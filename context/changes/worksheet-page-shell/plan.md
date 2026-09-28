@@ -194,13 +194,13 @@ No data migration. Auth routes and stored sessions are left in place.
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes
-- [x] 2.2 `npx astro check` passes
-- [x] 2.3 `src/components/Welcome.astro` and `src/components/Topbar.astro` are gone, and no file imports them
-- [x] 2.4 The home page renders the heading `PrintoKids`, the sentence `Wygeneruj labirynt i wydrukuj go na kartce A4.`, and a `disabled` button whose accessible name is `Generuj`
+- [x] 2.1 `npm run lint` passes — 03a0fc4
+- [x] 2.2 `npx astro check` passes — 03a0fc4
+- [x] 2.3 `src/components/Welcome.astro` and `src/components/Topbar.astro` are gone, and no file imports them — 03a0fc4
+- [x] 2.4 The home page renders the heading `PrintoKids`, the sentence `Wygeneruj labirynt i wydrukuj go na kartce A4.`, and a `disabled` button whose accessible name is `Generuj` — 03a0fc4
 
 #### Manual
 
-- [x] 2.5 `/` shows a warm off-white page with charcoal text, generous space, and no illustration, cosmic background, sign-in links, or feature cards
-- [x] 2.6 The Generuj control is visible and cannot be activated; no maze and no A4 sheet appear
-- [x] 2.7 `/auth/signin` still shows the cosmic starter screen
+- [x] 2.5 `/` shows a warm off-white page with charcoal text, generous space, and no illustration, cosmic background, sign-in links, or feature cards — 03a0fc4
+- [x] 2.6 The Generuj control is visible and cannot be activated; no maze and no A4 sheet appear — 03a0fc4
+- [x] 2.7 `/auth/signin` still shows the cosmic starter screen — 03a0fc4
