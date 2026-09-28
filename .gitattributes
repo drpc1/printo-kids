@@ -1,0 +1,13 @@
+# Store every text file with LF in the repository and check it out with LF on
+# every platform. Without this, core.autocrlf=true on Windows checks files out
+# with CRLF and prettier (endOfLine: "lf") fails on every line of every file.
+* text=auto eol=lf
+
+# Binaries must never be line-ending converted.
+*.png binary
+*.ico binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.woff binary
+*.woff2 binary
