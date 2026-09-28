@@ -181,26 +181,26 @@ No data migration. Auth routes and stored sessions are left in place.
 
 #### Automated
 
-- [x] 1.1 `npm run lint` passes
-- [x] 1.2 `npx astro check` passes
-- [x] 1.3 `src/pages/index.astro` sets `title="PrintoKids"`, `lang="pl"`, and `showConfigBanner={false}`
+- [x] 1.1 `npm run lint` passes — 8409ce7
+- [x] 1.2 `npx astro check` passes — 8409ce7
+- [x] 1.3 `src/pages/index.astro` sets `title="PrintoKids"`, `lang="pl"`, and `showConfigBanner={false}` — 8409ce7
 
 #### Manual
 
-- [ ] 1.4 Loading `/` shows document title PrintoKids, `html lang="pl"`, and no missing-Supabase banner
-- [ ] 1.5 Loading `/auth/signin` still uses `lang="en"` and still shows the missing-Supabase banner when Supabase is not configured
+- [x] 1.4 Loading `/` shows document title PrintoKids, `html lang="pl"`, and no missing-Supabase banner — 8409ce7
+- [x] 1.5 Loading `/auth/signin` still uses `lang="en"` and still shows the missing-Supabase banner when Supabase is not configured — 8409ce7
 
 ### Phase 2: Product first paint
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes
-- [ ] 2.2 `npx astro check` passes
-- [ ] 2.3 `src/components/Welcome.astro` and `src/components/Topbar.astro` are gone, and no file imports them
-- [ ] 2.4 The home page renders the heading `PrintoKids`, the sentence `Wygeneruj labirynt i wydrukuj go na kartce A4.`, and a `disabled` button whose accessible name is `Generuj`
+- [x] 2.1 `npm run lint` passes
+- [x] 2.2 `npx astro check` passes
+- [x] 2.3 `src/components/Welcome.astro` and `src/components/Topbar.astro` are gone, and no file imports them
+- [x] 2.4 The home page renders the heading `PrintoKids`, the sentence `Wygeneruj labirynt i wydrukuj go na kartce A4.`, and a `disabled` button whose accessible name is `Generuj`
 
 #### Manual
 
-- [ ] 2.5 `/` shows a warm off-white page with charcoal text, generous space, and no illustration, cosmic background, sign-in links, or feature cards
-- [ ] 2.6 The Generuj control is visible and cannot be activated; no maze and no A4 sheet appear
-- [ ] 2.7 `/auth/signin` still shows the cosmic starter screen
+- [x] 2.5 `/` shows a warm off-white page with charcoal text, generous space, and no illustration, cosmic background, sign-in links, or feature cards
+- [x] 2.6 The Generuj control is visible and cannot be activated; no maze and no A4 sheet appear
+- [x] 2.7 `/auth/signin` still shows the cosmic starter screen
