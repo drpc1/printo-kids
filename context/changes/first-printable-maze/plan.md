@@ -190,23 +190,23 @@ No data migration. Auth routes, middleware, and stored sessions stay as they are
 
 #### Automated
 
-- [x] 1.1 `npm test` passes, including more than one seeded maze that is 13 by 16, opens the north wall of row 0 column 6, opens the south wall of row 15 column 6, and has `countPaths` equal to 1
-- [x] 1.2 `npm run lint` passes
-- [x] 1.3 `npx astro check` passes
-- [x] 1.4 The CI `ci` job runs `npm test`
+- [x] 1.1 `npm test` passes, including more than one seeded maze that is 13 by 16, opens the north wall of row 0 column 6, opens the south wall of row 15 column 6, and has `countPaths` equal to 1 — 19cc6ca
+- [x] 1.2 `npm run lint` passes — 19cc6ca
+- [x] 1.3 `npx astro check` passes — 19cc6ca
+- [x] 1.4 The CI `ci` job runs `npm test` — 19cc6ca
 
 ### Phase 2: A4 sheet on the page
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes
-- [ ] 2.2 `npx astro check` passes
-- [ ] 2.3 `npm test` passes
-- [ ] 2.4 The home page renders an enabled button named Generuj and does not render a disabled Generuj button
+- [x] 2.1 `npm run lint` passes
+- [x] 2.2 `npx astro check` passes
+- [x] 2.3 `npm test` passes
+- [x] 2.4 The home page renders an enabled button named Generuj and does not render a disabled Generuj button
 
 #### Manual
 
-- [ ] 2.5 Clicking Generuj shows one A4-proportion sheet on the same page, with a maze, the word Start above the top opening, and Meta below the bottom opening
-- [ ] 2.6 Clicking Generuj again replaces that sheet with a different maze
-- [ ] 2.7 Before the first click there is no sheet, and `/auth/signin` still shows the cosmic starter screen
-- [ ] 2.8 A passage on the sheet is square, not stretched taller or wider to fill the page
+- [x] 2.5 Clicking Generuj shows one A4-proportion sheet on the same page, with a maze, the word Start above the top opening, and Meta below the bottom opening
+- [x] 2.6 Clicking Generuj again replaces that sheet with a different maze
+- [x] 2.7 Before the first click there is no sheet, and `/auth/signin` still shows the cosmic starter screen
+- [x] 2.8 A passage on the sheet is square, not stretched taller or wider to fill the page
