@@ -199,14 +199,14 @@ No data migration. Auth routes, middleware, and stored sessions stay as they are
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes
-- [x] 2.2 `npx astro check` passes
-- [x] 2.3 `npm test` passes
-- [x] 2.4 The home page renders an enabled button named Generuj and does not render a disabled Generuj button
+- [x] 2.1 `npm run lint` passes — 4b5479d
+- [x] 2.2 `npx astro check` passes — 4b5479d
+- [x] 2.3 `npm test` passes — 4b5479d
+- [x] 2.4 The home page renders an enabled button named Generuj and does not render a disabled Generuj button — 4b5479d
 
 #### Manual
 
-- [x] 2.5 Clicking Generuj shows one A4-proportion sheet on the same page, with a maze, the word Start above the top opening, and Meta below the bottom opening
-- [x] 2.6 Clicking Generuj again replaces that sheet with a different maze
-- [x] 2.7 Before the first click there is no sheet, and `/auth/signin` still shows the cosmic starter screen
-- [x] 2.8 A passage on the sheet is square, not stretched taller or wider to fill the page
+- [x] 2.5 Clicking Generuj shows one A4-proportion sheet on the same page, with a maze, the word Start above the top opening, and Meta below the bottom opening — 4b5479d
+- [x] 2.6 Clicking Generuj again replaces that sheet with a different maze — 4b5479d
+- [x] 2.7 Before the first click there is no sheet, and `/auth/signin` still shows the cosmic starter screen — 4b5479d
+- [x] 2.8 A passage on the sheet is square, not stretched taller or wider to fill the page — 4b5479d
