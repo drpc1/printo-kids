@@ -9,6 +9,7 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "node --experimental-strip-types --test src/lib/maze/generate.test.ts",
     "format": "prettier --write .",
     "smoke": "node scripts/smoke.mjs"
   },
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@eslint/compat": "^2.1.1",
     "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.4",
     "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.1.0",
