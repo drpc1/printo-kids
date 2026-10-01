@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-09-29
+updated: 2026-10-01
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -42,7 +42,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | ID    | Change ID                    | Outcome (user can …)                                                                 | Prerequisites | PRD refs                         | Status   |
 | ----- | ---------------------------- | ------------------------------------------------------------------------------------ | ------------- | -------------------------------- | -------- |
 | F-01  | worksheet-page-shell         | (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa) | —             | US-01                            | done |
-| S-01  | first-printable-maze         | Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie | F-01          | US-01, FR-003, FR-004            | in-progress |
+| S-01  | first-printable-maze         | Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie | F-01          | US-01, FR-003, FR-004            | done |
 | S-02  | print-a4-maze                | Rodzic może wydrukować tę kartę jako jedną stronę A4                                 | S-01          | FR-005                           | proposed |
 | S-03  | maze-character-choice        | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu | S-01          | US-01, FR-002                    | proposed |
 | S-04  | last-used-print-params       | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | S-03          | FR-006                           | proposed |
@@ -102,7 +102,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) is what a visitor se
   - Jak wygląda znacznik startu bez postaci? Rekomendacja: przerwa w zewnętrznej ścianie na środku góry, bez słowa „Start”; na dole analogiczna przerwa i napis „Meta”. Postać z `S-03` wstawi się w to samo miejsce. — Owner: user. Block: no.
   - Jaka stała siatka (liczba komórek, szerokość korytarza) na pierwszy labirynt, skoro poziomy są zaparkowane? — Owner: team. Block: no.
 - **Risk:** Wchodzi na stronę z `F-01`: ten sam przycisk zaczyna działać, na tej samej stronie pojawia się kartka A4 z labiryntem. Zobaczenie karty jest zatwierdzeniem. Layout treści karty: tylko labirynt + start + „Meta”. Poprawność generatora weryfikujemy w kodzie (niewidoczne dla rodzica): dokładnie jedna ścieżka od wejścia do wyjścia; ta sama funkcja w testach i przed pokazaniem karty. Druk jest `S-02`.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-02: Druk jednej strony A4
 
@@ -198,3 +198,4 @@ The starter Welcome screen (auth, marketing, cosmic layout) is what a visitor se
 ## Done
 
 - **F-01: (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa).** — Archived 2026-09-29 → `context/archive/2026-09-28-worksheet-page-shell/`. Lesson: —.
+- **S-01: Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie.** — Archived 2026-10-01 → `context/archive/2026-09-28-first-printable-maze/`. Lesson: —.
