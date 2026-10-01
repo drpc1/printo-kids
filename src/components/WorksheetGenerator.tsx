@@ -9,6 +9,7 @@ const INSET_Y = 10;
 const LABEL_COLUMN = 6;
 
 interface WallSegment {
+  id: string;
   x1: number;
   y1: number;
   x2: number;
@@ -98,7 +99,7 @@ function MazeSheet({ maze }: { maze: Maze }) {
       <g fill="none" stroke="var(--pk-ink)" strokeLinecap="square" strokeLinejoin="miter" strokeWidth={0.65}>
         {walls.map((wall) => (
           <line
-            key={`${wall.x1},${wall.y1},${wall.x2},${wall.y2}`}
+            key={wall.id}
             x1={wall.x1}
             y1={wall.y1}
             x2={wall.x2}
@@ -112,21 +113,6 @@ function MazeSheet({ maze }: { maze: Maze }) {
 
 function collectWalls(maze: Maze, originX: number, originY: number, cellSize: number): WallSegment[] {
   const walls: WallSegment[] = [];
-  const seen = new Set<string>();
-
-  function add(x1: number, y1: number, x2: number, y2: number): void {
-    const ordered = x1 < x2 || (x1 === x2 && y1 <= y2);
-    const ax = ordered ? x1 : x2;
-    const ay = ordered ? y1 : y2;
-    const bx = ordered ? x2 : x1;
-    const by = ordered ? y2 : y1;
-    const key = `${ax},${ay},${bx},${by}`;
-    if (seen.has(key)) {
-      return;
-    }
-    seen.add(key);
-    walls.push({ x1: ax, y1: ay, x2: bx, y2: by });
-  }
 
   for (let row = 0; row < maze.height; row += 1) {
     for (let col = 0; col < maze.width; col += 1) {
@@ -136,17 +122,29 @@ function collectWalls(maze: Maze, originX: number, originY: number, cellSize: nu
       }
       const x = originX + col * cellSize;
       const y = originY + row * cellSize;
-      if (cell.north) {
-        add(x, y, x + cellSize, y);
+      if (row === 0 && cell.north) {
+        walls.push({ id: `${row},${col},north`, x1: x, y1: y, x2: x + cellSize, y2: y });
       }
       if (cell.east) {
-        add(x + cellSize, y, x + cellSize, y + cellSize);
+        walls.push({
+          id: `${row},${col},east`,
+          x1: x + cellSize,
+          y1: y,
+          x2: x + cellSize,
+          y2: y + cellSize,
+        });
       }
       if (cell.south) {
-        add(x, y + cellSize, x + cellSize, y + cellSize);
+        walls.push({
+          id: `${row},${col},south`,
+          x1: x,
+          y1: y + cellSize,
+          x2: x + cellSize,
+          y2: y + cellSize,
+        });
       }
-      if (cell.west) {
-        add(x, y, x, y + cellSize);
+      if (col === 0 && cell.west) {
+        walls.push({ id: `${row},${col},west`, x1: x, y1: y, x2: x, y2: y + cellSize });
       }
     }
   }

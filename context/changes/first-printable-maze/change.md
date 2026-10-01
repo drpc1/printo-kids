@@ -1,7 +1,7 @@
 ---
 change_id: first-printable-maze
 title: Rodzic generuje rozwiązywalny labirynt i widzi kartę A4 na stronie
-status: implemented
+status: impl_reviewed
 created: 2026-09-28
 updated: 2026-09-29
 archived_at: null
