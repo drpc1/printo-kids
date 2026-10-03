@@ -288,30 +288,30 @@ No data migration. The tweakcn block is already in the working tree; phase 1 mus
 
 #### Automated
 
-- [x] 1.1 `npx astro check` passes
-- [x] 1.2 `npm run lint` passes
-- [x] 1.3 `src/styles/global.css` sets `color-scheme: light`, still contains light `--card: oklch(1 0 0)`, and still contains the `.dark` block
-- [x] 1.4 `src/styles/global.css` contains no `@page`, and `src/components/WorksheetHome.astro` still contains `@page`
+- [x] 1.1 `npx astro check` passes — ddf1942
+- [x] 1.2 `npm run lint` passes — ddf1942
+- [x] 1.3 `src/styles/global.css` sets `color-scheme: light`, still contains light `--card: oklch(1 0 0)`, and still contains the `.dark` block — ddf1942
+- [x] 1.4 `src/styles/global.css` contains no `@page`, and `src/components/WorksheetHome.astro` still contains `@page` — ddf1942
 
 #### Manual
 
-- [x] 1.5 `/` still shows the current worksheet, because this phase does not restyle it
-- [x] 1.6 Loading `/` does not request a web font
+- [x] 1.5 `/` still shows the current worksheet, because this phase does not restyle it — ddf1942
+- [x] 1.6 Loading `/` does not request a web font — ddf1942
 
 ### Phase 2: Kartka czyta tokeny
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes
-- [ ] 2.2 `npx astro check` passes
-- [ ] 2.3 `WorksheetHome.astro` and `WorksheetGenerator.tsx` contain no `--pk-`, `#F6F1E8`, `#3F3A34`, `#7D8B74`, `#5B554C`, or `fill="#fff"`
+- [x] 2.1 `npm run lint` passes
+- [x] 2.2 `npx astro check` passes
+- [x] 2.3 `WorksheetHome.astro` and `WorksheetGenerator.tsx` contain no `--pk-`, `#F6F1E8`, `#3F3A34`, `#7D8B74`, `#5B554C`, or `fill="#fff"`
 
 #### Manual
 
-- [ ] 2.4 `/` uses the warm background, a quieter sentence, and the same large pills
-- [ ] 2.5 After Generuj, the sheet is white, the walls are dark, and the page around the sheet stays warm
-- [ ] 2.6 Print preview is one A4 page, with the buttons hidden and the sheet white
-- [ ] 2.7 Tabbing to Generuj shows the theme focus ring
+- [x] 2.4 `/` uses the warm background, a quieter sentence, and the same large pills
+- [x] 2.5 After Generuj, the sheet is white, the walls are dark, and the page around the sheet stays warm
+- [x] 2.6 Print preview is one A4 page, with the buttons hidden and the sheet white
+- [x] 2.7 Tabbing to Generuj shows the theme focus ring
 
 ### Phase 3: Reszta aplikacji schodzi ze startera
 
