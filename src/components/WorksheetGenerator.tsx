@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { countPaths, generateMaze, type Maze, type MazeCell } from "@/lib/maze/generate";
 
@@ -15,8 +16,6 @@ interface WallSegment {
   x2: number;
   y2: number;
 }
-
-const SAGE_PILL = "rounded-full bg-[var(--pk-sage)] px-12 py-3.5 text-lg font-medium text-[var(--pk-paper)]";
 
 export default function WorksheetGenerator() {
   const [maze, setMaze] = useState<Maze | null>(null);
@@ -49,13 +48,23 @@ export default function WorksheetGenerator() {
   return (
     <div className={cn("flex w-full flex-col items-center gap-10")}>
       <div className={cn("flex flex-wrap items-center justify-center gap-4 print:hidden")}>
-        <button type="button" onClick={handleGenerate} className={cn(SAGE_PILL)}>
+        <Button
+          type="button"
+          variant="default"
+          onClick={handleGenerate}
+          className={cn("h-auto rounded-full px-12 py-3.5 text-lg")}
+        >
           Generuj
-        </button>
+        </Button>
         {maze !== null ? (
-          <button type="button" onClick={handlePrint} className={cn(SAGE_PILL)}>
+          <Button
+            type="button"
+            variant="default"
+            onClick={handlePrint}
+            className={cn("h-auto rounded-full px-12 py-3.5 text-lg")}
+          >
             Drukuj
-          </button>
+          </Button>
         ) : null}
       </div>
       {maze !== null ? <MazeSheet maze={maze} /> : null}
@@ -79,16 +88,16 @@ function MazeSheet({ maze }: { maze: Maze }) {
     <svg
       viewBox={`0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}`}
       className={cn(
-        "aspect-[210/297] h-auto w-full ring-1 ring-[var(--pk-ink)] print:h-[297mm] print:w-[210mm] print:ring-0",
+        "aspect-[210/297] h-auto w-full ring-1 ring-[var(--foreground)] print:h-[297mm] print:w-[210mm] print:ring-0",
       )}
       role="img"
       aria-label="Labirynt"
     >
-      <rect width={PAGE_WIDTH} height={PAGE_HEIGHT} fill="#fff" />
+      <rect width={PAGE_WIDTH} height={PAGE_HEIGHT} fill="var(--card)" />
       <text
         x={labelX}
         y={startY}
-        fill="var(--pk-ink)"
+        fill="var(--foreground)"
         fontFamily="ui-sans-serif, system-ui, sans-serif"
         fontSize={7}
         textAnchor="middle"
@@ -99,7 +108,7 @@ function MazeSheet({ maze }: { maze: Maze }) {
       <text
         x={labelX}
         y={metaY}
-        fill="var(--pk-ink)"
+        fill="var(--foreground)"
         fontFamily="ui-sans-serif, system-ui, sans-serif"
         fontSize={7}
         textAnchor="middle"
@@ -107,7 +116,7 @@ function MazeSheet({ maze }: { maze: Maze }) {
       >
         Meta
       </text>
-      <g fill="none" stroke="var(--pk-ink)" strokeLinecap="square" strokeLinejoin="miter" strokeWidth={0.65}>
+      <g fill="none" stroke="var(--foreground)" strokeLinecap="square" strokeLinejoin="miter" strokeWidth={0.65}>
         {walls.map((wall) => (
           <line key={wall.id} x1={wall.x1} y1={wall.y1} x2={wall.x2} y2={wall.y2} />
         ))}
