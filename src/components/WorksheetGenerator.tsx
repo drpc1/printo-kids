@@ -16,6 +16,8 @@ interface WallSegment {
   y2: number;
 }
 
+const SAGE_PILL = "rounded-full bg-[var(--pk-sage)] px-12 py-3.5 text-lg font-medium text-[var(--pk-paper)]";
+
 export default function WorksheetGenerator() {
   const [maze, setMaze] = useState<Maze | null>(null);
 
@@ -40,15 +42,22 @@ export default function WorksheetGenerator() {
     }
   }
 
+  function handlePrint(): void {
+    window.print();
+  }
+
   return (
     <div className={cn("flex w-full flex-col items-center gap-10")}>
-      <button
-        type="button"
-        onClick={handleGenerate}
-        className={cn("rounded-full bg-[var(--pk-sage)] px-12 py-3.5 text-lg font-medium text-[var(--pk-paper)]")}
-      >
-        Generuj
-      </button>
+      <div className={cn("flex flex-wrap items-center justify-center gap-4 print:hidden")}>
+        <button type="button" onClick={handleGenerate} className={cn(SAGE_PILL)}>
+          Generuj
+        </button>
+        {maze !== null ? (
+          <button type="button" onClick={handlePrint} className={cn(SAGE_PILL)}>
+            Drukuj
+          </button>
+        ) : null}
+      </div>
       {maze !== null ? <MazeSheet maze={maze} /> : null}
     </div>
   );
