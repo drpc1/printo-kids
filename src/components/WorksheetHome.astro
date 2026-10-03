@@ -15,3 +15,32 @@ import WorksheetGenerator from "./WorksheetGenerator";
     <WorksheetGenerator client:load />
   </div>
 </main>
+
+<style is:global>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  @media print {
+    html,
+    body {
+      height: auto !important;
+    }
+
+    #worksheet-home {
+      min-height: 0;
+      padding: 0;
+    }
+
+    #worksheet-home .max-w-xl {
+      max-width: none;
+    }
+
+    #worksheet-home h1,
+    #worksheet-home p,
+    #worksheet-home button {
+      display: none;
+    }
+  }
+</style>
