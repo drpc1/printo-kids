@@ -171,10 +171,6 @@
   --tracking-widest: calc(var(--tracking-normal) + 0.1em);
 }
 
-@utility bg-cosmic {
-  background-image: linear-gradient(to bottom, #0a0e1a, #0f1529, #0a0e1a);
-}
-
 @layer base {
   html {
     color-scheme: light;
