@@ -184,12 +184,12 @@ None. No stored sheets and no schema.
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes
-- [x] 2.2 `npx astro check` passes
-- [x] 2.3 `npm test` passes
-- [x] 2.4 After a maze exists, the page has an enabled button named Drukuj and still has Generuj; before the first maze, Drukuj is absent
+- [x] 2.1 `npm run lint` passes — ab1a8c9
+- [x] 2.2 `npx astro check` passes — ab1a8c9
+- [x] 2.3 `npm test` passes — ab1a8c9
+- [x] 2.4 After a maze exists, the page has an enabled button named Drukuj and still has Generuj; before the first maze, Drukuj is absent — ab1a8c9
 
 #### Manual
 
-- [x] 2.5 Clicking Drukuj opens the browser print dialog on the one-page sheet from Phase 1
-- [x] 2.6 Before Generuj, no Drukuj control is visible
+- [x] 2.5 Clicking Drukuj opens the browser print dialog on the one-page sheet from Phase 1 — ab1a8c9
+- [x] 2.6 Before Generuj, no Drukuj control is visible — ab1a8c9
