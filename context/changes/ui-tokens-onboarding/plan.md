@@ -302,33 +302,33 @@ No data migration. The tweakcn block is already in the working tree; phase 1 mus
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes
-- [x] 2.2 `npx astro check` passes
-- [x] 2.3 `WorksheetHome.astro` and `WorksheetGenerator.tsx` contain no `--pk-`, `#F6F1E8`, `#3F3A34`, `#7D8B74`, `#5B554C`, or `fill="#fff"`
+- [x] 2.1 `npm run lint` passes — 9606513
+- [x] 2.2 `npx astro check` passes — 9606513
+- [x] 2.3 `WorksheetHome.astro` and `WorksheetGenerator.tsx` contain no `--pk-`, `#F6F1E8`, `#3F3A34`, `#7D8B74`, `#5B554C`, or `fill="#fff"` — 9606513
 
 #### Manual
 
-- [x] 2.4 `/` uses the warm background, a quieter sentence, and the same large pills
-- [x] 2.5 After Generuj, the sheet is white, the walls are dark, and the page around the sheet stays warm
-- [x] 2.6 Print preview is one A4 page, with the buttons hidden and the sheet white
-- [x] 2.7 Tabbing to Generuj shows the theme focus ring
+- [x] 2.4 `/` uses the warm background, a quieter sentence, and the same large pills — 9606513
+- [x] 2.5 After Generuj, the sheet is white, the walls are dark, and the page around the sheet stays warm — 9606513
+- [x] 2.6 Print preview is one A4 page, with the buttons hidden and the sheet white — 9606513
+- [x] 2.7 Tabbing to Generuj shows the theme focus ring — 9606513
 
 ### Phase 3: Reszta aplikacji schodzi ze startera
 
 #### Automated
 
-- [ ] 3.1 `npm run lint` passes
-- [ ] 3.2 `npx astro check` passes
-- [ ] 3.3 `src/pages` and `src/components` contain no `bg-cosmic`, `purple-`, `blue-`, `red-`, or `white/`
-- [ ] 3.4 `src/styles/global.css` has no `@utility bg-cosmic`, and `src/components/ui/LibBadge.astro` is gone
-- [ ] 3.5 These routes still exist: `src/pages/auth/signin.astro`, `src/pages/auth/signup.astro`, `src/pages/auth/confirm-email.astro`, `src/pages/dashboard.astro`
+- [x] 3.1 `npm run lint` passes
+- [x] 3.2 `npx astro check` passes
+- [x] 3.3 `src/pages` and `src/components` contain no `bg-cosmic`, `purple-`, `blue-`, `red-`, or `white/`
+- [x] 3.4 `src/styles/global.css` has no `@utility bg-cosmic`, and `src/components/ui/LibBadge.astro` is gone
+- [x] 3.5 These routes still exist: `src/pages/auth/signin.astro`, `src/pages/auth/signup.astro`, `src/pages/auth/confirm-email.astro`, `src/pages/dashboard.astro`
 
 #### Manual
 
-- [ ] 3.6 Sign-in, sign-up, and confirm-email use the warm theme. Dashboard does too, but only after a session; an anonymous visit redirects to sign-in
-- [ ] 3.7 A sign-in field error sits beside the field in the destructive role
-- [ ] 3.8 A pending submit is N/A to observe: invalid fields never submit, and a valid submit is a full-page POST. Keep the pending label and spinner, restyle them, and do not convert the form to a client action
-- [ ] 3.9 `/` still matches the phase 2 worksheet
+- [x] 3.6 Sign-in, sign-up, and confirm-email use the warm theme. Dashboard does too, but only after a session; an anonymous visit redirects to sign-in
+- [x] 3.7 A sign-in field error sits beside the field in the destructive role
+- [x] 3.8 A pending submit is N/A to observe: invalid fields never submit, and a valid submit is a full-page POST. Keep the pending label and spinner, restyle them, and do not convert the form to a client action
+- [x] 3.9 `/` still matches the phase 2 worksheet
 
 ### Phase 4: Stany i reguła
 
