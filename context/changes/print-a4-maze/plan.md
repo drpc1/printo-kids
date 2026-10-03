@@ -168,28 +168,28 @@ None. No stored sheets and no schema.
 
 #### Automated
 
-- [x] 1.1 `npm run lint` passes
-- [x] 1.2 `npx astro check` passes
-- [x] 1.3 `npm test` passes
-- [x] 1.4 The A4 `@page` rule with margin 0 lives on the home worksheet, and `src/styles/global.css` has no `@page` rule
-- [x] 1.5 Print CSS hides the heading, the purpose sentence, and the buttons, and sizes the sheet to 210mm by 297mm
+- [x] 1.1 `npm run lint` passes — 2665193
+- [x] 1.2 `npx astro check` passes — 2665193
+- [x] 1.3 `npm test` passes — 2665193
+- [x] 1.4 The A4 `@page` rule with margin 0 lives on the home worksheet, and `src/styles/global.css` has no `@page` rule — 2665193
+- [x] 1.5 Print CSS hides the heading, the purpose sentence, and the buttons, and sizes the sheet to 210mm by 297mm — 2665193
 
 #### Manual
 
-- [x] 1.6 With margins left at Default and headers and footers off, print preview of a generated maze is one A4 page of the white sheet only: maze, Start, and Meta
-- [x] 1.7 The printed maze is the same size as the on-screen sheet, with at least 10mm of white inside the sheet edge
-- [x] 1.8 On screen, the heading, purpose sentence, Generuj, and paper background stay; before the first click there is no sheet; `/auth/signin` is unchanged
+- [x] 1.6 With margins left at Default and headers and footers off, print preview of a generated maze is one A4 page of the white sheet only: maze, Start, and Meta — 2665193
+- [x] 1.7 The printed maze is the same size as the on-screen sheet, with at least 10mm of white inside the sheet edge — 2665193
+- [x] 1.8 On screen, the heading, purpose sentence, Generuj, and paper background stay; before the first click there is no sheet; `/auth/signin` is unchanged — 2665193
 
 ### Phase 2: Drukuj button
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes
-- [ ] 2.2 `npx astro check` passes
-- [ ] 2.3 `npm test` passes
-- [ ] 2.4 After a maze exists, the page has an enabled button named Drukuj and still has Generuj; before the first maze, Drukuj is absent
+- [x] 2.1 `npm run lint` passes
+- [x] 2.2 `npx astro check` passes
+- [x] 2.3 `npm test` passes
+- [x] 2.4 After a maze exists, the page has an enabled button named Drukuj and still has Generuj; before the first maze, Drukuj is absent
 
 #### Manual
 
-- [ ] 2.5 Clicking Drukuj opens the browser print dialog on the one-page sheet from Phase 1
-- [ ] 2.6 Before Generuj, no Drukuj control is visible
+- [x] 2.5 Clicking Drukuj opens the browser print dialog on the one-page sheet from Phase 1
+- [x] 2.6 Before Generuj, no Drukuj control is visible
