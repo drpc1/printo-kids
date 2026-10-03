@@ -69,7 +69,9 @@ function MazeSheet({ maze }: { maze: Maze }) {
   return (
     <svg
       viewBox={`0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}`}
-      className={cn("aspect-[210/297] h-auto w-full ring-1 ring-[var(--pk-ink)]")}
+      className={cn(
+        "aspect-[210/297] h-auto w-full ring-1 ring-[var(--pk-ink)] print:h-[297mm] print:w-[210mm] print:ring-0",
+      )}
       role="img"
       aria-label="Labirynt"
     >
@@ -98,13 +100,7 @@ function MazeSheet({ maze }: { maze: Maze }) {
       </text>
       <g fill="none" stroke="var(--pk-ink)" strokeLinecap="square" strokeLinejoin="miter" strokeWidth={0.65}>
         {walls.map((wall) => (
-          <line
-            key={wall.id}
-            x1={wall.x1}
-            y1={wall.y1}
-            x2={wall.x2}
-            y2={wall.y2}
-          />
+          <line key={wall.id} x1={wall.x1} y1={wall.y1} x2={wall.x2} y2={wall.y2} />
         ))}
       </g>
     </svg>
