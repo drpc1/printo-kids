@@ -31,3 +31,10 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 ## Tests and CI
 
 There is no unit-test runner. The only automated check is `scripts/smoke.mjs` (starter auth flow, not a product suite). CI on `master` (@.github/workflows/ci.yml) runs `npm run lint`, `npx astro check`, and `npm run build` (needs `SUPABASE_URL` / `SUPABASE_KEY` repository secrets), plus a smoke job against local Supabase. Commit-message convention is unset (no git history yet).
+
+## UI
+
+- Screen colors are the role utilities from `src/styles/global.css` (`background`, `foreground`, `muted-foreground`, `primary`, `primary-foreground`, `card`, `destructive`, `border`, `ring`). A new color is a new token there; hexes inside the tweakcn block stay legal.
+- Pages and components do not add hex colors, `--pk-*`, `bg-cosmic`, or Tailwind palette color classes. Arbitrary layout values such as `print:h-[297mm]` and `ring-[3px]` are not color literals and are not banned by this sentence.
+- `@page` stays in `src/components/WorksheetHome.astro`. Inter and Lora stay names in the theme and are not loaded from a view.
+- Shared controls live in `src/components/ui`. Check that catalog before writing a new one; add a missing one with `npx shadcn@latest add`.
