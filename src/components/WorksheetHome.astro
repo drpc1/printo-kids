@@ -4,14 +4,44 @@ import WorksheetGenerator from "./WorksheetGenerator";
 
 <main
   id="worksheet-home"
-  class="flex min-h-screen flex-col items-center justify-center bg-[var(--pk-paper)] px-6 py-20 text-[var(--pk-ink)]"
-  style="--pk-paper: #F6F1E8; --pk-ink: #3F3A34; --pk-sage: #7D8B74;"
+  class="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-20 text-foreground"
 >
   <div class="flex w-full max-w-xl flex-col items-center gap-10 text-center">
     <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">PrintoKids</h1>
 
-    <p class="text-lg leading-relaxed text-[#5B554C] sm:text-xl">Wygeneruj labirynt i wydrukuj go na kartce A4.</p>
+    <p class="text-lg leading-relaxed text-muted-foreground sm:text-xl">
+      Wygeneruj labirynt i wydrukuj go na kartce A4.
+    </p>
 
     <WorksheetGenerator client:load />
   </div>
 </main>
+
+<style is:global>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  @media print {
+    html,
+    body {
+      height: auto !important;
+    }
+
+    #worksheet-home {
+      min-height: 0;
+      padding: 0;
+    }
+
+    #worksheet-home .max-w-xl {
+      max-width: none;
+    }
+
+    #worksheet-home h1,
+    #worksheet-home p,
+    #worksheet-home button {
+      display: none;
+    }
+  }
+</style>
