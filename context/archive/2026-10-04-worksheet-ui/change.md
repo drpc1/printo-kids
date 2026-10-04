@@ -1,10 +1,10 @@
 ---
 change_id: worksheet-ui
 title: Audit the worksheet view against design tokens
-status: preparing
+status: archived
 created: 2026-10-04
 updated: 2026-10-04
-archived_at: null
+archived_at: 2026-10-04T13:18:02Z
 ---
 
 ## Notes
