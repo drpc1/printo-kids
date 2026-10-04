@@ -18,6 +18,8 @@ Opening the control shows a window. „Bez postaci” is the selected row. Three
 
 On the sheet the figure is 20 user units wide and tall, centered on the entrance, so it is wider than the gap and still inside the top band. The word Start sits immediately to its right, in that same band. Meta is unchanged. The control and the window do not print. The printed sheet matches the figure on screen.
 
+**Addendum (2026-10-04):** A character is a 30-unit PNG centered on the entrance, sitting on the top of the grid so it does not cover corridor cells. No character keeps the word Start centered on the entrance. Meta is unchanged.
+
 ### Key Discoveries:
 
 - Entrance and Start live in `src/components/WorksheetGenerator.tsx` (`LABEL_COLUMN` 6, Start text around the label-band center). Generation of the gap is `src/lib/maze/generate.ts:41-42`.
@@ -33,17 +35,23 @@ On the sheet the figure is 20 user units wide and tall, centered on the entrance
 - Difficulty levels, last-used parameters, or child profiles.
 - Redrawing or restyling the three pictures beyond removing the outer white field.
 - Changing the generator, the 13 by 16 grid, Meta, `@page`, or the Generuj and Drukuj pills.
+
+**Addendum (2026-10-04):** After a maze exists, the home blurb hides, the title shrinks, Generuj becomes outline, and Drukuj stays the filled pill. Empty state still uses a filled Generuj.
 - A legal opinion. Shipping these three files accepts the roadmap’s „rights do not block S-03” line. The PRD block before publishing stays written and is not cleared here.
 
 ## Implementation Approach
 
 Keep selection in the worksheet island, separate from `generateMaze`. The closed control is a button that shows the current choice and opens a dialog from `src/components/ui/`. The dialog lists „Bez postaci” and the three characters. The sheet reads that choice. No character means today’s centered Start. A character means a 20-unit image centered on the entrance and the word Start to its right. Assets are transparent PNGs next to the existing JPGs.
 
+**Addendum (2026-10-04):** No character means today’s centered Start. A character means a 30-unit PNG on the entrance, above the first corridor, and no Start word. Assets are the phase 1 PNGs only.
+
 ## Critical Implementation Details
 
 - **White field:** Remove only the outer white. Cream fills inside the car, rocket, and dinosaur stay. A single near-white threshold that eats cream fails this phase.
-- **Print:** The opener is a `button` inside `#worksheet-home`, so the existing print rule hides it. Dialog content is portaled outside that element, so the window itself needs `print:hidden` even when closed content would otherwise be absent. An open window must not appear on the printed page.
+- **Print:** The opener is a `button` inside `#worksheet-home`, so the existing print rule hides it. Dialog content is portaled outside that element, so the window itself needs `print:hidden` even when closed content would otherwise be absent. An open window must not appear on the printed page. Screen-only `#worksheet-home.has-maze` padding is more specific than the print `padding: 0` and must be reset in `@media print`, or the 297 mm sheet overflows onto blank pages. `@page` stays unchanged.
 - **Start position:** With no character, Start stays on the entrance center. With a character, the image takes that center and Start moves to the right of the image. Do not leave Start centered underneath the figure.
+
+**Addendum (2026-10-04):** With no character, Start stays on the entrance center. With a character, the 30-unit image takes that center and Start is not drawn.
 
 ## Phase 1: Transparent character files
 
@@ -60,6 +68,8 @@ Produce a transparent PNG for each of the three drawings. The JPGs remain where 
 **Intent**: Give the sheet an image that does not paint a white square, without redrawing the pictures.
 
 **Contract**: Add `samochodzik.png`, `rakieta.png`, and `dinozaur.png` beside the existing JPGs of the same names. Each PNG shows the same drawing as its JPG. The outer white field is transparent. Cream interior fills remain. The page does not use the JPGs as the sheet or dialog source.
+
+**Addendum (2026-10-04):** The JPGs were local knockout sources. After the PNGs shipped they were removed; only the PNGs remain in `public/characters/`.
 
 ### Success Criteria:
 
@@ -100,6 +110,8 @@ The parent can open a window, see „Bez postaci” selected, and pick a named c
 
 **Contract**: State is the selection, default none, independent of `maze`. The closed control is a `button` in the print-hidden action area. Its label is „Bez postaci” until a character is chosen, then a small icon plus „Samochodzik”, „Rakieta”, or „Dinozaur”. The icon uses the phase 1 PNG and is about 40px, smaller than the 20-unit sheet mark. The window’s first row is „Bez postaci”, selected by default. The other rows are the same three names, each with the small icon to the left of the name. Choosing a row updates the selection and closes the window. The window content is `print:hidden`. This phase does not add an SVG image.
 
+**Addendum (2026-10-04):** The closed control is a ghost line `Postać: {name} ▾` with a ~24px icon, not a second primary pill. Dialog rows still use ~40px icons.
+
 ### Success Criteria:
 
 #### Automated Verification:
@@ -116,6 +128,8 @@ The parent can open a window, see „Bez postaci” selected, and pick a named c
 - A print preview does not show the control or the window
 - Generuj still shows a maze whose start is the word Start and no figure
 
+**Note (2026-10-04):** Progress 2.4 title is unchanged. On a fresh load the closed control reads `Postać: Bez postaci`.
+
 **Implementation Note**: After completing this phase and all automated verification passes, pause here for manual confirmation from the human that the manual testing was successful before proceeding to the next phase.
 
 ---
@@ -124,7 +138,7 @@ The parent can open a window, see „Bez postaci” selected, and pick a named c
 
 ### Overview
 
-The selected figure appears on the sheet, wider than the entrance, with Start beside it. Changing the choice updates the figure and leaves the maze in place.
+The selected figure appears on the sheet, wider than the entrance. Changing the choice updates the figure and leaves the maze in place. With no character the sheet shows centered Start.
 
 ### Changes Required:
 
@@ -132,9 +146,11 @@ The selected figure appears on the sheet, wider than the entrance, with Start be
 
 **File**: `src/components/WorksheetGenerator.tsx`
 
-**Intent**: Put the chosen character on the entrance and keep the word Start readable next to it.
+**Intent**: Put the chosen character on the entrance. With no character, keep the centered Start word.
 
-**Contract**: `MazeSheet` reads the selection. None draws only the existing Start text at the entrance center. A character draws the phase 1 PNG at 20 by 20 user units, centered on `LABEL_COLUMN` 6 and on the label-band midpoint, and draws Start immediately to the right of that image, vertically centered with it, still inside the top band. The image is wider than the entrance gap of `(210 - 20) / 13` user units and does not cover corridor cells. Meta, wall geometry, and `fontFamily` are unchanged. Changing the selection does not call `generateMaze`. Returning to „Bez postaci” removes the image and restores centered Start.
+**Contract**: `MazeSheet` reads the selection. None draws the word Start centered on `LABEL_COLUMN` 6 in the top label band (`INSET_Y + labelBand / 2`), same `fontFamily` and size as Meta, and no image. A character draws the phase 1 PNG at 30 by 30 user units, centered on that column, sitting on the top of the grid (`originY - 30`) so it does not cover corridor cells, and does not draw Start. The image is wider than the entrance gap of `(210 - 20) / 13` user units. Meta, wall geometry, and Meta `fontFamily` are unchanged. Changing the selection does not call `generateMaze`. Returning to „Bez postaci” removes the image and restores centered Start.
+
+**Addendum (2026-10-04):** Replaces the earlier 20-unit figure-plus-Start contract. Progress 3.3, 3.4, and 3.6 titles stay as written; 3.3 and 3.6 mean centered Start with no image; 3.4 means a 30 mm figure with no Start beside it.
 
 ### Success Criteria:
 
@@ -146,7 +162,7 @@ The selected figure appears on the sheet, wider than the entrance, with Start be
 #### Manual Verification:
 
 - With „Bez postaci”, the generated sheet shows centered Start and no image
-- A chosen figure is about 20mm on the A4 sheet, centered on the entrance, wider than the gap, with Start immediately on its right, both in the top band, and no corridor covered
+- A chosen figure is about 30mm on the A4 sheet, centered on the entrance, wider than the gap, sitting above the first corridor, with no Start word
 - Choosing another character swaps the figure and leaves the walls unchanged
 - Choosing „Bez postaci” removes the figure and restores centered Start
 - The printed page matches that sheet and does not show the choice control or window
@@ -167,10 +183,10 @@ The selected figure appears on the sheet, wider than the entrance, with Start be
 
 ### Manual Testing Steps:
 
-1. Load `/`. Confirm the control says „Bez postaci”. Open the window and confirm the four rows.
-2. Generuj. Confirm Start is centered and no figure is on the sheet.
-3. Choose Samochodzik. Confirm the figure and Start sit in the top band and the walls did not change.
-4. Choose Rakieta, then Dinozaur, then „Bez postaci”. Confirm the sheet follows each choice.
+1. Load `/`. Confirm the control says `Postać: Bez postaci`. Open the window and confirm the four rows.
+2. Generuj. Confirm centered Start and no figure.
+3. Choose Samochodzik. Confirm a ~30mm figure on the entrance above the corridors, no Start word, and the walls did not change.
+4. Choose Rakieta, then Dinozaur, then „Bez postaci”. Confirm the sheet follows each choice and Start returns only for none.
 5. Print with a character selected and again with none. Confirm one A4 page, Meta still present, and no choice UI.
 
 ## Performance Considerations
@@ -208,29 +224,29 @@ No stored character preference exists yet. A reload starts again at „Bez posta
 
 #### Automated
 
-- [x] 2.1 `src/components/ui/dialog.tsx` exists
-- [x] 2.2 `npm run lint` exits 0
-- [x] 2.3 `npm test` exits 0
+- [x] 2.1 `src/components/ui/dialog.tsx` exists — 102d918
+- [x] 2.2 `npm run lint` exits 0 — 102d918
+- [x] 2.3 `npm test` exits 0 — 102d918
 
 #### Manual
 
-- [x] 2.4 A fresh load shows the control labeled „Bez postaci”
-- [x] 2.5 The window lists „Bez postaci” and three rows with a small icon and the name beside it
-- [x] 2.6 Choosing Dinozaur shows that name and icon on the closed control
-- [x] 2.7 A print preview does not show the control or the window
-- [x] 2.8 Generuj still shows a maze whose start is the word Start and no figure
+- [x] 2.4 A fresh load shows the control labeled „Bez postaci” — 102d918
+- [x] 2.5 The window lists „Bez postaci” and three rows with a small icon and the name beside it — 102d918
+- [x] 2.6 Choosing Dinozaur shows that name and icon on the closed control — 102d918
+- [x] 2.7 A print preview does not show the control or the window — 102d918
+- [x] 2.8 Generuj still shows a maze whose start is the word Start and no figure — 102d918
 
 ### Phase 3: Character beside Start
 
 #### Automated
 
-- [ ] 3.1 `npm run lint` exits 0
-- [ ] 3.2 `npm test` exits 0
+- [x] 3.1 `npm run lint` exits 0
+- [x] 3.2 `npm test` exits 0
 
 #### Manual
 
-- [ ] 3.3 With „Bez postaci”, the generated sheet shows centered Start and no image
-- [ ] 3.4 A chosen figure is about 20mm on the A4 sheet, centered on the entrance, wider than the gap, with Start immediately on its right, both in the top band, and no corridor covered
-- [ ] 3.5 Choosing another character swaps the figure and leaves the walls unchanged
-- [ ] 3.6 Choosing „Bez postaci” removes the figure and restores centered Start
-- [ ] 3.7 The printed page matches that sheet and does not show the choice control or window
+- [x] 3.3 With „Bez postaci”, the generated sheet shows centered Start and no image
+- [x] 3.4 A chosen figure is about 20mm on the A4 sheet, centered on the entrance, wider than the gap, with Start immediately on its right, both in the top band, and no corridor covered
+- [x] 3.5 Choosing another character swaps the figure and leaves the walls unchanged
+- [x] 3.6 Choosing „Bez postaci” removes the figure and restores centered Start
+- [x] 3.7 The printed page matches that sheet and does not show the choice control or window
