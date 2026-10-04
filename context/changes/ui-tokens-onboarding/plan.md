@@ -334,18 +334,18 @@ No data migration. The tweakcn block is already in the working tree; phase 1 mus
 
 #### Automated
 
-- [x] 4.1 `npm run lint` passes
-- [x] 4.2 The `AGENTS.md` UI section names the tweakcn roles and forbids hex and palette color classes on screens
+- [x] 4.1 `npm run lint` passes — c13f3a1
+- [x] 4.2 The `AGENTS.md` UI section names the tweakcn roles and forbids hex and palette color classes on screens — c13f3a1
 
 #### Manual
 
-- [x] 4.3 Worksheet default: `/` uses theme roles and shadcn `Button`, with no leftover product hex
-- [x] 4.4 Worksheet hover: the pill visibly changes on hover via the primary token
-- [x] 4.5 Worksheet focus-visible: Tab to Generuj and Drukuj shows the ring token, not the browser default
-- [x] 4.6 Worksheet disabled: N/A, because Drukuj is omitted until a maze exists and Generuj is always enabled
-- [x] 4.7 Worksheet error: N/A, because the generator returns one path and this change adds no error message
-- [x] 4.8 Worksheet empty: before Generuj the page shows the heading, the sentence, and Generuj, and no sheet
-- [x] 4.9 Worksheet loading: N/A, because generation is synchronous and the layout does not jump
-- [x] 4.10 Auth focus-visible: Tab through sign-in fields shows the ring token
-- [x] 4.11 Auth error: invalid submit shows the message beside the field in the destructive role
-- [x] 4.12 Auth loading: N/A, because sign-in pending is not held on a native POST. The spinner and pending label stay and are restyled; do not add a client action to make loading visible
+- [x] 4.3 Worksheet default: `/` uses theme roles and shadcn `Button`, with no leftover product hex — c13f3a1
+- [x] 4.4 Worksheet hover: the pill visibly changes on hover via the primary token — c13f3a1
+- [x] 4.5 Worksheet focus-visible: Tab to Generuj and Drukuj shows the ring token, not the browser default — c13f3a1
+- [x] 4.6 Worksheet disabled: N/A, because Drukuj is omitted until a maze exists and Generuj is always enabled — c13f3a1
+- [x] 4.7 Worksheet error: N/A, because the generator returns one path and this change adds no error message — c13f3a1
+- [x] 4.8 Worksheet empty: before Generuj the page shows the heading, the sentence, and Generuj, and no sheet — c13f3a1
+- [x] 4.9 Worksheet loading: N/A, because generation is synchronous and the layout does not jump — c13f3a1
+- [x] 4.10 Auth focus-visible: Tab through sign-in fields shows the ring token — c13f3a1
+- [x] 4.11 Auth error: invalid submit shows the message beside the field in the destructive role — c13f3a1
+- [x] 4.12 Auth loading: N/A, because sign-in pending is not held on a native POST. The spinner and pending label stay and are restyled; do not add a client action to make loading visible — c13f3a1
