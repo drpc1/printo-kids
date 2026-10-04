@@ -60,6 +60,18 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Przy starcie znajduje się wybrana postać.
 - Przy końcu labiryntu znajduje się napis „Meta”.
 
+### US-02: Rodzic wstawia własny obrazek — poza MVP
+
+- **Given** rodzic ma własny plik obrazka, na przykład zdjęcie dziecka
+- **When** wskaże ten plik przed generowaniem labiryntu
+- **Then** obrazek staje przy starcie na karcie, a plik zostaje w przeglądarce i nie jest wysyłany na serwer
+
+#### Acceptance Criteria
+
+- Ta historyjka jest poza MVP. Jest zapisana, żeby do niej wrócić po katalogu dostarczonych postaci.
+- Plik nie trafia na serwer, także na czas generowania.
+- Po złożeniu karty usługa nie przechowuje kopii pliku.
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -127,9 +139,10 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
 - MVP nie dostarcza biblioteki gotowych kart — FR-011 pozostaje możliwym rozszerzeniem poza MVP.
+- MVP nie przyjmuje własnego obrazka od rodzica — US-02 zostaje poza MVP. Katalog dostarczonych postaci idzie pierwszy.
 
 ## Open Questions
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — TBD by user. Block: no (pain and missing capability are captured; the second vision paragraph is incomplete until this lands).
 2. **Jakie mierzalne właściwości określają każdy poziom trudności?** — Owner: user. Block: yes for validating that the generated maze matches the selected level.
-3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature.
+3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Własny plik rodzica jest US-02 i zostaje poza MVP.

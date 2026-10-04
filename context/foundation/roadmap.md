@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-01
+updated: 2026-10-04
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -43,8 +43,9 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | ----- | ---------------------------- | ------------------------------------------------------------------------------------ | ------------- | -------------------------------- | -------- |
 | F-01  | worksheet-page-shell         | (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa) | —             | US-01                            | done |
 | S-01  | first-printable-maze         | Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie | F-01          | US-01, FR-003, FR-004            | done |
-| S-02  | print-a4-maze                | Rodzic może wydrukować tę kartę jako jedną stronę A4                                 | S-01          | FR-005                           | proposed |
-| S-03  | maze-character-choice        | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu | S-01          | US-01, FR-002                    | proposed |
+| S-02  | print-a4-maze                | Rodzic może wydrukować tę kartę jako jedną stronę A4                                 | S-01          | FR-005                           | done        |
+| F-02  | remove-starter-scaffold      | (foundation) Aplikacja nie serwuje już logowania ani dashboardu ze startera; sprawdzian HTTP pilnuje strony produktu | S-02          | Access Control, Non-Goals (brak kont) | proposed |
+| S-03  | maze-character-choice        | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu | F-02          | US-01, FR-002                    | in-progress |
 | S-04  | last-used-print-params       | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | S-03          | FR-006                           | proposed |
 | S-05  | child-profile-create-select  | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                   | proposed |
 | S-06  | child-profile-save-delete    | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu | S-05          | FR-009, FR-010                   | proposed |
@@ -55,8 +56,8 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 
 | Stream | Theme                    | Chain                         | Note                                                                 |
 | ------ | ------------------------ | ----------------------------- | -------------------------------------------------------------------- |
-| A      | Strona, karta, potem druk | `F-01` → `S-01` → `S-02`     | Najpierw po co jest strona i przycisk, potem labirynt na kartce, potem wydruk. Wydruk jest gwiazdą przewodnią kamienia. |
-| B      | Postać, potem parametry  | `S-03` → `S-04`               | Dołącza do strumienia A przy `S-01`. Postać nie czeka na druk.       |
+| A      | Strona, karta, potem druk | `F-01` → `S-01` → `S-02` → `F-02` | Najpierw po co jest strona i przycisk, potem labirynt na kartce, potem wydruk. Wydruk jest gwiazdą przewodnią kamienia. `F-02` sprząta starter, zanim ruszy postać. |
+| B      | Postać, potem parametry  | `S-03` → `S-04`               | Dołącza do strumienia A przy `F-02`. Postać nie czekała na druk; czeka na sprzątanie startera. |
 | C      | Profile dziecka          | `S-05` → `S-06`               | Dołącza do strumienia B przy `S-03`. Wydruk nie wymaga profilu.      |
 
 ## Baseline
@@ -73,7 +74,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Foundations
 
-The starter Welcome screen (auth, marketing, cosmic layout) is what a visitor sees today; it is not the product. `F-01` replaces that first paint with a short purpose line and a generate control so `S-01` only makes the button produce an A4 maze on the same page and `S-02` only prints it. Character assets enter in `S-03`. On-device last-used parameters enter in `S-04`. Child-profile storage enters in `S-05`. Difficulty rules stay parked until the later conversation.
+The starter Welcome screen (auth, marketing, cosmic layout) was the first paint; it is not the product. `F-01` replaced that first paint with a short purpose line and a generate control so `S-01` only makes the button produce an A4 maze on the same page and `S-02` only prints it. `F-02` usuwa pozostałe trasy konta, dashboard i sprawdzian logowania, zanim ruszy `S-03`. Character assets enter in `S-03`. On-device last-used parameters enter in `S-04`. Child-profile storage enters in `S-05`. Difficulty rules stay parked until the later conversation.
 
 ### F-01: Strona główna narzędzia
 
@@ -110,10 +111,23 @@ The starter Welcome screen (auth, marketing, cosmic layout) is what a visitor se
 - **Change ID:** print-a4-maze
 - **PRD refs:** FR-005
 - **Prerequisites:** S-01
-- **Parallel with:** S-03
+- **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Gwiazda przewodnia kamienia — po S-01 widać kartę, ale to jeszcze nie jest karta na kredkę. Nie ocenia labiryntu; sprawdza jedną stronę, brak ucięcia, margines co najmniej 10 mm. Ryzyko: przeglądarki i drukarki różnie stosują marginesy.
+- **Status:** done
+
+### F-02: Usunięcie pozostałości startera
+
+- **Outcome:** (foundation) Wejście do aplikacji to kartka do druku; nie ma już ekranów logowania ani dashboardu ze startera, a automatyczny sprawdzian HTTP pilnuje strony produktu.
+- **Change ID:** remove-starter-scaffold
+- **PRD refs:** Access Control (bez logowania); Non-Goals (brak kont rodziców)
+- **Unlocks:** S-03
+- **Prerequisites:** S-02
+- **Parallel with:** —
+- **Blockers:** —
+- **Unknowns:** —
+- **Risk:** `F-01` zdjął chrome startera tylko ze strony głównej. Trasy konta, dashboard i sprawdzian logowania zostały, więc `S-01` i `S-02` zostawiały `/auth/signin` bez zmian, a `@page` nie mogło wejść do globalnego arkusza. Ten plasterek schodzi przed `S-03`, żeby postać i kolejne ekrany nie dziedziczyły tego warunku. Ryzyko: jedyny automatyczny sprawdzian HTTP dziś chodzi po flow konta, a build w CI chce sekretów Supabase — skasowanie stron bez podmiany tego sprawdzianu zostawia obowiązek, którego produkt nie używa.
 - **Status:** proposed
 
 ### S-03: Postać przy starcie labiryntu
@@ -121,13 +135,13 @@ The starter Welcome screen (auth, marketing, cosmic layout) is what a visitor se
 - **Outcome:** Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu.
 - **Change ID:** maze-character-choice
 - **PRD refs:** US-01, FR-002
-- **Prerequisites:** S-01
-- **Parallel with:** S-02
+- **Prerequisites:** F-02
+- **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
   - Jakie jest źródło dostarczonych postaci (zestaw do narysowania / licencji)? Prawa nie blokują tej historyjki — decyzja użytkownika z wywiadu. — Owner: user. Block: no.
-- **Risk:** Świadomie po karcie na ekranie, bez czekania na druk. Ryzyko: profil dziecka ma ulubioną postać, więc `S-05` czeka na ten plasterek. Brak znajomości technologii w projekcie nadal obowiązuje, ale generator jest już za nami.
-- **Status:** proposed
+- **Risk:** Świadomie po karcie na ekranie, bez czekania na druk; czeka na `F-02`, żeby nie dziedziczyć warunku „zostaw `/auth/signin`”. Ryzyko: profil dziecka ma ulubioną postać, więc `S-05` czeka na ten plasterek. Brak znajomości technologii w projekcie nadal obowiązuje, ale generator jest już za nami.
+- **Status:** in-progress
 
 ### S-04: Ostatnio użyte parametry bez profilu
 
@@ -174,7 +188,8 @@ The starter Welcome screen (auth, marketing, cosmic layout) is what a visitor se
 | F-01       | worksheet-page-shell        | Wejście na /: po co jest strona i przycisk Generuj                 | yes                   | Run `/10x-plan worksheet-page-shell` |
 | S-01       | first-printable-maze        | Rodzic generuje rozwiązywalny labirynt i widzi kartę A4 na stronie | no                    | Czeka na F-01 |
 | S-02       | print-a4-maze               | Druk karty jako jednej strony A4                                   | no                    | Czeka na S-01; gwiazda przewodnia kamienia |
-| S-03       | maze-character-choice       | Wybór postaci z zestawu przy starcie labiryntu                     | no                    | Czeka na S-01; można planować równolegle z S-02 |
+| F-02       | remove-starter-scaffold     | Usunięcie logowania, dashboardu i sprawdzianu auth ze startera     | yes                   | Następne, przed S-03. Run `/10x-plan remove-starter-scaffold` |
+| S-03       | maze-character-choice       | Wybór postaci z zestawu przy starcie labiryntu                     | no                    | Czeka na F-02 |
 | S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Czeka na S-03; poziom dołączy po odparkowaniu trudności |
 | S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                      | no                    | Czeka na S-03; domyślna trudność dołączy po odparkowaniu |
 | S-06       | child-profile-save-delete   | Zapis zmian profilu i usunięcie po potwierdzeniu                   | no                    | Czeka na S-05 |
@@ -192,6 +207,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) is what a visitor se
 - **Konta rodziców i synchronizacja między urządzeniami** — Why parked: PRD §Non-Goals; ustawienia i profile zostają na urządzeniu.
 - **Zapis i archiwum wygenerowanych kart** — Why parked: PRD §Non-Goals; cykl życia karty kończy się po wydruku.
 - **Biblioteka gotowych kart (FR-011)** — Why parked: PRD §Non-Goals; nice-to-have poza MVP.
+- **Własny obrazek rodzica (US-02)** — Why parked: świadomie poza MVP, zapisane 2026-10-04, żeby nie zginęło. Change ID do odblokowania: `parent-supplied-maze-image`. Plik zostaje w przeglądarce i nie jest wysyłany na serwer. Najpierw katalog dostarczonych postaci w `S-03`: samochodzik, rakieta, dinozaur.
 
 ## Milestone History
 
@@ -199,3 +215,4 @@ The starter Welcome screen (auth, marketing, cosmic layout) is what a visitor se
 
 - **F-01: (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa).** — Archived 2026-09-29 → `context/archive/2026-09-28-worksheet-page-shell/`. Lesson: —.
 - **S-01: Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie.** — Archived 2026-10-01 → `context/archive/2026-09-28-first-printable-maze/`. Lesson: —.
+- **S-02: Rodzic może wydrukować tę kartę jako jedną stronę A4.** — Archived 2026-10-03 → `context/archive/2026-09-29-print-a4-maze/`. Lesson: —.
