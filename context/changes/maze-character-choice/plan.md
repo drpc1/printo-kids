@@ -197,28 +197,28 @@ No stored character preference exists yet. A reload starts again at „Bez posta
 
 #### Automated
 
-- [x] 1.1 `public/characters/samochodzik.png`, `public/characters/rakieta.png`, and `public/characters/dinozaur.png` exist, and the three JPGs of the same names are still in that folder
-- [x] 1.2 `npm run lint` exits 0
+- [x] 1.1 `public/characters/samochodzik.png`, `public/characters/rakieta.png`, and `public/characters/dinozaur.png` exist, and the three JPGs of the same names are still in that folder — 26c9560
+- [x] 1.2 `npm run lint` exits 0 — 26c9560
 
 #### Manual
 
-- [x] 1.3 On a non-white backdrop, each PNG shows the drawing with no outer white rectangle, and cream parts of the drawing are still filled
+- [x] 1.3 On a non-white backdrop, each PNG shows the drawing with no outer white rectangle, and cream parts of the drawing are still filled — 26c9560
 
 ### Phase 2: Choice dialog
 
 #### Automated
 
-- [ ] 2.1 `src/components/ui/dialog.tsx` exists
-- [ ] 2.2 `npm run lint` exits 0
-- [ ] 2.3 `npm test` exits 0
+- [x] 2.1 `src/components/ui/dialog.tsx` exists
+- [x] 2.2 `npm run lint` exits 0
+- [x] 2.3 `npm test` exits 0
 
 #### Manual
 
-- [ ] 2.4 A fresh load shows the control labeled „Bez postaci”
-- [ ] 2.5 The window lists „Bez postaci” and three rows with a small icon and the name beside it
-- [ ] 2.6 Choosing Dinozaur shows that name and icon on the closed control
-- [ ] 2.7 A print preview does not show the control or the window
-- [ ] 2.8 Generuj still shows a maze whose start is the word Start and no figure
+- [x] 2.4 A fresh load shows the control labeled „Bez postaci”
+- [x] 2.5 The window lists „Bez postaci” and three rows with a small icon and the name beside it
+- [x] 2.6 Choosing Dinozaur shows that name and icon on the closed control
+- [x] 2.7 A print preview does not show the control or the window
+- [x] 2.8 Generuj still shows a maze whose start is the word Start and no figure
 
 ### Phase 3: Character beside Start
 
