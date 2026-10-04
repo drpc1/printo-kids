@@ -1,10 +1,10 @@
 ---
 change_id: maze-character-choice
 title: Maze character choice
-status: impl_reviewed
+status: archived
 created: 2026-10-04
 updated: 2026-10-04
-archived_at: null
+archived_at: 2026-10-04T21:30:22Z
 ---
 
 ## Notes
