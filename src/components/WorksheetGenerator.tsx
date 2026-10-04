@@ -10,6 +10,7 @@ const PAGE_HEIGHT = 297;
 const INSET_X = 10;
 const INSET_Y = 10;
 const LABEL_COLUMN = 6;
+const CHARACTER_MARK_SIZE = 30;
 
 const CHARACTER_CHOICES = [
   { id: "none", label: "Bez postaci", src: null },
@@ -93,7 +94,7 @@ export default function WorksheetGenerator() {
           <GenerateButton onClick={handleGenerate} tone="hero" />
         </div>
       )}
-      {hasMaze ? <MazeSheet maze={maze} /> : null}
+      {hasMaze ? <MazeSheet maze={maze} characterSrc={selectedChoice.src} /> : null}
     </div>
   );
 }
@@ -168,7 +169,7 @@ function CharacterChoiceControl({
   );
 }
 
-function MazeSheet({ maze }: { maze: Maze }) {
+function MazeSheet({ maze, characterSrc }: { maze: Maze; characterSrc: string | null }) {
   const cellSize = (PAGE_WIDTH - INSET_X * 2) / maze.width;
   const innerHeight = PAGE_HEIGHT - INSET_Y * 2;
   const gridHeight = maze.height * cellSize;
@@ -179,28 +180,40 @@ function MazeSheet({ maze }: { maze: Maze }) {
   const startY = INSET_Y + labelBand / 2;
   const metaY = originY + gridHeight + labelBand / 2;
   const walls = collectWalls(maze, originX, originY, cellSize);
+  const hasCharacter = characterSrc !== null;
+  const markY = originY - CHARACTER_MARK_SIZE;
 
   return (
     <svg
       viewBox={`0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}`}
       className={cn(
-        "aspect-[210/297] h-auto w-full ring-1 ring-[var(--foreground)] print:h-[297mm] print:w-[210mm] print:ring-0",
+        "aspect-[210/297] h-auto w-full ring-1 ring-[var(--foreground)] print:block print:h-[297mm] print:max-h-[297mm] print:w-[210mm] print:overflow-hidden print:ring-0",
       )}
       role="img"
       aria-label="Labirynt"
     >
       <rect width={PAGE_WIDTH} height={PAGE_HEIGHT} fill="var(--card)" />
-      <text
-        x={labelX}
-        y={startY}
-        fill="var(--foreground)"
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-        fontSize={7}
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        Start
-      </text>
+      {hasCharacter ? (
+        <image
+          href={characterSrc}
+          x={labelX - CHARACTER_MARK_SIZE / 2}
+          y={markY}
+          width={CHARACTER_MARK_SIZE}
+          height={CHARACTER_MARK_SIZE}
+        />
+      ) : (
+        <text
+          x={labelX}
+          y={startY}
+          fill="var(--foreground)"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize={7}
+          textAnchor="middle"
+          dominantBaseline="middle"
+        >
+          Start
+        </text>
+      )}
       <text
         x={labelX}
         y={metaY}

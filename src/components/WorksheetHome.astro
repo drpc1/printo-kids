@@ -23,19 +23,43 @@ import WorksheetGenerator from "./WorksheetGenerator";
     margin: 0;
   }
 
+  @media screen {
+    #worksheet-home.has-maze {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    #worksheet-home.has-maze .max-w-xl {
+      gap: 1.5rem;
+    }
+
+    #worksheet-home.has-maze h1 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    #worksheet-home.has-maze p {
+      display: none;
+    }
+  }
+
   @media print {
     html,
     body {
       height: auto !important;
+      overflow: hidden;
     }
 
-    #worksheet-home {
+    #worksheet-home,
+    #worksheet-home.has-maze {
       min-height: 0;
       padding: 0;
     }
 
-    #worksheet-home .max-w-xl {
+    #worksheet-home .max-w-xl,
+    #worksheet-home.has-maze .max-w-xl {
       max-width: none;
+      gap: 0;
     }
 
     #worksheet-home h1,
@@ -43,23 +67,10 @@ import WorksheetGenerator from "./WorksheetGenerator";
     #worksheet-home button {
       display: none;
     }
-  }
 
-  #worksheet-home.has-maze {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
-  #worksheet-home.has-maze .max-w-xl {
-    gap: 1.5rem;
-  }
-
-  #worksheet-home.has-maze h1 {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-
-  #worksheet-home.has-maze p {
-    display: none;
+    #worksheet-home svg {
+      display: block;
+      overflow: hidden;
+    }
   }
 </style>
