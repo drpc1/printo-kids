@@ -240,13 +240,13 @@ No stored character preference exists yet. A reload starts again at „Bez posta
 
 #### Automated
 
-- [x] 3.1 `npm run lint` exits 0
-- [x] 3.2 `npm test` exits 0
+- [x] 3.1 `npm run lint` exits 0 — 5c6e54a
+- [x] 3.2 `npm test` exits 0 — 5c6e54a
 
 #### Manual
 
-- [x] 3.3 With „Bez postaci”, the generated sheet shows centered Start and no image
-- [x] 3.4 A chosen figure is about 20mm on the A4 sheet, centered on the entrance, wider than the gap, with Start immediately on its right, both in the top band, and no corridor covered
-- [x] 3.5 Choosing another character swaps the figure and leaves the walls unchanged
-- [x] 3.6 Choosing „Bez postaci” removes the figure and restores centered Start
-- [x] 3.7 The printed page matches that sheet and does not show the choice control or window
+- [x] 3.3 With „Bez postaci”, the generated sheet shows centered Start and no image — 5c6e54a
+- [x] 3.4 A chosen figure is about 20mm on the A4 sheet, centered on the entrance, wider than the gap, with Start immediately on its right, both in the top band, and no corridor covered — 5c6e54a
+- [x] 3.5 Choosing another character swaps the figure and leaves the walls unchanged — 5c6e54a
+- [x] 3.6 Choosing „Bez postaci” removes the figure and restores centered Start — 5c6e54a
+- [x] 3.7 The printed page matches that sheet and does not show the choice control or window — 5c6e54a

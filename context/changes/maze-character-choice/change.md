@@ -1,7 +1,7 @@
 ---
 change_id: maze-character-choice
 title: Maze character choice
-status: implementing
+status: implemented
 created: 2026-10-04
 updated: 2026-10-04
 archived_at: null
