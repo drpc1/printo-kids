@@ -32,6 +32,8 @@ Sign-in, sign-up, confirm-email, and the dashboard use the same theme: paper pag
 - `F-02` / `remove-starter-scaffold` is still `new` and is the change that deletes auth and the dashboard. This change only restyles them. `scripts/smoke.mjs` still walks the auth flow.
 - Inter and Lora are names only. Loading them would change printed type and add a font dependency this change rejected.
 
+
+
 ## What We're NOT Doing
 
 - Replacing, regenerating, or hand-editing the tweakcn values in `:root`, `.dark`, or `@theme inline`. Shadow hexes inside that export stay.
@@ -45,6 +47,8 @@ Sign-in, sign-up, confirm-email, and the dashboard use the same theme: paper pag
 - Changing maze generation, grid size, `@page`, print hiding, or the pill dimensions (`h-auto`, `rounded-full`, `px-12`, `py-3.5`, `text-lg`).
 - Restyling auth submit buttons into the worksheet pill. Sign out does not become that pill either.
 - Adding info/warning/error colors that tweakcn did not export.
+
+
 
 ## Implementation Approach
 
@@ -61,6 +65,8 @@ Screen role map, from the colors on the worksheet and the starter chrome:
 - Auth and dashboard panels → `bg-card`, `text-card-foreground`, `border-border`.
 - Sign out → `Button` `outline`, default size, no palette classes.
 
+
+
 ## Critical Implementation Details
 
 **Utility lifetime.** `@utility bg-cosmic` is still used by the four starter pages. Leave it in place through phases 1 and 2. Phase 3 deletes the utility in the same edit that removes the last `bg-cosmic` class, so a pause after phase 1 does not strip the sign-in background.
@@ -69,11 +75,15 @@ Screen role map, from the colors on the worksheet and the starter chrome:
 
 ## Phase 1: Motyw zostaje źródłem
 
+
+
 ### Overview
 
 Lock the pasted tweakcn block as the source of truth, tell the browser the document is light, and prove print CSS and the worksheet colors have not moved yet. `bg-cosmic` stays until phase 3.
 
 ### Changes Required:
+
+
 
 #### 1. Document color scheme
 
@@ -89,9 +99,11 @@ Lock the pasted tweakcn block as the source of truth, tell the browser the docum
 
 **Intent**: Leave the A4 page rule on the worksheet while phase 1 touches global CSS.
 
-**Contract**: The unscoped `@page { size: A4; margin: 0 }` block remains in this file. Phase 1 does not change the `--pk-*` style attribute or the sentence hex.
+**Contract**: The unscoped `@page { size: A4; margin: 0 }` block remains in this file. Phase 1 does not change the `--pk-`* style attribute or the sentence hex.
 
 ### Success Criteria:
+
+
 
 #### Automated Verification:
 
@@ -99,6 +111,8 @@ Lock the pasted tweakcn block as the source of truth, tell the browser the docum
 - `npm run lint` passes
 - `src/styles/global.css` sets `color-scheme: light`, still contains light `--card: oklch(1 0 0)`, and still contains the `.dark` block
 - `src/styles/global.css` contains no `@page`, and `src/components/WorksheetHome.astro` still contains `@page`
+
+
 
 #### Manual Verification:
 
@@ -109,13 +123,19 @@ Lock the pasted tweakcn block as the source of truth, tell the browser the docum
 
 ---
 
+
+
 ## Phase 2: Kartka czyta tokeny
+
+
 
 ### Overview
 
 The worksheet reads the theme. Local product hexes and `--pk-*` disappear. Generuj and Drukuj become the shared button at the current pill size. The sheet rectangle becomes white via `--card`.
 
 ### Changes Required:
+
+
 
 #### 1. Page shell
 
@@ -131,15 +151,19 @@ The worksheet reads the theme. Local product hexes and `--pk-*` disappear. Gener
 
 **Intent**: Use the shared button for Generuj and Drukuj, and paint the sheet from tokens, keeping the current size and the white-on-warm layout.
 
-**Contract**: Import `Button` from `@/components/ui/button`. Both controls use the default variant. Their `className` is only `h-auto rounded-full px-12 py-3.5 text-lg` — no `bg-*`, `text-*`, or `hover:*` color class, so `bg-primary`, `text-primary-foreground`, `hover:bg-primary/90`, and `focus-visible:ring-ring` come from `button.tsx`. `h-auto` is required so tailwind-merge drops the default size `h-9` (`button.tsx` size default). `shadow-xs` from the default variant stays. Delete `SAGE_PILL`. Drukuj still renders only when `maze !== null`, inside the existing `print:hidden` wrapper. The rect fill is the `--card` property, not `#fff`. The screen ring, maze stroke, and Start/Meta fill use `--foreground`, not `--pk-ink`. Start/Meta keep `fontFamily="ui-sans-serif, system-ui, sans-serif"`. The `countPaths` guard and `window.print()` stay; no error message is added.
+**Contract**: Import `Button` from `@/components/ui/button`. Both controls use the default variant. Their `className` is only `h-auto rounded-full px-12 py-3.5 text-lg` — no `bg-`*, `text-*`, or `hover:*` color class, so `bg-primary`, `text-primary-foreground`, `hover:bg-primary/90`, and `focus-visible:ring-ring` come from `button.tsx`. `h-auto` is required so tailwind-merge drops the default size `h-9` (`button.tsx` size default). `shadow-xs` from the default variant stays. Delete `SAGE_PILL`. Drukuj still renders only when `maze !== null`, inside the existing `print:hidden` wrapper. The rect fill is the `--card` property, not `#fff`. The screen ring, maze stroke, and Start/Meta fill use `--foreground`, not `--pk-ink`. Start/Meta keep `fontFamily="ui-sans-serif, system-ui, sans-serif"`. The `countPaths` guard and `window.print()` stay; no error message is added.
 
 ### Success Criteria:
+
+
 
 #### Automated Verification:
 
 - `npm run lint` passes
 - `npx astro check` passes
 - `WorksheetHome.astro` and `WorksheetGenerator.tsx` contain no `--pk-`, `#F6F1E8`, `#3F3A34`, `#7D8B74`, `#5B554C`, or `fill="#fff"`
+
+
 
 #### Manual Verification:
 
@@ -152,7 +176,11 @@ The worksheet reads the theme. Local product hexes and `--pk-*` disappear. Gener
 
 ---
 
+
+
 ## Phase 3: Reszta aplikacji schodzi ze startera
+
+
 
 ### Overview
 
@@ -160,13 +188,15 @@ Auth, the dashboard, form chrome, and the banner use the same roles. Starter pal
 
 ### Changes Required:
 
+
+
 #### 1. Auth and dashboard pages
 
 **File**: `src/pages/auth/signin.astro`, `src/pages/auth/signup.astro`, `src/pages/auth/confirm-email.astro`, `src/pages/dashboard.astro`
 
 **Intent**: Replace the cosmic glass panels with the theme page and card, without removing the routes.
 
-**Contract**: Each page uses `bg-background` on the screen and `bg-card text-card-foreground border-border` on the panel. Headings use foreground, not a blue-to-purple gradient. Links use `text-primary`. No `bg-cosmic`, `border-white/*`, `bg-white/*`, `text-white`, `text-blue-*`, or `text-purple-*`. Copy and form actions stay. Dashboard Sign out uses `Button` variant `outline` at the default size, not the worksheet pill and not a native button with palette classes.
+**Contract**: Each page uses `bg-background` on the screen and `bg-card text-card-foreground border-border` on the panel. Headings use foreground, not a blue-to-purple gradient. Links use `text-primary`. No `bg-cosmic`, `border-white/`*, `bg-white/*`, `text-white`, `text-blue-*`, or `text-purple-*`. Copy and form actions stay. Dashboard Sign out uses `Button` variant `outline` at the default size, not the worksheet pill and not a native button with palette classes.
 
 #### 2. Form chrome
 
@@ -186,6 +216,8 @@ Auth, the dashboard, form chrome, and the banner use the same roles. Starter pal
 
 ### Success Criteria:
 
+
+
 #### Automated Verification:
 
 - `npm run lint` passes
@@ -193,6 +225,8 @@ Auth, the dashboard, form chrome, and the banner use the same roles. Starter pal
 - `src/pages` and `src/components` contain no `bg-cosmic`, `purple-`, `blue-`, `red-`, or `white/`
 - `src/styles/global.css` has no `@utility bg-cosmic`, and `src/components/ui/LibBadge.astro` is gone
 - These routes still exist: `src/pages/auth/signin.astro`, `src/pages/auth/signup.astro`, `src/pages/auth/confirm-email.astro`, `src/pages/dashboard.astro`
+
+
 
 #### Manual Verification:
 
@@ -205,7 +239,11 @@ Auth, the dashboard, form chrome, and the banner use the same roles. Starter pal
 
 ---
 
+
+
 ## Phase 4: Stany i reguła
+
+
 
 ### Overview
 
@@ -213,20 +251,26 @@ Record the state matrix on the real screens, including the cells this product do
 
 ### Changes Required:
 
+
+
 #### 1. Agent rule
 
 **File**: `AGENTS.md`
 
-**Intent**: Extend the existing UI bullets so the next change does not bring back hexes, `--pk-*`, or the starter palette.
+**Intent**: Extend the existing UI bullets so the next change does not bring back hexes, `--pk-`*, or the starter palette.
 
-**Contract**: Edit the `## UI` section in place. Do not add a second rules file and do not add an ESLint rule or npm script. The section states that screen colors are the role utilities from `src/styles/global.css` (`background`, `foreground`, `muted-foreground`, `primary`, `primary-foreground`, `card`, `destructive`, `border`, `ring`); that pages and components do not add hex colors, `--pk-*`, `bg-cosmic`, or Tailwind palette color classes; that `@page` stays in `WorksheetHome.astro`; that shared controls live in `src/components/ui` and missing ones come from `npx shadcn@latest add`; and that Inter and Lora stay names in the theme and are not loaded from a view. Arbitrary layout values such as `print:h-[297mm]` and `ring-[3px]` are not color literals and are not banned by this sentence. Hexes inside the tweakcn block in `global.css` stay legal.
+**Contract**: Edit the `## UI` section in place. Do not add a second rules file and do not add an ESLint rule or npm script. The section states that screen colors are the role utilities from `src/styles/global.css` (`background`, `foreground`, `muted-foreground`, `primary`, `primary-foreground`, `card`, `destructive`, `border`, `ring`); that pages and components do not add hex colors, `--pk-`*, `bg-cosmic`, or Tailwind palette color classes; that `@page` stays in `WorksheetHome.astro`; that shared controls live in `src/components/ui` and missing ones come from `npx shadcn@latest add`; and that Inter and Lora stay names in the theme and are not loaded from a view. Arbitrary layout values such as `print:h-[297mm]` and `ring-[3px]` are not color literals and are not banned by this sentence. Hexes inside the tweakcn block in `global.css` stay legal.
 
 ### Success Criteria:
+
+
 
 #### Automated Verification:
 
 - `npm run lint` passes
 - The `AGENTS.md` UI section names the tweakcn roles and forbids hex and palette color classes on screens
+
+
 
 #### Manual Verification:
 
@@ -245,16 +289,24 @@ Record the state matrix on the real screens, including the cells this product do
 
 ---
 
+
+
 ## Testing Strategy
+
+
 
 ### Unit Tests:
 
 - No new unit tests. This change does not modify `src/lib/maze/generate.ts`. Existing generator tests stay the proof that a generated maze has one path.
 
+
+
 ### Integration Tests:
 
 - `npx astro check` and `npm run lint` after each phase.
 - `scripts/smoke.mjs` is the auth-flow check and should keep passing because the auth routes stay. Run it only when a server is already up. Do not add a visual regression tool.
+
+
 
 ### Manual Testing Steps:
 
@@ -262,6 +314,8 @@ Record the state matrix on the real screens, including the cells this product do
 2. Click Generuj. Confirm a white sheet, dark walls, and Drukuj as a matching pill. Hover a pill. Print-preview one A4 page with the buttons hidden.
 3. Open `/auth/signin`, `/auth/signup`, and `/auth/confirm-email` signed out. Confirm the warm theme. Open `/dashboard` only after a session (the smoke signup is enough); signed out, it redirects to `/auth/signin`.
 4. Submit sign-in with an empty field and confirm the destructive message sits by the field. Do not treat a visible pending label as a pass; that state is N/A.
+
+
 
 ## Performance Considerations
 
@@ -280,11 +334,17 @@ No data migration. The tweakcn block is already in the working tree; phase 1 mus
 - Worksheet: `src/components/WorksheetHome.astro`, `src/components/WorksheetGenerator.tsx`
 - Shared button: `src/components/ui/button.tsx`
 
+
+
 ## Progress
 
-> Convention: `- [ ]` pending, `- [x]` done. Append ` — <commit sha>` when a step lands. Do not rename step titles. See `references/progress-format.md`.
+> Convention: `- [ ]` pending, `- [x]` done. Append  `— <commit sha>` when a step lands. Do not rename step titles. See `references/progress-format.md`.
+
+
 
 ### Phase 1: Motyw zostaje źródłem
+
+
 
 #### Automated
 
@@ -293,18 +353,26 @@ No data migration. The tweakcn block is already in the working tree; phase 1 mus
 - [x] 1.3 `src/styles/global.css` sets `color-scheme: light`, still contains light `--card: oklch(1 0 0)`, and still contains the `.dark` block — ddf1942
 - [x] 1.4 `src/styles/global.css` contains no `@page`, and `src/components/WorksheetHome.astro` still contains `@page` — ddf1942
 
+
+
 #### Manual
 
 - [x] 1.5 `/` still shows the current worksheet, because this phase does not restyle it — ddf1942
 - [x] 1.6 Loading `/` does not request a web font — ddf1942
 
+
+
 ### Phase 2: Kartka czyta tokeny
+
+
 
 #### Automated
 
 - [x] 2.1 `npm run lint` passes — 9606513
 - [x] 2.2 `npx astro check` passes — 9606513
 - [x] 2.3 `WorksheetHome.astro` and `WorksheetGenerator.tsx` contain no `--pk-`, `#F6F1E8`, `#3F3A34`, `#7D8B74`, `#5B554C`, or `fill="#fff"` — 9606513
+
+
 
 #### Manual
 
@@ -313,7 +381,11 @@ No data migration. The tweakcn block is already in the working tree; phase 1 mus
 - [x] 2.6 Print preview is one A4 page, with the buttons hidden and the sheet white — 9606513
 - [x] 2.7 Tabbing to Generuj shows the theme focus ring — 9606513
 
+
+
 ### Phase 3: Reszta aplikacji schodzi ze startera
+
+
 
 #### Automated
 
@@ -323,6 +395,8 @@ No data migration. The tweakcn block is already in the working tree; phase 1 mus
 - [x] 3.4 `src/styles/global.css` has no `@utility bg-cosmic`, and `src/components/ui/LibBadge.astro` is gone — aa91e83
 - [x] 3.5 These routes still exist: `src/pages/auth/signin.astro`, `src/pages/auth/signup.astro`, `src/pages/auth/confirm-email.astro`, `src/pages/dashboard.astro` — aa91e83
 
+
+
 #### Manual
 
 - [x] 3.6 Sign-in, sign-up, and confirm-email use the warm theme. Dashboard does too, but only after a session; an anonymous visit redirects to sign-in — aa91e83
@@ -330,12 +404,18 @@ No data migration. The tweakcn block is already in the working tree; phase 1 mus
 - [x] 3.8 A pending submit is N/A to observe: invalid fields never submit, and a valid submit is a full-page POST. Keep the pending label and spinner, restyle them, and do not convert the form to a client action — aa91e83
 - [x] 3.9 `/` still matches the phase 2 worksheet — aa91e83
 
+
+
 ### Phase 4: Stany i reguła
+
+
 
 #### Automated
 
 - [x] 4.1 `npm run lint` passes — c13f3a1
 - [x] 4.2 The `AGENTS.md` UI section names the tweakcn roles and forbids hex and palette color classes on screens — c13f3a1
+
+
 
 #### Manual
 
