@@ -1,7 +1,7 @@
 ---
 change_id: ui-tokens-onboarding
 title: Ui tokens onboarding
-status: implementing
+status: impl_reviewed
 created: 2026-10-03
 updated: 2026-10-04
 archived_at: null
