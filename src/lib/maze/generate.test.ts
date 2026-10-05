@@ -3,7 +3,10 @@ import { describe, mock, test } from "node:test";
 import { countPaths, generateMaze, type Maze } from "./generate.ts";
 
 void describe("generateMaze", () => {
-  for (const seed of [1, 99, 12345]) {
+  for (const seed of [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+    31, 99, 12345,
+  ]) {
     void test(`seed ${seed} is a 13 by 16 maze with one path`, () => {
       const maze = generateMaze(mulberry32(seed));
       assertSolvableMaze(maze);
