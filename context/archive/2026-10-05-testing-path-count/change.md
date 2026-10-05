@@ -1,10 +1,10 @@
 ---
 change_id: testing-path-count
 title: Prove zero-path and two-path mazes are not finished sheets
-status: impl_reviewed
+status: archived
 created: 2026-10-05
 updated: 2026-10-05
-archived_at: null
+archived_at: 2026-10-05T08:55:15Z
 ---
 
 ## Notes
