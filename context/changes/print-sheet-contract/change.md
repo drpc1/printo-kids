@@ -9,4 +9,4 @@ archived_at: null
 
 ## Notes
 
-Udowodnić jedną stronę A4 w Chrome, margines co najmniej 10 mm, napis Meta i postać przy starcie. Edge, Firefox i Safari dopiero, gdy Chrome jest zielony.
+Udowodnić jedną stronę A4 w Chrome, margines co najmniej 10 mm, napis Meta i postać przy starcie. Chrome i Edge są sprawdzone. Firefox i Safari odłożone 2026-10-05 — na tym etapie ich nie sprawdzamy. Status zostaje implementing.

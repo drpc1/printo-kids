@@ -248,24 +248,24 @@ Nothing is stored. Existing on-screen sheets pick up the shared function on the 
 
 #### Automated
 
-- [x] 2.1 `npm test` passes the print-rule contract: worksheet `@page` is A4 with margin 0, `global.css` has no `@page`, the sheet prints at 210 mm by 297 mm, and print hides the heading, purpose line, and controls
-- [x] 2.2 `npm run lint` passes
+- [x] 2.1 `npm test` passes the print-rule contract: worksheet `@page` is A4 with margin 0, `global.css` has no `@page`, the sheet prints at 210 mm by 297 mm, and print hides the heading, purpose line, and controls — 2096c85
+- [x] 2.2 `npm run lint` passes — 2096c85
 
 #### Manual
 
-- [x] 2.3 Chrome print preview, with margins left at Default and headers and footers off, is exactly one A4 page
-- [x] 2.4 The maze is not clipped, white inside the sheet edge around the maze is at least 10 mm, and Meta is visible at the exit
-- [x] 2.5 The selected character is at the entrance, and a top about 1.6 mm from the sheet edge still passes
-- [x] 2.6 On screen, the heading and the buttons stay visible
+- [x] 2.3 Chrome print preview, with margins left at Default and headers and footers off, is exactly one A4 page — 2096c85
+- [x] 2.4 The maze is not clipped, white inside the sheet edge around the maze is at least 10 mm, and Meta is visible at the exit — 2096c85
+- [x] 2.5 The selected character is at the entrance, and a top about 1.6 mm from the sheet edge still passes — 2096c85
+- [x] 2.6 On screen, the heading and the buttons stay visible — 2096c85
 
 ### Phase 3: Other desktop browsers
 
 #### Automated
 
-- [ ] 3.1 `npm test` still passes
+- [x] 3.1 `npm test` still passes
 
 #### Manual
 
-- [ ] 3.2 Edge print preview, with margins at Default and headers and footers off, is one A4 page, the maze is unclipped, Meta is at the exit, and the character is at the start
+- [x] 3.2 Edge print preview, with margins at Default and headers and footers off, is one A4 page, the maze is unclipped, Meta is at the exit, and the character is at the start
 - [ ] 3.3 Firefox print preview meets that same bar
 - [ ] 3.4 Safari print preview meets that same bar, on a machine that has desktop Safari
