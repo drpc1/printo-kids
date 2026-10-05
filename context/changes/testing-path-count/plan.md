@@ -121,11 +121,11 @@ No data migration and no product-code migration. The page keeps its current Gene
 
 #### Automated
 
-- [x] 1.1 `npm test` passes and reports a passing test for each of the 34 seeds 0–31, 99, and 12345
-- [x] 1.2 `npm run lint` passes
-- [x] 1.3 `git diff -- src/lib/maze/generate.ts src/components/WorksheetGenerator.tsx` is empty
+- [x] 1.1 `npm test` passes and reports a passing test for each of the 34 seeds 0–31, 99, and 12345 — afda85a
+- [x] 1.2 `npm run lint` passes — afda85a
+- [x] 1.3 `git diff -- src/lib/maze/generate.ts src/components/WorksheetGenerator.tsx` is empty — afda85a
 
 #### Manual
 
-- [x] 1.4 The extra-wall test and the stop-at-2 test are still in `generate.test.ts` and were not rewritten
-- [x] 1.5 A seed outside that list is not described as proven
+- [x] 1.4 The extra-wall test and the stop-at-2 test are still in `generate.test.ts` and were not rewritten — afda85a
+- [x] 1.5 A seed outside that list is not described as proven — afda85a
