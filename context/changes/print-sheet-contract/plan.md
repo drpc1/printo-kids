@@ -235,28 +235,28 @@ Nothing is stored. Existing on-screen sheets pick up the shared function on the 
 
 #### Automated
 
-- [x] 1.1 `npm test` passes and covers the 13 by 16 sheet: maze inset at least 10 mm on every side, Meta at least 10 mm from the page edges, a 30 mm character centered on column 6 with its bottom on the maze top, Start when no character is selected, and no requirement that the character top clear 10 mm
-- [x] 1.2 `npm run lint` passes
+- [x] 1.1 `npm test` passes and covers the 13 by 16 sheet: maze inset at least 10 mm on every side, Meta at least 10 mm from the page edges, a 30 mm character centered on column 6 with its bottom on the maze top, Start when no character is selected, and no requirement that the character top clear 10 mm — 9860679
+- [x] 1.2 `npm run lint` passes — 9860679
 
 #### Manual
 
-- [x] 1.3 On screen, after Generuj with a character selected, the figure sits at the entrance and Meta sits at the exit
-- [x] 1.4 Bez postaci shows Start in the upper band and still shows Meta
-- [x] 1.5 The phase 2 row in `context/foundation/test-plan.md` names `print-sheet-contract`
+- [x] 1.3 On screen, after Generuj with a character selected, the figure sits at the entrance and Meta sits at the exit — 9860679
+- [x] 1.4 Bez postaci shows Start in the upper band and still shows Meta — 9860679
+- [x] 1.5 The phase 2 row in `context/foundation/test-plan.md` names `print-sheet-contract` — 9860679
 
 ### Phase 2: Chrome print contract
 
 #### Automated
 
-- [ ] 2.1 `npm test` passes the print-rule contract: worksheet `@page` is A4 with margin 0, `global.css` has no `@page`, the sheet prints at 210 mm by 297 mm, and print hides the heading, purpose line, and controls
-- [ ] 2.2 `npm run lint` passes
+- [x] 2.1 `npm test` passes the print-rule contract: worksheet `@page` is A4 with margin 0, `global.css` has no `@page`, the sheet prints at 210 mm by 297 mm, and print hides the heading, purpose line, and controls
+- [x] 2.2 `npm run lint` passes
 
 #### Manual
 
-- [ ] 2.3 Chrome print preview, with margins left at Default and headers and footers off, is exactly one A4 page
-- [ ] 2.4 The maze is not clipped, white inside the sheet edge around the maze is at least 10 mm, and Meta is visible at the exit
-- [ ] 2.5 The selected character is at the entrance, and a top about 1.6 mm from the sheet edge still passes
-- [ ] 2.6 On screen, the heading and the buttons stay visible
+- [x] 2.3 Chrome print preview, with margins left at Default and headers and footers off, is exactly one A4 page
+- [x] 2.4 The maze is not clipped, white inside the sheet edge around the maze is at least 10 mm, and Meta is visible at the exit
+- [x] 2.5 The selected character is at the entrance, and a top about 1.6 mm from the sheet edge still passes
+- [x] 2.6 On screen, the heading and the buttons stay visible
 
 ### Phase 3: Other desktop browsers
 
