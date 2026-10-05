@@ -1,7 +1,7 @@
 ---
 change_id: last-used-print-params
 title: Remember the last used character as an editable default
-status: implementing
+status: implemented
 created: 2026-10-05
 updated: 2026-10-05
 archived_at: null

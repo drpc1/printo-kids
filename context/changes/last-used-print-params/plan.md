@@ -180,14 +180,14 @@ Istniejącego klucza nie ma. Pierwsza wizyta po wdrożeniu jest jak brak zapisu 
 
 #### Automated
 
-- [x] 2.1 `npm run lint` przechodzi po podpięciu kontrolki
-- [x] 2.2 `npm test` przechodzi po podpięciu kontrolki
+- [x] 2.1 `npm run lint` przechodzi po podpięciu kontrolki — 1a00030
+- [x] 2.2 `npm test` przechodzi po podpięciu kontrolki — 1a00030
 
 #### Manual
 
-- [x] 2.3 Świeża wizyta pokazuje „Postać: Bez postaci”, a Generuj rysuje Start
-- [x] 2.4 Wybór Rakiety i odświeżenie bez Generuj pokazuje „Postać: Rakieta” przed Generuj, bez dodatkowego zdania
-- [x] 2.5 Po wygenerowaniu Dinozaura zmiana na Rakietę i odświeżenie przywraca Rakietę bez drugiego Generuj
-- [x] 2.6 Wybór „Bez postaci” i odświeżenie przywraca „Bez postaci” oraz Start
-- [x] 2.7 Identyfikator spoza zestawu w magazynie po odświeżeniu daje „Bez postaci”, a Generuj nadal działa
-- [x] 2.8 Druk nadal chowa kontrolkę wyboru i daje jedną stronę A4
+- [x] 2.3 Świeża wizyta pokazuje „Postać: Bez postaci”, a Generuj rysuje Start — 1a00030
+- [x] 2.4 Wybór Rakiety i odświeżenie bez Generuj pokazuje „Postać: Rakieta” przed Generuj, bez dodatkowego zdania — 1a00030
+- [x] 2.5 Po wygenerowaniu Dinozaura zmiana na Rakietę i odświeżenie przywraca Rakietę bez drugiego Generuj — 1a00030
+- [x] 2.6 Wybór „Bez postaci” i odświeżenie przywraca „Bez postaci” oraz Start — 1a00030
+- [x] 2.7 Identyfikator spoza zestawu w magazynie po odświeżeniu daje „Bez postaci”, a Generuj nadal działa — 1a00030
+- [x] 2.8 Druk nadal chowa kontrolkę wyboru i daje jedną stronę A4 — 1a00030
