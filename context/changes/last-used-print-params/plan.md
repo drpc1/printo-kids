@@ -173,21 +173,21 @@ Istniejącego klucza nie ma. Pierwsza wizyta po wdrożeniu jest jak brak zapisu 
 
 #### Automated
 
-- [x] 1.1 `npm test` akceptuje brak klucza, pusty string, zły JSON, goły string `rakieta`, identyfikator spoza zestawu, `none`, `samochodzik`, `rakieta` i `dinozaur`, a rzucający magazyn nie przerywa odczytu ani zapisu
-- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` akceptuje brak klucza, pusty string, zły JSON, goły string `rakieta`, identyfikator spoza zestawu, `none`, `samochodzik`, `rakieta` i `dinozaur`, a rzucający magazyn nie przerywa odczytu ani zapisu — 85740fd
+- [x] 1.2 `npm run lint` przechodzi — 85740fd
 
 ### Phase 2: Kontrolka czyta i zapisuje postać
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` przechodzi po podpięciu kontrolki
-- [ ] 2.2 `npm test` przechodzi po podpięciu kontrolki
+- [x] 2.1 `npm run lint` przechodzi po podpięciu kontrolki
+- [x] 2.2 `npm test` przechodzi po podpięciu kontrolki
 
 #### Manual
 
-- [ ] 2.3 Świeża wizyta pokazuje „Postać: Bez postaci”, a Generuj rysuje Start
-- [ ] 2.4 Wybór Rakiety i odświeżenie bez Generuj pokazuje „Postać: Rakieta” przed Generuj, bez dodatkowego zdania
-- [ ] 2.5 Po wygenerowaniu Dinozaura zmiana na Rakietę i odświeżenie przywraca Rakietę bez drugiego Generuj
-- [ ] 2.6 Wybór „Bez postaci” i odświeżenie przywraca „Bez postaci” oraz Start
-- [ ] 2.7 Identyfikator spoza zestawu w magazynie po odświeżeniu daje „Bez postaci”, a Generuj nadal działa
-- [ ] 2.8 Druk nadal chowa kontrolkę wyboru i daje jedną stronę A4
+- [x] 2.3 Świeża wizyta pokazuje „Postać: Bez postaci”, a Generuj rysuje Start
+- [x] 2.4 Wybór Rakiety i odświeżenie bez Generuj pokazuje „Postać: Rakieta” przed Generuj, bez dodatkowego zdania
+- [x] 2.5 Po wygenerowaniu Dinozaura zmiana na Rakietę i odświeżenie przywraca Rakietę bez drugiego Generuj
+- [x] 2.6 Wybór „Bez postaci” i odświeżenie przywraca „Bez postaci” oraz Start
+- [x] 2.7 Identyfikator spoza zestawu w magazynie po odświeżeniu daje „Bez postaci”, a Generuj nadal działa
+- [x] 2.8 Druk nadal chowa kontrolkę wyboru i daje jedną stronę A4
