@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { countPaths, generateMaze, type Maze, type MazeCell } from "@/lib/maze/generate";
+import { layoutSheet } from "@/lib/sheet/layout";
 
 const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
-const INSET_X = 10;
-const INSET_Y = 10;
+const INSET = 10;
 const LABEL_COLUMN = 6;
 const CHARACTER_MARK_SIZE = 30;
 
@@ -170,60 +170,56 @@ function CharacterChoiceControl({
 }
 
 function MazeSheet({ maze, characterSrc }: { maze: Maze; characterSrc: string | null }) {
-  const cellSize = (PAGE_WIDTH - INSET_X * 2) / maze.width;
-  const innerHeight = PAGE_HEIGHT - INSET_Y * 2;
-  const gridHeight = maze.height * cellSize;
-  const labelBand = (innerHeight - gridHeight) / 2;
-  const originX = INSET_X;
-  const originY = INSET_Y + labelBand;
-  const labelX = originX + (LABEL_COLUMN + 0.5) * cellSize;
-  const startY = INSET_Y + labelBand / 2;
-  const metaY = originY + gridHeight + labelBand / 2;
-  const walls = collectWalls(maze, originX, originY, cellSize);
-  const hasCharacter = characterSrc !== null;
-  const markY = originY - CHARACTER_MARK_SIZE;
+  const sheet = layoutSheet({
+    pageWidth: PAGE_WIDTH,
+    pageHeight: PAGE_HEIGHT,
+    inset: INSET,
+    columns: maze.width,
+    rows: maze.height,
+    entranceColumn: LABEL_COLUMN,
+    markSize: CHARACTER_MARK_SIZE,
+    characterSelected: characterSrc !== null,
+  });
+  const cellSize = sheet.maze.width / maze.width;
+  const walls = collectWalls(maze, sheet.maze.x, sheet.maze.y, cellSize);
+  const mark = sheet.mark;
+  const start = sheet.start;
 
   return (
     <svg
-      viewBox={`0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}`}
+      viewBox={`0 0 ${sheet.page.width} ${sheet.page.height}`}
       className={cn(
         "aspect-[210/297] h-auto w-full ring-1 ring-[var(--foreground)] print:block print:h-[297mm] print:max-h-[297mm] print:w-[210mm] print:overflow-hidden print:ring-0",
       )}
       role="img"
       aria-label="Labirynt"
     >
-      <rect width={PAGE_WIDTH} height={PAGE_HEIGHT} fill="var(--card)" />
-      {hasCharacter ? (
-        <image
-          href={characterSrc}
-          x={labelX - CHARACTER_MARK_SIZE / 2}
-          y={markY}
-          width={CHARACTER_MARK_SIZE}
-          height={CHARACTER_MARK_SIZE}
-        />
-      ) : (
+      <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
+      {mark !== null && characterSrc !== null ? (
+        <image href={characterSrc} x={mark.x} y={mark.y} width={mark.width} height={mark.height} />
+      ) : start !== null ? (
         <text
-          x={labelX}
-          y={startY}
+          x={start.x}
+          y={start.y}
           fill="var(--foreground)"
           fontFamily="ui-sans-serif, system-ui, sans-serif"
           fontSize={7}
           textAnchor="middle"
           dominantBaseline="middle"
         >
-          Start
+          {start.text}
         </text>
-      )}
+      ) : null}
       <text
-        x={labelX}
-        y={metaY}
+        x={sheet.meta.x}
+        y={sheet.meta.y}
         fill="var(--foreground)"
         fontFamily="ui-sans-serif, system-ui, sans-serif"
         fontSize={7}
         textAnchor="middle"
         dominantBaseline="middle"
       >
-        Meta
+        {sheet.meta.text}
       </text>
       <g fill="none" stroke="var(--foreground)" strokeLinecap="square" strokeLinejoin="miter" strokeWidth={0.65}>
         {walls.map((wall) => (
