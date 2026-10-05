@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
+import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { countPaths, generateMaze, type Maze, type MazeCell } from "@/lib/maze/generate";
 import { layoutSheet } from "@/lib/sheet/layout";
+import { cn } from "@/lib/utils";
 
 const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
@@ -31,7 +32,13 @@ interface WallSegment {
 
 export default function WorksheetGenerator() {
   const [maze, setMaze] = useState<Maze | null>(null);
-  const [character, setCharacter] = useState<CharacterChoice>("none");
+  const [character, setCharacter] = useState<CharacterChoice>(() => {
+    const stored = readLastUsed(
+      localStorage,
+      CHARACTER_CHOICES.map((option) => option.id),
+    );
+    return CHARACTER_CHOICES.find((option) => option.id === stored)?.id ?? "none";
+  });
   const [choiceOpen, setChoiceOpen] = useState(false);
   const selectedChoice = CHARACTER_CHOICES.find((option) => option.id === character) ?? CHARACTER_CHOICES[0];
 
@@ -154,6 +161,7 @@ function CharacterChoiceControl({
               className={cn("h-auto w-full justify-start px-4 py-2 text-lg", character === option.id && "bg-muted")}
               onClick={() => {
                 onSelect(option.id);
+                writeLastUsed(localStorage, option.id);
                 onOpenChange(false);
               }}
             >
