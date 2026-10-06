@@ -231,22 +231,22 @@ Czytelnik starego guide, dla którego ryzyko 4 było starterem, a ryzyko 5 przeg
 
 #### Automated
 
-- [x] 1.1 §3 ma fazę 1 change opened / path-count-test, fazę 2 implementing / print-sheet-contract oraz fazy 3 i 4 not started
-- [x] 1.2 Guide nie zawiera cytatu plik:linia
+- [x] 1.1 §3 ma fazę 1 change opened / path-count-test, fazę 2 implementing / print-sheet-contract oraz fazy 3 i 4 not started — 329d415
+- [x] 1.2 Guide nie zawiera cytatu plik:linia — 329d415
 
 #### Manual
 
-- [x] 1.3 §2 ma sześć ryzyk z briefu, a progi poziomów nie są osobnym wierszem
+- [x] 1.3 §2 ma sześć ryzyk z briefu, a progi poziomów nie są osobnym wierszem — 329d415
 
 ### Phase 2: Sprawdzone, podręcznik i budżet
 
 #### Automated
 
-- [ ] 2.1 §5 wymienia 34 ziarna do 12345, brak odmowy przy zero ścieżkach oraz otwarte Firefox i Safari
-- [ ] 2.2 §6 ma TBD dla faz 1–4, a §7 wyłącza starter, migawki, progi, bibliotekę kart i profil przed plasterkiem
-- [ ] 2.4 §5 mówi, że testy nie sprawdzają pliku wybranej postaci na kartce
-- [ ] 2.5 §5 nazywa kontrakt ostatniej postaci pokrytym, a §7 nie goni równoważnych mutantów
+- [x] 2.1 §5 wymienia 34 ziarna do 12345, brak odmowy przy zero ścieżkach oraz otwarte Firefox i Safari
+- [x] 2.2 §6 ma TBD dla faz 1–4, a §7 wyłącza starter, migawki, progi, bibliotekę kart i profil przed plasterkiem
+- [x] 2.4 §5 mówi, że testy nie sprawdzają pliku wybranej postaci na kartce
+- [x] 2.5 §5 nazywa kontrakt ostatniej postaci pokrytym, a §7 nie goni równoważnych mutantów
 
 #### Manual
 
-- [ ] 2.3 §5 nie uznaje 59 testów za dowód strony Chrome ani profilu na urządzeniu
+- [x] 2.3 §5 nie uznaje 59 testów za dowód strony Chrome ani profilu na urządzeniu

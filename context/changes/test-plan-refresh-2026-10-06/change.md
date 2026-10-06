@@ -3,7 +3,7 @@ change_id: test-plan-refresh-2026-10-06
 title: Refresh the whole-product test-plan guide
 status: implementing
 created: 2026-10-06
-updated: 2026-10-06
+updated: 2026-10-07
 archived_at: null
 ---
 
