@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, mock, test } from "node:test";
-import { countPaths, generateMaze, type Maze } from "./generate.ts";
+import { countPaths, generateMaze, mazeForSheet, type Maze } from "./generate.ts";
 
 void describe("generateMaze", () => {
   for (const seed of [
@@ -52,6 +52,44 @@ void describe("countPaths", () => {
       }
     }
     assert.equal(countPaths(maze), 2);
+  });
+});
+
+void describe("mazeForSheet", () => {
+  void test("returns null for a fully walled 13 by 16 grid", () => {
+    const maze = cloneMaze(generateMaze(mulberry32(1)));
+    for (const row of maze.cells) {
+      for (const cell of row) {
+        cell.north = true;
+        cell.east = true;
+        cell.south = true;
+        cell.west = true;
+      }
+    }
+    assert.equal(countPaths(maze), 0);
+    assert.equal(mazeForSheet(maze), null);
+  });
+
+  void test("returns null when path counting stops at 2", () => {
+    const maze = cloneMaze(generateMaze(mulberry32(1)));
+    for (let row = 0; row < maze.height; row += 1) {
+      for (let col = 0; col < maze.width; col += 1) {
+        if (col < maze.width - 1) {
+          knockDown(maze, row, col, "east");
+        }
+        if (row < maze.height - 1) {
+          knockDown(maze, row, col, "south");
+        }
+      }
+    }
+    assert.equal(countPaths(maze), 2);
+    assert.equal(mazeForSheet(maze), null);
+  });
+
+  void test("returns the same maze when one path exists", () => {
+    const maze = generateMaze(mulberry32(1));
+    assert.equal(countPaths(maze), 1);
+    assert.equal(mazeForSheet(maze), maze);
   });
 });
 

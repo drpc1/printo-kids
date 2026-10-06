@@ -80,6 +80,13 @@ export function countPaths(maze: Maze): number {
   return found;
 }
 
+export function mazeForSheet(candidate: Maze): Maze | null {
+  if (countPaths(candidate) === 1) {
+    return candidate;
+  }
+  return null;
+}
+
 function createCells(): MazeCell[][] {
   return Array.from({ length: HEIGHT }, () =>
     Array.from({ length: WIDTH }, (): MazeCell => ({
