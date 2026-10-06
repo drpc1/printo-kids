@@ -82,28 +82,51 @@ Baza testów: **sparse**. `npm test` uruchamia cztery pliki w `src/lib/`: `maze/
 
 ## §5 Co jest już sprawdzone
 
-Jest test szczęśliwej ścieżki generatora. Przypadki „zero ścieżek” i „dwie ścieżki” nie są sprawdzone. Druk, „Meta”, postać przy starcie i zgodność ekranu z wydrukiem nie mają testu produktu. Smoke w CI sprawdza flow kont ze startera.
+Jest 59 testów. Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
+
+Dla 34 ziaren, liczb 0–31 oraz 99 i 12345, generator daje labirynt 13 na 16 z otwartymi nacięciami i jedną ścieżką. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Te ziarna nie dowodzą odmowy kartki przy zero ścieżkach.
+
+Zmutowana siatka potrafi dać więcej niż jedną ścieżkę. Siatka z otwartymi wewnętrznymi ścianami zatrzymuje licznik na 2. Przypadek „więcej niż jedna” wybiera siatkę tym samym licznikiem, który potem sprawdza. Żaden z tych dwóch przypadków nie przechodzi przez klik, który zapisuje kartkę. Asercji odmowy kartki przy zero ścieżkach nie ma.
+
+Układ kartki: strona 210 na 297, labirynt co najmniej 10 od krawędzi, „Meta” pod kratką i co najmniej 10 od krawędzi, przy postaci znacznik 30 na 30 ze spodem na górze labiryntu. Góra znacznika nie musi mieć 10 od krawędzi. Bez postaci jest „Start”, a „Meta” zostaje.
+
+Reguły druku są tekstem źródeł: jedno `@page` A4 z marginesem 0, brak `@page` w globalnym arkuszu, SVG druku 210 mm na 297 mm z ukrytym przepełnieniem, druk chowa nagłówek, linię celu i przyciski, a dopełnienie ekranu zostaje w regule ekranu. Te testy nie otwierają przeglądarki i nie dowodzą liczby stron. Nie są dowodem jednej strony w Chrome.
+
+Ręczny podgląd Chrome i Edge jest zapisany jako zrobiony w planie `print-sheet-contract`. Firefox i Safari są nadal otwarte. Ten guide ich nie powtarza.
+
+Kontrakt ostatniej postaci w schowku jest pokryty: brak klucza, pusty zapis, zły JSON, postać spoza listy, wyjątek ze schowka, zapis i odczyt. Zła wartość wraca jako brak postaci. To nie jest zapis ani usunięcie profilu dziecka. Wynik mutacji około 67% nie otwiera nowego testu: przeżyte mutanty i tak zwracają „none”. Ten kontrakt nie sprawdza, że generator wstawia identyfikator na kartkę.
+
+Układ przy „jakiejś” postaci wymaga znacznika 30 na 30, a bez postaci wymaga napisu „Start”. Nie wymaga, żeby adres obrazka był adresem wybranej postaci: samochodzik, rakieta albo dinozaur. „Bez postaci” jako brak obrazka na kartce generatora też nie jest w tych testach. Testy nie sprawdzają, czy na kartkę wszedł plik wybranej postaci.
+
+Smoke w osobnym jobie CI nadal sprawdza flow kont ze startera. To nie jest dowód, że profil zostaje na urządzeniu.
 
 ## §6 Podręcznik
 
 Wypełnia się przy zamknięciu fazy wdrożenia. Do tego czasu wzorzec jest nazwany po zachowaniu, nie po pliku.
 
-### Liczba ścieżek
+### Prawidłowa kartka
 
-TBD — patrz §3 Faza 1 dla wzorca odmowy kartki przy zero ścieżkach i przy więcej niż jednej ścieżce.
+TBD — patrz §3 Faza 1 dla wzorca odmowy kartki przy zero ścieżkach i przy więcej niż jednej. 34 ziarna z §5 nie są tym wzorcem.
 
 ### Druk i znaczniki kartki
 
-TBD — patrz §3 Faza 2 dla wzorca obcięcia lub drugiej strony oraz braku „Meta” lub postaci przy starcie.
+TBD — patrz §3 Faza 2 dla wzorca druku i znaczników kartki, łącznie z tym, że na starcie jest plik wybranej albo przywróconej postaci, a nie sam prostokąt znacznika.
+
+### Dane lokalne
+
+TBD — patrz §3 Faza 3. Nie wypełniać, dopóki plasterek nie istnieje.
 
 ### Bramka produktu
 
-TBD — patrz §3 Faza 3 dla wzorca bramki, która pilnuje kartki i nie pokrywa startera.
+TBD — patrz §3 Faza 4 dla wzorca bramki, która pilnuje kartki i nie obrasta testami kont.
 
 ## §7 Poza budżetem
 
-- Logowanie, rejestracja, potwierdzenie maila, dashboard, API kont i dokładanie asercji startera do smoke.
-- Migawki pikseli kartki i rysunków postaci.
-- Zgodność labiryntu z poziomem trudności, dopóki poziomów nie ma.
-- Własny obrazek rodzica.
+- Logowanie, rejestracja, potwierdzenie maila, dashboard, API kont, testy startera i dokładanie asercji startera do smoke.
+- Migawki pikseli kartki i postaci.
+- Zgodność labiryntu z poziomem i progi poziomów, dopóki poziomów nie ma.
+- Biblioteka kart FR-011, która użyje wyroczni ryzyka 1 dopiero gdy powstanie.
+- Test profilu przed plasterkiem: profil, ostatnie parametry i własny obrazek, dopóki nie istnieją S-05, S-06 albo US-02.
 - Automatyczne „czy rodzic rozumie ekran”. To zostaje ręcznym sprawdzeniem.
+- Macierz automatycznych przeglądarek jako pierwszy test druku.
+- Asercje ostatniej postaci dopisane tylko po to, by zabić równoważnego mutanta, który i tak zwraca „none”.
