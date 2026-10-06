@@ -16,7 +16,7 @@ Trzy zasady. Każda faza wdrożenia przekazuje je do `/10x-plan`.
 
 2. **Obawy użytkowników są dowodem.** Ryzyka, przez które zespół przeszedł, mają taką samą wagę jak linie PRD lub dane hot-spotów.
 
-3. **Ryzyka to scenariusze, a nie lokalizacje kodu.** Mapa w §2 cytuje dowody: linie PRD, odpowiedzi z wywiadu, katalogi hot-spotów z liczbą zmian, ograniczenia stosu. Nie cytuje `plik:linia`, nazw funkcji, nazw schematów ani nazw modułów i nie twierdzi, że dany plik jest miejscem awarii. Katalog hot-spotów jest dowodem prawdopodobieństwa. To, gdzie w kodzie przebiega awaria, ustala `/10x-research` w fazie wdrożenia.
+3. **Ryzyka to scenariusze, a nie lokalizacje kodu.** Mapa w §2 cytuje dowody: linie PRD, odpowiedzi z wywiadu, katalogi hot-spotów z liczbą wystąpień ścieżek, ograniczenia stosu. Nie cytuje `plik:linia`, nazw funkcji, nazw schematów ani nazw modułów i nie twierdzi, że dany plik jest miejscem awarii. Katalog hot-spotów jest dowodem prawdopodobieństwa. To, gdzie w kodzie przebiega awaria, ustala `/10x-research` w fazie wdrożenia.
 
 Skan hot-spotów: zakres `src`, 19 commitów od 2026-09-06. Liczby przy katalogach to wystąpienia ścieżek w tych commitach: `src/components/` 39, `src/pages/` 15, `src/lib/` 11. `src/lib/maze/` ma 3 wystąpienia. `src/components/auth/` ma 11 wystąpień i `src/pages/auth/` ma 6; oba zostają śladem startera poza budżetem testów (§7). Poprawka rysowania wspólnej ściany z 2026-10-01 jest dowodem prawdopodobieństwa ryzyka 1.
 
