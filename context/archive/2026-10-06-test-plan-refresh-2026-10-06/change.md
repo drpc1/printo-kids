@@ -1,10 +1,10 @@
 ---
 change_id: test-plan-refresh-2026-10-06
 title: Refresh the whole-product test-plan guide
-status: impl_reviewed
+status: archived
 created: 2026-10-06
-updated: 2026-10-07
-archived_at: null
+updated: 2026-10-06
+archived_at: 2026-10-06T22:42:43Z
 ---
 
 ## Notes
