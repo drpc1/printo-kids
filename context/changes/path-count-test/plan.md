@@ -138,10 +138,10 @@ Stan kartki żyje w pamięci komponentu i startuje od `null`. Zapis lokalny post
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, w tym odmowa kartki przy `countPaths` 0, odmowa przy `countPaths` 2 i zwrot tego samego labiryntu przy `countPaths` 1
-- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` przechodzi, w tym odmowa kartki przy `countPaths` 0, odmowa przy `countPaths` 2 i zwrot tego samego labiryntu przy `countPaths` 1 — b211225
+- [x] 1.2 `npm run lint` przechodzi — b211225
 
 #### Manual
 
-- [x] 1.3 W `handleGenerate` `setMaze` jest wołane tylko dla niepustego wyniku, bez `else`, bez komunikatu i bez ponowienia
-- [x] 1.4 Test zatrzymania licznika na 2 oraz pętla 34 ziaren zostały w `generate.test.ts` i nie zostały przepisane
+- [x] 1.3 W `handleGenerate` `setMaze` jest wołane tylko dla niepustego wyniku, bez `else`, bez komunikatu i bez ponowienia — b211225
+- [x] 1.4 Test zatrzymania licznika na 2 oraz pętla 34 ziaren zostały w `generate.test.ts` i nie zostały przepisane — b211225
