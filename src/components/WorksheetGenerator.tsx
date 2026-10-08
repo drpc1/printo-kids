@@ -1,9 +1,16 @@
-import { useEffect, useState, type SubmitEvent } from "react";
+import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { profileNameError, readChildProfiles, writeChildProfiles, type ChildProfile } from "@/lib/child-profiles";
+import {
+  openingVisit,
+  profileNameError,
+  readChildProfiles,
+  sortProfiles,
+  writeChildProfiles,
+  type ChildProfile,
+} from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
 import { layoutSheet } from "@/lib/sheet/layout";
@@ -39,6 +46,7 @@ interface VisitStart {
   profiles: ChildProfile[];
   activeId: string | null;
   character: CharacterChoice;
+  ask: boolean;
 }
 
 interface WallSegment {
@@ -56,6 +64,7 @@ export default function WorksheetGenerator() {
   const [character, setCharacter] = useState(visit.character);
   const [maze, setMaze] = useState<Maze | null>(null);
   const [choiceOpen, setChoiceOpen] = useState(false);
+  const waitingForChild = visit.ask && activeId === null;
   const selectedChoice = CHARACTER_CHOICES.find((option) => option.id === character) ?? CHARACTER_CHOICES[0];
 
   useEffect(() => {
@@ -70,6 +79,9 @@ export default function WorksheetGenerator() {
   }, [maze]);
 
   function handleGenerate(): void {
+    if (waitingForChild) {
+      return;
+    }
     const next = mazeForSheet(generateMaze(Math.random));
     if (next !== null) {
       setMaze(next);
@@ -86,6 +98,11 @@ export default function WorksheetGenerator() {
     setCharacter(characterChoice(profile.character));
   }
 
+  function handleProfileChosen(profile: ChildProfile): void {
+    setActiveId(profile.id);
+    setCharacter(characterChoice(profile.character));
+  }
+
   const hasMaze = maze !== null;
 
   return (
@@ -94,7 +111,9 @@ export default function WorksheetGenerator() {
         profiles={profiles}
         activeId={activeId}
         barCharacter={character}
+        ask={visit.ask}
         onCreated={handleProfileCreated}
+        onChoose={handleProfileChosen}
       />
       {hasMaze ? (
         <div className={cn("flex w-full items-center justify-between gap-4 print:hidden")}>
@@ -107,7 +126,7 @@ export default function WorksheetGenerator() {
               onSelect={setCharacter}
               rememberLastUsed={activeId === null}
             />
-            <GenerateButton onClick={handleGenerate} tone="quiet" />
+            <GenerateButton onClick={handleGenerate} tone="quiet" disabled={waitingForChild} />
           </div>
           <Button
             type="button"
@@ -128,7 +147,7 @@ export default function WorksheetGenerator() {
             onSelect={setCharacter}
             rememberLastUsed={activeId === null}
           />
-          <GenerateButton onClick={handleGenerate} tone="hero" />
+          <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
         </div>
       )}
       {hasMaze ? <MazeSheet maze={maze} characterSrc={selectedChoice.src} /> : null}
@@ -136,12 +155,21 @@ export default function WorksheetGenerator() {
   );
 }
 
-function GenerateButton({ onClick, tone }: { onClick: () => void; tone: "hero" | "quiet" }) {
+function GenerateButton({
+  onClick,
+  tone,
+  disabled,
+}: {
+  onClick: () => void;
+  tone: "hero" | "quiet";
+  disabled: boolean;
+}) {
   return (
     <Button
       type="button"
       variant={tone === "hero" ? "default" : "outline"}
       onClick={onClick}
+      disabled={disabled}
       className={cn("h-auto rounded-full px-12 py-3.5 text-lg")}
     >
       Generuj
@@ -153,24 +181,30 @@ function ProfileCorner({
   profiles,
   activeId,
   barCharacter,
+  ask,
   onCreated,
+  onChoose,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
   barCharacter: CharacterChoice;
+  ask: boolean;
   onCreated: (profile: ChildProfile) => void;
+  onChoose: (profile: ChildProfile) => void;
 }) {
   const activeProfile = profiles.find((profile) => profile.id === activeId) ?? null;
   const cornerLabel = activeProfile === null ? "Profil" : activeProfile.name;
   const favorite =
     activeProfile === null ? null : (CHARACTER_CHOICES.find((option) => option.id === activeProfile.character) ?? null);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(ask);
   const [panel, setPanel] = useState<ProfilePanel>("menu");
+  const createLock = useRef(false);
   const [draftName, setDraftName] = useState("");
   const [draftCharacter, setDraftCharacter] = useState<CharacterChoice>(barCharacter);
   const [formError, setFormError] = useState<string | null>(null);
 
   function openCreateForm(): void {
+    createLock.current = false;
     setDraftName("");
     setDraftCharacter(barCharacter);
     setFormError(null);
@@ -190,6 +224,11 @@ function ProfileCorner({
     setProfileOpen(open);
   }
 
+  function handleChoose(profile: ChildProfile): void {
+    onChoose(profile);
+    setProfileOpen(false);
+  }
+
   function handleCancel(): void {
     setDraftName("");
     setFormError(null);
@@ -202,6 +241,9 @@ function ProfileCorner({
 
   function handleCreate(event: SubmitEvent<HTMLFormElement>): void {
     event.preventDefault();
+    if (createLock.current) {
+      return;
+    }
     const nameError = profileNameError(
       draftName,
       profiles.map((profile) => profile.name),
@@ -216,8 +258,10 @@ function ProfileCorner({
       name: draftName.trim(),
       character: draftCharacter,
     };
+    createLock.current = true;
     const saved = writeChildProfiles(localStorage, [...profiles, profile]);
     if (!saved) {
+      createLock.current = false;
       setFormError(SAVE_ERROR_TEXT);
       return;
     }
@@ -245,10 +289,35 @@ function ProfileCorner({
       <DialogContent showCloseButton={false}>
         {panel === "menu" ? (
           <div className={cn("flex flex-col gap-2")}>
-            <DialogTitle className={cn("break-words")}>
-              {activeProfile === null ? "Profil" : activeProfile.name}
-            </DialogTitle>
-            {favorite !== null ? <SavedCharacter choice={favorite} /> : null}
+            {profiles.length >= 2 ? (
+              <>
+                <DialogTitle className={cn("sr-only")}>Profil</DialogTitle>
+                {sortProfiles(profiles).map((profile) => (
+                  <Button
+                    key={profile.id}
+                    type="button"
+                    variant="ghost"
+                    aria-pressed={profile.id === activeId}
+                    className={cn(
+                      "h-auto w-full min-w-0 justify-start px-4 py-2 text-left text-lg break-words whitespace-normal",
+                      profile.id === activeId && "bg-muted",
+                    )}
+                    onClick={() => {
+                      handleChoose(profile);
+                    }}
+                  >
+                    <span className={cn("min-w-0 break-words")}>{profile.name}</span>
+                  </Button>
+                ))}
+              </>
+            ) : (
+              <>
+                <DialogTitle className={cn("break-words")}>
+                  {activeProfile === null ? "Profil" : activeProfile.name}
+                </DialogTitle>
+                {favorite !== null ? <SavedCharacter choice={favorite} /> : null}
+              </>
+            )}
             <Button
               type="button"
               variant="ghost"
@@ -491,19 +560,12 @@ function mazeCell(maze: Maze, row: number, col: number): MazeCell | undefined {
 
 function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitStart {
   const profiles = readChildProfiles(storage, ALLOWED_CHARACTER_IDS);
-  const only = profiles.length === 1 ? profiles[0] : undefined;
-  if (only !== undefined) {
-    return {
-      profiles,
-      activeId: only.id,
-      character: characterChoice(only.character),
-    };
-  }
-
+  const opening = openingVisit(profiles, readLastUsed(storage, ALLOWED_CHARACTER_IDS));
   return {
     profiles,
-    activeId: null,
-    character: characterChoice(readLastUsed(storage, ALLOWED_CHARACTER_IDS)),
+    activeId: opening.activeId,
+    character: characterChoice(opening.character),
+    ask: opening.ask,
   };
 }
 
