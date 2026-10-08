@@ -1,10 +1,10 @@
 ---
 change_id: last-used-print-params
 title: Remember the last used character as an editable default
-status: impl_reviewed
+status: archived
 created: 2026-10-05
 updated: 2026-10-05
-archived_at: null
+archived_at: 2026-10-05T22:04:23Z
 ---
 
 ## Notes
