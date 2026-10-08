@@ -209,8 +209,8 @@ Istniejące wpisy `{id, name, character}` zostają. Brak klucza `printo-kids:chi
 
 #### Automated
 
-- [x] 1.1 `npm test` obejmuje zapis dinozaura u Zosi bez zmiany imienia i bez ruszenia Antka, odmowę nieznanego id i postaci spoza zestawu, przejście paska z rakiety na dinozaura, zostawienie paska samochodzik, zostawienie aktywnej Zosi po usunięciu Basi, włączenie Antka po usunięciu aktywnej Zosi, pytanie i postać bez profilu gdy po usunięciu aktywnego zostaje dwoje, powrót do postaci bez profilu po usunięciu ostatniego oraz pytanie albo włączenie jedynego, gdy nikt nie był aktywny
-- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` obejmuje zapis dinozaura u Zosi bez zmiany imienia i bez ruszenia Antka, odmowę nieznanego id i postaci spoza zestawu, przejście paska z rakiety na dinozaura, zostawienie paska samochodzik, zostawienie aktywnej Zosi po usunięciu Basi, włączenie Antka po usunięciu aktywnej Zosi, pytanie i postać bez profilu gdy po usunięciu aktywnego zostaje dwoje, powrót do postaci bez profilu po usunięciu ostatniego oraz pytanie albo włączenie jedynego, gdy nikt nie był aktywny — dbf06bc
+- [x] 1.2 `npm run lint` przechodzi — dbf06bc
 
 ### Phase 2: Zapis ulubionej w rogu
 
