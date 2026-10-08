@@ -254,12 +254,12 @@ Brak klucza `printo-kids:child-profiles` oznacza brak profili. `printo-kids:last
 
 #### Automated
 
-- [x] 3.1 `npm test` sprawdza start wizyty: zero i jedno dziecko puszczają Generuj, dwoje bez wyboru zostawia ostatnią postać bez profilu i blokuje Generuj, a imiona układają się Antek, Basia, Łucja, Zosia
-- [x] 3.2 `npm run lint` przechodzi
+- [x] 3.1 `npm test` sprawdza start wizyty: zero i jedno dziecko puszczają Generuj, dwoje bez wyboru zostawia ostatnią postać bez profilu i blokuje Generuj, a imiona układają się Antek, Basia, Łucja, Zosia — 9e00412
+- [x] 3.2 `npm run lint` przechodzi — 9e00412
 
 #### Manual
 
-- [x] 3.3 Zosia (rakieta) i Antek (dinozaur), a ostatnia postać bez profilu to samochodzik: wejście otwiera menu, pasek pokazuje Samochodzik, Generuj nie działa; zamknięcie menu bez imienia zostawia Generuj wyłączone
-- [x] 3.4 Kliknięcie Zosi ustawia „Postać: Rakieta” i włącza Generuj; kliknięcie dinozaura zmienia tylko tę wizytę; odświeżenie znowu pyta, a po ponownym wyborze Zosi wraca rakieta
-- [x] 3.5 Menu układa Antek przed Zosią, „Dodaj profil” jest na dole, a nowy profil od razu staje się aktywny
-- [x] 3.6 Druk jednej strony A4 nadal nie pokazuje rogu ani menu
+- [x] 3.3 Zosia (rakieta) i Antek (dinozaur), a ostatnia postać bez profilu to samochodzik: wejście otwiera menu, pasek pokazuje Samochodzik, Generuj nie działa; zamknięcie menu bez imienia zostawia Generuj wyłączone — 9e00412
+- [x] 3.4 Kliknięcie Zosi ustawia „Postać: Rakieta” i włącza Generuj; kliknięcie dinozaura zmienia tylko tę wizytę; odświeżenie znowu pyta, a po ponownym wyborze Zosi wraca rakieta — 9e00412
+- [x] 3.5 Menu układa Antek przed Zosią, „Dodaj profil” jest na dole, a nowy profil od razu staje się aktywny — 9e00412
+- [x] 3.6 Druk jednej strony A4 nadal nie pokazuje rogu ani menu — 9e00412
