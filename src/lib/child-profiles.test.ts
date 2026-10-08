@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import {
+  barAfterFavoriteSave,
   openingVisit,
   profileNameError,
   readChildProfiles,
   sortProfiles,
+  visitAfterDelete,
+  withFavorite,
   writeChildProfiles,
   type ChildProfile,
   type ChildProfileStorage,
@@ -178,6 +181,126 @@ void describe("openingVisit", () => {
         ask: true,
       },
     );
+  });
+});
+
+void describe("withFavorite", () => {
+  void test("saving dinozaur for Zosia keeps the name Zosia and leaves Antek unchanged", () => {
+    const profiles: ChildProfile[] = [
+      { id: "z1", name: "Zosia", character: "rakieta" },
+      { id: "a1", name: "Antek", character: "samochodzik" },
+    ];
+    const input: ChildProfile[] = profiles.map((profile) => ({ ...profile }));
+
+    assert.deepEqual(withFavorite(profiles, "z1", "dinozaur", ALLOWED), [
+      { id: "z1", name: "Zosia", character: "dinozaur" },
+      { id: "a1", name: "Antek", character: "samochodzik" },
+    ]);
+    assert.deepEqual(profiles, input);
+  });
+
+  void test("an unknown id and a character outside the set return null", () => {
+    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta" }];
+
+    assert.equal(withFavorite(profiles, "missing", "dinozaur", ALLOWED), null);
+    assert.equal(withFavorite(profiles, "z1", "smok", ALLOWED), null);
+    assert.deepEqual(profiles, [{ id: "z1", name: "Zosia", character: "rakieta" }]);
+  });
+});
+
+void describe("barAfterFavoriteSave", () => {
+  void test("a bar still showing the previous favorite becomes the saved favorite", () => {
+    assert.equal(barAfterFavoriteSave("rakieta", "rakieta", "dinozaur"), "dinozaur");
+  });
+
+  void test("a bar already on samochodzik stays on samochodzik", () => {
+    assert.equal(barAfterFavoriteSave("samochodzik", "rakieta", "dinozaur"), "samochodzik");
+  });
+});
+
+void describe("visitAfterDelete", () => {
+  const zosia: ChildProfile = { id: "z1", name: "Zosia", character: "rakieta" };
+  const antek: ChildProfile = { id: "a1", name: "Antek", character: "dinozaur" };
+  const basia: ChildProfile = { id: "b1", name: "Basia", character: "samochodzik" };
+
+  void test("deleting Basia while Zosia is active keeps Zosia, the bar, and does not ask", () => {
+    const profiles = [zosia, antek, basia];
+
+    assert.deepEqual(visitAfterDelete(profiles, "b1", "z1", "samochodzik", "rakieta"), {
+      profiles: [zosia, antek],
+      activeId: "z1",
+      character: "samochodzik",
+      ask: false,
+    });
+    assert.deepEqual(profiles, [zosia, antek, basia]);
+  });
+
+  void test("deleting active Zosia when only Antek remains activates Antek and his dinozaur", () => {
+    assert.deepEqual(visitAfterDelete([zosia, antek], "z1", "z1", "rakieta", "samochodzik"), {
+      profiles: [antek],
+      activeId: "a1",
+      character: "dinozaur",
+      ask: false,
+    });
+  });
+
+  void test("deleting active Zosia when Antek and Basia remain clears the active child and asks", () => {
+    assert.deepEqual(visitAfterDelete([zosia, antek, basia], "z1", "z1", "rakieta", "samochodzik"), {
+      profiles: [antek, basia],
+      activeId: null,
+      character: "samochodzik",
+      ask: true,
+    });
+  });
+
+  void test("deleting the only profile returns no active child, lastUsed, and does not ask", () => {
+    assert.deepEqual(visitAfterDelete([zosia], "z1", "z1", "rakieta", "samochodzik"), {
+      profiles: [],
+      activeId: null,
+      character: "samochodzik",
+      ask: false,
+    });
+  });
+
+  void test("with nobody active, deleting one of three asks and keeps lastUsed", () => {
+    assert.deepEqual(visitAfterDelete([zosia, antek, basia], "b1", null, "rakieta", "samochodzik"), {
+      profiles: [zosia, antek],
+      activeId: null,
+      character: "samochodzik",
+      ask: true,
+    });
+  });
+
+  void test("with nobody active, deleting one of two activates the remaining profile", () => {
+    assert.deepEqual(visitAfterDelete([zosia, antek], "z1", null, "samochodzik", "rakieta"), {
+      profiles: [antek],
+      activeId: "a1",
+      character: "dinozaur",
+      ask: false,
+    });
+  });
+
+  void test("a missing id leaves the list, the active child, and the bar unchanged", () => {
+    const profiles = [zosia, antek, basia];
+
+    assert.deepEqual(visitAfterDelete(profiles, "missing", "z1", "samochodzik", "rakieta"), {
+      profiles: [zosia, antek, basia],
+      activeId: "z1",
+      character: "samochodzik",
+      ask: false,
+    });
+    assert.deepEqual(visitAfterDelete(profiles, "missing", null, "samochodzik", "rakieta"), {
+      profiles: [zosia, antek, basia],
+      activeId: null,
+      character: "samochodzik",
+      ask: true,
+    });
+    assert.deepEqual(visitAfterDelete([zosia], "missing", null, "samochodzik", "rakieta"), {
+      profiles: [zosia],
+      activeId: null,
+      character: "samochodzik",
+      ask: false,
+    });
   });
 });
 
