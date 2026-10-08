@@ -61,7 +61,7 @@ Słownik statusu: `not started` → `change opened` → `researched` → `planne
 | # | Faza | Cel ochrony | Ryzyka | Typy testów | Status | Change folder |
 | - | --- | --- | --- | --- | --- | --- |
 | 1 | Prawidłowy labirynt po zmianie rysowania | Kartka bez uczciwego rozwiązania nie jest gotowa | 1 | Jednostkowy na obecnym runnerze Node | change opened | path-count-test |
-| 2 | Kontrakt druku i faktów kartki | Jedna strona A4 w Chrome, labirynt nieobcięty, margines co najmniej 10 mm, „Meta” oraz na starcie ta postać, która została wybrana albo przywrócona. Firefox i Safari zostają ręcznym podglądem, nadal otwartym. To, która postać weszła na kartkę, jest w tej fazie nadal otwarte: obecny plan `print-sheet-contract` tego nie sprawdza | 2, 3, 4 | Kontrakt układu w Chrome; ręczny podgląd Firefox i Safari | implementing | print-sheet-contract |
+| 2 | Kontrakt druku i faktów kartki | Jedna strona A4 w Chrome, labirynt nieobcięty, margines co najmniej 10 mm, „Meta” oraz na starcie ta postać, która została wybrana albo przywrócona. Chrome i Edge są sprawdzone, a `print-sheet-contract` jest zarchiwizowany. Całościowy ręczny podgląd Chrome, Edge, Firefox i Safari jest sprawdzianem na koniec projektu. To, która postać weszła na kartkę, jest w tej fazie nadal otwarte: ten plan tego nie sprawdza | 2, 3, 4 | Kontrakt układu w Chrome i Edge; cztery przeglądarki na koniec projektu | implementing | print-sheet-contract |
 | 3 | Dane lokalne po powstaniu plasterka | Jawny zapis, potwierdzenie usunięcia, dane zostają na urządzeniu, i tylko gdy plasterek istnieje | 5 | Kontrakt lokalny, gdy istnieje S-05, S-06 albo US-02 | not started | — |
 | 4 | Bramka produktu bez startera | Bramka pilnuje kartki i nie obrasta testami kont | 6 | `npm test` jako bramka produktu; smoke startera bez nowych asercji | not started | — |
 
@@ -92,7 +92,7 @@ Układ kartki: strona 210 na 297, labirynt co najmniej 10 od krawędzi, „Meta�
 
 Reguły druku są tekstem źródeł: jedno `@page` A4 z marginesem 0, brak `@page` w globalnym arkuszu, SVG druku 210 mm na 297 mm z ukrytym przepełnieniem, druk chowa nagłówek, linię celu i przyciski, a dopełnienie ekranu zostaje w regule ekranu. Te testy nie otwierają przeglądarki i nie dowodzą liczby stron. Nie są dowodem jednej strony w Chrome.
 
-Ręczny podgląd Chrome i Edge jest zapisany jako zrobiony w planie `print-sheet-contract`. Firefox i Safari są nadal otwarte. Ten guide ich nie powtarza.
+Ręczny podgląd Chrome i Edge jest zapisany jako zrobiony w zarchiwizowanym planie `print-sheet-contract`. Firefox i Safari nie były sprawdzane. Całościowy ręczny podgląd Chrome, Edge, Firefox i Safari jest w sekcji Koniec projektu.
 
 Kontrakt ostatniej postaci w schowku jest pokryty: brak klucza, pusty zapis, zły JSON, postać spoza listy, wyjątek ze schowka, zapis i odczyt. Zła wartość wraca jako brak postaci. To nie jest zapis ani usunięcie profilu dziecka. Wynik mutacji około 67% nie otwiera nowego testu: przeżyte mutanty i tak zwracają „none”. Ten kontrakt nie sprawdza, że generator wstawia identyfikator na kartkę.
 
@@ -130,3 +130,9 @@ TBD — patrz §3 Faza 4 dla wzorca bramki, która pilnuje kartki i nie obrasta 
 - Automatyczne „czy rodzic rozumie ekran”. To zostaje ręcznym sprawdzeniem.
 - Macierz automatycznych przeglądarek jako pierwszy test druku.
 - Asercje ostatniej postaci dopisane tylko po to, by zabić równoważnego mutanta, który i tak zwraca „none”.
+
+## Koniec projektu
+
+Przed oddaniem produktu przeprowadzić całościowy ręczny podgląd druku na aktualnych desktopowych Chrome, Edge, Firefox i Safari. W każdej: marginesy zostawione na Default, nagłówki i stopki wyłączone, dokładnie jedna strona A4, labirynt nieobcięty, biały pas wewnątrz krawędzi kartki co najmniej 10 mm, „Meta” przy wyjściu, wybrana postać przy starcie. Góra postaci około 1,6 mm od krawędzi kartki nadal przechodzi. Na ekranie zostają nagłówek i przyciski.
+
+Chrome i Edge przeszły ten pasek w `print-sheet-contract`. Ten sprawdzian powtarza go na wszystkich czterech, łącznie z Firefoxem i Safari, których tamten plasterek nie domknął. To zostaje ręcznym podglądem, nie macierzą automatycznych przeglądarek.
