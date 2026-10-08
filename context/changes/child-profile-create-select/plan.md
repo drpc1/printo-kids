@@ -233,33 +233,33 @@ Brak klucza `printo-kids:child-profiles` oznacza brak profili. `printo-kids:last
 
 #### Automated
 
-- [x] 1.1 `npm test` obejmuje brak klucza, pusty string, zły JSON, imię po obcięciu spacji, puste imię, duplikat bez względu na wielkość liter, 40 i 41 znaków, postać spoza zestawu oraz odczyt, który nie wywołuje zapisu
-- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` obejmuje brak klucza, pusty string, zły JSON, imię po obcięciu spacji, puste imię, duplikat bez względu na wielkość liter, 40 i 41 znaków, postać spoza zestawu oraz odczyt, który nie wywołuje zapisu — 077ca3c
+- [x] 1.2 `npm run lint` przechodzi — 077ca3c
 
 ### Phase 2: Róg i założenie
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` przechodzi po podpięciu rogu
-- [ ] 2.2 `npm test` przechodzi po podpięciu rogu
+- [x] 2.1 `npm run lint` przechodzi po podpięciu rogu
+- [x] 2.2 `npm test` przechodzi po podpięciu rogu
 
 #### Manual
 
-- [ ] 2.3 Brak profili: róg pokazuje „Profil”, Anuluj nic nie zapisuje, utworzenie „Zosia” z rakietą pokazuje w rogu „Zosia” i na pasku „Postać: Rakieta”, a odświeżenie zostawia rakietę
-- [ ] 2.4 Przy samej Zosi kliknięcie dinozaura zmienia postać w tej wizycie; odświeżenie wraca do rakiety, a klucz `printo-kids:last-used` zostaje bez zmian
-- [ ] 2.5 Puste imię, drugie „zosia” i imię dłuższe niż 40 znaków zostają w oknie z komunikatem i nie dopisują profilu
-- [ ] 2.6 Druk jednej strony A4 nie pokazuje rogu, menu ani przycisków
+- [x] 2.3 Brak profili: róg pokazuje „Profil”, Anuluj nic nie zapisuje, utworzenie „Zosia” z rakietą pokazuje w rogu „Zosia” i na pasku „Postać: Rakieta”, a odświeżenie zostawia rakietę
+- [x] 2.4 Przy samej Zosi kliknięcie dinozaura zmienia postać w tej wizycie; odświeżenie wraca do rakiety, a klucz `printo-kids:last-used` zostaje bez zmian
+- [x] 2.5 Puste imię, drugie „zosia” i imię dłuższe niż 40 znaków zostają w oknie z komunikatem i nie dopisują profilu
+- [x] 2.6 Druk jednej strony A4 nie pokazuje rogu, menu ani przycisków
 
 ### Phase 3: Wybór przy dwóch i więcej
 
 #### Automated
 
-- [ ] 3.1 `npm test` sprawdza start wizyty: zero i jedno dziecko puszczają Generuj, dwoje bez wyboru zostawia ostatnią postać bez profilu i blokuje Generuj, a imiona układają się Antek, Basia, Łucja, Zosia
-- [ ] 3.2 `npm run lint` przechodzi
+- [x] 3.1 `npm test` sprawdza start wizyty: zero i jedno dziecko puszczają Generuj, dwoje bez wyboru zostawia ostatnią postać bez profilu i blokuje Generuj, a imiona układają się Antek, Basia, Łucja, Zosia
+- [x] 3.2 `npm run lint` przechodzi
 
 #### Manual
 
-- [ ] 3.3 Zosia (rakieta) i Antek (dinozaur), a ostatnia postać bez profilu to samochodzik: wejście otwiera menu, pasek pokazuje Samochodzik, Generuj nie działa; zamknięcie menu bez imienia zostawia Generuj wyłączone
-- [ ] 3.4 Kliknięcie Zosi ustawia „Postać: Rakieta” i włącza Generuj; kliknięcie dinozaura zmienia tylko tę wizytę; odświeżenie znowu pyta, a po ponownym wyborze Zosi wraca rakieta
-- [ ] 3.5 Menu układa Antek przed Zosią, „Dodaj profil” jest na dole, a nowy profil od razu staje się aktywny
-- [ ] 3.6 Druk jednej strony A4 nadal nie pokazuje rogu ani menu
+- [x] 3.3 Zosia (rakieta) i Antek (dinozaur), a ostatnia postać bez profilu to samochodzik: wejście otwiera menu, pasek pokazuje Samochodzik, Generuj nie działa; zamknięcie menu bez imienia zostawia Generuj wyłączone
+- [x] 3.4 Kliknięcie Zosi ustawia „Postać: Rakieta” i włącza Generuj; kliknięcie dinozaura zmienia tylko tę wizytę; odświeżenie znowu pyta, a po ponownym wyborze Zosi wraca rakieta
+- [x] 3.5 Menu układa Antek przed Zosią, „Dodaj profil” jest na dole, a nowy profil od razu staje się aktywny
+- [x] 3.6 Druk jednej strony A4 nadal nie pokazuje rogu ani menu

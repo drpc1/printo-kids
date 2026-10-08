@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import {
+  openingVisit,
   profileNameError,
   readChildProfiles,
+  sortProfiles,
   writeChildProfiles,
   type ChildProfile,
   type ChildProfileStorage,
@@ -141,6 +143,63 @@ void describe("writeChildProfiles", () => {
       },
     ]);
     assert.deepEqual(readChildProfiles(storage, ALLOWED), profiles);
+  });
+});
+
+void describe("openingVisit", () => {
+  void test("zero profiles and lastUsed samochodzik keep samochodzik and do not ask", () => {
+    assert.deepEqual(openingVisit([], "samochodzik"), {
+      activeId: null,
+      character: "samochodzik",
+      ask: false,
+    });
+  });
+
+  void test("one profile Zosia with rakieta uses that id and rakieta and does not ask", () => {
+    assert.deepEqual(openingVisit([{ id: "z1", name: "Zosia", character: "rakieta" }], "samochodzik"), {
+      activeId: "z1",
+      character: "rakieta",
+      ask: false,
+    });
+  });
+
+  void test("Zosia and Antek with lastUsed samochodzik keep samochodzik and ask", () => {
+    assert.deepEqual(
+      openingVisit(
+        [
+          { id: "z1", name: "Zosia", character: "rakieta" },
+          { id: "a1", name: "Antek", character: "dinozaur" },
+        ],
+        "samochodzik",
+      ),
+      {
+        activeId: null,
+        character: "samochodzik",
+        ask: true,
+      },
+    );
+  });
+});
+
+void describe("sortProfiles", () => {
+  void test("orders Antek, Basia, Łucja, Zosia and leaves the input array unchanged", () => {
+    const profiles: ChildProfile[] = [
+      { id: "z", name: "Zosia", character: "rakieta" },
+      { id: "l", name: "Łucja", character: "dinozaur" },
+      { id: "b", name: "Basia", character: "samochodzik" },
+      { id: "a", name: "Antek", character: "none" },
+    ];
+    const input: ChildProfile[] = profiles.map((profile) => ({ ...profile }));
+    const ordered = sortProfiles(profiles);
+
+    assert.deepEqual(ordered, [
+      { id: "a", name: "Antek", character: "none" },
+      { id: "b", name: "Basia", character: "samochodzik" },
+      { id: "l", name: "Łucja", character: "dinozaur" },
+      { id: "z", name: "Zosia", character: "rakieta" },
+    ]);
+    assert.notEqual(ordered, profiles);
+    assert.deepEqual(profiles, input);
   });
 });
 

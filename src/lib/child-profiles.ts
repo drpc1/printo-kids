@@ -61,6 +61,29 @@ export function writeChildProfiles(storage: ChildProfileStorage, profiles: reado
   }
 }
 
+export interface OpeningVisit {
+  activeId: string | null;
+  character: string;
+  ask: boolean;
+}
+
+export function openingVisit(profiles: readonly ChildProfile[], lastUsed: string): OpeningVisit {
+  const only = profiles.length === 1 ? profiles[0] : undefined;
+  if (only !== undefined) {
+    return { activeId: only.id, character: only.character, ask: false };
+  }
+
+  return {
+    activeId: null,
+    character: lastUsed,
+    ask: profiles.length >= 2,
+  };
+}
+
+export function sortProfiles(profiles: readonly ChildProfile[]): ChildProfile[] {
+  return [...profiles].sort((left, right) => left.name.localeCompare(right.name, "pl"));
+}
+
 function parseStored(raw: string): unknown {
   return JSON.parse(raw) as unknown;
 }
