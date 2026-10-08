@@ -216,8 +216,8 @@ Istniejące wpisy `{id, name, character}` zostają. Brak klucza `printo-kids:chi
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi po podpięciu zapisu w rogu
-- [ ] 2.2 `npm run lint` przechodzi po podpięciu zapisu w rogu
+- [x] 2.1 `npm test` przechodzi po podpięciu zapisu w rogu
+- [x] 2.2 `npm run lint` przechodzi po podpięciu zapisu w rogu
 
 #### Manual
 

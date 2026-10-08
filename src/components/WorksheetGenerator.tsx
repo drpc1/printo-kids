@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
+  barAfterFavoriteSave,
   openingVisit,
   profileNameError,
   readChildProfiles,
   sortProfiles,
+  withFavorite,
   writeChildProfiles,
   type ChildProfile,
 } from "@/lib/child-profiles";
@@ -97,6 +99,11 @@ export default function WorksheetGenerator() {
     setCharacter(characterChoice(profile.character));
   }
 
+  function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string): void {
+    setProfiles(nextProfiles);
+    setCharacter(characterChoice(nextBar));
+  }
+
   const hasMaze = maze !== null;
 
   return (
@@ -108,6 +115,7 @@ export default function WorksheetGenerator() {
         ask={visit.ask}
         onCreated={handleProfileCreated}
         onChoose={handleProfileChosen}
+        onFavoriteSaved={handleFavoriteSaved}
       />
       {hasMaze ? (
         <div className={cn("flex w-full items-center justify-between gap-4 print:hidden")}>
@@ -178,6 +186,7 @@ function ProfileCorner({
   ask,
   onCreated,
   onChoose,
+  onFavoriteSaved,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
@@ -185,23 +194,34 @@ function ProfileCorner({
   ask: boolean;
   onCreated: (profile: ChildProfile) => void;
   onChoose: (profile: ChildProfile) => void;
+  onFavoriteSaved: (profiles: ChildProfile[], barCharacter: string) => void;
 }) {
   const activeProfile = profiles.find((profile) => profile.id === activeId) ?? null;
   const cornerLabel = activeProfile === null ? "Profil" : activeProfile.name;
-  const favorite =
-    activeProfile === null ? null : (CHARACTER_CHOICES.find((option) => option.id === activeProfile.character) ?? null);
   const [profileOpen, setProfileOpen] = useState(ask);
   const [panel, setPanel] = useState<ProfilePanel>("menu");
   const createLock = useRef(false);
+  const favoriteLock = useRef(false);
   const [draftName, setDraftName] = useState("");
   const [draftCharacter, setDraftCharacter] = useState<CharacterChoice>(barCharacter);
   const [formError, setFormError] = useState<string | null>(null);
+  const [favoriteDraft, setFavoriteDraft] = useState<CharacterChoice>(
+    activeProfile === null ? barCharacter : characterChoice(activeProfile.character),
+  );
+  const [favoriteError, setFavoriteError] = useState<string | null>(null);
+
+  function abandonFavoriteDraft(): void {
+    favoriteLock.current = false;
+    setFavoriteDraft(activeProfile === null ? barCharacter : characterChoice(activeProfile.character));
+    setFavoriteError(null);
+  }
 
   function openCreateForm(): void {
     createLock.current = false;
     setDraftName("");
     setDraftCharacter(barCharacter);
     setFormError(null);
+    abandonFavoriteDraft();
     setPanel("form");
   }
 
@@ -213,14 +233,46 @@ function ProfileCorner({
         setPanel("menu");
         setDraftName("");
         setFormError(null);
+        abandonFavoriteDraft();
       }
+    } else {
+      abandonFavoriteDraft();
     }
     setProfileOpen(open);
   }
 
   function handleChoose(profile: ChildProfile): void {
+    abandonFavoriteDraft();
     onChoose(profile);
     setProfileOpen(false);
+  }
+
+  function handleFavoriteSelect(id: CharacterChoice): void {
+    favoriteLock.current = false;
+    setFavoriteDraft(id);
+  }
+
+  function handleSaveFavorite(): void {
+    if (favoriteLock.current || activeProfile === null) {
+      return;
+    }
+    const previousFavorite = activeProfile.character;
+    if (favoriteDraft === previousFavorite) {
+      return;
+    }
+    const nextProfiles = withFavorite(profiles, activeProfile.id, favoriteDraft, ALLOWED_CHARACTER_IDS);
+    if (nextProfiles === null) {
+      return;
+    }
+    favoriteLock.current = true;
+    const saved = writeChildProfiles(localStorage, nextProfiles);
+    if (!saved) {
+      favoriteLock.current = false;
+      setFavoriteError(SAVE_ERROR_TEXT);
+      return;
+    }
+    onFavoriteSaved(nextProfiles, barAfterFavoriteSave(barCharacter, previousFavorite, favoriteDraft));
+    setFavoriteError(null);
   }
 
   function handleCancel(): void {
@@ -305,13 +357,28 @@ function ProfileCorner({
                 ))}
               </>
             ) : (
-              <>
-                <DialogTitle className={cn("break-words")}>
-                  {activeProfile === null ? "Profil" : activeProfile.name}
-                </DialogTitle>
-                {favorite !== null ? <SavedCharacter choice={favorite} /> : null}
-              </>
+              <DialogTitle className={cn("break-words")}>
+                {activeProfile === null ? "Profil" : activeProfile.name}
+              </DialogTitle>
             )}
+            {activeProfile !== null ? (
+              <>
+                <CharacterChoiceRows selected={favoriteDraft} onSelect={handleFavoriteSelect} />
+                {favoriteError !== null ? (
+                  <p id="child-profile-save-error" role="alert" className={cn("text-destructive text-sm")}>
+                    {favoriteError}
+                  </p>
+                ) : null}
+                <Button
+                  type="button"
+                  disabled={favoriteDraft === activeProfile.character}
+                  aria-describedby={favoriteError !== null ? "child-profile-save-error" : undefined}
+                  onClick={handleSaveFavorite}
+                >
+                  Zapisz
+                </Button>
+              </>
+            ) : null}
             <Button
               type="button"
               variant="ghost"
@@ -355,15 +422,6 @@ function ProfileCorner({
         )}
       </DialogContent>
     </Dialog>
-  );
-}
-
-function SavedCharacter({ choice }: { choice: (typeof CHARACTER_CHOICES)[number] }) {
-  return (
-    <div className={cn("flex items-center gap-2 px-4 py-2 text-lg")}>
-      {choice.src !== null ? <img src={choice.src} alt="" width={40} height={40} className={cn("size-10")} /> : null}
-      {choice.label}
-    </div>
   );
 }
 
