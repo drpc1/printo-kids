@@ -184,15 +184,15 @@ Kształt `printo-kids:last-used` i zapis profili zostają. Nowa funkcja czyta id
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi i sprawdza: `samochodzik` → `/characters/samochodzik.png`, `rakieta` → `/characters/rakieta.png`, `dinozaur` → `/characters/dinozaur.png`, `none` → `null`, `smok` → `null`
-- [x] 1.2 `npm test` sprawdza, że `src/components/WorksheetGenerator.tsx` nie zawiera literałów `/characters/samochodzik.png`, `/characters/rakieta.png` ani `/characters/dinozaur.png` i że woła `characterSheetSrc`
-- [x] 1.3 `npm run lint` przechodzi
+- [x] 1.1 `npm test` przechodzi i sprawdza: `samochodzik` → `/characters/samochodzik.png`, `rakieta` → `/characters/rakieta.png`, `dinozaur` → `/characters/dinozaur.png`, `none` → `null`, `smok` → `null` — 6454705
+- [x] 1.2 `npm test` sprawdza, że `src/components/WorksheetGenerator.tsx` nie zawiera literałów `/characters/samochodzik.png`, `/characters/rakieta.png` ani `/characters/dinozaur.png` i że woła `characterSheetSrc` — 6454705
+- [x] 1.3 `npm run lint` przechodzi — 6454705
 
 ### Phase 2: Podręcznik fazy
 
 #### Manual
 
-- [ ] 2.1 Sekcja „Druk i znaczniki kartki” opisuje adres pliku identyfikatora, „Start” przy braku pliku oraz to, że „Meta” i prostokąt 30 na 30 zostają w teście układu, i nie zawiera „TBD”
-- [ ] 2.2 §4 wymienia te same pliki co skrypt `test` w `package.json`, łącznie z nowym testem postaci i z `child-profiles.test.ts`
-- [ ] 2.3 §5 nie twierdzi, że testy pomijają plik wybranej postaci; zdania o prostokącie 30 na 30, napisie „Start” i o kontrakcie ostatniego zapisu zostają
-- [ ] 2.4 W §3 klauzula o otwartym wyborze postaci na kartce jest zastąpiona adresem pliku identyfikatora, a komórka Status jest nietknięta
+- [x] 2.1 Sekcja „Druk i znaczniki kartki” opisuje adres pliku identyfikatora, „Start” przy braku pliku oraz to, że „Meta” i prostokąt 30 na 30 zostają w teście układu, i nie zawiera „TBD”
+- [x] 2.2 §4 wymienia te same pliki co skrypt `test` w `package.json`, łącznie z nowym testem postaci i z `child-profiles.test.ts`
+- [x] 2.3 §5 nie twierdzi, że testy pomijają plik wybranej postaci; zdania o prostokącie 30 na 30, napisie „Start” i o kontrakcie ostatniego zapisu zostają
+- [x] 2.4 W §3 klauzula o otwartym wyborze postaci na kartce jest zastąpiona adresem pliku identyfikatora, a komórka Status jest nietknięta

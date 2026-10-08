@@ -1,6 +1,6 @@
 ---
 project: PrintoKids
-checked: 2026-10-06
+checked: 2026-10-08
 status: active
 ---
 
@@ -60,8 +60,8 @@ Słownik statusu: `not started` → `change opened` → `researched` → `planne
 
 | # | Faza | Cel ochrony | Ryzyka | Typy testów | Status | Change folder |
 | - | --- | --- | --- | --- | --- | --- |
-| 1 | Prawidłowy labirynt po zmianie rysowania | Kartka bez uczciwego rozwiązania nie jest gotowa | 1 | Jednostkowy na obecnym runnerze Node | change opened | path-count-test |
-| 2 | Kontrakt druku i faktów kartki | Jedna strona A4 w Chrome, labirynt nieobcięty, margines co najmniej 10 mm, „Meta” oraz na starcie ta postać, która została wybrana albo przywrócona. Chrome i Edge są sprawdzone, a `print-sheet-contract` jest zarchiwizowany. Całościowy ręczny podgląd Chrome, Edge, Firefox i Safari jest sprawdzianem na koniec projektu. To, która postać weszła na kartkę, jest w tej fazie nadal otwarte: ten plan tego nie sprawdza | 2, 3, 4 | Kontrakt układu w Chrome i Edge; cztery przeglądarki na koniec projektu | implementing | print-sheet-contract |
+| 1 | Prawidłowy labirynt po zmianie rysowania | Kartka bez uczciwego rozwiązania nie jest gotowa | 1 | Jednostkowy na obecnym runnerze Node | complete | path-count-test |
+| 2 | Kontrakt druku i faktów kartki | Jedna strona A4 w Chrome, labirynt nieobcięty, margines co najmniej 10 mm, „Meta” oraz na starcie ta postać, która została wybrana albo przywrócona. Chrome i Edge są sprawdzone, a `print-sheet-contract` jest zarchiwizowany. Całościowy ręczny podgląd Chrome, Edge, Firefox i Safari jest sprawdzianem na koniec projektu. Na kartce jest adres pliku identyfikatora, który na nią wszedł | 2, 3, 4 | Kontrakt układu w Chrome i Edge; cztery przeglądarki na koniec projektu | change opened | testing-character-on-sheet |
 | 3 | Dane lokalne po powstaniu plasterka | Jawny zapis, potwierdzenie usunięcia, dane zostają na urządzeniu, i tylko gdy plasterek istnieje | 5 | Kontrakt lokalny, gdy istnieje S-05, S-06 albo US-02 | not started | — |
 | 4 | Bramka produktu bez startera | Bramka pilnuje kartki i nie obrasta testami kont | 6 | `npm test` jako bramka produktu; smoke startera bez nowych asercji | not started | — |
 
@@ -71,7 +71,7 @@ Kolejność bierze się z wpływu i sparzenia, zgodnie z wywiadem P3. Faza 1 ma 
 
 Astro 7 SSR, wyspy React, TypeScript, Tailwind, Cloudflare Workers. Node 22.14.0. Produkt nie ma kont, płatności, AI ani zadań w tle. Dane labiryntu i przyszłych profili zostają na urządzeniu.
 
-Baza testów: **sparse**. `npm test` uruchamia cztery pliki w `src/lib/`: `maze/generate.test.ts`, `sheet/layout.test.ts`, `sheet/print-contract.test.ts`, `last-used.test.ts`. Nie ma Vitest, Jest ani Playwright. CI odpala `npm test` oraz, osobno, smoke po flow kont. AGENTS.md nadal opisuje brak runnera testów jednostkowych — to jest nieaktualne wobec `package.json`.
+Baza testów: **sparse**. `npm test` uruchamia `src/lib/maze/generate.test.ts`, `src/lib/sheet/layout.test.ts`, `src/lib/sheet/print-contract.test.ts`, `src/lib/last-used.test.ts`, `src/lib/child-profiles.test.ts` i `src/lib/sheet/character.test.ts`. Nie ma Vitest, Jest ani Playwright. CI odpala `npm test` oraz, osobno, smoke po flow kont.
 
 **Stack grounding tools (current session):**
 
@@ -86,7 +86,7 @@ Jest 59 testów. Opisują istniejący zestaw. Nie są dowodem jednej strony w Ch
 
 Dla 34 ziaren, liczb 0–31 oraz 99 i 12345, generator daje labirynt 13 na 16 z otwartymi nacięciami i jedną ścieżką. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Te ziarna nie dowodzą odmowy kartki przy zero ścieżkach.
 
-Zmutowana siatka potrafi dać więcej niż jedną ścieżkę. Siatka z otwartymi wewnętrznymi ścianami zatrzymuje licznik na 2. Przypadek „więcej niż jedna” wybiera siatkę tym samym licznikiem, który potem sprawdza. Żaden z tych dwóch przypadków nie przechodzi przez klik, który zapisuje kartkę. Asercji odmowy kartki przy zero ścieżkach nie ma.
+Zmutowana siatka potrafi dać więcej niż jedną ścieżkę. Siatka z otwartymi wewnętrznymi ścianami zatrzymuje licznik na 2. Przypadek „więcej niż jedna” wybiera siatkę tym samym licznikiem, który potem sprawdza. Gotowa kartka wymaga dokładnie jednej ścieżki: zero ścieżek i dwie ścieżki nie są zapisywane, a jedna ścieżka zostawia ten sam labirynt. Klik Generuj zapisuje kartkę tylko przy niepustym wyniku, bez komunikatu i bez ponowienia.
 
 Układ kartki: strona 210 na 297, labirynt co najmniej 10 od krawędzi, „Meta” pod kratką i co najmniej 10 od krawędzi, przy postaci znacznik 30 na 30 ze spodem na górze labiryntu. Góra znacznika nie musi mieć 10 od krawędzi. Bez postaci jest „Start”, a „Meta” zostaje.
 
@@ -94,9 +94,9 @@ Reguły druku są tekstem źródeł: jedno `@page` A4 z marginesem 0, brak `@pag
 
 Ręczny podgląd Chrome i Edge jest zapisany jako zrobiony w zarchiwizowanym planie `print-sheet-contract`. Firefox i Safari nie były sprawdzane. Całościowy ręczny podgląd Chrome, Edge, Firefox i Safari jest w sekcji Koniec projektu.
 
-Kontrakt ostatniej postaci w schowku jest pokryty: brak klucza, pusty zapis, zły JSON, postać spoza listy, wyjątek ze schowka, zapis i odczyt. Zła wartość wraca jako brak postaci. To nie jest zapis ani usunięcie profilu dziecka. Wynik mutacji około 67% nie otwiera nowego testu: przeżyte mutanty i tak zwracają „none”. Ten kontrakt nie sprawdza, że generator wstawia identyfikator na kartkę.
+Kontrakt ostatniej postaci w schowku jest pokryty: brak klucza, pusty zapis, zły JSON, postać spoza listy, wyjątek ze schowka, zapis i odczyt. Zła wartość wraca jako brak postaci. To nie jest zapis ani usunięcie profilu dziecka. Wynik mutacji około 67% nie otwiera nowego testu: przeżyte mutanty i tak zwracają „none”. Kontrakt ostatniego zapisu sam nie rysuje kartki.
 
-Układ przy „jakiejś” postaci wymaga znacznika 30 na 30, a bez postaci wymaga napisu „Start”. Nie wymaga, żeby adres obrazka był adresem wybranej postaci: samochodzik, rakieta albo dinozaur. „Bez postaci” jako brak obrazka na kartce generatora też nie jest w tych testach. Testy nie sprawdzają, czy na kartkę wszedł plik wybranej postaci.
+Układ przy „jakiejś” postaci wymaga znacznika 30 na 30, a bez postaci wymaga napisu „Start”.
 
 Smoke w osobnym jobie CI nadal sprawdza flow kont ze startera. To nie jest dowód, że profil zostaje na urządzeniu.
 
@@ -106,11 +106,11 @@ Wypełnia się przy zamknięciu fazy wdrożenia. Do tego czasu wzorzec jest nazw
 
 ### Prawidłowa kartka
 
-TBD — patrz §3 Faza 1 dla wzorca odmowy kartki przy zero ścieżkach i przy więcej niż jednej. 34 ziarna z §5 nie są tym wzorcem.
+Wzorzec odmowy gotowej kartki: dokładnie jedna ścieżka zostawia ten sam labirynt. Zero ścieżek, na siatce 13 na 16 ze wszystkimi ścianami zamkniętymi, nie jest gotową kartką. Dwie ścieżki, gdy licznik staje na 2 po otwarciu wewnętrznych ścian wschodnich i południowych, też nie są gotową kartką. Klik Generuj zapisuje kartkę tylko przy niepustym wyniku tego sprawdzenia, bez komunikatu i bez ponowienia. 34 ziarna z §5 nie są tym wzorcem. Progi łatwy, średni i trudny nie wchodzą tutaj.
 
 ### Druk i znaczniki kartki
 
-TBD — patrz §3 Faza 2 dla wzorca druku i znaczników kartki, łącznie z tym, że na starcie jest plik wybranej albo przywróconej postaci, a nie sam prostokąt znacznika.
+Wzorzec znaczników kartki: na kartce jest adres pliku identyfikatora, który na nią wszedł — samochodzik, rakieta albo dinozaur. „Bez postaci” zostawia napis „Start” i brak obrazka. „Meta” oraz prostokąt 30 na 30 zostają dotychczasowym testem układu. Para jednego profilu i ostatniego zapisu nie jest tym wzorcem.
 
 ### Dane lokalne
 
