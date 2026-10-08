@@ -13,6 +13,7 @@ import {
 } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
+import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
 import { cn } from "@/lib/utils";
 
@@ -21,13 +22,6 @@ const PAGE_HEIGHT = 297;
 const INSET = 10;
 const LABEL_COLUMN = 6;
 const CHARACTER_MARK_SIZE = 30;
-
-const CHARACTER_CHOICES = [
-  { id: "none", label: "Bez postaci", src: null },
-  { id: "samochodzik", label: "Samochodzik", src: "/characters/samochodzik.png" },
-  { id: "rakieta", label: "Rakieta", src: "/characters/rakieta.png" },
-  { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.png" },
-] as const;
 
 const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
 
@@ -65,7 +59,7 @@ export default function WorksheetGenerator() {
   const [maze, setMaze] = useState<Maze | null>(null);
   const [choiceOpen, setChoiceOpen] = useState(false);
   const waitingForChild = visit.ask && activeId === null;
-  const selectedChoice = CHARACTER_CHOICES.find((option) => option.id === character) ?? CHARACTER_CHOICES[0];
+  const selectedChoice = characterRow(character);
 
   useEffect(() => {
     const main = document.getElementById("worksheet-home");
@@ -150,7 +144,7 @@ export default function WorksheetGenerator() {
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
         </div>
       )}
-      {hasMaze ? <MazeSheet maze={maze} characterSrc={selectedChoice.src} /> : null}
+      {hasMaze ? <MazeSheet maze={maze} characterId={character} /> : null}
     </div>
   );
 }
@@ -452,7 +446,8 @@ function CharacterChoiceRows({
   );
 }
 
-function MazeSheet({ maze, characterSrc }: { maze: Maze; characterSrc: string | null }) {
+function MazeSheet({ maze, characterId }: { maze: Maze; characterId: CharacterChoice }) {
+  const characterSrc = characterSheetSrc(characterId);
   const sheet = layoutSheet({
     pageWidth: PAGE_WIDTH,
     pageHeight: PAGE_HEIGHT,
