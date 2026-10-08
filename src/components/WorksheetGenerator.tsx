@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { profileNameError, readChildProfiles, writeChildProfiles, type ChildProfile } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
-import { countPaths, generateMaze, type Maze, type MazeCell } from "@/lib/maze/generate";
+import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
 import { layoutSheet } from "@/lib/sheet/layout";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +22,24 @@ const CHARACTER_CHOICES = [
   { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.png" },
 ] as const;
 
+const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
+
+const NAME_ERROR_TEXT = {
+  empty: "Wpisz imię",
+  "too-long": "Imię może mieć najwyżej 40 znaków",
+  duplicate: "Takie imię już jest",
+} as const;
+
+const SAVE_ERROR_TEXT = "Nie udało się zapisać profilu";
+
 type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
+type ProfilePanel = "menu" | "form";
+
+interface VisitStart {
+  profiles: ChildProfile[];
+  activeId: string | null;
+  character: CharacterChoice;
+}
 
 interface WallSegment {
   id: string;
@@ -31,14 +50,11 @@ interface WallSegment {
 }
 
 export default function WorksheetGenerator() {
+  const [visit] = useState(() => readVisitStart(localStorage));
+  const [profiles, setProfiles] = useState(visit.profiles);
+  const [activeId, setActiveId] = useState(visit.activeId);
+  const [character, setCharacter] = useState(visit.character);
   const [maze, setMaze] = useState<Maze | null>(null);
-  const [character, setCharacter] = useState<CharacterChoice>(() => {
-    const stored = readLastUsed(
-      localStorage,
-      CHARACTER_CHOICES.map((option) => option.id),
-    );
-    return CHARACTER_CHOICES.find((option) => option.id === stored)?.id ?? "none";
-  });
   const [choiceOpen, setChoiceOpen] = useState(false);
   const selectedChoice = CHARACTER_CHOICES.find((option) => option.id === character) ?? CHARACTER_CHOICES[0];
 
@@ -54,8 +70,8 @@ export default function WorksheetGenerator() {
   }, [maze]);
 
   function handleGenerate(): void {
-    const next = generateMaze(Math.random);
-    if (countPaths(next) === 1) {
+    const next = mazeForSheet(generateMaze(Math.random));
+    if (next !== null) {
       setMaze(next);
     }
   }
@@ -64,10 +80,22 @@ export default function WorksheetGenerator() {
     window.print();
   }
 
+  function handleProfileCreated(profile: ChildProfile): void {
+    setProfiles((current) => [...current, profile]);
+    setActiveId(profile.id);
+    setCharacter(characterChoice(profile.character));
+  }
+
   const hasMaze = maze !== null;
 
   return (
     <div className={cn("flex w-full flex-col items-center gap-4")}>
+      <ProfileCorner
+        profiles={profiles}
+        activeId={activeId}
+        barCharacter={character}
+        onCreated={handleProfileCreated}
+      />
       {hasMaze ? (
         <div className={cn("flex w-full items-center justify-between gap-4 print:hidden")}>
           <div className={cn("flex min-w-0 items-center gap-3")}>
@@ -77,6 +105,7 @@ export default function WorksheetGenerator() {
               choiceOpen={choiceOpen}
               onOpenChange={setChoiceOpen}
               onSelect={setCharacter}
+              rememberLastUsed={activeId === null}
             />
             <GenerateButton onClick={handleGenerate} tone="quiet" />
           </div>
@@ -97,6 +126,7 @@ export default function WorksheetGenerator() {
             choiceOpen={choiceOpen}
             onOpenChange={setChoiceOpen}
             onSelect={setCharacter}
+            rememberLastUsed={activeId === null}
           />
           <GenerateButton onClick={handleGenerate} tone="hero" />
         </div>
@@ -119,18 +149,175 @@ function GenerateButton({ onClick, tone }: { onClick: () => void; tone: "hero" |
   );
 }
 
+function ProfileCorner({
+  profiles,
+  activeId,
+  barCharacter,
+  onCreated,
+}: {
+  profiles: readonly ChildProfile[];
+  activeId: string | null;
+  barCharacter: CharacterChoice;
+  onCreated: (profile: ChildProfile) => void;
+}) {
+  const activeProfile = profiles.find((profile) => profile.id === activeId) ?? null;
+  const cornerLabel = activeProfile === null ? "Profil" : activeProfile.name;
+  const favorite =
+    activeProfile === null ? null : (CHARACTER_CHOICES.find((option) => option.id === activeProfile.character) ?? null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [panel, setPanel] = useState<ProfilePanel>("menu");
+  const [draftName, setDraftName] = useState("");
+  const [draftCharacter, setDraftCharacter] = useState<CharacterChoice>(barCharacter);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  function openCreateForm(): void {
+    setDraftName("");
+    setDraftCharacter(barCharacter);
+    setFormError(null);
+    setPanel("form");
+  }
+
+  function handleProfileOpenChange(open: boolean): void {
+    if (open) {
+      if (profiles.length === 0) {
+        openCreateForm();
+      } else {
+        setPanel("menu");
+        setDraftName("");
+        setFormError(null);
+      }
+    }
+    setProfileOpen(open);
+  }
+
+  function handleCancel(): void {
+    setDraftName("");
+    setFormError(null);
+    if (profiles.length === 0) {
+      setProfileOpen(false);
+      return;
+    }
+    setPanel("menu");
+  }
+
+  function handleCreate(event: SubmitEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    const nameError = profileNameError(
+      draftName,
+      profiles.map((profile) => profile.name),
+    );
+    if (nameError !== null) {
+      setFormError(NAME_ERROR_TEXT[nameError]);
+      return;
+    }
+
+    const profile: ChildProfile = {
+      id: crypto.randomUUID(),
+      name: draftName.trim(),
+      character: draftCharacter,
+    };
+    const saved = writeChildProfiles(localStorage, [...profiles, profile]);
+    if (!saved) {
+      setFormError(SAVE_ERROR_TEXT);
+      return;
+    }
+
+    onCreated(profile);
+    setDraftName("");
+    setFormError(null);
+    setProfileOpen(false);
+  }
+
+  return (
+    <Dialog open={profileOpen} onOpenChange={handleProfileOpenChange}>
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          aria-label={cornerLabel}
+          className={cn(
+            "text-muted-foreground hover:text-foreground fixed top-4 right-4 z-40 h-auto max-w-48 px-2 py-1 text-base font-normal print:hidden",
+          )}
+        >
+          <span className={cn("min-w-0 truncate")}>{cornerLabel}</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent showCloseButton={false}>
+        {panel === "menu" ? (
+          <div className={cn("flex flex-col gap-2")}>
+            <DialogTitle className={cn("break-words")}>
+              {activeProfile === null ? "Profil" : activeProfile.name}
+            </DialogTitle>
+            {favorite !== null ? <SavedCharacter choice={favorite} /> : null}
+            <Button
+              type="button"
+              variant="ghost"
+              className={cn("h-auto w-full justify-start px-4 py-2 text-lg")}
+              onClick={openCreateForm}
+            >
+              Dodaj profil
+            </Button>
+          </div>
+        ) : (
+          <form className={cn("flex flex-col gap-4")} onSubmit={handleCreate}>
+            <DialogTitle className={cn("sr-only")}>Imię</DialogTitle>
+            <div className={cn("flex flex-col gap-2")}>
+              <label htmlFor="child-profile-name" className={cn("text-sm font-medium")}>
+                Imię
+              </label>
+              <Input
+                id="child-profile-name"
+                value={draftName}
+                onChange={(event) => {
+                  setDraftName(event.target.value);
+                }}
+                aria-invalid={formError !== null}
+                aria-describedby={formError !== null ? "child-profile-error" : undefined}
+                autoComplete="off"
+              />
+              {formError !== null ? (
+                <p id="child-profile-error" role="alert" className={cn("text-destructive text-sm")}>
+                  {formError}
+                </p>
+              ) : null}
+            </div>
+            <CharacterChoiceRows selected={draftCharacter} onSelect={setDraftCharacter} />
+            <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end")}>
+              <Button type="button" variant="outline" onClick={handleCancel}>
+                Anuluj
+              </Button>
+              <Button type="submit">Utwórz</Button>
+            </div>
+          </form>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function SavedCharacter({ choice }: { choice: (typeof CHARACTER_CHOICES)[number] }) {
+  return (
+    <div className={cn("flex items-center gap-2 px-4 py-2 text-lg")}>
+      {choice.src !== null ? <img src={choice.src} alt="" width={40} height={40} className={cn("size-10")} /> : null}
+      {choice.label}
+    </div>
+  );
+}
+
 function CharacterChoiceControl({
   character,
   selectedChoice,
   choiceOpen,
   onOpenChange,
   onSelect,
+  rememberLastUsed,
 }: {
   character: CharacterChoice;
   selectedChoice: (typeof CHARACTER_CHOICES)[number];
   choiceOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onSelect: (id: CharacterChoice) => void;
+  rememberLastUsed: boolean;
 }) {
   return (
     <Dialog open={choiceOpen} onOpenChange={onOpenChange}>
@@ -151,29 +338,48 @@ function CharacterChoiceControl({
       </DialogTrigger>
       <DialogContent className={cn("print:hidden")} showCloseButton={false}>
         <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
-        <div className={cn("flex flex-col gap-2")}>
-          {CHARACTER_CHOICES.map((option) => (
-            <Button
-              key={option.id}
-              type="button"
-              variant="ghost"
-              aria-pressed={character === option.id}
-              className={cn("h-auto w-full justify-start px-4 py-2 text-lg", character === option.id && "bg-muted")}
-              onClick={() => {
-                onSelect(option.id);
-                writeLastUsed(localStorage, option.id);
-                onOpenChange(false);
-              }}
-            >
-              {option.src !== null ? (
-                <img src={option.src} alt="" width={40} height={40} className={cn("size-10")} />
-              ) : null}
-              {option.label}
-            </Button>
-          ))}
-        </div>
+        <CharacterChoiceRows
+          selected={character}
+          onSelect={(id) => {
+            onSelect(id);
+            if (rememberLastUsed) {
+              writeLastUsed(localStorage, id);
+            }
+            onOpenChange(false);
+          }}
+        />
       </DialogContent>
     </Dialog>
+  );
+}
+
+function CharacterChoiceRows({
+  selected,
+  onSelect,
+}: {
+  selected: CharacterChoice;
+  onSelect: (id: CharacterChoice) => void;
+}) {
+  return (
+    <div className={cn("flex flex-col gap-2")}>
+      {CHARACTER_CHOICES.map((option) => (
+        <Button
+          key={option.id}
+          type="button"
+          variant="ghost"
+          aria-pressed={selected === option.id}
+          className={cn("h-auto w-full justify-start px-4 py-2 text-lg", selected === option.id && "bg-muted")}
+          onClick={() => {
+            onSelect(option.id);
+          }}
+        >
+          {option.src !== null ? (
+            <img src={option.src} alt="" width={40} height={40} className={cn("size-10")} />
+          ) : null}
+          {option.label}
+        </Button>
+      ))}
+    </div>
   );
 }
 
@@ -281,4 +487,30 @@ function collectWalls(maze: Maze, originX: number, originY: number, cellSize: nu
 
 function mazeCell(maze: Maze, row: number, col: number): MazeCell | undefined {
   return maze.cells[row]?.[col];
+}
+
+function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitStart {
+  const profiles = readChildProfiles(storage, ALLOWED_CHARACTER_IDS);
+  const only = profiles.length === 1 ? profiles[0] : undefined;
+  if (only !== undefined) {
+    return {
+      profiles,
+      activeId: only.id,
+      character: characterChoice(only.character),
+    };
+  }
+
+  return {
+    profiles,
+    activeId: null,
+    character: characterChoice(readLastUsed(storage, ALLOWED_CHARACTER_IDS)),
+  };
+}
+
+function characterChoice(value: string): CharacterChoice {
+  const match = CHARACTER_CHOICES.find((option) => option.id === value);
+  if (match === undefined) {
+    return "none";
+  }
+  return match.id;
 }
