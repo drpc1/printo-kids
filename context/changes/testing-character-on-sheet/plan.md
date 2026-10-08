@@ -192,7 +192,7 @@ Kształt `printo-kids:last-used` i zapis profili zostają. Nowa funkcja czyta id
 
 #### Manual
 
-- [x] 2.1 Sekcja „Druk i znaczniki kartki” opisuje adres pliku identyfikatora, „Start” przy braku pliku oraz to, że „Meta” i prostokąt 30 na 30 zostają w teście układu, i nie zawiera „TBD”
-- [x] 2.2 §4 wymienia te same pliki co skrypt `test` w `package.json`, łącznie z nowym testem postaci i z `child-profiles.test.ts`
-- [x] 2.3 §5 nie twierdzi, że testy pomijają plik wybranej postaci; zdania o prostokącie 30 na 30, napisie „Start” i o kontrakcie ostatniego zapisu zostają
-- [x] 2.4 W §3 klauzula o otwartym wyborze postaci na kartce jest zastąpiona adresem pliku identyfikatora, a komórka Status jest nietknięta
+- [x] 2.1 Sekcja „Druk i znaczniki kartki” opisuje adres pliku identyfikatora, „Start” przy braku pliku oraz to, że „Meta” i prostokąt 30 na 30 zostają w teście układu, i nie zawiera „TBD” — ea67c57
+- [x] 2.2 §4 wymienia te same pliki co skrypt `test` w `package.json`, łącznie z nowym testem postaci i z `child-profiles.test.ts` — ea67c57
+- [x] 2.3 §5 nie twierdzi, że testy pomijają plik wybranej postaci; zdania o prostokącie 30 na 30, napisie „Start” i o kontrakcie ostatniego zapisu zostają — ea67c57
+- [x] 2.4 W §3 klauzula o otwartym wyborze postaci na kartce jest zastąpiona adresem pliku identyfikatora, a komórka Status jest nietknięta — ea67c57

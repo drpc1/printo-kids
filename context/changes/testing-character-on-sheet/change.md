@@ -1,7 +1,7 @@
 ---
 change_id: testing-character-on-sheet
 title: Prove the sheet shows the chosen or restored character
-status: implementing
+status: implemented
 created: 2026-10-08
 updated: 2026-10-08
 archived_at: null
