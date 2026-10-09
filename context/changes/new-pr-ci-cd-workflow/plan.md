@@ -162,9 +162,13 @@ Danych do przeniesienia nie ma. Otwarty pull request dostaje pin Node przy nast�
 
 - [x] 1.4 Trzy opisy nie obiecują deployu z Actions ani drugiego pliku workflow — d6d3d42
 
+> Domyślny branch repozytorium to `main`. Workflow i trzy opisy słuchają `main`. Branch `master` na remote nie istnieje.
+
 ### Phase 2: Wymagane checki
 
 #### Manual
 
 - [x] 2.1 Na `master` wymagane checki to `CI / ci` i `CI / smoke` — f7c1546
 - [x] 2.2 Pull request z czerwonym jobem `ci` albo `smoke` nie wchodzi na `master` — f7c1546
+
+> GitHub zapisuje te checki jako konteksty `ci` i `smoke` (aplikacja GitHub Actions) na branchu `main`. Etykiety `CI / ci` i `CI / smoke` nie dostają statusu na pull requeście.
