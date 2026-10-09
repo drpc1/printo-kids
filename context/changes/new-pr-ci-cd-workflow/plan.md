@@ -154,17 +154,17 @@ Danych do przeniesienia nie ma. Otwarty pull request dostaje pin Node przy nast�
 
 #### Automated
 
-- [x] 1.1 W `ci.yml` są dwa `node-version-file: .nvmrc` i nie ma klucza `node-version`
-- [x] 1.2 Zdarzenia `push` i `pull_request` na `master` oraz joby `ci` i `smoke` zostają, razem z komendami `npm run lint`, `npm test`, `npx astro check`, `npm run build` i `npm run smoke`
-- [x] 1.3 `README.md`, `CLAUDE.md` i `AGENTS.md` opisują push, pull request, `npm test` w jobie `ci` i job `smoke`
+- [x] 1.1 W `ci.yml` są dwa `node-version-file: .nvmrc` i nie ma klucza `node-version` — d6d3d42
+- [x] 1.2 Zdarzenia `push` i `pull_request` na `master` oraz joby `ci` i `smoke` zostają, razem z komendami `npm run lint`, `npm test`, `npx astro check`, `npm run build` i `npm run smoke` — d6d3d42
+- [x] 1.3 `README.md`, `CLAUDE.md` i `AGENTS.md` opisują push, pull request, `npm test` w jobie `ci` i job `smoke` — d6d3d42
 
 #### Manual
 
-- [x] 1.4 Trzy opisy nie obiecują deployu z Actions ani drugiego pliku workflow
+- [x] 1.4 Trzy opisy nie obiecują deployu z Actions ani drugiego pliku workflow — d6d3d42
 
 ### Phase 2: Wymagane checki
 
 #### Manual
 
-- [ ] 2.1 Na `master` wymagane checki to `CI / ci` i `CI / smoke`
-- [ ] 2.2 Pull request z czerwonym jobem `ci` albo `smoke` nie wchodzi na `master`
+- [x] 2.1 Na `master` wymagane checki to `CI / ci` i `CI / smoke`
+- [x] 2.2 Pull request z czerwonym jobem `ci` albo `smoke` nie wchodzi na `master`
