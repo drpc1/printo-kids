@@ -72,6 +72,20 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Plik nie trafia na serwer, także na czas generowania.
 - Po złożeniu karty usługa nie przechowuje kopii pliku.
 
+### US-03: Lista postaci przy profilu — do ustalenia
+
+- **Given** rodzic tworzy profil dziecka albo ogląda zapisany profil
+- **When** wskazuje ulubioną postać
+- **Then** lista postaci w tych dwóch miejscach jest przerobiona; dokładny wygląd zostaje do ustalenia
+
+#### Acceptance Criteria
+
+- Dotyczy tworzenia profilu i podglądu profilu.
+- Pasek „Postać” na kartce zostaje bez zmian.
+- Dokładny sposób wyboru postaci nie jest ustalony w tej historyjce.
+- Do czasu zaplanowania tej historyjki formularz profilu zostaje przy czterech otwartych wierszach.
+- Własny obrazek rodzica zostaje przy US-02.
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -140,6 +154,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
 - MVP nie dostarcza biblioteki gotowych kart — FR-011 pozostaje możliwym rozszerzeniem poza MVP.
 - MVP nie przyjmuje własnego obrazka od rodzica — US-02 zostaje poza MVP. Katalog dostarczonych postaci idzie pierwszy.
+- Bieżące tworzenie profilu zostaje przy otwartej liście postaci — US-03 zapisuje późniejszą przeróbkę tej listy przy tworzeniu profilu i w podglądzie profilu. Wygląd nie jest ustalony.
 
 ## Open Questions
 
