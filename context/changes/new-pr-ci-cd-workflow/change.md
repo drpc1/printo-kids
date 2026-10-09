@@ -1,7 +1,7 @@
 ---
 change_id: new-pr-ci-cd-workflow
 title: Add a GitHub Actions workflow that validates pull requests
-status: implementing
+status: implemented
 created: 2026-10-08
 updated: 2026-10-09
 archived_at: null

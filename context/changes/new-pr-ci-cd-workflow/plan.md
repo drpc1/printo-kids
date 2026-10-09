@@ -166,5 +166,5 @@ Danych do przeniesienia nie ma. Otwarty pull request dostaje pin Node przy nast�
 
 #### Manual
 
-- [x] 2.1 Na `master` wymagane checki to `CI / ci` i `CI / smoke`
-- [x] 2.2 Pull request z czerwonym jobem `ci` albo `smoke` nie wchodzi na `master`
+- [x] 2.1 Na `master` wymagane checki to `CI / ci` i `CI / smoke` — f7c1546
+- [x] 2.2 Pull request z czerwonym jobem `ci` albo `smoke` nie wchodzi na `master` — f7c1546
