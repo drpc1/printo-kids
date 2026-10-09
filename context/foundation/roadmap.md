@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-04
+updated: 2026-10-08
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -46,8 +46,8 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-02  | print-a4-maze                | Rodzic może wydrukować tę kartę jako jedną stronę A4                                 | S-01          | FR-005                           | done        |
 | F-02  | remove-starter-scaffold      | (foundation) Aplikacja nie serwuje już logowania ani dashboardu ze startera; sprawdzian HTTP pilnuje strony produktu | S-02          | Access Control, Non-Goals (brak kont) | proposed |
 | S-03  | maze-character-choice        | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu | F-02          | US-01, FR-002                    | done |
-| S-04  | last-used-print-params       | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | S-03          | FR-006                           | proposed |
-| S-05  | child-profile-create-select  | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                   | proposed |
+| S-04  | last-used-print-params       | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | S-03          | FR-006                           | done |
+| S-05  | child-profile-create-select  | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                   | done        |
 | S-06  | child-profile-save-delete    | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu | S-05          | FR-009, FR-010                   | proposed |
 
 ## Streams
@@ -154,7 +154,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Unknowns:**
   - Zapamiętany poziom trudności wraca, gdy odparkujemy poziomy. Do tego czasu parametr to postać. — Owner: user. Block: no.
 - **Risk:** Czeka, aż jest parametr do zapamiętania (postać). Ryzyko: wspólne urządzenie pokaże parametry poprzedniego dziecka — PRD wymaga, by wartości zawsze dało się zmienić przed generowaniem.
-- **Status:** proposed
+- **Status:** done
 
 ### S-05: Utworzenie i wybór profilu dziecka
 
@@ -167,7 +167,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Unknowns:**
   - Domyślna trudność w profilu wraca, gdy odparkujemy poziomy. Ten plasterek dowozi profil i postać. — Owner: user. Block: no.
 - **Risk:** Na końcu, bo wydruk nie wymaga profilu, a limitem jest jedna osoba po godzinach. Czeka na postać. Ryzyko: selektor przy jednym profilu zaśmieci ekran — PRD każe go ukryć, gdy nie ma rzeczywistego wyboru. Brak znajomości technologii w projekcie: lokalny zapis profilu to drugi nieznany kawałek stosu po generatorze.
-- **Status:** proposed
+- **Status:** done
 
 ### S-06: Zapis i usunięcie profilu dziecka
 
@@ -208,6 +208,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Zapis i archiwum wygenerowanych kart** — Why parked: PRD §Non-Goals; cykl życia karty kończy się po wydruku.
 - **Biblioteka gotowych kart (FR-011)** — Why parked: PRD §Non-Goals; nice-to-have poza MVP.
 - **Własny obrazek rodzica (US-02)** — Why parked: świadomie poza MVP, zapisane 2026-10-04, żeby nie zginęło. Change ID do odblokowania: `parent-supplied-maze-image`. Plik zostaje w przeglądarce i nie jest wysyłany na serwer. Najpierw katalog dostarczonych postaci w `S-03`: samochodzik, rakieta, dinozaur.
+- **Lista postaci przy tworzeniu i podglądzie profilu (US-03)** — Why parked: wygląd do ustalenia później, zapisane 2026-10-08. Bieżący formularz S-05 zostaje przy czterech otwartych wierszach. Pasek „Postać” na kartce nie wchodzi. Change ID do odblokowania: `profile-character-list`. To nie jest US-02 ani S-06.
 
 ## Milestone History
 
@@ -217,3 +218,5 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **S-01: Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie.** — Archived 2026-10-01 → `context/archive/2026-09-28-first-printable-maze/`. Lesson: —.
 - **S-02: Rodzic może wydrukować tę kartę jako jedną stronę A4.** — Archived 2026-10-03 → `context/archive/2026-09-29-print-a4-maze/`. Lesson: —.
 - **S-03: Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu.** — Archived 2026-10-04 → `context/archive/2026-10-04-maze-character-choice/`. Lesson: —.
+- **S-04: Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne.** — Archived 2026-10-05 → `context/archive/2026-10-05-last-used-print-params/`. Lesson: —.
+- **S-05: Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór.** — Archived 2026-10-08 → `context/archive/2026-10-06-child-profile-create-select/`. Lesson: —.

@@ -17,6 +17,7 @@ Run from the repo root on Node 22.14.0 (@.nvmrc). Scripts: @package.json.
 - `npm run lint` / `npm run lint:fix` — ESLint with type-checked rules
 - `npm run format` — Prettier (Astro + Tailwind plugins, @.prettierrc.json)
 - `npm run build` / `npm run preview` — production SSR build and preview
+- `npm test` — Node's built-in test runner (`node --test`) on the files named in the `test` script (@package.json)
 - `npm run smoke` — auth-flow HTTP check against a running server (`BASE_URL`, default `http://localhost:4321`)
 
 Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --write` on `*.{json,css,md}`.
@@ -30,7 +31,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 
 ## Tests and CI
 
-There is no unit-test runner. The only automated check is `scripts/smoke.mjs` (starter auth flow, not a product suite). CI on `main` (@.github/workflows/ci.yml) runs `npm run lint`, `npx astro check`, and `npm run build` (needs `SUPABASE_URL` / `SUPABASE_KEY` repository secrets), plus a smoke job against local Supabase. Commit-message convention is unset (no git history yet).
+`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the starter auth-flow HTTP check, not that suite. Push and pull request to `main` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (needs `SUPABASE_URL` / `SUPABASE_KEY` repository secrets), and a separate job `smoke` runs the starter account-flow check on local Supabase. Both jobs fail the run when red. Commit-message convention is unset.
 
 ## UI
 

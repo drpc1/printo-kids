@@ -1,10 +1,10 @@
 ---
 change_id: child-profile-create-select
 title: Utworzenie i wybór lokalnego profilu dziecka
-status: implementing
+status: archived
 created: 2026-10-06
-updated: 2026-10-07
-archived_at: null
+updated: 2026-10-08
+archived_at: 2026-10-08T19:35:19Z
 ---
 
 ## Notes

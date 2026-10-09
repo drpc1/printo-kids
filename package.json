@@ -9,7 +9,7 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "node --experimental-strip-types --test src/lib/maze/generate.test.ts src/lib/sheet/layout.test.ts src/lib/sheet/print-contract.test.ts src/lib/last-used.test.ts src/lib/child-profiles.test.ts",
+    "test": "node --experimental-strip-types --test src/lib/maze/generate.test.ts src/lib/sheet/layout.test.ts src/lib/sheet/print-contract.test.ts src/lib/last-used.test.ts src/lib/child-profiles.test.ts src/lib/sheet/character.test.ts",
     "format": "prettier --write .",
     "smoke": "node scripts/smoke.mjs"
   },

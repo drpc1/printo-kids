@@ -52,4 +52,4 @@ Full server-side rendering (`output: "server"` in astro.config.mjs). All pages a
 
 ## CI
 
-GitHub Actions workflow (`.github/workflows/ci.yml`) runs lint + build on every push and PR to main. Requires `SUPABASE_URL` and `SUPABASE_KEY` repository secrets for the build step.
+GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and pull request to main. Job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build`, and requires `SUPABASE_URL` and `SUPABASE_KEY` repository secrets for the build step. A separate job `smoke` runs the starter account-flow check on local Supabase. Both jobs fail the run when red.

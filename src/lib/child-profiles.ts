@@ -61,6 +61,79 @@ export function writeChildProfiles(storage: ChildProfileStorage, profiles: reado
   }
 }
 
+export interface OpeningVisit {
+  activeId: string | null;
+  character: string;
+  ask: boolean;
+}
+
+export function withFavorite(
+  profiles: readonly ChildProfile[],
+  id: string,
+  character: string,
+  allowed: readonly string[],
+): ChildProfile[] | null {
+  if (!allowed.includes(character) || !profiles.some((profile) => profile.id === id)) {
+    return null;
+  }
+
+  return profiles.map((profile) => (profile.id === id ? { ...profile, character } : profile));
+}
+
+export function barAfterFavoriteSave(bar: string, previousFavorite: string, nextFavorite: string): string {
+  return bar === previousFavorite ? nextFavorite : bar;
+}
+
+export function openingVisit(profiles: readonly ChildProfile[], lastUsed: string): OpeningVisit {
+  const only = profiles.length === 1 ? profiles[0] : undefined;
+  if (only !== undefined) {
+    return { activeId: only.id, character: only.character, ask: false };
+  }
+
+  return {
+    activeId: null,
+    character: lastUsed,
+    ask: profiles.length >= 2,
+  };
+}
+
+export interface VisitAfterDelete extends OpeningVisit {
+  profiles: ChildProfile[];
+}
+
+export function visitAfterDelete(
+  profiles: readonly ChildProfile[],
+  deletedId: string,
+  activeId: string | null,
+  barCharacter: string,
+  lastUsed: string,
+): VisitAfterDelete {
+  if (!profiles.some((profile) => profile.id === deletedId)) {
+    return {
+      profiles: [...profiles],
+      activeId,
+      character: barCharacter,
+      ask: activeId === null && profiles.length >= 2,
+    };
+  }
+
+  const remaining = profiles.filter((profile) => profile.id !== deletedId);
+  if (activeId !== null && activeId !== deletedId) {
+    return {
+      profiles: remaining,
+      activeId,
+      character: barCharacter,
+      ask: false,
+    };
+  }
+
+  return { profiles: remaining, ...openingVisit(remaining, lastUsed) };
+}
+
+export function sortProfiles(profiles: readonly ChildProfile[]): ChildProfile[] {
+  return [...profiles].sort((left, right) => left.name.localeCompare(right.name, "pl"));
+}
+
 function parseStored(raw: string): unknown {
   return JSON.parse(raw) as unknown;
 }
