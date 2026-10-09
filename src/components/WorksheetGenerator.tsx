@@ -9,9 +9,11 @@ import {
   profileNameError,
   readChildProfiles,
   sortProfiles,
+  visitAfterDelete,
   withFavorite,
   writeChildProfiles,
   type ChildProfile,
+  type VisitAfterDelete,
 } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
@@ -36,7 +38,7 @@ const NAME_ERROR_TEXT = {
 const SAVE_ERROR_TEXT = "Nie udało się zapisać profilu";
 
 type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
-type ProfilePanel = "menu" | "form";
+type ProfilePanel = "menu" | "form" | "delete" | "switch";
 
 interface VisitStart {
   profiles: ChildProfile[];
@@ -58,9 +60,10 @@ export default function WorksheetGenerator() {
   const [profiles, setProfiles] = useState(visit.profiles);
   const [activeId, setActiveId] = useState(visit.activeId);
   const [character, setCharacter] = useState(visit.character);
+  const [ask, setAsk] = useState(visit.ask);
   const [maze, setMaze] = useState<Maze | null>(null);
   const [choiceOpen, setChoiceOpen] = useState(false);
-  const waitingForChild = visit.ask && activeId === null;
+  const waitingForChild = profiles.length >= 2 && activeId === null;
   const selectedChoice = characterRow(character);
 
   useEffect(() => {
@@ -104,6 +107,13 @@ export default function WorksheetGenerator() {
     setCharacter(characterChoice(nextBar));
   }
 
+  function handleDeleted(next: VisitAfterDelete): void {
+    setProfiles(next.profiles);
+    setActiveId(next.activeId);
+    setCharacter(characterChoice(next.character));
+    setAsk(next.ask);
+  }
+
   const hasMaze = maze !== null;
 
   return (
@@ -112,10 +122,11 @@ export default function WorksheetGenerator() {
         profiles={profiles}
         activeId={activeId}
         barCharacter={character}
-        ask={visit.ask}
+        ask={ask}
         onCreated={handleProfileCreated}
         onChoose={handleProfileChosen}
         onFavoriteSaved={handleFavoriteSaved}
+        onDeleted={handleDeleted}
       />
       {hasMaze ? (
         <div className={cn("flex w-full items-center justify-between gap-4 print:hidden")}>
@@ -187,6 +198,7 @@ function ProfileCorner({
   onCreated,
   onChoose,
   onFavoriteSaved,
+  onDeleted,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
@@ -195,6 +207,7 @@ function ProfileCorner({
   onCreated: (profile: ChildProfile) => void;
   onChoose: (profile: ChildProfile) => void;
   onFavoriteSaved: (profiles: ChildProfile[], barCharacter: string) => void;
+  onDeleted: (next: VisitAfterDelete) => void;
 }) {
   const activeProfile = profiles.find((profile) => profile.id === activeId) ?? null;
   const cornerLabel = activeProfile === null ? "Profil" : activeProfile.name;
@@ -202,6 +215,7 @@ function ProfileCorner({
   const [panel, setPanel] = useState<ProfilePanel>("menu");
   const createLock = useRef(false);
   const favoriteLock = useRef(false);
+  const deleteLock = useRef(false);
   const [draftName, setDraftName] = useState("");
   const [draftCharacter, setDraftCharacter] = useState<CharacterChoice>(barCharacter);
   const [formError, setFormError] = useState<string | null>(null);
@@ -209,6 +223,10 @@ function ProfileCorner({
     activeProfile === null ? barCharacter : characterChoice(activeProfile.character),
   );
   const [favoriteError, setFavoriteError] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<ChildProfile | null>(null);
+  const [pendingSwitch, setPendingSwitch] = useState<ChildProfile | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [switchError, setSwitchError] = useState<string | null>(null);
 
   function abandonFavoriteDraft(): void {
     favoriteLock.current = false;
@@ -216,8 +234,17 @@ function ProfileCorner({
     setFavoriteError(null);
   }
 
+  function clearPendingViews(): void {
+    deleteLock.current = false;
+    setPendingDelete(null);
+    setDeleteError(null);
+    setPendingSwitch(null);
+    setSwitchError(null);
+  }
+
   function openCreateForm(): void {
     createLock.current = false;
+    clearPendingViews();
     setDraftName("");
     setDraftCharacter(barCharacter);
     setFormError(null);
@@ -225,7 +252,18 @@ function ProfileCorner({
     setPanel("form");
   }
 
+  function cancelDelete(): void {
+    deleteLock.current = false;
+    setPendingDelete(null);
+    setDeleteError(null);
+    setPanel("menu");
+  }
+
   function handleProfileOpenChange(open: boolean): void {
+    if (!open && panel === "delete") {
+      cancelDelete();
+      return;
+    }
     if (open) {
       if (profiles.length === 0) {
         openCreateForm();
@@ -233,9 +271,12 @@ function ProfileCorner({
         setPanel("menu");
         setDraftName("");
         setFormError(null);
+        clearPendingViews();
         abandonFavoriteDraft();
       }
     } else {
+      clearPendingViews();
+      setPanel("menu");
       abandonFavoriteDraft();
     }
     setProfileOpen(open);
@@ -245,6 +286,103 @@ function ProfileCorner({
     abandonFavoriteDraft();
     onChoose(profile);
     setProfileOpen(false);
+  }
+
+  function handleNameClick(profile: ChildProfile): void {
+    if (profile.id === activeId) {
+      handleChoose(profile);
+      return;
+    }
+    if (activeProfile !== null && favoriteDraft !== activeProfile.character) {
+      favoriteLock.current = false;
+      setPendingSwitch(profile);
+      setSwitchError(null);
+      setPanel("switch");
+      return;
+    }
+    handleChoose(profile);
+  }
+
+  function openDelete(profile: ChildProfile): void {
+    deleteLock.current = false;
+    setPendingDelete(profile);
+    setDeleteError(null);
+    setPanel("delete");
+  }
+
+  function openActiveDelete(): void {
+    if (activeProfile === null) {
+      return;
+    }
+    openDelete(activeProfile);
+  }
+
+  function confirmDelete(): void {
+    if (deleteLock.current || pendingDelete === null) {
+      return;
+    }
+    const next = visitAfterDelete(
+      profiles,
+      pendingDelete.id,
+      activeId,
+      barCharacter,
+      readLastUsed(localStorage, ALLOWED_CHARACTER_IDS),
+    );
+    deleteLock.current = true;
+    const saved = writeChildProfiles(localStorage, next.profiles);
+    if (!saved) {
+      deleteLock.current = false;
+      setDeleteError(SAVE_ERROR_TEXT);
+      return;
+    }
+    setDeleteError(null);
+    setPendingDelete(null);
+    if (next.activeId !== activeId) {
+      const nextActive = next.profiles.find((profile) => profile.id === next.activeId) ?? null;
+      favoriteLock.current = false;
+      setFavoriteDraft(nextActive === null ? characterChoice(next.character) : characterChoice(nextActive.character));
+      setFavoriteError(null);
+    }
+    onDeleted(next);
+    setPanel("menu");
+    if (next.profiles.length === 0) {
+      setProfileOpen(false);
+    }
+  }
+
+  function handleSwitchWithoutSave(): void {
+    if (pendingSwitch === null) {
+      return;
+    }
+    const target = pendingSwitch;
+    setPendingSwitch(null);
+    setSwitchError(null);
+    setPanel("menu");
+    handleChoose(target);
+  }
+
+  function handleSaveAndSwitch(): void {
+    if (favoriteLock.current || activeProfile === null || pendingSwitch === null) {
+      return;
+    }
+    const nextProfiles = withFavorite(profiles, activeProfile.id, favoriteDraft, ALLOWED_CHARACTER_IDS);
+    if (nextProfiles === null) {
+      return;
+    }
+    const target = pendingSwitch;
+    favoriteLock.current = true;
+    const saved = writeChildProfiles(localStorage, nextProfiles);
+    if (!saved) {
+      favoriteLock.current = false;
+      setSwitchError(SAVE_ERROR_TEXT);
+      return;
+    }
+    setSwitchError(null);
+    setPendingSwitch(null);
+    setPanel("menu");
+    onFavoriteSaved(nextProfiles, target.character);
+    handleChoose(target);
+    favoriteLock.current = true;
   }
 
   function handleFavoriteSelect(id: CharacterChoice): void {
@@ -332,28 +470,102 @@ function ProfileCorner({
           <span className={cn("min-w-0 truncate")}>{cornerLabel}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent showCloseButton={false}>
-        {panel === "menu" ? (
+      <DialogContent
+        className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto")}
+        showCloseButton={false}
+        onEscapeKeyDown={(event) => {
+          if (panel !== "delete") {
+            return;
+          }
+          event.preventDefault();
+          cancelDelete();
+        }}
+        onInteractOutside={(event) => {
+          if (panel !== "delete") {
+            return;
+          }
+          event.preventDefault();
+          cancelDelete();
+        }}
+      >
+        {panel === "delete" && pendingDelete !== null ? (
+          <div className={cn("flex flex-col gap-4")}>
+            <DialogTitle className={cn("break-words")}>{`Usunąć profil ${pendingDelete.name}?`}</DialogTitle>
+            {deleteError !== null ? (
+              <p id="child-profile-delete-error" role="alert" className={cn("text-destructive text-sm")}>
+                {deleteError}
+              </p>
+            ) : null}
+            <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end")}>
+              <Button type="button" variant="outline" onClick={cancelDelete}>
+                Anuluj
+              </Button>
+              <Button
+                type="button"
+                aria-describedby={deleteError !== null ? "child-profile-delete-error" : undefined}
+                onClick={confirmDelete}
+              >
+                Usuń
+              </Button>
+            </div>
+          </div>
+        ) : panel === "switch" && pendingSwitch !== null ? (
+          <div className={cn("flex flex-col gap-2")}>
+            <DialogTitle className={cn("sr-only")}>Profil</DialogTitle>
+            {switchError !== null ? (
+              <p id="child-profile-switch-error" role="alert" className={cn("text-destructive text-sm")}>
+                {switchError}
+              </p>
+            ) : null}
+            <Button
+              type="button"
+              className={cn("h-auto w-full justify-start px-4 py-2 text-lg break-words whitespace-normal")}
+              aria-describedby={switchError !== null ? "child-profile-switch-error" : undefined}
+              onClick={handleSaveAndSwitch}
+            >
+              Zapisz i przełącz
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className={cn("h-auto w-full justify-start px-4 py-2 text-lg break-words whitespace-normal")}
+              onClick={handleSwitchWithoutSave}
+            >
+              Przełącz bez zapisu
+            </Button>
+          </div>
+        ) : panel !== "form" ? (
           <div className={cn("flex flex-col gap-2")}>
             {profiles.length >= 2 ? (
               <>
                 <DialogTitle className={cn("sr-only")}>Profil</DialogTitle>
                 {sortProfiles(profiles).map((profile) => (
-                  <Button
-                    key={profile.id}
-                    type="button"
-                    variant="ghost"
-                    aria-pressed={profile.id === activeId}
-                    className={cn(
-                      "h-auto w-full min-w-0 justify-start px-4 py-2 text-left text-lg break-words whitespace-normal",
-                      profile.id === activeId && "bg-muted",
-                    )}
-                    onClick={() => {
-                      handleChoose(profile);
-                    }}
-                  >
-                    <span className={cn("min-w-0 break-words")}>{profile.name}</span>
-                  </Button>
+                  <div key={profile.id} className={cn("flex w-full items-start gap-2")}>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      aria-pressed={profile.id === activeId}
+                      className={cn(
+                        "h-auto min-w-0 flex-1 justify-start px-4 py-2 text-left text-lg break-words whitespace-normal",
+                        profile.id === activeId && "bg-muted",
+                      )}
+                      onClick={() => {
+                        handleNameClick(profile);
+                      }}
+                    >
+                      <span className={cn("min-w-0 break-words")}>{profile.name}</span>
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className={cn("h-auto shrink-0 px-4 py-2 text-lg")}
+                      onClick={() => {
+                        openDelete(profile);
+                      }}
+                    >
+                      Usuń
+                    </Button>
+                  </div>
                 ))}
               </>
             ) : (
@@ -378,6 +590,16 @@ function ProfileCorner({
                   Zapisz
                 </Button>
               </>
+            ) : null}
+            {profiles.length === 1 && activeProfile !== null ? (
+              <Button
+                type="button"
+                variant="ghost"
+                className={cn("h-auto w-full justify-start px-4 py-2 text-lg")}
+                onClick={openActiveDelete}
+              >
+                Usuń
+              </Button>
             ) : null}
             <Button
               type="button"
