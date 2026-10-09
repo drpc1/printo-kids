@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-08
+updated: 2026-10-09
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -48,7 +48,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-03  | maze-character-choice        | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu | F-02          | US-01, FR-002                    | done |
 | S-04  | last-used-print-params       | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | S-03          | FR-006                           | done |
 | S-05  | child-profile-create-select  | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                   | done        |
-| S-06  | child-profile-save-delete    | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu | S-05          | FR-009, FR-010                   | proposed |
+| S-06  | child-profile-save-delete    | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu | S-05          | FR-009, FR-010                   | done |
 
 ## Streams
 
@@ -179,25 +179,25 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Osobno od tworzenia, żeby jednorazowa zmiana karty nie mieszała się z trwałą zmianą profilu. Ryzyko: usunięcie bez potwierdzenia jest nieodwracalne na urządzeniu.
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
 | Roadmap ID | Change ID                   | Suggested issue title                                              | Ready for `/10x-plan` | Notes |
 | ---------- | --------------------------- | ------------------------------------------------------------------ | --------------------- | ----- |
-| F-01       | worksheet-page-shell        | Wejście na /: po co jest strona i przycisk Generuj                 | yes                   | Run `/10x-plan worksheet-page-shell` |
-| S-01       | first-printable-maze        | Rodzic generuje rozwiązywalny labirynt i widzi kartę A4 na stronie | no                    | Czeka na F-01 |
-| S-02       | print-a4-maze               | Druk karty jako jednej strony A4                                   | no                    | Czeka na S-01; gwiazda przewodnia kamienia |
-| F-02       | remove-starter-scaffold     | Usunięcie logowania, dashboardu i sprawdzianu auth ze startera     | yes                   | Następne, przed S-03. Run `/10x-plan remove-starter-scaffold` |
-| S-03       | maze-character-choice       | Wybór postaci z zestawu przy starcie labiryntu                     | no                    | Czeka na F-02 |
-| S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Czeka na S-03; poziom dołączy po odparkowaniu trudności |
-| S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                      | no                    | Czeka na S-03; domyślna trudność dołączy po odparkowaniu |
-| S-06       | child-profile-save-delete   | Zapis zmian profilu i usunięcie po potwierdzeniu                   | no                    | Czeka na S-05 |
+| F-01       | worksheet-page-shell        | Wejście na /: po co jest strona i przycisk Generuj                 | no                    | Done. Archived 2026-09-29 |
+| S-01       | first-printable-maze        | Rodzic generuje rozwiązywalny labirynt i widzi kartę A4 na stronie | no                    | Done. Archived 2026-10-01 |
+| S-02       | print-a4-maze               | Druk karty jako jednej strony A4                                   | no                    | Done. Archived 2026-10-03; gwiazda przewodnia kamienia |
+| F-02       | remove-starter-scaffold     | Usunięcie logowania, dashboardu i sprawdzianu auth ze startera     | yes                   | Folder otwarty, bez planu. S-03 nie czeka już na ten plasterek. Run `/10x-plan remove-starter-scaffold` |
+| S-03       | maze-character-choice       | Wybór postaci z zestawu przy starcie labiryntu                     | no                    | Done. Archived 2026-10-04 |
+| S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Done. Archived 2026-10-05. Poziom dołączy po odparkowaniu trudności |
+| S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                      | no                    | Done. Archived 2026-10-08. Domyślna trudność dołączy po odparkowaniu |
+| S-06       | child-profile-save-delete   | Zapis zmian profilu i usunięcie po potwierdzeniu                   | no                    | Done. Archived 2026-10-09 |
 
 ## Open Roadmap Questions
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
-2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (`S-03` nie czeka na prawa — decyzja z wywiadu; źródło zestawu wciąż do wskazania przy planowaniu `S-03`).
+2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (`S-03` jest done; zestaw to samochodzik, rakieta i dinozaur. Prawa przed publikacją zostają otwarte w PRD).
 
 ## Parked
 
@@ -220,3 +220,4 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **S-03: Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu.** — Archived 2026-10-04 → `context/archive/2026-10-04-maze-character-choice/`. Lesson: —.
 - **S-04: Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne.** — Archived 2026-10-05 → `context/archive/2026-10-05-last-used-print-params/`. Lesson: —.
 - **S-05: Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór.** — Archived 2026-10-08 → `context/archive/2026-10-06-child-profile-create-select/`. Lesson: —.
+- **S-06: Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu.** — Archived 2026-10-09 → `context/archive/2026-10-08-child-profile-save-delete/`. Lesson: —.
