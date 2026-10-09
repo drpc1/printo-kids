@@ -30,7 +30,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 
 ## Tests and CI
 
-There is no unit-test runner. The only automated check is `scripts/smoke.mjs` (starter auth flow, not a product suite). CI on `master` (@.github/workflows/ci.yml) runs `npm run lint`, `npx astro check`, and `npm run build` (needs `SUPABASE_URL` / `SUPABASE_KEY` repository secrets), plus a smoke job against local Supabase. Commit-message convention is unset (no git history yet).
+There is no unit-test runner. The only automated check is `scripts/smoke.mjs` (starter auth flow, not a product suite). CI on `main` (@.github/workflows/ci.yml) runs `npm run lint`, `npx astro check`, and `npm run build` (needs `SUPABASE_URL` / `SUPABASE_KEY` repository secrets), plus a smoke job against local Supabase. Commit-message convention is unset (no git history yet).
 
 ## UI
 
