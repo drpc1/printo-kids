@@ -221,21 +221,21 @@ Istniejące wpisy `{id, name, character}` zostają. Brak klucza `printo-kids:chi
 
 #### Manual
 
-- [x] 2.3 Zosia z rakietą, pasek rakieta: dinozaur w rogu i „Zapisz” zostawiają dinozaura w profilu i na pasku, a odświeżenie znowu daje dinozaura
-- [x] 2.4 Pasek najpierw samochodzik, potem „Zapisz” dinozaura: pasek zostaje samochodzik, odświeżenie daje dinozaura, a `printo-kids:last-used` się nie zmienia
-- [x] 2.5 „Zapisz” jest nieaktywny, gdy w rogu wskazana jest już rakieta; zamknięcie okna po wskazaniu dinozaura bez „Zapisz” zostawia w profilu rakietę i nie rusza paska
-- [x] 2.6 Druk jednej strony A4 nie pokazuje rogu ani „Zapisz”
+- [x] 2.3 Zosia z rakietą, pasek rakieta: dinozaur w rogu i „Zapisz” zostawiają dinozaura w profilu i na pasku, a odświeżenie znowu daje dinozaura — 08c18ce
+- [x] 2.4 Pasek najpierw samochodzik, potem „Zapisz” dinozaura: pasek zostaje samochodzik, odświeżenie daje dinozaura, a `printo-kids:last-used` się nie zmienia — 08c18ce
+- [x] 2.5 „Zapisz” jest nieaktywny, gdy w rogu wskazana jest już rakieta; zamknięcie okna po wskazaniu dinozaura bez „Zapisz” zostawia w profilu rakietę i nie rusza paska — 08c18ce
+- [x] 2.6 Druk jednej strony A4 nie pokazuje rogu ani „Zapisz” — 08c18ce
 
 ### Phase 3: Usunięcie i przełączenie
 
 #### Automated
 
-- [x] 3.1 `npm test` przechodzi po podpięciu usunięcia i ostrzeżenia
-- [x] 3.2 `npm run lint` przechodzi po podpięciu usunięcia i ostrzeżenia
+- [x] 3.1 `npm test` przechodzi po podpięciu usunięcia i ostrzeżenia — 08c18ce
+- [x] 3.2 `npm run lint` przechodzi po podpięciu usunięcia i ostrzeżenia — 08c18ce
 
 #### Manual
 
-- [x] 3.3 Przy aktywnej Zosi usunięcie Basi po potwierdzeniu zostawia Zosię i pasek, a Anuluj przy innym imieniu nic nie kasuje
-- [x] 3.4 Usunięcie aktywnej Zosi: sam Antek staje się aktywny i Generuj działa; przy dwójce zostającej róg to „Profil”, pasek to postać bez profilu i Generuj czeka; po ostatnim profilu róg to „Profil”, pasek to postać bez profilu i Generuj działa
-- [x] 3.5 Dinozaur w rogu bez „Zapisz”, potem klik Antka: widać „Zapisz i przełącz” oraz „Przełącz bez zapisu”; pierwsze zapisuje dinozaura u Zosi i włącza Antka, drugie zostawia Zosi rakietę i włącza Antka; bez zmiany w rogu klik Antka przełącza od razu
-- [x] 3.6 Druk jednej strony A4 nie pokazuje „Usuń” ani ostrzeżenia o przełączeniu
+- [x] 3.3 Przy aktywnej Zosi usunięcie Basi po potwierdzeniu zostawia Zosię i pasek, a Anuluj przy innym imieniu nic nie kasuje — 08c18ce
+- [x] 3.4 Usunięcie aktywnej Zosi: sam Antek staje się aktywny i Generuj działa; przy dwójce zostającej róg to „Profil”, pasek to postać bez profilu i Generuj czeka; po ostatnim profilu róg to „Profil”, pasek to postać bez profilu i Generuj działa — 08c18ce
+- [x] 3.5 Dinozaur w rogu bez „Zapisz”, potem klik Antka: widać „Zapisz i przełącz” oraz „Przełącz bez zapisu”; pierwsze zapisuje dinozaura u Zosi i włącza Antka, drugie zostawia Zosi rakietę i włącza Antka; bez zmiany w rogu klik Antka przełącza od razu — 08c18ce
+- [x] 3.6 Druk jednej strony A4 nie pokazuje „Usuń” ani ostrzeżenia o przełączeniu — 08c18ce

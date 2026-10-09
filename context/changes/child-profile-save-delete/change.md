@@ -1,9 +1,9 @@
 ---
 change_id: child-profile-save-delete
 title: Zapis ulubionej postaci i usunięcie profilu dziecka
-status: implementing
+status: implemented
 created: 2026-10-08
-updated: 2026-10-08
+updated: 2026-10-09
 archived_at: null
 ---
 
