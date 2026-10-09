@@ -31,7 +31,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 
 ## Tests and CI
 
-`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the starter auth-flow HTTP check, not that suite. Push and pull request to `master` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (needs `SUPABASE_URL` / `SUPABASE_KEY` repository secrets), and a separate job `smoke` runs the starter account-flow check on local Supabase. Both jobs fail the run when red. Commit-message convention is unset.
+`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the starter auth-flow HTTP check, not that suite. Push and pull request to `main` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (needs `SUPABASE_URL` / `SUPABASE_KEY` repository secrets), and a separate job `smoke` runs the starter account-flow check on local Supabase. Both jobs fail the run when red. Commit-message convention is unset.
 
 ## UI
 
