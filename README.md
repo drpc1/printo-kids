@@ -182,10 +182,10 @@ It needs a reachable Supabase instance (local or cloud) with email confirmation 
 
 ## CI
 
-GitHub Actions runs two jobs on every push and PR to `master`:
+GitHub Actions workflow (`.github/workflows/ci.yml`) runs two jobs on every push and pull request to `master`. Both jobs fail the run when red.
 
-- **ci** — lint, `astro check` and build. Configure `SUPABASE_URL` and `SUPABASE_KEY` as repository secrets for the build step.
-- **smoke** — starts a local Supabase via the Supabase CLI, builds, serves the production preview on the Cloudflare runtime and runs `npm run smoke` against it. No secrets required.
+- **ci** — `npm run lint`, `npm test`, `npx astro check`, and `npm run build`. Configure `SUPABASE_URL` and `SUPABASE_KEY` as repository secrets for the build step.
+- **smoke** — a separate job that starts a local Supabase via the Supabase CLI, builds, serves the production preview on the Cloudflare runtime and runs `npm run smoke` (the starter account-flow check) against it. No secrets required.
 
 ## License
 
