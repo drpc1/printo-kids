@@ -50,15 +50,15 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic może wybrać postać i poziom trudności labiryntu
 - **When** wybierze te parametry i uruchomi generowanie
-- **Then** otrzymuje gotowy do wydruku labirynt A4 o wybranym poziomie trudności i z wybraną postacią
+- **Then** otrzymuje gotowy do wydruku labirynt A4 o wybranym poziomie trudności; wybrana postać stoi przy starcie, poza poziomem nastolatka
 
 #### Acceptance Criteria
 
 - Labirynt zajmuje większą część strony A4.
 - Labirynt nie przekracza wąskich marginesów strony.
 - Istnieje dokładnie jedna prawidłowa ścieżka prowadząca od startu do mety.
-- Przy starcie znajduje się wybrana postać.
-- Przy końcu labiryntu znajduje się napis „Meta”.
+- Na poziomach od 3 lat do 7–8 lat przy starcie znajduje się wybrana postać. Poziom nastolatka postaci nie pokazuje.
+- Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, a napis „Meta” na środku dolnej. Poziom nastolatka ma start i metę w narożnikach.
 
 ### US-02: Rodzic wstawia własny obrazek — poza MVP
 
@@ -91,7 +91,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 ### Generator i druk
 
 - FR-001: Rodzic może wybrać jeden z dostarczonych poziomów trudności. Priority: must-have
-  > Socrates: Counter-argument considered: nazwy poziomów mogą wprowadzać w błąd bez mierzalnych reguł. Resolution: kept; reguły poziomów muszą zostać zdefiniowane przed walidacją wymagania.
+  > Socrates: Counter-argument considered: nazwy poziomów mogą wprowadzać w błąd bez mierzalnych reguł. Resolution: kept; poziomy są nazwane wiekiem, a reguły szerokości alejki i długości drogi są w Business Logic.
 - FR-002: Rodzic może wybrać postać z dostarczonego zestawu. Priority: must-have
   > Socrates: Counter-argument considered: przygotowanie i prawa do postaci mogą opóźnić podstawowy przepływ. Resolution: kept; źródło postaci i prawa pozostają otwartym pytaniem.
 - FR-003: Rodzic może wygenerować strukturalnie poprawny labirynt zgodny z wybranymi parametrami. Priority: must-have
@@ -130,13 +130,24 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 ## Business Logic
 
-Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom trudności zwiększa przez liczbę rozgałęzień, ślepych uliczek i zakrętów, zachowując stały, czytelny rozmiar przejść na A4.
+Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom wyznaczają szerokość alejki i długość drogi do mety.
 
-Rodzic wybiera jeden z trzech poziomów — łatwy, średni albo trudny — oraz postać z dostarczonego zestawu.
+Rodzic wybiera jeden z sześciu poziomów nazwanych wiekiem oraz postać z dostarczonego zestawu. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Dwa poziomy mogą dzielić szerokość alejki i różnić się długością drogi.
 
-Wynikiem jest karta A4 z wybraną postacią przy starcie i napisem „Meta” przy końcu. Labirynt zajmuje większą część strony, zachowuje margines co najmniej 10 mm i spełnia reguły wybranego poziomu; dokładne progi złożoności poziomów pozostają do ustalenia.
+| Poziom | Alejka | Siatka | Droga do mety | Ślepe uliczki |
+| --- | --- | --- | --- | --- |
+| 3 lata | około 21 mm | 9×11 | do około 25 komórek (około 50 cm) | płytkie |
+| 4 lata | około 21 mm | 9×11 | od około 40 komórek (około 85 cm) | — |
+| 5 lat | około 15 mm | 13×16 | do około 40 komórek (około 60 cm) | płytkie |
+| 6 lat | około 15 mm | 13×16 | od około 70 komórek (około 1 m) | — |
+| 7–8 lat | około 11 mm | 17×21 | około 80–120 komórek | — |
+| nastolatek | około 7 mm | 27×33 | około 150–300 komórek | głębokie |
 
-# TODO: mierzalne progi złożoności poziomów trudności — see Open Questions
+Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, napis „Meta” na środku dolnej, a przy starcie stoi wybrana postać. Poziom nastolatka ma start i metę w narożnikach i nie pokazuje postaci. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
+
+Krótki poziom przy danej szerokości ma płytkie ślepe uliczki, żeby krótka droga nie była zagadką ukrytą wśród pułapek. Liczba komórek, która odróżnia płytką uliczkę od głębokiej, zostaje do planu.
+
+Wynikiem jest karta A4. Labirynt zajmuje większą część strony, zachowuje margines co najmniej 10 mm i spełnia reguły wybranego poziomu.
 
 ## Access Control
 
@@ -155,9 +166,10 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 - MVP nie dostarcza biblioteki gotowych kart — FR-011 pozostaje możliwym rozszerzeniem poza MVP.
 - MVP nie przyjmuje własnego obrazka od rodzica — US-02 zostaje poza MVP. Katalog dostarczonych postaci idzie pierwszy.
 - Bieżące tworzenie profilu zostaje przy otwartej liście postaci — US-03 zapisuje późniejszą przeróbkę tej listy przy tworzeniu profilu i w podglądzie profilu. Wygląd nie jest ustalony.
+- MVP nie ma poziomu dla osoby dorosłej. Najstarszy poziom to nastolatek.
 
 ## Open Questions
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — TBD by user. Block: no (pain and missing capability are captured; the second vision paragraph is incomplete until this lands).
-2. **Jakie mierzalne właściwości określają każdy poziom trudności?** — Owner: user. Block: yes for validating that the generated maze matches the selected level.
+2. **Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej?** — Owner: user. Block: yes for validating dead-end depth. Szerokość alejki i zakres długości drogi są już w Business Logic.
 3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Własny plik rodzica jest US-02 i zostaje poza MVP.
