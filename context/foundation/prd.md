@@ -188,13 +188,37 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 ## Non-Goals
 
-- MVP nie generuje sudoku, kart kodowania ani innych typów zadań — skupia się wyłącznie na labiryntach.
+- MVP nie generuje innych typów kart — skupia się wyłącznie na labiryntach. Lista na później jest w sekcji „Po MVP”.
 - MVP nie używa LLM do generowania ani oceniania labiryntów — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
 - MVP nie dostarcza biblioteki gotowych kart — FR-011 pozostaje możliwym rozszerzeniem poza MVP.
 - MVP nie przyjmuje własnego obrazka od rodzica — US-02 zostaje poza MVP. Katalog dostarczonych postaci idzie pierwszy.
 - MVP nie ma poziomu dla osoby dorosłej. Najstarszy poziom to nastolatek.
+
+## Po MVP
+
+Zapisane 2026-10-10, żeby nie zginęło. Poza bieżącym kamieniem. Żaden z tych typów nie wchodzi do MVP.
+
+Wspólna umowa z labiryntem: generator algorytmiczny, jedna sprawdzalna odpowiedź, trudność nazwana wiekiem, jedna strona A4, czarny druk. Bez modelu językowego.
+
+Zanim powstanie drugi generator, strona przestaje być stroną samego labiryntu. Rodzic wybiera rodzaj karty. Druk, margines, ostatnie parametry i profil dziecka zostają. Przebudowa ma pomieścić drugi rodzaj, nie katalog wszystkich typów z tej listy.
+
+Numer ma tylko symetria. Reszta nie ma kolejności.
+
+1. **Symetria.** Dziecko uzupełnia drugą połówkę wzoru na kratce. Trudność: rozmiar kratki, gęstość, oś. Wiek około 4–7 lat.
+
+Bez numeru:
+
+- **Sekwencje.** Dziecko wskazuje, co będzie dalej. Kartka odpada, gdy do pustego miejsca pasują dwie reguły.
+- **Połącz kropki.** Sylwetka wybranej postaci. Czeka na obrys każdej postaci.
+- **Który nie pasuje.** Jeden obrazek łamie jawną regułę. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
+- **Nonogram postaci.** Po rozwiązaniu widać uproszczoną postać. Czeka na małą bitmapę postaci.
+- **Karty kodowania.** Kratka, postać, meta i strzałki. Jedna najkrótsza droga.
+- **Sudoku obrazkowe.** Układ 4×4 z symbolami. Układ 9×9 zostaje przy nastolatku.
+- **Porównywanie kwot w złotych.** Dwie kupki monet albo jedna kupka i cena. Liczy się wartość monet, nie liczba sztuk. „Ułóż dokładnie tę kwotę” czeka na regułę, która zostawia jeden układ.
+
+Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem waluty.
 
 ## Open Questions
 
