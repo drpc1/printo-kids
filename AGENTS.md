@@ -39,3 +39,11 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 - Pages and components do not add hex colors, `--pk-*`, `bg-cosmic`, or Tailwind palette color classes. Arbitrary layout values such as `print:h-[297mm]` and `ring-[3px]` are not color literals and are not banned by this sentence.
 - `@page` stays in `src/components/WorksheetHome.astro`. Inter and Lora stay names in the theme and are not loaded from a view.
 - Shared controls live in `src/components/ui`. Check that catalog before writing a new one; add a missing one with `npx shadcn@latest add`.
+
+## Mutation testing
+
+Repo uses Stryker for selective mutation testing on risk-critical modules.
+Run it only for code covered by the current change or a risk from test-plan.md,
+prefer narrowed scope with --mutate "path/to/file.ts:start-end", and do not chase
+100% mutation score. Survived mutants should be reviewed one by one: add an
+assertion only when the mutant represents a user-visible or business-relevant bug.
