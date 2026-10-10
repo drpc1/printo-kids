@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-09
+updated: 2026-10-10
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -22,10 +22,10 @@ milestone_status: open
 
 **M-1: Pierwsza drukowalna karta A4** — Status: open
 
-- **Intent:** Pokazać, że rodzic może wygenerować jakikolwiek rozwiązywalny labirynt, zobaczyć kartę A4 na stronie i wydrukować ją jako jedną stronę. Potem dodać postać, zapamiętane parametry i opcjonalne profile dzieci. Poziomy trudności są poza aktywną sekwencją — wrócimy do nich osobną rozmową.
+- **Intent:** Pokazać, że rodzic może wygenerować jakikolwiek rozwiązywalny labirynt, zobaczyć kartę A4 na stronie i wydrukować ją jako jedną stronę. Potem dodać postać, zapamiętane parametry, opcjonalne profile dzieci i wybór poziomu trudności zgodny z wiekiem.
 - **Source materials:** `context/foundation/prd.md` (v1)
 - **Done when:** every F-NN and S-NN below is `done`.
-- **Scope anchors:** US-01, FR-002–FR-010 (FR-001 zaparkowane; FR-011 poza zakresem tego kamienia).
+- **Scope anchors:** US-01, FR-001–FR-010 (FR-011 poza zakresem tego kamienia).
 
 ## Vision recap
 
@@ -49,6 +49,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-04  | last-used-print-params       | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | S-03          | FR-006                           | done |
 | S-05  | child-profile-create-select  | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                   | done        |
 | S-06  | child-profile-save-delete    | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu | S-05          | FR-009, FR-010                   | done |
+| S-07       | maze-difficulty-levels       | Rodzic może wybrać poziom nazwany wiekiem i dostać labirynt zgodny z alejką i długością drogi tego poziomu | S-06          | US-01, FR-001, FR-003, FR-006, FR-007 | proposed |
 
 ## Streams
 
@@ -59,6 +60,7 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 | A      | Strona, karta, potem druk | `F-01` → `S-01` → `S-02` → `F-02` | Najpierw po co jest strona i przycisk, potem labirynt na kartce, potem wydruk. Wydruk jest gwiazdą przewodnią kamienia. `F-02` sprząta starter, zanim ruszy postać. |
 | B      | Postać, potem parametry  | `S-03` → `S-04`               | Dołącza do strumienia A przy `F-02`. Postać nie czekała na druk; czeka na sprzątanie startera. |
 | C      | Profile dziecka          | `S-05` → `S-06`               | Dołącza do strumienia B przy `S-03`. Wydruk nie wymaga profilu.      |
+| D      | Poziom trudności         | `S-07`                        | Dołącza po `S-06`. Wybór wieku na istniejącej kartce, nie nowy ekran. |
 
 ## Baseline
 
@@ -74,7 +76,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Foundations
 
-The starter Welcome screen (auth, marketing, cosmic layout) was the first paint; it is not the product. `F-01` replaced that first paint with a short purpose line and a generate control so `S-01` only makes the button produce an A4 maze on the same page and `S-02` only prints it. `F-02` usuwa pozostałe trasy konta, dashboard i sprawdzian logowania, zanim ruszy `S-03`. Character assets enter in `S-03`. On-device last-used parameters enter in `S-04`. Child-profile storage enters in `S-05`. Difficulty rules stay parked until the later conversation.
+The starter Welcome screen (auth, marketing, cosmic layout) was the first paint; it is not the product. `F-01` replaced that first paint with a short purpose line and a generate control so `S-01` only makes the button produce an A4 maze on the same page and `S-02` only prints it. `F-02` usuwa pozostałe trasy konta, dashboard i sprawdzian logowania, zanim ruszy `S-03`. Character assets enter in `S-03`. On-device last-used parameters enter in `S-04`. Child-profile storage enters in `S-05`. Difficulty levels enter in `S-07`.
 
 ### F-01: Strona główna narzędzia
 
@@ -152,7 +154,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Parallel with:** S-05, S-06
 - **Blockers:** —
 - **Unknowns:**
-  - Zapamiętany poziom trudności wraca, gdy odparkujemy poziomy. Do tego czasu parametr to postać. — Owner: user. Block: no.
+  - Zapamiętany poziom trudności wchodzi w `S-07`. Ten plasterek zapamiętał postać. — Owner: user. Block: no.
 - **Risk:** Czeka, aż jest parametr do zapamiętania (postać). Ryzyko: wspólne urządzenie pokaże parametry poprzedniego dziecka — PRD wymaga, by wartości zawsze dało się zmienić przed generowaniem.
 - **Status:** done
 
@@ -165,7 +167,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Parallel with:** S-04
 - **Blockers:** —
 - **Unknowns:**
-  - Domyślna trudność w profilu wraca, gdy odparkujemy poziomy. Ten plasterek dowozi profil i postać. — Owner: user. Block: no.
+  - Domyślna trudność w profilu wchodzi w `S-07`. Ten plasterek dowiózł profil i postać. — Owner: user. Block: no.
 - **Risk:** Na końcu, bo wydruk nie wymaga profilu, a limitem jest jedna osoba po godzinach. Czeka na postać. Ryzyko: selektor przy jednym profilu zaśmieci ekran — PRD każe go ukryć, gdy nie ma rzeczywistego wyboru. Brak znajomości technologii w projekcie: lokalny zapis profilu to drugi nieznany kawałek stosu po generatorze.
 - **Status:** done
 
@@ -181,6 +183,19 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Risk:** Osobno od tworzenia, żeby jednorazowa zmiana karty nie mieszała się z trwałą zmianą profilu. Ryzyko: usunięcie bez potwierdzenia jest nieodwracalne na urządzeniu.
 - **Status:** done
 
+### S-07: Poziomy trudności labiryntu
+
+- **Outcome:** Rodzic może wybrać jeden z sześciu poziomów nazwanych wiekiem i dostać labirynt A4 zgodny z szerokością alejki i długością drogi tego poziomu.
+- **Change ID:** maze-difficulty-levels
+- **PRD refs:** US-01, FR-001, FR-003, FR-006, FR-007
+- **Prerequisites:** S-06
+- **Parallel with:** —
+- **Blockers:** —
+- **Unknowns:**
+  - Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej? — Owner: user. Block: yes for validating dead-end depth. Szerokość alejki i zakres długości drogi są w PRD.
+- **Risk:** Nie nowy ekran: wybór poziomu na istniejącej kartce. Ostatnio użyte parametry i domyślna trudność profilu zaczynają pamiętać poziom. Poziom nastolatka nie pokazuje postaci i ma start oraz metę w narożnikach. Generator dziś nie trafia sam w zakres długości drogi. Głębokość ślepych uliczek nie ma jeszcze progu w komórkach.
+- **Status:** proposed
+
 ## Backlog Handoff
 
 | Roadmap ID | Change ID                   | Suggested issue title                                              | Ready for `/10x-plan` | Notes |
@@ -190,9 +205,10 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 | S-02       | print-a4-maze               | Druk karty jako jednej strony A4                                   | no                    | Done. Archived 2026-10-03; gwiazda przewodnia kamienia |
 | F-02       | remove-starter-scaffold     | Usunięcie logowania, dashboardu i sprawdzianu auth ze startera     | yes                   | Folder otwarty, bez planu. S-03 nie czeka już na ten plasterek. Run `/10x-plan remove-starter-scaffold` |
 | S-03       | maze-character-choice       | Wybór postaci z zestawu przy starcie labiryntu                     | no                    | Done. Archived 2026-10-04 |
-| S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Done. Archived 2026-10-05. Poziom dołączy po odparkowaniu trudności |
-| S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                      | no                    | Done. Archived 2026-10-08. Domyślna trudność dołączy po odparkowaniu |
+| S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Done. Archived 2026-10-05. Poziom dołącza w `S-07` |
+| S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                      | no                    | Done. Archived 2026-10-08. Domyślna trudność dołącza w `S-07` |
 | S-06       | child-profile-save-delete   | Zapis zmian profilu i usunięcie po potwierdzeniu                   | no                    | Done. Archived 2026-10-09 |
+| S-07       | maze-difficulty-levels      | Rodzic wybiera poziom nazwany wiekiem i dostaje zgodny labirynt    | no                    | Decyzje są w PRD. Run `/10x-new maze-difficulty-levels`, potem `/10x-research` |
 
 ## Open Roadmap Questions
 
@@ -201,7 +217,6 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 
 ## Parked
 
-- **Poziomy trudności (FR-001; zgodność labiryntu z poziomem z FR-003)** — Why parked: rozmowa odłożona świadomie na później. Nie stoi na ścieżce `F-01`–`S-06`. Change ID do odblokowania: `maze-difficulty-levels`. Do rozstrzygnięcia wtedy: ile poziomów; czym się różnią; czy wielkość i kształt labiryntu są zawsze takie same. PRD zapisuje trzy poziomy (łatwy / średni / trudny) i różnicowanie przez rozgałęzienia, ślepe uliczki i zakręty przy stałym rozmiarze przejść — to punkt startu tamtej rozmowy, nie decyzja na teraz. Nowe testy generatora (zgodność z poziomem) dochodzą wtedy, nie nowy ekran.
 - **Sudoku, karty kodowania i inne typy zadań** — Why parked: PRD §Non-Goals; MVP tylko labirynty.
 - **Generowanie albo ocena labiryntu modelem językowym** — Why parked: PRD §Non-Goals; rezultat ma wynikać z jawnych reguł algorytmicznych.
 - **Konta rodziców i synchronizacja między urządzeniami** — Why parked: PRD §Non-Goals; ustawienia i profile zostają na urządzeniu.
