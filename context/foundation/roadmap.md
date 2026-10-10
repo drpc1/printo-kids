@@ -24,7 +24,7 @@ milestone_status: open
 
 - **Intent:** Pokazać, że rodzic może wygenerować jakikolwiek rozwiązywalny labirynt, zobaczyć kartę A4 na stronie i wydrukować ją jako jedną stronę. Potem dodać postać, zapamiętane parametry, opcjonalne profile dzieci i wybór poziomu trudności zgodny z wiekiem. Dalej poszerzyć katalog postaci i umożliwić ten sam przepływ na telefonie.
 - **Source materials:** `context/foundation/prd.md` (v1)
-- **Done when:** every F-NN and S-NN below is `done`.
+- **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcja „Po tym kamieniu” nie wlicza się.
 - **Scope anchors:** US-01, US-03, US-04, FR-001–FR-010, FR-012, FR-013 (FR-011 poza zakresem tego kamienia).
 
 ## Vision recap
@@ -249,12 +249,32 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 
 ## Parked
 
-- **Sudoku, karty kodowania i inne typy zadań** — Why parked: PRD §Non-Goals; MVP tylko labirynty.
+- **Inne typy kart pracy** — Why parked: MVP zostaje przy labiryntach. Lista i numer symetrii są w „Po tym kamieniu”. PRD §Po MVP.
 - **Generowanie albo ocena labiryntu modelem językowym** — Why parked: PRD §Non-Goals; rezultat ma wynikać z jawnych reguł algorytmicznych.
 - **Konta rodziców i synchronizacja między urządzeniami** — Why parked: PRD §Non-Goals; ustawienia i profile zostają na urządzeniu.
 - **Zapis i archiwum wygenerowanych kart** — Why parked: PRD §Non-Goals; cykl życia karty kończy się po wydruku.
 - **Biblioteka gotowych kart (FR-011)** — Why parked: PRD §Non-Goals; nice-to-have poza MVP.
 - **Własny obrazek rodzica (US-02)** — Why parked: świadomie poza MVP, zapisane 2026-10-04, żeby nie zginęło. Change ID do odblokowania: `parent-supplied-maze-image`. Plik zostaje w przeglądarce i nie jest wysyłany na serwer. Katalog dostarczonych postaci poszerza `S-08`. Własny plik nadal czeka.
+
+## Po tym kamieniu
+
+Nie wlicza się do „Done when” M-1. Kamień nie jest otwarty. Numer ma tylko symetria, żeby lista nie wyglądała jak kolejka.
+
+Zanim ruszy S-10, strona przestaje być stroną samego labiryntu: rodzic wybiera rodzaj karty, a druk, margines, ostatnie parametry i profil zostają. Ta przebudowa mieści drugi rodzaj, nie katalog typów poniżej. Nie dostaje własnego numeru. Jest wejściem do S-10.
+
+- **S-10: Karta symetrii** — Dziecko uzupełnia drugą połówkę wzoru na kratce A4. Trudność: rozmiar kratki, gęstość, oś. Wiek około 4–7 lat. Change ID do odblokowania: `symmetry-worksheet`. Źródło: PRD §Po MVP.
+
+Bez numeru, ta sama umowa (algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4, czarny druk, bez modelu językowego):
+
+- **Sekwencje** — co będzie dalej. Kartka odpada, gdy pasują dwie reguły.
+- **Połącz kropki** — sylwetka postaci. Czeka na obrys.
+- **Który nie pasuje** — jedna złamana reguła. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
+- **Nonogram postaci** — rozwiązanie odsłania postać. Czeka na bitmapę.
+- **Karty kodowania** — kratka, postać, meta, strzałki, jedna najkrótsza droga.
+- **Sudoku obrazkowe** — 4×4 z symbolami. Układ 9×9 zostaje przy nastolatku.
+- **Porównywanie kwot w złotych** — wartość kupek monet, nie liczba sztuk. „Ułóż dokładnie tę kwotę” czeka na jeden układ.
+
+Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą listą.
 
 ## Milestone History
 
