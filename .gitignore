@@ -35,5 +35,6 @@ blob-report/
 playwright/.cache/
 .playwright-cli/
 
-# stryker temp files
+# stryker temp files and the HTML report from a local run
 .stryker-tmp
+reports/mutation/

@@ -38,7 +38,7 @@ const NAME_ERROR_TEXT = {
 const SAVE_ERROR_TEXT = "Nie udało się zapisać profilu";
 
 type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
-type ProfilePanel = "menu" | "form" | "delete" | "switch";
+type ProfilePanel = "menu" | "form" | "delete" | "switch" | "favorite-list" | "draft-list";
 
 interface VisitStart {
   profiles: ChildProfile[];
@@ -217,7 +217,7 @@ function ProfileCorner({
   const favoriteLock = useRef(false);
   const deleteLock = useRef(false);
   const [draftName, setDraftName] = useState("");
-  const [draftCharacter, setDraftCharacter] = useState<CharacterChoice>(barCharacter);
+  const [draftCharacter, setDraftCharacter] = useState<CharacterChoice>("none");
   const [formError, setFormError] = useState<string | null>(null);
   const [favoriteDraft, setFavoriteDraft] = useState<CharacterChoice>(
     activeProfile === null ? barCharacter : characterChoice(activeProfile.character),
@@ -246,7 +246,7 @@ function ProfileCorner({
     createLock.current = false;
     clearPendingViews();
     setDraftName("");
-    setDraftCharacter(barCharacter);
+    setDraftCharacter("none");
     setFormError(null);
     abandonFavoriteDraft();
     setPanel("form");
@@ -388,6 +388,24 @@ function ProfileCorner({
   function handleFavoriteSelect(id: CharacterChoice): void {
     favoriteLock.current = false;
     setFavoriteDraft(id);
+  }
+
+  function openFavoriteList(): void {
+    setPanel("favorite-list");
+  }
+
+  function openDraftList(): void {
+    setPanel("draft-list");
+  }
+
+  function handleFavoritePicked(id: CharacterChoice): void {
+    handleFavoriteSelect(id);
+    setPanel("menu");
+  }
+
+  function handleDraftPicked(id: CharacterChoice): void {
+    setDraftCharacter(id);
+    setPanel("form");
   }
 
   function handleSaveFavorite(): void {
@@ -534,6 +552,14 @@ function ProfileCorner({
               Przełącz bez zapisu
             </Button>
           </div>
+        ) : panel === "favorite-list" || panel === "draft-list" ? (
+          <div className={cn("flex flex-col gap-2")}>
+            <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
+            <CharacterChoiceRows
+              selected={panel === "draft-list" ? draftCharacter : favoriteDraft}
+              onSelect={panel === "draft-list" ? handleDraftPicked : handleFavoritePicked}
+            />
+          </div>
         ) : panel !== "form" ? (
           <div className={cn("flex flex-col gap-2")}>
             {profiles.length >= 2 ? (
@@ -575,7 +601,7 @@ function ProfileCorner({
             )}
             {activeProfile !== null ? (
               <>
-                <CharacterChoiceRows selected={favoriteDraft} onSelect={handleFavoriteSelect} />
+                <ProfileCharacterControl character={favoriteDraft} onOpen={openFavoriteList} />
                 {favoriteError !== null ? (
                   <p id="child-profile-save-error" role="alert" className={cn("text-destructive text-sm")}>
                     {favoriteError}
@@ -633,7 +659,7 @@ function ProfileCorner({
                 </p>
               ) : null}
             </div>
-            <CharacterChoiceRows selected={draftCharacter} onSelect={setDraftCharacter} />
+            <ProfileCharacterControl character={draftCharacter} onOpen={openDraftList} />
             <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end")}>
               <Button type="button" variant="outline" onClick={handleCancel}>
                 Anuluj
@@ -679,7 +705,7 @@ function CharacterChoiceControl({
           <ChevronDown className={cn("size-4")} aria-hidden />
         </Button>
       </DialogTrigger>
-      <DialogContent className={cn("print:hidden")} showCloseButton={false}>
+      <DialogContent className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden")} showCloseButton={false}>
         <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
         <CharacterChoiceRows
           selected={character}
@@ -693,6 +719,23 @@ function CharacterChoiceControl({
         />
       </DialogContent>
     </Dialog>
+  );
+}
+
+function ProfileCharacterControl({ character, onOpen }: { character: CharacterChoice; onOpen: () => void }) {
+  const choice = characterRow(character);
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      aria-label={`Postać: ${choice.label}`}
+      className={cn("h-auto w-full justify-start px-4 py-2 text-lg")}
+      onClick={onOpen}
+    >
+      {choice.src !== null ? <img src={choice.src} alt="" width={40} height={40} className={cn("size-10")} /> : null}
+      {choice.label}
+      <ChevronDown className={cn("size-4")} aria-hidden />
+    </Button>
   );
 }
 
