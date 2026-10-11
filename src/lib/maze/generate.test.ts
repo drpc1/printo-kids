@@ -19,6 +19,10 @@ void describe("generateMaze", () => {
     assert.deepEqual(mazeA, mazeB);
   });
 
+  void test("two seeds do not print the same walls", () => {
+    assert.notDeepEqual(generateMaze(mulberry32(0)), generateMaze(mulberry32(1)));
+  });
+
   void test("generateMaze does not call Math.random", () => {
     const randomMock = mock.method(Math, "random", () => {
       throw new Error("Math.random must not be called");
