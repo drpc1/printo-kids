@@ -279,12 +279,12 @@ Istniejący `printo-kids:last-used` i `printo-kids:child-profiles` bez `level` c
 
 #### Automated
 
-- [ ] 1.1 `npm test` sprawdza sześć poziomów: siatkę, jedną drogę, długość w paśmie i regułę odnogi
-- [ ] 1.2 `npm run lint` i `npx astro check` przechodzą
+- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę, jedną drogę, długość w paśmie i regułę odnogi
+- [x] 1.2 `npm run lint` i `npx astro check` przechodzą
 
 #### Manual
 
-- [ ] 1.3 W `context/foundation/test-plan.md` §7 zgodność z tymi sześcioma poziomami nie jest już poza budżetem, a §5 i §6 nie mówią już, że Generuj jest bez komunikatu ani że każde ziarno jest kartką 13×16
+- [x] 1.3 W `context/foundation/test-plan.md` §7 zgodność z tymi sześcioma poziomami nie jest już poza budżetem, a §5 i §6 nie mówią już, że Generuj jest bez komunikatu ani że każde ziarno jest kartką 13×16
 
 ### Phase 2: Kartka dla czterech siatek
 
