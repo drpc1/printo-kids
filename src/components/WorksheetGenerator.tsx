@@ -6,7 +6,7 @@ import { CharacterChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
-import { DEFAULT_LEVEL_ID } from "@/lib/maze/levels";
+import { DEFAULT_LEVEL_ID, levelById, type Level } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,6 @@ import { cn } from "@/lib/utils";
 const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
 const INSET = 10;
-const LABEL_COLUMN = 6;
 const CHARACTER_MARK_SIZE = 30;
 
 const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
@@ -97,6 +96,7 @@ export default function WorksheetGenerator() {
   }
 
   const hasMaze = maze !== null;
+  const sheetLevel = levelById(DEFAULT_LEVEL_ID);
 
   return (
     <div className={cn("flex w-full flex-col items-center gap-4")}>
@@ -145,7 +145,7 @@ export default function WorksheetGenerator() {
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
         </div>
       )}
-      {hasMaze ? <MazeSheet maze={maze} characterId={character} /> : null}
+      {hasMaze ? <MazeSheet maze={maze} characterId={character} level={sheetLevel} /> : null}
     </div>
   );
 }
@@ -221,7 +221,7 @@ function CharacterChoiceControl({
   );
 }
 
-function MazeSheet({ maze, characterId }: { maze: Maze; characterId: CharacterChoice }) {
+function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: CharacterChoice; level: Level }) {
   const characterSrc = characterSheetSrc(characterId);
   const sheet = layoutSheet({
     pageWidth: PAGE_WIDTH,
@@ -229,9 +229,9 @@ function MazeSheet({ maze, characterId }: { maze: Maze; characterId: CharacterCh
     inset: INSET,
     columns: maze.width,
     rows: maze.height,
-    entranceColumn: LABEL_COLUMN,
+    entranceColumn: level.entrance.col,
     markSize: CHARACTER_MARK_SIZE,
-    characterSelected: characterSrc !== null,
+    characterSelected: level.showCharacter && characterSrc !== null,
   });
   const cellSize = sheet.maze.width / maze.width;
   const walls = collectWalls(maze, sheet.maze.x, sheet.maze.y, cellSize);
