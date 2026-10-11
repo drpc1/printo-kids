@@ -1,7 +1,7 @@
 ---
 change_id: remove-starter-scaffold
 title: Remove starter scaffold
-status: planned
+status: implementing
 created: 2026-10-03
 updated: 2026-10-11
 archived_at: null

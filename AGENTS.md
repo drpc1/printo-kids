@@ -1,11 +1,11 @@
 # Repository Guidelines
 
-PrintoKids is an Astro 7 SSR app (React 19 islands, TypeScript, Tailwind 4, Cloudflare adapter) that generates a solvable A4 maze, previews it, and prints it. Product and stack lock: @context/foundation/prd.md and @context/foundation/tech-stack.md. Starter-era agent notes: @CLAUDE.md.
+PrintoKids is an Astro 7 SSR app (React 19 islands, TypeScript, Tailwind 4, Cloudflare adapter) that generates a solvable A4 maze, previews it, and prints it. Product and stack lock: @context/foundation/prd.md and @context/foundation/tech-stack.md.
 
 ## Hard rules
 
-- MVP has no accounts, payments, AI, or backend jobs. Keep maze and optional child-profile data on-device; do not wire new product flows to the shipped Supabase auth stack (@context/foundation/tech-stack.md).
-- Never commit `.env` or `.dev.vars`. Server secrets are `SUPABASE_URL` and `SUPABASE_KEY` via `astro:env` in @astro.config.mjs; copy @.env.example to `.env` (Node) or `.dev.vars` (Cloudflare local).
+- MVP has no accounts, payments, AI, or backend jobs. Keep maze and optional child-profile data on-device.
+- Never commit `.env` or `.dev.vars`.
 - Merge Tailwind classes with `cn()` from `@/lib/utils` (@src/lib/utils.ts). Do not concatenate class strings.
 - Do not add Next.js `'use client'` (or similar) directives. `astro/no-set-html-directive` is an ESLint error (@eslint.config.js).
 
@@ -18,20 +18,20 @@ Run from the repo root on Node 22.14.0 (@.nvmrc). Scripts: @package.json.
 - `npm run format` — Prettier (Astro + Tailwind plugins, @.prettierrc.json)
 - `npm run build` / `npm run preview` — production SSR build and preview
 - `npm test` — Node's built-in test runner (`node --test`) on the files named in the `test` script (@package.json)
-- `npm run smoke` — auth-flow HTTP check against a running server (`BASE_URL`, default `http://localhost:4321`)
+- `npm run smoke` — HTTP check of the product page against a running server (`BASE_URL`, default `http://localhost:4321`)
 
 Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --write` on `*.{json,css,md}`.
 
 ## Structure and conventions
 
-- `src/pages/` routes and `src/pages/api/` endpoints; `src/layouts/` Astro layouts; `src/components/` Astro + React; `src/components/ui/` shadcn new-york (@components.json); `src/lib/` helpers; `src/middleware.ts` attaches `locals.user` and gates `PROTECTED_ROUTES`.
+- `src/pages/` routes and `src/pages/api/` endpoints; `src/layouts/` Astro layouts; `src/components/` Astro + React; `src/components/ui/` shadcn new-york (@components.json); `src/lib/` helpers.
 - Import with `@/*` → `./src/*` (@tsconfig.json). Use Astro for static content and layout; React only when interactivity is required. Add shadcn pieces with `npx shadcn@latest add [name]`.
 - API routes export uppercase `GET` / `POST`. Put shared DTOs in `src/types.ts`. Extract React hooks to `src/hooks/` (`@/hooks` in @components.json).
-- Full SSR: `output: "server"` in @astro.config.mjs. Deploy with `npx wrangler deploy` (@wrangler.jsonc). If you later add Postgres tables, name migrations `YYYYMMDDHHmmss_short_description.sql` and enable RLS per operation and role.
+- Full SSR: `output: "server"` in @astro.config.mjs. Deploy with `npx wrangler deploy` (@wrangler.jsonc).
 
 ## Tests and CI
 
-`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the starter auth-flow HTTP check, not that suite. Push and pull request to `main` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (needs `SUPABASE_URL` / `SUPABASE_KEY` repository secrets), and a separate job `smoke` runs the starter account-flow check on local Supabase. Both jobs fail the run when red. Commit-message convention is unset.
+`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the HTTP check of the product page, not that suite. Push and pull request to `main` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (the build does not need Supabase secrets), and a separate job `smoke` runs that HTTP check. Both jobs fail the run when red. Commit-message convention is unset.
 
 ## UI
 

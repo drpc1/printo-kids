@@ -1,73 +1,36 @@
-// Smoke test: proves the built app, the Cloudflare adapter and the Supabase auth flow still work together.
+// Smoke test: the product page is served and the starter account routes are gone.
 // Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
-const email = `smoke-${Date.now()}@example.com`;
-const password = "Smoke-Test-Passw0rd!";
-const jar = new Map();
+const HOME_SENTENCE = "Wygeneruj labirynt i wydrukuj go na kartce A4.";
 
-function cookieHeader() {
-  return [...jar.entries()].map(([k, v]) => `${k}=${v}`).join("; ");
-}
-
-function storeCookies(response) {
-  for (const raw of response.headers.getSetCookie()) {
-    const [pair, ...attrs] = raw.split(";");
-    const [name, ...rest] = pair.split("=");
-    const expired = attrs.some((a) => /max-age=0/i.test(a.trim()));
-    if (expired) jar.delete(name.trim());
-    else jar.set(name.trim(), rest.join("="));
-  }
-}
-
-async function request(path, { method = "GET", form } = {}) {
-  const response = await fetch(BASE_URL + path, {
-    method,
-    redirect: "manual",
-    headers: {
-      Cookie: cookieHeader(),
-      Origin: BASE_URL,
-      ...(form ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
-    },
-    body: form ? new URLSearchParams(form).toString() : undefined,
-  });
-  storeCookies(response);
-  return { status: response.status, location: response.headers.get("location") ?? "" };
+async function request(path) {
+  const response = await fetch(BASE_URL + path, { redirect: "manual" });
+  const body = await response.text();
+  return { status: response.status, body };
 }
 
 const steps = [
-  ["home renders", () => request("/"), { status: 200 }],
-  ["dashboard redirects anonymous user", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],
   [
-    "signup creates account",
-    () => request("/api/auth/signup", { method: "POST", form: { email, password } }),
-    { status: 302, location: "/auth/confirm-email" },
+    "home renders the worksheet sentence",
+    () => request("/"),
+    (actual) => actual.status === 200 && actual.body.includes(HOME_SENTENCE),
+    `200 and ${HOME_SENTENCE}`,
   ],
-  [
-    "signin rejects wrong password",
-    () => request("/api/auth/signin", { method: "POST", form: { email, password: "wrong" } }),
-    { status: 302, location: "/auth/signin?error=" },
-  ],
-  [
-    "signin accepts correct password",
-    () => request("/api/auth/signin", { method: "POST", form: { email, password } }),
-    { status: 302, location: "/" },
-  ],
-  ["dashboard renders for signed-in user", () => request("/dashboard"), { status: 200 }],
-  ["signout clears session", () => request("/api/auth/signout", { method: "POST" }), { status: 302, location: "/" }],
-  ["dashboard redirects after signout", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],
+  ["signin is not served", () => request("/auth/signin"), (actual) => actual.status === 404, "404"],
+  ["signup is not served", () => request("/auth/signup"), (actual) => actual.status === 404, "404"],
+  ["confirm-email is not served", () => request("/auth/confirm-email"), (actual) => actual.status === 404, "404"],
+  ["dashboard is not served", () => request("/dashboard"), (actual) => actual.status === 404, "404"],
 ];
 
 let failed = 0;
-for (const [name, run, expected] of steps) {
+for (const [name, run, ok, expected] of steps) {
   const actual = await run();
-  const ok =
-    actual.status === expected.status &&
-    (expected.location === undefined || actual.location.startsWith(expected.location));
-  console.log(`${ok ? "PASS" : "FAIL"}  ${name}  -> ${actual.status} ${actual.location}`);
-  if (!ok) {
+  const passed = ok(actual);
+  console.log(`${passed ? "PASS" : "FAIL"}  ${name}  -> ${actual.status}`);
+  if (!passed) {
     failed++;
-    console.log(`      expected ${expected.status} ${expected.location ?? ""}`);
+    console.log(`      expected ${expected}`);
   }
 }
 

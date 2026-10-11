@@ -1,15 +1,12 @@
 ---
 import "../styles/global.css";
-import Banner from "@/components/Banner.astro";
-import { missingConfigs } from "@/lib/config-status";
 
 interface Props {
   title?: string;
   lang?: string;
-  showConfigBanner?: boolean;
 }
 
-const { title = "10x Astro Starter", lang = "en", showConfigBanner = true } = Astro.props;
+const { title = "PrintoKids", lang = "en" } = Astro.props;
 ---
 
 <!doctype html>
@@ -21,21 +18,6 @@ const { title = "10x Astro Starter", lang = "en", showConfigBanner = true } = As
     <title>{title}</title>
   </head>
   <body>
-    {showConfigBanner &&
-      missingConfigs.map((cfg) => (
-        <Banner variant="error">
-          <strong>Uwaga:</strong> {cfg.message}
-          {cfg.docsUrl && (
-            <>
-              {" "}
-              <a href={cfg.docsUrl} target="_blank" rel="noopener noreferrer">
-                {cfg.docsLabel ?? "Dokumentacja"}
-              </a>
-              .
-            </>
-          )}
-        </Banner>
-      ))}
     <slot />
   </body>
 </html>
