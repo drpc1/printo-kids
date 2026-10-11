@@ -60,6 +60,19 @@ void describe("readChildProfiles", () => {
     assertStoredRead(stored([{ id: "1", name: "   ", character: "rakieta" }]), []);
   });
 
+  void test("Zosia and Antek both come back", () => {
+    assertStoredRead(
+      stored([
+        { id: "z1", name: "Zosia", character: "rakieta" },
+        { id: "a1", name: "Antek", character: "dinozaur" },
+      ]),
+      [
+        { id: "z1", name: "Zosia", character: "rakieta" },
+        { id: "a1", name: "Antek", character: "dinozaur" },
+      ],
+    );
+  });
+
   void test("a padded name is kept trimmed and does not write", () => {
     assertStoredRead(stored([{ id: "1", name: " Zosia ", character: "rakieta" }]), [
       { id: "1", name: "Zosia", character: "rakieta" },
@@ -116,6 +129,17 @@ void describe("profileNameError", () => {
 
   void test('"zosia" duplicates an existing Zosia', () => {
     assert.equal(profileNameError("zosia", ["Zosia"]), "duplicate");
+  });
+
+  void test("Antek next to Zosia is not a duplicate", () => {
+    assert.equal(profileNameError("Antek", ["Zosia"]), null);
+  });
+
+  void test("40 emoji code points is valid and 41 is too long", () => {
+    const emoji = "😀";
+
+    assert.equal(profileNameError(emoji.repeat(40), []), null);
+    assert.equal(profileNameError(emoji.repeat(41), []), "too-long");
   });
 });
 
@@ -300,6 +324,12 @@ void describe("visitAfterDelete", () => {
       activeId: null,
       character: "samochodzik",
       ask: false,
+    });
+    assert.deepEqual(visitAfterDelete([zosia, antek], "missing", null, "samochodzik", "rakieta"), {
+      profiles: [zosia, antek],
+      activeId: null,
+      character: "samochodzik",
+      ask: true,
     });
   });
 });

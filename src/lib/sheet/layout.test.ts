@@ -18,6 +18,7 @@ void describe("layoutSheet", () => {
     assert.equal(sheet.page.height, PAGE_HEIGHT);
     assert.equal(sheet.maze.x, INSET);
     assert.equal(sheet.page.width - (sheet.maze.x + sheet.maze.width), INSET);
+    assert.equal(sheet.maze.height, ROWS * (sheet.maze.width / COLUMNS));
     assert.ok(sheet.maze.y >= INSET);
     assert.ok(sheet.page.height - (sheet.maze.y + sheet.maze.height) >= INSET);
   });
