@@ -6,6 +6,7 @@ import { CharacterChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
+import { DEFAULT_LEVEL_ID } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
 import { cn } from "@/lib/utils";
@@ -61,7 +62,8 @@ export default function WorksheetGenerator() {
     if (waitingForChild) {
       return;
     }
-    const next = mazeForSheet(generateMaze(Math.random));
+    const level = DEFAULT_LEVEL_ID;
+    const next = mazeForSheet(generateMaze(level, Math.random), level);
     if (next !== null) {
       setMaze(next);
     }

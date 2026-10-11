@@ -84,9 +84,9 @@ Baza testów: **sparse**. `npm test` uruchamia `src/lib/maze/generate.test.ts`, 
 
 Jest 59 testów. Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
 
-Dla 34 ziaren, liczb 0–31 oraz 99 i 12345, generator daje labirynt 13 na 16 z otwartymi nacięciami i jedną ścieżką. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Te ziarna nie dowodzą odmowy kartki przy zero ścieżkach.
+Dla każdego z sześciu poziomów jedno ustalone ziarno daje siatkę tego poziomu, otwarte ściany wejścia i wyjścia, jedną drogę, długość w paśmie i odnogę w limicie. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Dotychczasowe ziarna 13×16 nie muszą same spełniać pasma 5 lat. Te sprawdzenia nie dowodzą odmowy kartki przy zero ścieżkach.
 
-Zmutowana siatka potrafi dać więcej niż jedną ścieżkę. Siatka z otwartymi wewnętrznymi ścianami zatrzymuje licznik na 2. Przypadek „więcej niż jedna” wybiera siatkę tym samym licznikiem, który potem sprawdza. Gotowa kartka wymaga dokładnie jednej ścieżki: zero ścieżek i dwie ścieżki nie są zapisywane, a jedna ścieżka zostawia ten sam labirynt. Klik Generuj zapisuje kartkę tylko przy niepustym wyniku, bez komunikatu i bez ponowienia.
+Zmutowana siatka potrafi dać więcej niż jedną ścieżkę. Siatka z otwartymi wewnętrznymi ścianami zatrzymuje licznik na 2. Przypadek „więcej niż jedna” wybiera siatkę tym samym licznikiem, który potem sprawdza. Gotowa kartka wymaga dokładnie jednej ścieżki: zero ścieżek i dwie ścieżki nie są zapisywane, a jedna ścieżka zostawia ten sam labirynt. Klik Generuj zapisuje kartkę tylko przy niepustym wyniku. Gdy ułożenie się nie uda, widać „Nie udało się ułożyć tego poziomu.”, bez ponowienia.
 
 Układ kartki: strona 210 na 297, labirynt co najmniej 10 od krawędzi, „Meta” pod kratką i co najmniej 10 od krawędzi, przy postaci znacznik 30 na 30 ze spodem na górze labiryntu. Góra znacznika nie musi mieć 10 od krawędzi. Bez postaci jest „Start”, a „Meta” zostaje.
 
@@ -106,7 +106,7 @@ Wypełnia się przy zamknięciu fazy wdrożenia. Do tego czasu wzorzec jest nazw
 
 ### Prawidłowa kartka
 
-Wzorzec odmowy gotowej kartki: dokładnie jedna ścieżka zostawia ten sam labirynt. Zero ścieżek, na siatce 13 na 16 ze wszystkimi ścianami zamkniętymi, nie jest gotową kartką. Dwie ścieżki, gdy licznik staje na 2 po otwarciu wewnętrznych ścian wschodnich i południowych, też nie są gotową kartką. Klik Generuj zapisuje kartkę tylko przy niepustym wyniku tego sprawdzenia, bez komunikatu i bez ponowienia. 34 ziarna z §5 nie są tym wzorcem. Progi łatwy, średni i trudny nie wchodzą tutaj.
+Wzorzec odmowy gotowej kartki: dokładnie jedna ścieżka zostawia ten sam labirynt. Zero ścieżek, na siatce 13 na 16 ze wszystkimi ścianami zamkniętymi, nie jest gotową kartką. Dwie ścieżki, gdy licznik staje na 2 po otwarciu wewnętrznych ścian wschodnich i południowych, też nie są gotową kartką. Klik Generuj zapisuje kartkę tylko przy niepustym wyniku tego sprawdzenia. Gdy ułożenie się nie uda, widać „Nie udało się ułożyć tego poziomu.”, bez ponowienia. Kontrakt sześciu poziomów z §5 nie jest tym wzorcem. Progi łatwy, średni i trudny nie wchodzą tutaj.
 
 ### Druk i znaczniki kartki
 
@@ -124,7 +124,6 @@ TBD — patrz §3 Faza 4 dla wzorca bramki, która pilnuje kartki i nie obrasta 
 
 - Logowanie, rejestracja, potwierdzenie maila, dashboard, API kont, testy startera i dokładanie asercji startera do smoke.
 - Migawki pikseli kartki i postaci.
-- Zgodność labiryntu z poziomem i progi poziomów, dopóki poziomów nie ma.
 - Biblioteka kart FR-011, która użyje wyroczni ryzyka 1 dopiero gdy powstanie.
 - Test profilu przed plasterkiem: profil, ostatnie parametry i własny obrazek, dopóki nie istnieją S-05, S-06 albo US-02.
 - Automatyczne „czy rodzic rozumie ekran”. To zostaje ręcznym sprawdzeniem.
