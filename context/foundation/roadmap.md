@@ -228,6 +228,8 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 
 ## Backlog Handoff
 
+Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcja „Po tym kamieniu” nie dostaje issue, dopóki kamień nie jest otwarty.
+
 | Roadmap ID | Change ID                   | Suggested issue title                                              | Ready for `/10x-plan` | Notes |
 | ---------- | --------------------------- | ------------------------------------------------------------------ | --------------------- | ----- |
 | F-01       | worksheet-page-shell        | Wejście na /: po co jest strona i przycisk Generuj                 | no                    | Done. Archived 2026-09-29 |
