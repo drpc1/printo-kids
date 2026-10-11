@@ -156,15 +156,15 @@ Danych do przeniesienia nie ma. Profile i ostatnie parametry zostają w przeglą
 
 #### Automated
 
-- [x] 1.1 Usunięte są katalogi i pliki auth, `src/middleware.ts`, `src/lib/supabase.ts`, `src/lib/config-status.ts`, `src/components/Banner.astro`, `src/env.d.ts`, `supabase/`, `.env.example`, `public/template.png` i `CLAUDE.md`; pod `src/` nie ma importu `@/lib/supabase`, `@/components/auth`, `@/components/Banner` ani `@/lib/config-status`
-- [x] 1.2 `Layout.astro` nie importuje banera, domyślny tytuł to `PrintoKids`, a `index.astro` nie przekazuje `showConfigBanner`
-- [x] 1.3 `package.json` nie zawiera `@supabase/ssr`, `@supabase/supabase-js` ani `supabase`, a `"name"` zostaje `10x-astro-starter`
-- [x] 1.4 `npm test`, `npm run lint` i `npx astro check` przechodzą
-- [x] 1.5 `npm run build` przechodzi bez `SUPABASE_URL` i `SUPABASE_KEY`
-- [x] 1.6 `scripts/smoke.mjs` wymaga 200 i zdania `Wygeneruj labirynt i wydrukuj go na kartce A4.` na `GET /` oraz 404 na `/auth/signin`, `/auth/signup`, `/auth/confirm-email` i `/dashboard`
-- [x] 1.7 `.github/workflows/ci.yml` zostawia joby `ci` i `smoke`, nie startuje Supabase i nie wstrzykuje `SUPABASE_URL` ani `SUPABASE_KEY`
-- [x] 1.8 `AGENTS.md` nie wskazuje na `CLAUDE.md`, nie opisuje sekretów Supabase, middleware, smoke kont, dostarczonego stosu auth Supabase ani migracji Postgresa i RLS; `README.md` nie każe klonować `10x-astro-starter` ani konfigurować Supabase; `deploy-plan.md` nie wskazuje na `src/lib/supabase.ts`
+- [x] 1.1 Usunięte są katalogi i pliki auth, `src/middleware.ts`, `src/lib/supabase.ts`, `src/lib/config-status.ts`, `src/components/Banner.astro`, `src/env.d.ts`, `supabase/`, `.env.example`, `public/template.png` i `CLAUDE.md`; pod `src/` nie ma importu `@/lib/supabase`, `@/components/auth`, `@/components/Banner` ani `@/lib/config-status` — 2ca676d
+- [x] 1.2 `Layout.astro` nie importuje banera, domyślny tytuł to `PrintoKids`, a `index.astro` nie przekazuje `showConfigBanner` — 2ca676d
+- [x] 1.3 `package.json` nie zawiera `@supabase/ssr`, `@supabase/supabase-js` ani `supabase`, a `"name"` zostaje `10x-astro-starter` — 2ca676d
+- [x] 1.4 `npm test`, `npm run lint` i `npx astro check` przechodzą — 2ca676d
+- [x] 1.5 `npm run build` przechodzi bez `SUPABASE_URL` i `SUPABASE_KEY` — 2ca676d
+- [x] 1.6 `scripts/smoke.mjs` wymaga 200 i zdania `Wygeneruj labirynt i wydrukuj go na kartce A4.` na `GET /` oraz 404 na `/auth/signin`, `/auth/signup`, `/auth/confirm-email` i `/dashboard` — 2ca676d
+- [x] 1.7 `.github/workflows/ci.yml` zostawia joby `ci` i `smoke`, nie startuje Supabase i nie wstrzykuje `SUPABASE_URL` ani `SUPABASE_KEY` — 2ca676d
+- [x] 1.8 `AGENTS.md` nie wskazuje na `CLAUDE.md`, nie opisuje sekretów Supabase, middleware, smoke kont, dostarczonego stosu auth Supabase ani migracji Postgresa i RLS; `README.md` nie każe klonować `10x-astro-starter` ani konfigurować Supabase; `deploy-plan.md` nie wskazuje na `src/lib/supabase.ts` — 2ca676d
 
 #### Manual
 
-- [x] 1.9 Wejście na `/` pokazuje kartkę ze zdaniem o labiryncie A4 i przyciskiem Generuj, a `/auth/signin` oraz `/dashboard` nie są ekranami logowania
+- [x] 1.9 Wejście na `/` pokazuje kartkę ze zdaniem o labiryncie A4 i przyciskiem Generuj, a `/auth/signin` oraz `/dashboard` nie są ekranami logowania — 2ca676d
