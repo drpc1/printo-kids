@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { CHARACTER_CHOICES, characterSheetSrc } from "./character.ts";
+import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "./character.ts";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
@@ -35,6 +35,22 @@ void describe("characterSheetSrc", () => {
     assert.equal(generator.includes("/characters/rakieta.png"), false);
     assert.equal(generator.includes("/characters/dinozaur.png"), false);
     assert.equal(generator.includes("characterSheetSrc("), true);
+  });
+});
+
+void describe("characterRow", () => {
+  void test("a catalog id returns that row", () => {
+    assert.equal(characterRow("rakieta").id, "rakieta");
+    assert.equal(characterRow("rakieta").label, "Rakieta");
+    assert.equal(characterRow("rakieta").src, "/characters/rakieta.png");
+  });
+
+  void test("an unknown id returns Bez postaci", () => {
+    const row = characterRow("smok");
+
+    assert.equal(row.id, "none");
+    assert.equal(row.label, "Bez postaci");
+    assert.equal(row.src, null);
   });
 });
 
