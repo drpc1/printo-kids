@@ -25,7 +25,7 @@ Zapis ostatniej postaci i profilu przyjmuje dowolne id z listy przekazanej przez
 
 ## Desired End State
 
-Rodzic otwiera „Postać” na pasku i widzi „Bez postaci” oraz jedenaście postaci w kolejności z PRD. Na oknie o wysokości telefonu dochodzi do Wróżki przewinięciem tej listy. Wybrana postać stoi przy starcie labiryntu, tak jak dzisiejsze trzy.
+Rodzic otwiera „Postać” na pasku i widzi „Bez postaci” oraz jedenaście postaci alfabetycznie po polsku. Na oknie o wysokości telefonu dochodzi do Wróżki przewinięciem tej listy. Wybrana postać stoi przy starcie labiryntu, tak jak dzisiejsze trzy.
 
 W oknie profilu na wejściu jest jedna kontrolka. Przy istniejącym profilu pokazuje zapisaną ulubioną. Przy tworzeniu profilu pokazuje „Bez postaci”. Otwarcie prowadzi do tej samej listy, przewijanej w tym samym oknie. „Zapisz” utrwala ulubioną. „Utwórz” zapisuje postać ze szkicu. Utworzenie bez zmiany kontrolki zapisuje brak postaci i pasek karty przechodzi na „Bez postaci”.
 
@@ -33,7 +33,7 @@ Ostatnio użyta postać i ulubiona postać profilu mogą być dowolnym id z kata
 
 ### Key Discoveries:
 
-- Kolejność katalogu: `none`, `samochodzik`, `rakieta`, `dinozaur`, `jednorozec`, `kot`, `pies`, `robot`, `smok`, `strazak`, `syrenka`, `wrozka`. Etykiety: Bez postaci, Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka, Wróżka. Plik: `/characters/{id}.png`, a dla `none` brak pliku.
+- Kolejność katalogu, alfabetycznie po polsku: `none`, `dinozaur`, `jednorozec`, `kot`, `pies`, `rakieta`, `robot`, `samochodzik`, `smok`, `strazak`, `syrenka`, `wrozka`. Etykiety: Bez postaci, Dinozaur, Jednorożec, Kot, Pies, Rakieta, Robot, Samochodzik, Smok, Strażak, Syrenka, Wróżka. Plik: `/characters/{id}.png`, a dla `none` brak pliku.
 - Znacznik na karcie zostaje 30 na 30. „Bez postaci” zostawia napis „Start” i nie rysuje obrazka.
 - Faza 1 sama dodaje dwanaście wierszy do paska. Profil nadal pokazuje kolumnę, a dialog paska może ucinać listę, dopóki nie wejdzie faza 2.
 
@@ -73,7 +73,7 @@ Lista w profilu wchodzi w istniejący panel okna profilu i po wskazaniu wraca do
 
 ### Overview
 
-Kontrakt katalogu obejmuje jedenaście postaci i „Bez postaci”, z etykietą i ścieżką pliku. Czerwony test prowadzi dopisanie wierszy. Pliki PNG już leżą na dysku.
+Kontrakt katalogu obejmuje jedenaście postaci i „Bez postaci”, z etykietą i ścieżką pliku. Kolejność wierszy jest alfabetyczna po polsku. Czerwony test prowadzi dopisanie wierszy. Pliki PNG już leżą na dysku.
 
 ### Changes Required:
 
@@ -97,7 +97,7 @@ Kontrakt katalogu obejmuje jedenaście postaci i „Bez postaci”, z etykietą 
 
 #### Automated Verification:
 
-- `npm test` przechodzi: katalog ma „Bez postaci” i jedenaście postaci w kolejności z PRD, `smok` wskazuje `/characters/smok.png`, id spoza katalogu wraca do „Bez postaci”, a generator nie powtarza ścieżek plików
+- `npm test` przechodzi: katalog ma „Bez postaci” i jedenaście postaci alfabetycznie po polsku, `smok` wskazuje `/characters/smok.png`, id spoza katalogu wraca do „Bez postaci”, a generator nie powtarza ścieżek plików
 - `npm run lint` przechodzi
 
 #### Manual Verification:
@@ -205,12 +205,12 @@ Zapisane id Samochodzika, Rakiety, Dinozaura i „Bez postaci” zostają popraw
 
 #### Automated
 
-- [ ] 1.1 `npm test` przechodzi: katalog ma „Bez postaci” i jedenaście postaci w kolejności z PRD, `smok` wskazuje `/characters/smok.png`, id spoza katalogu wraca do „Bez postaci”, a generator nie powtarza ścieżek plików
-- [ ] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` przechodzi: katalog ma „Bez postaci” i jedenaście postaci w kolejności z PRD, `smok` wskazuje `/characters/smok.png`, id spoza katalogu wraca do „Bez postaci”, a generator nie powtarza ścieżek plików
+- [x] 1.2 `npm run lint` przechodzi
 
 #### Manual
 
-- [ ] 1.3 Na pasku karty etykiety Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka pokazują własne obrazki
+- [x] 1.3 Na pasku karty etykiety Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka pokazują własne obrazki
 
 ### Phase 2: Jedna kontrolka i przewijana lista
 

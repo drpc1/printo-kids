@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
@@ -7,50 +7,66 @@ import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "./character.
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
-void describe("characterSheetSrc", () => {
-  void test("the four catalog ids keep their labels and sheet files", () => {
+const catalog = [
+  { id: "none", label: "Bez postaci", src: null },
+  { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.png" },
+  { id: "jednorozec", label: "Jednorożec", src: "/characters/jednorozec.png" },
+  { id: "kot", label: "Kot", src: "/characters/kot.png" },
+  { id: "pies", label: "Pies", src: "/characters/pies.png" },
+  { id: "rakieta", label: "Rakieta", src: "/characters/rakieta.png" },
+  { id: "robot", label: "Robot", src: "/characters/robot.png" },
+  { id: "samochodzik", label: "Samochodzik", src: "/characters/samochodzik.png" },
+  { id: "smok", label: "Smok", src: "/characters/smok.png" },
+  { id: "strazak", label: "Strażak", src: "/characters/strazak.png" },
+  { id: "syrenka", label: "Syrenka", src: "/characters/syrenka.png" },
+  { id: "wrozka", label: "Wróżka", src: "/characters/wrozka.png" },
+] as const;
+
+void describe("character catalog", () => {
+  void test("lists Bez postaci and eleven characters in Polish alphabetical order", () => {
     assert.deepEqual(
       CHARACTER_CHOICES.map((row) => ({ id: row.id, label: row.label, src: row.src })),
-      [
-        { id: "none", label: "Bez postaci", src: null },
-        { id: "samochodzik", label: "Samochodzik", src: "/characters/samochodzik.png" },
-        { id: "rakieta", label: "Rakieta", src: "/characters/rakieta.png" },
-        { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.png" },
-      ],
+      [...catalog],
     );
-    assert.equal(characterSheetSrc("none"), null);
-    assert.equal(characterSheetSrc("samochodzik"), "/characters/samochodzik.png");
-    assert.equal(characterSheetSrc("rakieta"), "/characters/rakieta.png");
-    assert.equal(characterSheetSrc("dinozaur"), "/characters/dinozaur.png");
   });
 
-  void test("a string outside the four ids is not a character", () => {
-    assert.equal(characterSheetSrc("smok"), null);
+  void test("returns the smok sheet file", () => {
+    assert.equal(characterSheetSrc("smok"), "/characters/smok.png");
   });
 
-  void test("the worksheet generator calls characterSheetSrc and does not repeat the file paths", () => {
-    const generator = readRepoFile("src/components/WorksheetGenerator.tsx");
+  void test("an id outside the catalog is Bez postaci", () => {
+    assert.equal(characterSheetSrc("poza-katalogiem"), null);
 
-    assert.equal(generator.includes("/characters/samochodzik.png"), false);
-    assert.equal(generator.includes("/characters/rakieta.png"), false);
-    assert.equal(generator.includes("/characters/dinozaur.png"), false);
-    assert.equal(generator.includes("characterSheetSrc("), true);
-  });
-});
-
-void describe("characterRow", () => {
-  void test("a catalog id returns that row", () => {
-    assert.equal(characterRow("rakieta").id, "rakieta");
-    assert.equal(characterRow("rakieta").label, "Rakieta");
-    assert.equal(characterRow("rakieta").src, "/characters/rakieta.png");
-  });
-
-  void test("an unknown id returns Bez postaci", () => {
-    const row = characterRow("smok");
+    const row = characterRow("poza-katalogiem");
 
     assert.equal(row.id, "none");
     assert.equal(row.label, "Bez postaci");
     assert.equal(row.src, null);
+  });
+
+  void test("every catalog sheet file exists under public", () => {
+    for (const row of CHARACTER_CHOICES) {
+      if (row.src === null) {
+        continue;
+      }
+
+      const relative = row.src.startsWith("/") ? row.src.slice(1) : row.src;
+      assert.equal(existsSync(path.join(repoRoot, "public", relative)), true, row.src);
+    }
+  });
+
+  void test("the worksheet generator calls characterSheetSrc and does not repeat catalog file paths", () => {
+    const generator = readRepoFile("src/components/WorksheetGenerator.tsx");
+
+    assert.equal(generator.includes("characterSheetSrc("), true);
+
+    for (const row of CHARACTER_CHOICES) {
+      if (row.src === null) {
+        continue;
+      }
+
+      assert.equal(generator.includes(row.src), false, row.src);
+    }
   });
 });
 
