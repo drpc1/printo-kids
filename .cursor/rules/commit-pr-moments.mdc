@@ -1,0 +1,32 @@
+---
+description: Remind the user when a commit, pull request, or GitHub issue update is due
+alwaysApply: true
+---
+
+# Commit and pull request moments
+
+The user works on several threads at once and misses the moment to commit or open a pull request. Remind them in one or two sentences at these moments. Do not commit or open a pull request unless they ask. Do not repeat the reminder on later turns of the same pause.
+
+Remind about a **commit** when:
+
+- A thread reaches a coherent slice (one concern, files that belong together) and the next step would start a different thread.
+- The conversation switches topic while that slice is still uncommitted.
+- A dependency, ignore rule, or config is about to land without the files that use it, or the reverse.
+
+Name the files that belong in that commit and the files that stay out.
+
+Remind about a **pull request** when:
+
+- The branch holds a finished slice, the commits are pushed or ready to push, and nothing required for that slice is still uncommitted.
+- Further work would pile a new thread onto the same pull request.
+
+After a merge, remind them that the next thread starts from an updated local `main`, not from the merged feature branch.
+
+Remind about **GitHub issues** when a slice in `context/foundation/roadmap.md` changes status. Issues with the `roadmap-slice` label follow „At a glance” and „Done”. Do not open, close, or relabel an issue unless they ask. Do not repeat the reminder on later turns of the same pause.
+
+- A slice becomes `done`: close its issue and drop `status:ready` or `status:blocked`.
+- A slice enters the open milestone: open an issue. Add `status:ready` only when its Backlog Handoff row says ready for `/10x-plan`. Leave proposed slices unlabeled beyond `roadmap-slice`.
+- A slice moves between proposed, ready, and blocked: update those labels.
+- A slice in „Po tym kamieniu” gets no issue until that milestone is open.
+
+Name the issue numbers that are now stale.

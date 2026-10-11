@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-10
+updated: 2026-10-11
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -44,7 +44,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | F-01  | worksheet-page-shell         | (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa) | —             | US-01                            | done |
 | S-01  | first-printable-maze         | Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie | F-01          | US-01, FR-003, FR-004            | done |
 | S-02  | print-a4-maze                | Rodzic może wydrukować tę kartę jako jedną stronę A4                                 | S-01          | FR-005                           | done        |
-| F-02  | remove-starter-scaffold      | (foundation) Aplikacja nie serwuje już logowania ani dashboardu ze startera; sprawdzian HTTP pilnuje strony produktu | S-02          | Access Control, Non-Goals (brak kont) | proposed |
+| F-02  | remove-starter-scaffold      | (foundation) Aplikacja nie serwuje już logowania ani dashboardu ze startera; sprawdzian HTTP pilnuje strony produktu | S-02          | Access Control, Non-Goals (brak kont) | in-progress |
 | S-03  | maze-character-choice        | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu | F-02          | US-01, FR-002                    | done |
 | S-04  | last-used-print-params       | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | S-03          | FR-006                           | done |
 | S-05  | child-profile-create-select  | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                   | done        |
@@ -133,7 +133,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** `F-01` zdjął chrome startera tylko ze strony głównej. Trasy konta, dashboard i sprawdzian logowania zostały, więc `S-01` i `S-02` zostawiały `/auth/signin` bez zmian, a `@page` nie mogło wejść do globalnego arkusza. Ten plasterek schodzi przed `S-03`, żeby postać i kolejne ekrany nie dziedziczyły tego warunku. Ryzyko: jedyny automatyczny sprawdzian HTTP dziś chodzi po flow konta, a build w CI chce sekretów Supabase — skasowanie stron bez podmiany tego sprawdzianu zostawia obowiązek, którego produkt nie używa.
-- **Status:** proposed
+- **Status:** in-progress
 
 ### S-03: Postać przy starcie labiryntu
 
@@ -227,6 +227,8 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Status:** ready
 
 ## Backlog Handoff
+
+Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcja „Po tym kamieniu” nie dostaje issue, dopóki kamień nie jest otwarty.
 
 | Roadmap ID | Change ID                   | Suggested issue title                                              | Ready for `/10x-plan` | Notes |
 | ---------- | --------------------------- | ------------------------------------------------------------------ | --------------------- | ----- |
