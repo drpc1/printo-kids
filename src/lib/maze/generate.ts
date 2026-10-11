@@ -13,12 +13,6 @@ export interface Maze {
   cells: MazeCell[][];
 }
 
-interface Jog {
-  index: number;
-  sideA: MazePoint;
-  sideB: MazePoint;
-}
-
 export function generateMaze(levelId: LevelId, random: () => number): Maze {
   const level = levelById(levelId);
   const path = layPath(level, random);
@@ -201,124 +195,117 @@ function pointKey(point: MazePoint): string {
   return `${point.row},${point.col}`;
 }
 
+// Pair counts whose full-width weave, then a run-limited descent, lands in the length band.
+const PAIRS_IN_BAND: Record<LevelId, readonly number[]> = {
+  lat3: [2],
+  lat4: [3, 4],
+  lat5: [2, 3],
+  lat6: [5, 6],
+  lat7: [5, 6, 7],
+  nastolatek: [5, 6, 7, 8],
+};
+
 function layPath(level: Level, random: () => number): MazePoint[] {
-  if (level.id === "nastolatek") {
-    return nastolatekPath(random);
+  const pairs = pick(PAIRS_IN_BAND[level.id], random);
+  const woven = weavePairs(level.columns, pairs);
+  const descended = descendToExit(woven, level, random);
+  const start = descended.findIndex((point) => point.row === level.entrance.row && point.col === level.entrance.col);
+  if (start < 0) {
+    throw new Error("Winding path missed the entrance");
   }
-  if (level.id === "lat4") {
-    return pairedSweep(level, 4);
-  }
-  if (level.id === "lat6") {
-    return pairedSweep(level, 6);
-  }
-  if (level.id === "lat7") {
-    return pairedSweep(level, 3);
-  }
-  const path = spine(level);
-  extendWithJogs(path, level, random);
-  return path;
+  return descended.slice(start);
 }
 
-function spine(level: Level): MazePoint[] {
+function weavePairs(columns: number, pairs: number): MazePoint[] {
   const path: MazePoint[] = [];
-  for (let row = level.entrance.row; row <= level.exit.row; row += 1) {
-    path.push({ row, col: level.entrance.col });
-  }
-  return path;
-}
-
-function pairedSweep(level: Level, reach: number): MazePoint[] {
-  const col = level.entrance.col;
-  const path: MazePoint[] = [];
-  let row = level.entrance.row;
-  let pair = 0;
-  while (row + 1 <= level.exit.row) {
-    const side = pair % 2 === 0 ? 1 : -1;
-    path.push({ row, col });
-    for (let step = 1; step <= reach; step += 1) {
-      path.push({ row, col: col + side * step });
-    }
-    path.push({ row: row + 1, col: col + side * reach });
-    for (let step = reach - 1; step >= 1; step -= 1) {
-      path.push({ row: row + 1, col: col + side * step });
-    }
-    path.push({ row: row + 1, col });
-    row += 2;
-    pair += 1;
-  }
-  for (let leftover = row; leftover <= level.exit.row; leftover += 1) {
-    path.push({ row: leftover, col });
-  }
-  return path;
-}
-
-function nastolatekPath(random: () => number): MazePoint[] {
-  // Columns 19–23 keep a left-to-right serpentine inside 150–300 cells and an odd length.
-  const startCol = 19 + Math.floor(random() * 5);
-  const endCol = 26;
-  const path: MazePoint[] = [];
-  for (let col = 0; col < startCol; col += 1) {
-    path.push({ row: 0, col });
-  }
-  for (let row = 0; row < 33; row += 1) {
-    if (row % 2 === 0) {
-      for (let col = startCol; col <= endCol; col += 1) {
-        path.push({ row, col });
+  for (let pair = 0; pair < pairs; pair += 1) {
+    const top = pair * 2;
+    if (pair % 2 === 0) {
+      for (let col = 0; col < columns - 1; col += 2) {
+        path.push({ row: top, col }, { row: top + 1, col }, { row: top + 1, col: col + 1 }, { row: top, col: col + 1 });
       }
+      path.push({ row: top, col: columns - 1 }, { row: top + 1, col: columns - 1 });
     } else {
-      for (let col = endCol; col >= startCol; col -= 1) {
-        path.push({ row, col });
+      for (let col = columns - 1; col > 0; col -= 2) {
+        path.push({ row: top, col }, { row: top + 1, col }, { row: top + 1, col: col - 1 }, { row: top, col: col - 1 });
       }
+      path.push({ row: top, col: 0 }, { row: top + 1, col: 0 });
     }
   }
   return path;
 }
 
-function extendWithJogs(path: MazePoint[], level: Level, random: () => number): void {
+function descendToExit(path: MazePoint[], level: Level, random: () => number): MazePoint[] {
   const occupied = new Set(path.map((point) => keyOf(point, level.columns)));
-  while (level.pathMax === null || path.length + 2 <= level.pathMax) {
-    const candidates = jogCandidates(path, occupied, level);
-    if (candidates.length === 0) {
-      return;
+  const guardLimit = level.columns * level.rows * 4;
+  for (let guard = 0; guard < guardLimit; guard += 1) {
+    const current = path[path.length - 1];
+    if (current.row === level.exit.row && current.col === level.exit.col) {
+      return path;
     }
-    applyJog(path, occupied, pick(candidates, random), level.columns);
+    const rowStep = Math.sign(level.exit.row - current.row);
+    const colStep = Math.sign(level.exit.col - current.col);
+    const options: MazePoint[] = [];
+    if (colStep !== 0) {
+      options.push({ row: current.row, col: current.col + colStep });
+    }
+    if (rowStep !== 0) {
+      options.push({ row: current.row + rowStep, col: current.col });
+    }
+    if (colStep === 0) {
+      const sides = random() < 0.5 ? [1, -1] : [-1, 1];
+      for (const side of sides) {
+        options.push({ row: current.row, col: current.col + side });
+      }
+    }
+    const next = options.find((candidate) => canAppend(path, occupied, candidate, level));
+    if (next === undefined) {
+      break;
+    }
+    path.push(next);
+    occupied.add(keyOf(next, level.columns));
   }
+  throw new Error("Winding path did not reach the exit");
 }
 
-function jogCandidates(path: MazePoint[], occupied: Set<number>, level: Level): Jog[] {
-  const candidates: Jog[] = [];
-  for (let index = 0; index < path.length - 1; index += 1) {
-    const from = path[index];
-    const to = path[index + 1];
-    const perpendicular =
-      from.row !== to.row
-        ? [
-            { row: 0, col: 1 },
-            { row: 0, col: -1 },
-          ]
-        : [
-            { row: 1, col: 0 },
-            { row: -1, col: 0 },
-          ];
-    for (const step of perpendicular) {
-      const sideA = { row: from.row + step.row, col: from.col + step.col };
-      const sideB = { row: to.row + step.row, col: to.col + step.col };
-      if (!inBounds(sideA, level) || !inBounds(sideB, level)) {
-        continue;
-      }
-      if (occupied.has(keyOf(sideA, level.columns)) || occupied.has(keyOf(sideB, level.columns))) {
-        continue;
-      }
-      candidates.push({ index, sideA, sideB });
-    }
+function canAppend(path: readonly MazePoint[], occupied: Set<number>, next: MazePoint, level: Level): boolean {
+  if (!inBounds(next, level) || occupied.has(keyOf(next, level.columns))) {
+    return false;
   }
-  return candidates;
+  const from = path[path.length - 1];
+  if (Math.abs(from.row - next.row) + Math.abs(from.col - next.col) !== 1) {
+    return false;
+  }
+  const direction = stepDirection(from, next);
+  const continued = path.length >= 2 && stepDirection(path[path.length - 2], from) === direction;
+  const length = continued ? straightRun(path) + 1 : 2;
+  return length <= 3;
 }
 
-function applyJog(path: MazePoint[], occupied: Set<number>, jog: Jog, columns: number): void {
-  path.splice(jog.index + 1, 0, jog.sideA, jog.sideB);
-  occupied.add(keyOf(jog.sideA, columns));
-  occupied.add(keyOf(jog.sideB, columns));
+function straightRun(path: readonly MazePoint[]): number {
+  const last = path.length - 1;
+  const direction = stepDirection(path[last - 1], path[last]);
+  let length = 2;
+  for (let index = last - 1; index > 0; index -= 1) {
+    if (stepDirection(path[index - 1], path[index]) !== direction) {
+      break;
+    }
+    length += 1;
+  }
+  return length;
+}
+
+function stepDirection(from: MazePoint, to: MazePoint): "north" | "east" | "south" | "west" {
+  if (to.col === from.col + 1) {
+    return "east";
+  }
+  if (to.col === from.col - 1) {
+    return "west";
+  }
+  if (to.row === from.row + 1) {
+    return "south";
+  }
+  return "north";
 }
 
 function carveSpur(cells: MazeCell[][], level: Level, path: MazePoint[], frozen: Map<number, number>): void {

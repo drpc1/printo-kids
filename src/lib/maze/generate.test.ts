@@ -30,10 +30,10 @@ void describe("LEVELS", () => {
           rows: 11,
           entrance: { row: 0, col: 4 },
           exit: { row: 10, col: 4 },
-          pathMin: null,
-          pathMax: 25,
+          pathMin: 24,
+          pathMax: 44,
           spurMin: null,
-          spurMax: 6,
+          spurMax: 4,
           showCharacter: true,
         },
         {
@@ -43,10 +43,10 @@ void describe("LEVELS", () => {
           rows: 11,
           entrance: { row: 0, col: 4 },
           exit: { row: 10, col: 4 },
-          pathMin: 40,
-          pathMax: null,
+          pathMin: 50,
+          pathMax: 80,
           spurMin: null,
-          spurMax: 9,
+          spurMax: null,
           showCharacter: true,
         },
         {
@@ -56,10 +56,10 @@ void describe("LEVELS", () => {
           rows: 16,
           entrance: { row: 0, col: 6 },
           exit: { row: 15, col: 6 },
-          pathMin: null,
-          pathMax: 40,
+          pathMin: 56,
+          pathMax: 96,
           spurMin: null,
-          spurMax: 6,
+          spurMax: 4,
           showCharacter: true,
         },
         {
@@ -69,8 +69,8 @@ void describe("LEVELS", () => {
           rows: 16,
           entrance: { row: 0, col: 6 },
           exit: { row: 15, col: 6 },
-          pathMin: 70,
-          pathMax: null,
+          pathMin: 110,
+          pathMax: 170,
           spurMin: null,
           spurMax: null,
           showCharacter: true,
@@ -82,8 +82,8 @@ void describe("LEVELS", () => {
           rows: 21,
           entrance: { row: 0, col: 8 },
           exit: { row: 20, col: 8 },
-          pathMin: 80,
-          pathMax: 120,
+          pathMin: 150,
+          pathMax: 240,
           spurMin: null,
           spurMax: null,
           showCharacter: true,
@@ -95,8 +95,8 @@ void describe("LEVELS", () => {
           rows: 33,
           entrance: { row: 0, col: 0 },
           exit: { row: 32, col: 26 },
-          pathMin: 150,
-          pathMax: 300,
+          pathMin: 280,
+          pathMax: 500,
           spurMin: 25,
           spurMax: null,
           showCharacter: false,
@@ -107,7 +107,7 @@ void describe("LEVELS", () => {
 });
 
 void describe("generateMaze", () => {
-  void test("a fixed seed meets each level's grid, one route, length band, and spur rule", () => {
+  void test("a fixed seed meets each level's grid, one winding route, and the run rule", () => {
     for (const level of LEVELS) {
       const maze = generateMaze(level.id, mulberry32(1));
       assert.equal(maze.width, level.columns, level.id);
@@ -119,20 +119,30 @@ void describe("generateMaze", () => {
       assert.equal(maze.cells[level.entrance.row][level.entrance.col].north, false, level.id);
       assert.equal(maze.cells[level.exit.row][level.exit.col].south, false, level.id);
       assert.equal(countPaths(maze, level.entrance, level.exit), 1, level.id);
-      const length = routeCells(maze, level.entrance, level.exit).length;
-      if (level.pathMin !== null) {
-        assert.ok(length >= level.pathMin, `${level.id} route ${length}`);
-      }
-      if (level.pathMax !== null) {
-        assert.ok(length <= level.pathMax, `${level.id} route ${length}`);
-      }
-      const spur = longestSpur(maze, level.entrance, level.exit);
-      if (level.spurMax !== null) {
-        assert.ok(spur <= level.spurMax, `${level.id} spur ${spur}`);
-      }
-      if (level.spurMin !== null) {
-        assert.ok(spur >= level.spurMin, `${level.id} spur ${spur}`);
-      }
+      const route = routeCells(maze, level.entrance, level.exit);
+      assert.ok(level.pathMin !== null && route.length >= level.pathMin, `${level.id} route ${route.length}`);
+      assert.ok(level.pathMax !== null && route.length <= level.pathMax, `${level.id} route ${route.length}`);
+      const third = Math.floor(level.columns / 3);
+      assert.ok(
+        route.some((point) => point.col < third),
+        `${level.id} left third`,
+      );
+      assert.ok(
+        route.some((point) => point.col >= level.columns - third),
+        `${level.id} right third`,
+      );
+      assert.ok(
+        route.some((point, index) => index > 0 && point.row < route[index - 1].row),
+        `${level.id} upward step`,
+      );
+      const runs = straightRuns(route);
+      assert.ok(
+        runs.every((run) => run < 5),
+        `${level.id} runs ${runs.join(",")}`,
+      );
+      const fours = runs.filter((run) => run === 4).length;
+      const shorts = runs.filter((run) => run <= 3).length;
+      assert.ok(fours < shorts, `${level.id} fours ${fours} shorts ${shorts}`);
     }
   });
 
@@ -214,9 +224,10 @@ void describe("mazeForSheet", () => {
   });
 
   void test("returns the same maze when one path exists", () => {
-    const maze = generateMaze(DEFAULT_LEVEL_ID, mulberry32(1));
-    assert.equal(countPaths(maze, defaultLevel.entrance, defaultLevel.exit), 1);
-    assert.equal(mazeForSheet(maze, DEFAULT_LEVEL_ID), maze);
+    const level = levelById("lat4");
+    const maze = generateMaze(level.id, mulberry32(1));
+    assert.equal(countPaths(maze, level.entrance, level.exit), 1);
+    assert.equal(mazeForSheet(maze, level.id), maze);
   });
 
   void test("returns null when the only route is outside the level's length band", () => {
@@ -284,6 +295,34 @@ function routeCells(maze: Maze, entrance: MazePoint, exit: MazePoint): MazePoint
   }
   cells.reverse();
   return cells;
+}
+
+function straightRuns(route: MazePoint[]): number[] {
+  if (route.length < 2) {
+    return route.length === 0 ? [] : [1];
+  }
+  const runs: number[] = [];
+  let length = 2;
+  let direction = runDirection(route[0], route[1]);
+  for (let index = 2; index < route.length; index += 1) {
+    const next = runDirection(route[index - 1], route[index]);
+    if (next === direction) {
+      length += 1;
+    } else {
+      runs.push(length);
+      direction = next;
+      length = 2;
+    }
+  }
+  runs.push(length);
+  return runs;
+}
+
+function runDirection(from: MazePoint, to: MazePoint): "north" | "east" | "south" | "west" {
+  if (to.row === from.row) {
+    return to.col > from.col ? "east" : "west";
+  }
+  return to.row > from.row ? "south" : "north";
 }
 
 function longestSpur(maze: Maze, entrance: MazePoint, exit: MazePoint): number {
