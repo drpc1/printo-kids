@@ -50,7 +50,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-05  | child-profile-create-select  | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                   | done        |
 | S-06  | child-profile-save-delete    | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu | S-05          | FR-009, FR-010                   | done |
 | S-07       | maze-difficulty-levels       | Rodzic może wybrać poziom nazwany wiekiem i dostać labirynt zgodny z alejką i długością drogi tego poziomu | S-06          | US-01, FR-001, FR-003, FR-006, FR-007 | proposed |
-| S-08  | full-character-catalog       | Rodzic może wybrać dowolną postać z katalogu jedenastu, także przy profilu, a pełna lista zostaje widoczna na węższym oknie | S-04, S-06    | US-03, FR-002, FR-012        | ready    |
+| S-08  | full-character-catalog       | Rodzic może wybrać dowolną postać z katalogu jedenastu, także przy profilu, a pełna lista zostaje widoczna na węższym oknie | S-04, S-06    | US-03, FR-002, FR-012        | planning |
 | S-09  | phone-worksheet              | Rodzic może na telefonie wygenerować labirynt i wydrukować go jako jedną stronę A4, bez nachodzących się przycisków | S-02          | US-04, FR-004, FR-005, FR-013 | ready    |
 
 ## Streams
@@ -210,7 +210,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Unknowns:**
   - Czy na krótkim oknie lista ma być cała naraz, czy może się przewijać? Rekomendacja: na typowym telefonie i na niższym oknie pełna lista jest widoczna bez ucinania; wygląd dodawania profilu i zapisu ulubionej postaci może się zmienić, żeby to się zmieściło. — Owner: team. Block: no.
 - **Risk:** Dotychczasowy wybór to trzy postacie i wiersz „Bez postaci”. Katalog dokłada Jednorożca, Kota, Psa, Robota, Smoka, Strażaka, Syrenkę i Wróżkę. Ta sama lista wchodzi na pasek karty, do tworzenia profilu i do zapisu ulubionej. Ostatnio użyta postać i ulubiona postać profilu przyjmują nowy identyfikator. Prawa do publikacji nie blokują planowania, tak jak przy `S-03`.
-- **Status:** ready
+- **Status:** planning
 
 ### S-09: Strona karty na telefonie
 
