@@ -1,10 +1,10 @@
 ---
 change_id: remove-starter-scaffold
 title: Remove starter scaffold
-status: impl_reviewed
+status: archived
 created: 2026-10-03
 updated: 2026-10-11
-archived_at: null
+archived_at: 2026-10-11T11:47:07Z
 ---
 
 ## Notes
