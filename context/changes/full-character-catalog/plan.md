@@ -205,23 +205,23 @@ Zapisane id Samochodzika, Rakiety, Dinozaura i „Bez postaci” zostają popraw
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi: katalog ma „Bez postaci” i jedenaście postaci w kolejności z PRD, `smok` wskazuje `/characters/smok.png`, id spoza katalogu wraca do „Bez postaci”, a generator nie powtarza ścieżek plików
-- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` przechodzi: katalog ma „Bez postaci” i jedenaście postaci w kolejności z PRD, `smok` wskazuje `/characters/smok.png`, id spoza katalogu wraca do „Bez postaci”, a generator nie powtarza ścieżek plików — ce594eb
+- [x] 1.2 `npm run lint` przechodzi — ce594eb
 
 #### Manual
 
-- [x] 1.3 Na pasku karty etykiety Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka pokazują własne obrazki
+- [x] 1.3 Na pasku karty etykiety Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka pokazują własne obrazki — ce594eb
 
 ### Phase 2: Jedna kontrolka i przewijana lista
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi, a testy ostatniej postaci i profili nadal odrzucają `smok`, gdy nie ma go na przekazanej liście dozwolonych id
-- [ ] 2.2 `npm run lint` przechodzi
+- [x] 2.1 `npm test` przechodzi, a testy ostatniej postaci i profili nadal odrzucają `smok`, gdy nie ma go na przekazanej liście dozwolonych id
+- [x] 2.2 `npm run lint` przechodzi
 
 #### Manual
 
-- [ ] 2.3 Na oknie o wysokości telefonu lista na pasku i lista w profilu przewijają się do Wróżki, a Wróżka nie zostaje poza ekranem bez przewijania
-- [ ] 2.4 Wejście w istniejący profil pokazuje jedną zapisaną postać, nie dwanaście wierszy, a Zapisz jest wyłączony, dopóki postać się nie zmieni
-- [ ] 2.5 Nowy profil startuje od „Bez postaci”, a utworzenie bez zmiany przełącza pasek karty na „Bez postaci”
-- [ ] 2.6 Zapis ulubionej z katalogu widać po ponownym wejściu, a pasek karty zmienia się tylko wtedy, gdy pokazywał poprzednią ulubioną
+- [x] 2.3 Na oknie o wysokości telefonu lista na pasku i lista w profilu przewijają się do Wróżki, a Wróżka nie zostaje poza ekranem bez przewijania
+- [x] 2.4 Wejście w istniejący profil pokazuje jedną zapisaną postać, nie dwanaście wierszy, a Zapisz jest wyłączony, dopóki postać się nie zmieni
+- [x] 2.5 Nowy profil startuje od „Bez postaci”, a utworzenie bez zmiany przełącza pasek karty na „Bez postaci”
+- [x] 2.6 Zapis ulubionej z katalogu widać po ponownym wejściu, a pasek karty zmienia się tylko wtedy, gdy pokazywał poprzednią ulubioną
