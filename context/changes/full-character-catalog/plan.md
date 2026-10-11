@@ -216,12 +216,12 @@ Zapisane id Samochodzika, Rakiety, Dinozaura i „Bez postaci” zostają popraw
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi, a testy ostatniej postaci i profili nadal odrzucają `smok`, gdy nie ma go na przekazanej liście dozwolonych id
-- [x] 2.2 `npm run lint` przechodzi
+- [x] 2.1 `npm test` przechodzi, a testy ostatniej postaci i profili nadal odrzucają `smok`, gdy nie ma go na przekazanej liście dozwolonych id — ab536e6
+- [x] 2.2 `npm run lint` przechodzi — ab536e6
 
 #### Manual
 
-- [x] 2.3 Na oknie o wysokości telefonu lista na pasku i lista w profilu przewijają się do Wróżki, a Wróżka nie zostaje poza ekranem bez przewijania
-- [x] 2.4 Wejście w istniejący profil pokazuje jedną zapisaną postać, nie dwanaście wierszy, a Zapisz jest wyłączony, dopóki postać się nie zmieni
-- [x] 2.5 Nowy profil startuje od „Bez postaci”, a utworzenie bez zmiany przełącza pasek karty na „Bez postaci”
-- [x] 2.6 Zapis ulubionej z katalogu widać po ponownym wejściu, a pasek karty zmienia się tylko wtedy, gdy pokazywał poprzednią ulubioną
+- [x] 2.3 Na oknie o wysokości telefonu lista na pasku i lista w profilu przewijają się do Wróżki, a Wróżka nie zostaje poza ekranem bez przewijania — ab536e6
+- [x] 2.4 Wejście w istniejący profil pokazuje jedną zapisaną postać, nie dwanaście wierszy, a Zapisz jest wyłączony, dopóki postać się nie zmieni — ab536e6
+- [x] 2.5 Nowy profil startuje od „Bez postaci”, a utworzenie bez zmiany przełącza pasek karty na „Bez postaci” — ab536e6
+- [x] 2.6 Zapis ulubionej z katalogu widać po ponownym wejściu, a pasek karty zmienia się tylko wtedy, gdy pokazywał poprzednią ulubioną — ab536e6
