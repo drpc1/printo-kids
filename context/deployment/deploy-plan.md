@@ -32,7 +32,7 @@ W [astro.config.mjs](astro.config.mjs) wyłączyć bindingi, których aplikacja 
 - `session: false` na poziomie `defineConfig` — adapter czyta `config.session` i przy wartości innej niż `false` sam tworzy KV `SESSION`.
 - `adapter: cloudflare({ imageService: "compile" })` — domyślne `cloudflare-binding` provisionuje binding Images.
 
-Nie ustawiać `SUPABASE_URL` ani `SUPABASE_KEY`. [src/lib/supabase.ts](src/lib/supabase.ts) już zwraca `null`, gdy ich brakuje. Nie przekazywać `--env` do Wranglera i nie tworzyć projektu Pages.
+Nie ustawiać `SUPABASE_URL` ani `SUPABASE_KEY`. Aplikacja nie ma klienta Supabase. Nie przekazywać `--env` do Wranglera i nie tworzyć projektu Pages.
 
 W frontmatterze [context/foundation/tech-stack.md](context/foundation/tech-stack.md) poprawić `deployment_target` na `cloudflare-workers` i zdanie o Pages, żeby kolejny deploy nie poszedł w zły produkt. CI w [.github/workflows/ci.yml](.github/workflows/ci.yml) zostaje bez zmian: infrastruktura wyłącza pipeline deployu z tego kroku.
 
