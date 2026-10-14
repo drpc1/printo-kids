@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import {
   barAfterFavoriteSave,
@@ -30,15 +31,15 @@ const CHARACTER_MARK_SIZE = 30;
 const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
 
 const NAME_ERROR_TEXT = {
-  empty: "Wpisz imię",
-  "too-long": "Imię może mieć najwyżej 40 znaków",
-  duplicate: "Takie imię już jest",
+  empty: "Wpisz imi─Ö",
+  "too-long": "Imi─Ö mo┼╝e mie─ç najwy┼╝ej 40 znak├│w",
+  duplicate: "Takie imi─Ö ju┼╝ jest",
 } as const;
 
-const SAVE_ERROR_TEXT = "Nie udało się zapisać profilu";
+const SAVE_ERROR_TEXT = "Nie uda┼éo si─Ö zapisa─ç profilu";
 
 type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
-type ProfilePanel = "menu" | "form" | "delete" | "switch" | "favorite-list" | "draft-list";
+type ProfilePanel = "menu" | "form" | "delete" | "edit" | "favorite-list" | "draft-list";
 
 interface VisitStart {
   profiles: ChildProfile[];
@@ -224,9 +225,7 @@ function ProfileCorner({
   );
   const [favoriteError, setFavoriteError] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<ChildProfile | null>(null);
-  const [pendingSwitch, setPendingSwitch] = useState<ChildProfile | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [switchError, setSwitchError] = useState<string | null>(null);
 
   function abandonFavoriteDraft(): void {
     favoriteLock.current = false;
@@ -238,8 +237,6 @@ function ProfileCorner({
     deleteLock.current = false;
     setPendingDelete(null);
     setDeleteError(null);
-    setPendingSwitch(null);
-    setSwitchError(null);
   }
 
   function openCreateForm(): void {
@@ -256,6 +253,11 @@ function ProfileCorner({
     deleteLock.current = false;
     setPendingDelete(null);
     setDeleteError(null);
+    setPanel("menu");
+  }
+
+  function cancelEdit(): void {
+    abandonFavoriteDraft();
     setPanel("menu");
   }
 
@@ -288,19 +290,20 @@ function ProfileCorner({
     setProfileOpen(false);
   }
 
-  function handleNameClick(profile: ChildProfile): void {
+  function openEdit(profile: ChildProfile): void {
     if (profile.id === activeId) {
-      handleChoose(profile);
+      if (activeProfile === null) {
+        return;
+      }
+      setFavoriteDraft(characterChoice(activeProfile.character));
+      setFavoriteError(null);
+      setPanel("edit");
       return;
     }
-    if (activeProfile !== null && favoriteDraft !== activeProfile.character) {
-      favoriteLock.current = false;
-      setPendingSwitch(profile);
-      setSwitchError(null);
-      setPanel("switch");
-      return;
-    }
-    handleChoose(profile);
+    setFavoriteDraft(characterChoice(profile.character));
+    setFavoriteError(null);
+    onChoose(profile);
+    setPanel("edit");
   }
 
   function openDelete(profile: ChildProfile): void {
@@ -308,13 +311,6 @@ function ProfileCorner({
     setPendingDelete(profile);
     setDeleteError(null);
     setPanel("delete");
-  }
-
-  function openActiveDelete(): void {
-    if (activeProfile === null) {
-      return;
-    }
-    openDelete(activeProfile);
   }
 
   function confirmDelete(): void {
@@ -350,41 +346,6 @@ function ProfileCorner({
     }
   }
 
-  function handleSwitchWithoutSave(): void {
-    if (pendingSwitch === null) {
-      return;
-    }
-    const target = pendingSwitch;
-    setPendingSwitch(null);
-    setSwitchError(null);
-    setPanel("menu");
-    handleChoose(target);
-  }
-
-  function handleSaveAndSwitch(): void {
-    if (favoriteLock.current || activeProfile === null || pendingSwitch === null) {
-      return;
-    }
-    const nextProfiles = withFavorite(profiles, activeProfile.id, favoriteDraft, ALLOWED_CHARACTER_IDS);
-    if (nextProfiles === null) {
-      return;
-    }
-    const target = pendingSwitch;
-    favoriteLock.current = true;
-    const saved = writeChildProfiles(localStorage, nextProfiles);
-    if (!saved) {
-      favoriteLock.current = false;
-      setSwitchError(SAVE_ERROR_TEXT);
-      return;
-    }
-    setSwitchError(null);
-    setPendingSwitch(null);
-    setPanel("menu");
-    onFavoriteSaved(nextProfiles, target.character);
-    handleChoose(target);
-    favoriteLock.current = true;
-  }
-
   function handleFavoriteSelect(id: CharacterChoice): void {
     favoriteLock.current = false;
     setFavoriteDraft(id);
@@ -400,7 +361,7 @@ function ProfileCorner({
 
   function handleFavoritePicked(id: CharacterChoice): void {
     handleFavoriteSelect(id);
-    setPanel("menu");
+    setPanel("edit");
   }
 
   function handleDraftPicked(id: CharacterChoice): void {
@@ -429,6 +390,7 @@ function ProfileCorner({
     }
     onFavoriteSaved(nextProfiles, barAfterFavoriteSave(barCharacter, previousFavorite, favoriteDraft));
     setFavoriteError(null);
+    setPanel("menu");
   }
 
   function handleCancel(): void {
@@ -508,7 +470,7 @@ function ProfileCorner({
       >
         {panel === "delete" && pendingDelete !== null ? (
           <div className={cn("flex flex-col gap-4")}>
-            <DialogTitle className={cn("break-words")}>{`Usunąć profil ${pendingDelete.name}?`}</DialogTitle>
+            <DialogTitle className={cn("break-words")}>{`Usun─ů─ç profil ${pendingDelete.name}?`}</DialogTitle>
             {deleteError !== null ? (
               <p id="child-profile-delete-error" role="alert" className={cn("text-destructive text-sm")}>
                 {deleteError}
@@ -523,110 +485,104 @@ function ProfileCorner({
                 aria-describedby={deleteError !== null ? "child-profile-delete-error" : undefined}
                 onClick={confirmDelete}
               >
-                Usuń
+                Usu┼ä
               </Button>
             </div>
           </div>
-        ) : panel === "switch" && pendingSwitch !== null ? (
-          <div className={cn("flex flex-col gap-2")}>
-            <DialogTitle className={cn("sr-only")}>Profil</DialogTitle>
-            {switchError !== null ? (
-              <p id="child-profile-switch-error" role="alert" className={cn("text-destructive text-sm")}>
-                {switchError}
-              </p>
-            ) : null}
-            <Button
-              type="button"
-              className={cn("h-auto w-full justify-start px-4 py-2 text-lg break-words whitespace-normal")}
-              aria-describedby={switchError !== null ? "child-profile-switch-error" : undefined}
-              onClick={handleSaveAndSwitch}
-            >
-              Zapisz i przełącz
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className={cn("h-auto w-full justify-start px-4 py-2 text-lg break-words whitespace-normal")}
-              onClick={handleSwitchWithoutSave}
-            >
-              Przełącz bez zapisu
-            </Button>
-          </div>
         ) : panel === "favorite-list" || panel === "draft-list" ? (
           <div className={cn("flex flex-col gap-2")}>
-            <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
+            <DialogTitle className={cn("sr-only")}>Wybierz posta─ç</DialogTitle>
             <CharacterChoiceRows
               selected={panel === "draft-list" ? draftCharacter : favoriteDraft}
               onSelect={panel === "draft-list" ? handleDraftPicked : handleFavoritePicked}
             />
           </div>
-        ) : panel !== "form" ? (
-          <div className={cn("flex flex-col gap-2")}>
-            {profiles.length >= 2 ? (
-              <>
-                <DialogTitle className={cn("sr-only")}>Profil</DialogTitle>
-                {sortProfiles(profiles).map((profile) => (
-                  <div key={profile.id} className={cn("flex w-full items-start gap-2")}>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      aria-pressed={profile.id === activeId}
-                      className={cn(
-                        "h-auto min-w-0 flex-1 justify-start px-4 py-2 text-left text-lg break-words whitespace-normal",
-                        profile.id === activeId && "bg-muted",
-                      )}
-                      onClick={() => {
-                        handleNameClick(profile);
-                      }}
-                    >
-                      <span className={cn("min-w-0 break-words")}>{profile.name}</span>
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className={cn("h-auto shrink-0 px-4 py-2 text-lg")}
-                      onClick={() => {
-                        openDelete(profile);
-                      }}
-                    >
-                      Usuń
-                    </Button>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <DialogTitle className={cn("break-words")}>
-                {activeProfile === null ? "Profil" : activeProfile.name}
-              </DialogTitle>
-            )}
-            {activeProfile !== null ? (
-              <>
-                <ProfileCharacterControl character={favoriteDraft} onOpen={openFavoriteList} />
-                {favoriteError !== null ? (
-                  <p id="child-profile-save-error" role="alert" className={cn("text-destructive text-sm")}>
-                    {favoriteError}
-                  </p>
-                ) : null}
-                <Button
-                  type="button"
-                  disabled={favoriteDraft === activeProfile.character}
-                  aria-describedby={favoriteError !== null ? "child-profile-save-error" : undefined}
-                  onClick={handleSaveFavorite}
-                >
-                  Zapisz
-                </Button>
-              </>
+        ) : panel === "edit" && activeProfile !== null ? (
+          <div className={cn("flex flex-col gap-4")}>
+            <DialogTitle className={cn("break-words")}>{activeProfile.name}</DialogTitle>
+            <ProfileCharacterControl character={favoriteDraft} onOpen={openFavoriteList} />
+            {favoriteError !== null ? (
+              <p id="child-profile-save-error" role="alert" className={cn("text-destructive text-sm")}>
+                {favoriteError}
+              </p>
             ) : null}
-            {profiles.length === 1 && activeProfile !== null ? (
+            <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end")}>
+              <Button type="button" variant="outline" onClick={cancelEdit}>
+                Anuluj
+              </Button>
               <Button
                 type="button"
-                variant="ghost"
-                className={cn("h-auto w-full justify-start px-4 py-2 text-lg")}
-                onClick={openActiveDelete}
+                disabled={favoriteDraft === activeProfile.character}
+                aria-describedby={favoriteError !== null ? "child-profile-save-error" : undefined}
+                onClick={handleSaveFavorite}
               >
-                Usuń
+                Zapisz
               </Button>
-            ) : null}
+            </div>
+          </div>
+        ) : panel !== "form" ? (
+          <div className={cn("flex flex-col gap-2")}>
+            {profiles.length >= 1 ? (
+              <>
+                <DialogTitle className={cn("sr-only")}>Profil</DialogTitle>
+                <TooltipProvider>
+                  {sortProfiles(profiles).map((profile) => (
+                    <div key={profile.id} className={cn("flex w-full items-start gap-2")}>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        aria-pressed={profile.id === activeId}
+                        className={cn(
+                          "h-auto min-w-0 flex-1 justify-start px-4 py-2 text-left text-lg break-words whitespace-normal",
+                          profile.id === activeId && "bg-muted",
+                        )}
+                        onClick={() => {
+                          handleChoose(profile);
+                        }}
+                      >
+                        <span className={cn("min-w-0 break-words")}>{profile.name}</span>
+                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Edytuj ${profile.name}`}
+                            className={cn("shrink-0")}
+                            onClick={() => {
+                              openEdit(profile);
+                            }}
+                          >
+                            <Pencil className={cn("size-4")} aria-hidden />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Edytuj</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Usu┼ä ${profile.name}`}
+                            className={cn("shrink-0")}
+                            onClick={() => {
+                              openDelete(profile);
+                            }}
+                          >
+                            <Trash2 className={cn("size-4")} aria-hidden />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Usu┼ä</TooltipContent>
+                      </Tooltip>
+                    </div>
+                  ))}
+                </TooltipProvider>
+              </>
+            ) : (
+              <DialogTitle className={cn("break-words")}>Profil</DialogTitle>
+            )}
             <Button
               type="button"
               variant="ghost"
@@ -638,10 +594,10 @@ function ProfileCorner({
           </div>
         ) : (
           <form className={cn("flex flex-col gap-4")} onSubmit={handleCreate}>
-            <DialogTitle className={cn("sr-only")}>Imię</DialogTitle>
+            <DialogTitle className={cn("sr-only")}>Imi─Ö</DialogTitle>
             <div className={cn("flex flex-col gap-2")}>
               <label htmlFor="child-profile-name" className={cn("text-sm font-medium")}>
-                Imię
+                Imi─Ö
               </label>
               <Input
                 id="child-profile-name"
@@ -664,7 +620,7 @@ function ProfileCorner({
               <Button type="button" variant="outline" onClick={handleCancel}>
                 Anuluj
               </Button>
-              <Button type="submit">Utwórz</Button>
+              <Button type="submit">Utw├│rz</Button>
             </div>
           </form>
         )}
@@ -694,10 +650,10 @@ function CharacterChoiceControl({
         <Button
           type="button"
           variant="ghost"
-          aria-label={`Postać: ${selectedChoice.label}`}
+          aria-label={`Posta─ç: ${selectedChoice.label}`}
           className={cn("text-muted-foreground hover:text-foreground h-auto gap-1.5 px-2 py-1 text-base font-normal")}
         >
-          <span>Postać:</span>
+          <span>Posta─ç:</span>
           {selectedChoice.src !== null ? (
             <img src={selectedChoice.src} alt="" width={24} height={24} className={cn("size-6")} />
           ) : null}
@@ -706,7 +662,7 @@ function CharacterChoiceControl({
         </Button>
       </DialogTrigger>
       <DialogContent className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden")} showCloseButton={false}>
-        <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
+        <DialogTitle className={cn("sr-only")}>Wybierz posta─ç</DialogTitle>
         <CharacterChoiceRows
           selected={character}
           onSelect={(id) => {
@@ -728,7 +684,7 @@ function ProfileCharacterControl({ character, onOpen }: { character: CharacterCh
     <Button
       type="button"
       variant="ghost"
-      aria-label={`Postać: ${choice.label}`}
+      aria-label={`Posta─ç: ${choice.label}`}
       className={cn("h-auto w-full justify-start px-4 py-2 text-lg")}
       onClick={onOpen}
     >
