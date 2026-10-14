@@ -21,7 +21,7 @@ Sześć siatek zostaje. Wejście i wyjście zostają. Jedna droga. Jedno ułoże
 | `lat3` | 9×11 | 24–44 | ≤ 4 |
 | `lat4` | 9×11 | 50–80 | bez progu głębokości |
 | `lat5` | 13×16 | 56–96 | ≤ 4 |
-| `lat6` | 13×16 | 110–170 | bez progu głębokości |
+| `lat6` | 13×16 | 56–96 | ≤ 4 |
 | `lat7` | 17×21 | 150–240 | bez progu głębokości |
 | `nastolatek` | 27×33 | 280–500 | ≥ 25 |
 
@@ -157,7 +157,7 @@ PRD i plan poziomów mówią tymi samymi pasmami i progami odnogi co generator. 
 
 **Intent**: Zdania „do około 40 komórek” i podobne przestają opisywać kartkę, której generator już nie robi.
 
-**Contract**: Tabela w Business Logic ma pasma 24–44, 50–80, 56–96, 110–170, 150–240 i 280–500. Płytka odnoga 3 lat i 5 lat to najwyżej 4 komórki. Głęboka odnoga nastolatka to co najmniej 25. Zdanie, że krótki poziom nie jest zagadką wśród pułapek, zostaje. Siatki i alejki zostają.
+**Contract**: Tabela w Business Logic ma pasma 24–44, 50–80, 56–96, 56–96, 150–240 i 280–500. Płytka odnoga 3 lat, 5 lat i 6 lat to najwyżej 4 komórki. Głęboka odnoga nastolatka to co najmniej 25. Zdanie, że krótki poziom nie jest zagadką wśród pułapek, zostaje. Siatki i alejki zostają.
 
 #### 2. Plan poziomów
 
@@ -171,7 +171,7 @@ PRD i plan poziomów mówią tymi samymi pasmami i progami odnogi co generator. 
 
 #### Manual Verification:
 
-- W `context/foundation/prd.md` tabela drogi ma pasma 24–44, 50–80, 56–96, 110–170, 150–240 i 280–500, płytka odnoga 3 lat i 5 lat to najwyżej 4 komórki, a głęboka odnoga nastolatka co najmniej 25
+- W `context/foundation/prd.md` tabela drogi ma pasma 24–44, 50–80, 56–96, 56–96, 150–240 i 280–500, płytka odnoga 3 lat, 5 lat i 6 lat to najwyżej 4 komórki, a głęboka odnoga nastolatka co najmniej 25
 - W `context/changes/maze-difficulty-levels/plan.md` tabela Desired End State oraz sekcje Key Discoveries i Critical Implementation Details opisują zawijaną drogę i te same pasma, a bloki Phase 1–3 oraz sekcja Progress zostają bez zmian
 
 **Implementation Note**: Po przeczytaniu obu tabel plasterek jest gotowy do przeglądu implementacji.
@@ -238,5 +238,5 @@ Zapis ostatniego użycia i profili ta zmiana nie rusza. Pasma żyją w `LEVELS` 
 
 #### Manual
 
-- [ ] 3.1 W `context/foundation/prd.md` tabela drogi ma pasma 24–44, 50–80, 56–96, 110–170, 150–240 i 280–500, płytka odnoga 3 lat i 5 lat to najwyżej 4 komórki, a głęboka odnoga nastolatka co najmniej 25
+- [ ] 3.1 W `context/foundation/prd.md` tabela drogi ma pasma 24–44, 50–80, 56–96, 56–96, 150–240 i 280–500, płytka odnoga 3 lat, 5 lat i 6 lat to najwyżej 4 komórki, a głęboka odnoga nastolatka co najmniej 25
 - [ ] 3.2 W `context/changes/maze-difficulty-levels/plan.md` tabela Desired End State oraz sekcje Key Discoveries i Critical Implementation Details opisują zawijaną drogę i te same pasma, a bloki Phase 1–3 oraz sekcja Progress zostają bez zmian
