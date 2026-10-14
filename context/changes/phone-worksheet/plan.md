@@ -85,6 +85,8 @@ Pasek po wygenerowaniu przestaje nachodzić na siebie i nie przewija strony w bo
 
 **Contract**: Ikona ma `aria-hidden`, a nazwa dostępna przycisku to słowo „Generuj” albo „Drukuj”, bez zmian, bo `seed.spec.ts` szuka po `getByRole("button", { name })`. Klasy łączy `cn()`.
 
+> Nota z implementacji (2026-10-14): od `sm` padding to `px-8`, nie `px-12`. Z ikonami i `px-12` rząd potrzebował 396 px + szerokość „Postać:” (157–229 px), więc w 576 px Drukuj zawijał się przy 8 z 12 wyborów. Z `px-8` mieści się każda postać, a przyciski mają prawie dzisiejszą szerokość. Decyzja użytkownika.
+
 #### 3. Kontrakt druku
 
 **File**: `src/lib/sheet/print-contract.test.ts`
@@ -390,18 +392,18 @@ Brak danych do migracji. Zapis profili i ostatnio użytych parametrów bez zmian
 
 #### Automated
 
-- [ ] 1.1 Testy produktu przechodzą: `npm test`
-- [ ] 1.2 Lint przechodzi: `npm run lint`
-- [ ] 1.3 Sprawdzenie typów przechodzi: `npx astro check`
-- [ ] 1.4 Build przechodzi: `npm run build`
+- [x] 1.1 Testy produktu przechodzą: `npm test`
+- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check`
+- [x] 1.4 Build przechodzi: `npm run build`
 
 #### Manual
 
-- [ ] 1.5 Przy 360×780, 375×812 i 390×844 po wygenerowaniu (tymczasowo `lat6`) Generuj, Drukuj i „Postać:” nie nachodzą na siebie, a każdy przycisk ma co najmniej 44 px wysokości
-- [ ] 1.6 Przy 360, 375, 390 i 768 px `document.documentElement.scrollWidth` jest równe `innerWidth` przed generowaniem i po nim
-- [ ] 1.7 Przy 640 i 1280 px z najdłuższą nazwą postaci pasek ma ikony `Shuffle` i `Printer` przed słowami, a jego elementy nie nachodzą na siebie i nie wychodzą poza kontener; gdy brak miejsca, Drukuj jest w następnej linii
-- [ ] 1.8 Podgląd druku w Chrome na desktopie nie pokazuje paska ani ikon
-- [ ] 1.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat`
+- [x] 1.5 Przy 360×780, 375×812 i 390×844 po wygenerowaniu (tymczasowo `lat6`) Generuj, Drukuj i „Postać:” nie nachodzą na siebie, a każdy przycisk ma co najmniej 44 px wysokości
+- [x] 1.6 Przy 360, 375, 390 i 768 px `document.documentElement.scrollWidth` jest równe `innerWidth` przed generowaniem i po nim
+- [x] 1.7 Przy 640 i 1280 px z najdłuższą nazwą postaci pasek ma ikony `Shuffle` i `Printer` przed słowami, a jego elementy nie nachodzą na siebie i nie wychodzą poza kontener; gdy brak miejsca, Drukuj jest w następnej linii
+- [x] 1.8 Podgląd druku w Chrome na desktopie nie pokazuje paska ani ikon
+- [x] 1.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat`
 
 ### Phase 2: Przycisk Profil i viewport
 
