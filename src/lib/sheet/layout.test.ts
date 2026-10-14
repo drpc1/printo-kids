@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { LEVELS, levelById, type Level } from "../maze/levels.ts";
 import { layoutSheet, type SheetLayout } from "./layout.ts";
 
 const PAGE_WIDTH = 210;
@@ -61,6 +62,45 @@ void describe("layoutSheet", () => {
     assert.ok(start.y < sheet.maze.y);
     assert.equal(sheet.meta.text, "Meta");
   });
+
+  void test("cell width is 190 divided by columns on every level grid", () => {
+    for (const level of LEVELS) {
+      const sheet = layoutForLevel(level, level.showCharacter);
+
+      assert.equal(sheet.maze.width / level.columns, (PAGE_WIDTH - INSET * 2) / level.columns);
+    }
+  });
+
+  void test("a middle entrance keeps the mark on that column and on the page", () => {
+    for (const level of LEVELS) {
+      if (!level.showCharacter) {
+        continue;
+      }
+
+      const sheet = layoutForLevel(level, true);
+      const mark = sheet.mark;
+
+      assert.ok(mark);
+      assert.equal(sheet.start, null);
+      assert.equal(mark.width, MARK_SIZE);
+      assert.equal(mark.height, MARK_SIZE);
+      assert.equal(mark.x + mark.width / 2, columnCenter(sheet, level));
+      assert.ok(mark.y >= 0);
+    }
+  });
+
+  void test("nastolatek shows Start on column 0 and has no mark", () => {
+    const level = levelById("nastolatek");
+    const sheet = layoutForLevel(level, level.showCharacter);
+    const start = sheet.start;
+
+    assert.equal(level.entrance.col, 0);
+    assert.equal(level.showCharacter, false);
+    assert.equal(sheet.mark, null);
+    assert.ok(start);
+    assert.equal(start.text, "Start");
+    assert.equal(start.x, columnCenter(sheet, level));
+  });
 });
 
 function layoutFor(characterSelected: boolean): SheetLayout {
@@ -79,4 +119,22 @@ function layoutFor(characterSelected: boolean): SheetLayout {
 function entranceCenter(sheet: SheetLayout): number {
   const cellSize = sheet.maze.width / COLUMNS;
   return sheet.maze.x + (ENTRANCE_COLUMN + 0.5) * cellSize;
+}
+
+function layoutForLevel(level: Level, characterSelected: boolean): SheetLayout {
+  return layoutSheet({
+    pageWidth: PAGE_WIDTH,
+    pageHeight: PAGE_HEIGHT,
+    inset: INSET,
+    columns: level.columns,
+    rows: level.rows,
+    entranceColumn: level.entrance.col,
+    markSize: MARK_SIZE,
+    characterSelected,
+  });
+}
+
+function columnCenter(sheet: SheetLayout, level: Level): number {
+  const cellSize = sheet.maze.width / level.columns;
+  return sheet.maze.x + (level.entrance.col + 0.5) * cellSize;
 }
