@@ -68,10 +68,10 @@ export const LEVELS: readonly Level[] = [
     rows: 16,
     entrance: { row: 0, col: 6 },
     exit: { row: 15, col: 6 },
-    pathMin: 110,
-    pathMax: 170,
+    pathMin: 56,
+    pathMax: 96,
     spurMin: null,
-    spurMax: null,
+    spurMax: 4,
     showCharacter: true,
   },
   {
