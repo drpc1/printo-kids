@@ -101,11 +101,11 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Generuj i Drukuj są osobno klikalne; jeden nie zasłania drugiego.
-- Labirynt nie wychodzi poza jedną stronę A4 ani w szerokości, ani w długości, i zachowuje margines co najmniej 10 mm.
+- Labirynt nie wychodzi poza jedną stronę A4 ani w szerokości, ani w długości, i zachowuje margines co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
 - Podgląd karty przed drukiem zostaje na telefonie.
 - Profil, wybór postaci i nagłówek zostają używalne i nie zasłaniają karty ani przycisków.
 - Druk nadal nie wymaga profilu dziecka.
-- Desktopowe Chrome, Edge, Firefox i Safari zostają w zakresie. Telefon dochodzi, a nie je zastępuje.
+- Desktopowe Chrome, Edge, Brave, Firefox i Safari zostają w zakresie. Telefon dochodzi, a nie je zastępuje. Na iOS Chrome i Brave używają silnika Safari (WebKit), więc ich układ odpowiada Safari, a druk sprawdza się w każdej z nich osobno.
 
 ## Functional Requirements
 
@@ -148,9 +148,9 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
-- Karta mieści się na jednej stronie A4 i zachowuje margines co najmniej 10 mm z każdej strony.
-- Generowanie, podgląd i druk działają w aktualnych desktopowych wersjach Chrome, Edge, Firefox i Safari.
-- Generowanie, podgląd i druk działają na telefonie w aktualnych mobilnych wersjach Chrome, Edge, Firefox i Safari.
+- Karta mieści się na jednej stronie A4 i zachowuje margines co najmniej 10 mm z każdej strony. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
+- Generowanie, podgląd i druk działają w aktualnych desktopowych wersjach Chrome, Edge, Brave, Firefox i Safari.
+- Generowanie, podgląd i druk działają na telefonie w aktualnych mobilnych wersjach Chrome, Edge, Brave, Firefox i Safari.
 - Na telefonie kontrolki generowania i drukowania nie nachodzą na siebie.
 - Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm.
 - Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
@@ -163,14 +163,14 @@ Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom wyz
 
 Rodzic wybiera jeden z sześciu poziomów nazwanych wiekiem oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Dwa poziomy mogą dzielić szerokość alejki i różnić się długością drogi.
 
-| Poziom | Alejka | Siatka | Droga do mety | Ślepe uliczki |
-| --- | --- | --- | --- | --- |
-| 3 lata | około 21 mm | 9×11 | do około 25 komórek (około 50 cm) | płytkie |
-| 4 lata | około 21 mm | 9×11 | od około 40 komórek (około 85 cm) | — |
-| 5 lat | około 15 mm | 13×16 | do około 40 komórek (około 60 cm) | płytkie |
-| 6 lat | około 15 mm | 13×16 | od około 70 komórek (około 1 m) | — |
-| 7–8 lat | około 11 mm | 17×21 | około 80–120 komórek | — |
-| nastolatek | około 7 mm | 27×33 | około 150–300 komórek | głębokie |
+| Poziom     | Alejka      | Siatka | Droga do mety                     | Ślepe uliczki |
+| ---------- | ----------- | ------ | --------------------------------- | ------------- |
+| 3 lata     | około 21 mm | 9×11   | do około 25 komórek (około 50 cm) | płytkie       |
+| 4 lata     | około 21 mm | 9×11   | od około 40 komórek (około 85 cm) | —             |
+| 5 lat      | około 15 mm | 13×16  | do około 40 komórek (około 60 cm) | płytkie       |
+| 6 lat      | około 15 mm | 13×16  | od około 70 komórek (około 1 m)   | —             |
+| 7–8 lat    | około 11 mm | 17×21  | około 80–120 komórek              | —             |
+| nastolatek | około 7 mm  | 27×33  | około 150–300 komórek             | głębokie      |
 
 Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, napis „Meta” na środku dolnej, a przy starcie stoi wybrana postać. Poziom nastolatka ma start i metę w narożnikach i nie pokazuje postaci. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
 
