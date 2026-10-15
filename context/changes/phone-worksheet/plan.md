@@ -392,46 +392,46 @@ Brak danych do migracji. Zapis profili i ostatnio użytych parametrów bez zmian
 
 #### Automated
 
-- [x] 1.1 Testy produktu przechodzą: `npm test` — 49badd6
-- [x] 1.2 Lint przechodzi: `npm run lint` — 49badd6
-- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check` — 49badd6
-- [x] 1.4 Build przechodzi: `npm run build` — 49badd6
+- [x] 1.1 Testy produktu przechodzą: `npm test` — 0d0dcf2
+- [x] 1.2 Lint przechodzi: `npm run lint` — 0d0dcf2
+- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check` — 0d0dcf2
+- [x] 1.4 Build przechodzi: `npm run build` — 0d0dcf2
 
 #### Manual
 
-- [x] 1.5 Przy 360×780, 375×812 i 390×844 po wygenerowaniu (tymczasowo `lat6`) Generuj, Drukuj i „Postać:” nie nachodzą na siebie, a każdy przycisk ma co najmniej 44 px wysokości — 49badd6
-- [x] 1.6 Przy 360, 375, 390 i 768 px `document.documentElement.scrollWidth` jest równe `innerWidth` przed generowaniem i po nim — 49badd6
-- [x] 1.7 Przy 640 i 1280 px z najdłuższą nazwą postaci pasek ma ikony `Shuffle` i `Printer` przed słowami, a jego elementy nie nachodzą na siebie i nie wychodzą poza kontener; gdy brak miejsca, Drukuj jest w następnej linii — 49badd6
-- [x] 1.8 Podgląd druku w Chrome na desktopie nie pokazuje paska ani ikon — 49badd6
-- [x] 1.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat` — 49badd6
+- [x] 1.5 Przy 360×780, 375×812 i 390×844 po wygenerowaniu (tymczasowo `lat6`) Generuj, Drukuj i „Postać:” nie nachodzą na siebie, a każdy przycisk ma co najmniej 44 px wysokości — 0d0dcf2
+- [x] 1.6 Przy 360, 375, 390 i 768 px `document.documentElement.scrollWidth` jest równe `innerWidth` przed generowaniem i po nim — 0d0dcf2
+- [x] 1.7 Przy 640 i 1280 px z najdłuższą nazwą postaci pasek ma ikony `Shuffle` i `Printer` przed słowami, a jego elementy nie nachodzą na siebie i nie wychodzą poza kontener; gdy brak miejsca, Drukuj jest w następnej linii — 0d0dcf2
+- [x] 1.8 Podgląd druku w Chrome na desktopie nie pokazuje paska ani ikon — 0d0dcf2
+- [x] 1.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat` — 0d0dcf2
 
 ### Phase 2: Przycisk Profil i viewport
 
 #### Automated
 
-- [x] 2.1 Testy produktu przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Sprawdzenie typów przechodzi: `npx astro check`
-- [x] 2.4 Build przechodzi: `npm run build`
+- [x] 2.1 Testy produktu przechodzą: `npm test` — a294998
+- [x] 2.2 Lint przechodzi: `npm run lint` — a294998
+- [x] 2.3 Sprawdzenie typów przechodzi: `npx astro check` — a294998
+- [x] 2.4 Build przechodzi: `npm run build` — a294998
 
 #### Manual
 
-- [x] 2.5 Przy 375×812 z profilem o 40-znakowym imieniu przycisk Profil i `h1` nie nachodzą na siebie przed generowaniem i po nim
-- [x] 2.6 Po przewinięciu do dołu karty na 375 px Profil nie leży nad kartą
-- [x] 2.7 Przy 1280 px z myszą Profil zostaje przyklejony w prawym górnym rogu przy przewijaniu
+- [x] 2.5 Przy 375×812 z profilem o 40-znakowym imieniu przycisk Profil i `h1` nie nachodzą na siebie przed generowaniem i po nim — a294998
+- [x] 2.6 Po przewinięciu do dołu karty na 375 px Profil nie leży nad kartą — a294998
+- [x] 2.7 Przy 1280 px z myszą Profil zostaje przyklejony w prawym górnym rogu przy przewijaniu — a294998
 - [ ] 2.8 Przy 844×390 z emulacją dotyku Profil po przewinięciu do dołu karty nie leży nad kartą
-- [x] 2.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat`
+- [x] 2.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat` — a294998
 
 ### Phase 3: Dokumenty (PRD, plan testów, roadmapa)
 
 #### Automated
 
-- [ ] 3.1 Commit dokumentów przechodzi przez lint-staged (Prettier), a `git diff --word-diff` poza formatowaniem pokazuje tylko zamierzone zdania
+- [x] 3.1 Commit dokumentów przechodzi przez lint-staged (Prettier), a `git diff --word-diff` poza formatowaniem pokazuje tylko zamierzone zdania
 
 #### Manual
 
-- [ ] 3.2 US-04 i oba wymagania niefunkcjonalne o przeglądarkach wymieniają Brave
-- [ ] 3.3 Zdanie o marginesie 10 mm mówi wprost, że dotyczy ścian i ramki labiryntu, a nie znaku postaci
+- [x] 3.2 US-04 i oba wymagania niefunkcjonalne o przeglądarkach wymieniają Brave
+- [x] 3.3 Zdanie o marginesie 10 mm mówi wprost, że dotyczy ścian i ramki labiryntu, a nie znaku postaci
 
 ### Phase 4: Spójność wierszy w dialogach
 
