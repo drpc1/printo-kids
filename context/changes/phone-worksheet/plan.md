@@ -426,25 +426,25 @@ Brak danych do migracji. Zapis profili i ostatnio użytych parametrów bez zmian
 
 #### Automated
 
-- [x] 3.1 Commit dokumentów przechodzi przez lint-staged (Prettier), a `git diff --word-diff` poza formatowaniem pokazuje tylko zamierzone zdania
+- [x] 3.1 Commit dokumentów przechodzi przez lint-staged (Prettier), a `git diff --word-diff` poza formatowaniem pokazuje tylko zamierzone zdania — 0c6901d
 
 #### Manual
 
-- [x] 3.2 US-04 i oba wymagania niefunkcjonalne o przeglądarkach wymieniają Brave
-- [x] 3.3 Zdanie o marginesie 10 mm mówi wprost, że dotyczy ścian i ramki labiryntu, a nie znaku postaci
+- [x] 3.2 US-04 i oba wymagania niefunkcjonalne o przeglądarkach wymieniają Brave — 0c6901d
+- [x] 3.3 Zdanie o marginesie 10 mm mówi wprost, że dotyczy ścian i ramki labiryntu, a nie znaku postaci — 0c6901d
 
 ### Phase 4: Spójność wierszy w dialogach
 
 #### Automated
 
-- [ ] 4.1 Testy produktu przechodzą: `npm test`
-- [ ] 4.2 Lint przechodzi: `npm run lint`
-- [ ] 4.3 Sprawdzenie typów przechodzi: `npx astro check`
+- [x] 4.1 Testy produktu przechodzą: `npm test`
+- [x] 4.2 Lint przechodzi: `npm run lint`
+- [x] 4.3 Sprawdzenie typów przechodzi: `npx astro check`
 
 #### Manual
 
-- [ ] 4.4 Przy 375 px tekst wierszy w oknie profili i na liście postaci ma 16 px, a wiersze mają co najmniej 44 px wysokości
-- [ ] 4.5 Przy 1280 px dialogi wyglądają jak przed fazą
+- [x] 4.4 Przy 375 px tekst wierszy w oknie profili i na liście postaci ma 16 px, a wiersze mają co najmniej 44 px wysokości
+- [x] 4.5 Przy 1280 px dialogi wyglądają jak przed fazą
 
 ### Phase 5: Testy telefonu w Playwright
 
