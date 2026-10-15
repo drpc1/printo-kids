@@ -392,35 +392,35 @@ Brak danych do migracji. Zapis profili i ostatnio użytych parametrów bez zmian
 
 #### Automated
 
-- [x] 1.1 Testy produktu przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check`
-- [x] 1.4 Build przechodzi: `npm run build`
+- [x] 1.1 Testy produktu przechodzą: `npm test` — 49badd6
+- [x] 1.2 Lint przechodzi: `npm run lint` — 49badd6
+- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check` — 49badd6
+- [x] 1.4 Build przechodzi: `npm run build` — 49badd6
 
 #### Manual
 
-- [x] 1.5 Przy 360×780, 375×812 i 390×844 po wygenerowaniu (tymczasowo `lat6`) Generuj, Drukuj i „Postać:” nie nachodzą na siebie, a każdy przycisk ma co najmniej 44 px wysokości
-- [x] 1.6 Przy 360, 375, 390 i 768 px `document.documentElement.scrollWidth` jest równe `innerWidth` przed generowaniem i po nim
-- [x] 1.7 Przy 640 i 1280 px z najdłuższą nazwą postaci pasek ma ikony `Shuffle` i `Printer` przed słowami, a jego elementy nie nachodzą na siebie i nie wychodzą poza kontener; gdy brak miejsca, Drukuj jest w następnej linii
-- [x] 1.8 Podgląd druku w Chrome na desktopie nie pokazuje paska ani ikon
-- [x] 1.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat`
+- [x] 1.5 Przy 360×780, 375×812 i 390×844 po wygenerowaniu (tymczasowo `lat6`) Generuj, Drukuj i „Postać:” nie nachodzą na siebie, a każdy przycisk ma co najmniej 44 px wysokości — 49badd6
+- [x] 1.6 Przy 360, 375, 390 i 768 px `document.documentElement.scrollWidth` jest równe `innerWidth` przed generowaniem i po nim — 49badd6
+- [x] 1.7 Przy 640 i 1280 px z najdłuższą nazwą postaci pasek ma ikony `Shuffle` i `Printer` przed słowami, a jego elementy nie nachodzą na siebie i nie wychodzą poza kontener; gdy brak miejsca, Drukuj jest w następnej linii — 49badd6
+- [x] 1.8 Podgląd druku w Chrome na desktopie nie pokazuje paska ani ikon — 49badd6
+- [x] 1.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat` — 49badd6
 
 ### Phase 2: Przycisk Profil i viewport
 
 #### Automated
 
-- [ ] 2.1 Testy produktu przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Sprawdzenie typów przechodzi: `npx astro check`
-- [ ] 2.4 Build przechodzi: `npm run build`
+- [x] 2.1 Testy produktu przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.3 Sprawdzenie typów przechodzi: `npx astro check`
+- [x] 2.4 Build przechodzi: `npm run build`
 
 #### Manual
 
-- [ ] 2.5 Przy 375×812 z profilem o 40-znakowym imieniu przycisk Profil i `h1` nie nachodzą na siebie przed generowaniem i po nim
-- [ ] 2.6 Po przewinięciu do dołu karty na 375 px Profil nie leży nad kartą
-- [ ] 2.7 Przy 1280 px z myszą Profil zostaje przyklejony w prawym górnym rogu przy przewijaniu
+- [x] 2.5 Przy 375×812 z profilem o 40-znakowym imieniu przycisk Profil i `h1` nie nachodzą na siebie przed generowaniem i po nim
+- [x] 2.6 Po przewinięciu do dołu karty na 375 px Profil nie leży nad kartą
+- [x] 2.7 Przy 1280 px z myszą Profil zostaje przyklejony w prawym górnym rogu przy przewijaniu
 - [ ] 2.8 Przy 844×390 z emulacją dotyku Profil po przewinięciu do dołu karty nie leży nad kartą
-- [ ] 2.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat`
+- [x] 2.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat`
 
 ### Phase 3: Dokumenty (PRD, plan testów, roadmapa)
 
