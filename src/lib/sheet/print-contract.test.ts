@@ -47,7 +47,7 @@ void describe("print contract", () => {
 
     const generator = readRepoFile(WORKSHEET_GENERATOR);
     assert.deepEqual(classNamesContaining(generator, "print:hidden"), [
-      "flex w-full items-center justify-between gap-4 print:hidden",
+      "flex w-full flex-wrap items-center gap-3 sm:gap-4 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
       "max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden",
     ]);
