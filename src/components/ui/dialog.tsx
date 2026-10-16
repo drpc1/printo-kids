@@ -3,6 +3,7 @@ import { XIcon } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 
 import { Button } from "@/components/ui/button";
+import { useScrollEdges } from "@/hooks/useScrollEdges";
 import { cn } from "@/lib/utils";
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -42,6 +43,7 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
 }) {
+  const scrollEdges = useScrollEdges();
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
@@ -54,7 +56,9 @@ function DialogContent({
         )}
         {...props}
       >
-        <div className={cn("min-h-0 overflow-y-auto")}>{children}</div>
+        <div ref={scrollEdges} data-slot="dialog-body" className={cn("scroll-shadow min-h-0 overflow-y-auto")}>
+          {children}
+        </div>
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"

@@ -34,6 +34,13 @@ void describe("print contract", () => {
     assert.ok(svgClass.includes("print:overflow-hidden"));
   });
 
+  void test("the printed SVG shrinks into the printable area when the browser adds printer margins", () => {
+    // iOS print ignores @page margin: 0; without the clamp the 210 by 297 mm sheet spills onto a second page.
+    const printCss = extractBlock(readRepoFile(WORKSHEET_HOME), "@media print");
+    assert.match(printCss, /#worksheet-home svg\s*\{[^}]*max-width:\s*100%\s*;/);
+    assert.match(printCss, /#worksheet-home svg\s*\{[^}]*max-height:\s*100vh\s*;/);
+  });
+
   void test("print hides the heading, the purpose line, and the controls", () => {
     const home = readRepoFile(WORKSHEET_HOME);
     assert.match(home, /<h1\b/);
