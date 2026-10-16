@@ -25,7 +25,7 @@ export function generateMaze(levelId: LevelId, random: () => number): Maze {
   if (level.algorithm === "kruskal") {
     carveKruskal(cells, level.rows, level.columns, random);
   } else {
-    carveBacktracker(cells, level.rows, level.columns, random);
+    carveBacktracker(cells, level.rows, level.columns, level.entrance, random);
   }
   cells[level.entrance.row][level.entrance.col].north = false;
   cells[level.exit.row][level.exit.col].south = false;
@@ -93,9 +93,14 @@ function carveKruskal(cells: MazeCell[][], rows: number, columns: number, random
   }
 }
 
-function carveBacktracker(cells: MazeCell[][], rows: number, columns: number, random: () => number): void {
+function carveBacktracker(
+  cells: MazeCell[][],
+  rows: number,
+  columns: number,
+  start: MazePoint,
+  random: () => number,
+): void {
   const visited = Array.from({ length: rows }, () => Array.from({ length: columns }, () => false));
-  const start: MazePoint = { row: Math.floor(random() * rows), col: Math.floor(random() * columns) };
   visited[start.row][start.col] = true;
   const stack: MazePoint[] = [start];
 
