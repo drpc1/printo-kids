@@ -278,20 +278,20 @@ Istniejący `printo-kids:last-used` i `printo-kids:child-profiles` bez `level` c
 
 #### Automated
 
-- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę, jedną drogę, długość w paśmie i regułę odnogi — 3caf4db
-- [x] 1.2 `npm run lint` i `npx astro check` przechodzą — 3caf4db
+- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę, jedną drogę, długość w paśmie i regułę odnogi — e1b42f4
+- [x] 1.2 `npm run lint` i `npx astro check` przechodzą — e1b42f4
 
 #### Manual
 
-- [x] 1.3 W `context/foundation/test-plan.md` §7 zgodność z tymi sześcioma poziomami nie jest już poza budżetem, a §5 i §6 nie mówią już, że Generuj jest bez komunikatu ani że każde ziarno jest kartką 13×16 — 3caf4db
+- [x] 1.3 W `context/foundation/test-plan.md` §7 zgodność z tymi sześcioma poziomami nie jest już poza budżetem, a §5 i §6 nie mówią już, że Generuj jest bez komunikatu ani że każde ziarno jest kartką 13×16 — e1b42f4
 
 ### Phase 2: Kartka dla czterech siatek
 
 #### Automated
 
-- [x] 2.1 Test układu daje szerokość komórki `190 / kolumny` dla 9, 13, 17 i 27 — 044a296
-- [x] 2.2 Test układu kładzie napis albo postać na środkowej kolumnie poziomów do 7–8 lat, a na nastolatku napis Start bez znacznika postaci, z górą znacznika na stronie dla pozostałych trzech siatek — 044a296
-- [x] 2.3 `npm test` i `npm run lint` przechodzą — 044a296
+- [x] 2.1 Test układu daje szerokość komórki `190 / kolumny` dla 9, 13, 17 i 27 — 5d7aa6e
+- [x] 2.2 Test układu kładzie napis albo postać na środkowej kolumnie poziomów do 7–8 lat, a na nastolatku napis Start bez znacznika postaci, z górą znacznika na stronie dla pozostałych trzech siatek — 5d7aa6e
+- [x] 2.3 `npm test` i `npm run lint` przechodzą — 5d7aa6e
 
 ### Phase 3: Wybór, zapis i Generuj
 
