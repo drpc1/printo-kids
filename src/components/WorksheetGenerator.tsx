@@ -6,7 +6,7 @@ import { CharacterChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
-import { DEFAULT_LEVEL_ID, levelById, type Level } from "@/lib/maze/levels";
+import { LEVELS, levelById, type Level, type LevelId } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
 const INSET = 10;
 const CHARACTER_MARK_SIZE = 30;
+const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
 
 const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
 
@@ -24,6 +25,7 @@ interface VisitStart {
   profiles: ChildProfile[];
   activeId: string | null;
   character: CharacterChoice;
+  level: LevelId;
   ask: boolean;
 }
 
@@ -40,9 +42,12 @@ export default function WorksheetGenerator() {
   const [profiles, setProfiles] = useState(visit.profiles);
   const [activeId, setActiveId] = useState(visit.activeId);
   const [character, setCharacter] = useState(visit.character);
+  const [level, setLevel] = useState(visit.level);
+  const [generateFailed, setGenerateFailed] = useState(false);
   const [ask, setAsk] = useState(visit.ask);
   const [maze, setMaze] = useState<Maze | null>(null);
   const [choiceOpen, setChoiceOpen] = useState(false);
+  const [levelOpen, setLevelOpen] = useState(false);
   const waitingForChild = profiles.length >= 2 && activeId === null;
   const selectedChoice = characterRow(character);
 
@@ -61,10 +66,35 @@ export default function WorksheetGenerator() {
     if (waitingForChild) {
       return;
     }
-    const level = DEFAULT_LEVEL_ID;
     const next = mazeForSheet(generateMaze(level, Math.random), level);
-    if (next !== null) {
-      setMaze(next);
+    if (next === null) {
+      setGenerateFailed(true);
+      return;
+    }
+    setGenerateFailed(false);
+    setMaze(next);
+  }
+
+  function applyLevel(next: LevelId): void {
+    if (next === level) {
+      return;
+    }
+    setLevel(next);
+    setMaze(null);
+    setGenerateFailed(false);
+  }
+
+  function handleCharacterSelect(id: CharacterChoice): void {
+    setCharacter(id);
+    if (activeId === null) {
+      writeLastUsed(localStorage, { character: id, level });
+    }
+  }
+
+  function handleLevelSelect(id: LevelId): void {
+    applyLevel(id);
+    if (activeId === null) {
+      writeLastUsed(localStorage, { character, level: id });
     }
   }
 
@@ -76,11 +106,13 @@ export default function WorksheetGenerator() {
     setProfiles((current) => [...current, profile]);
     setActiveId(profile.id);
     setCharacter(characterChoice(profile.character));
+    applyLevel(profile.level);
   }
 
   function handleProfileChosen(profile: ChildProfile): void {
     setActiveId(profile.id);
     setCharacter(characterChoice(profile.character));
+    applyLevel(profile.level);
   }
 
   function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string): void {
@@ -92,11 +124,20 @@ export default function WorksheetGenerator() {
     setProfiles(next.profiles);
     setActiveId(next.activeId);
     setCharacter(characterChoice(next.character));
+    applyLevel(next.level);
     setAsk(next.ask);
   }
 
   const hasMaze = maze !== null;
-  const sheetLevel = levelById(DEFAULT_LEVEL_ID);
+  const sheetLevel = levelById(level);
+  const levelControl = (
+    <LevelChoiceControl level={sheetLevel} open={levelOpen} onOpenChange={setLevelOpen} onSelect={handleLevelSelect} />
+  );
+  const failedNote = generateFailed ? (
+    <p role="alert" className={cn("text-destructive text-sm")}>
+      {GENERATE_FAILED_TEXT}
+    </p>
+  ) : null;
 
   return (
     <div className={cn("flex w-full flex-col items-center gap-4")}>
@@ -104,6 +145,7 @@ export default function WorksheetGenerator() {
         profiles={profiles}
         activeId={activeId}
         barCharacter={character}
+        barLevel={level}
         ask={ask}
         onCreated={handleProfileCreated}
         onChoose={handleProfileChosen}
@@ -112,16 +154,17 @@ export default function WorksheetGenerator() {
       />
       {hasMaze ? (
         <div className={cn("flex w-full items-center justify-between gap-4 print:hidden")}>
-          <div className={cn("flex min-w-0 items-center gap-3")}>
+          <div className={cn("flex min-w-0 flex-wrap items-center gap-3")}>
             <CharacterChoiceControl
               character={character}
               selectedChoice={selectedChoice}
               choiceOpen={choiceOpen}
               onOpenChange={setChoiceOpen}
-              onSelect={setCharacter}
-              rememberLastUsed={activeId === null}
+              onSelect={handleCharacterSelect}
             />
+            {levelControl}
             <GenerateButton onClick={handleGenerate} tone="quiet" disabled={waitingForChild} />
+            {failedNote}
           </div>
           <Button
             type="button"
@@ -134,15 +177,18 @@ export default function WorksheetGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          <CharacterChoiceControl
-            character={character}
-            selectedChoice={selectedChoice}
-            choiceOpen={choiceOpen}
-            onOpenChange={setChoiceOpen}
-            onSelect={setCharacter}
-            rememberLastUsed={activeId === null}
-          />
+          <div className={cn("flex flex-wrap items-center justify-center gap-2")}>
+            <CharacterChoiceControl
+              character={character}
+              selectedChoice={selectedChoice}
+              choiceOpen={choiceOpen}
+              onOpenChange={setChoiceOpen}
+              onSelect={handleCharacterSelect}
+            />
+            {levelControl}
+          </div>
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
+          {failedNote}
         </div>
       )}
       {hasMaze ? <MazeSheet maze={maze} characterId={character} level={sheetLevel} /> : null}
@@ -178,14 +224,12 @@ function CharacterChoiceControl({
   choiceOpen,
   onOpenChange,
   onSelect,
-  rememberLastUsed,
 }: {
   character: CharacterChoice;
   selectedChoice: (typeof CHARACTER_CHOICES)[number];
   choiceOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onSelect: (id: CharacterChoice) => void;
-  rememberLastUsed: boolean;
 }) {
   return (
     <Dialog open={choiceOpen} onOpenChange={onOpenChange}>
@@ -210,12 +254,58 @@ function CharacterChoiceControl({
           selected={character}
           onSelect={(id) => {
             onSelect(id);
-            if (rememberLastUsed) {
-              writeLastUsed(localStorage, id);
-            }
             onOpenChange(false);
           }}
         />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function LevelChoiceControl({
+  level,
+  open,
+  onOpenChange,
+  onSelect,
+}: {
+  level: Level;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSelect: (id: LevelId) => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          aria-label={`Poziom: ${level.label}`}
+          className={cn("text-muted-foreground hover:text-foreground h-auto gap-1.5 px-2 py-1 text-base font-normal")}
+        >
+          <span>Poziom:</span>
+          {level.label}
+          <ChevronDown className={cn("size-4")} aria-hidden />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden")} showCloseButton={false}>
+        <DialogTitle className={cn("sr-only")}>Wybierz poziom</DialogTitle>
+        <div className={cn("flex flex-col gap-2")}>
+          {LEVELS.map((option) => (
+            <Button
+              key={option.id}
+              type="button"
+              variant="ghost"
+              aria-pressed={level.id === option.id}
+              className={cn("h-auto w-full justify-start px-4 py-2 text-lg", level.id === option.id && "bg-muted")}
+              onClick={() => {
+                onSelect(option.id);
+                onOpenChange(false);
+              }}
+            >
+              {option.label}
+            </Button>
+          ))}
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -335,6 +425,7 @@ function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitSta
     profiles,
     activeId: opening.activeId,
     character: characterChoice(opening.character),
+    level: opening.level,
     ask: opening.ask,
   };
 }

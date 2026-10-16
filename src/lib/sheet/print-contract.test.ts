@@ -50,6 +50,7 @@ void describe("print contract", () => {
       "flex w-full items-center justify-between gap-4 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
       "max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden",
+      "max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden",
     ]);
   });
 
