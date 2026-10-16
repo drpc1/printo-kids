@@ -101,11 +101,11 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Generuj i Drukuj są osobno klikalne; jeden nie zasłania drugiego.
-- Labirynt nie wychodzi poza jedną stronę A4 ani w szerokości, ani w długości, i zachowuje margines co najmniej 10 mm.
+- Labirynt nie wychodzi poza jedną stronę A4 ani w szerokości, ani w długości, i zachowuje margines co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
 - Podgląd karty przed drukiem zostaje na telefonie.
 - Profil, wybór postaci i nagłówek zostają używalne i nie zasłaniają karty ani przycisków.
 - Druk nadal nie wymaga profilu dziecka.
-- Desktopowe Chrome, Edge, Firefox i Safari zostają w zakresie. Telefon dochodzi, a nie je zastępuje.
+- Desktopowe Chrome, Edge, Brave, Firefox i Safari zostają w zakresie. Telefon dochodzi, a nie je zastępuje. Na iOS Chrome i Brave używają silnika Safari (WebKit), więc ich układ odpowiada Safari, a druk sprawdza się w każdej z nich osobno.
 
 ## Functional Requirements
 
@@ -148,11 +148,11 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
-- Karta mieści się na jednej stronie A4 i zachowuje margines co najmniej 10 mm z każdej strony.
-- Generowanie, podgląd i druk działają w aktualnych desktopowych wersjach Chrome, Edge, Firefox i Safari.
-- Generowanie, podgląd i druk działają na telefonie w aktualnych mobilnych wersjach Chrome, Edge, Firefox i Safari.
+- Karta mieści się na jednej stronie A4 i zachowuje margines co najmniej 10 mm z każdej strony. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
+- Generowanie, podgląd i druk działają w aktualnych desktopowych wersjach Chrome, Edge, Brave, Firefox i Safari.
+- Generowanie, podgląd i druk działają na telefonie w aktualnych mobilnych wersjach Chrome, Edge, Brave, Firefox i Safari.
 - Na telefonie kontrolki generowania i drukowania nie nachodzą na siebie.
-- Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm.
+- Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
 - Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.

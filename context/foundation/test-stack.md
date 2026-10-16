@@ -16,3 +16,12 @@
 - seed: tests/e2e/seed.spec.ts — protects worksheet-generate-shows-maze (Generuj reveals the maze on the screen)
 - browser CLI: playwright-cli, command skill at .cursor/skills/playwright-cli/SKILL.md
 - updated: 2026-10-10
+
+## Projekty telefonu (phone-worksheet, S-09)
+
+- projects: `chromium` (Desktop Chrome), `phone-360` (Chromium 360×780, dotyk), `pixel-7` (Chromium), `iphone-13` (WebKit), `tablet-768` (Chromium 768×1024, dotyk)
+- layout spec: `tests/e2e/phone-layout.spec.ts`; `seed.spec.ts` runs on every project
+- local run: `E2E_PORT=4398 npx playwright test` (port 4321 is often taken by another dev server and `reuseExistingServer` would test that server)
+- WebKit: Playwright 1.64 WebKit crashes at launch on the Windows dev machine (exit 0xC0EA0002), so `iphone-13` is skipped on Windows unless `E2E_WEBKIT=1`
+- CI: none on push or pull request; the on-demand workflow `.github/workflows/e2e-phone.yml` (`workflow_dispatch`, Ubuntu) runs all five projects and uploads `playwright-report`
+- updated: 2026-10-15

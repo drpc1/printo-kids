@@ -21,6 +21,9 @@ import { cn } from "@/lib/utils";
 
 const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
 
+// Dialog rows stay at the size of Generuj and Drukuj: 16 px text below sm, 18 px from sm, 44 px tall either way.
+export const DIALOG_ROW_CLASS = "h-auto justify-start px-4 py-2.5 text-base sm:py-2 sm:text-lg";
+
 const NAME_ERROR_TEXT = {
   empty: "Wpisz imię",
   "too-long": "Imię może mieć najwyżej 40 znaków",
@@ -288,15 +291,14 @@ export function ProfileCorner({
           variant="ghost"
           aria-label={cornerLabel}
           className={cn(
-            "text-muted-foreground hover:text-foreground fixed top-4 right-4 z-40 h-auto max-w-48 px-2 py-1 text-base font-normal print:hidden",
+            "text-muted-foreground hover:text-foreground absolute top-4 right-4 z-40 h-auto max-w-48 px-2 py-1 text-base font-normal print:hidden sm:pointer-fine:fixed",
           )}
         >
           <span className={cn("min-w-0 truncate")}>{cornerLabel}</span>
         </Button>
       </DialogTrigger>
       <DialogContent
-        className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto")}
-        showCloseButton={false}
+        className={cn("max-h-[calc(100dvh-2rem)]")}
         onEscapeKeyDown={(event) => {
           if (panel !== "delete") {
             return;
@@ -378,7 +380,8 @@ export function ProfileCorner({
                         variant="ghost"
                         aria-pressed={profile.id === activeId}
                         className={cn(
-                          "h-auto min-w-0 flex-1 justify-start px-4 py-2 text-left text-lg break-words whitespace-normal",
+                          DIALOG_ROW_CLASS,
+                          "min-w-0 flex-1 text-left break-words whitespace-normal",
                           profile.id === activeId && "bg-muted",
                         )}
                         onClick={() => {
@@ -428,12 +431,7 @@ export function ProfileCorner({
             ) : (
               <DialogTitle className={cn("break-words")}>Profil</DialogTitle>
             )}
-            <Button
-              type="button"
-              variant="ghost"
-              className={cn("h-auto w-full justify-start px-4 py-2 text-lg")}
-              onClick={openCreateForm}
-            >
+            <Button type="button" variant="ghost" className={cn(DIALOG_ROW_CLASS, "w-full")} onClick={openCreateForm}>
               Dodaj profil
             </Button>
           </div>
@@ -482,7 +480,7 @@ function ProfileCharacterControl({ character, onOpen }: { character: CharacterCh
       type="button"
       variant="ghost"
       aria-label={`Postać: ${choice.label}`}
-      className={cn("h-auto w-full justify-start px-4 py-2 text-lg")}
+      className={cn(DIALOG_ROW_CLASS, "w-full")}
       onClick={onOpen}
     >
       {choice.src !== null ? <img src={choice.src} alt="" width={40} height={40} className={cn("size-10")} /> : null}
@@ -511,7 +509,7 @@ export function CharacterChoiceRows({
           type="button"
           variant="ghost"
           aria-pressed={selected === option.id}
-          className={cn("h-auto w-full justify-start px-4 py-2 text-lg", selected === option.id && "bg-muted")}
+          className={cn(DIALOG_ROW_CLASS, "w-full", selected === option.id && "bg-muted")}
           onClick={() => {
             onSelect(option.id);
           }}
