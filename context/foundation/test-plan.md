@@ -71,7 +71,7 @@ Kolejność bierze się z wpływu i sparzenia, zgodnie z wywiadem P3. Faza 1 ma 
 
 Astro 7 SSR, wyspy React, TypeScript, Tailwind, Cloudflare Workers. Node 22.14.0. Produkt nie ma kont, płatności, AI ani zadań w tle. Dane labiryntu i przyszłych profili zostają na urządzeniu.
 
-Baza testów: **sparse**. `npm test` uruchamia `src/lib/maze/generate.test.ts`, `src/lib/sheet/layout.test.ts`, `src/lib/sheet/print-contract.test.ts`, `src/lib/last-used.test.ts`, `src/lib/child-profiles.test.ts` i `src/lib/sheet/character.test.ts`. Nie ma Vitest ani Jest. Playwright jest (`tests/e2e/`), działa lokalnie i nie ma go w CI. CI odpala `npm test` oraz, osobno, smoke strony produktu.
+Baza testów: **sparse**. `npm test` uruchamia `src/lib/maze/generate.test.ts`, `src/lib/sheet/layout.test.ts`, `src/lib/sheet/print-contract.test.ts`, `src/lib/last-used.test.ts`, `src/lib/child-profiles.test.ts` i `src/lib/sheet/character.test.ts`. Nie ma Vitest ani Jest. Playwright jest (`tests/e2e/`), działa lokalnie i nie ma go w bramce CI; ręczny workflow `e2e-phone.yml` uruchamia wszystkie projekty, także iPhone (WebKit). CI odpala `npm test` oraz, osobno, smoke strony produktu.
 
 **Stack grounding tools (current session):**
 

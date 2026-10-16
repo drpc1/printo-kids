@@ -10,8 +10,9 @@ if (existsSync(".env")) process.loadEnvFile(".env");
 const PORT = Number(process.env.E2E_PORT ?? 4321);
 const baseURL = `http://localhost:${PORT}`;
 
-// Playwright's WebKit crashes at launch on this Windows host (exit 0xC0EA0002), so the iPhone
-// project runs on Linux and macOS, in the on-demand workflow e2e-phone.yml, or with E2E_WEBKIT=1.
+// Playwright's WebKit crashed at launch on the Windows dev machine (exit 0xC0EA0002), so the iPhone
+// project is off on every Windows host and runs on Linux and macOS, in the on-demand workflow
+// e2e-phone.yml, or on Windows with E2E_WEBKIT=1.
 const RUN_WEBKIT = process.platform !== "win32" || process.env.E2E_WEBKIT === "1";
 if (!RUN_WEBKIT && process.env.TEST_WORKER_INDEX === undefined) {
   process.stderr.write(
