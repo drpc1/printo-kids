@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CharacterChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
+import { CharacterChoiceRows, DIALOG_ROW_CLASS, ProfileCorner } from "@/components/ProfileCorner";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
@@ -16,6 +16,10 @@ const PAGE_HEIGHT = 297;
 const INSET = 10;
 const CHARACTER_MARK_SIZE = 30;
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
+
+// Button's default size adds has-[>svg]:px-3; the has-[>svg] entries replace it so the icon keeps the full padding.
+const ACTION_BUTTON_CLASS =
+  "h-auto rounded-full px-6 py-2.5 text-base has-[>svg]:px-6 sm:px-8 sm:py-3.5 sm:text-lg sm:has-[>svg]:px-8";
 
 const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
 
@@ -153,8 +157,8 @@ export default function WorksheetGenerator() {
         onDeleted={handleDeleted}
       />
       {hasMaze ? (
-        <div className={cn("flex w-full items-center justify-between gap-4 print:hidden")}>
-          <div className={cn("flex min-w-0 flex-wrap items-center gap-3")}>
+        <div className={cn("flex w-full flex-wrap items-center gap-3 sm:gap-4 print:hidden")}>
+          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3 sm:w-auto")}>
             <CharacterChoiceControl
               character={character}
               selectedChoice={selectedChoice}
@@ -163,15 +167,21 @@ export default function WorksheetGenerator() {
               onSelect={handleCharacterSelect}
             />
             {levelControl}
-            <GenerateButton onClick={handleGenerate} tone="quiet" disabled={waitingForChild} />
             {failedNote}
           </div>
+          <GenerateButton
+            onClick={handleGenerate}
+            tone="quiet"
+            disabled={waitingForChild}
+            className="flex-1 sm:flex-none"
+          />
           <Button
             type="button"
             variant="default"
             onClick={handlePrint}
-            className={cn("h-auto rounded-full px-12 py-3.5 text-lg")}
+            className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
           >
+            <Printer aria-hidden />
             Drukuj
           </Button>
         </div>
@@ -200,10 +210,12 @@ function GenerateButton({
   onClick,
   tone,
   disabled,
+  className,
 }: {
   onClick: () => void;
   tone: "hero" | "quiet";
   disabled: boolean;
+  className?: string;
 }) {
   return (
     <Button
@@ -211,8 +223,9 @@ function GenerateButton({
       variant={tone === "hero" ? "default" : "outline"}
       onClick={onClick}
       disabled={disabled}
-      className={cn("h-auto rounded-full px-12 py-3.5 text-lg")}
+      className={cn(ACTION_BUTTON_CLASS, className)}
     >
+      <Shuffle aria-hidden />
       Generuj
     </Button>
   );
@@ -248,7 +261,7 @@ function CharacterChoiceControl({
           <ChevronDown className={cn("size-4")} aria-hidden />
         </Button>
       </DialogTrigger>
-      <DialogContent className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden")} showCloseButton={false}>
+      <DialogContent className={cn("max-h-[calc(100dvh-2rem)] print:hidden")}>
         <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
         <CharacterChoiceRows
           selected={character}
@@ -287,7 +300,7 @@ function LevelChoiceControl({
           <ChevronDown className={cn("size-4")} aria-hidden />
         </Button>
       </DialogTrigger>
-      <DialogContent className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden")} showCloseButton={false}>
+      <DialogContent className={cn("max-h-[calc(100dvh-2rem)] print:hidden")}>
         <DialogTitle className={cn("sr-only")}>Wybierz poziom</DialogTitle>
         <div className={cn("flex flex-col gap-2")}>
           {LEVELS.map((option) => (
@@ -296,7 +309,7 @@ function LevelChoiceControl({
               type="button"
               variant="ghost"
               aria-pressed={level.id === option.id}
-              className={cn("h-auto w-full justify-start px-4 py-2 text-lg", level.id === option.id && "bg-muted")}
+              className={cn(DIALOG_ROW_CLASS, "w-full", level.id === option.id && "bg-muted")}
               onClick={() => {
                 onSelect(option.id);
                 onOpenChange(false);

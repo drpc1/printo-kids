@@ -38,3 +38,7 @@ playwright/.cache/
 # stryker temp files and the HTML report from a local run
 .stryker-tmp
 reports/mutation/
+
+# Claude Code: local settings and the skills junction to .cursor/skills
+.claude/settings.local.json
+.claude/skills

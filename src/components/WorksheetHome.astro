@@ -4,7 +4,7 @@ import WorksheetGenerator from "./WorksheetGenerator";
 
 <main
   id="worksheet-home"
-  class="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-20 text-foreground"
+  class="flex min-h-dvh flex-col items-center justify-center bg-background px-6 py-20 text-foreground"
 >
   <div class="flex w-full max-w-xl flex-col items-center gap-10 text-center">
     <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">PrintoKids</h1>
@@ -43,6 +43,12 @@ import WorksheetGenerator from "./WorksheetGenerator";
     }
   }
 
+  @media screen and (max-width: 639px) {
+    #worksheet-home.has-maze {
+      padding-top: 3.5rem;
+    }
+  }
+
   @media print {
     html,
     body {
@@ -71,6 +77,9 @@ import WorksheetGenerator from "./WorksheetGenerator";
     #worksheet-home svg {
       display: block;
       overflow: hidden;
+      /* iOS print ignores the zero page margin and adds printer margins; the sheet scales down into the printable area. */
+      max-width: 100%;
+      max-height: 100vh;
     }
   }
 </style>
