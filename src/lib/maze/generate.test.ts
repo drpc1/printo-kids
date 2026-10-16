@@ -114,15 +114,29 @@ void describe("generateMaze", () => {
     assert.ok(lat6 > lat5, `lat6 ${lat6} lat5 ${lat5}`);
   });
 
-  void test("3 years and 5 years do not repeat one fixed route", () => {
-    for (const id of ["lat3", "lat5"] as const) {
-      const level = levelById(id);
+  void test("no level repeats one fixed route", () => {
+    for (const level of LEVELS) {
       const routes = new Set<string>();
       for (let seed = 0; seed < 8; seed += 1) {
-        const route = routeCells(generateMaze(id, mulberry32(seed)), level.entrance, level.exit);
+        const route = routeCells(generateMaze(level.id, mulberry32(seed)), level.entrance, level.exit);
         routes.add(route.map(cellKey).join(" "));
       }
-      assert.ok(routes.size >= 2, `${id} routes ${routes.size}`);
+      assert.ok(routes.size >= 2, `${level.id} routes ${routes.size}`);
+    }
+  });
+
+  void test("Kruskal levels close both east and south somewhere above the last corner", () => {
+    for (const level of LEVELS.filter((entry) => entry.algorithm === "kruskal")) {
+      for (let seed = 0; seed < 5; seed += 1) {
+        const maze = generateMaze(level.id, mulberry32(seed));
+        const closed = maze.cells.some((row, rowIndex) =>
+          row.some(
+            (cell, colIndex) =>
+              cell.east && cell.south && !(rowIndex === maze.height - 1 && colIndex === maze.width - 1),
+          ),
+        );
+        assert.ok(closed, `${level.id} seed ${seed}`);
+      }
     }
   });
 
@@ -187,9 +201,9 @@ void describe("mazeForSheet", () => {
 
   void test("returns null when the maze grid is not the level grid", () => {
     const lat3 = levelById("lat3");
-    const maze = generateMaze(lat3.id, mulberry32(1));
+    const maze = generateMaze("lat5", mulberry32(1));
     assert.equal(countPaths(maze, lat3.entrance, lat3.exit), 1);
-    assert.equal(mazeForSheet(maze, "lat5"), null);
+    assert.equal(mazeForSheet(maze, lat3.id), null);
   });
 
   void test("returns the same maze when one path exists", () => {
