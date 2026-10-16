@@ -220,15 +220,15 @@ Zapis ostatniego użycia i profili ta zmiana nie rusza. Pasma żyją w `LEVELS` 
 
 #### Automated
 
-- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę bez zmian, jedną drogę, długość w nowym paśmie, komórkę w lewej i w prawej tercji, co najmniej jeden krok w górę, brak biegu o 5 lub więcej komórkach na drodze oraz mniej biegów o 4 komórkach niż biegów o 1–3
-- [x] 1.2 `npm run lint` i `npx astro check` przechodzą
+- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę bez zmian, jedną drogę, długość w nowym paśmie, komórkę w lewej i w prawej tercji, co najmniej jeden krok w górę, brak biegu o 5 lub więcej komórkach na drodze oraz mniej biegów o 4 komórkach niż biegów o 1–3 — b1547c0
+- [x] 1.2 `npm run lint` i `npx astro check` przechodzą — b1547c0
 
 ### Phase 2: Odnogi ze skrętem
 
 #### Automated
 
-- [ ] 2.1 `npm test` sprawdza odnogę: 3 lata i 5 lat co najwyżej 4, nastolatek co najmniej 25, a na każdym poziomie brak biegu o 5 lub więcej komórkach w całym labiryncie i mniej biegów o 4 komórkach niż biegów o 1–3
-- [ ] 2.2 `npm test` i `npm run lint` przechodzą
+- [x] 2.1 `npm test` sprawdza odnogę: 3 lata i 5 lat co najwyżej 4, nastolatek co najmniej 25, a na każdym poziomie brak biegu o 5 lub więcej komórkach w całym labiryncie i mniej biegów o 4 komórkach niż biegów o 1–3 — 3ee7320
+- [x] 2.2 `npm test` i `npm run lint` przechodzą — 3ee7320
 
 #### Manual
 

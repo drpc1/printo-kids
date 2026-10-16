@@ -16,16 +16,16 @@ Zapis `printo-kids:last-used` to JSON `{ character }`, a profil to `id`, `name`,
 
 Pasek ma kontrolkę „Poziom:” z sześcioma nazwami. Generuj buduje labirynt wybranego poziomu. Drukuje się kartka, która jest na ekranie. Zmiana poziomu chowa kartkę do następnego Generuj.
 
-| Id | Nazwa | Siatka | Wejście → wyjście | Droga (komórki) | Odnoga |
-| --- | --- | --- | --- | --- | --- |
-| `lat3` | 3 lata | 9×11 | środek góra → środek dół | ≤ 25 | ≤ 6 |
-| `lat4` | 4 lata | 9×11 | środek góra → środek dół | ≥ 40 | ≤ 9 |
-| `lat5` | 5 lat | 13×16 | środek góra → środek dół | ≤ 40 | ≤ 6 |
-| `lat6` | 6 lat | 13×16 | środek góra → środek dół | ≥ 70 | bez limitu |
-| `lat7` | 7–8 lat | 17×21 | środek góra → środek dół | 80–120 | bez limitu |
-| `nastolatek` | nastolatek | 27×33 | lewy górny → prawy dolny | 150–300 | ≥ 25 |
+| Id | Nazwa | Siatka | Wejście → wyjście |
+| --- | --- | --- | --- |
+| `lat3` | 3 lata | 9×11 | środek góra → środek dół |
+| `lat4` | 4 lata | 9×11 | środek góra → środek dół |
+| `lat5` | 5 lat | 13×16 | środek góra → środek dół |
+| `lat6` | 6 lat | 13×16 | środek góra → środek dół |
+| `lat7` | 7–8 lat | 17×21 | środek góra → środek dół |
+| `nastolatek` | nastolatek | 27×33 | lewy górny → prawy dolny |
 
-Długość drogi liczy komórki jedynej drogi razem ze startem i metą. Odnoga to najdłuższy ciąg komórek poza tą drogą; pierwsza komórka poza drogą ma głębokość 1. Środek kolumny to `(columns - 1) / 2`. Wejście otwiera ścianę północną, meta południową. Przedziały są domknięte. Poziomy 5 lat i 6 lat nie dzielą żadnej długości: 41–69 nie pasuje do żadnego z nich.
+Generator, algorytm poziomu i bramka `mazeForSheet` są opisane w `context/changes/random-maze-generator/plan.md`, który zastępuje fazę 1 tego planu. Pasm długości drogi i progów odnogi nie ma; długość drogi jest typową wartością dla siatki i algorytmu. Środek kolumny to `(columns - 1) / 2`. Wejście otwiera ścianę północną, meta południową.
 
 Na poziomach do 7–8 lat wybrana postać stoi przy starcie, a „Bez postaci” zostawia napis Start. Nastolatek nie pokazuje postaci, pokazuje napis Start i nie musi mieć kółka. Zostaje dokładnie jedna droga start–meta.
 
@@ -33,8 +33,7 @@ Pusty zapis i nieznany poziom czytają się jako `lat5`. Wybór na pasku bez akt
 
 ### Key Discoveries:
 
-- Prosta droga środkiem 9×11 jest 4 kroki od krawędzi bocznej, więc odnoga ≤ 6 mieści drogę o 11 komórkach. Odnoga ≤ 3 tej prostej drogi nie mieści.
-- Grzebień w kolumnie 6 na 13×16 daje 5 latom drogę 16 przy odnodze 6. Wężyk na 9×11 daje 4 latom drogę 91 przy odnodze 4. Droga ≥ 70 i pasmo 80–120 są kładzione w całości.
+- Generator kładący drogę pod pasmo długości i limit odnogi rysował grzebień przy środku kartki (`frame.md`). Zwykłe losowanie drzewa rozpinającego (Kruskal albo DFS) samo daje krętą drogę; szczegóły w `random-maze-generator`.
 - `countPaths` i `LABEL_COLUMN` są wpisane jako kolumna 6 oraz wiersze 0 i 15. Nowa siatka bez ruszenia tych stałych rozjedzie otwór i napis.
 - Zapis ostatniego użycia i profili nadpisuje cały JSON. Dopisanie poziomu tylko przy odczycie zniknie przy następnym zapisie postaci.
 
@@ -56,7 +55,7 @@ Tabela poziomów jest jednym modułem, z którego korzystają generator, kartka 
 
 `countPaths` musi dostać komórki wejścia i wyjścia z poziomu. Zostawienie stałych `(0, 6)` i `(15, 6)` policzy drogę nie tam, gdzie jest otwór, gdy siatka nie jest 13×16.
 
-Odnoga ≤ 6 przy 3 latach jest spełniona przez prostą drogę w kolumnie 4. Ta sama odnoga przy 5 latach jest spełniona przez prostą drogę w kolumnie 6. Nie trzeba losować rzeźbienia: w próbce 4000 labiryntów taki próg był skrajem, nie typem.
+Generator i bramka idą za `context/changes/random-maze-generator/plan.md`: poziom to siatka i algorytm losowania (`kruskal` albo `backtracker`), a `mazeForSheet` sprawdza tylko siatkę i jedną drogę. Faza 3 tego planu woła `generateMaze(level, Math.random)` i `mazeForSheet` bez zmiany sygnatur.
 
 `writeLastUsed` i `writeChildProfiles` budują JSON od zera. Każde wywołanie po tej zmianie zapisuje też poziom. Zmiana poziomu czyści stan kartki w tym samym zdarzeniu, zanim rodzic zdąży kliknąć Drukuj.
 
@@ -279,32 +278,32 @@ Istniejący `printo-kids:last-used` i `printo-kids:child-profiles` bez `level` c
 
 #### Automated
 
-- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę, jedną drogę, długość w paśmie i regułę odnogi — 3caf4db
-- [x] 1.2 `npm run lint` i `npx astro check` przechodzą — 3caf4db
+- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę, jedną drogę, długość w paśmie i regułę odnogi — e1b42f4
+- [x] 1.2 `npm run lint` i `npx astro check` przechodzą — e1b42f4
 
 #### Manual
 
-- [x] 1.3 W `context/foundation/test-plan.md` §7 zgodność z tymi sześcioma poziomami nie jest już poza budżetem, a §5 i §6 nie mówią już, że Generuj jest bez komunikatu ani że każde ziarno jest kartką 13×16 — 3caf4db
+- [x] 1.3 W `context/foundation/test-plan.md` §7 zgodność z tymi sześcioma poziomami nie jest już poza budżetem, a §5 i §6 nie mówią już, że Generuj jest bez komunikatu ani że każde ziarno jest kartką 13×16 — e1b42f4
 
 ### Phase 2: Kartka dla czterech siatek
 
 #### Automated
 
-- [x] 2.1 Test układu daje szerokość komórki `190 / kolumny` dla 9, 13, 17 i 27 — 044a296
-- [x] 2.2 Test układu kładzie napis albo postać na środkowej kolumnie poziomów do 7–8 lat, a na nastolatku napis Start bez znacznika postaci, z górą znacznika na stronie dla pozostałych trzech siatek — 044a296
-- [x] 2.3 `npm test` i `npm run lint` przechodzą — 044a296
+- [x] 2.1 Test układu daje szerokość komórki `190 / kolumny` dla 9, 13, 17 i 27 — 5d7aa6e
+- [x] 2.2 Test układu kładzie napis albo postać na środkowej kolumnie poziomów do 7–8 lat, a na nastolatku napis Start bez znacznika postaci, z górą znacznika na stronie dla pozostałych trzech siatek — 5d7aa6e
+- [x] 2.3 `npm test` i `npm run lint` przechodzą — 5d7aa6e
 
 ### Phase 3: Wybór, zapis i Generuj
 
 #### Automated
 
-- [ ] 3.1 Test zapisu: brak pola poziomu i nieznany poziom czytają się jako `lat5`, zapis odkłada poziom, a profil bez poziomu zostaje
-- [ ] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą
+- [x] 3.1 Test zapisu: brak pola poziomu i nieznany poziom czytają się jako `lat5`, zapis odkłada poziom, a profil bez poziomu zostaje — 435fae8
+- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą — 435fae8
 
 #### Manual
 
-- [ ] 3.3 Sześć poziomów po Generuj różni się alejką albo długością drogi, a nastolatek ma narożniki, napis Start i nie pokazuje postaci
-- [ ] 3.4 Zmiana poziomu chowa kartkę i Drukuj wraca dopiero po kolejnym Generuj
-- [ ] 3.5 Po odświeżeniu strony bez profilu widać ten sam poziom
-- [ ] 3.6 Przy aktywnym profilu zmiana poziomu na pasku nie zmienia profilu aż do jawnego zapisu, a wybór dziecka i usunięcie innego dziecka zostawiają na pasku poziom z tej samej reguły co postać
-- [ ] 3.7 Gdy ułożenie się nie uda, widać „Nie udało się ułożyć tego poziomu.” i kartka spoza reguły się nie pojawia
+- [x] 3.3 Sześć poziomów po Generuj różni się alejką albo długością drogi, a nastolatek ma narożniki, napis Start i nie pokazuje postaci — 435fae8
+- [x] 3.4 Zmiana poziomu chowa kartkę i Drukuj wraca dopiero po kolejnym Generuj — 435fae8
+- [x] 3.5 Po odświeżeniu strony bez profilu widać ten sam poziom — 435fae8
+- [x] 3.6 Przy aktywnym profilu zmiana poziomu na pasku nie zmienia profilu aż do jawnego zapisu, a wybór dziecka i usunięcie innego dziecka zostawiają na pasku poziom z tej samej reguły co postać — 435fae8
+- [x] 3.7 Gdy ułożenie się nie uda, widać „Nie udało się ułożyć tego poziomu.” i kartka spoza reguły się nie pojawia — 435fae8

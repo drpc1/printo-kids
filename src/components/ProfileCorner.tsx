@@ -15,13 +15,14 @@ import {
   type VisitAfterDelete,
 } from "@/lib/child-profiles";
 import { readLastUsed } from "@/lib/last-used";
+import { levelById, type LevelId } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow } from "@/lib/sheet/character";
 import { cn } from "@/lib/utils";
 
 const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
 
 // Dialog rows stay at the size of Generuj and Drukuj: 16 px text below sm, 18 px from sm, 44 px tall either way.
-const DIALOG_ROW_CLASS = "h-auto justify-start px-4 py-2.5 text-base sm:py-2 sm:text-lg";
+export const DIALOG_ROW_CLASS = "h-auto justify-start px-4 py-2.5 text-base sm:py-2 sm:text-lg";
 
 const NAME_ERROR_TEXT = {
   empty: "Wpisz imię",
@@ -38,6 +39,7 @@ export function ProfileCorner({
   profiles,
   activeId,
   barCharacter,
+  barLevel,
   ask,
   onCreated,
   onChoose,
@@ -47,6 +49,7 @@ export function ProfileCorner({
   profiles: readonly ChildProfile[];
   activeId: string | null;
   barCharacter: CharacterChoice;
+  barLevel: LevelId;
   ask: boolean;
   onCreated: (profile: ChildProfile) => void;
   onChoose: (profile: ChildProfile) => void;
@@ -164,7 +167,7 @@ export function ProfileCorner({
       profiles,
       pendingDelete.id,
       activeId,
-      barCharacter,
+      { character: barCharacter, level: barLevel },
       readLastUsed(localStorage, ALLOWED_CHARACTER_IDS),
     );
     deleteLock.current = true;
@@ -217,10 +220,10 @@ export function ProfileCorner({
       return;
     }
     const previousFavorite = activeProfile.character;
-    if (favoriteDraft === previousFavorite) {
+    if (favoriteDraft === previousFavorite && barLevel === activeProfile.level) {
       return;
     }
-    const nextProfiles = withFavorite(profiles, activeProfile.id, favoriteDraft, ALLOWED_CHARACTER_IDS);
+    const nextProfiles = withFavorite(profiles, activeProfile.id, favoriteDraft, barLevel, ALLOWED_CHARACTER_IDS);
     if (nextProfiles === null) {
       return;
     }
@@ -264,6 +267,7 @@ export function ProfileCorner({
       id: crypto.randomUUID(),
       name: draftName.trim(),
       character: draftCharacter,
+      level: barLevel,
     };
     createLock.current = true;
     const saved = writeChildProfiles(localStorage, [...profiles, profile]);
@@ -343,6 +347,7 @@ export function ProfileCorner({
           <div className={cn("flex flex-col gap-4")}>
             <DialogTitle className={cn("break-words")}>{activeProfile.name}</DialogTitle>
             <ProfileCharacterControl character={favoriteDraft} onOpen={openFavoriteList} />
+            <ProfileLevelNote level={barLevel} />
             {favoriteError !== null ? (
               <p id="child-profile-save-error" role="alert" className={cn("text-destructive text-sm")}>
                 {favoriteError}
@@ -354,7 +359,7 @@ export function ProfileCorner({
               </Button>
               <Button
                 type="button"
-                disabled={favoriteDraft === activeProfile.character}
+                disabled={favoriteDraft === activeProfile.character && barLevel === activeProfile.level}
                 aria-describedby={favoriteError !== null ? "child-profile-save-error" : undefined}
                 onClick={handleSaveFavorite}
               >
@@ -454,6 +459,7 @@ export function ProfileCorner({
               ) : null}
             </div>
             <ProfileCharacterControl character={draftCharacter} onOpen={openDraftList} />
+            <ProfileLevelNote level={barLevel} />
             <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end")}>
               <Button type="button" variant="outline" onClick={handleCancel}>
                 Anuluj
@@ -482,6 +488,10 @@ function ProfileCharacterControl({ character, onOpen }: { character: CharacterCh
       <ChevronDown className={cn("size-4")} aria-hidden />
     </Button>
   );
+}
+
+function ProfileLevelNote({ level }: { level: LevelId }) {
+  return <p className={cn("text-muted-foreground px-4 text-base")}>{`Poziom: ${levelById(level).label}`}</p>;
 }
 
 export function CharacterChoiceRows({
