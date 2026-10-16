@@ -18,14 +18,16 @@ Pasek ma kontrolkę „Poziom:” z sześcioma nazwami. Generuj buduje labirynt 
 
 | Id | Nazwa | Siatka | Wejście → wyjście | Droga (komórki) | Odnoga |
 | --- | --- | --- | --- | --- | --- |
-| `lat3` | 3 lata | 9×11 | środek góra → środek dół | ≤ 25 | ≤ 6 |
-| `lat4` | 4 lata | 9×11 | środek góra → środek dół | ≥ 40 | ≤ 9 |
-| `lat5` | 5 lat | 13×16 | środek góra → środek dół | ≤ 40 | ≤ 6 |
-| `lat6` | 6 lat | 13×16 | środek góra → środek dół | ≥ 70 | bez limitu |
-| `lat7` | 7–8 lat | 17×21 | środek góra → środek dół | 80–120 | bez limitu |
-| `nastolatek` | nastolatek | 27×33 | lewy górny → prawy dolny | 150–300 | ≥ 25 |
+| `lat3` | 3 lata | 9×11 | środek góra → środek dół | 24–44 | ≤ 4 |
+| `lat4` | 4 lata | 9×11 | środek góra → środek dół | 50–80 | bez limitu |
+| `lat5` | 5 lat | 13×16 | środek góra → środek dół | 56–96 | ≤ 4 |
+| `lat6` | 6 lat | 13×16 | środek góra → środek dół | 56–96 | ≤ 4 |
+| `lat7` | 7–8 lat | 17×21 | środek góra → środek dół | 150–240 | bez limitu |
+| `nastolatek` | nastolatek | 27×33 | lewy górny → prawy dolny | 280–500 | ≥ 25 |
 
-Długość drogi liczy komórki jedynej drogi razem ze startem i metą. Odnoga to najdłuższy ciąg komórek poza tą drogą; pierwsza komórka poza drogą ma głębokość 1. Środek kolumny to `(columns - 1) / 2`. Wejście otwiera ścianę północną, meta południową. Przedziały są domknięte. Poziomy 5 lat i 6 lat nie dzielą żadnej długości: 41–69 nie pasuje do żadnego z nich.
+Długość drogi liczy komórki jedynej drogi razem ze startem i metą. Odnoga to najdłuższy ciąg komórek poza tą drogą; pierwsza komórka poza drogą ma głębokość 1. Środek kolumny to `(columns - 1) / 2`. Wejście otwiera ścianę północną, meta południową. Przedziały są domknięte. Długość jest luźną kolejnością wieku: 5 lat i 6 lat dzielą pasmo 56–96 (`winding-maze-path`).
+
+Droga skręca w górę, w dół i w boki i ma komórkę w lewej i w prawej tercji kartki (`[0, floor(columns / 3))` i ostatnie `floor(columns / 3)` kolumn). Bieg to najdłuższy ciąg komórek w jednym kierunku. W całym labiryncie, na drodze i w odnogach, nie ma biegu o 5 lub więcej komórkach, a biegów o 4 komórkach jest mniej niż biegów o 1–3.
 
 Na poziomach do 7–8 lat wybrana postać stoi przy starcie, a „Bez postaci” zostawia napis Start. Nastolatek nie pokazuje postaci, pokazuje napis Start i nie musi mieć kółka. Zostaje dokładnie jedna droga start–meta.
 
@@ -33,8 +35,9 @@ Pusty zapis i nieznany poziom czytają się jako `lat5`. Wybór na pasku bez akt
 
 ### Key Discoveries:
 
-- Prosta droga środkiem 9×11 jest 4 kroki od krawędzi bocznej, więc odnoga ≤ 6 mieści drogę o 11 komórkach. Odnoga ≤ 3 tej prostej drogi nie mieści.
-- Grzebień w kolumnie 6 na 13×16 daje 5 latom drogę 16 przy odnodze 6. Wężyk na 9×11 daje 4 latom drogę 91 przy odnodze 4. Droga ≥ 70 i pasmo 80–120 są kładzione w całości.
+- Prosta w kolumnie wejścia z jednokomórkowymi uskokami dobijała do sufitu 40 na 5 latach bez kroku w górę, a odnogi szły prosto do krawędzi, bo limit 6 równał się odległości od kolumny 6 do brzegu (`frame.md`). Samo podniesienie sufitu zostawia drogę przy środku.
+- `floor(13 / 3)` to 4, więc na 5 latach lewa tercja to kolumny 0–3, a prawa 9–12. Wejście w kolumnie 6 jest środkiem, więc droga musi z niego zejść w obie strony.
+- Odnoga o głębokości 4 może być jednym biegiem o 4 komórkach. Reguła wyjątku na to pozwala, ale nie pozwala dojść prosto do krawędzi, bo od środka 5 lat jest 6 komórek.
 - `countPaths` i `LABEL_COLUMN` są wpisane jako kolumna 6 oraz wiersze 0 i 15. Nowa siatka bez ruszenia tych stałych rozjedzie otwór i napis.
 - Zapis ostatniego użycia i profili nadpisuje cały JSON. Dopisanie poziomu tylko przy odczycie zniknie przy następnym zapisie postaci.
 
@@ -56,7 +59,9 @@ Tabela poziomów jest jednym modułem, z którego korzystają generator, kartka 
 
 `countPaths` musi dostać komórki wejścia i wyjścia z poziomu. Zostawienie stałych `(0, 6)` i `(15, 6)` policzy drogę nie tam, gdzie jest otwór, gdy siatka nie jest 13×16.
 
-Odnoga ≤ 6 przy 3 latach jest spełniona przez prostą drogę w kolumnie 4. Ta sama odnoga przy 5 latach jest spełniona przez prostą drogę w kolumnie 6. Nie trzeba losować rzeźbienia: w próbce 4000 labiryntów taki próg był skrajem, nie typem.
+Droga nie jest prostą w kolumnie wejścia. Generator najpierw kładzie zawijaną drogę, która sama mieści się w paśmie, wchodzi w obie tercje i trzyma regułę biegu, a potem dokleja resztę siatki odnogami, które skręcają tą samą regułą i trzymają próg głębokości poziomu. Konstrukcja trafia w regułę w jednym ułożeniu; nie losuje rzeźbienia, bo w próbce 4000 labiryntów takie progi były skrajem, nie typem.
+
+Głębokość odnogi i długość biegu to dwie osie. Odnoga nastolatka ma co najmniej 25 komórek poza drogą i przy tym skręca, zanim dojdzie do pięciu komórek w linii.
 
 `writeLastUsed` i `writeChildProfiles` budują JSON od zera. Każde wywołanie po tej zmianie zapisuje też poziom. Zmiana poziomu czyści stan kartki w tym samym zdarzeniu, zanim rodzic zdąży kliknąć Drukuj.
 
