@@ -71,9 +71,10 @@ Na iOS Chrome i Brave używają silnika Safari, więc układ sprawdzamy tylko w 
 
 Błąd druku, którego nie da się naprawić w `@media print` w `src/components/WorksheetHome.astro` bez zmiany `@page` ani geometrii karty, wpisujemy tutaj z nazwą nowej zmiany (`/10x-new`).
 
-- (brak)
+- 2026-10-16, iOS (Chrome): wydruk na jednej stronie, ale z szerokim białym pasem (szacunek dla Letter: ok. 26 mm z boków, 35–40 mm u góry i u dołu). Przyczyna: margines drukarki iOS nakłada się na własny margines karty 10 mm. Usunięcie wymaga zmiany geometrii karty, poza S-09 → nowa zmiana `context/changes/print-printer-margins/`.
 
 ## Poprawki w trakcie fazy 6
 
 - 2026-10-16: druk na iOS (Chrome) na dwie strony → karta zmniejsza się do obszaru druku. **Powtórzyć druk na iOS w Safari, Chrome i Brave.**
 - 2026-10-16: niewidoczne przewijanie listy profili → cień przy krawędzi w oknie profili i na liście postaci.
+- 2026-10-16: cień był za słaby na beżowym tle → kolor `--primary` (zielony) z kryciem 55%, wysokość 20 px.
