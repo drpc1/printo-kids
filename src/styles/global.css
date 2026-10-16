@@ -183,3 +183,16 @@
     letter-spacing: var(--tracking-normal);
   }
 }
+
+/* Scrollable dialogs: a soft shadow at the top or bottom edge shows there are more rows that way.
+   The covers scroll with the content (local) and hide each shadow once that end is reached. */
+@utility scroll-shadow {
+  background:
+    linear-gradient(var(--background) 30%, transparent) center top / 100% 2.5rem no-repeat local,
+    linear-gradient(transparent, var(--background) 70%) center bottom / 100% 2.5rem no-repeat local,
+    radial-gradient(farthest-side at 50% 0, color-mix(in oklab, var(--foreground) 25%, transparent), transparent) center
+      top / 100% 0.875rem no-repeat scroll,
+    radial-gradient(farthest-side at 50% 100%, color-mix(in oklab, var(--foreground) 25%, transparent), transparent)
+      center bottom / 100% 0.875rem no-repeat scroll,
+    var(--background);
+}

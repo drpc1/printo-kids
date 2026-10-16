@@ -342,6 +342,10 @@ Ręczny dowód FR-005 i FR-013 w każdej przeglądarce z zakresu oraz sprawdzeni
 
 **Contract**: `@page { size: A4; margin: 0 }` zostaje bez zmian.
 
+> Nota z implementacji (2026-10-16): Chrome na iOS drukował kartę na dwie strony, ucinając ją na szerokość. iOS ignoruje `@page { margin: 0 }` i dokłada marginesy drukarki, a karta miała sztywne 210 × 297 mm. Poprawka w `@media print`: `#worksheet-home svg { max-width: 100%; max-height: 100vh }`, karta zmniejsza się proporcjonalnie do obszaru druku. Pomiar w Chromium z emulowanym obszarem druku: A4 bez marginesów 210×297 (bez zmian), Letter z marginesami 12,7 mm 190×254, A4 z marginesami 10 mm 190×277. Nowa asercja w `print-contract.test.ts`.
+
+> Nota z implementacji (2026-10-16, decyzja użytkownika): zakres fazy 6 rozszerzony o wskazówkę przewijania w oknie profili i na liście postaci (wbrew pozycji „Wskazówka przewijania listy postaci” w What We're NOT Doing). Na telefonie pasek przewijania jest niewidoczny, więc przy wielu profilach lista wyglądała na kompletną. Klasa `scroll-shadow` w `src/styles/global.css` (tokeny `--background`, `--foreground`, samo CSS z `background-attachment: local`) daje cień przy krawędzi, w którą da się jeszcze przewinąć. Dostały ją oba `DialogContent`.
+
 ### Success Criteria:
 
 #### Automated Verification:
