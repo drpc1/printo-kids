@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { readLastUsed, writeLastUsed, type LastUsedStorage } from "./last-used.ts";
+import { readLastUsed, writeLastUsed, type LastUsed, type LastUsedStorage } from "./last-used.ts";
 
 const KEY = "printo-kids:last-used";
 const ALLOWED = ["none", "samochodzik", "rakieta", "dinozaur"];
@@ -11,43 +11,56 @@ interface StoredWrite {
 }
 
 void describe("readLastUsed", () => {
-  void test("a missing key reads none and does not write", () => {
-    assertStoredRead(null, "none");
+  void test("a missing key reads none and lat5 and does not write", () => {
+    assertStoredRead(null, { character: "none", level: "lat5" });
   });
 
-  void test("an empty string reads none and does not write", () => {
-    assertStoredRead("", "none");
+  void test("an empty string reads none and lat5 and does not write", () => {
+    assertStoredRead("", { character: "none", level: "lat5" });
   });
 
-  void test("invalid JSON reads none and does not write", () => {
-    assertStoredRead("{", "none");
+  void test("invalid JSON reads none and lat5 and does not write", () => {
+    assertStoredRead("{", { character: "none", level: "lat5" });
   });
 
-  void test('a bare JSON string "rakieta" reads none and does not write', () => {
-    assertStoredRead('"rakieta"', "none");
+  void test('a bare JSON string "rakieta" reads none and lat5 and does not write', () => {
+    assertStoredRead('"rakieta"', { character: "none", level: "lat5" });
   });
 
-  void test("a character outside the allow-list reads none and does not write", () => {
-    assertStoredRead('{"character":"smok"}', "none");
+  void test("a character outside the allow-list reads none and keeps the stored level", () => {
+    assertStoredRead('{"character":"smok","level":"lat3"}', { character: "none", level: "lat3" });
   });
 
   void test("a stored none reads none and does not write", () => {
-    assertStoredRead('{"character":"none"}', "none");
+    assertStoredRead('{"character":"none","level":"lat5"}', { character: "none", level: "lat5" });
   });
 
   void test("a stored samochodzik reads samochodzik and does not write", () => {
-    assertStoredRead('{"character":"samochodzik"}', "samochodzik");
+    assertStoredRead('{"character":"samochodzik","level":"lat5"}', { character: "samochodzik", level: "lat5" });
   });
 
   void test("a stored rakieta reads rakieta and does not write", () => {
-    assertStoredRead('{"character":"rakieta"}', "rakieta");
+    assertStoredRead('{"character":"rakieta","level":"lat5"}', { character: "rakieta", level: "lat5" });
   });
 
   void test("a stored dinozaur reads dinozaur and does not write", () => {
-    assertStoredRead('{"character":"dinozaur"}', "dinozaur");
+    assertStoredRead('{"character":"dinozaur","level":"lat5"}', { character: "dinozaur", level: "lat5" });
   });
 
-  void test("a throwing getItem reads none and does not write", () => {
+  void test("an old record without level keeps the character and reads lat5", () => {
+    assertStoredRead('{"character":"rakieta"}', { character: "rakieta", level: "lat5" });
+  });
+
+  void test("an unknown level keeps the character and reads lat5", () => {
+    assertStoredRead('{"character":"rakieta","level":"lat9"}', { character: "rakieta", level: "lat5" });
+    assertStoredRead('{"character":"rakieta","level":6}', { character: "rakieta", level: "lat5" });
+  });
+
+  void test("a stored level from the table reads back", () => {
+    assertStoredRead('{"character":"none","level":"nastolatek"}', { character: "none", level: "nastolatek" });
+  });
+
+  void test("a throwing getItem reads none and lat5 and does not write", () => {
     let writes = 0;
     const storage: LastUsedStorage = {
       getItem(): string | null {
@@ -59,7 +72,7 @@ void describe("readLastUsed", () => {
       },
     };
 
-    assert.equal(readLastUsed(storage, ALLOWED), "none");
+    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "none", level: "lat5" });
     assert.equal(writes, 0);
   });
 });
@@ -76,29 +89,29 @@ void describe("writeLastUsed", () => {
     };
 
     assert.doesNotThrow(() => {
-      writeLastUsed(storage, "rakieta");
+      writeLastUsed(storage, { character: "rakieta", level: "lat5" });
     });
   });
 
-  void test("writing none and rakieta reads each value back", () => {
+  void test("writing character and level reads each value back", () => {
     const storage = memoryStorage(null);
 
-    writeLastUsed(storage, "none");
-    assert.equal(readLastUsed(storage, ALLOWED), "none");
+    writeLastUsed(storage, { character: "none", level: "lat5" });
+    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "none", level: "lat5" });
 
-    writeLastUsed(storage, "rakieta");
-    assert.equal(readLastUsed(storage, ALLOWED), "rakieta");
+    writeLastUsed(storage, { character: "rakieta", level: "lat6" });
+    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "rakieta", level: "lat6" });
     assert.deepEqual(storage.writes, [
-      { key: KEY, value: '{"character":"none"}' },
-      { key: KEY, value: '{"character":"rakieta"}' },
+      { key: KEY, value: '{"character":"none","level":"lat5"}' },
+      { key: KEY, value: '{"character":"rakieta","level":"lat6"}' },
     ]);
   });
 });
 
-function assertStoredRead(stored: string | null, expected: string): void {
+function assertStoredRead(stored: string | null, expected: LastUsed): void {
   const storage = memoryStorage(stored);
 
-  assert.equal(readLastUsed(storage, ALLOWED), expected);
+  assert.deepEqual(readLastUsed(storage, ALLOWED), expected);
   assert.deepEqual(storage.writes, []);
 }
 

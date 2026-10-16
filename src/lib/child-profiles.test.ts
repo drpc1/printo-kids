@@ -39,58 +39,80 @@ void describe("readChildProfiles", () => {
   });
 
   void test("a character outside the allow-list is dropped and does not write", () => {
-    assertStoredRead(stored([{ id: "1", name: "Zosia", character: "smok" }]), []);
+    assertStoredRead(stored([{ id: "1", name: "Zosia", character: "smok", level: "lat5" }]), []);
   });
 
   void test("an empty id is dropped and does not write", () => {
-    assertStoredRead(stored([{ id: "", name: "Zosia", character: "rakieta" }]), []);
+    assertStoredRead(stored([{ id: "", name: "Zosia", character: "rakieta", level: "lat5" }]), []);
   });
 
   void test("a repeated id keeps the first profile and does not write", () => {
     assertStoredRead(
       stored([
-        { id: "same", name: "Zosia", character: "rakieta" },
-        { id: "same", name: "Antek", character: "dinozaur" },
+        { id: "same", name: "Zosia", character: "rakieta", level: "lat5" },
+        { id: "same", name: "Antek", character: "dinozaur", level: "lat5" },
       ]),
-      [{ id: "same", name: "Zosia", character: "rakieta" }],
+      [{ id: "same", name: "Zosia", character: "rakieta", level: "lat5" }],
     );
   });
 
   void test("a name of only spaces is dropped and does not write", () => {
-    assertStoredRead(stored([{ id: "1", name: "   ", character: "rakieta" }]), []);
+    assertStoredRead(stored([{ id: "1", name: "   ", character: "rakieta", level: "lat5" }]), []);
   });
 
   void test("Zosia and Antek both come back", () => {
     assertStoredRead(
       stored([
-        { id: "z1", name: "Zosia", character: "rakieta" },
-        { id: "a1", name: "Antek", character: "dinozaur" },
+        { id: "z1", name: "Zosia", character: "rakieta", level: "lat5" },
+        { id: "a1", name: "Antek", character: "dinozaur", level: "lat5" },
       ]),
       [
-        { id: "z1", name: "Zosia", character: "rakieta" },
-        { id: "a1", name: "Antek", character: "dinozaur" },
+        { id: "z1", name: "Zosia", character: "rakieta", level: "lat5" },
+        { id: "a1", name: "Antek", character: "dinozaur", level: "lat5" },
       ],
     );
   });
 
   void test("a padded name is kept trimmed and does not write", () => {
-    assertStoredRead(stored([{ id: "1", name: " Zosia ", character: "rakieta" }]), [
-      { id: "1", name: "Zosia", character: "rakieta" },
+    assertStoredRead(stored([{ id: "1", name: " Zosia ", character: "rakieta", level: "lat5" }]), [
+      { id: "1", name: "Zosia", character: "rakieta", level: "lat5" },
     ]);
   });
 
   void test("a second name that matches regardless of case is dropped and does not write", () => {
     assertStoredRead(
       stored([
-        { id: "1", name: "Zosia", character: "rakieta" },
-        { id: "2", name: "zosia", character: "dinozaur" },
+        { id: "1", name: "Zosia", character: "rakieta", level: "lat5" },
+        { id: "2", name: "zosia", character: "dinozaur", level: "lat5" },
       ]),
-      [{ id: "1", name: "Zosia", character: "rakieta" }],
+      [{ id: "1", name: "Zosia", character: "rakieta", level: "lat5" }],
     );
   });
 
   void test("a name longer than 40 code points is dropped and does not write", () => {
     assertStoredRead(stored([{ id: "1", name: "a".repeat(41), character: "rakieta" }]), []);
+  });
+
+  void test("a profile without level stays on the list with lat5", () => {
+    assertStoredRead(JSON.stringify({ profiles: [{ id: "z1", name: "Zosia", character: "rakieta" }] }), [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat5" },
+    ]);
+  });
+
+  void test("a profile with an unknown level stays on the list with lat5", () => {
+    assertStoredRead(stored([{ id: "z1", name: "Zosia", character: "rakieta", level: "lat9" }]), [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat5" },
+    ]);
+  });
+
+  void test("a stored level from the table reads back", () => {
+    assertStoredRead(stored([{ id: "z1", name: "Zosia", character: "rakieta", level: "nastolatek" }]), [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "nastolatek" },
+    ]);
+  });
+
+  void test("a bad character still drops a profile that has a valid level", () => {
+    assertStoredRead(stored([{ id: "z1", name: "Zosia", character: "smok", level: "lat3" }]), []);
   });
 
   void test("a throwing getItem reads an empty list and does not write", () => {
@@ -153,20 +175,20 @@ void describe("writeChildProfiles", () => {
         throw new Error("setItem blocked");
       },
     };
-    const profiles: ChildProfile[] = [{ id: "1", name: "Zosia", character: "rakieta" }];
+    const profiles: ChildProfile[] = [{ id: "1", name: "Zosia", character: "rakieta", level: "lat5" }];
 
     assert.equal(writeChildProfiles(storage, profiles), false);
   });
 
-  void test("writing Zosia with rakieta reads the same id, name, and character", () => {
+  void test("writing Zosia with rakieta and lat3 reads the same id, name, character, and level", () => {
     const storage = memoryStorage(null);
-    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta" }];
+    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat3" }];
 
     assert.equal(writeChildProfiles(storage, profiles), true);
     assert.deepEqual(storage.writes, [
       {
         key: KEY,
-        value: '{"profiles":[{"id":"z1","name":"Zosia","character":"rakieta"}]}',
+        value: '{"profiles":[{"id":"z1","name":"Zosia","character":"rakieta","level":"lat3"}]}',
       },
     ]);
     assert.deepEqual(readChildProfiles(storage, ALLOWED), profiles);
@@ -174,34 +196,39 @@ void describe("writeChildProfiles", () => {
 });
 
 void describe("openingVisit", () => {
-  void test("zero profiles and lastUsed samochodzik keep samochodzik and do not ask", () => {
-    assert.deepEqual(openingVisit([], "samochodzik"), {
+  const lastUsed = { character: "samochodzik", level: "lat3" } as const;
+
+  void test("zero profiles keep the last-used character and level and do not ask", () => {
+    assert.deepEqual(openingVisit([], lastUsed), {
       activeId: null,
       character: "samochodzik",
+      level: "lat3",
       ask: false,
     });
   });
 
-  void test("one profile Zosia with rakieta uses that id and rakieta and does not ask", () => {
-    assert.deepEqual(openingVisit([{ id: "z1", name: "Zosia", character: "rakieta" }], "samochodzik"), {
+  void test("one profile Zosia uses her id, character, and level and does not ask", () => {
+    assert.deepEqual(openingVisit([{ id: "z1", name: "Zosia", character: "rakieta", level: "lat6" }], lastUsed), {
       activeId: "z1",
       character: "rakieta",
+      level: "lat6",
       ask: false,
     });
   });
 
-  void test("Zosia and Antek with lastUsed samochodzik keep samochodzik and ask", () => {
+  void test("Zosia and Antek keep the last-used character and level and ask", () => {
     assert.deepEqual(
       openingVisit(
         [
-          { id: "z1", name: "Zosia", character: "rakieta" },
-          { id: "a1", name: "Antek", character: "dinozaur" },
+          { id: "z1", name: "Zosia", character: "rakieta", level: "lat6" },
+          { id: "a1", name: "Antek", character: "dinozaur", level: "lat4" },
         ],
-        "samochodzik",
+        lastUsed,
       ),
       {
         activeId: null,
         character: "samochodzik",
+        level: "lat3",
         ask: true,
       },
     );
@@ -209,26 +236,26 @@ void describe("openingVisit", () => {
 });
 
 void describe("withFavorite", () => {
-  void test("saving dinozaur for Zosia keeps the name Zosia and leaves Antek unchanged", () => {
+  void test("saving dinozaur and lat6 for Zosia keeps the name Zosia and leaves Antek unchanged", () => {
     const profiles: ChildProfile[] = [
-      { id: "z1", name: "Zosia", character: "rakieta" },
-      { id: "a1", name: "Antek", character: "samochodzik" },
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat5" },
+      { id: "a1", name: "Antek", character: "samochodzik", level: "lat4" },
     ];
     const input: ChildProfile[] = profiles.map((profile) => ({ ...profile }));
 
-    assert.deepEqual(withFavorite(profiles, "z1", "dinozaur", ALLOWED), [
-      { id: "z1", name: "Zosia", character: "dinozaur" },
-      { id: "a1", name: "Antek", character: "samochodzik" },
+    assert.deepEqual(withFavorite(profiles, "z1", "dinozaur", "lat6", ALLOWED), [
+      { id: "z1", name: "Zosia", character: "dinozaur", level: "lat6" },
+      { id: "a1", name: "Antek", character: "samochodzik", level: "lat4" },
     ]);
     assert.deepEqual(profiles, input);
   });
 
   void test("an unknown id and a character outside the set return null", () => {
-    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta" }];
+    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5" }];
 
-    assert.equal(withFavorite(profiles, "missing", "dinozaur", ALLOWED), null);
-    assert.equal(withFavorite(profiles, "z1", "smok", ALLOWED), null);
-    assert.deepEqual(profiles, [{ id: "z1", name: "Zosia", character: "rakieta" }]);
+    assert.equal(withFavorite(profiles, "missing", "dinozaur", "lat5", ALLOWED), null);
+    assert.equal(withFavorite(profiles, "z1", "smok", "lat5", ALLOWED), null);
+    assert.deepEqual(profiles, [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5" }]);
   });
 });
 
@@ -243,92 +270,104 @@ void describe("barAfterFavoriteSave", () => {
 });
 
 void describe("visitAfterDelete", () => {
-  const zosia: ChildProfile = { id: "z1", name: "Zosia", character: "rakieta" };
-  const antek: ChildProfile = { id: "a1", name: "Antek", character: "dinozaur" };
-  const basia: ChildProfile = { id: "b1", name: "Basia", character: "samochodzik" };
+  const zosia: ChildProfile = { id: "z1", name: "Zosia", character: "rakieta", level: "lat5" };
+  const antek: ChildProfile = { id: "a1", name: "Antek", character: "dinozaur", level: "lat4" };
+  const basia: ChildProfile = { id: "b1", name: "Basia", character: "samochodzik", level: "lat7" };
+  const bar = { character: "samochodzik", level: "lat6" } as const;
+  const lastUsed = { character: "rakieta", level: "lat3" } as const;
 
-  void test("deleting Basia while Zosia is active keeps Zosia, the bar, and does not ask", () => {
+  void test("deleting Basia while Zosia is active keeps Zosia, the bar character and level, and does not ask", () => {
     const profiles = [zosia, antek, basia];
 
-    assert.deepEqual(visitAfterDelete(profiles, "b1", "z1", "samochodzik", "rakieta"), {
+    assert.deepEqual(visitAfterDelete(profiles, "b1", "z1", bar, lastUsed), {
       profiles: [zosia, antek],
       activeId: "z1",
       character: "samochodzik",
+      level: "lat6",
       ask: false,
     });
     assert.deepEqual(profiles, [zosia, antek, basia]);
   });
 
-  void test("deleting active Zosia when only Antek remains activates Antek and his dinozaur", () => {
-    assert.deepEqual(visitAfterDelete([zosia, antek], "z1", "z1", "rakieta", "samochodzik"), {
+  void test("deleting active Zosia when only Antek remains activates Antek, his dinozaur, and his level", () => {
+    assert.deepEqual(visitAfterDelete([zosia, antek], "z1", "z1", bar, lastUsed), {
       profiles: [antek],
       activeId: "a1",
       character: "dinozaur",
+      level: "lat4",
       ask: false,
     });
   });
 
-  void test("deleting active Zosia when Antek and Basia remain clears the active child and asks", () => {
-    assert.deepEqual(visitAfterDelete([zosia, antek, basia], "z1", "z1", "rakieta", "samochodzik"), {
+  void test("deleting active Zosia when Antek and Basia remain clears the active child, takes lastUsed, and asks", () => {
+    assert.deepEqual(visitAfterDelete([zosia, antek, basia], "z1", "z1", bar, lastUsed), {
       profiles: [antek, basia],
       activeId: null,
-      character: "samochodzik",
+      character: "rakieta",
+      level: "lat3",
       ask: true,
     });
   });
 
   void test("deleting the only profile returns no active child, lastUsed, and does not ask", () => {
-    assert.deepEqual(visitAfterDelete([zosia], "z1", "z1", "rakieta", "samochodzik"), {
+    assert.deepEqual(visitAfterDelete([zosia], "z1", "z1", bar, lastUsed), {
       profiles: [],
       activeId: null,
-      character: "samochodzik",
+      character: "rakieta",
+      level: "lat3",
       ask: false,
     });
   });
 
   void test("with nobody active, deleting one of three asks and keeps lastUsed", () => {
-    assert.deepEqual(visitAfterDelete([zosia, antek, basia], "b1", null, "rakieta", "samochodzik"), {
+    assert.deepEqual(visitAfterDelete([zosia, antek, basia], "b1", null, bar, lastUsed), {
       profiles: [zosia, antek],
       activeId: null,
-      character: "samochodzik",
+      character: "rakieta",
+      level: "lat3",
       ask: true,
     });
   });
 
   void test("with nobody active, deleting one of two activates the remaining profile", () => {
-    assert.deepEqual(visitAfterDelete([zosia, antek], "z1", null, "samochodzik", "rakieta"), {
+    assert.deepEqual(visitAfterDelete([zosia, antek], "z1", null, bar, lastUsed), {
       profiles: [antek],
       activeId: "a1",
       character: "dinozaur",
+      level: "lat4",
       ask: false,
     });
   });
 
-  void test("a missing id leaves the list, the active child, and the bar unchanged", () => {
+  void test("a missing id leaves the list, the active child, and the bar character and level unchanged", () => {
     const profiles = [zosia, antek, basia];
 
-    assert.deepEqual(visitAfterDelete(profiles, "missing", "z1", "samochodzik", "rakieta"), {
+    assert.deepEqual(visitAfterDelete(profiles, "missing", "z1", bar, lastUsed), {
       profiles: [zosia, antek, basia],
       activeId: "z1",
       character: "samochodzik",
+      level: "lat6",
       ask: false,
     });
-    assert.deepEqual(visitAfterDelete(profiles, "missing", null, "samochodzik", "rakieta"), {
+    assert.deepEqual(visitAfterDelete(profiles, "missing", null, bar, lastUsed), {
       profiles: [zosia, antek, basia],
       activeId: null,
       character: "samochodzik",
+      level: "lat6",
       ask: true,
     });
-    assert.deepEqual(visitAfterDelete([zosia], "missing", null, "samochodzik", "rakieta"), {
+    assert.deepEqual(visitAfterDelete([zosia], "missing", null, bar, lastUsed), {
       profiles: [zosia],
       activeId: null,
       character: "samochodzik",
+      level: "lat6",
       ask: false,
     });
-    assert.deepEqual(visitAfterDelete([zosia, antek], "missing", null, "samochodzik", "rakieta"), {
+    assert.deepEqual(visitAfterDelete([zosia, antek], "missing", null, bar, lastUsed), {
       profiles: [zosia, antek],
       activeId: null,
       character: "samochodzik",
+      level: "lat6",
       ask: true,
     });
   });
@@ -337,19 +376,19 @@ void describe("visitAfterDelete", () => {
 void describe("sortProfiles", () => {
   void test("orders Antek, Basia, Łucja, Zosia and leaves the input array unchanged", () => {
     const profiles: ChildProfile[] = [
-      { id: "z", name: "Zosia", character: "rakieta" },
-      { id: "l", name: "Łucja", character: "dinozaur" },
-      { id: "b", name: "Basia", character: "samochodzik" },
-      { id: "a", name: "Antek", character: "none" },
+      { id: "z", name: "Zosia", character: "rakieta", level: "lat5" },
+      { id: "l", name: "Łucja", character: "dinozaur", level: "lat5" },
+      { id: "b", name: "Basia", character: "samochodzik", level: "lat5" },
+      { id: "a", name: "Antek", character: "none", level: "lat5" },
     ];
     const input: ChildProfile[] = profiles.map((profile) => ({ ...profile }));
     const ordered = sortProfiles(profiles);
 
     assert.deepEqual(ordered, [
-      { id: "a", name: "Antek", character: "none" },
-      { id: "b", name: "Basia", character: "samochodzik" },
-      { id: "l", name: "Łucja", character: "dinozaur" },
-      { id: "z", name: "Zosia", character: "rakieta" },
+      { id: "a", name: "Antek", character: "none", level: "lat5" },
+      { id: "b", name: "Basia", character: "samochodzik", level: "lat5" },
+      { id: "l", name: "Łucja", character: "dinozaur", level: "lat5" },
+      { id: "z", name: "Zosia", character: "rakieta", level: "lat5" },
     ]);
     assert.notEqual(ordered, profiles);
     assert.deepEqual(profiles, input);
@@ -363,7 +402,7 @@ function assertStoredRead(storedValue: string | null, expected: ChildProfile[]):
   assert.deepEqual(storage.writes, []);
 }
 
-function stored(profiles: ChildProfile[]): string {
+function stored(profiles: Record<string, unknown>[]): string {
   return JSON.stringify({ profiles });
 }
 
