@@ -162,7 +162,7 @@ Na `feat/maze-winding` są też commity `dialog-close-button`. Ten plan dotyka t
 
 #### Manual
 
-- [ ] 1.3 Kolejne Generuj na 5 latach dają różne drogi, kartka mieści się na jednej stronie A4
+- [x] 1.3 Kolejne Generuj na 5 latach dają różne drogi, kartka mieści się na jednej stronie A4 — a3b11be
 
 ### Phase 2: Dokumenty i porzucenie `winding-maze-path`
 
