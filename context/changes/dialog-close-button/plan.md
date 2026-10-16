@@ -193,8 +193,8 @@ Brak migracji. Profile w `localStorage` zostają.
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi: `npm run lint`
-- [x] 2.2 Sprawdzenie typów przechodzi: `npx astro check`
+- [x] 2.1 Lint przechodzi: `npm run lint` — fa5df6c
+- [x] 2.2 Sprawdzenie typów przechodzi: `npx astro check` — fa5df6c
 
 #### Manual
 
