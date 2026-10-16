@@ -292,7 +292,6 @@ export function ProfileCorner({
       </DialogTrigger>
       <DialogContent
         className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto")}
-        showCloseButton={false}
         onEscapeKeyDown={(event) => {
           if (panel !== "delete") {
             return;
