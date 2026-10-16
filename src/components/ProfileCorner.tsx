@@ -16,7 +16,6 @@ import {
 } from "@/lib/child-profiles";
 import { readLastUsed } from "@/lib/last-used";
 import { CHARACTER_CHOICES, characterRow } from "@/lib/sheet/character";
-import { useScrollEdges } from "@/hooks/useScrollEdges";
 import { cn } from "@/lib/utils";
 
 const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
@@ -58,7 +57,6 @@ export function ProfileCorner({
   const cornerLabel = activeProfile === null ? "Profil" : activeProfile.name;
   const [profileOpen, setProfileOpen] = useState(ask);
   const [panel, setPanel] = useState<ProfilePanel>("menu");
-  const scrollEdges = useScrollEdges();
   const createLock = useRef(false);
   const favoriteLock = useRef(false);
   const deleteLock = useRef(false);
@@ -296,9 +294,7 @@ export function ProfileCorner({
         </Button>
       </DialogTrigger>
       <DialogContent
-        ref={scrollEdges}
-        className={cn("scroll-shadow max-h-[calc(100dvh-2rem)] overflow-y-auto")}
-        showCloseButton={false}
+        className={cn("max-h-[calc(100dvh-2rem)]")}
         onEscapeKeyDown={(event) => {
           if (panel !== "delete") {
             return;

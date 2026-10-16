@@ -56,7 +56,7 @@ void describe("print contract", () => {
     assert.deepEqual(classNamesContaining(generator, "print:hidden"), [
       "flex w-full flex-wrap items-center gap-3 sm:gap-4 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
-      "scroll-shadow max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden",
+      "max-h-[calc(100dvh-2rem)] print:hidden",
     ]);
   });
 
