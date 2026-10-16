@@ -275,6 +275,8 @@ Automatyczny dowód, że układ telefonu i tabletu nie nachodzi na siebie i nie 
 
 **Contract**: `webServer`, `baseURL` i reszta konfiguracji bez zmian. `npx playwright test` uruchamia wszystkie projekty, a `--project=<nazwa>` jeden.
 
+> Nota z implementacji (2026-10-15): WebKit z Playwright 1.64 pada przy starcie na Windowsie dewelopera (exit 0xC0EA0002). `iphone-13` jest pomijany na Windowsie (chyba że `E2E_WEBKIT=1`), a wszystkie pięć projektów uruchamia ręczny workflow `.github/workflows/e2e-phone.yml` (`workflow_dispatch`, Ubuntu). To wyjątek od „Playwright w CI” z What We're NOT Doing: tylko na żądanie, nie przy pushu ani PR. Decyzja użytkownika. Lokalnie testy biegną z `E2E_PORT=4398`, bo port 4321 bywa zajęty przez inny serwer.
+
 #### 2. Test układu
 
 **File**: `tests/e2e/phone-layout.spec.ts`
@@ -305,6 +307,8 @@ Automatyczny dowód, że układ telefonu i tabletu nie nachodzi na siebie i nie 
 - Test celowo czerwienieje, gdy na chwilę przywrócić `px-12` bez `sm:` na Generuj albo `fixed` bez wariantów na Profil, a potem zielenieje po cofnięciu
 
 **Implementation Note**: Po zielonej weryfikacji automatycznej zatrzymaj się na ręczne potwierdzenie użytkownika przed fazą 6.
+
+> Nota z implementacji (2026-10-15): `px-12` bez `sm:` nie jest już widoczną usterką, bo pasek ma `flex-wrap` i za szerokie przyciski schodzą do kolejnego rzędu bez nachodzenia; test słusznie zostaje zielony. Zepsucie paska sprawdzono przywróceniem starego układu bez `flex-wrap` (czerwone na `phone-360` i `pixel-7`). `fixed` na Profilu jest czerwone na `phone-360`, `pixel-7` i `tablet-768` po zmniejszeniu okna testu przewijania do 400 px.
 
 ---
 
@@ -437,27 +441,27 @@ Brak danych do migracji. Zapis profili i ostatnio użytych parametrów bez zmian
 
 #### Automated
 
-- [x] 4.1 Testy produktu przechodzą: `npm test`
-- [x] 4.2 Lint przechodzi: `npm run lint`
-- [x] 4.3 Sprawdzenie typów przechodzi: `npx astro check`
+- [x] 4.1 Testy produktu przechodzą: `npm test` — 1b93006
+- [x] 4.2 Lint przechodzi: `npm run lint` — 1b93006
+- [x] 4.3 Sprawdzenie typów przechodzi: `npx astro check` — 1b93006
 
 #### Manual
 
-- [x] 4.4 Przy 375 px tekst wierszy w oknie profili i na liście postaci ma 16 px, a wiersze mają co najmniej 44 px wysokości
-- [x] 4.5 Przy 1280 px dialogi wyglądają jak przed fazą
+- [x] 4.4 Przy 375 px tekst wierszy w oknie profili i na liście postaci ma 16 px, a wiersze mają co najmniej 44 px wysokości — 1b93006
+- [x] 4.5 Przy 1280 px dialogi wyglądają jak przed fazą — 1b93006
 
 ### Phase 5: Testy telefonu w Playwright
 
 #### Automated
 
-- [ ] 5.1 Przeglądarki są zainstalowane: `npx playwright install chromium webkit`
-- [ ] 5.2 Wszystkie projekty przechodzą: `npx playwright test`
-- [ ] 5.3 `seed.spec.ts` przechodzi na projektach z telefonem i tabletem: `npx playwright test seed.spec.ts`
-- [ ] 5.4 Testy produktu i lint przechodzą: `npm test` i `npm run lint`
+- [x] 5.1 Przeglądarki są zainstalowane: `npx playwright install chromium webkit`
+- [x] 5.2 Wszystkie projekty przechodzą: `npx playwright test`
+- [x] 5.3 `seed.spec.ts` przechodzi na projektach z telefonem i tabletem: `npx playwright test seed.spec.ts`
+- [x] 5.4 Testy produktu i lint przechodzą: `npm test` i `npm run lint`
 
 #### Manual
 
-- [ ] 5.5 Test celowo czerwienieje, gdy na chwilę przywrócić `px-12` bez `sm:` na Generuj albo `fixed` bez wariantów na Profil, a potem zielenieje po cofnięciu
+- [x] 5.5 Test celowo czerwienieje, gdy na chwilę przywrócić `px-12` bez `sm:` na Generuj albo `fixed` bez wariantów na Profil, a potem zielenieje po cofnięciu
 
 ### Phase 6: Ręczny druk i dialogi
 
