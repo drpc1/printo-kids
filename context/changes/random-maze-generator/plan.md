@@ -157,8 +157,8 @@ Na `feat/maze-winding` są też commity `dialog-close-button`. Ten plan dotyka t
 
 #### Automated
 
-- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę, wejście i wyjście, jedną drogę, osiągalność każdej komórki, kolejność median w parach 3/4 i 5/6 oraz brak stałej drogi na 3 i 5 latach
-- [x] 1.2 `npm run lint` i `npx astro check` przechodzą
+- [x] 1.1 `npm test` sprawdza sześć poziomów: siatkę, wejście i wyjście, jedną drogę, osiągalność każdej komórki, kolejność median w parach 3/4 i 5/6 oraz brak stałej drogi na 3 i 5 latach — 27779c6
+- [x] 1.2 `npm run lint` i `npx astro check` przechodzą — 27779c6
 
 #### Manual
 
