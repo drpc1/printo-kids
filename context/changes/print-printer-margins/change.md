@@ -16,3 +16,5 @@ Przyczyna: iOS ignoruje `@page { margin: 0 }` i dokłada margines drukarki (ok. 
 Do rozstrzygnięcia w planie: czy w druku z marginesem drukarki karta ma mniejszy margines wewnętrzny (zmiana geometrii, `layoutSheet` / inset), osobny wariant karty do druku, czy coś innego. Koordynacja z S-07 (`maze-difficulty-levels`), który zmienia siatkę. PRD wymaga co najmniej 10 mm marginesu wokół ścian labiryntu, liczonego od krawędzi kartki.
 
 Pomiary i metoda (Chromium z emulowanym obszarem druku): `context/changes/phone-worksheet/plan.md`, nota w fazie 6.
+
+Issue: https://github.com/drpc1/printo-kids/issues/38

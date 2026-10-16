@@ -160,6 +160,8 @@ test("a long profile list marks the edge it can still scroll towards", async ({ 
   await expect(dialog).toBeVisible();
   // The body inside ui/dialog.tsx is the element that scrolls.
   const body = dialog.locator('[data-slot="dialog-body"]');
+  const overflows = await body.evaluate((element) => element.scrollHeight > element.clientHeight);
+  expect(overflows, "12 profiles must overflow a 600 px tall window for this test to mean anything").toBe(true);
   await expect(body).toHaveAttribute("data-more-below", "");
   await expect(body).not.toHaveAttribute("data-more-above", "");
 

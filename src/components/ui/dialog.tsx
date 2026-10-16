@@ -56,7 +56,7 @@ function DialogContent({
         )}
         {...props}
       >
-        <div ref={scrollEdges} data-slot="dialog-body" className={cn("scroll-shadow min-h-0 overflow-y-auto")}>
+        <div ref={scrollEdges} data-slot="dialog-body" className={cn("scroll-shadow -m-1 min-h-0 overflow-y-auto p-1")}>
           {children}
         </div>
         {showCloseButton && (
