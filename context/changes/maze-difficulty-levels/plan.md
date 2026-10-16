@@ -297,13 +297,13 @@ Istniejący `printo-kids:last-used` i `printo-kids:child-profiles` bez `level` c
 
 #### Automated
 
-- [x] 3.1 Test zapisu: brak pola poziomu i nieznany poziom czytają się jako `lat5`, zapis odkłada poziom, a profil bez poziomu zostaje
-- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą
+- [x] 3.1 Test zapisu: brak pola poziomu i nieznany poziom czytają się jako `lat5`, zapis odkłada poziom, a profil bez poziomu zostaje — 435fae8
+- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą — 435fae8
 
 #### Manual
 
-- [x] 3.3 Sześć poziomów po Generuj różni się alejką albo długością drogi, a nastolatek ma narożniki, napis Start i nie pokazuje postaci
-- [x] 3.4 Zmiana poziomu chowa kartkę i Drukuj wraca dopiero po kolejnym Generuj
-- [x] 3.5 Po odświeżeniu strony bez profilu widać ten sam poziom
-- [x] 3.6 Przy aktywnym profilu zmiana poziomu na pasku nie zmienia profilu aż do jawnego zapisu, a wybór dziecka i usunięcie innego dziecka zostawiają na pasku poziom z tej samej reguły co postać
-- [x] 3.7 Gdy ułożenie się nie uda, widać „Nie udało się ułożyć tego poziomu.” i kartka spoza reguły się nie pojawia
+- [x] 3.3 Sześć poziomów po Generuj różni się alejką albo długością drogi, a nastolatek ma narożniki, napis Start i nie pokazuje postaci — 435fae8
+- [x] 3.4 Zmiana poziomu chowa kartkę i Drukuj wraca dopiero po kolejnym Generuj — 435fae8
+- [x] 3.5 Po odświeżeniu strony bez profilu widać ten sam poziom — 435fae8
+- [x] 3.6 Przy aktywnym profilu zmiana poziomu na pasku nie zmienia profilu aż do jawnego zapisu, a wybór dziecka i usunięcie innego dziecka zostawiają na pasku poziom z tej samej reguły co postać — 435fae8
+- [x] 3.7 Gdy ułożenie się nie uda, widać „Nie udało się ułożyć tego poziomu.” i kartka spoza reguły się nie pojawia — 435fae8
