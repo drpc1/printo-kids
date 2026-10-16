@@ -129,3 +129,43 @@ test.describe("with a profile that has the longest allowed name", () => {
     expect(overlaps(corner, await viewportBox(sheet))).toBe(false);
   });
 });
+
+test("a long profile list marks the edge it can still scroll towards", async ({ page }) => {
+  // Phones hide scrollbars; the edge shadow (useScrollEdges + scroll-shadow) is the only hint.
+  await page.addInitScript((key) => {
+    const names = [
+      "Ala",
+      "Bartek",
+      "Celina",
+      "Dawid",
+      "Ela",
+      "Franek",
+      "Gosia",
+      "Henio",
+      "Iga",
+      "Jaś",
+      "Kasia",
+      "Leon",
+    ];
+    window.localStorage.setItem(
+      key,
+      JSON.stringify({ profiles: names.map((name, index) => ({ id: `e2e-${index}`, name, character: "kot" })) }),
+    );
+  }, PROFILES_KEY);
+  await page.setViewportSize({ width: viewportWidth(page), height: 600 });
+  await page.goto("/");
+
+  // Two or more profiles and none chosen: the corner opens the list on its own.
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  // The body inside ui/dialog.tsx is the element that scrolls.
+  const body = dialog.locator('[data-slot="dialog-body"]');
+  await expect(body).toHaveAttribute("data-more-below", "");
+  await expect(body).not.toHaveAttribute("data-more-above", "");
+
+  await body.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+  await expect(body).toHaveAttribute("data-more-above", "");
+  await expect(body).not.toHaveAttribute("data-more-below", "");
+});
