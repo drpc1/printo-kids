@@ -84,7 +84,7 @@ Baza testów: **sparse**. `npm test` uruchamia `src/lib/maze/generate.test.ts`, 
 
 Jest 59 testów. Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
 
-Dla każdego z sześciu poziomów jedno ustalone ziarno daje siatkę tego poziomu, otwarte ściany wejścia i wyjścia, jedną drogę, długość w paśmie i odnogę w limicie. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Dotychczasowe ziarna 13×16 nie muszą same spełniać pasma 5 lat. Te sprawdzenia nie dowodzą odmowy kartki przy zero ścieżkach.
+Dla każdego z sześciu poziomów kilka ustalonych ziaren daje siatkę tego poziomu, otwarte ściany wejścia i wyjścia, jedną drogę i osiągalność każdej komórki. Na 200 ziarnach mediana drogi 4 lat jest większa niż 3 lat, a 6 lat niż 5 lat; to kolejność, nie próg. Żaden poziom nie powtarza jednej drogi na ośmiu ziarnach. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Te sprawdzenia nie dowodzą odmowy kartki przy zero ścieżkach.
 
 Zmutowana siatka potrafi dać więcej niż jedną ścieżkę. Siatka z otwartymi wewnętrznymi ścianami zatrzymuje licznik na 2. Przypadek „więcej niż jedna” wybiera siatkę tym samym licznikiem, który potem sprawdza. Gotowa kartka wymaga dokładnie jednej ścieżki: zero ścieżek i dwie ścieżki nie są zapisywane, a jedna ścieżka zostawia ten sam labirynt. Klik Generuj zapisuje kartkę tylko przy niepustym wyniku. Gdy ułożenie się nie uda, widać „Nie udało się ułożyć tego poziomu.”, bez ponowienia.
 
@@ -124,6 +124,7 @@ TBD — patrz §3 Faza 4 dla wzorca bramki, która pilnuje kartki i nie obrasta 
 
 - Logowanie, rejestracja, potwierdzenie maila, dashboard, API kont, testy startera i dokładanie asercji startera do smoke.
 - Migawki pikseli kartki i postaci.
+- Pasmo długości drogi, próg głębokości odnogi i reguła biegu dla pojedynczej kartki. Poziom wyznacza siatka i sposób losowania; różnicę w parach o tej samej alejce pilnuje kolejność median.
 - Biblioteka kart FR-011, która użyje wyroczni ryzyka 1 dopiero gdy powstanie.
 - Test profilu przed plasterkiem: profil, ostatnie parametry i własny obrazek, dopóki nie istnieją S-05, S-06 albo US-02.
 - Automatyczne „czy rodzic rozumie ekran”. To zostaje ręcznym sprawdzeniem.

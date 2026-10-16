@@ -16,18 +16,16 @@ Zapis `printo-kids:last-used` to JSON `{ character }`, a profil to `id`, `name`,
 
 Pasek ma kontrolkę „Poziom:” z sześcioma nazwami. Generuj buduje labirynt wybranego poziomu. Drukuje się kartka, która jest na ekranie. Zmiana poziomu chowa kartkę do następnego Generuj.
 
-| Id | Nazwa | Siatka | Wejście → wyjście | Droga (komórki) | Odnoga |
-| --- | --- | --- | --- | --- | --- |
-| `lat3` | 3 lata | 9×11 | środek góra → środek dół | 24–44 | ≤ 4 |
-| `lat4` | 4 lata | 9×11 | środek góra → środek dół | 50–80 | bez limitu |
-| `lat5` | 5 lat | 13×16 | środek góra → środek dół | 56–96 | ≤ 4 |
-| `lat6` | 6 lat | 13×16 | środek góra → środek dół | 56–96 | ≤ 4 |
-| `lat7` | 7–8 lat | 17×21 | środek góra → środek dół | 150–240 | bez limitu |
-| `nastolatek` | nastolatek | 27×33 | lewy górny → prawy dolny | 280–500 | ≥ 25 |
+| Id | Nazwa | Siatka | Wejście → wyjście |
+| --- | --- | --- | --- |
+| `lat3` | 3 lata | 9×11 | środek góra → środek dół |
+| `lat4` | 4 lata | 9×11 | środek góra → środek dół |
+| `lat5` | 5 lat | 13×16 | środek góra → środek dół |
+| `lat6` | 6 lat | 13×16 | środek góra → środek dół |
+| `lat7` | 7–8 lat | 17×21 | środek góra → środek dół |
+| `nastolatek` | nastolatek | 27×33 | lewy górny → prawy dolny |
 
-Długość drogi liczy komórki jedynej drogi razem ze startem i metą. Odnoga to najdłuższy ciąg komórek poza tą drogą; pierwsza komórka poza drogą ma głębokość 1. Środek kolumny to `(columns - 1) / 2`. Wejście otwiera ścianę północną, meta południową. Przedziały są domknięte. Długość jest luźną kolejnością wieku: 5 lat i 6 lat dzielą pasmo 56–96 (`winding-maze-path`).
-
-Droga skręca w górę, w dół i w boki i ma komórkę w lewej i w prawej tercji kartki (`[0, floor(columns / 3))` i ostatnie `floor(columns / 3)` kolumn). Bieg to najdłuższy ciąg komórek w jednym kierunku. W całym labiryncie, na drodze i w odnogach, nie ma biegu o 5 lub więcej komórkach, a biegów o 4 komórkach jest mniej niż biegów o 1–3.
+Generator, algorytm poziomu i bramka `mazeForSheet` są opisane w `context/changes/random-maze-generator/plan.md`, który zastępuje fazę 1 tego planu. Pasm długości drogi i progów odnogi nie ma; długość drogi jest typową wartością dla siatki i algorytmu. Środek kolumny to `(columns - 1) / 2`. Wejście otwiera ścianę północną, meta południową.
 
 Na poziomach do 7–8 lat wybrana postać stoi przy starcie, a „Bez postaci” zostawia napis Start. Nastolatek nie pokazuje postaci, pokazuje napis Start i nie musi mieć kółka. Zostaje dokładnie jedna droga start–meta.
 
@@ -35,9 +33,7 @@ Pusty zapis i nieznany poziom czytają się jako `lat5`. Wybór na pasku bez akt
 
 ### Key Discoveries:
 
-- Prosta w kolumnie wejścia z jednokomórkowymi uskokami dobijała do sufitu 40 na 5 latach bez kroku w górę, a odnogi szły prosto do krawędzi, bo limit 6 równał się odległości od kolumny 6 do brzegu (`frame.md`). Samo podniesienie sufitu zostawia drogę przy środku.
-- `floor(13 / 3)` to 4, więc na 5 latach lewa tercja to kolumny 0–3, a prawa 9–12. Wejście w kolumnie 6 jest środkiem, więc droga musi z niego zejść w obie strony.
-- Odnoga o głębokości 4 może być jednym biegiem o 4 komórkach. Reguła wyjątku na to pozwala, ale nie pozwala dojść prosto do krawędzi, bo od środka 5 lat jest 6 komórek.
+- Generator kładący drogę pod pasmo długości i limit odnogi rysował grzebień przy środku kartki (`frame.md`). Zwykłe losowanie drzewa rozpinającego (Kruskal albo DFS) samo daje krętą drogę; szczegóły w `random-maze-generator`.
 - `countPaths` i `LABEL_COLUMN` są wpisane jako kolumna 6 oraz wiersze 0 i 15. Nowa siatka bez ruszenia tych stałych rozjedzie otwór i napis.
 - Zapis ostatniego użycia i profili nadpisuje cały JSON. Dopisanie poziomu tylko przy odczycie zniknie przy następnym zapisie postaci.
 
@@ -59,9 +55,7 @@ Tabela poziomów jest jednym modułem, z którego korzystają generator, kartka 
 
 `countPaths` musi dostać komórki wejścia i wyjścia z poziomu. Zostawienie stałych `(0, 6)` i `(15, 6)` policzy drogę nie tam, gdzie jest otwór, gdy siatka nie jest 13×16.
 
-Droga nie jest prostą w kolumnie wejścia. Generator najpierw kładzie zawijaną drogę, która sama mieści się w paśmie, wchodzi w obie tercje i trzyma regułę biegu, a potem dokleja resztę siatki odnogami, które skręcają tą samą regułą i trzymają próg głębokości poziomu. Konstrukcja trafia w regułę w jednym ułożeniu; nie losuje rzeźbienia, bo w próbce 4000 labiryntów takie progi były skrajem, nie typem.
-
-Głębokość odnogi i długość biegu to dwie osie. Odnoga nastolatka ma co najmniej 25 komórek poza drogą i przy tym skręca, zanim dojdzie do pięciu komórek w linii.
+Generator i bramka idą za `context/changes/random-maze-generator/plan.md`: poziom to siatka i algorytm losowania (`kruskal` albo `backtracker`), a `mazeForSheet` sprawdza tylko siatkę i jedną drogę. Faza 3 tego planu woła `generateMaze(level, Math.random)` i `mazeForSheet` bez zmiany sygnatur.
 
 `writeLastUsed` i `writeChildProfiles` budują JSON od zera. Każde wywołanie po tej zmianie zapisuje też poziom. Zmiana poziomu czyści stan kartki w tym samym zdarzeniu, zanim rodzic zdąży kliknąć Drukuj.
 
