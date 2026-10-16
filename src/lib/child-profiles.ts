@@ -1,3 +1,5 @@
+import { DEFAULT_LEVEL_ID, isLevelId, type LevelId } from "./maze/levels.ts";
+
 const CHILD_PROFILES_KEY = "printo-kids:child-profiles";
 const MAX_NAME_CODE_POINTS = 40;
 
@@ -10,6 +12,7 @@ export interface ChildProfile {
   id: string;
   name: string;
   character: string;
+  level: LevelId;
 }
 
 export function readChildProfiles(storage: ChildProfileStorage, allowed: readonly string[]): ChildProfile[] {
@@ -61,9 +64,15 @@ export function writeChildProfiles(storage: ChildProfileStorage, profiles: reado
   }
 }
 
+export interface BarChoice {
+  character: string;
+  level: LevelId;
+}
+
 export interface OpeningVisit {
   activeId: string | null;
   character: string;
+  level: LevelId;
   ask: boolean;
 }
 
@@ -71,28 +80,30 @@ export function withFavorite(
   profiles: readonly ChildProfile[],
   id: string,
   character: string,
+  level: LevelId,
   allowed: readonly string[],
 ): ChildProfile[] | null {
   if (!allowed.includes(character) || !profiles.some((profile) => profile.id === id)) {
     return null;
   }
 
-  return profiles.map((profile) => (profile.id === id ? { ...profile, character } : profile));
+  return profiles.map((profile) => (profile.id === id ? { ...profile, character, level } : profile));
 }
 
 export function barAfterFavoriteSave(bar: string, previousFavorite: string, nextFavorite: string): string {
   return bar === previousFavorite ? nextFavorite : bar;
 }
 
-export function openingVisit(profiles: readonly ChildProfile[], lastUsed: string): OpeningVisit {
+export function openingVisit(profiles: readonly ChildProfile[], lastUsed: BarChoice): OpeningVisit {
   const only = profiles.length === 1 ? profiles[0] : undefined;
   if (only !== undefined) {
-    return { activeId: only.id, character: only.character, ask: false };
+    return { activeId: only.id, character: only.character, level: only.level, ask: false };
   }
 
   return {
     activeId: null,
-    character: lastUsed,
+    character: lastUsed.character,
+    level: lastUsed.level,
     ask: profiles.length >= 2,
   };
 }
@@ -105,14 +116,15 @@ export function visitAfterDelete(
   profiles: readonly ChildProfile[],
   deletedId: string,
   activeId: string | null,
-  barCharacter: string,
-  lastUsed: string,
+  bar: BarChoice,
+  lastUsed: BarChoice,
 ): VisitAfterDelete {
   if (!profiles.some((profile) => profile.id === deletedId)) {
     return {
       profiles: [...profiles],
       activeId,
-      character: barCharacter,
+      character: bar.character,
+      level: bar.level,
       ask: activeId === null && profiles.length >= 2,
     };
   }
@@ -122,7 +134,8 @@ export function visitAfterDelete(
     return {
       profiles: remaining,
       activeId,
-      character: barCharacter,
+      character: bar.character,
+      level: bar.level,
       ask: false,
     };
   }
@@ -188,7 +201,9 @@ function acceptEntry(entry: unknown, allowed: readonly string[], kept: readonly 
     return null;
   }
 
-  return { id, name: name.trim(), character };
+  const level = isLevelId(entry.level) ? entry.level : DEFAULT_LEVEL_ID;
+
+  return { id, name: name.trim(), character, level };
 }
 
 function codePointLength(value: string): number {

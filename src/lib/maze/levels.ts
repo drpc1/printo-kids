@@ -83,6 +83,10 @@ export const LEVELS: readonly Level[] = [
   },
 ];
 
+export function isLevelId(value: unknown): value is LevelId {
+  return LEVELS.some((level) => level.id === value);
+}
+
 export function levelById(id: LevelId): Level {
   const level = LEVELS.find((entry) => entry.id === id);
   if (level === undefined) {
