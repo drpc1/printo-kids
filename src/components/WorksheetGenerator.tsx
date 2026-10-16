@@ -217,7 +217,10 @@ function CharacterChoiceControl({
           <ChevronDown className={cn("size-4")} aria-hidden />
         </Button>
       </DialogTrigger>
-      <DialogContent className={cn("max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden")} showCloseButton={false}>
+      <DialogContent
+        className={cn("scroll-shadow max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden")}
+        showCloseButton={false}
+      >
         <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
         <CharacterChoiceRows
           selected={character}
