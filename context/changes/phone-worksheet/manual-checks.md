@@ -78,3 +78,4 @@ Błąd druku, którego nie da się naprawić w `@media print` w `src/components/
 - 2026-10-16: druk na iOS (Chrome) na dwie strony → karta zmniejsza się do obszaru druku. **Powtórzyć druk na iOS w Safari, Chrome i Brave.**
 - 2026-10-16: niewidoczne przewijanie listy profili → cień przy krawędzi w oknie profili i na liście postaci.
 - 2026-10-16: cień był za słaby na beżowym tle → kolor `--primary` (zielony) z kryciem 55%, wysokość 20 px.
+- 2026-10-16: na iPhonie cienia nadal nie było widać (iOS nie obsługuje `background-attachment: local` w przewijanym oknie) → hook `useScrollEdges` ustawia `data-more-above` / `data-more-below`, a `scroll-shadow` rysuje wewnętrzny cień `--primary` 70%. Test Playwright sprawdza atrybuty, także na WebKit w workflow.
