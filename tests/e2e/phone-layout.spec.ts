@@ -28,8 +28,24 @@ function overlaps(a: Box, b: Box): boolean {
 }
 
 // The bar and dialogs animate (transition-all, zoom-in); measure the settled layout.
+// Looping animations (a spinner) never finish, so they are left out.
 async function settle(page: Page): Promise<void> {
-  await page.evaluate(() => Promise.all(document.getAnimations().map((animation) => animation.finished)));
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((animation) => animation.effect?.getTiming().iterations !== Infinity)
+        .map((animation) => animation.finished),
+    ),
+  );
+}
+
+function viewportWidth(page: Page): number {
+  const size = page.viewportSize();
+  if (size === null) {
+    throw new Error("the project has no fixed viewport");
+  }
+  return size.width;
 }
 
 async function expectNoSidewaysScroll(page: Page): Promise<void> {
@@ -55,7 +71,7 @@ test("the action bar fits the screen and its controls do not cover each other", 
   await generate(page);
   await expectNoSidewaysScroll(page);
 
-  const width = page.viewportSize()?.width ?? 0;
+  const width = viewportWidth(page);
   const boxes = {
     generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
     drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
@@ -98,8 +114,7 @@ test.describe("with a profile that has the longest allowed name", () => {
     test.skip(testInfo.project.use.hasTouch !== true, "a mouse screen keeps the corner fixed on purpose");
 
     // A short window makes the sheet taller than the screen, so a fixed corner would land on it.
-    const width = page.viewportSize()?.width ?? 0;
-    await page.setViewportSize({ width, height: 400 });
+    await page.setViewportSize({ width: viewportWidth(page), height: 400 });
     await page.goto("/");
     await generate(page);
 

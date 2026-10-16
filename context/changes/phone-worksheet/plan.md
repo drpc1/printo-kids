@@ -85,6 +85,8 @@ Pasek po wygenerowaniu przestaje nachodzić na siebie i nie przewija strony w bo
 
 **Contract**: Ikona ma `aria-hidden`, a nazwa dostępna przycisku to słowo „Generuj” albo „Drukuj”, bez zmian, bo `seed.spec.ts` szuka po `getByRole("button", { name })`. Klasy łączy `cn()`.
 
+> Nota z implementacji (2026-10-16, z przeglądu): `ACTION_BUTTON_CLASS` zawiera też `has-[>svg]:px-6` i `sm:has-[>svg]:px-8`, bo bazowy `Button` ma `has-[>svg]:px-3`, które po dodaniu ikony nadpisałoby padding.
+
 > Nota z implementacji (2026-10-14): od `sm` padding to `px-8`, nie `px-12`. Z ikonami i `px-12` rząd potrzebował 396 px + szerokość „Postać:” (157–229 px), więc w 576 px Drukuj zawijał się przy 8 z 12 wyborów. Z `px-8` mieści się każda postać, a przyciski mają prawie dzisiejszą szerokość. Decyzja użytkownika.
 
 #### 3. Kontrakt druku
@@ -131,6 +133,8 @@ Profil nie leży nad kartą i nagłówkiem na telefonie. Strona ma jawną skalę
 **Intent**: Trigger Profil ma pozycję `absolute` (przewija się ze stroną) poniżej `sm` i na każdym urządzeniu dotykowym, także na telefonie poziomo (np. 844×390) i tablecie. `fixed` zostaje tylko od `sm` przy wskaźniku precyzyjnym (mysz). Reszta klas (`top-4 right-4 z-40 max-w-48`, obcinanie imienia) bez zmian.
 
 **Contract**: Zmienia się tylko lista klas triggera w `ProfileCorner`: bazowo `absolute`, `fixed` tylko przy złożeniu wariantów `sm:` i `pointer-fine:` z Tailwind 4. Kod dialogu zostaje nietknięty, żeby nie wchodzić w diff `profile-corner-jobs`.
+
+> Nota z implementacji (2026-10-16, z przeglądu): po refaktorze na `main` (drpc1/printo-kids#31) `ProfileCorner` jest w `src/components/ProfileCorner.tsx`, więc zmiana klas triggera trafiła tam (rebase gałęzi na `origin/main` 2026-10-15). Odstęp nagłówka na telefonie to `padding-top: 3.5rem` (nagłówek ok. 8 px pod przyciskiem Profil).
 
 #### 2. Odstęp nagłówka na telefonie
 
@@ -241,6 +245,8 @@ Na telefonie nic w oknie profili ani na liście postaci nie jest większe od Gen
 **Intent**: Wszystkie wiersze dialogów o klasie `h-auto w-full justify-start px-4 py-2 text-lg` (profile, lista postaci, „Dodaj profil”, potwierdzenia) korzystają z jednej stałej w module. Poniżej `sm` stała daje `text-base py-2.5` (44 px), od `sm` `text-lg py-2` (też 44 px).
 
 **Contract**: Wiersze z dodatkowymi klasami (`bg-muted` dla zaznaczenia, `break-words whitespace-normal`, jeśli zostaną po scaleniu) łączą stałą z dodatkami przez `cn()`. Przyciski ikon z `profile-corner-jobs` (`size="icon"`) zostają bez zmian.
+
+> Nota z implementacji (2026-10-16, z przeglądu): stała `DIALOG_ROW_CLASS` jest w `src/components/ProfileCorner.tsx` (po refaktorze z `main`). Obejmuje też czwarty wiersz, imię dziecka na liście profili, nowy z `profile-corner-jobs`. `DialogTitle` zostaje na `text-lg`, bo to nagłówek okna, nie wiersz ani przycisk. Na telefonie wiersze listy postaci (z obrazkiem 40 px) mają 60 px zamiast 56 px.
 
 ### Success Criteria:
 
@@ -454,14 +460,14 @@ Brak danych do migracji. Zapis profili i ostatnio użytych parametrów bez zmian
 
 #### Automated
 
-- [x] 5.1 Przeglądarki są zainstalowane: `npx playwright install chromium webkit`
-- [x] 5.2 Wszystkie projekty przechodzą: `npx playwright test`
-- [x] 5.3 `seed.spec.ts` przechodzi na projektach z telefonem i tabletem: `npx playwright test seed.spec.ts`
-- [x] 5.4 Testy produktu i lint przechodzą: `npm test` i `npm run lint`
+- [x] 5.1 Przeglądarki są zainstalowane: `npx playwright install chromium webkit` — 4b14020
+- [x] 5.2 Wszystkie projekty przechodzą: `npx playwright test` — 4b14020
+- [x] 5.3 `seed.spec.ts` przechodzi na projektach z telefonem i tabletem: `npx playwright test seed.spec.ts` — 4b14020
+- [x] 5.4 Testy produktu i lint przechodzą: `npm test` i `npm run lint` — 4b14020
 
 #### Manual
 
-- [x] 5.5 Test celowo czerwienieje, gdy na chwilę przywrócić `px-12` bez `sm:` na Generuj albo `fixed` bez wariantów na Profil, a potem zielenieje po cofnięciu
+- [x] 5.5 Test celowo czerwienieje, gdy na chwilę przywrócić `px-12` bez `sm:` na Generuj albo `fixed` bez wariantów na Profil, a potem zielenieje po cofnięciu — 4b14020
 
 ### Phase 6: Ręczny druk i dialogi
 

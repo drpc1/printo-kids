@@ -5,6 +5,9 @@ name: E2E phone layout
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   e2e:
     runs-on: ubuntu-latest
