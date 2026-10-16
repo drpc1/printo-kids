@@ -146,7 +146,7 @@ Na `feat/maze-winding` są też commity `dialog-close-button`. Ten plan dotyka t
 
 ## References
 
-- Porzucone: `context/changes/winding-maze-path/plan.md`
+- Porzucone: `context/archive/2026-10-11-winding-maze-path/plan.md`
 - Rama: `context/changes/maze-difficulty-levels/frame.md`
 - Generator przed zmianami: `git show main:src/lib/maze/generate.ts`
 - Tabela produktu: `context/foundation/prd.md` (Business Logic)
@@ -168,7 +168,7 @@ Na `feat/maze-winding` są też commity `dialog-close-button`. Ten plan dotyka t
 
 #### Manual
 
-- [ ] 2.1 PRD: tabela z kolumną „Losowanie”, droga jako wartość typowa, pytanie 2 zamknięte
-- [ ] 2.2 test-plan §5 i §7 bez pasma i progu odnogi
-- [ ] 2.3 Plan `maze-difficulty-levels` odsyła do tego planu
-- [ ] 2.4 `winding-maze-path` ma `status: abandoned` i jest zarchiwizowany
+- [x] 2.1 PRD: tabela z kolumną „Losowanie”, droga jako wartość typowa, pytanie 2 zamknięte — 3ae7dd0
+- [x] 2.2 test-plan §5 i §7 bez pasma i progu odnogi — 3ae7dd0
+- [x] 2.3 Plan `maze-difficulty-levels` odsyła do tego planu — 3ae7dd0
+- [x] 2.4 `winding-maze-path` ma `status: abandoned` i jest zarchiwizowany — 9787b1a
