@@ -175,9 +175,9 @@ Brak migracji. Profile w `localStorage` zostają.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Sprawdzenie typów przechodzi: `npx astro check`
-- [x] 1.3 Dotychczasowe testy przechodzą: `npm test`
+- [x] 1.1 Lint przechodzi: `npm run lint` — c328ea9
+- [x] 1.2 Sprawdzenie typów przechodzi: `npx astro check` — c328ea9
+- [x] 1.3 Dotychczasowe testy przechodzą: `npm test` — c328ea9
 
 #### Manual
 
@@ -193,8 +193,8 @@ Brak migracji. Profile w `localStorage` zostają.
 
 #### Automated
 
-- [ ] 2.1 Lint przechodzi: `npm run lint`
-- [ ] 2.2 Sprawdzenie typów przechodzi: `npx astro check`
+- [x] 2.1 Lint przechodzi: `npm run lint`
+- [x] 2.2 Sprawdzenie typów przechodzi: `npx astro check`
 
 #### Manual
 
