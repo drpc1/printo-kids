@@ -158,12 +158,14 @@ test("a long profile list marks the edge it can still scroll towards", async ({ 
   // Two or more profiles and none chosen: the corner opens the list on its own.
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
-  await expect(dialog).toHaveAttribute("data-more-below", "");
-  await expect(dialog).not.toHaveAttribute("data-more-above", "");
+  // The body inside ui/dialog.tsx is the element that scrolls.
+  const body = dialog.locator('[data-slot="dialog-body"]');
+  await expect(body).toHaveAttribute("data-more-below", "");
+  await expect(body).not.toHaveAttribute("data-more-above", "");
 
-  await dialog.evaluate((element) => {
+  await body.evaluate((element) => {
     element.scrollTop = element.scrollHeight;
   });
-  await expect(dialog).toHaveAttribute("data-more-above", "");
-  await expect(dialog).not.toHaveAttribute("data-more-below", "");
+  await expect(body).toHaveAttribute("data-more-above", "");
+  await expect(body).not.toHaveAttribute("data-more-below", "");
 });
