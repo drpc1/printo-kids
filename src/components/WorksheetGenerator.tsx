@@ -9,6 +9,7 @@ import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze
 import { DEFAULT_LEVEL_ID, levelById, type Level } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
+import { useScrollEdges } from "@/hooks/useScrollEdges";
 import { cn } from "@/lib/utils";
 
 const PAGE_WIDTH = 210;
@@ -200,6 +201,7 @@ function CharacterChoiceControl({
   onSelect: (id: CharacterChoice) => void;
   rememberLastUsed: boolean;
 }) {
+  const scrollEdges = useScrollEdges();
   return (
     <Dialog open={choiceOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
@@ -218,6 +220,7 @@ function CharacterChoiceControl({
         </Button>
       </DialogTrigger>
       <DialogContent
+        ref={scrollEdges}
         className={cn("scroll-shadow max-h-[calc(100dvh-2rem)] overflow-y-auto print:hidden")}
         showCloseButton={false}
       >
