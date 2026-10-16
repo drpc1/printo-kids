@@ -7,6 +7,8 @@ export interface MazePoint {
   col: number;
 }
 
+export type MazeAlgorithm = "kruskal" | "backtracker";
+
 export interface Level {
   id: LevelId;
   label: string;
@@ -14,10 +16,7 @@ export interface Level {
   rows: number;
   entrance: MazePoint;
   exit: MazePoint;
-  pathMin: number | null;
-  pathMax: number | null;
-  spurMin: number | null;
-  spurMax: number | null;
+  algorithm: MazeAlgorithm;
   showCharacter: boolean;
 }
 
@@ -29,10 +28,7 @@ export const LEVELS: readonly Level[] = [
     rows: 11,
     entrance: { row: 0, col: 4 },
     exit: { row: 10, col: 4 },
-    pathMin: 24,
-    pathMax: 44,
-    spurMin: null,
-    spurMax: 4,
+    algorithm: "kruskal",
     showCharacter: true,
   },
   {
@@ -42,10 +38,7 @@ export const LEVELS: readonly Level[] = [
     rows: 11,
     entrance: { row: 0, col: 4 },
     exit: { row: 10, col: 4 },
-    pathMin: 50,
-    pathMax: 80,
-    spurMin: null,
-    spurMax: null,
+    algorithm: "backtracker",
     showCharacter: true,
   },
   {
@@ -55,10 +48,7 @@ export const LEVELS: readonly Level[] = [
     rows: 16,
     entrance: { row: 0, col: 6 },
     exit: { row: 15, col: 6 },
-    pathMin: 56,
-    pathMax: 96,
-    spurMin: null,
-    spurMax: 4,
+    algorithm: "kruskal",
     showCharacter: true,
   },
   {
@@ -68,10 +58,7 @@ export const LEVELS: readonly Level[] = [
     rows: 16,
     entrance: { row: 0, col: 6 },
     exit: { row: 15, col: 6 },
-    pathMin: 56,
-    pathMax: 96,
-    spurMin: null,
-    spurMax: 4,
+    algorithm: "backtracker",
     showCharacter: true,
   },
   {
@@ -81,10 +68,7 @@ export const LEVELS: readonly Level[] = [
     rows: 21,
     entrance: { row: 0, col: 8 },
     exit: { row: 20, col: 8 },
-    pathMin: 150,
-    pathMax: 240,
-    spurMin: null,
-    spurMax: null,
+    algorithm: "backtracker",
     showCharacter: true,
   },
   {
@@ -94,10 +78,7 @@ export const LEVELS: readonly Level[] = [
     rows: 33,
     entrance: { row: 0, col: 0 },
     exit: { row: 32, col: 26 },
-    pathMin: 280,
-    pathMax: 500,
-    spurMin: 25,
-    spurMax: null,
+    algorithm: "backtracker",
     showCharacter: false,
   },
 ];
