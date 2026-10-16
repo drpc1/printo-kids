@@ -161,20 +161,20 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom wyznaczają szerokość alejki i długość drogi do mety.
 
-Rodzic wybiera jeden z sześciu poziomów nazwanych wiekiem oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Dwa poziomy mogą dzielić szerokość alejki i różnić się długością drogi.
+Rodzic wybiera jeden z sześciu poziomów nazwanych wiekiem oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Dwa poziomy mogą dzielić szerokość alejki i różnić się długością drogi. Długość jest luźną kolejnością wieku: 5 lat i 6 lat mają to samo pasmo.
 
 | Poziom | Alejka | Siatka | Droga do mety | Ślepe uliczki |
 | --- | --- | --- | --- | --- |
-| 3 lata | około 21 mm | 9×11 | do około 25 komórek (około 50 cm) | płytkie |
-| 4 lata | około 21 mm | 9×11 | od około 40 komórek (około 85 cm) | — |
-| 5 lat | około 15 mm | 13×16 | do około 40 komórek (około 60 cm) | płytkie |
-| 6 lat | około 15 mm | 13×16 | od około 70 komórek (około 1 m) | — |
-| 7–8 lat | około 11 mm | 17×21 | około 80–120 komórek | — |
-| nastolatek | około 7 mm | 27×33 | około 150–300 komórek | głębokie |
+| 3 lata | około 21 mm | 9×11 | 24–44 komórki | płytkie, najwyżej 4 komórki |
+| 4 lata | około 21 mm | 9×11 | 50–80 komórek | — |
+| 5 lat | około 15 mm | 13×16 | 56–96 komórek | płytkie, najwyżej 4 komórki |
+| 6 lat | około 15 mm | 13×16 | 56–96 komórek | płytkie, najwyżej 4 komórki |
+| 7–8 lat | około 11 mm | 17×21 | 150–240 komórek | — |
+| nastolatek | około 7 mm | 27×33 | 280–500 komórek | głębokie, co najmniej 25 komórek |
 
 Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, napis „Meta” na środku dolnej, a przy starcie stoi wybrana postać. Poziom nastolatka ma start i metę w narożnikach i nie pokazuje postaci. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
 
-Krótki poziom przy danej szerokości ma płytkie ślepe uliczki, żeby krótka droga nie była zagadką ukrytą wśród pułapek. Liczba komórek, która odróżnia płytką uliczkę od głębokiej, zostaje do planu.
+Krótki poziom przy danej szerokości ma płytkie ślepe uliczki, żeby krótka droga nie była zagadką ukrytą wśród pułapek. Płytka uliczka ma najwyżej 4 komórki poza drogą, głęboka co najmniej 25. Droga i ślepe uliczki skręcają w każdą stronę: pięciu komórek w linii nie ma, a cztery są wyjątkiem.
 
 Wynikiem jest karta A4. Labirynt zajmuje większą część strony, zachowuje margines co najmniej 10 mm i spełnia reguły wybranego poziomu.
 
