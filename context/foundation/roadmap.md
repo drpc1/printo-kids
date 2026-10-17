@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-16
+updated: 2026-10-17
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -198,6 +198,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
   - Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej? — Owner: user. Block: yes for validating dead-end depth. Szerokość alejki i zakres długości drogi są w PRD.
 - **Risk:** Nie nowy ekran: wybór poziomu na istniejącej kartce. Ostatnio użyte parametry i domyślna trudność profilu zaczynają pamiętać poziom. Poziom nastolatka nie pokazuje postaci i ma start oraz metę w narożnikach. Generator dziś nie trafia sam w zakres długości drogi. Głębokość ślepych uliczek nie ma jeszcze progu w komórkach. Zmiana siatki może znowu rozjechać jedną stronę A4, którą naprawia `S-09`.
 - **Status:** done
+- **Follow-up:** `profile-level-choice` (PR #41, #42) — wybór poziomu przy „Dodaj profil” i „Edytuj”; wcześniej profil brał poziom z paska.
 
 ### S-08: Pełny katalog postaci
 
@@ -240,7 +241,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 | S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Done. Archived 2026-10-05. Poziom dołącza w `S-07`                                                      |
 | S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                        | no                    | Done. Archived 2026-10-08. Domyślna trudność dołącza w `S-07`                                           |
 | S-06       | child-profile-save-delete   | Zapis zmian profilu i usunięcie po potwierdzeniu                     | no                    | Done. Archived 2026-10-09                                                                               |
-| S-07       | maze-difficulty-levels      | Rodzic wybiera poziom nazwany wiekiem i dostaje zgodny labirynt      | no                    | Decyzje są w PRD. Run `/10x-new maze-difficulty-levels`, potem `/10x-research`                          |
+| S-07       | maze-difficulty-levels      | Rodzic wybiera poziom nazwany wiekiem i dostaje zgodny labirynt      | no                    | Done. Archived 2026-10-16. Poziom w profilu: `profile-level-choice`, archived 2026-10-17                |
 | S-08       | full-character-catalog      | Pełny katalog jedenastu postaci przy karcie i przy profilu           | yes                   | Run `/10x-plan full-character-catalog`                                                                  |
 | S-09       | phone-worksheet             | Strona karty na telefonie i druk jako jedna strona A4                | yes                   | Run `/10x-plan phone-worksheet`                                                                         |
 
@@ -291,4 +292,4 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-06: Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu.** — Archived 2026-10-09 → `context/archive/2026-10-08-child-profile-save-delete/`. Lesson: —.
 - **F-02: (foundation) Wejście do aplikacji to kartka do druku; nie ma już ekranów logowania ani dashboardu ze startera, a automatyczny sprawdzian HTTP pilnuje strony produktu.** — Archived 2026-10-11 → `context/archive/2026-10-03-remove-starter-scaffold/`. Lesson: —.
 - **S-08: Rodzic może wybrać dowolną postać z katalogu jedenastu, także przy tworzeniu profilu i przy zapisie ulubionej postaci, a pełna lista zostaje widoczna na węższym oknie.** — Archived 2026-10-11 → `context/archive/2026-10-11-full-character-catalog/`. Lesson: —.
-- **S-07: Rodzic może wybrać jeden z sześciu poziomów nazwanych wiekiem i dostać labirynt A4 zgodny z szerokością alejki i długością drogi tego poziomu.** — Archived 2026-10-16 → `context/archive/2026-10-11-maze-difficulty-levels/`. Lesson: —.
+- **S-07: Rodzic może wybrać jeden z sześciu poziomów nazwanych wiekiem i dostać labirynt A4 zgodny z szerokością alejki i długością drogi tego poziomu.** — Archived 2026-10-16 → `context/archive/2026-10-11-maze-difficulty-levels/`. Lesson: —. Wybór poziomu przy tworzeniu i edycji profilu (FR-007, FR-009) domknęło `profile-level-choice` — archived 2026-10-17 → `context/archive/2026-10-17-profile-level-choice/`.
