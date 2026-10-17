@@ -275,20 +275,20 @@ void describe("withFavorite", () => {
 });
 
 void describe("barAfterFavoriteSave", () => {
-  void test("a bar still on the profile's previous level lat5 becomes the saved level lat7", () => {
-    assert.equal(barAfterFavoriteSave<LevelId>("lat5", "lat5", "lat7"), "lat7");
-  });
-
-  void test("a bar already on nastolatek stays on nastolatek after saving lat7", () => {
-    assert.equal(barAfterFavoriteSave<LevelId>("nastolatek", "lat5", "lat7"), "nastolatek");
-  });
-
   void test("a bar still showing the previous favorite becomes the saved favorite", () => {
     assert.equal(barAfterFavoriteSave("rakieta", "rakieta", "dinozaur"), "dinozaur");
   });
 
   void test("a bar already on samochodzik stays on samochodzik", () => {
     assert.equal(barAfterFavoriteSave("samochodzik", "rakieta", "dinozaur"), "samochodzik");
+  });
+
+  void test("a bar still on the profile's previous level lat5 becomes the saved level lat7", () => {
+    assert.equal(barAfterFavoriteSave<LevelId>("lat5", "lat5", "lat7"), "lat7");
+  });
+
+  void test("a bar already on nastolatek stays on nastolatek after saving lat7", () => {
+    assert.equal(barAfterFavoriteSave<LevelId>("nastolatek", "lat5", "lat7"), "nastolatek");
   });
 });
 
