@@ -1,7 +1,7 @@
 ---
 change_id: level-bar-fixes
 title: Zmiana poziomu przegenerowuje kartkę, a pasek mieści się w jednej linii
-status: implemented
+status: impl_reviewed
 created: 2026-10-17
 updated: 2026-10-17
 archived_at: null
@@ -15,3 +15,5 @@ Zgłoszenia użytkowniczki po wdrożeniu poziomów (PR #40):
 2. Po dodaniu „Poziom:” przyciski Drukuj i Generuj przeszły do drugiej linii. Na komputerze pasek ma być w jednej linii.
 
 Wybór poziomu w profilu dziecka jest osobną zmianą.
+
+Decyzja z review (F3): przy widocznej kartce zmiana poziomu przegenerowuje labirynt także wtedy, gdy trzeba jeszcze wybrać dziecko (Generuj wyszarzony). Kartka zawsze pasuje do poziomu na pasku; Drukuj nie zależy od wyboru dziecka.
