@@ -39,7 +39,7 @@ Range `2605e3d..09a92ed` (contains drpc1/printo-kids#34 dialog-close-button, rev
 - **Severity**: ⚠️ WARNING
 - **Impact**: 🏃 LOW — quick decision; fix is obvious and narrowly scoped
 - **Dimension**: Safety & Quality
-- **Location**: src/hooks/useScrollEdges.ts:23-26
+- **Location**: src/hooks/useScrollEdges.ts:23-26 (od 2026-10-18 `src/hooks/useScrollIndicator.ts`)
 - **Detail**: `ResizeObserver` patrzy na sam środek okna, który po osiągnięciu `max-h` nie zmienia rozmiaru, a `MutationObserver` widzi tylko `childList`. Dłuższy tekst albo przełączona klasa zmienia `scrollHeight` bez wywołania `update`. Dziś panele wymieniają węzły, więc to luka utajona.
 - **Fix**: Obserwować też rozmiar dzieci środka (ResizeObserver na każdym dziecku, odświeżane przy mutacji).
 - **Decision**: FIXED
@@ -71,7 +71,7 @@ Range `2605e3d..09a92ed` (contains drpc1/printo-kids#34 dialog-close-button, rev
   - Tradeoff: Więcej CSS, nakładki muszą przepuszczać dotyk (`pointer-events: none`).
   - Confidence: MED — wzorzec znany, nietestowany tu na iOS.
   - Blind spot: Zachowanie sticky w przewijanym flex-col na starszym iOS.
-- **Decision**: PENDING (decyzja po teście na iPhonie po wdrożeniu #36)
+- **Decision**: DISMISSED (2026-10-18: cień zastąpiony widocznym paskiem przewijania na życzenie użytkowniczki, więc problem znika)
 
 ### F5 — Test długiej listy nie sprawdza, że lista naprawdę się przewija
 

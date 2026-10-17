@@ -3,7 +3,7 @@ import { XIcon } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 
 import { Button } from "@/components/ui/button";
-import { useScrollEdges } from "@/hooks/useScrollEdges";
+import { useScrollIndicator } from "@/hooks/useScrollIndicator";
 import { cn } from "@/lib/utils";
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -43,7 +43,7 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
 }) {
-  const scrollEdges = useScrollEdges();
+  const { bodyRef, trackRef, thumbRef } = useScrollIndicator();
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
@@ -56,8 +56,25 @@ function DialogContent({
         )}
         {...props}
       >
-        <div ref={scrollEdges} data-slot="dialog-body" className={cn("scroll-shadow -m-1 min-h-0 overflow-y-auto p-1")}>
+        <div
+          ref={bodyRef}
+          data-slot="dialog-body"
+          className={cn(
+            "-m-1 min-h-0 [scrollbar-color:var(--muted-foreground)_transparent] overflow-y-auto p-1 pointer-coarse:[scrollbar-width:none]",
+          )}
+        >
           {children}
+        </div>
+        {/* Drawn scrollbar for touch screens, where the native one stays hidden until scrolling. */}
+        <div
+          ref={trackRef}
+          data-slot="dialog-scroll-track"
+          aria-hidden
+          className={cn(
+            "bg-muted pointer-events-none absolute hidden w-1.5 rounded-full pointer-coarse:data-scrollable:block",
+          )}
+        >
+          <div ref={thumbRef} className={cn("bg-muted-foreground w-full rounded-full")} />
         </div>
         {showCloseButton && (
           <DialogPrimitive.Close
