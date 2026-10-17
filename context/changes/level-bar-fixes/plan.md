@@ -182,10 +182,10 @@ Brak — zapis w `localStorage` się nie zmienia.
 
 #### Automated
 
-- [x] 2.1 `npx playwright test` przechodzi, w tym test paska na komputerze i dotychczasowe testy telefonu
-- [x] 2.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
+- [x] 2.1 `npx playwright test` przechodzi, w tym test paska na komputerze i dotychczasowe testy telefonu — 1d4cea6
+- [x] 2.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą — 1d4cea6
 
 #### Manual
 
-- [x] 2.3 Na komputerze pasek ma dwa rzędy: Postać i Poziom, pod nimi Generuj po lewej i Drukuj po prawej, także dla Samochodzika i poziomu nastolatek
-- [x] 2.4 Na telefonie układ paska wygląda jak przed zmianą
+- [x] 2.3 Na komputerze pasek ma dwa rzędy: Postać i Poziom, pod nimi Generuj po lewej i Drukuj po prawej, także dla Samochodzika i poziomu nastolatek — 1d4cea6
+- [x] 2.4 Na telefonie układ paska wygląda jak przed zmianą — 1d4cea6
