@@ -1,9 +1,9 @@
 ---
 change_id: dialog-close-above-scrollbar
 title: Przycisk X bezpośrednio nad paskiem przewijania
-status: implementing
+status: implemented
 created: 2026-10-16
-updated: 2026-10-16
+updated: 2026-10-17
 archived_at: null
 ---
 
