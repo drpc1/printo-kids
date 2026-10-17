@@ -22,6 +22,67 @@ async function wallSignature(page: Page): Promise<string> {
   return ends.join(" ");
 }
 
+interface Box {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+async function box(page: Page, name: string | RegExp): Promise<Box> {
+  const found = await page.getByRole("button", { name }).boundingBox();
+  if (found === null) {
+    throw new Error(`button ${String(name)} has no box`);
+  }
+  return found;
+}
+
+function overlaps(a: Box, b: Box): boolean {
+  return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
+}
+
+// Short names left room for Generuj in the first row and pushed Drukuj alone to the second;
+// the longest names pushed both down. Every case must keep the two together under the selectors.
+const BAR_CASES = [
+  { name: "default names", character: "none", level: "lat5", levelLabel: "5 lat" },
+  { name: "longest names", character: "samochodzik", level: "nastolatek", levelLabel: "nastolatek" },
+] as const;
+
+for (const barCase of BAR_CASES) {
+  test(`on desktop the bar keeps Generuj and Drukuj in one row under Postać and Poziom (${barCase.name})`, async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== "chromium", "desktop layout check");
+    await page.addInitScript(
+      ([character, level]) => {
+        window.localStorage.setItem("printo-kids:last-used", JSON.stringify({ character, level }));
+      },
+      [barCase.character, barCase.level] as const,
+    );
+    await page.goto("/");
+    await page.getByRole("button", { name: "Generuj" }).click();
+    await expect(page.getByRole("img", { name: "Labirynt" })).toBeVisible();
+    await expect(page.getByRole("button", { name: `Poziom: ${barCase.levelLabel}` })).toBeVisible();
+
+    const boxes = {
+      postac: await box(page, /^Postać:/),
+      poziom: await box(page, /^Poziom:/),
+      generuj: await box(page, "Generuj"),
+      drukuj: await box(page, "Drukuj"),
+    };
+    const middle = (b: Box) => b.y + b.height / 2;
+    expect(Math.abs(middle(boxes.generuj) - middle(boxes.drukuj))).toBeLessThanOrEqual(2);
+    expect(boxes.postac.y + boxes.postac.height).toBeLessThanOrEqual(boxes.generuj.y);
+    expect(boxes.poziom.y + boxes.poziom.height).toBeLessThanOrEqual(boxes.generuj.y);
+    const all = Object.values(boxes);
+    for (const [index, a] of all.entries()) {
+      for (const b of all.slice(index + 1)) {
+        expect(overlaps(a, b)).toBe(false);
+      }
+    }
+  });
+}
+
 test("changing the level on a sheet redraws the maze for that level", async ({ page }) => {
   await page.goto("/");
 

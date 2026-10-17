@@ -162,8 +162,8 @@ export default function WorksheetGenerator() {
         onDeleted={handleDeleted}
       />
       {sheetShown ? (
-        <div className={cn("flex w-full flex-wrap items-center gap-3 sm:gap-4 print:hidden")}>
-          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3 sm:w-auto")}>
+        <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
+          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
             <CharacterChoiceControl
               character={character}
               selectedChoice={selectedChoice}
@@ -174,22 +174,24 @@ export default function WorksheetGenerator() {
             {levelControl}
             {failedNote}
           </div>
-          <GenerateButton
-            onClick={handleGenerate}
-            tone="quiet"
-            disabled={waitingForChild}
-            className="flex-1 sm:flex-none"
-          />
-          <Button
-            type="button"
-            variant="default"
-            onClick={handlePrint}
-            disabled={maze === null}
-            className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
-          >
-            <Printer aria-hidden />
-            Drukuj
-          </Button>
+          <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
+            <GenerateButton
+              onClick={handleGenerate}
+              tone="quiet"
+              disabled={waitingForChild}
+              className="flex-1 sm:flex-none"
+            />
+            <Button
+              type="button"
+              variant="default"
+              onClick={handlePrint}
+              disabled={maze === null}
+              className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
+            >
+              <Printer aria-hidden />
+              Drukuj
+            </Button>
+          </div>
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
