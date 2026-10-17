@@ -83,14 +83,14 @@ export function withFavorite(
   level: LevelId,
   allowed: readonly string[],
 ): ChildProfile[] | null {
-  if (!allowed.includes(character) || !profiles.some((profile) => profile.id === id)) {
+  if (!allowed.includes(character) || !isLevelId(level) || !profiles.some((profile) => profile.id === id)) {
     return null;
   }
 
   return profiles.map((profile) => (profile.id === id ? { ...profile, character, level } : profile));
 }
 
-export function barAfterFavoriteSave(bar: string, previousFavorite: string, nextFavorite: string): string {
+export function barAfterFavoriteSave<T extends string>(bar: T, previousFavorite: T, nextFavorite: T): T {
   return bar === previousFavorite ? nextFavorite : bar;
 }
 
