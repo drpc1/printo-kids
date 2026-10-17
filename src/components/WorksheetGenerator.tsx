@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { ChevronDown, Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CharacterChoiceRows, DIALOG_ROW_CLASS, ProfileCorner } from "@/components/ProfileCorner";
+import { CharacterChoiceRows, LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
-import { LEVELS, levelById, type Level, type LevelId } from "@/lib/maze/levels";
+import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
 import { cn } from "@/lib/utils";
@@ -303,23 +303,13 @@ function LevelChoiceControl({
       </DialogTrigger>
       <DialogContent className={cn("max-h-[calc(100dvh-2rem)] print:hidden")}>
         <DialogTitle className={cn("sr-only")}>Wybierz poziom</DialogTitle>
-        <div className={cn("flex flex-col gap-2")}>
-          {LEVELS.map((option) => (
-            <Button
-              key={option.id}
-              type="button"
-              variant="ghost"
-              aria-pressed={level.id === option.id}
-              className={cn(DIALOG_ROW_CLASS, "w-full", level.id === option.id && "bg-muted")}
-              onClick={() => {
-                onSelect(option.id);
-                onOpenChange(false);
-              }}
-            >
-              {option.label}
-            </Button>
-          ))}
-        </div>
+        <LevelChoiceRows
+          selected={level.id}
+          onSelect={(id) => {
+            onSelect(id);
+            onOpenChange(false);
+          }}
+        />
       </DialogContent>
     </Dialog>
   );
