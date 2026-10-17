@@ -12,6 +12,7 @@ import {
   type ChildProfile,
   type ChildProfileStorage,
 } from "./child-profiles.ts";
+import type { LevelId } from "./maze/levels.ts";
 
 const KEY = "printo-kids:child-profiles";
 const ALLOWED = ["none", "samochodzik", "rakieta", "dinozaur"];
@@ -257,6 +258,20 @@ void describe("withFavorite", () => {
     assert.equal(withFavorite(profiles, "z1", "smok", "lat5", ALLOWED), null);
     assert.deepEqual(profiles, [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5" }]);
   });
+
+  void test("saving only lat7 for Zosia keeps rakieta and changes the level", () => {
+    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5" }];
+
+    assert.deepEqual(withFavorite(profiles, "z1", "rakieta", "lat7", ALLOWED), [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat7" },
+    ]);
+  });
+
+  void test("a level outside LEVELS returns null", () => {
+    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5" }];
+
+    assert.equal(withFavorite(profiles, "z1", "rakieta", "dorosly" as LevelId, ALLOWED), null);
+  });
 });
 
 void describe("barAfterFavoriteSave", () => {
@@ -266,6 +281,14 @@ void describe("barAfterFavoriteSave", () => {
 
   void test("a bar already on samochodzik stays on samochodzik", () => {
     assert.equal(barAfterFavoriteSave("samochodzik", "rakieta", "dinozaur"), "samochodzik");
+  });
+
+  void test("a bar still on the profile's previous level lat5 becomes the saved level lat7", () => {
+    assert.equal(barAfterFavoriteSave<LevelId>("lat5", "lat5", "lat7"), "lat7");
+  });
+
+  void test("a bar already on nastolatek stays on nastolatek after saving lat7", () => {
+    assert.equal(barAfterFavoriteSave<LevelId>("nastolatek", "lat5", "lat7"), "nastolatek");
   });
 });
 
