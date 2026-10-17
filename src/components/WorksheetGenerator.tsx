@@ -50,6 +50,7 @@ export default function WorksheetGenerator() {
   const [generateFailed, setGenerateFailed] = useState(false);
   const [ask, setAsk] = useState(visit.ask);
   const [maze, setMaze] = useState<Maze | null>(null);
+  const [sheetShown, setSheetShown] = useState(false);
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
   const waitingForChild = profiles.length >= 2 && activeId === null;
@@ -60,11 +61,10 @@ export default function WorksheetGenerator() {
     if (main === null) {
       return;
     }
-    const hasMaze = maze !== null;
-    main.classList.toggle("has-maze", hasMaze);
-    main.classList.toggle("justify-start", hasMaze);
-    main.classList.toggle("justify-center", !hasMaze);
-  }, [maze]);
+    main.classList.toggle("has-maze", sheetShown);
+    main.classList.toggle("justify-start", sheetShown);
+    main.classList.toggle("justify-center", !sheetShown);
+  }, [sheetShown]);
 
   function handleGenerate(): void {
     if (waitingForChild) {
@@ -77,6 +77,7 @@ export default function WorksheetGenerator() {
     }
     setGenerateFailed(false);
     setMaze(next);
+    setSheetShown(true);
   }
 
   function applyLevel(next: LevelId): void {
@@ -84,8 +85,13 @@ export default function WorksheetGenerator() {
       return;
     }
     setLevel(next);
-    setMaze(null);
-    setGenerateFailed(false);
+    if (!sheetShown) {
+      setGenerateFailed(false);
+      return;
+    }
+    const redrawn = mazeForSheet(generateMaze(next, Math.random), next);
+    setMaze(redrawn);
+    setGenerateFailed(redrawn === null);
   }
 
   function handleCharacterSelect(id: CharacterChoice): void {
@@ -133,7 +139,6 @@ export default function WorksheetGenerator() {
     setAsk(next.ask);
   }
 
-  const hasMaze = maze !== null;
   const sheetLevel = levelById(level);
   const levelControl = (
     <LevelChoiceControl level={sheetLevel} open={levelOpen} onOpenChange={setLevelOpen} onSelect={handleLevelSelect} />
@@ -157,9 +162,9 @@ export default function WorksheetGenerator() {
         onFavoriteSaved={handleFavoriteSaved}
         onDeleted={handleDeleted}
       />
-      {hasMaze ? (
-        <div className={cn("flex w-full flex-wrap items-center gap-3 sm:gap-4 print:hidden")}>
-          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3 sm:w-auto")}>
+      {sheetShown ? (
+        <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
+          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
             <CharacterChoiceControl
               character={character}
               selectedChoice={selectedChoice}
@@ -170,21 +175,24 @@ export default function WorksheetGenerator() {
             {levelControl}
             {failedNote}
           </div>
-          <GenerateButton
-            onClick={handleGenerate}
-            tone="quiet"
-            disabled={waitingForChild}
-            className="flex-1 sm:flex-none"
-          />
-          <Button
-            type="button"
-            variant="default"
-            onClick={handlePrint}
-            className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
-          >
-            <Printer aria-hidden />
-            Drukuj
-          </Button>
+          <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
+            <GenerateButton
+              onClick={handleGenerate}
+              tone="quiet"
+              disabled={waitingForChild}
+              className="flex-1 sm:flex-none"
+            />
+            <Button
+              type="button"
+              variant="default"
+              onClick={handlePrint}
+              disabled={maze === null}
+              className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
+            >
+              <Printer aria-hidden />
+              Drukuj
+            </Button>
+          </div>
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
@@ -202,7 +210,7 @@ export default function WorksheetGenerator() {
           {failedNote}
         </div>
       )}
-      {hasMaze ? <MazeSheet maze={maze} characterId={character} level={sheetLevel} /> : null}
+      {maze !== null ? <MazeSheet maze={maze} characterId={character} level={sheetLevel} /> : null}
     </div>
   );
 }
