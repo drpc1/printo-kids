@@ -90,14 +90,14 @@ Jednostkowo `withFavorite` i `barAfterFavoriteSave` w `child-profiles.test.ts`; 
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — ccfb414
-- [x] 1.2 Lint przechodzi: `npm run lint` — ccfb414
-- [x] 1.3 Typy przechodzą: `npx astro check` — ccfb414
-- [x] 1.4 Build przechodzi: `npm run build` — ccfb414
-- [x] 1.5 E2E przechodzą lokalnie: `npx playwright test` — ccfb414
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — ccfb414 — 28c06f1
+- [x] 1.2 Lint przechodzi: `npm run lint` — ccfb414 — 28c06f1
+- [x] 1.3 Typy przechodzą: `npx astro check` — ccfb414 — 28c06f1
+- [x] 1.4 Build przechodzi: `npm run build` — ccfb414 — 28c06f1
+- [x] 1.5 E2E przechodzą lokalnie: `npx playwright test` — ccfb414 — 28c06f1
 
 #### Manual
 
-- [x] 1.6 „Dodaj profil”: wybór poziomu z listy, „Utwórz” — pasek pokazuje wybrany poziom — ccfb414
-- [x] 1.7 „Edytuj”: zmiana samego poziomu włącza „Zapisz”; po zapisie pasek przejmuje poziom, jeśli pokazywał poprzedni poziom profilu — ccfb414
-- [x] 1.8 „Anuluj” w edycji porzuca szkic poziomu — ccfb414
+- [x] 1.6 „Dodaj profil”: wybór poziomu z listy, „Utwórz” — pasek pokazuje wybrany poziom — ccfb414 — 28c06f1
+- [x] 1.7 „Edytuj”: zmiana samego poziomu włącza „Zapisz”; po zapisie pasek przejmuje poziom, jeśli pokazywał poprzedni poziom profilu — ccfb414 — 28c06f1
+- [x] 1.8 „Anuluj” w edycji porzuca szkic poziomu — ccfb414 — 28c06f1
