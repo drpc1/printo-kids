@@ -170,22 +170,22 @@ Brak — zapis w `localStorage` się nie zmienia.
 
 #### Automated
 
-- [x] 1.1 `npx playwright test tests/e2e/level-bar.spec.ts` przechodzi: zmiana poziomu przy kartce zostawia kartkę z innymi ścianami i aktywnym Drukuj
-- [x] 1.2 `npm test`, `npm run lint` i `npx astro check` przechodzą
+- [x] 1.1 `npx playwright test tests/e2e/level-bar.spec.ts` przechodzi: zmiana poziomu przy kartce zostawia kartkę z innymi ścianami i aktywnym Drukuj — 1917389
+- [x] 1.2 `npm test`, `npm run lint` i `npx astro check` przechodzą — 1917389
 
 #### Manual
 
-- [x] 1.3 Na komputerze: Generuj, potem zmiana poziomu na pasku i przez wybór profilu — kartka zostaje i pokazuje labirynt nowego poziomu
-- [x] 1.4 Z wymuszonym `null` w bramce (tylko w worktree, przywrócone): zmiana poziomu przy kartce chowa kartkę, zostawia pasek z komunikatem i wyszarzonym Drukuj; udane Generuj przywraca kartkę
+- [x] 1.3 Na komputerze: Generuj, potem zmiana poziomu na pasku i przez wybór profilu — kartka zostaje i pokazuje labirynt nowego poziomu — 1917389
+- [x] 1.4 Z wymuszonym `null` w bramce (tylko w worktree, przywrócone): zmiana poziomu przy kartce chowa kartkę, zostawia pasek z komunikatem i wyszarzonym Drukuj; udane Generuj przywraca kartkę — 1917389
 
 ### Phase 2: Pasek w dwóch rzędach na komputerze
 
 #### Automated
 
-- [ ] 2.1 `npx playwright test` przechodzi, w tym test paska na komputerze i dotychczasowe testy telefonu
-- [ ] 2.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
+- [x] 2.1 `npx playwright test` przechodzi, w tym test paska na komputerze i dotychczasowe testy telefonu
+- [x] 2.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
 
 #### Manual
 
-- [ ] 2.3 Na komputerze pasek ma dwa rzędy: Postać i Poziom, pod nimi Generuj po lewej i Drukuj po prawej, także dla Samochodzika i poziomu nastolatek
-- [ ] 2.4 Na telefonie układ paska wygląda jak przed zmianą
+- [x] 2.3 Na komputerze pasek ma dwa rzędy: Postać i Poziom, pod nimi Generuj po lewej i Drukuj po prawej, także dla Samochodzika i poziomu nastolatek
+- [x] 2.4 Na telefonie układ paska wygląda jak przed zmianą
