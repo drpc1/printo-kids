@@ -130,8 +130,9 @@ test.describe("with a profile that has the longest allowed name", () => {
   });
 });
 
-test("a long profile list marks the edge it can still scroll towards", async ({ page }) => {
-  // Phones hide scrollbars; the edge shadow (useScrollEdges + scroll-shadow) is the only hint.
+test("a long profile list shows a scrollbar the eye can find", async ({ page }, testInfo) => {
+  // Touch screens hide the native scrollbar until scrolling, so ui/dialog.tsx draws its own
+  // (useScrollIndicator). A mouse screen keeps the native one, coloured from the theme.
   await page.addInitScript((key) => {
     const names = [
       "Ala",
@@ -158,16 +159,36 @@ test("a long profile list marks the edge it can still scroll towards", async ({ 
   // Two or more profiles and none chosen: the corner opens the list on its own.
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
+  await settle(page);
   // The body inside ui/dialog.tsx is the element that scrolls.
   const body = dialog.locator('[data-slot="dialog-body"]');
   const overflows = await body.evaluate((element) => element.scrollHeight > element.clientHeight);
   expect(overflows, "12 profiles must overflow a 600 px tall window for this test to mean anything").toBe(true);
-  await expect(body).toHaveAttribute("data-more-below", "");
-  await expect(body).not.toHaveAttribute("data-more-above", "");
+  const track = dialog.locator('[data-slot="dialog-scroll-track"]');
+
+  if (testInfo.project.use.hasTouch !== true) {
+    await expect(track).toBeHidden();
+    expect(await body.evaluate((element) => getComputedStyle(element).scrollbarColor)).not.toBe("auto");
+    return;
+  }
+
+  await expect(track).toBeVisible();
+  const trackBox = await viewportBox(track);
+  const bodyBox = await viewportBox(body);
+  // The bar sits beside the rows, not over them.
+  expect(trackBox.x).toBeGreaterThanOrEqual(bodyBox.x + bodyBox.width);
+  const thumb = track.locator("div");
+  const top = await viewportBox(thumb);
+  expect(Math.abs(top.y - trackBox.y)).toBeLessThanOrEqual(1);
+  expect(top.height).toBeLessThan(trackBox.height);
 
   await body.evaluate((element) => {
     element.scrollTop = element.scrollHeight;
   });
-  await expect(body).toHaveAttribute("data-more-above", "");
-  await expect(body).not.toHaveAttribute("data-more-below", "");
+  await expect
+    .poll(async () => {
+      const end = await viewportBox(thumb);
+      return Math.abs(end.y + end.height - (trackBox.y + trackBox.height));
+    })
+    .toBeLessThanOrEqual(1);
 });
