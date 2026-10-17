@@ -1,10 +1,10 @@
 ---
 change_id: profile-level-choice
 title: Wybór poziomu trudności przy tworzeniu i edycji profilu dziecka
-status: impl_reviewed
+status: archived
 created: 2026-10-17
 updated: 2026-10-17
-archived_at: null
+archived_at: 2026-10-17T22:11:52Z
 ---
 
 ## Notes
