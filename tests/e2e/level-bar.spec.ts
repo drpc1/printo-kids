@@ -41,6 +41,19 @@ function overlaps(a: Box, b: Box): boolean {
   return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
 }
 
+// The bar and dialogs animate (transition-all, zoom-in); measure the settled layout.
+// Looping animations (a spinner) never finish, so they are left out.
+async function settle(page: Page): Promise<void> {
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((animation) => animation.effect?.getTiming().iterations !== Infinity)
+        .map((animation) => animation.finished),
+    ),
+  );
+}
+
 // Short names left room for Generuj in the first row and pushed Drukuj alone to the second;
 // the longest names pushed both down. Every case must keep the two together under the selectors.
 const BAR_CASES = [
@@ -63,6 +76,7 @@ for (const barCase of BAR_CASES) {
     await page.getByRole("button", { name: "Generuj" }).click();
     await expect(page.getByRole("img", { name: "Labirynt" })).toBeVisible();
     await expect(page.getByRole("button", { name: `Poziom: ${barCase.levelLabel}` })).toBeVisible();
+    await settle(page);
 
     const boxes = {
       postac: await box(page, /^Postać:/),
