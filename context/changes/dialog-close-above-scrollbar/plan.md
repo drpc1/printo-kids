@@ -118,13 +118,13 @@ Brak danych do przeniesienia. Zachowanie startuje od HEAD z `pr-14`.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Sprawdzenie typów przechodzi: `npx astro check`
-- [x] 1.3 Dotychczasowe testy przechodzą: `npm test`
+- [x] 1.1 Lint przechodzi: `npm run lint` — 9d6974e
+- [x] 1.2 Sprawdzenie typów przechodzi: `npx astro check` — 9d6974e
+- [x] 1.3 Dotychczasowe testy przechodzą: `npm test` — 9d6974e
 
 #### Manual
 
-- [x] 1.4 Lista profili z paskiem: lewa i prawa krawędź ramki X pokrywają się z rynną paska.
-- [x] 1.5 Dialog postaci z paskiem: lewa i prawa krawędź ramki X pokrywają się z rynną paska.
-- [x] 1.6 Pytanie o usunięcie bez paska: X zostaje w rogu i nie zasłania tytułu.
-- [x] 1.7 Po przewinięciu listy X zostaje w rogu, a ołówek, kosz i pierwszy wiersz postaci nadal się klikają.
+- [x] 1.4 Lista profili z paskiem: lewa i prawa krawędź ramki X pokrywają się z rynną paska. — 9d6974e
+- [x] 1.5 Dialog postaci z paskiem: lewa i prawa krawędź ramki X pokrywają się z rynną paska. — 9d6974e
+- [x] 1.6 Pytanie o usunięcie bez paska: X zostaje w rogu i nie zasłania tytułu. — 9d6974e
+- [x] 1.7 Po przewinięciu listy X zostaje w rogu, a ołówek, kosz i pierwszy wiersz postaci nadal się klikają. — 9d6974e
