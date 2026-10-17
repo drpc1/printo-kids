@@ -119,9 +119,10 @@ export default function WorksheetGenerator() {
     applyLevel(profile.level);
   }
 
-  function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string): void {
+  function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string, nextLevel: LevelId): void {
     setProfiles(nextProfiles);
     setCharacter(characterChoice(nextBar));
+    applyLevel(nextLevel);
   }
 
   function handleDeleted(next: VisitAfterDelete): void {
