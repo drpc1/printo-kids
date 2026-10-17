@@ -555,7 +555,7 @@ function ProfileLevelControl({ level, onOpen }: { level: LevelId; onOpen: () => 
   );
 }
 
-function LevelChoiceRows({ selected, onSelect }: { selected: LevelId; onSelect: (id: LevelId) => void }) {
+export function LevelChoiceRows({ selected, onSelect }: { selected: LevelId; onSelect: (id: LevelId) => void }) {
   return (
     <div className={cn("flex flex-col gap-2")}>
       {LEVELS.map((option) => (
