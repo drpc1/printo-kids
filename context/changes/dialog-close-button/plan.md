@@ -181,13 +181,13 @@ Brak migracji. Profile w `localStorage` zostają.
 
 #### Manual
 
-- [ ] 1.4 Dialog postaci: X zamyka okno i nie zmienia wybranej postaci. Nazwa dla czytnika to „Zamknij”.
-- [ ] 1.5 Menu profilu: X zamyka całe okno.
-- [ ] 1.6 Edycja ze szkicem różnym od zapisanej postaci: X zamyka okno i nie zapisuje szkicu. „Anuluj” wraca na listę.
-- [ ] 1.7 Formularz z wpisanym imieniem: X zamyka okno i nie tworzy profilu, także gdy inne profile już są.
-- [ ] 1.8 Lista postaci otwarta z edycji albo z formularza: X zamyka całe okno profilu.
-- [ ] 1.9 Pytanie o usunięcie: X wraca na listę, profil zostaje, okno zostaje otwarte.
-- [ ] 1.10 Escape i klik obok zostają jak dziś: poza usuwaniem zamykają okno, na usuwaniu wracają na listę.
+- [x] 1.4 Dialog postaci: X zamyka okno i nie zmienia wybranej postaci. Nazwa dla czytnika to „Zamknij”. — b420ab3
+- [x] 1.5 Menu profilu: X zamyka całe okno. — b420ab3
+- [x] 1.6 Edycja ze szkicem różnym od zapisanej postaci: X zamyka okno i nie zapisuje szkicu. „Anuluj” wraca na listę. — b420ab3
+- [x] 1.7 Formularz z wpisanym imieniem: X zamyka okno i nie tworzy profilu, także gdy inne profile już są. — b420ab3
+- [x] 1.8 Lista postaci otwarta z edycji albo z formularza: X zamyka całe okno profilu. — b420ab3
+- [x] 1.9 Pytanie o usunięcie: X wraca na listę, profil zostaje, okno zostaje otwarte. — b420ab3
+- [x] 1.10 Escape i klik obok zostają jak dziś: poza usuwaniem zamykają okno, na usuwaniu wracają na listę. — b420ab3
 
 ### Phase 2: Odstęp w rogu
 
@@ -198,7 +198,9 @@ Brak migracji. Profile w `localStorage` zostają.
 
 #### Manual
 
-- [ ] 2.3 Lista profili: X nie zasłania ołówka ani kosza pierwszego wiersza, a obie ikony nadal się klikają.
-- [ ] 2.4 Dialog postaci: X nie zasłania pierwszego wiersza, a ten wiersz nadal wybiera postać.
-- [ ] 2.5 Po przewinięciu długiej listy X zostaje w widocznym prawym górnym rogu okna.
-- [ ] 2.6 Na szerokości około 360 px punkty 2.3, 2.4 i 2.5 nadal zachodzą.
+- [x] 2.3 Lista profili: X nie zasłania ołówka ani kosza pierwszego wiersza, a obie ikony nadal się klikają. — 4093934
+- [x] 2.4 Dialog postaci: X nie zasłania pierwszego wiersza, a ten wiersz nadal wybiera postać. — 4093934
+- [x] 2.5 Po przewinięciu długiej listy X zostaje w widocznym prawym górnym rogu okna. — 4093934
+- [x] 2.6 Na szerokości około 360 px punkty 2.3, 2.4 i 2.5 nadal zachodzą. — 4093934
+
+> Nota z przeglądu (2026-10-18): ręczne pozycje 1.4–1.10 i 2.3–2.6 sprawdził skrypt Playwright na `npm run preview` w Chromium (1280×780 oraz 360×780 z dotykiem), na kodzie z `main` po `dialog-close-above-scrollbar` i pasku przewijania z `phone-worksheet`. Wyniki są w `reviews/impl-review.md`. Stały test tych gestów: `tests/e2e/dialog-close.spec.ts`.

@@ -89,6 +89,8 @@ Pasek po wygenerowaniu przestaje nachodzić na siebie i nie przewija strony w bo
 
 > Nota z implementacji (2026-10-14): od `sm` padding to `px-8`, nie `px-12`. Z ikonami i `px-12` rząd potrzebował 396 px + szerokość „Postać:” (157–229 px), więc w 576 px Drukuj zawijał się przy 8 z 12 wyborów. Z `px-8` mieści się każda postać, a przyciski mają prawie dzisiejszą szerokość. Decyzja użytkownika.
 
+> Nota z przeglądu zamykającego (2026-10-18): pasek nie jest już jednym rzędem od `sm`. Zmiana `level-bar-fixes` (1d4cea6, drpc1/printo-kids#45) ustawiła go na każdej szerokości w dwóch rzędach: parametry (`Postać:`, `Poziom:`), pod nimi Generuj i Drukuj. Opis „od `sm` jeden rząd” w Desired End State i w punkcie 1 tej fazy dotyczy stanu przed tą zmianą.
+
 #### 3. Kontrakt druku
 
 **File**: `src/lib/sheet/print-contract.test.ts`
