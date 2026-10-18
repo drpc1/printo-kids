@@ -56,10 +56,10 @@ Na iOS Chrome i Brave używają silnika Safari, więc układ sprawdzamy tylko w 
 
 ## Dialogi na telefonie
 
-| Platforma | Przeglądarka | Pole imienia widoczne nad klawiaturą | Lista postaci przewija się do wszystkich 11 i „Bez postaci” | Cień przy krawędzi listy profili (≥ 10 profili) i listy postaci | Uwagi |
-| --------- | ------------ | ------------------------------------ | ----------------------------------------------------------- | --------------------------------------------------------------- | ----- |
-| Android   | Chrome       |                                      |                                                             |                                                                 |       |
-| iOS       | Safari       |                                      |                                                             |                                                                 |       |
+| Platforma | Przeglądarka | Pole imienia widoczne nad klawiaturą | Lista postaci przewija się do wszystkich 11 i „Bez postaci” | Widoczny pasek przewijania przy liście profili (≥ 12 profili) i liście postaci | Uwagi |
+| --------- | ------------ | ------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------ | ----- |
+| Android   | Chrome       |                                      |                                                             |                                                                                |       |
+| iOS       | Safari       |                                      |                                                             |                                                                                |       |
 
 ## Automatyczny przebieg iPhone (WebKit)
 
@@ -75,7 +75,7 @@ Błąd druku, którego nie da się naprawić w `@media print` w `src/components/
 
 ## Otwarte
 
-- 2026-10-16, iPhone (użytkownik): cień przy przewijanej liście profili nadal niewidoczny, mimo że podgląd serwuje nowy CSS, a test Playwright na WebKit (`a long profile list marks the edge…`) przechodzi. Do ustalenia: wersja iOS, czy lista faktycznie się przewija, przeglądarka. Następny krok: tymczasowa diagnostyka atrybutów `data-more-*` na telefonie.
+- (brak)
 
 ## Poprawki w trakcie fazy 6
 
@@ -85,3 +85,4 @@ Błąd druku, którego nie da się naprawić w `@media print` w `src/components/
 - 2026-10-16: na iPhonie cienia nadal nie było widać (iOS nie obsługuje `background-attachment: local` w przewijanym oknie) → hook `useScrollEdges` ustawia `data-more-above` / `data-more-below`, a `scroll-shadow` rysuje wewnętrzny `box-shadow`. Test Playwright sprawdza atrybuty, także na WebKit w workflow.
 - 2026-10-16: kolor cienia bez `color-mix()` (`--scroll-edge: var(--primary)`), na wypadek iOS starszego niż 16.2.
 - 2026-10-16: po scaleniu drpc1/printo-kids#34 przewija się środek okna w `ui/dialog.tsx`, więc cień i hook są tam (wszystkie okna). Przegląd fazy 6: odstęp `-m-1 p-1` dla obwódek fokusu, hook obserwuje też rozmiar dzieci.
+- 2026-10-18: cień był widoczny na iPhonie, ale użytkowniczka woli zamiast niego widoczny pasek przewijania → własna szyna z suwakiem (`--muted` / `--muted-foreground`) na ekranach dotykowych, natywny pasek w kolorze `--muted-foreground` na komputerze; cień usunięty.
