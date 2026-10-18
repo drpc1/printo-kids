@@ -42,10 +42,11 @@ function overlaps(a: Box, b: Box): boolean {
 }
 
 // The bar and dialogs animate (transition-all, zoom-in); measure the settled layout.
-// Looping animations (a spinner) never finish, so they are left out.
+// Looping animations (a spinner) never finish, so they are left out. A cancelled animation
+// rejects its finished promise; allSettled keeps that from failing the test.
 async function settle(page: Page): Promise<void> {
   await page.evaluate(() =>
-    Promise.all(
+    Promise.allSettled(
       document
         .getAnimations()
         .filter((animation) => animation.effect?.getTiming().iterations !== Infinity)
