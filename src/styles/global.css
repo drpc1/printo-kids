@@ -183,21 +183,3 @@
     letter-spacing: var(--tracking-normal);
   }
 }
-
-/* Scrollable dialog body: a shadow at the top or bottom edge shows there are more rows that way.
-   useScrollEdges (src/hooks) sets data-more-above / data-more-below on the body in ui/dialog.tsx. */
-@utility scroll-shadow {
-  /* Plain token, no color-mix(): older iOS Safari drops the whole rule otherwise. The blur fades it out. */
-  --scroll-edge: var(--primary);
-  &[data-more-above] {
-    box-shadow: inset 0 1.75rem 1.25rem -1.25rem var(--scroll-edge);
-  }
-  &[data-more-below] {
-    box-shadow: inset 0 -1.75rem 1.25rem -1.25rem var(--scroll-edge);
-  }
-  &[data-more-above][data-more-below] {
-    box-shadow:
-      inset 0 1.75rem 1.25rem -1.25rem var(--scroll-edge),
-      inset 0 -1.75rem 1.25rem -1.25rem var(--scroll-edge);
-  }
-}
