@@ -1,0 +1,21 @@
+---
+change_id: touch-targets
+title: Większe pola dotyku przycisku profilu i krzyżyka w oknach
+status: new
+created: 2026-10-18
+updated: 2026-10-18
+archived_at: null
+---
+
+## Notes
+
+Z przeglądów zamykających 2026-10-18 (`phone-worksheet` F2, `dialog-close-button` F2, F4, F6; raporty w `context/archive/` po archiwizacji tych zmian).
+
+Pomiar na telefonie 375×812:
+
+- Przycisk profilu w rogu strony (`src/components/ProfileCorner.tsx`, trigger `h-auto px-2 py-1 text-base`): 39×32 px przy imieniu „Ala”. Generuj, Drukuj i wiersze okien mają 44 px.
+- Krzyżyk w rogu okien (`src/components/ui/dialog.tsx`, `DialogPrimitive.Close`, ikona `size-4` bez odstępu): 16×16 px, poniżej 24 px z WCAG 2.5.8. Na liście postaci to jedyny widoczny sposób wyjścia bez wyboru.
+
+Cel: ikona i napis bez zmian, rośnie tylko pole dotyku (Profil co najmniej 44 px wysokości na `pointer-coarse`, X ok. 36–44 px wokół ikony). Przy okazji X dostaje fokus w stylu `focus-visible:` z `button.tsx` i bez martwych klas `data-[state=open]:…`; komentarz, że `pr-4` okna wiąże się z `right-4` krzyżyka i przesunięciem szyny w `useScrollIndicator.ts`.
+
+Ryzyko: róg okna ma 56 px pasa nad pierwszym wierszem (`pt-14`) i szynę paska przewijania po prawej; większy X musi się zmieścić między nimi. Sprawdzić na iPhonie.

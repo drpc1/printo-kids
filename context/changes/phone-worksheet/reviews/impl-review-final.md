@@ -51,7 +51,7 @@ HEAD `a4042c8` (`origin/main`). Gates: `npm test` 113/113, `npm run lint` 0, `np
 - **Location**: src/components/ProfileCorner.tsx:334
 - **Detail**: Trigger ma `h-auto px-2 py-1 text-base`, czyli ok. 32 px. Plan wymaga 44 px dla Generuj, Drukuj i wierszy dialogów, ale nie dla Profilu, więc to nie dryf, tylko luka w celu dotykowym na tej samej stronie telefonu.
 - **Fix**: Dodać `pointer-coarse:min-h-11` do klas triggera (i ewentualnie asercję wysokości w `phone-layout.spec.ts`).
-- **Decision**: PENDING
+- **Decision**: DEFERRED (przeniesione do nowej zmiany `context/changes/touch-targets/`, decyzja użytkowniczki 2026-10-18)
 
 ### F3 — `settle()` w testach może odrzucić się przy przerwanej animacji
 

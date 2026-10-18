@@ -53,7 +53,7 @@ Manual criteria were exercised by a throwaway Playwright script against `npm run
   - Tradeoff: PR „archiwizacja” niesie zmianę UI bez planu i bez sprawdzenia na iPhonie.
   - Confidence: MED — prosta klasa, ale róg ma już dwie wcześniejsze poprawki.
   - Blind spot: iOS Safari.
-- **Decision**: PENDING
+- **Decision**: DEFERRED (przeniesione do nowej zmiany `context/changes/touch-targets/`, decyzja użytkowniczki 2026-10-18)
 
 ### F3 — Brak testu, który pilnuje X na pytaniu o usunięcie
 
@@ -73,7 +73,7 @@ Manual criteria were exercised by a throwaway Playwright script against `npm run
 - **Location**: src/components/ui/dialog.tsx:83
 - **Detail**: X ma `focus:ring-2 focus:ring-offset-2` i `opacity-70`, a reszta kontrolek `focus-visible:ring-ring/50 focus-visible:ring-[3px]`; obwódka pojawia się też po dotknięciu. Klasy `data-[state=open]:bg-accent data-[state=open]:text-muted-foreground` nigdy nie pasują (`data-state` jest na treści, nie na przycisku). To wzorzec z shadcn, nie z tej zmiany.
 - **Fix**: Przy F2 przejść na wzorzec `focus-visible:` z `button.tsx` i usunąć martwe klasy.
-- **Decision**: PENDING
+- **Decision**: DEFERRED (przeniesione do nowej zmiany `context/changes/touch-targets/`, decyzja użytkowniczki 2026-10-18)
 
 ### F5 — Okno poziomu też dostało krzyżyk
 
@@ -93,4 +93,4 @@ Manual criteria were exercised by a throwaway Playwright script against `npm run
 - **Location**: src/components/ui/dialog.tsx:54
 - **Detail**: `pr-4` działa, bo pasuje do `right-4` krzyżyka i przesunięcia szyny w `useScrollIndicator.ts`; związek opisuje tylko commit 92202fa.
 - **Fix**: Jednozdaniowy komentarz w `dialog.tsx`, najlepiej razem z F2.
-- **Decision**: PENDING
+- **Decision**: DEFERRED (przeniesione do nowej zmiany `context/changes/touch-targets/`, decyzja użytkowniczki 2026-10-18)
