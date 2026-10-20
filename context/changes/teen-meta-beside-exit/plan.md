@@ -129,11 +129,11 @@ Brak. Układ nie jest zapisywany. Profile i ostatnie użycie trzymają identyfik
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, a `src/lib/sheet/layout.test.ts` wymaga, żeby na nastolatku `meta.x` był środkiem kolumny 26 i `start.x` środkiem kolumny 0, oraz żeby na każdym pozostałym poziomie `meta.x` był środkiem `exit.col` przy `exit.col === entrance.col`
-- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` przechodzi, a `src/lib/sheet/layout.test.ts` wymaga, żeby na nastolatku `meta.x` był środkiem kolumny 26 i `start.x` środkiem kolumny 0, oraz żeby na każdym pozostałym poziomie `meta.x` był środkiem `exit.col` przy `exit.col === entrance.col` — 8062949
+- [x] 1.2 `npm run lint` przechodzi — 8062949
 
 #### Manual
 
-- [x] 1.3 Po Generuj na poziomie nastolatek słowo „Meta” jest pod otwarciem po prawej, a „Start” zostaje po lewej
-- [x] 1.4 Po Generuj na poziomie 5 lat „Meta” zostaje na środku kartki, pod wyjściem
-- [x] 1.5 Podgląd druku nastolatka pokazuje „Meta” przy prawym wyjściu
+- [x] 1.3 Po Generuj na poziomie nastolatek słowo „Meta” jest pod otwarciem po prawej, a „Start” zostaje po lewej — 8062949
+- [x] 1.4 Po Generuj na poziomie 5 lat „Meta” zostaje na środku kartki, pod wyjściem — 8062949
+- [x] 1.5 Podgląd druku nastolatka pokazuje „Meta” przy prawym wyjściu — 8062949
