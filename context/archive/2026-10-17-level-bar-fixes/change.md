@@ -1,10 +1,10 @@
 ---
 change_id: level-bar-fixes
 title: Zmiana poziomu przegenerowuje kartkę, a pasek mieści się w jednej linii
-status: impl_reviewed
+status: archived
 created: 2026-10-17
-updated: 2026-10-17
-archived_at: null
+updated: 2026-10-18
+archived_at: 2026-10-18T20:51:06Z
 ---
 
 ## Notes
