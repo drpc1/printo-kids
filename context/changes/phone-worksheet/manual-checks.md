@@ -27,39 +27,39 @@
 
 ## Druk
 
-| Platforma        | Przeglądarka | 1. Jedna strona | 2. Nieobcięty | 3. 10 mm | 4. Fakty kartki | Uwagi |
-| ---------------- | ------------ | --------------- | ------------- | -------- | --------------- | ----- |
-| Komputer         | Chrome       |                 |               |          |                 |       |
-| Komputer         | Edge         |                 |               |          |                 |       |
-| Komputer         | Brave        |                 |               |          |                 |       |
-| Komputer         | Firefox      |                 |               |          |                 |       |
-| Komputer (macOS) | Safari       |                 |               |          |                 |       |
-| Android          | Chrome       |                 |               |          |                 |       |
-| Android          | Edge         |                 |               |          |                 |       |
-| Android          | Brave        |                 |               |          |                 |       |
-| Android          | Firefox      |                 |               |          |                 |       |
-| iOS              | Safari       |                 |               |          |                 |       |
-| iOS              | Chrome       |                 |               |          |                 |       |
-| iOS              | Brave        |                 |               |          |                 |       |
+| Platforma        | Przeglądarka | 1. Jedna strona                   | 2. Nieobcięty                     | 3. 10 mm                               | 4. Fakty kartki                                                               | Uwagi                                                                                                                      |
+| ---------------- | ------------ | --------------------------------- | --------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Komputer         | Chrome       | ok                                | ok                                | ok                                     | ok                                                                            | 2026-10-20, użytkowniczka                                                                                                  |
+| Komputer         | Edge         | ok                                | ok                                | ok                                     | ok                                                                            | 2026-10-20, użytkowniczka                                                                                                  |
+| Komputer         | Brave        | ok                                | ok                                | ok                                     | ok                                                                            | 2026-10-20, użytkowniczka                                                                                                  |
+| Komputer         | Firefox      | nie sprawdzono: poza archiwizacją | nie sprawdzono: poza archiwizacją | nie sprawdzono: poza archiwizacją      | nie sprawdzono: poza archiwizacją                                             | 2026-10-20                                                                                                                 |
+| Komputer (macOS) | Safari       | nie sprawdzono: brak Maca         | nie sprawdzono: brak Maca         | nie sprawdzono: brak Maca              | nie sprawdzono: brak Maca                                                     | 2026-10-20                                                                                                                 |
+| Android          | Chrome       | nie sprawdzono: brak urządzenia   | nie sprawdzono: brak urządzenia   | nie sprawdzono: brak urządzenia        | nie sprawdzono: brak urządzenia                                               | 2026-10-20; emulacja: Playwright phone-360 i pixel-7 (bez paska adresu i bez druku)                                        |
+| Android          | Edge         | nie sprawdzono: brak urządzenia   | nie sprawdzono: brak urządzenia   | nie sprawdzono: brak urządzenia        | nie sprawdzono: brak urządzenia                                               | 2026-10-20; emulacja: Playwright phone-360 i pixel-7 (bez paska adresu i bez druku)                                        |
+| Android          | Brave        | nie sprawdzono: brak urządzenia   | nie sprawdzono: brak urządzenia   | nie sprawdzono: brak urządzenia        | nie sprawdzono: brak urządzenia                                               | 2026-10-20; emulacja: Playwright phone-360 i pixel-7 (bez paska adresu i bez druku)                                        |
+| Android          | Firefox      | nie sprawdzono: brak urządzenia   | nie sprawdzono: brak urządzenia   | nie sprawdzono: brak urządzenia        | nie sprawdzono: brak urządzenia                                               | 2026-10-20; emulacja: Playwright phone-360 i pixel-7 (bez paska adresu i bez druku)                                        |
+| iOS              | Safari       | ok                                | ok                                | ok (szerszy, patrz Znane ograniczenia) | błąd: beżowe pasy tła strony wokół karty; Safari dokłada adres i numer strony | 2026-10-20. Pasy: poprawka w `@media print` (`background: none`), do powtórzenia. Adres i numer strony: znane ograniczenie |
+| iOS              | Chrome       | ok                                | ok                                | ok (szerszy, patrz Znane ograniczenia) | ok                                                                            | 2026-10-20, użytkowniczka                                                                                                  |
+| iOS              | Brave        | ok                                | ok                                | ok (szerszy, patrz Znane ograniczenia) | ok                                                                            | 2026-10-20, użytkowniczka                                                                                                  |
 
 ## Układ na telefonie
 
 Na iOS Chrome i Brave używają silnika Safari, więc układ sprawdzamy tylko w Safari.
 
-| Platforma | Przeglądarka | 5. Przyciski | 6. Bez przewijania w bok | 7. Profil (pion / poziom) | 8. Pasek adresu | Uwagi |
-| --------- | ------------ | ------------ | ------------------------ | ------------------------- | --------------- | ----- |
-| Android   | Chrome       |              |                          |                           |                 |       |
-| Android   | Edge         |              |                          |                           |                 |       |
-| Android   | Brave        |              |                          |                           |                 |       |
-| Android   | Firefox      |              |                          |                           |                 |       |
-| iOS       | Safari       |              |                          |                           |                 |       |
+| Platforma | Przeglądarka | 5. Przyciski                    | 6. Bez przewijania w bok        | 7. Profil (pion / poziom)       | 8. Pasek adresu                 | Uwagi                                                                               |
+| --------- | ------------ | ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------- |
+| Android   | Chrome       | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | 2026-10-20; emulacja: Playwright phone-360 i pixel-7 (bez paska adresu i bez druku) |
+| Android   | Edge         | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | 2026-10-20; emulacja: Playwright phone-360 i pixel-7 (bez paska adresu i bez druku) |
+| Android   | Brave        | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | 2026-10-20; emulacja: Playwright phone-360 i pixel-7 (bez paska adresu i bez druku) |
+| Android   | Firefox      | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | nie sprawdzono: brak urządzenia | 2026-10-20; emulacja: Playwright phone-360 i pixel-7 (bez paska adresu i bez druku) |
+| iOS       | Safari       | ok                              | ok                              | ok / ok                         | ok                              | 2026-10-20, użytkowniczka                                                           |
 
 ## Dialogi na telefonie
 
-| Platforma | Przeglądarka | Pole imienia widoczne nad klawiaturą | Lista postaci przewija się do wszystkich 11 i „Bez postaci” | Widoczny pasek przewijania przy liście profili (≥ 12 profili) i liście postaci | Uwagi |
-| --------- | ------------ | ------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------ | ----- |
-| Android   | Chrome       |                                      |                                                             |                                                                                |       |
-| iOS       | Safari       |                                      |                                                             |                                                                                |       |
+| Platforma | Przeglądarka | Pole imienia widoczne nad klawiaturą | Lista postaci przewija się do wszystkich 11 i „Bez postaci” | Widoczny pasek przewijania przy liście profili (≥ 12 profili) i liście postaci | Uwagi                                                                    |
+| --------- | ------------ | ------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| Android   | Chrome       | nie sprawdzono: brak urządzenia      | nie sprawdzono: brak urządzenia                             | nie sprawdzono: brak urządzenia                                                | 2026-10-20                                                               |
+| iOS       | Safari       | ok                                   | ok                                                          | ok                                                                             | 2026-10-20, użytkowniczka; pasek przewijania potwierdzony też 2026-10-18 |
 
 ## Automatyczny przebieg iPhone (WebKit)
 
@@ -72,10 +72,12 @@ Na iOS Chrome i Brave używają silnika Safari, więc układ sprawdzamy tylko w 
 Błąd druku, którego nie da się naprawić w `@media print` w `src/components/WorksheetHome.astro` bez zmiany `@page` ani geometrii karty, wpisujemy tutaj z nazwą nowej zmiany (`/10x-new`).
 
 - 2026-10-16, iOS (Chrome): wydruk na jednej stronie, ale z szerokim białym pasem (szacunek dla Letter: ok. 26 mm z boków, 35–40 mm u góry i u dołu). Przyczyna: margines drukarki iOS nakłada się na własny margines karty 10 mm. Usunięcie wymaga zmiany geometrii karty, poza S-09 → nowa zmiana `context/changes/print-printer-margins/`.
+- 2026-10-20, iOS (Safari): Safari dokłada w marginesie drukarki adres strony i numer strony. CSS ich nie wyłącza, a okno druku iOS nie ma takiej opcji → dopisane do `context/changes/print-printer-margins/`.
+- 2026-10-20, Android (Chrome, Edge, Brave, Firefox) oraz komputer Firefox i Safari (macOS): nie sprawdzono przed archiwizacją S-09. Układ Androida pokrywa emulacja Playwright (`phone-360`, `pixel-7`, `tablet-768`), druku i klawiatury ekranowej nie → nowa zmiana `context/changes/print-browser-coverage/`.
 
 ## Otwarte
 
-- (brak)
+- iOS (Safari): powtórzyć druk po poprawce beżowych pasów (2026-10-20) i wpisać wynik w kolumnie 4.
 
 ## Poprawki w trakcie fazy 6
 
@@ -86,3 +88,4 @@ Błąd druku, którego nie da się naprawić w `@media print` w `src/components/
 - 2026-10-16: kolor cienia bez `color-mix()` (`--scroll-edge: var(--primary)`), na wypadek iOS starszego niż 16.2.
 - 2026-10-16: po scaleniu drpc1/printo-kids#34 przewija się środek okna w `ui/dialog.tsx`, więc cień i hook są tam (wszystkie okna). Przegląd fazy 6: odstęp `-m-1 p-1` dla obwódek fokusu, hook obserwuje też rozmiar dzieci.
 - 2026-10-18: cień był widoczny na iPhonie, ale użytkowniczka woli zamiast niego widoczny pasek przewijania → własna szyna z suwakiem (`--muted` / `--muted-foreground`) na ekranach dotykowych, natywny pasek w kolorze `--muted-foreground` na komputerze; cień usunięty.
+- 2026-10-20: Safari na iOS drukował beżowe tło strony wokół zmniejszonej karty → `background: none` dla `html`, `body` i `#worksheet-home` w `@media print`; asercja w `print-contract.test.ts`.
