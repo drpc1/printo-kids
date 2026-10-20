@@ -84,7 +84,7 @@ void describe("layoutSheet", () => {
       assert.equal(sheet.start, null);
       assert.equal(mark.width, MARK_SIZE);
       assert.equal(mark.height, MARK_SIZE);
-      assert.equal(mark.x + mark.width / 2, columnCenter(sheet, level));
+      assert.equal(mark.x + mark.width / 2, columnCenter(sheet, level.columns, level.entrance.col));
       assert.ok(mark.y >= 0);
     }
   });
@@ -93,13 +93,31 @@ void describe("layoutSheet", () => {
     const level = levelById("nastolatek");
     const sheet = layoutForLevel(level, level.showCharacter);
     const start = sheet.start;
+    const gridBottom = sheet.maze.y + sheet.maze.height;
 
     assert.equal(level.entrance.col, 0);
+    assert.equal(level.exit.col, 26);
     assert.equal(level.showCharacter, false);
     assert.equal(sheet.mark, null);
     assert.ok(start);
     assert.equal(start.text, "Start");
-    assert.equal(start.x, columnCenter(sheet, level));
+    assert.equal(start.x, columnCenter(sheet, level.columns, 0));
+    assert.equal(sheet.meta.text, "Meta");
+    assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, 26));
+    assert.ok(sheet.meta.y > gridBottom);
+  });
+
+  void test("younger levels keep Meta on the shared entrance and exit column", () => {
+    for (const level of LEVELS) {
+      if (level.id === "nastolatek") {
+        continue;
+      }
+
+      const sheet = layoutForLevel(level, level.showCharacter);
+
+      assert.equal(level.exit.col, level.entrance.col);
+      assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, level.exit.col));
+    }
   });
 });
 
@@ -111,6 +129,7 @@ function layoutFor(characterSelected: boolean): SheetLayout {
     columns: COLUMNS,
     rows: ROWS,
     entranceColumn: ENTRANCE_COLUMN,
+    exitColumn: ENTRANCE_COLUMN,
     markSize: MARK_SIZE,
     characterSelected,
   });
@@ -129,12 +148,13 @@ function layoutForLevel(level: Level, characterSelected: boolean): SheetLayout {
     columns: level.columns,
     rows: level.rows,
     entranceColumn: level.entrance.col,
+    exitColumn: level.exit.col,
     markSize: MARK_SIZE,
     characterSelected,
   });
 }
 
-function columnCenter(sheet: SheetLayout, level: Level): number {
-  const cellSize = sheet.maze.width / level.columns;
-  return sheet.maze.x + (level.entrance.col + 0.5) * cellSize;
+function columnCenter(sheet: SheetLayout, columns: number, column: number): number {
+  const cellSize = sheet.maze.width / columns;
+  return sheet.maze.x + (column + 0.5) * cellSize;
 }
