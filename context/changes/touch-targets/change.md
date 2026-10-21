@@ -3,7 +3,7 @@ change_id: touch-targets
 title: Większe pola dotyku przycisku profilu i krzyżyka w oknach
 status: new
 created: 2026-10-18
-updated: 2026-10-18
+updated: 2026-10-21
 archived_at: null
 ---
 
@@ -19,3 +19,5 @@ Pomiar na telefonie 375×812:
 Cel: ikona i napis bez zmian, rośnie tylko pole dotyku (Profil co najmniej 44 px wysokości na `pointer-coarse`, X ok. 36–44 px wokół ikony). Przy okazji X dostaje fokus w stylu `focus-visible:` z `button.tsx` i bez martwych klas `data-[state=open]:…`; komentarz, że `pr-4` okna wiąże się z `right-4` krzyżyka i przesunięciem szyny w `useScrollIndicator.ts`.
 
 Ryzyko: róg okna ma 56 px pasa nad pierwszym wierszem (`pt-14`) i szynę paska przewijania po prawej; większy X musi się zmieścić między nimi. Sprawdzić na iPhonie.
+
+2026-10-21: ten sam róg ma otwarte drpc1/printo-kids#37 (X bezpośrednio nad paskiem przewijania). Na ekranie dotykowym (375 px, lista postaci) X ma x 326–342 px, a rysowany pasek 349–355 px, bo szyna z `useScrollIndicator.ts` stoi w prawym odstępie okna (`offsetLeft + offsetWidth + 3`). Większe pole X i jego kolumna z paskiem to jedna decyzja o rogu; plan powinien domknąć oba.
