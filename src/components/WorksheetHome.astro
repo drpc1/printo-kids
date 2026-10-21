@@ -54,12 +54,15 @@ import WorksheetGenerator from "./WorksheetGenerator";
     body {
       height: auto !important;
       overflow: hidden;
+      /* Safari on iOS prints backgrounds; the screen color would frame the scaled-down sheet. */
+      background: none;
     }
 
     #worksheet-home,
     #worksheet-home.has-maze {
       min-height: 0;
       padding: 0;
+      background: none;
     }
 
     #worksheet-home .max-w-xl,

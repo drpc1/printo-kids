@@ -89,6 +89,8 @@ Pasek po wygenerowaniu przestaje nachodzić na siebie i nie przewija strony w bo
 
 > Nota z implementacji (2026-10-14): od `sm` padding to `px-8`, nie `px-12`. Z ikonami i `px-12` rząd potrzebował 396 px + szerokość „Postać:” (157–229 px), więc w 576 px Drukuj zawijał się przy 8 z 12 wyborów. Z `px-8` mieści się każda postać, a przyciski mają prawie dzisiejszą szerokość. Decyzja użytkownika.
 
+> Nota z przeglądu zamykającego (2026-10-18): pasek nie jest już jednym rzędem od `sm`. Zmiana `level-bar-fixes` (1d4cea6, drpc1/printo-kids#45) ustawiła go na każdej szerokości w dwóch rzędach: parametry (`Postać:`, `Poziom:`), pod nimi Generuj i Drukuj. Opis „od `sm` jeden rząd” w Desired End State i w punkcie 1 tej fazy dotyczy stanu przed tą zmianą.
+
 #### 3. Kontrakt druku
 
 **File**: `src/lib/sheet/print-contract.test.ts`
@@ -435,7 +437,7 @@ Brak danych do migracji. Zapis profili i ostatnio użytych parametrów bez zmian
 - [x] 2.5 Przy 375×812 z profilem o 40-znakowym imieniu przycisk Profil i `h1` nie nachodzą na siebie przed generowaniem i po nim — a294998
 - [x] 2.6 Po przewinięciu do dołu karty na 375 px Profil nie leży nad kartą — a294998
 - [x] 2.7 Przy 1280 px z myszą Profil zostaje przyklejony w prawym górnym rogu przy przewijaniu — a294998
-- [ ] 2.8 Przy 844×390 z emulacją dotyku Profil po przewinięciu do dołu karty nie leży nad kartą
+- [x] 2.8 Przy 844×390 z emulacją dotyku Profil po przewinięciu do dołu karty nie leży nad kartą — a294998
 - [x] 2.9 `levels.ts` jest z powrotem na `lat5` i nie występuje w `git diff --stat` — a294998
 
 ### Phase 3: Dokumenty (PRD, plan testów, roadmapa)
@@ -479,11 +481,13 @@ Brak danych do migracji. Zapis profili i ostatnio użytych parametrów bez zmian
 
 #### Automated
 
-- [ ] 6.1 Po ewentualnej poprawce druku testy produktu przechodzą: `npm test`
+- [x] 6.1 Po ewentualnej poprawce druku testy produktu przechodzą: `npm test` — e8e062d
 
 #### Manual
 
-- [ ] 6.2 Tabela w `manual-checks.md` ma wynik dla każdej przeglądarki z zakresu
-- [ ] 6.3 Każdy wiersz druku ma jedną stronę A4 z labiryntem nieobciętym i co najmniej 10 mm wokół ścian, albo wpis znanego ograniczenia ze wskazaną nową zmianą
-- [ ] 6.4 Dialogi na telefonie: pole imienia widoczne przy otwartej klawiaturze, lista postaci pokazuje wszystkie pozycje po przewinięciu
-- [ ] 6.5 W Safari na iOS i Chrome na Androidzie strona przed generowaniem nie przewija się w pionie przy widocznym pasku adresu
+- [x] 6.2 Tabela w `manual-checks.md` ma wynik dla każdej przeglądarki z zakresu — e8e062d
+- [x] 6.3 Każdy wiersz druku ma jedną stronę A4 z labiryntem nieobciętym i co najmniej 10 mm wokół ścian, albo wpis znanego ograniczenia ze wskazaną nową zmianą — e8e062d
+- [x] 6.4 Dialogi na telefonie: pole imienia widoczne przy otwartej klawiaturze, lista postaci pokazuje wszystkie pozycje po przewinięciu — e8e062d
+- [x] 6.5 W Safari na iOS i Chrome na Androidzie strona przed generowaniem nie przewija się w pionie przy widocznym pasku adresu — e8e062d
+
+> Nota z archiwizacji (2026-10-21): 2.8 potwierdziła użytkowniczka na iPhonie (Profil pionowo i poziomo nie leży nad kartą). 6.4 i 6.5 sprawdzone w Safari na iOS; Android (Chrome, Edge, Brave, Firefox) oraz komputer Firefox i Safari (macOS) mają w `manual-checks.md` wpis „nie sprawdzono” i przeszły do `context/changes/print-browser-coverage/`. 6.1: `npm test` 114/114 po poprawce beżowego tła w druku Safari (e8e062d).

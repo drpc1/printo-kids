@@ -39,6 +39,8 @@ export function useScrollIndicator(): {
       thumb.style.height = `${thumbHeight}px`;
       thumb.style.transform = `translateY(${progress * (clientHeight - thumbHeight)}px)`;
     };
+    // React attaches this ref before the track and thumb refs, so this first call can return
+    // early. The ResizeObserver below always reports once after observe(), which draws the bar.
     update();
     body.addEventListener("scroll", update, { passive: true });
     // The body is capped by max-height, so its own box stops changing once content overflows:
