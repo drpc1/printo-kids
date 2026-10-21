@@ -10,6 +10,8 @@ const COLUMNS = 13;
 const ROWS = 16;
 const ENTRANCE_COLUMN = 6;
 const MARK_SIZE = 30;
+const LABEL_HEIGHT = 7;
+const CHARACTER_LEVELS = LEVELS.filter((level) => level.showCharacter);
 
 void describe("layoutSheet", () => {
   void test("a 13 by 16 sheet is a 210 by 297 page with the maze inset 10", () => {
@@ -107,6 +109,76 @@ void describe("layoutSheet", () => {
     assert.ok(sheet.meta.y > gridBottom);
   });
 
+  void test("on a character level the white band above the mark equals the band below Meta", () => {
+    assert.ok(CHARACTER_LEVELS.length > 0);
+
+    for (const level of CHARACTER_LEVELS) {
+      const sheet = layoutForLevel(level, true);
+      const mark = sheet.mark;
+
+      assert.ok(mark, level.id);
+      const bandBelowMeta = PAGE_HEIGHT - (sheet.meta.y + LABEL_HEIGHT / 2);
+      assert.ok(Math.abs(mark.y - bandBelowMeta) <= 0.01, `${level.id}: ${mark.y} vs ${bandBelowMeta}`);
+    }
+  });
+
+  void test("on a character level the block shift does not depend on a picked character", () => {
+    for (const level of CHARACTER_LEVELS) {
+      const withMark = layoutForLevel(level, true);
+      const withStart = layoutForLevel(level, false);
+      const centered = layoutForLevel(level, false, false);
+      const shift = withStart.maze.y - centered.maze.y;
+      const centeredStart = centered.start;
+      const start = withStart.start;
+
+      assert.ok(shift > 0, level.id);
+      assert.equal(withMark.maze.y, withStart.maze.y, level.id);
+      assert.equal(withMark.meta.y, withStart.meta.y, level.id);
+      assert.ok(start, level.id);
+      assert.ok(centeredStart, level.id);
+      assert.equal(start.text, "Start");
+      assert.ok(Math.abs(start.y - (centeredStart.y + shift)) <= 1e-9, level.id);
+      assert.ok(Math.abs(withStart.meta.y - (centered.meta.y + shift)) <= 1e-9, level.id);
+      assert.equal(withStart.maze.x, centered.maze.x, level.id);
+      assert.equal(start.x, centeredStart.x, level.id);
+      assert.equal(withStart.meta.x, centered.meta.x, level.id);
+    }
+  });
+
+  void test("on a character level the shifted block stays inside the page margins", () => {
+    for (const level of CHARACTER_LEVELS) {
+      for (const characterSelected of [true, false]) {
+        const sheet = layoutForLevel(level, characterSelected);
+
+        assert.ok(sheet.maze.y >= INSET, level.id);
+        assert.ok(PAGE_HEIGHT - wallsBottom(sheet) >= INSET, level.id);
+        assert.ok(PAGE_HEIGHT - sheet.meta.y >= INSET, level.id);
+        assert.ok(sheet.meta.y > wallsBottom(sheet), level.id);
+        if (characterSelected) {
+          assert.ok(sheet.mark, level.id);
+          assert.ok(sheet.mark.y >= 0, level.id);
+          assert.equal(sheet.mark.y + sheet.mark.height, sheet.maze.y, level.id);
+        }
+      }
+    }
+  });
+
+  void test("nastolatek keeps the centered block", () => {
+    const level = levelById("nastolatek");
+    const sheet = layoutForLevel(level, false);
+    const centered = layoutForLevel(level, false, false);
+    const innerHeight = PAGE_HEIGHT - INSET * 2;
+    const labelBand = (innerHeight - sheet.maze.height) / 2;
+
+    assert.equal(level.showCharacter, false);
+    assert.equal(sheet.maze.y, centered.maze.y);
+    assert.equal(sheet.meta.y, centered.meta.y);
+    assert.equal(sheet.start?.y, centered.start?.y);
+    assert.equal(sheet.maze.y, INSET + labelBand);
+    assert.equal(sheet.start?.y, INSET + labelBand / 2);
+    assert.equal(sheet.meta.y, INSET + labelBand + sheet.maze.height + labelBand / 2);
+  });
+
   void test("younger levels keep Meta on the shared entrance and exit column", () => {
     for (const level of LEVELS) {
       if (level.id === "nastolatek") {
@@ -132,6 +204,8 @@ function layoutFor(characterSelected: boolean): SheetLayout {
     exitColumn: ENTRANCE_COLUMN,
     markSize: MARK_SIZE,
     characterSelected,
+    levelShowsCharacter: true,
+    labelHeight: LABEL_HEIGHT,
   });
 }
 
@@ -140,7 +214,11 @@ function entranceCenter(sheet: SheetLayout): number {
   return sheet.maze.x + (ENTRANCE_COLUMN + 0.5) * cellSize;
 }
 
-function layoutForLevel(level: Level, characterSelected: boolean): SheetLayout {
+function layoutForLevel(
+  level: Level,
+  characterSelected: boolean,
+  levelShowsCharacter: boolean = level.showCharacter,
+): SheetLayout {
   return layoutSheet({
     pageWidth: PAGE_WIDTH,
     pageHeight: PAGE_HEIGHT,
@@ -151,7 +229,13 @@ function layoutForLevel(level: Level, characterSelected: boolean): SheetLayout {
     exitColumn: level.exit.col,
     markSize: MARK_SIZE,
     characterSelected,
+    levelShowsCharacter,
+    labelHeight: LABEL_HEIGHT,
   });
+}
+
+function wallsBottom(sheet: SheetLayout): number {
+  return sheet.maze.y + sheet.maze.height;
 }
 
 function columnCenter(sheet: SheetLayout, columns: number, column: number): number {
