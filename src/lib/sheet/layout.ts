@@ -27,7 +27,7 @@ export interface SheetLayoutInput {
   markSize: number;
   characterSelected: boolean;
   levelShowsCharacter: boolean;
-  /** Label text height in page units; the bottom edge of "Meta" is meta.y + labelHeight / 2. */
+  /** Label font size in page units. The label box spans meta.y ± labelHeight / 2; the letters end a little inside it. */
   labelHeight: number;
 }
 
@@ -62,6 +62,8 @@ export function layoutSheet(input: SheetLayoutInput): SheetLayout {
   // On a level that shows a character the whole block moves down by the same shift, so the white
   // band above the character mark equals the white band below "Meta". The shift ignores whether a
   // character is picked, so the grid stays put when the parent switches to "Start".
+  // It assumes a band of at least about 11 above the grid, as on today's level grids: a taller grid would push the
+  // walls into the bottom inset, and the "stays inside the page margins" test would fail for it.
   const shift = levelShowsCharacter
     ? (pageHeight - centeredMetaY - labelHeight / 2 - centeredOriginY + markSize) / 2
     : 0;
@@ -75,7 +77,7 @@ export function layoutSheet(input: SheetLayoutInput): SheetLayout {
   const maze = { x: originX, y: originY, width: pageWidth - inset * 2, height: gridHeight };
   const meta = { x: metaX, y: metaY, text: "Meta" };
 
-  if (characterSelected) {
+  if (characterSelected && levelShowsCharacter) {
     return {
       page,
       maze,

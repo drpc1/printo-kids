@@ -157,10 +157,18 @@ void describe("layoutSheet", () => {
         if (characterSelected) {
           assert.ok(sheet.mark, level.id);
           assert.ok(sheet.mark.y >= 0, level.id);
-          assert.equal(sheet.mark.y + sheet.mark.height, sheet.maze.y, level.id);
+          assertNear(sheet.mark.y + sheet.mark.height, sheet.maze.y, level.id);
         }
       }
     }
+  });
+
+  void test("a picked character on a level without one still shows Start and no mark", () => {
+    const level = levelById("nastolatek");
+    const sheet = layoutForLevel(level, true);
+
+    assert.equal(sheet.mark, null);
+    assert.equal(sheet.start?.text, "Start");
   });
 
   void test("nastolatek keeps the centered block", () => {
@@ -174,9 +182,9 @@ void describe("layoutSheet", () => {
     assert.equal(sheet.maze.y, centered.maze.y);
     assert.equal(sheet.meta.y, centered.meta.y);
     assert.equal(sheet.start?.y, centered.start?.y);
-    assert.equal(sheet.maze.y, INSET + labelBand);
-    assert.equal(sheet.start?.y, INSET + labelBand / 2);
-    assert.equal(sheet.meta.y, INSET + labelBand + sheet.maze.height + labelBand / 2);
+    assertNear(sheet.maze.y, INSET + labelBand);
+    assertNear(sheet.start?.y, INSET + labelBand / 2);
+    assertNear(sheet.meta.y, INSET + labelBand + sheet.maze.height + labelBand / 2);
   });
 
   void test("younger levels keep Meta on the shared entrance and exit column", () => {
@@ -241,4 +249,8 @@ function wallsBottom(sheet: SheetLayout): number {
 function columnCenter(sheet: SheetLayout, columns: number, column: number): number {
   const cellSize = sheet.maze.width / columns;
   return sheet.maze.x + (column + 0.5) * cellSize;
+}
+
+function assertNear(actual: number | undefined, expected: number, message?: string): void {
+  assert.ok(actual !== undefined && Math.abs(actual - expected) <= 1e-9, message ?? `${actual} vs ${expected}`);
 }
