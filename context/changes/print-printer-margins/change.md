@@ -3,7 +3,7 @@ change_id: print-printer-margins
 title: Wydruk z iPhone'a bez podwójnego marginesu
 status: new
 created: 2026-10-16
-updated: 2026-10-16
+updated: 2026-10-20
 archived_at: null
 ---
 
@@ -18,3 +18,5 @@ Do rozstrzygnięcia w planie: czy w druku z marginesem drukarki karta ma mniejsz
 Pomiary i metoda (Chromium z emulowanym obszarem druku): `context/changes/phone-worksheet/plan.md`, nota w fazie 6.
 
 Issue: https://github.com/drpc1/printo-kids/issues/38
+
+2026-10-20, iOS (Safari): Safari dokłada w marginesie drukarki adres strony i numer strony. CSS ich nie wyłącza, a okno druku iOS nie ma takiej opcji. Do uwzględnienia przy wyborze geometrii druku (zabierają część marginesu drukarki).

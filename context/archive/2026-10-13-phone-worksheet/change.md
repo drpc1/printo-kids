@@ -1,10 +1,10 @@
 ---
 change_id: phone-worksheet
 title: Phone worksheet
-status: implementing
+status: archived
 created: 2026-10-13
-updated: 2026-10-16
-archived_at: null
+updated: 2026-10-21
+archived_at: 2026-10-21T21:10:15Z
 ---
 
 ## Notes

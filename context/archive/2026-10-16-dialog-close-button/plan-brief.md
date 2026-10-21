@@ -16,14 +16,14 @@ W prawym górnym rogu obu okien widać samą ikonę X. Czytnik mówi „Zamknij�
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) |
-| --- | --- | --- |
-| Krzyżyk | Jeden na dialog, nie na panel | Rodzic zamyka okno, a krok wewnątrz zostaje przy „Anuluj” |
-| Wygląd | Sama ikona, nazwa „Zamknij” dla czytnika | Prośba była o przycisk X, a angielskie „Close” schodzi z jedynego napisu |
-| Usuwanie | X wraca na listę | Tak jak Escape i „Anuluj”; profil zostaje |
-| Pozostałe widoki | X zamyka całe okno | Tak jak Escape, także z listy postaci wewnątrz profilu |
-| „Anuluj” | Gdy profil już jest, wraca na listę | Edycja i formularz mają wtedy osobny gest od zamknięcia okna |
-| Sprawdzenie | Ręcznie, bez nowego testu UI | `npm test` nie montuje dialogów |
+| Decision         | Choice                                   | Why (1 sentence)                                                         |
+| ---------------- | ---------------------------------------- | ------------------------------------------------------------------------ |
+| Krzyżyk          | Jeden na dialog, nie na panel            | Rodzic zamyka okno, a krok wewnątrz zostaje przy „Anuluj”                |
+| Wygląd           | Sama ikona, nazwa „Zamknij” dla czytnika | Prośba była o przycisk X, a angielskie „Close” schodzi z jedynego napisu |
+| Usuwanie         | X wraca na listę                         | Tak jak Escape i „Anuluj”; profil zostaje                                |
+| Pozostałe widoki | X zamyka całe okno                       | Tak jak Escape, także z listy postaci wewnątrz profilu                   |
+| „Anuluj”         | Gdy profil już jest, wraca na listę      | Edycja i formularz mają wtedy osobny gest od zamknięcia okna             |
+| Sprawdzenie      | Ręcznie, bez nowego testu UI             | `npm test` nie montuje dialogów                                          |
 
 ## Scope
 
@@ -37,10 +37,10 @@ Zostaje `DialogPrimitive.Close` w `DialogContent`. Woła `onOpenChange(false)`, 
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Krzyżyk i polska nazwa | X na obu oknach, nazwa „Zamknij”, usuwanie wraca na listę | Własny `onClick` na krzyżyku obszedłby osłonę usuwania |
-| 2. Odstęp w rogu | X nie zasłania pierwszego wiersza i zostaje przy przewijaniu | `overflow-y-auto` na tym samym elemencie może zabrać X z rogu |
+| Phase                     | What it delivers                                             | Key risk                                                      |
+| ------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------- |
+| 1. Krzyżyk i polska nazwa | X na obu oknach, nazwa „Zamknij”, usuwanie wraca na listę    | Własny `onClick` na krzyżyku obszedłby osłonę usuwania        |
+| 2. Odstęp w rogu          | X nie zasłania pierwszego wiersza i zostaje przy przewijaniu | `overflow-y-auto` na tym samym elemencie może zabrać X z rogu |
 
 **Prerequisites:** brak. Krzyżyk jest już w `src/components/ui/dialog.tsx`.
 **Estimated effort:** jedna sesja, dwie krótkie fazy.

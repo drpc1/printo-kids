@@ -138,7 +138,7 @@ Brak research.md dla S-09. `context/changes/maze-difficulty-levels/research.md:6
 ## Open Questions
 
 1. ~~Pomiar na żywo~~ Rozstrzygnięte: przyciski nachodzą na siebie, a strona ma poziomy overflow o 9 px (sekcja „Pomiar na żywo”).
-1a. **Generator na poziomie domyślnym:** czy poprawka z niezacommitowanej pracy w Cursorze wejdzie przed S-09? Od tego zależy, jak S-09 jest testowany.
+   1a. **Generator na poziomie domyślnym:** czy poprawka z niezacommitowanej pracy w Cursorze wejdzie przed S-09? Od tego zależy, jak S-09 jest testowany.
 2. **Druk z telefonu:** jak mobilne Chrome, Firefox, Safari i Edge obsługują `@page { size: A4; margin: 0 }` i 297 mm? Ręczne sprawdzenie, nie do wyczytania z kodu.
 3. **Znak postaci w marginesie:** czy „margines 10 mm” obejmuje znak postaci? Decyzja produktowa (właściciel: użytkownik).
 4. **Zakres przeglądarek mobilnych:** roadmapa rekomenduje Chrome, Edge, Firefox i Safari. Wymaga potwierdzenia przez użytkownika.

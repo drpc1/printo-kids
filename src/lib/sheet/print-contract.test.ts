@@ -41,6 +41,13 @@ void describe("print contract", () => {
     assert.match(printCss, /#worksheet-home svg\s*\{[^}]*max-height:\s*100vh\s*;/);
   });
 
+  void test("print drops the screen background around the scaled-down sheet", () => {
+    // Safari on iOS prints backgrounds, so the screen color showed as strips inside the printer margins.
+    const printCss = extractBlock(readRepoFile(WORKSHEET_HOME), "@media print");
+    assert.match(printCss, /html,\s*body\s*\{[^}]*background:\s*none\s*;/);
+    assert.match(printCss, /#worksheet-home\.has-maze\s*\{[^}]*background:\s*none\s*;/);
+  });
+
   void test("print hides the heading, the purpose line, and the controls", () => {
     const home = readRepoFile(WORKSHEET_HOME);
     assert.match(home, /<h1\b/);
