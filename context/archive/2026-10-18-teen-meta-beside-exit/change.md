@@ -1,10 +1,10 @@
 ---
 change_id: teen-meta-beside-exit
 title: Place the teenage META label beside the maze exit
-status: impl_reviewed
+status: archived
 created: 2026-10-18
-updated: 2026-10-20
-archived_at: null
+updated: 2026-10-21
+archived_at: 2026-10-21T21:30:22Z
 ---
 
 ## Notes
