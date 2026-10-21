@@ -1,6 +1,6 @@
 ---
 project: PrintoKids
-checked: 2026-10-08
+checked: 2026-10-21
 status: active
 ---
 
@@ -71,7 +71,7 @@ Kolejność bierze się z wpływu i sparzenia, zgodnie z wywiadem P3. Faza 1 ma 
 
 Astro 7 SSR, wyspy React, TypeScript, Tailwind, Cloudflare Workers. Node 22.14.0. Produkt nie ma kont, płatności, AI ani zadań w tle. Dane labiryntu i przyszłych profili zostają na urządzeniu.
 
-Baza testów: **sparse**. `npm test` uruchamia `src/lib/maze/generate.test.ts`, `src/lib/sheet/layout.test.ts`, `src/lib/sheet/print-contract.test.ts`, `src/lib/last-used.test.ts`, `src/lib/child-profiles.test.ts` i `src/lib/sheet/character.test.ts`. Nie ma Vitest ani Jest. Playwright jest (`tests/e2e/`), działa lokalnie i nie ma go w bramce CI; ręczny workflow `e2e-phone.yml` uruchamia wszystkie projekty, także iPhone (WebKit). CI odpala `npm test` oraz, osobno, smoke strony produktu.
+Baza testów: **sparse**. `npm test` uruchamia `src/lib/maze/generate.test.ts`, `src/lib/sheet/layout.test.ts`, `src/lib/sheet/print-contract.test.ts`, `src/lib/last-used.test.ts`, `src/lib/child-profiles.test.ts`, `src/lib/sheet/character.test.ts` i `scripts/agent-hooks.test.mjs`. Nie ma Vitest ani Jest. Playwright jest (`tests/e2e/`: `seed`, `phone-layout`, `level-bar`, `profile-level`, `dialog-close`), działa lokalnie i nie ma go w bramce CI; ręczny workflow `e2e-phone.yml` uruchamia wszystkie projekty, także iPhone (WebKit). CI odpala `npm test` oraz, osobno, smoke strony produktu.
 
 **Stack grounding tools (current session):**
 
@@ -82,7 +82,7 @@ Baza testów: **sparse**. `npm test` uruchamia `src/lib/maze/generate.test.ts`, 
 
 ## §5 Co jest już sprawdzone
 
-Jest 59 testów. Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
+`npm test` ma 114 testów (stan 2026-10-21). Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
 
 Dla każdego z sześciu poziomów kilka ustalonych ziaren daje siatkę tego poziomu, otwarte ściany wejścia i wyjścia, jedną drogę i osiągalność każdej komórki. Na 200 ziarnach mediana drogi 4 lat jest większa niż 3 lat, a 6 lat niż 5 lat; to kolejność, nie próg. Żaden poziom nie powtarza jednej drogi na ośmiu ziarnach. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Te sprawdzenia nie dowodzą odmowy kartki przy zero ścieżkach.
 
@@ -92,13 +92,15 @@ Układ kartki: strona 210 na 297, labirynt co najmniej 10 od krawędzi, „Meta�
 
 Reguły druku są tekstem źródeł: jedno `@page` A4 z marginesem 0, brak `@page` w globalnym arkuszu, SVG druku 210 mm na 297 mm z ukrytym przepełnieniem, druk chowa nagłówek, linię celu i przyciski, a dopełnienie ekranu zostaje w regule ekranu. Te testy nie otwierają przeglądarki i nie dowodzą liczby stron. Nie są dowodem jednej strony w Chrome.
 
-Ręczny podgląd Chrome i Edge jest zapisany jako zrobiony w zarchiwizowanym planie `print-sheet-contract`. Firefox i Safari nie były sprawdzane. Całościowy ręczny podgląd Chrome, Edge, Firefox i Safari jest w sekcji Koniec projektu.
+Ręczny podgląd Chrome i Edge jest zapisany jako zrobiony w zarchiwizowanym planie `print-sheet-contract`. S-09 (`context/archive/2026-10-13-phone-worksheet/manual-checks.md`, 2026-10-20 i 2026-10-21) dołożył ręczny druk na komputerze w Chrome, Edge i Brave oraz na iOS w Safari, Chrome i Brave: jedna strona, labirynt nieobcięty. Na iOS margines drukarki sumuje się z 10 mm karty, a Safari dokłada adres i numer strony; to zostaje w `print-printer-margins`. Safari na iOS drukuje tła: beżowe pasy tła strony wokół karty usunęło `background: none` w `@media print`, pilnowane tekstem w `print-contract.test.ts`. Emulacja druku w Chromium tego nie pokaże, bo Chromium domyślnie nie drukuje teł. Nie sprawdzono: Android (Chrome, Edge, Brave, Firefox), Firefox i Safari na komputerze; to `print-browser-coverage`. Całościowy ręczny podgląd jest w sekcji Koniec projektu.
+
+Układ telefonu i tabletu pilnuje `phone-layout.spec.ts` (Chromium, a WebKit w ręcznym workflow `e2e-phone.yml`): brak przewijania w bok, Generuj, Drukuj i „Postać:” nie nachodzą na siebie, Profil nie zasłania nagłówka ani, na ekranie dotykowym, karty. Krzyżyk na pytaniu o usunięcie profilu wraca na listę i niczego nie kasuje (`dialog-close.spec.ts`, ryzyko 5). Te testy nie dowodzą liczby stron wydruku.
 
 Kontrakt ostatniej postaci w schowku jest pokryty: brak klucza, pusty zapis, zły JSON, postać spoza listy, wyjątek ze schowka, zapis i odczyt. Zła wartość wraca jako brak postaci. To nie jest zapis ani usunięcie profilu dziecka. Wynik mutacji około 67% nie otwiera nowego testu: przeżyte mutanty i tak zwracają „none”. Kontrakt ostatniego zapisu sam nie rysuje kartki.
 
 Układ przy „jakiejś” postaci wymaga znacznika 30 na 30, a bez postaci wymaga napisu „Start”.
 
-Smoke w osobnym jobie CI nadal sprawdza flow kont ze startera. To nie jest dowód, że profil zostaje na urządzeniu.
+Smoke w osobnym jobie CI (`scripts/smoke.mjs`) sprawdza, że strona produktu się wyświetla, a trasy kont ze startera zwracają 404. To nie jest dowód, że profil zostaje na urządzeniu.
 
 ## §6 Podręcznik
 
@@ -135,4 +137,4 @@ TBD — patrz §3 Faza 4 dla wzorca bramki, która pilnuje kartki i nie obrasta 
 
 Przed oddaniem produktu przeprowadzić całościowy ręczny podgląd druku na aktualnych desktopowych Chrome, Edge, Brave, Firefox i Safari oraz na telefonie: Chrome, Edge, Brave i Firefox na Androidzie, Safari, Chrome i Brave na iOS. W każdej: marginesy zostawione na Default, nagłówki i stopki wyłączone, dokładnie jedna strona A4, labirynt nieobcięty, biały pas wewnątrz krawędzi kartki co najmniej 10 mm, „Meta” przy wyjściu, wybrana postać przy starcie. Góra postaci około 1,6 mm od krawędzi kartki nadal przechodzi, bo margines 10 mm z PRD dotyczy ścian i ramki labiryntu, nie znaku postaci. Na ekranie zostają nagłówek i przyciski.
 
-Chrome i Edge przeszły ten pasek w `print-sheet-contract`. Ten sprawdzian powtarza go na wszystkich pięciu, łącznie z Brave, Firefoxem i Safari, których tamten plasterek nie domknął, a protokół telefonu jest w `context/changes/phone-worksheet/manual-checks.md`. To zostaje ręcznym podglądem, nie macierzą automatycznych przeglądarek.
+Chrome i Edge przeszły ten pasek w `print-sheet-contract`. Ten sprawdzian powtarza go na wszystkich pięciu, łącznie z Brave, Firefoxem i Safari, których tamten plasterek nie domknął, a protokół telefonu jest w `context/archive/2026-10-13-phone-worksheet/manual-checks.md` (stan po S-09 w §5). To zostaje ręcznym podglądem, nie macierzą automatycznych przeglądarek.
