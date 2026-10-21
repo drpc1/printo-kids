@@ -332,6 +332,7 @@ function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: Char
     columns: maze.width,
     rows: maze.height,
     entranceColumn: level.entrance.col,
+    exitColumn: level.exit.col,
     markSize: CHARACTER_MARK_SIZE,
     characterSelected: level.showCharacter && characterSrc !== null,
   });
