@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-21
+updated: 2026-10-22
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -39,20 +39,20 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                   | Outcome (user can …)                                                                                                                   | Prerequisites | PRD refs                              | Status |
-| ---- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------------------------------- | ------ |
-| F-01 | worksheet-page-shell        | (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa)        | —             | US-01                                 | done   |
-| S-01 | first-printable-maze        | Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie                                                  | F-01          | US-01, FR-003, FR-004                 | done   |
-| S-02 | print-a4-maze               | Rodzic może wydrukować tę kartę jako jedną stronę A4                                                                                   | S-01          | FR-005                                | done   |
-| F-02 | remove-starter-scaffold     | (foundation) Aplikacja nie serwuje już logowania ani dashboardu ze startera; sprawdzian HTTP pilnuje strony produktu                   | S-02          | Access Control, Non-Goals (brak kont) | done   |
-| S-03 | maze-character-choice       | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu                                                  | F-02          | US-01, FR-002                         | done   |
-| S-04 | last-used-print-params      | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne                                | S-03          | FR-006                                | done   |
-| S-05 | child-profile-create-select | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                        | done   |
-| S-06 | child-profile-save-delete   | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu                                       | S-05          | FR-009, FR-010                        | done   |
-| S-07 | maze-difficulty-levels      | Rodzic może wybrać poziom nazwany wiekiem i dostać labirynt zgodny z alejką i długością drogi tego poziomu                             | S-06          | US-01, FR-001, FR-003, FR-006, FR-007 | done   |
-| S-08 | full-character-catalog      | Rodzic może wybrać dowolną postać z katalogu jedenastu, także przy profilu, a pełna lista zostaje widoczna na węższym oknie            | S-04, S-06    | US-03, FR-002, FR-012                 | done   |
-| S-09 | phone-worksheet             | Rodzic może na telefonie wygenerować labirynt i wydrukować go jako jedną stronę A4, bez nachodzących się przycisków                    | S-02          | US-04, FR-004, FR-005, FR-013         | done   |
-| S-11 | printed-maze-equal-margins  | Rodzic może wydrukować kartę, na której labirynt wraz z postacią jest odrobinę niżej, a margines górny i dolny zostają takie same      | S-02, S-03    | US-01, FR-005                         | ready  |
+| ID   | Change ID                   | Outcome (user can …)                                                                                                                   | Prerequisites | PRD refs                              | Status      |
+| ---- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------------------------------- | ----------- |
+| F-01 | worksheet-page-shell        | (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa)        | —             | US-01                                 | done        |
+| S-01 | first-printable-maze        | Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie                                                  | F-01          | US-01, FR-003, FR-004                 | done        |
+| S-02 | print-a4-maze               | Rodzic może wydrukować tę kartę jako jedną stronę A4                                                                                   | S-01          | FR-005                                | done        |
+| F-02 | remove-starter-scaffold     | (foundation) Aplikacja nie serwuje już logowania ani dashboardu ze startera; sprawdzian HTTP pilnuje strony produktu                   | S-02          | Access Control, Non-Goals (brak kont) | done        |
+| S-03 | maze-character-choice       | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu                                                  | F-02          | US-01, FR-002                         | done        |
+| S-04 | last-used-print-params      | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne                                | S-03          | FR-006                                | done        |
+| S-05 | child-profile-create-select | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                        | done        |
+| S-06 | child-profile-save-delete   | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu                                       | S-05          | FR-009, FR-010                        | done        |
+| S-07 | maze-difficulty-levels      | Rodzic może wybrać poziom nazwany wiekiem i dostać labirynt zgodny z alejką i długością drogi tego poziomu                             | S-06          | US-01, FR-001, FR-003, FR-006, FR-007 | done        |
+| S-08 | full-character-catalog      | Rodzic może wybrać dowolną postać z katalogu jedenastu, także przy profilu, a pełna lista zostaje widoczna na węższym oknie            | S-04, S-06    | US-03, FR-002, FR-012                 | done        |
+| S-09 | phone-worksheet             | Rodzic może na telefonie wygenerować labirynt i wydrukować go jako jedną stronę A4, bez nachodzących się przycisków                    | S-02          | US-04, FR-004, FR-005, FR-013         | done        |
+| S-11 | printed-maze-equal-margins  | Rodzic może wydrukować kartę, na której labirynt wraz z postacią jest odrobinę niżej, a margines górny i dolny zostają takie same      | S-02, S-03    | US-01, FR-005                         | in-progress |
 
 ## Streams
 
@@ -238,7 +238,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Postać przy starcie wystaje nad labirynt i skraca biały pas u góry względem dołu. Niżej schodzi para: labirynt i postać. „Meta” zostaje pod labiryntem, więc dolny margines liczy się pod treścią karty. Bez postaci oraz na poziomie nastolatka, który postaci nie pokazuje, układ zostaje. Pas 10 mm nadal dotyczy ścian labiryntu; znak postaci może w niego wejść. `S-07` i `S-09` są już `done`; obie ruszały rysunek kartki, więc plan zaczyna od dzisiejszego `layoutSheet`. Na iOS margines drukarki zmniejsza kartę (`print-printer-margins`, #38), co dotyczy tego samego pasa.
-- **Status:** ready
+- **Status:** in-progress
 
 ## Backlog Handoff
 
