@@ -88,7 +88,7 @@ Dla każdego z sześciu poziomów kilka ustalonych ziaren daje siatkę tego pozi
 
 Zmutowana siatka potrafi dać więcej niż jedną ścieżkę. Siatka z otwartymi wewnętrznymi ścianami zatrzymuje licznik na 2. Przypadek „więcej niż jedna” wybiera siatkę tym samym licznikiem, który potem sprawdza. Gotowa kartka wymaga dokładnie jednej ścieżki: zero ścieżek i dwie ścieżki nie są zapisywane, a jedna ścieżka zostawia ten sam labirynt. Klik Generuj zapisuje kartkę tylko przy niepustym wyniku. Gdy ułożenie się nie uda, widać „Nie udało się ułożyć tego poziomu.”, bez ponowienia.
 
-Układ kartki: strona 210 na 297, labirynt co najmniej 10 od krawędzi, „Meta” pod kratką i co najmniej 10 od krawędzi, przy postaci znacznik 30 na 30 ze spodem na górze labiryntu. Góra znacznika nie musi mieć 10 od krawędzi. Bez postaci jest „Start”, a „Meta” zostaje.
+Układ kartki: strona 210 na 297, labirynt co najmniej 10 od krawędzi, „Meta” pod kratką i co najmniej 10 od krawędzi, przy postaci znacznik 30 na 30 ze spodem na górze labiryntu. Góra znacznika nie musi mieć 10 od krawędzi. Bez postaci jest „Start”, a „Meta” zostaje. Na poziomach z postacią cały blok schodzi w dół tak, że biały pas nad znacznikiem równa się pasowi pod dolną krawędzią „Meta”; wersja ze „Start” schodzi o tyle samo, więc jej góra i dół są nierówne. Nastolatek ma układ bez przesunięcia (`layout.test.ts`).
 
 Reguły druku są tekstem źródeł: jedno `@page` A4 z marginesem 0, brak `@page` w globalnym arkuszu, SVG druku 210 mm na 297 mm z ukrytym przepełnieniem, druk chowa nagłówek, linię celu i przyciski, a dopełnienie ekranu zostaje w regule ekranu. Te testy nie otwierają przeglądarki i nie dowodzą liczby stron. Nie są dowodem jednej strony w Chrome.
 

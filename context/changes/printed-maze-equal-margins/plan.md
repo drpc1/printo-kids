@@ -181,7 +181,7 @@ Brak danych do migracji.
 
 #### Automated
 
-- [ ] 2.1 Commit dokumentu przechodzi przez lint-staged (Prettier)
+- [x] 2.1 Commit dokumentu przechodzi przez lint-staged (Prettier)
 
 #### Manual
 
