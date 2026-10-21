@@ -52,18 +52,19 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-07 | maze-difficulty-levels      | Rodzic może wybrać poziom nazwany wiekiem i dostać labirynt zgodny z alejką i długością drogi tego poziomu                             | S-06          | US-01, FR-001, FR-003, FR-006, FR-007 | done   |
 | S-08 | full-character-catalog      | Rodzic może wybrać dowolną postać z katalogu jedenastu, także przy profilu, a pełna lista zostaje widoczna na węższym oknie            | S-04, S-06    | US-03, FR-002, FR-012                 | done   |
 | S-09 | phone-worksheet             | Rodzic może na telefonie wygenerować labirynt i wydrukować go jako jedną stronę A4, bez nachodzących się przycisków                    | S-02          | US-04, FR-004, FR-005, FR-013         | done   |
+| S-11 | printed-maze-equal-margins  | Rodzic może wydrukować kartę, na której labirynt wraz z postacią jest odrobinę niżej, a margines górny i dolny zostają takie same      | S-02, S-03    | US-01, FR-005                         | ready  |
 
 ## Streams
 
 Navigation aid — groups items that share a Prerequisites chain. Canonical ordering still lives in the dependency graph below; this table is the proposed reading order across parallel tracks.
 
-| Stream | Theme                     | Chain                             | Note                                                                                                                                                                |
-| ------ | ------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A      | Strona, karta, potem druk | `F-01` → `S-01` → `S-02` → `F-02` | Najpierw po co jest strona i przycisk, potem labirynt na kartce, potem wydruk. Wydruk jest gwiazdą przewodnią kamienia. `F-02` sprząta starter, zanim ruszy postać. |
-| B      | Postać, potem parametry   | `S-03` → `S-04` → `S-08`          | Dołącza do strumienia A przy `F-02`. Pełny katalog dołącza po profilach (`S-06`), nie po samych parametrach.                                                        |
-| C      | Profile dziecka           | `S-05` → `S-06`                   | Dołącza do strumienia B przy `S-03`. Wydruk nie wymaga profilu.                                                                                                     |
-| D      | Poziom trudności          | `S-07`                            | Dołącza po `S-06`. Wybór wieku na istniejącej kartce, nie nowy ekran.                                                                                               |
-| E      | Strona na telefonie       | `S-09`                            | Dołącza po `S-02`. Nie czeka na sprzątanie startera ani na poziomy trudności.                                                                                       |
+| Stream | Theme                     | Chain                             | Note                                                                                                                                                                                  |
+| ------ | ------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A      | Strona, karta, potem druk | `F-01` → `S-01` → `S-02` → `F-02` | Najpierw po co jest strona i przycisk, potem labirynt na kartce, potem wydruk. Wydruk jest gwiazdą przewodnią kamienia. `F-02` sprząta starter, zanim ruszy postać.                   |
+| B      | Postać, potem parametry   | `S-03` → `S-04` → `S-08`; `S-11`  | Dołącza do strumienia A przy `F-02`. Pełny katalog dołącza po profilach (`S-06`), nie po samych parametrach. `S-11` schodzi z `S-03`: równy margines wydruku, gdy postać jest u góry. |
+| C      | Profile dziecka           | `S-05` → `S-06`                   | Dołącza do strumienia B przy `S-03`. Wydruk nie wymaga profilu.                                                                                                                       |
+| D      | Poziom trudności          | `S-07`                            | Dołącza po `S-06`. Wybór wieku na istniejącej kartce, nie nowy ekran.                                                                                                                 |
+| E      | Strona na telefonie       | `S-09`                            | Dołącza po `S-02`. Nie czeka na sprzątanie startera ani na poziomy trudności.                                                                                                         |
 
 ## Baseline
 
@@ -192,7 +193,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Change ID:** maze-difficulty-levels
 - **PRD refs:** US-01, FR-001, FR-003, FR-006, FR-007
 - **Prerequisites:** S-06
-- **Parallel with:** S-08, S-09
+- **Parallel with:** S-08, S-09, S-11
 - **Blockers:** —
 - **Unknowns:**
   - Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej? — Owner: user. Block: yes for validating dead-end depth. Szerokość alejki i zakres długości drogi są w PRD.
@@ -219,7 +220,7 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Change ID:** phone-worksheet
 - **PRD refs:** US-04, FR-004, FR-005, FR-013
 - **Prerequisites:** S-02
-- **Parallel with:** S-07, S-08
+- **Parallel with:** S-07, S-08, S-11
 - **Blockers:** —
 - **Unknowns:**
   - ~~Które przeglądarki na telefonie są w zakresie?~~ Rozstrzygnięte 2026-10-13: Chrome, Edge, Brave, Firefox i Safari na komputerze i telefonie; na iOS układ w Safari, druk także w Chrome i Brave. — Owner: user. Block: no.
@@ -227,23 +228,36 @@ The starter Welcome screen (auth, marketing, cosmic layout) was the first paint;
 - **Risk:** Bieżąca usterka jest na dzisiejszej karcie, więc plasterek nie czeka na poziomy trudności. `S-07` zmienia siatkę i musi utrzymać jedną stronę A4. Profil, wybór postaci i nagłówek zostają używalne i nie zasłaniają karty. Druk nadal nie wymaga profilu.
 - **Status:** in-progress
 
+### S-11: Równy margines wydruku z postacią
+
+- **Outcome:** Rodzic może wydrukować kartę, na której labirynt wraz z postacią jest odrobinę niżej, a margines górny i dolny zostają takie same także wtedy, gdy postać stoi u góry.
+- **Change ID:** printed-maze-equal-margins
+- **PRD refs:** US-01, FR-005
+- **Prerequisites:** S-02, S-03
+- **Parallel with:** S-07, S-09
+- **Blockers:** —
+- **Unknowns:** —
+- **Risk:** Postać przy starcie wystaje nad labirynt i skraca biały pas u góry względem dołu. Niżej schodzi para: labirynt i postać. „Meta” zostaje pod labiryntem, więc dolny margines liczy się pod treścią karty. Bez postaci oraz na poziomie nastolatka, który postaci nie pokazuje, układ zostaje. Pas 10 mm nadal dotyczy ścian labiryntu; znak postaci może w niego wejść. `S-07` i `S-09` są już `done`; obie ruszały rysunek kartki, więc plan zaczyna od dzisiejszego `layoutSheet`. Na iOS margines drukarki zmniejsza kartę (`print-printer-margins`, #38), co dotyczy tego samego pasa.
+- **Status:** ready
+
 ## Backlog Handoff
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcja „Po tym kamieniu” nie dostaje issue, dopóki kamień nie jest otwarty.
 
-| Roadmap ID | Change ID                   | Suggested issue title                                                | Ready for `/10x-plan` | Notes                                                                                                                 |
-| ---------- | --------------------------- | -------------------------------------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| F-01       | worksheet-page-shell        | Wejście na /: po co jest strona i przycisk Generuj                   | no                    | Done. Archived 2026-09-29                                                                                             |
-| S-01       | first-printable-maze        | Rodzic generuje rozwiązywalny labirynt i widzi kartę A4 na stronie   | no                    | Done. Archived 2026-10-01                                                                                             |
-| S-02       | print-a4-maze               | Druk karty jako jednej strony A4                                     | no                    | Done. Archived 2026-10-03; gwiazda przewodnia kamienia                                                                |
-| F-02       | remove-starter-scaffold     | Usunięcie logowania, dashboardu i sprawdzianu auth ze startera       | no                    | Done. Archived 2026-10-11                                                                                             |
-| S-03       | maze-character-choice       | Wybór postaci z zestawu przy starcie labiryntu                       | no                    | Done. Archived 2026-10-04                                                                                             |
-| S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Done. Archived 2026-10-05. Poziom dołącza w `S-07`                                                                    |
-| S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                        | no                    | Done. Archived 2026-10-08. Domyślna trudność dołącza w `S-07`                                                         |
-| S-06       | child-profile-save-delete   | Zapis zmian profilu i usunięcie po potwierdzeniu                     | no                    | Done. Archived 2026-10-09                                                                                             |
-| S-07       | maze-difficulty-levels      | Rodzic wybiera poziom nazwany wiekiem i dostaje zgodny labirynt      | no                    | Done. Archived 2026-10-16. Poziom w profilu: `profile-level-choice`, archived 2026-10-17                              |
-| S-08       | full-character-catalog      | Pełny katalog jedenastu postaci przy karcie i przy profilu           | no                    | Done. Archived 2026-10-11                                                                                             |
-| S-09       | phone-worksheet             | Strona karty na telefonie i druk jako jedna strona A4                | no                    | Done. Archived 2026-10-21. Dalej: `print-browser-coverage`, `print-printer-margins`, `touch-targets` (poza kamieniem) |
+| Roadmap ID | Change ID                   | Suggested issue title                                                | Ready for `/10x-plan` | Notes                                                                                                                                              |
+| ---------- | --------------------------- | -------------------------------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F-01       | worksheet-page-shell        | Wejście na /: po co jest strona i przycisk Generuj                   | no                    | Done. Archived 2026-09-29                                                                                                                          |
+| S-01       | first-printable-maze        | Rodzic generuje rozwiązywalny labirynt i widzi kartę A4 na stronie   | no                    | Done. Archived 2026-10-01                                                                                                                          |
+| S-02       | print-a4-maze               | Druk karty jako jednej strony A4                                     | no                    | Done. Archived 2026-10-03; gwiazda przewodnia kamienia                                                                                             |
+| F-02       | remove-starter-scaffold     | Usunięcie logowania, dashboardu i sprawdzianu auth ze startera       | no                    | Done. Archived 2026-10-11                                                                                                                          |
+| S-03       | maze-character-choice       | Wybór postaci z zestawu przy starcie labiryntu                       | no                    | Done. Archived 2026-10-04                                                                                                                          |
+| S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Done. Archived 2026-10-05. Poziom dołącza w `S-07`                                                                                                 |
+| S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                        | no                    | Done. Archived 2026-10-08. Domyślna trudność dołącza w `S-07`                                                                                      |
+| S-06       | child-profile-save-delete   | Zapis zmian profilu i usunięcie po potwierdzeniu                     | no                    | Done. Archived 2026-10-09                                                                                                                          |
+| S-07       | maze-difficulty-levels      | Rodzic wybiera poziom nazwany wiekiem i dostaje zgodny labirynt      | no                    | Done. Archived 2026-10-16. Poziom w profilu: `profile-level-choice`, archived 2026-10-17                                                           |
+| S-08       | full-character-catalog      | Pełny katalog jedenastu postaci przy karcie i przy profilu           | no                    | Done. Archived 2026-10-11                                                                                                                          |
+| S-09       | phone-worksheet             | Strona karty na telefonie i druk jako jedna strona A4                | no                    | Done. Archived 2026-10-21. Dalej: `print-browser-coverage`, `print-printer-margins`, `touch-targets` (poza kamieniem)                              |
+| S-11       | printed-maze-equal-margins  | Na wydruku labirynt z postacią niżej, równy margines góra i dół      | yes                   | Run `/10x-new printed-maze-equal-margins`, potem `/10x-plan`. Issue #35 z 2026-10-16; wpis dopisany 2026-10-21 z niezacommitowanej wersji roboczej |
 
 ## Open Roadmap Questions
 
