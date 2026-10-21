@@ -166,16 +166,16 @@ Brak danych do migracji.
 
 #### Automated
 
-- [x] 1.1 Testy produktu przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check`
-- [x] 1.4 Build przechodzi: `npm run build`
-- [x] 1.5 Playwright przechodzi: `npx playwright test`
-- [x] 1.6 Zawężony Stryker na `layout.ts` nie zostawia przeżytego mutanta, który zmienia położenie bloku widoczne dla rodzica: `npx stryker run --mutate "src/lib/sheet/layout.ts"`
+- [x] 1.1 Testy produktu przechodzą: `npm test` — 5ad9265
+- [x] 1.2 Lint przechodzi: `npm run lint` — 5ad9265
+- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check` — 5ad9265
+- [x] 1.4 Build przechodzi: `npm run build` — 5ad9265
+- [x] 1.5 Playwright przechodzi: `npx playwright test` — 5ad9265
+- [x] 1.6 Zawężony Stryker na `layout.ts` nie zostawia przeżytego mutanta, który zmienia położenie bloku widoczne dla rodzica: `npx stryker run --mutate "src/lib/sheet/layout.ts"` — 5ad9265
 
 #### Manual
 
-- [x] 1.7 Na ekranie przy 5 latach z postacią biały pas nad postacią i pod „Meta” wyglądają na równe, a przy nastolatku karta wygląda jak przed zmianą
+- [x] 1.7 Na ekranie przy 5 latach z postacią biały pas nad postacią i pod „Meta” wyglądają na równe, a przy nastolatku karta wygląda jak przed zmianą — 5ad9265
 
 ### Phase 2: Ręczny druk i dokumenty
 
