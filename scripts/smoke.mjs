@@ -1,4 +1,4 @@
-// Smoke test: the product page is served and the starter account routes are gone.
+// Smoke test: the product pages (/ and /labirynt) are served and the starter account routes are gone.
 // Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
@@ -14,6 +14,12 @@ const steps = [
   [
     "home renders the worksheet sentence",
     () => request("/"),
+    (actual) => actual.status === 200 && actual.body.includes(HOME_SENTENCE),
+    `200 and ${HOME_SENTENCE}`,
+  ],
+  [
+    "labirynt renders the worksheet sentence",
+    () => request("/labirynt"),
     (actual) => actual.status === 200 && actual.body.includes(HOME_SENTENCE),
     `200 and ${HOME_SENTENCE}`,
   ],

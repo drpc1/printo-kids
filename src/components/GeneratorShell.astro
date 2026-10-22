@@ -1,19 +1,27 @@
 ---
-import WorksheetGenerator from "./WorksheetGenerator";
+interface Props {
+  description: string;
+}
+
+const { description } = Astro.props;
 ---
 
 <main
   id="worksheet-home"
   class="flex min-h-dvh flex-col items-center justify-center bg-background px-6 py-20 text-foreground"
 >
+  <a
+    href="/"
+    class="text-muted-foreground hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute top-4 left-4 z-40 inline-flex min-h-11 items-center rounded-md px-2 text-base outline-none focus-visible:ring-[3px] print:hidden sm:pointer-fine:fixed"
+  >
+    Wszystkie karty
+  </a>
   <div class="flex w-full max-w-xl flex-col items-center gap-10 text-center">
     <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">PrintoKids</h1>
 
-    <p class="text-lg leading-relaxed text-muted-foreground sm:text-xl">
-      Wygeneruj labirynt i wydrukuj go na kartce A4.
-    </p>
+    <p class="text-lg leading-relaxed text-muted-foreground sm:text-xl">{description}</p>
 
-    <WorksheetGenerator client:only="react" />
+    <slot />
   </div>
 </main>
 
@@ -45,7 +53,7 @@ import WorksheetGenerator from "./WorksheetGenerator";
 
   @media screen and (max-width: 639px) {
     #worksheet-home.has-maze {
-      padding-top: 3.5rem;
+      padding-top: 4.5rem;
     }
   }
 
@@ -73,6 +81,7 @@ import WorksheetGenerator from "./WorksheetGenerator";
 
     #worksheet-home h1,
     #worksheet-home p,
+    #worksheet-home a,
     #worksheet-home button {
       display: none;
     }
