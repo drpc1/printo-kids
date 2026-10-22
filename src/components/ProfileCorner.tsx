@@ -332,6 +332,7 @@ export function ProfileCorner({
           aria-label={cornerLabel}
           className={cn(
             "text-muted-foreground hover:text-foreground absolute top-4 right-4 z-40 h-auto max-w-48 px-2 py-1 text-base font-normal print:hidden sm:pointer-fine:fixed",
+            "pointer-coarse:min-h-11",
           )}
         >
           <span className={cn("min-w-0 truncate")}>{cornerLabel}</span>
