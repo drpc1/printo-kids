@@ -46,6 +46,7 @@ export function ProfileCorner({
   onChoose,
   onFavoriteSaved,
   onDeleted,
+  onClearProfile,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
@@ -56,6 +57,7 @@ export function ProfileCorner({
   onChoose: (profile: ChildProfile) => void;
   onFavoriteSaved: (profiles: ChildProfile[], barCharacter: string, barLevel: LevelId) => void;
   onDeleted: (next: VisitAfterDelete) => void;
+  onClearProfile: () => void;
 }) {
   const activeProfile = profiles.find((profile) => profile.id === activeId) ?? null;
   const cornerLabel = activeProfile === null ? "Profil" : activeProfile.name;
@@ -140,6 +142,12 @@ export function ProfileCorner({
   function handleChoose(profile: ChildProfile): void {
     abandonFavoriteDraft();
     onChoose(profile);
+    setProfileOpen(false);
+  }
+
+  function handleClearProfile(): void {
+    abandonFavoriteDraft();
+    onClearProfile();
     setProfileOpen(false);
   }
 
@@ -475,6 +483,16 @@ export function ProfileCorner({
                     </div>
                   ))}
                 </TooltipProvider>
+                {activeProfile !== null ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className={cn(DIALOG_ROW_CLASS, "w-full")}
+                    onClick={handleClearProfile}
+                  >
+                    Bez profilu
+                  </Button>
+                ) : null}
               </>
             ) : (
               <DialogTitle className={cn("break-words")}>Profil</DialogTitle>

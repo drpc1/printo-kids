@@ -3,6 +3,7 @@ import { ChevronDown, Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceRows, LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
+import { clearActiveProfile, NO_PROFILE, readActiveProfile, writeActiveProfile } from "@/lib/active-profile";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
@@ -118,12 +119,23 @@ export default function WorksheetGenerator() {
     setActiveId(profile.id);
     setCharacter(characterChoice(profile.character));
     applyLevel(profile.level);
+    writeActiveProfile(localStorage, profile.id);
   }
 
   function handleProfileChosen(profile: ChildProfile): void {
     setActiveId(profile.id);
     setCharacter(characterChoice(profile.character));
     applyLevel(profile.level);
+    writeActiveProfile(localStorage, profile.id);
+  }
+
+  function handleProfileCleared(): void {
+    const lastUsed = readLastUsed(localStorage, ALLOWED_CHARACTER_IDS);
+    setActiveId(null);
+    setCharacter(characterChoice(lastUsed.character));
+    applyLevel(lastUsed.level);
+    setAsk(false);
+    writeActiveProfile(localStorage, NO_PROFILE);
   }
 
   function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string, nextLevel: LevelId): void {
@@ -138,6 +150,12 @@ export default function WorksheetGenerator() {
     setCharacter(characterChoice(next.character));
     applyLevel(next.level);
     setAsk(next.ask);
+    // No active profile after a delete clears the key, so the default rule (single profile, or ask) applies.
+    if (next.activeId === null) {
+      clearActiveProfile(localStorage);
+    } else {
+      writeActiveProfile(localStorage, next.activeId);
+    }
   }
 
   const sheetLevel = levelById(level);
@@ -162,6 +180,7 @@ export default function WorksheetGenerator() {
         onChoose={handleProfileChosen}
         onFavoriteSaved={handleFavoriteSaved}
         onDeleted={handleDeleted}
+        onClearProfile={handleProfileCleared}
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
@@ -436,7 +455,7 @@ function mazeCell(maze: Maze, row: number, col: number): MazeCell | undefined {
 
 function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitStart {
   const profiles = readChildProfiles(storage, ALLOWED_CHARACTER_IDS);
-  const opening = openingVisit(profiles, readLastUsed(storage, ALLOWED_CHARACTER_IDS));
+  const opening = openingVisit(profiles, readLastUsed(storage, ALLOWED_CHARACTER_IDS), readActiveProfile(storage));
   return {
     profiles,
     activeId: opening.activeId,
