@@ -15,6 +15,7 @@ const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
 const INSET = 10;
 const CHARACTER_MARK_SIZE = 30;
+const SHEET_LABEL_SIZE = 7;
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
 
 // Button's default size adds has-[>svg]:px-3; the has-[>svg] entries replace it so the icon keeps the full padding.
@@ -335,6 +336,8 @@ function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: Char
     exitColumn: level.exit.col,
     markSize: CHARACTER_MARK_SIZE,
     characterSelected: level.showCharacter && characterSrc !== null,
+    levelShowsCharacter: level.showCharacter,
+    labelHeight: SHEET_LABEL_SIZE,
   });
   const cellSize = sheet.maze.width / maze.width;
   const walls = collectWalls(maze, sheet.maze.x, sheet.maze.y, cellSize);
@@ -359,7 +362,7 @@ function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: Char
           y={start.y}
           fill="var(--foreground)"
           fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={7}
+          fontSize={SHEET_LABEL_SIZE}
           textAnchor="middle"
           dominantBaseline="middle"
         >
@@ -371,7 +374,7 @@ function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: Char
         y={sheet.meta.y}
         fill="var(--foreground)"
         fontFamily="ui-sans-serif, system-ui, sans-serif"
-        fontSize={7}
+        fontSize={SHEET_LABEL_SIZE}
         textAnchor="middle"
         dominantBaseline="middle"
       >

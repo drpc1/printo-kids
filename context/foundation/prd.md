@@ -163,14 +163,14 @@ Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom wyz
 
 Rodzic wybiera jeden z sześciu poziomów nazwanych wiekiem oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Dwa poziomy mogą dzielić szerokość alejki i różnić się sposobem losowania. Każde Generuj daje nowy labirynt.
 
-| Poziom | Alejka | Siatka | Losowanie | Droga do mety (typowo) |
-| --- | --- | --- | --- | --- |
-| 3 lata | około 21 mm | 9×11 | krótka droga, dużo krótkich odnóg | około 21 komórek |
-| 4 lata | około 21 mm | 9×11 | długa, kręta droga | około 41 komórek |
-| 5 lat | około 15 mm | 13×16 | krótka droga, dużo krótkich odnóg | około 32 komórek |
-| 6 lat | około 15 mm | 13×16 | długa, kręta droga | około 80 komórek |
-| 7–8 lat | około 11 mm | 17×21 | długa, kręta droga | około 130 komórek |
-| nastolatek | około 7 mm | 27×33 | długa, kręta droga | około 300 komórek |
+| Poziom     | Alejka      | Siatka | Losowanie                         | Droga do mety (typowo) |
+| ---------- | ----------- | ------ | --------------------------------- | ---------------------- |
+| 3 lata     | około 21 mm | 9×11   | krótka droga, dużo krótkich odnóg | około 21 komórek       |
+| 4 lata     | około 21 mm | 9×11   | długa, kręta droga                | około 41 komórek       |
+| 5 lat      | około 15 mm | 13×16  | krótka droga, dużo krótkich odnóg | około 32 komórek       |
+| 6 lat      | około 15 mm | 13×16  | długa, kręta droga                | około 80 komórek       |
+| 7–8 lat    | około 11 mm | 17×21  | długa, kręta droga                | około 130 komórek      |
+| nastolatek | około 7 mm  | 27×33  | długa, kręta droga                | około 300 komórek      |
 
 Droga do mety nie jest progiem. To typowa długość dla siatki i sposobu losowania; pojedyncza karta może być krótsza albo dłuższa.
 
@@ -227,3 +227,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — TBD by user. Block: no (pain and missing capability are captured; the second vision paragraph is incomplete until this lands).
 2. ~~**Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej?**~~ — Zamknięte 2026-10-16 jako nieaktualne: poziom wyznacza sposób losowania, nie próg głębokości odnogi (`random-maze-generator`).
 3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka. Własny plik rodzica jest US-02 i zostaje poza MVP.
+4. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Dziś pasek „Postać” zostaje aktywny przy nastolatku, a karta postaci nie rysuje, co myli rodzica. Albo wybór postaci blokuje się przy nastolatku, albo nastolatek też dostaje postać, bo młodsze dzieci mogą chcieć ten poziom. Nowa zmiana, issue drpc1/printo-kids#54 (2026-10-22).
