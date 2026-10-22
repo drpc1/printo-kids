@@ -1,10 +1,10 @@
 ---
 change_id: printed-maze-equal-margins
 title: Na wydruku labirynt z postacią niżej, równy margines góra i dół
-status: implemented
+status: archived
 created: 2026-10-22
 updated: 2026-10-22
-archived_at: null
+archived_at: 2026-10-22T13:45:01Z
 ---
 
 ## Notes
