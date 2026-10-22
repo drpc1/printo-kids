@@ -1,9 +1,9 @@
 ---
 change_id: touch-targets
 title: Większe pola dotyku przycisku profilu i krzyżyka w oknach
-status: new
+status: impl_reviewed
 created: 2026-10-18
-updated: 2026-10-21
+updated: 2026-10-23
 archived_at: null
 ---
 
@@ -21,3 +21,7 @@ Cel: ikona i napis bez zmian, rośnie tylko pole dotyku (Profil co najmniej 44 p
 Ryzyko: róg okna ma 56 px pasa nad pierwszym wierszem (`pt-14`) i szynę paska przewijania po prawej; większy X musi się zmieścić między nimi. Sprawdzić na iPhonie.
 
 2026-10-21: ten sam róg ma otwarte drpc1/printo-kids#37 (X bezpośrednio nad paskiem przewijania). Na ekranie dotykowym (375 px, lista postaci) X ma x 326–342 px, a rysowany pasek 349–355 px, bo szyna z `useScrollIndicator.ts` stoi w prawym odstępie okna (`offsetLeft + offsetWidth + 3`). Większe pole X i jego kolumna z paskiem to jedna decyzja o rogu; plan powinien domknąć oba.
+
+2026-10-22: na komputerze (wskaźnik precyzyjny, Windows, lista profili) natywny pasek ma 16 px i zajmuje 12–28 px od prawej krawędzi paddingu. Dzisiejszy glif zajmuje 16–32 px, czyli stoi 4 px za bardzo w lewo. Plan fazy 2 dosuwa go do `right-3`. Paska nie przesuwamy.
+
+2026-10-23: najechanie krzyżyka ma wyglądać jak ołówek i kosz. Płytka ma 36 px, `rounded-md` i tło `accent`, a glif jest na jej środku. Pole kliknięcia zostaje 44 px i prawa krawędź glifu zostaje na pasku. Przygaszenie `opacity-70` schodzi. Pierścień fokusu otacza płytkę, nie całe pole.
