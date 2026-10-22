@@ -39,12 +39,12 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                  | Outcome (user can …)                                                                                                                                              | Prerequisites | PRD refs      | Status   |
-| ---- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
-| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora             | —             | US-05, FR-014 | ready    |
-| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | proposed |
-| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, gęstość, oś) na pasku strony symetrii                                                                 | S-12          | US-07, FR-016 | proposed |
-| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek i osobny poziom każdego rodzaju karty; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13          | US-08, FR-017 | proposed |
+| ID   | Change ID                  | Outcome (user can …)                                                                                                                                              | Prerequisites | PRD refs      | Status      |
+| ---- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | ----------- |
+| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora             | —             | US-05, FR-014 | in-progress |
+| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | proposed    |
+| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, gęstość, oś) na pasku strony symetrii                                                                 | S-12          | US-07, FR-016 | proposed    |
+| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek i osobny poziom każdego rodzaju karty; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13          | US-08, FR-017 | proposed    |
 
 ## Baseline
 
@@ -75,7 +75,7 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
   - Skąd miniatury? Rekomendacja: statyczne SVG na rodzaj karty, wygenerowane z prawdziwego generatora przy budowaniu, żeby miniatura nie rozjechała się z wyglądem karty. — Owner: team. Block: no.
   - Co z adresem `/` po zmianie? Dziś to labirynt, a sprawdzian HTTP (`npm run smoke`) i CI sprawdzają `/`. Rekomendacja: `/` to katalog, a sprawdzian dostaje też `/labirynt`. — Owner: team. Block: no.
 - **Risk:** Najtrudniejsze miejsce kamienia. Strona labiryntu przenosi się z `/` pod `/labirynt`, więc razem z nią muszą pójść `@page` i reguły druku (dziś w `WorksheetHome.astro`), profil w rogu i sprawdzian HTTP. Duży komponent `WorksheetGenerator.tsx` zostaje cały na stronie labiryntu; nie rozbijamy go warunkami, bo drugi rodzaj dostaje własną stronę. Wspólna jest tylko powłoka (profil, link powrotu, układ). Profil wybrany w katalogu musi zostać na stronie generatora (wspólny `localStorage`). Nie zmieniamy ani druku, ani marginesu, ani zapisanych danych; naprawiały je S-09 i S-11. Katalog z jedną miniaturą jest celowo skromny: drugą dokłada S-12. Jeśli plan okaże się za duży, rozdzielić na „labirynt pod własnym adresem” i „katalog”.
-- **Status:** ready
+- **Status:** in-progress
 
 ## Slices
 
