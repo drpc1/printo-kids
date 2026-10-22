@@ -4,287 +4,165 @@ version: 1
 status: draft
 created: 2026-09-27
 updated: 2026-10-22
-prd_version: 1
+prd_version: 2
 main_goal: low-complexity
 top_blocker: capacity
-milestone_id: first-printable-a4-maze
-milestone_seq: 1
-milestone_status: done
+milestone_id: symmetry-card-a4
+milestone_seq: 2
+milestone_status: open
 ---
 
 # Roadmap: PrintoKids
 
-> Derived from `context/foundation/prd.md` (v1) + auto-researched codebase baseline.
+> Derived from `context/foundation/prd.md` (v2) + auto-researched codebase baseline.
 > Edit-in-place; archive when superseded.
 > Slices below are listed in dependency order. The "At a glance" table is the index.
 
 ## Milestone
 
-**M-1: Pierwsza drukowalna karta A4** — Status: done
+**M-2: Karta symetrii na A4** — Status: open
 
-- **Intent:** Pokazać, że rodzic może wygenerować jakikolwiek rozwiązywalny labirynt, zobaczyć kartę A4 na stronie i wydrukować ją jako jedną stronę. Potem dodać postać, zapamiętane parametry, opcjonalne profile dzieci i wybór poziomu trudności zgodny z wiekiem. Dalej poszerzyć katalog postaci i umożliwić ten sam przepływ na telefonie.
-- **Source materials:** `context/foundation/prd.md` (v1)
+- **Intent:** Pokazać, że produkt unosi drugi rodzaj karty. Strona główna staje się katalogiem z miniaturami, a każdy rodzaj karty ma własną stronę generatora. Rodzic generuje kartę symetrii (dziecko dorysowuje drugą połowę wzoru na kratce, wiek około 4–7 lat), widzi podgląd i drukuje ją jako jedną stronę A4, także z telefonu. Potem poziomy symetrii, potem wspólny wiek w profilu i poziomy osobno dla każdego rodzaju karty.
+- **Source materials:** `context/foundation/prd.md` (v2)
 - **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcja „Po tym kamieniu” nie wlicza się.
-- **Scope anchors:** US-01, US-03, US-04, FR-001–FR-010, FR-012, FR-013 (FR-011 poza zakresem tego kamienia).
+- **Scope anchors:** US-05–US-08, FR-014–FR-017, NFR „Karta symetrii spełnia te same granice co labirynt”, Business Logic „Karta symetrii”. Labirynt zostaje bez zmian.
 
 ## Vision recap
 
-Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności, a dziecko wciąż chce kolejną kartę. Szukanie i ściąganie z wielu stron nie daje nowej karty na tym samym poziomie. Brakuje sposobu, żeby wygenerować nową kartę, gdy skończy się dopasowana gotowa biblioteka.
+Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności, a dziecko wciąż chce kolejną kartę. Szukanie i ściąganie z wielu stron nie daje nowej karty na tym samym poziomie. Brakuje sposobu, żeby wygenerować nową kartę, gdy skończy się dopasowana gotowa biblioteka. M-2 dokłada drugi rodzaj karty na tych samych zasadach: algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4, czarny druk.
 
 ## North star
 
-**S-02: Rodzic może wydrukować kartę A4 jako jedną stronę** — to jest najwcześniejszy plasterek, który dowozi kartę na kredkę. Najpierw `F-01` (strona), potem `S-01` (labirynt na karcie); sam podgląd jeszcze nie udowadnia produktu.
+**S-12: Rodzic może wygenerować kartę symetrii, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie** — to najmniejszy kompletny przepływ, który dowodzi, że druga karta działa w całym łańcuchu (katalog, generowanie, podgląd, druk) na własnej stronie. Poziomy i pamięć dochodzą dopiero po nim.
 
-> North star — tu: najmniejszy kompletny przepływ od wygenerowania do wydruku, którego udane dowiezienie pokazuje, że produkt w ogóle działa. Stoi możliwie wcześnie, bo reszta ma sens tylko jeśli ten przepływ działa.
+> North star — tu: najmniejszy kompletny przepływ, którego udane dowiezienie pokazuje, że kamień ma sens. Stoi możliwie wcześnie, bo reszta ma sens tylko jeśli ten przepływ działa.
 
 ## At a glance
 
-| ID   | Change ID                   | Outcome (user can …)                                                                                                                   | Prerequisites | PRD refs                              | Status |
-| ---- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------------------------------- | ------ |
-| F-01 | worksheet-page-shell        | (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa)        | —             | US-01                                 | done   |
-| S-01 | first-printable-maze        | Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie                                                  | F-01          | US-01, FR-003, FR-004                 | done   |
-| S-02 | print-a4-maze               | Rodzic może wydrukować tę kartę jako jedną stronę A4                                                                                   | S-01          | FR-005                                | done   |
-| F-02 | remove-starter-scaffold     | (foundation) Aplikacja nie serwuje już logowania ani dashboardu ze startera; sprawdzian HTTP pilnuje strony produktu                   | S-02          | Access Control, Non-Goals (brak kont) | done   |
-| S-03 | maze-character-choice       | Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu                                                  | F-02          | US-01, FR-002                         | done   |
-| S-04 | last-used-print-params      | Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne                                | S-03          | FR-006                                | done   |
-| S-05 | child-profile-create-select | Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór | S-03          | FR-007, FR-008                        | done   |
-| S-06 | child-profile-save-delete   | Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu                                       | S-05          | FR-009, FR-010                        | done   |
-| S-07 | maze-difficulty-levels      | Rodzic może wybrać poziom nazwany wiekiem i dostać labirynt zgodny z alejką i długością drogi tego poziomu                             | S-06          | US-01, FR-001, FR-003, FR-006, FR-007 | done   |
-| S-08 | full-character-catalog      | Rodzic może wybrać dowolną postać z katalogu jedenastu, także przy profilu, a pełna lista zostaje widoczna na węższym oknie            | S-04, S-06    | US-03, FR-002, FR-012                 | done   |
-| S-09 | phone-worksheet             | Rodzic może na telefonie wygenerować labirynt i wydrukować go jako jedną stronę A4, bez nachodzących się przycisków                    | S-02          | US-04, FR-004, FR-005, FR-013         | done   |
-| S-11 | printed-maze-equal-margins  | Rodzic może wydrukować kartę, na której labirynt wraz z postacią jest odrobinę niżej, a margines górny i dolny zostają takie same      | S-02, S-03    | US-01, FR-005                         | done   |
-
-## Streams
-
-Navigation aid — groups items that share a Prerequisites chain. Canonical ordering still lives in the dependency graph below; this table is the proposed reading order across parallel tracks.
-
-| Stream | Theme                     | Chain                             | Note                                                                                                                                                                                  |
-| ------ | ------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A      | Strona, karta, potem druk | `F-01` → `S-01` → `S-02` → `F-02` | Najpierw po co jest strona i przycisk, potem labirynt na kartce, potem wydruk. Wydruk jest gwiazdą przewodnią kamienia. `F-02` sprząta starter, zanim ruszy postać.                   |
-| B      | Postać, potem parametry   | `S-03` → `S-04` → `S-08`; `S-11`  | Dołącza do strumienia A przy `F-02`. Pełny katalog dołącza po profilach (`S-06`), nie po samych parametrach. `S-11` schodzi z `S-03`: równy margines wydruku, gdy postać jest u góry. |
-| C      | Profile dziecka           | `S-05` → `S-06`                   | Dołącza do strumienia B przy `S-03`. Wydruk nie wymaga profilu.                                                                                                                       |
-| D      | Poziom trudności          | `S-07`                            | Dołącza po `S-06`. Wybór wieku na istniejącej kartce, nie nowy ekran.                                                                                                                 |
-| E      | Strona na telefonie       | `S-09`                            | Dołącza po `S-02`. Nie czeka na sprzątanie startera ani na poziomy trudności.                                                                                                         |
+| ID   | Change ID                  | Outcome (user can …)                                                                                                                                              | Prerequisites | PRD refs      | Status   |
+| ---- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
+| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora             | —             | US-05, FR-014 | ready    |
+| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | proposed |
+| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, gęstość, oś) na pasku strony symetrii                                                                 | S-12          | US-07, FR-016 | proposed |
+| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek i osobny poziom każdego rodzaju karty; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13          | US-08, FR-017 | proposed |
 
 ## Baseline
 
-What's already in place in the codebase as of `2026-09-27` (auto-researched + user-confirmed).
+What's already in place in the codebase as of `2026-10-22` (z kodu i z `tech-stack.md`, M-1 zamknięty).
 Foundations below assume these are present and do NOT re-scaffold them.
 
-- **Frontend:** present — UI shell, routing, and component kit are in the repo (`package.json`, `astro.config.mjs`).
-- **Backend / API:** partial — page-serving runtime is in place; only starter account endpoints exist. No maze-generation endpoint and no background jobs. Product flow does not need a maze API for this milestone.
-- **Data:** partial — starter account client only. No product schema, no migrations, no on-device storage for last-used parameters or child profiles.
-- **Auth:** present — starter account scaffold is wired, including a gated example page. Product does not use accounts (PRD: jeden lokalny rodzic, bez logowania).
-- **Deploy / infra:** partial — hosting target and CI (lint, check, build, smoke) are in the repo (`wrangler.jsonc`, `.github/workflows/ci.yml`). Auto-deploy on merge is declared in the stack note but not present.
-- **Observability:** partial — platform request logs are on. No app-level error tracking or metrics.
+- **Frontend:** present — jedna strona `/` z generatorem labiryntu w dużym komponencie React (`src/components/WorksheetGenerator.tsx`, ~455 linii: stan labiryntu, profili, paska, okien dialogowych), układ i `@page` w `WorksheetHome.astro`, kit `src/components/ui`. Brak katalogu kart i osobnych stron generatorów.
+- **Backend / API:** absent by design — strona renderowana po stronie serwera, bez endpointu generowania; generowanie działa w przeglądarce.
+- **Data:** present — tylko na urządzeniu: ostatnio użyte parametry (`src/lib/last-used.ts`) i profile dzieci (`src/lib/child-profiles.ts`). Oba pamiętają dziś postać i poziom labiryntu; nie ma wspólnego wieku ani poziomów osobnych dla rodzajów kart.
+- **Auth:** absent by design — konta usunięte w F-02; PRD: jeden lokalny rodzic.
+- **Deploy / infra:** present — CI (lint, test, check, build, smoke). `npm test` wylicza pliki testów jawnie, więc nowe pliki testów trzeba dopisać do skryptu.
+- **Observability:** partial — dzienniki platformy, bez śledzenia błędów aplikacji.
+
+Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), profile i ostatnie parametry, katalog postaci (dla labiryntu), `src/components/ui`. Specyficzne dla labiryntu: `src/lib/maze/` (`generate.ts`, `levels.ts`) i `src/lib/sheet/layout.ts`.
 
 ## Foundations
 
-The starter Welcome screen (auth, marketing, cosmic layout) was the first paint; it is not the product. `F-01` replaced that first paint with a short purpose line and a generate control so `S-01` only makes the button produce an A4 maze on the same page and `S-02` only prints it. `F-02` usuwa pozostałe trasy konta, dashboard i sprawdzian logowania, zanim ruszy `S-03`. Character assets enter in `S-03`. On-device last-used parameters enter in `S-04`. Child-profile storage enters in `S-05`. Difficulty levels enter in `S-07`.
+### F-03: Katalog kart na stronie głównej
 
-### F-01: Strona główna narzędzia
-
-- **Outcome:** (foundation) Wejście na stronę główną pokazuje, do czego jest narzędzie, i przycisk generowania labiryntu (na razie nie działa).
-- **Change ID:** worksheet-page-shell
-- **PRD refs:** US-01
-- **Unlocks:** S-01, S-02
+- **Outcome:** (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem (`/labirynt`), ze wspólną powłoką strony generatora (profil w rogu, link „Wszystkie karty”, druk).
+- **Change ID:** card-catalog-home
+- **PRD refs:** US-05, FR-014
+- **Unlocks:** S-12
 - **Prerequisites:** —
 - **Parallel with:** —
 - **Blockers:** —
-- **Unknowns:** —
-- **Risk:** Świadomie bez pustej kartki A4 na starcie: rodzic ma wiedzieć po co tu jest i co kliknąć. Przycisk jest widoczny, ale nic nie generuje — to tymczasowe, `S-01` podłącza go na tym samym ekranie. Znika chrome startera (logowanie, baner o braku konfiguracji, hero). Brak znajomości technologii w projekcie ma wyjść tutaj. Układ kartki (start góra, „Meta” dół) wchodzi z labiryntem w `S-01`.
-- **Status:** done
+- **Unknowns:**
+  - Skąd miniatury? Rekomendacja: statyczne SVG na rodzaj karty, wygenerowane z prawdziwego generatora przy budowaniu, żeby miniatura nie rozjechała się z wyglądem karty. — Owner: team. Block: no.
+  - Co z adresem `/` po zmianie? Dziś to labirynt, a sprawdzian HTTP (`npm run smoke`) i CI sprawdzają `/`. Rekomendacja: `/` to katalog, a sprawdzian dostaje też `/labirynt`. — Owner: team. Block: no.
+- **Risk:** Najtrudniejsze miejsce kamienia. Strona labiryntu przenosi się z `/` pod `/labirynt`, więc razem z nią muszą pójść `@page` i reguły druku (dziś w `WorksheetHome.astro`), profil w rogu i sprawdzian HTTP. Duży komponent `WorksheetGenerator.tsx` zostaje cały na stronie labiryntu; nie rozbijamy go warunkami, bo drugi rodzaj dostaje własną stronę. Wspólna jest tylko powłoka (profil, link powrotu, układ). Profil wybrany w katalogu musi zostać na stronie generatora (wspólny `localStorage`). Nie zmieniamy ani druku, ani marginesu, ani zapisanych danych; naprawiały je S-09 i S-11. Katalog z jedną miniaturą jest celowo skromny: drugą dokłada S-12. Jeśli plan okaże się za duży, rozdzielić na „labirynt pod własnym adresem” i „katalog”.
+- **Status:** ready
 
 ## Slices
 
-### S-01: Labirynt na karcie A4
+### S-12: Karta symetrii na A4
 
-- **Outcome:** Rodzic może wygenerować rozwiązywalny labirynt i zobaczyć go jako kartę A4 na stronie.
-- **Change ID:** first-printable-maze
-- **PRD refs:** US-01, FR-003, FR-004
-- **Prerequisites:** F-01
+- **Outcome:** Rodzic może wejść z katalogu na stronę symetrii (`/symetria`), wygenerować kartę z jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.
+- **Change ID:** symmetry-first-printable
+- **PRD refs:** US-06, FR-015
+- **Prerequisites:** F-03
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
-  - Jak wygląda znacznik startu bez postaci? Rekomendacja: przerwa w zewnętrznej ścianie na środku góry, bez słowa „Start”; na dole analogiczna przerwa i napis „Meta”. Postać z `S-03` wstawi się w to samo miejsce. — Owner: user. Block: no.
-  - Jaka stała siatka (liczba komórek, szerokość korytarza) na pierwszy labirynt, skoro poziomy są zaparkowane? — Owner: team. Block: no.
-- **Risk:** Wchodzi na stronę z `F-01`: ten sam przycisk zaczyna działać, na tej samej stronie pojawia się kartka A4 z labiryntem. Zobaczenie karty jest zatwierdzeniem. Layout treści karty: tylko labirynt + start + „Meta”. Poprawność generatora weryfikujemy w kodzie (niewidoczne dla rodzica): dokładnie jedna ścieżka od wejścia do wyjścia; ta sama funkcja w testach i przed pokazaniem karty. Druk jest `S-02`.
-- **Status:** done
+  - Jak wygląda zamalowana kratka i oś na czarnym druku? Rekomendacja: czarne wypełnione kratki, przerywana linia osi, cienka siatka w obu połowach. — Owner: user. Block: no.
+  - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „5 lat” z tabeli PRD (kratka około 15 mm, 12×16, pionowa oś); poziomy dochodzą w S-13. — Owner: team. Block: no.
+- **Risk:** Gwiazda przewodnia. Karta musi mieć odpowiedź wyliczoną i sprawdzoną tą samą funkcją w testach i przed pokazaniem (połowa pusta, nic na osi, wzór ani pusty, ani pełny). Kryteria z US-04 wchodzą do tego plasterka, nie są doklejane później: bez nachodzących się przycisków, jedna strona A4 w szerokości i w długości, margines 10 mm, Brave razem z resztą przeglądarek. Strona symetrii nie ma paska „Postać”. Do katalogu dochodzi miniatura symetrii i link do strony. Profil i ostatnie parametry na tej stronie jeszcze nie pamiętają niczego własnego (S-14). Nowe pliki testów trzeba dopisać do skryptu `npm test`. Wzór nie może wyglądać na losowy szum: gęstość i skupienie kratek decydują, czy dziecko ma co dorysować.
+- **Status:** proposed
 
-### S-02: Druk jednej strony A4
+### S-13: Poziomy symetrii
 
-- **Outcome:** Rodzic może wydrukować tę kartę jako jedną stronę A4.
-- **Change ID:** print-a4-maze
-- **PRD refs:** FR-005
-- **Prerequisites:** S-01
-- **Parallel with:** —
-- **Blockers:** —
-- **Unknowns:** —
-- **Risk:** Gwiazda przewodnia kamienia — po S-01 widać kartę, ale to jeszcze nie jest karta na kredkę. Nie ocenia labiryntu; sprawdza jedną stronę, brak ucięcia, margines co najmniej 10 mm. Ryzyko: przeglądarki i drukarki różnie stosują marginesy.
-- **Status:** done
-
-### F-02: Usunięcie pozostałości startera
-
-- **Outcome:** (foundation) Wejście do aplikacji to kartka do druku; nie ma już ekranów logowania ani dashboardu ze startera, a automatyczny sprawdzian HTTP pilnuje strony produktu.
-- **Change ID:** remove-starter-scaffold
-- **PRD refs:** Access Control (bez logowania); Non-Goals (brak kont rodziców)
-- **Unlocks:** S-03
-- **Prerequisites:** S-02
-- **Parallel with:** S-08, S-09
-- **Blockers:** —
-- **Unknowns:** —
-- **Risk:** `F-01` zdjął chrome startera tylko ze strony głównej. Trasy konta, dashboard i sprawdzian logowania zostały, więc `S-01` i `S-02` zostawiały `/auth/signin` bez zmian, a `@page` nie mogło wejść do globalnego arkusza. Ten plasterek schodzi przed `S-03`, żeby postać i kolejne ekrany nie dziedziczyły tego warunku. Ryzyko: jedyny automatyczny sprawdzian HTTP dziś chodzi po flow konta, a build w CI chce sekretów Supabase — skasowanie stron bez podmiany tego sprawdzianu zostawia obowiązek, którego produkt nie używa.
-- **Status:** done
-
-### S-03: Postać przy starcie labiryntu
-
-- **Outcome:** Rodzic może wybrać postać z dostarczonego zestawu; postać stoi przy starcie labiryntu.
-- **Change ID:** maze-character-choice
-- **PRD refs:** US-01, FR-002
-- **Prerequisites:** F-02
+- **Outcome:** Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, gęstość, oś) na pasku strony symetrii.
+- **Change ID:** symmetry-difficulty-levels
+- **PRD refs:** US-07, FR-016
+- **Prerequisites:** S-12
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
-  - Jakie jest źródło dostarczonych postaci (zestaw do narysowania / licencji)? Prawa nie blokują tej historyjki — decyzja użytkownika z wywiadu. — Owner: user. Block: no.
-- **Risk:** Świadomie po karcie na ekranie, bez czekania na druk; czeka na `F-02`, żeby nie dziedziczyć warunku „zostaw `/auth/signin`”. Ryzyko: profil dziecka ma ulubioną postać, więc `S-05` czeka na ten plasterek. Brak znajomości technologii w projekcie nadal obowiązuje, ale generator jest już za nami.
-- **Status:** done
+  - Czy startowe wartości z tabeli PRD pasują dziecku? — Owner: user. Block: no. Potwierdza je wydruk, nie planowanie (PRD Open Questions 5).
+- **Risk:** Każdy z czterech poziomów musi się mieścić na jednej stronie A4 z marginesem 10 mm, także gdy oś jest pozioma. To to samo ryzyko, które przy labiryncie rozjeżdżała zmiana siatki. Poziom żyje tylko na pasku strony; do profilu trafia dopiero w S-14.
+- **Status:** proposed
 
-### S-04: Ostatnio użyte parametry bez profilu
+### S-14: Wiek w profilu i poziomy osobno dla każdego rodzaju karty
 
-- **Outcome:** Rodzic bez profilu dziecka dostaje ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne.
-- **Change ID:** last-used-print-params
-- **PRD refs:** FR-006
-- **Prerequisites:** S-03
-- **Parallel with:** S-05, S-06
+- **Outcome:** Rodzic może zapamiętać w profilu dziecka wspólny wiek i osobny poziom każdego rodzaju karty (labirynt, symetria), a ostatnie parametry są pamiętane osobno dla każdego rodzaju; zapisane wcześniej profile i parametry nadal się wczytują.
+- **Change ID:** profile-age-and-levels
+- **PRD refs:** US-08, FR-017
+- **Prerequisites:** S-13
+- **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
-  - Zapamiętany poziom trudności wchodzi w `S-07`. Ten plasterek zapamiętał postać. — Owner: user. Block: no.
-- **Risk:** Czeka, aż jest parametr do zapamiętania (postać). Ryzyko: wspólne urządzenie pokaże parametry poprzedniego dziecka — PRD wymaga, by wartości zawsze dało się zmienić przed generowaniem.
-- **Status:** done
-
-### S-05: Utworzenie i wybór profilu dziecka
-
-- **Outcome:** Rodzic może utworzyć opcjonalny lokalny profil dziecka z ulubioną postacią oraz wybrać zapisany profil, gdy istnieje rzeczywisty wybór.
-- **Change ID:** child-profile-create-select
-- **PRD refs:** FR-007, FR-008
-- **Prerequisites:** S-03
-- **Parallel with:** S-04
-- **Blockers:** —
-- **Unknowns:**
-  - Domyślna trudność w profilu wchodzi w `S-07`. Ten plasterek dowiózł profil i postać. — Owner: user. Block: no.
-- **Risk:** Na końcu, bo wydruk nie wymaga profilu, a limitem jest jedna osoba po godzinach. Czeka na postać. Ryzyko: selektor przy jednym profilu zaśmieci ekran — PRD każe go ukryć, gdy nie ma rzeczywistego wyboru. Brak znajomości technologii w projekcie: lokalny zapis profilu to drugi nieznany kawałek stosu po generatorze.
-- **Status:** done
-
-### S-06: Zapis i usunięcie profilu dziecka
-
-- **Outcome:** Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka i usunąć profil po potwierdzeniu.
-- **Change ID:** child-profile-save-delete
-- **PRD refs:** FR-009, FR-010
-- **Prerequisites:** S-05
-- **Parallel with:** S-04
-- **Blockers:** —
-- **Unknowns:** —
-- **Risk:** Osobno od tworzenia, żeby jednorazowa zmiana karty nie mieszała się z trwałą zmianą profilu. Ryzyko: usunięcie bez potwierdzenia jest nieodwracalne na urządzeniu.
-- **Status:** done
-
-### S-07: Poziomy trudności labiryntu
-
-- **Outcome:** Rodzic może wybrać jeden z sześciu poziomów nazwanych wiekiem i dostać labirynt A4 zgodny z szerokością alejki i długością drogi tego poziomu.
-- **Change ID:** maze-difficulty-levels
-- **PRD refs:** US-01, FR-001, FR-003, FR-006, FR-007
-- **Prerequisites:** S-06
-- **Parallel with:** S-08, S-09, S-11
-- **Blockers:** —
-- **Unknowns:**
-  - Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej? — Owner: user. Block: yes for validating dead-end depth. Szerokość alejki i zakres długości drogi są w PRD.
-- **Risk:** Nie nowy ekran: wybór poziomu na istniejącej kartce. Ostatnio użyte parametry i domyślna trudność profilu zaczynają pamiętać poziom. Poziom nastolatka nie pokazuje postaci i ma start oraz metę w narożnikach. Generator dziś nie trafia sam w zakres długości drogi. Głębokość ślepych uliczek nie ma jeszcze progu w komórkach. Zmiana siatki może znowu rozjechać jedną stronę A4, którą naprawia `S-09`.
-- **Status:** done
-- **Follow-up:** `profile-level-choice` (PR #41, #42) — wybór poziomu przy „Dodaj profil” i „Edytuj”; wcześniej profil brał poziom z paska.
-
-### S-08: Pełny katalog postaci
-
-- **Outcome:** Rodzic może wybrać dowolną postać z katalogu jedenastu, także przy tworzeniu profilu i przy zapisie ulubionej postaci, a pełna lista zostaje widoczna na węższym oknie.
-- **Change ID:** full-character-catalog
-- **PRD refs:** US-03, FR-002, FR-012
-- **Prerequisites:** S-04, S-06
-- **Parallel with:** S-07, S-09
-- **Blockers:** —
-- **Unknowns:**
-  - Czy na krótkim oknie lista ma być cała naraz, czy może się przewijać? Rekomendacja: na typowym telefonie i na niższym oknie pełna lista jest widoczna bez ucinania; wygląd dodawania profilu i zapisu ulubionej postaci może się zmienić, żeby to się zmieściło. — Owner: team. Block: no.
-- **Risk:** Dotychczasowy wybór to trzy postacie i wiersz „Bez postaci”. Katalog dokłada Jednorożca, Kota, Psa, Robota, Smoka, Strażaka, Syrenkę i Wróżkę. Ta sama lista wchodzi na pasek karty, do tworzenia profilu i do zapisu ulubionej. Ostatnio użyta postać i ulubiona postać profilu przyjmują nowy identyfikator. Prawa do publikacji nie blokują planowania, tak jak przy `S-03`.
-- **Status:** done
-
-### S-09: Strona karty na telefonie
-
-- **Outcome:** Rodzic może na telefonie wygenerować labirynt i wydrukować go jako jedną stronę A4; Generuj i Drukuj nie nachodzą na siebie, a labirynt nie wychodzi poza stronę ani na szerokość, ani na długość.
-- **Change ID:** phone-worksheet
-- **PRD refs:** US-04, FR-004, FR-005, FR-013
-- **Prerequisites:** S-02
-- **Parallel with:** S-07, S-08, S-11
-- **Blockers:** —
-- **Unknowns:**
-  - ~~Które przeglądarki na telefonie są w zakresie?~~ Rozstrzygnięte 2026-10-13: Chrome, Edge, Brave, Firefox i Safari na komputerze i telefonie; na iOS układ w Safari, druk także w Chrome i Brave. — Owner: user. Block: no.
-  - Co jeszcze na stronie psuje się na telefonie poza nachodzącymi się przyciskami i labiryntem większym niż jedna strona A4? — Owner: team. Block: no.
-- **Risk:** Bieżąca usterka jest na dzisiejszej karcie, więc plasterek nie czeka na poziomy trudności. `S-07` zmienia siatkę i musi utrzymać jedną stronę A4. Profil, wybór postaci i nagłówek zostają używalne i nie zasłaniają karty. Druk nadal nie wymaga profilu.
-- **Status:** in-progress
-
-### S-11: Równy margines wydruku z postacią
-
-- **Outcome:** Rodzic może wydrukować kartę, na której labirynt wraz z postacią jest odrobinę niżej, a margines górny i dolny zostają takie same także wtedy, gdy postać stoi u góry.
-- **Change ID:** printed-maze-equal-margins
-- **PRD refs:** US-01, FR-005
-- **Prerequisites:** S-02, S-03
-- **Parallel with:** S-07, S-09
-- **Blockers:** —
-- **Unknowns:** —
-- **Risk:** Postać przy starcie wystaje nad labirynt i skraca biały pas u góry względem dołu. Niżej schodzi para: labirynt i postać. „Meta” zostaje pod labiryntem, więc dolny margines liczy się pod treścią karty. Bez postaci oraz na poziomie nastolatka, który postaci nie pokazuje, układ zostaje. Pas 10 mm nadal dotyczy ścian labiryntu; znak postaci może w niego wejść. `S-07` i `S-09` są już `done`; obie ruszały rysunek kartki, więc plan zaczyna od dzisiejszego `layoutSheet`. Na iOS margines drukarki zmniejsza kartę (`print-printer-margins`, #38), co dotyczy tego samego pasa.
-- **Status:** done
+  - Co dokładnie znaczy „wiek” dla labiryntu, który ma 6 poziomów (od 3 lat do nastolatka), i dla symetrii, która zaczyna się od 4 lat? Rekomendacja: wiek ustawia poziom na starcie na najbliższy dostępny, a rodzic może go zmienić i zapisać osobno. — Owner: user. Block: no.
+  - Czy dawny poziom labiryntu w profilu zostaje poziomem labiryntu, a wiek jest wyliczany z niego? Rekomendacja: tak, bez gubienia zapisanych danych. — Owner: team. Block: no.
+- **Risk:** Jedyny plasterek, który zmienia kształt danych zapisanych u rodzica, i dotyka też okien profilu (tworzenie, edycja, zapis, usunięcie). Stare wpisy muszą się wczytywać i nie wolno ich gubić. Profil zmienia się tylko po wyraźnym zapisie (FR-009), tak samo jak dotąd. Wspólne pola (wiek, postać) nie mogą wymuszać zmian w poziomach, a poziom rodzaju karty musi dać się wybrać niezależnie od wieku.
+- **Status:** proposed
 
 ## Backlog Handoff
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcja „Po tym kamieniu” nie dostaje issue, dopóki kamień nie jest otwarty.
 
-| Roadmap ID | Change ID                   | Suggested issue title                                                | Ready for `/10x-plan` | Notes                                                                                                                                              |
-| ---------- | --------------------------- | -------------------------------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| F-01       | worksheet-page-shell        | Wejście na /: po co jest strona i przycisk Generuj                   | no                    | Done. Archived 2026-09-29                                                                                                                          |
-| S-01       | first-printable-maze        | Rodzic generuje rozwiązywalny labirynt i widzi kartę A4 na stronie   | no                    | Done. Archived 2026-10-01                                                                                                                          |
-| S-02       | print-a4-maze               | Druk karty jako jednej strony A4                                     | no                    | Done. Archived 2026-10-03; gwiazda przewodnia kamienia                                                                                             |
-| F-02       | remove-starter-scaffold     | Usunięcie logowania, dashboardu i sprawdzianu auth ze startera       | no                    | Done. Archived 2026-10-11                                                                                                                          |
-| S-03       | maze-character-choice       | Wybór postaci z zestawu przy starcie labiryntu                       | no                    | Done. Archived 2026-10-04                                                                                                                          |
-| S-04       | last-used-print-params      | Ostatnio użyte parametry jako widoczne, edytowalne wartości domyślne | no                    | Done. Archived 2026-10-05. Poziom dołącza w `S-07`                                                                                                 |
-| S-05       | child-profile-create-select | Opcjonalny profil dziecka: utworzenie i wybór                        | no                    | Done. Archived 2026-10-08. Domyślna trudność dołącza w `S-07`                                                                                      |
-| S-06       | child-profile-save-delete   | Zapis zmian profilu i usunięcie po potwierdzeniu                     | no                    | Done. Archived 2026-10-09                                                                                                                          |
-| S-07       | maze-difficulty-levels      | Rodzic wybiera poziom nazwany wiekiem i dostaje zgodny labirynt      | no                    | Done. Archived 2026-10-16. Poziom w profilu: `profile-level-choice`, archived 2026-10-17                                                           |
-| S-08       | full-character-catalog      | Pełny katalog jedenastu postaci przy karcie i przy profilu           | no                    | Done. Archived 2026-10-11                                                                                                                          |
-| S-09       | phone-worksheet             | Strona karty na telefonie i druk jako jedna strona A4                | no                    | Done. Archived 2026-10-21. Dalej: `print-browser-coverage`, `print-printer-margins`, `touch-targets` (poza kamieniem)                              |
-| S-11       | printed-maze-equal-margins  | Na wydruku labirynt z postacią niżej, równy margines góra i dół      | yes                   | Run `/10x-new printed-maze-equal-margins`, potem `/10x-plan`. Issue #35 z 2026-10-16; wpis dopisany 2026-10-21 z niezacommitowanej wersji roboczej |
+| Roadmap ID | Change ID                  | Suggested issue title                                     | Ready for `/10x-plan` | Notes                                               |
+| ---------- | -------------------------- | --------------------------------------------------------- | --------------------- | --------------------------------------------------- |
+| F-03       | card-catalog-home          | Katalog kart na stronie głównej; labirynt pod `/labirynt` | yes                   | Run `/10x-new card-catalog-home`, potem `/10x-plan` |
+| S-12       | symmetry-first-printable   | Karta symetrii: strona, generowanie, podgląd i druk A4    | no                    | Czeka na F-03. Gwiazda przewodnia kamienia          |
+| S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, gęstość, oś                     | no                    | Czeka na S-12                                       |
+| S-14       | profile-age-and-levels     | Wiek w profilu i poziomy osobno dla każdego rodzaju karty | no                    | Czeka na S-13. Zmienia kształt zapisanych danych    |
 
 ## Open Roadmap Questions
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
-2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (`S-03` jest done. Katalog `S-08` dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Prawa przed publikacją zostają otwarte w PRD).
-3. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Dziś postać da się wybrać, a karta nastolatka jej nie rysuje. Blokada wyboru albo postać także u nastolatka; nowa zmiana poza S-11, issue #54. PRD Open Questions 4.
+2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (dotyczy katalogu postaci labiryntu; karta symetrii postaci nie używa).
+3. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Issue #54, PRD Open Questions 4. Nie należy do M-2.
+4. **Czy startowe wartości poziomów symetrii pasują dziecku?** — Owner: user. Block: no (S-13). PRD Open Questions 5.
+5. **Czy karta symetrii ma kiedyś używać postaci?** — Owner: user. Block: no. PRD Open Questions 6.
 
 ## Parked
 
-- **Inne typy kart pracy** — Why parked: MVP zostaje przy labiryntach. Lista i numer symetrii są w „Po tym kamieniu”. PRD §Po MVP.
-- **Generowanie albo ocena labiryntu modelem językowym** — Why parked: PRD §Non-Goals; rezultat ma wynikać z jawnych reguł algorytmicznych.
+- **Inne typy kart pracy poza symetrią** — Why parked: PRD §Non-Goals: kolejne rodzaje wchodzą jako osobne kamienie, po jednym. Zarys następnej karty jest w „Po tym kamieniu”.
+- **Generowanie albo ocena kart modelem językowym** — Why parked: PRD §Non-Goals; rezultat ma wynikać z jawnych reguł algorytmicznych.
 - **Konta rodziców i synchronizacja między urządzeniami** — Why parked: PRD §Non-Goals; ustawienia i profile zostają na urządzeniu.
 - **Zapis i archiwum wygenerowanych kart** — Why parked: PRD §Non-Goals; cykl życia karty kończy się po wydruku.
 - **Biblioteka gotowych kart (FR-011)** — Why parked: PRD §Non-Goals; nice-to-have poza MVP.
-- **Własny obrazek rodzica (US-02)** — Why parked: świadomie poza MVP, zapisane 2026-10-04, żeby nie zginęło. Change ID do odblokowania: `parent-supplied-maze-image`. Plik zostaje w przeglądarce i nie jest wysyłany na serwer. Katalog dostarczonych postaci poszerza `S-08`. Własny plik nadal czeka.
+- **Własny obrazek rodzica (US-02)** — Why parked: świadomie poza MVP, zapisane 2026-10-04. Change ID do odblokowania: `parent-supplied-maze-image`.
 
 ## Po tym kamieniu
 
-Nie wlicza się do „Done when” M-1. Kamień nie jest otwarty. Numer ma tylko symetria, żeby lista nie wyglądała jak kolejka.
+Nie wlicza się do „Done when” M-2. Kamień nie jest otwarty. Stary zapis S-10 (`symmetry-worksheet`) zastąpiły F-03 i S-12–S-14; numer S-10 zostaje nieużyty.
 
-Zanim ruszy S-10, strona przestaje być stroną samego labiryntu: rodzic wybiera rodzaj karty, a druk, margines, ostatnie parametry i profil zostają. Ta przebudowa mieści drugi rodzaj, nie katalog typów poniżej. Nie dostaje własnego numeru. Jest wejściem do S-10.
+Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4, czarny druk, bez modelu językowego.
 
-- **S-10: Karta symetrii** — Dziecko uzupełnia drugą połówkę wzoru na kratce A4. Trudność: rozmiar kratki, gęstość, oś. Wiek około 4–7 lat. Change ID do odblokowania: `symmetry-worksheet`. Źródło: PRD §Po MVP.
+**Zarys trzeciej karty: Sekwencje** (bez numeru i bez Change ID; kamień M-3 powstanie z `/10x-roadmap` po zamknięciu M-2):
 
-Bez numeru, ta sama umowa (algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4, czarny druk, bez modelu językowego):
+- **Co robi dziecko:** wskazuje, co będzie dalej w ciągu obrazków.
+- **Co dostaje po M-2:** katalog kart i wspólną powłokę strony generatora z F-03, wzorzec „generator, sprawdzenie odpowiedzi, układ A4, podgląd, druk” z S-12, poziomy i pamięć w profilu z S-13 i S-14. Trzecia karta dostaje własną stronę i miniaturę w tym samym katalogu.
+- **Czego brakuje:** zestawu obrazków do ciągów (z katalogu postaci czy osobny) i jawnych reguł ciągu. Kartka odpada, gdy do pustego miejsca pasują dwie reguły, więc generator musi to sprawdzać.
+- **Wiek i poziomy:** do ustalenia przy otwarciu kamienia.
 
-- **Sekwencje** — co będzie dalej. Kartka odpada, gdy pasują dwie reguły.
+Bez numeru, ta sama umowa:
+
 - **Połącz kropki** — sylwetka postaci. Czeka na obrys.
 - **Który nie pasuje** — jedna złamana reguła. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
 - **Nonogram postaci** — rozwiązanie odsłania postać. Czeka na bitmapę.

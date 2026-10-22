@@ -1,6 +1,6 @@
 ---
 project: PrintoKids
-version: 1
+version: 2
 status: draft
 created: 2026-09-18
 context_type: greenfield
@@ -40,6 +40,10 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać ulubioną postać dziecka do labiryntu.
 - Rodzic może wybrać dowolną postać z katalogu jedenastu dostarczonych postaci.
 - Rodzic może na telefonie wygenerować kartę i wydrukować ją jako jedną stronę A4.
+- Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej i wejść na stronę generatora tego rodzaju.
+- Rodzic może wygenerować kartę symetrii, na której dziecko dorysowuje drugą połowę wzoru na kratce, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
+- Rodzic może wybrać poziom karty symetrii (rozmiar kratki, gęstość wzoru, oś).
+- Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, także jako ostatnie parametry.
 
 ### Guardrails
 
@@ -107,6 +111,70 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Druk nadal nie wymaga profilu dziecka.
 - Desktopowe Chrome, Edge, Brave, Firefox i Safari zostają w zakresie. Telefon dochodzi, a nie je zastępuje. Na iOS Chrome i Brave używają silnika Safari (WebKit), więc ich układ odpowiada Safari, a druk sprawdza się w każdej z nich osobno.
 
+### US-05: Rodzic wybiera rodzaj karty z katalogu
+
+- **Given** rodzic otwiera stronę główną, na której jest katalog rodzajów kart
+- **When** kliknie miniaturę wybranego rodzaju
+- **Then** otwiera się strona generatora tego rodzaju; labirynt działa tak jak dotąd
+
+#### Acceptance Criteria
+
+- Strona główna to katalog: każdy rodzaj karty ma miniaturę pokazującą z grubsza, jak wygląda wygenerowana karta, i nazwę. Rodzic nie musi zgadywać po nazwie.
+- Każdy rodzaj ma własną stronę z własnym adresem (labirynt: `/labirynt`, symetria: `/symetria`). Kliknięcie miniatury otwiera ją.
+- Katalog mieści co najmniej 10 rodzajów i jest czytelny na telefonie (miniatury w 2 kolumnach) i na komputerze.
+- Na stronie generatora jest link „Wszystkie karty” z powrotem do katalogu.
+- Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma.
+- Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
+- Wybrany profil dziecka zostaje po przejściu między katalogiem a stronami generatorów.
+- Druk nadal nie wymaga profilu dziecka.
+- Pasek „Postać” jest pokazany tylko przy labiryncie. Karta symetrii postaci nie pokazuje.
+- Strony generatorów można zmieniać niezależnie od siebie: zmiana jednej nie zmienia drugiej.
+
+### US-06: Rodzic generuje kartę symetrii do druku
+
+- **Given** rodzic otworzył z katalogu stronę „Symetria”
+- **When** uruchomi generowanie
+- **Then** otrzymuje gotową do wydruku kartę A4: połowa wzoru jest narysowana na kratce, druga połowa jest pusta, a dziecko ma ją dorysować jako odbicie
+
+#### Acceptance Criteria
+
+- Kratka jest oddzielona osią symetrii; wzór leży po jednej stronie osi, druga strona jest pusta.
+- Odpowiedź jest jedna: odbicie wzoru względem osi. Aplikacja potrafi ją wyliczyć i sprawdzić.
+- Wzór nie jest pusty i nie jest już symetryczny w całości.
+- Każde Generuj daje nowy wzór.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm (ściany i ramka kratki) i drukuje się jako jedna strona.
+- Druk jest czarny, bez koloru i bez odpowiedzi na kartce.
+- Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+
+### US-07: Rodzic wybiera poziom karty symetrii
+
+- **Given** rodzic jest na stronie „Symetria”
+- **When** wybierze poziom nazwany wiekiem (około 4–7 lat)
+- **Then** karta ma kratkę, gęstość wzoru i oś zgodne z tym poziomem
+
+#### Acceptance Criteria
+
+- Poziom zmienia rozmiar kratki, gęstość wzoru i oś symetrii (pionowa lub pozioma). Reguły są w Business Logic.
+- Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
+- Poziom jest na pasku strony symetrii. Wybór poziomu w profilu dla symetrii dochodzi z US-08.
+
+### US-08: Rodzic zapamiętuje wiek i poziomy w profilu
+
+- **Given** rodzic ma profil dziecka albo wygenerował już kartę
+- **When** wróci na stronę, wybierze profil albo wejdzie na stronę innego rodzaju karty
+- **Then** ustawienia są takie, jak ostatnio albo jak w profilu, i dają się zmienić przed generowaniem
+
+#### Acceptance Criteria
+
+- Profil dziecka ma wspólne ustawienia: wiek i ulubioną postać. Obowiązują wszystkie rodzaje kart.
+- Każdy rodzaj karty ma własny poziom. Wiek ustawia go na starcie na najbliższy poziom tego rodzaju (symetria zaczyna się od 4 lat, więc wiek 3 lat daje jej poziom 4 lat).
+- Rodzic może wybrać poziom danego rodzaju niezależnie od wieku dziecka, na przykład labirynt trudniejszy niż wiek, i zapisać go w profilu.
+- Rodzaje kart mogą mieć własne dodatkowe ustawienia (np. oś symetrii). Dochodzą osobno i nie zmieniają wspólnych pól.
+- Ostatnio użyte parametry są pamiętane osobno dla każdego rodzaju karty i są widocznymi, edytowalnymi wartościami domyślnymi (jak FR-006).
+- Profil zmienia się tylko po wyraźnym zapisie (FR-009).
+- Zapisane wcześniej profile i ostatnie parametry nadal się wczytują; poziom labiryntu z dawnego profilu zostaje poziomem labiryntu.
+- Dane zostają na urządzeniu.
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -145,6 +213,17 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-012: Rodzic może wybrać dowolną postać z dostarczonego katalogu jedenastu postaci: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka. Priority: must-have
 - FR-013: Rodzic może na telefonie wygenerować labirynt, zobaczyć kartę i wydrukować ją jako jedną stronę A4. Priority: must-have
 
+### Rodzaje kart i symetria
+
+- FR-014: Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej; każdy rodzaj ma własną stronę generatora, a labirynt na niej nie zmienia działania. Priority: must-have
+  > Socrates: Counter-argument considered: katalog to dodatkowe kliknięcie dla rodzica, który chce tylko labirynt. Resolution: kept; miniatura pokazuje, jak wygląda karta, więc rodzic nie zgaduje po nazwie, a strona generatora zostaje taka jak dziś. Skrót „ostatnio użyte” jest możliwym dodatkiem poza tym kamieniem.
+- FR-015: Rodzic może wygenerować kartę symetrii z jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: dorysowanie odbicia na kratce może być za łatwe do zrobienia samemu bez aplikacji. Resolution: kept; wartość to nowa karta na właściwym poziomie na żądanie, ten sam problem co przy labiryncie.
+- FR-016: Rodzic może wybrać poziom karty symetrii nazwany wiekiem (rozmiar kratki, gęstość wzoru, oś). Priority: must-have
+  > Socrates: Counter-argument considered: bez mierzalnych reguł nazwy poziomów mogą wprowadzać w błąd. Resolution: kept; reguły kratki, gęstości i osi są w Business Logic.
+- FR-017: Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, a ostatnie parametry są pamiętane osobno dla każdego rodzaju. Priority: must-have
+  > Socrates: Counter-argument considered: nowe pola w zapisanych profilach mogą zepsuć istniejące dane. Resolution: revised; stare profile i ostatnie parametry nadal się wczytują, a dawny poziom labiryntu zostaje poziomem labiryntu. Wiek ustawia poziomy tylko na starcie; rodzic może je zmienić niezależnie.
+
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
@@ -153,6 +232,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Generowanie, podgląd i druk działają na telefonie w aktualnych mobilnych wersjach Chrome, Edge, Brave, Firefox i Safari.
 - Na telefonie kontrolki generowania i drukowania nie nachodzą na siebie.
 - Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
+- Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), czarny druk, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
@@ -180,18 +260,37 @@ Krótki poziom przy tej samej alejce losuje się sposobem, który daje krótszą
 
 Wynikiem jest karta A4. Labirynt zajmuje większą część strony, zachowuje margines co najmniej 10 mm i spełnia reguły wybranego poziomu.
 
+### Karta symetrii
+
+Aplikacja zawsze tworzy kartę z dokładnie jedną odpowiedzią: odbiciem wzoru względem osi. Poziom wyznaczają rozmiar kratki, gęstość wzoru i oś.
+
+Rodzic wybiera jeden z czterech poziomów nazwanych wiekiem. Kartka to pionowy prostokąt A4 z kratką podzieloną osią na dwie równe połowy. Wzór jest zamalowanymi kratkami po jednej stronie osi, druga strona jest pusta. Dziecko zamalowuje albo dorysowuje kratki po drugiej stronie tak, by wzór odbijał się w osi. Karta nie pokazuje postaci. Każde Generuj daje nowy wzór.
+
+| Poziom | Kratka      | Siatka (cała) | Gęstość wzoru | Oś                   |
+| ------ | ----------- | ------------- | ------------- | -------------------- |
+| 4 lata | około 20 mm | 8×12          | około 25%     | pionowa              |
+| 5 lat  | około 15 mm | 12×16         | około 30%     | pionowa              |
+| 6 lat  | około 12 mm | 14×20         | około 35%     | pionowa albo pozioma |
+| 7 lat  | około 10 mm | 18×24         | około 40%     | pionowa albo pozioma |
+
+Gęstość to udział zamalowanych kratek w połowie ze wzorem. Wartości są startowe i zostają potwierdzone na wydruku w kamieniu poziomów; pojedyncza karta może się różnić o kilka punktów.
+
+Reguły, które generator sprawdza: wzór ma co najmniej jedną zamalowaną kratkę i co najmniej jedną pustą w swojej połowie; żadna zamalowana kratka nie leży na osi; druga połowa jest pusta; odpowiedź jest dokładnie odbiciem. Karta, która łamie którąś z tych reguł, nie jest pokazana.
+
+Wynikiem jest karta A4. Kratka zajmuje większą część strony, zachowuje margines co najmniej 10 mm i spełnia reguły wybranego poziomu.
+
 ## Access Control
 
 Jeden lokalny użytkownik-rodzic; bez logowania i bez podziału na role. Ustawienia pozostają na urządzeniu.
 
-Rodzic może korzystać z generatora bez tworzenia profilu dziecka. Opcjonalne nazwane profile dzieci przechowują domyślną trudność i ulubioną postać, aby skrócić kolejne generowanie. Dzieci nie mają kont ani dostępu do aplikacji.
+Rodzic może korzystać z generatora bez tworzenia profilu dziecka. Opcjonalne nazwane profile dzieci przechowują wspólny wiek i ulubioną postać oraz poziom każdego rodzaju karty osobno (od kamienia symetrii), aby skrócić kolejne generowanie. Dzieci nie mają kont ani dostępu do aplikacji.
 
 Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 ## Non-Goals
 
-- MVP nie generuje innych typów kart — skupia się wyłącznie na labiryntach. Lista na później jest w sekcji „Po MVP”.
-- MVP nie używa LLM do generowania ani oceniania labiryntów — rezultat podlega jawnym regułom algorytmicznym.
+- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-08, FR-014–FR-017). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
+- MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
 - MVP nie dostarcza biblioteki gotowych kart — FR-011 pozostaje możliwym rozszerzeniem poza MVP.
@@ -200,17 +299,13 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 ## Po MVP
 
-Zapisane 2026-10-10, żeby nie zginęło. Poza bieżącym kamieniem. Żaden z tych typów nie wchodzi do MVP.
+Zapisane 2026-10-10, żeby nie zginęło. Poza bieżącym kamieniem. Żaden z tych typów nie wchodzi do zakresu, dopóki jego kamień nie jest otwarty.
 
 Wspólna umowa z labiryntem: generator algorytmiczny, jedna sprawdzalna odpowiedź, trudność nazwana wiekiem, jedna strona A4, czarny druk. Bez modelu językowego.
 
-Zanim powstanie drugi generator, strona przestaje być stroną samego labiryntu. Rodzic wybiera rodzaj karty. Druk, margines, ostatnie parametry i profil dziecka zostają. Przebudowa ma pomieścić drugi rodzaj, nie katalog wszystkich typów z tej listy.
+Symetria przeszła z tej listy do zakresu (2026-10-22): US-05–US-08, FR-014–FR-017, Business Logic „Karta symetrii”. Strona główna staje się katalogiem z miniaturami, a każdy rodzaj karty dostaje własną stronę generatora; druk, margines, ostatnie parametry i profil dziecka zostają. Ta przebudowa mieści kolejne rodzaje, ale nie dostarcza całej listy poniżej.
 
-Numer ma tylko symetria. Reszta nie ma kolejności.
-
-1. **Symetria.** Dziecko uzupełnia drugą połówkę wzoru na kratce. Trudność: rozmiar kratki, gęstość, oś. Wiek około 4–7 lat.
-
-Bez numeru:
+Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero przy otwarciu jego kamienia.
 
 - **Sekwencje.** Dziecko wskazuje, co będzie dalej. Kartka odpada, gdy do pustego miejsca pasują dwie reguły.
 - **Połącz kropki.** Sylwetka wybranej postaci. Czeka na obrys każdej postaci.
@@ -228,3 +323,5 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 2. ~~**Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej?**~~ — Zamknięte 2026-10-16 jako nieaktualne: poziom wyznacza sposób losowania, nie próg głębokości odnogi (`random-maze-generator`).
 3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka. Własny plik rodzica jest US-02 i zostaje poza MVP.
 4. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Dziś pasek „Postać” zostaje aktywny przy nastolatku, a karta postaci nie rysuje, co myli rodzica. Albo wybór postaci blokuje się przy nastolatku, albo nastolatek też dostaje postać, bo młodsze dzieci mogą chcieć ten poziom. Nowa zmiana, issue drpc1/printo-kids#54 (2026-10-22).
+5. **Czy startowe wartości poziomów symetrii (kratka, siatka, gęstość) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22; potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie.
+6. **Czy karta symetrii ma kiedyś używać postaci (np. połowa sylwetki)?** — Owner: user. Block: no. Dziś karta postaci nie pokazuje, a strona symetrii nie ma paska „Postać” (US-05). Zależy od obrysów postaci, jak „Połącz kropki”.
