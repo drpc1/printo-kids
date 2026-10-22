@@ -181,10 +181,10 @@ Brak danych do migracji.
 
 #### Automated
 
-- [x] 2.1 Commit dokumentu przechodzi przez lint-staged (Prettier)
+- [x] 2.1 Commit dokumentu przechodzi przez lint-staged (Prettier) — fd9df28
 
 #### Manual
 
-- [ ] 2.2 Druk do PDF w Chrome na komputerze (marginesy domyślne, bez nagłówków i stopek): 3 lata i 7–8 lat, z postacią i bez; jedna strona, biały pas nad postacią i pod „Meta” na oko równy, ściany nieobcięte
-- [ ] 2.3 Druk w Safari na iPhonie: te same cztery karty; jedna strona, blok niżej niż przed zmianą (szerszy margines iOS zostaje w `print-printer-margins`)
-- [ ] 2.4 Poziom nastolatka drukuje się jak przed zmianą
+- [x] 2.2 Druk do PDF w Chrome na komputerze (marginesy domyślne, bez nagłówków i stopek): 3 lata i 7–8 lat, z postacią i bez; jedna strona, biały pas nad postacią i pod „Meta” na oko równy, ściany nieobcięte
+- [x] 2.3 Druk w Safari na iPhonie: te same cztery karty; jedna strona, blok niżej niż przed zmianą (szerszy margines iOS zostaje w `print-printer-margins`)
+- [x] 2.4 Poziom nastolatka drukuje się jak przed zmianą
