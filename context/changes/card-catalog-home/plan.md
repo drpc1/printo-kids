@@ -285,15 +285,15 @@ Zapisane profile i ostatnie parametry nie zmieniają kształtu. Nowy klucz `prin
 
 #### Automated
 
-- [x] 3.1 Wszystkie testy: `npm test`
-- [x] 3.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build`
-- [x] 3.3 Smoke na `/` i `/labirynt`: `npm run smoke`
-- [x] 3.4 Nowy e2e: `npx playwright test catalog`
-- [x] 3.5 Miniatura odtwarza się skryptem bez zmian w pliku po drugim uruchomieniu: `npm run thumbnails` i brak diffu
+- [x] 3.1 Wszystkie testy: `npm test` — 408ffbc
+- [x] 3.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build` — 408ffbc
+- [x] 3.3 Smoke na `/` i `/labirynt`: `npm run smoke` — 408ffbc
+- [x] 3.4 Nowy e2e: `npx playwright test catalog` — 408ffbc
+- [x] 3.5 Miniatura odtwarza się skryptem bez zmian w pliku po drugim uruchomieniu: `npm run thumbnails` i brak diffu — 408ffbc
 
 #### Manual
 
-- [x] 3.6 `/` na telefonie 375 px: miniatura w 2-kolumnowej siatce, czytelna, bez poziomego przewijania.
-- [x] 3.7 `/` na komputerze: karta nie jest rozciągnięta na całą szerokość.
-- [x] 3.8 Kliknięcie karty otwiera labirynt; profil wybrany na `/labirynt` jest aktywny po powrocie i po ponownym wejściu.
-- [x] 3.9 Labirynt: pełny przepływ i druk A4 bez zmian względem stanu przed F-03.
+- [x] 3.6 `/` na telefonie 375 px: miniatura w 2-kolumnowej siatce, czytelna, bez poziomego przewijania. — 408ffbc
+- [x] 3.7 `/` na komputerze: karta nie jest rozciągnięta na całą szerokość. — 408ffbc
+- [x] 3.8 Kliknięcie karty otwiera labirynt; profil wybrany na `/labirynt` jest aktywny po powrocie i po ponownym wejściu. — 408ffbc
+- [x] 3.9 Labirynt: pełny przepływ i druk A4 bez zmian względem stanu przed F-03. — 408ffbc
