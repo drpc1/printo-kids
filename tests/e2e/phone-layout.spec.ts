@@ -1,7 +1,9 @@
 // Provenance: phone-worksheet (S-09, US-04)
 // Protects the screen around the sheet on phones, tablets and desktop: no sideways scroll,
 // Generuj, Drukuj and Postać do not cover each other, and the Profil corner does not cover
-// the heading or, on touch screens, the sheet. It does not prove one printed page.
+// the heading or, on touch screens, the sheet. On a coarse pointer that corner is at least
+// 44 px tall and under 48 px; a precise pointer keeps it under 44 px. It does not prove
+// one printed page.
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const PROFILES_KEY = "printo-kids:child-profiles";
@@ -89,6 +91,24 @@ test("the action bar fits the screen and its controls do not cover each other", 
   expect(boxes.drukuj.height).toBeGreaterThanOrEqual(44);
 });
 
+test("the Profil corner grows on a touch screen and stays short on a mouse", async ({ page }, testInfo) => {
+  // No profile is chosen, so the corner reads "Profil". pointer-coarse:min-h-11 is 44 px at a
+  // 16 px root and does not apply to a precise pointer, which keeps the height of the text.
+  await page.goto("/");
+  const corner = page.getByRole("button", { name: "Profil", exact: true });
+  await expect(corner).toBeVisible();
+
+  const { height } = await viewportBox(corner);
+  if (testInfo.project.use.hasTouch === true) {
+    expect(height).toBeGreaterThanOrEqual(44);
+    expect(height).toBeLessThan(48);
+    return;
+  }
+  if (testInfo.project.name === "chromium") {
+    expect(height).toBeLessThan(44);
+  }
+});
+
 test.describe("with a profile that has the longest allowed name", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(
@@ -134,6 +154,7 @@ test.describe("with a profile that has the longest allowed name", () => {
 test("a long profile list shows a scrollbar the eye can find", async ({ page }, testInfo) => {
   // Touch screens hide the native scrollbar until scrolling, so ui/dialog.tsx draws its own
   // (useScrollIndicator). A mouse screen keeps the native one, coloured from the theme.
+  // On touch the close target is 44 px, stays clear of the first row, and lines up with that track.
   await page.addInitScript((key) => {
     const names = [
       "Ala",
@@ -178,6 +199,19 @@ test("a long profile list shows a scrollbar the eye can find", async ({ page }, 
   const bodyBox = await viewportBox(body);
   // The bar sits beside the rows, not over them.
   expect(trackBox.x).toBeGreaterThanOrEqual(bodyBox.x + bodyBox.width);
+
+  const close = dialog.getByRole("button", { name: "Zamknij", exact: true });
+  const closeBox = await viewportBox(close);
+  // The hit area is a 44 px square and its bottom stays at least 4 px above the first row.
+  expect(Math.abs(closeBox.width - 44)).toBeLessThanOrEqual(1);
+  expect(Math.abs(closeBox.height - 44)).toBeLessThanOrEqual(1);
+  const firstRowBox = await viewportBox(body.getByRole("button").first());
+  expect(firstRowBox.y - (closeBox.y + closeBox.height)).toBeGreaterThanOrEqual(4);
+  // The hit area's right edge meets the drawn track, and the track does not start left of the glyph.
+  expect(Math.abs(closeBox.x + closeBox.width - (trackBox.x + trackBox.width))).toBeLessThanOrEqual(1);
+  const glyphBox = await viewportBox(close.locator("svg"));
+  expect(trackBox.x).toBeGreaterThanOrEqual(glyphBox.x);
+
   const thumb = track.locator("div");
   const top = await viewportBox(thumb);
   expect(Math.abs(top.y - trackBox.y)).toBeLessThanOrEqual(1);
