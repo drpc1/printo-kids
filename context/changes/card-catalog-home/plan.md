@@ -269,31 +269,31 @@ Zapisane profile i ostatnie parametry nie zmieniają kształtu. Nowy klucz `prin
 
 #### Automated
 
-- [x] 2.1 Kontrakt druku i reszta testów przechodzą: `npm test`
-- [x] 2.2 Lint i typy: `npm run lint` i `npx astro check`
-- [x] 2.3 Build przechodzi: `npm run build`
-- [x] 2.4 Smoke przechodzi na `/` i `/labirynt`: `npm run smoke` (przy działającym serwerze)
-- [x] 2.5 E2E telefonu, poziomu i okien przechodzą lokalnie: `npx playwright test`
+- [x] 2.1 Kontrakt druku i reszta testów przechodzą: `npm test` — 354799d
+- [x] 2.2 Lint i typy: `npm run lint` i `npx astro check` — 354799d
+- [x] 2.3 Build przechodzi: `npm run build` — 354799d
+- [x] 2.4 Smoke przechodzi na `/` i `/labirynt`: `npm run smoke` (przy działającym serwerze) — 354799d
+- [x] 2.5 E2E telefonu, poziomu i okien przechodzą lokalnie: `npx playwright test` — 354799d
 
 #### Manual
 
-- [x] 2.6 `/labirynt`: generuj, zmień poziom i postać, drukuj; podgląd wydruku to jedna strona A4 z marginesem 10 mm, bez linku „Wszystkie karty”.
-- [x] 2.7 Telefon 375 px: link w lewym górnym rogu nie zasłania profilu ani przycisków Generuj i Drukuj.
-- [x] 2.8 Link „Wszystkie karty” prowadzi do `/`.
+- [x] 2.6 `/labirynt`: generuj, zmień poziom i postać, drukuj; podgląd wydruku to jedna strona A4 z marginesem 10 mm, bez linku „Wszystkie karty”. — 354799d
+- [x] 2.7 Telefon 375 px: link w lewym górnym rogu nie zasłania profilu ani przycisków Generuj i Drukuj. — 354799d
+- [x] 2.8 Link „Wszystkie karty” prowadzi do `/`. — 354799d
 
 ### Phase 3: Katalog na / z miniaturą z generatora
 
 #### Automated
 
-- [ ] 3.1 Wszystkie testy: `npm test`
-- [ ] 3.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build`
-- [ ] 3.3 Smoke na `/` i `/labirynt`: `npm run smoke`
-- [ ] 3.4 Nowy e2e: `npx playwright test catalog`
-- [ ] 3.5 Miniatura odtwarza się skryptem bez zmian w pliku po drugim uruchomieniu: `npm run thumbnails` i brak diffu
+- [x] 3.1 Wszystkie testy: `npm test`
+- [x] 3.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build`
+- [x] 3.3 Smoke na `/` i `/labirynt`: `npm run smoke`
+- [x] 3.4 Nowy e2e: `npx playwright test catalog`
+- [x] 3.5 Miniatura odtwarza się skryptem bez zmian w pliku po drugim uruchomieniu: `npm run thumbnails` i brak diffu
 
 #### Manual
 
-- [ ] 3.6 `/` na telefonie 375 px: miniatura w 2-kolumnowej siatce, czytelna, bez poziomego przewijania.
-- [ ] 3.7 `/` na komputerze: karta nie jest rozciągnięta na całą szerokość.
-- [ ] 3.8 Kliknięcie karty otwiera labirynt; profil wybrany na `/labirynt` jest aktywny po powrocie i po ponownym wejściu.
-- [ ] 3.9 Labirynt: pełny przepływ i druk A4 bez zmian względem stanu przed F-03.
+- [x] 3.6 `/` na telefonie 375 px: miniatura w 2-kolumnowej siatce, czytelna, bez poziomego przewijania.
+- [x] 3.7 `/` na komputerze: karta nie jest rozciągnięta na całą szerokość.
+- [x] 3.8 Kliknięcie karty otwiera labirynt; profil wybrany na `/labirynt` jest aktywny po powrocie i po ponownym wejściu.
+- [x] 3.9 Labirynt: pełny przepływ i druk A4 bez zmian względem stanu przed F-03.
