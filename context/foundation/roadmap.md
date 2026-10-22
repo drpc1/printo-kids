@@ -9,7 +9,7 @@ main_goal: low-complexity
 top_blocker: capacity
 milestone_id: first-printable-a4-maze
 milestone_seq: 1
-milestone_status: open
+milestone_status: done
 ---
 
 # Roadmap: PrintoKids
@@ -20,7 +20,7 @@ milestone_status: open
 
 ## Milestone
 
-**M-1: Pierwsza drukowalna karta A4** — Status: open
+**M-1: Pierwsza drukowalna karta A4** — Status: done
 
 - **Intent:** Pokazać, że rodzic może wygenerować jakikolwiek rozwiązywalny labirynt, zobaczyć kartę A4 na stronie i wydrukować ją jako jedną stronę. Potem dodać postać, zapamiętane parametry, opcjonalne profile dzieci i wybór poziomu trudności zgodny z wiekiem. Dalej poszerzyć katalog postaci i umożliwić ten sam przepływ na telefonie.
 - **Source materials:** `context/foundation/prd.md` (v1)
@@ -295,6 +295,8 @@ Bez numeru, ta sama umowa (algorytm, jedna sprawdzalna odpowiedź, wiek, jedna s
 Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą listą.
 
 ## Milestone History
+
+- **M-1: Pierwsza drukowalna karta A4** (`first-printable-a4-maze`) — closed 2026-10-22. Rodzic generuje labirynt na wybranym poziomie, wybiera postać, korzysta z profili dzieci i drukuje kartę jako jedną stronę A4 także z telefonu.
 
 ## Done
 
