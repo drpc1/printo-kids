@@ -253,17 +253,17 @@ Zapisane profile i ostatnie parametry nie zmieniają kształtu. Nowy klucz `prin
 
 #### Automated
 
-- [x] 1.1 Nowe i zmienione testy przechodzą (plik dopisany do skryptu `test` w `package.json`): `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
-- [x] 1.4 Istniejący e2e profilu przechodzi lokalnie: `npx playwright test profile-level`
+- [x] 1.1 Nowe i zmienione testy przechodzą (plik dopisany do skryptu `test` w `package.json`): `npm test` — 5f1adf1
+- [x] 1.2 Lint przechodzi: `npm run lint` — 5f1adf1
+- [x] 1.3 Typy przechodzą: `npx astro check` — 5f1adf1
+- [x] 1.4 Istniejący e2e profilu przechodzi lokalnie: `npx playwright test profile-level` — 5f1adf1
 
 #### Manual
 
-- [x] 1.5 Utwórz dwa profile, wybierz drugi, odśwież stronę: drugi profil jest aktywny, okno wyboru się nie otwiera.
-- [x] 1.6 „Bez profilu” przy jednym profilu: po odświeżeniu nie wraca sam do profilu.
-- [x] 1.7 Usunięcie aktywnego profilu przy dwóch: pytanie o profil wraca albo wybiera się jedyny pozostały (jak dziś).
-- [x] 1.8 Druk nadal nie wymaga profilu.
+- [x] 1.5 Utwórz dwa profile, wybierz drugi, odśwież stronę: drugi profil jest aktywny, okno wyboru się nie otwiera. — 5f1adf1
+- [x] 1.6 „Bez profilu” przy jednym profilu: po odświeżeniu nie wraca sam do profilu. — 5f1adf1
+- [x] 1.7 Usunięcie aktywnego profilu przy dwóch: pytanie o profil wraca albo wybiera się jedyny pozostały (jak dziś). — 5f1adf1
+- [x] 1.8 Druk nadal nie wymaga profilu. — 5f1adf1
 
 ### Phase 2: Powłoka Astro i labirynt pod /labirynt
 

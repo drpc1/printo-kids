@@ -363,6 +363,16 @@ void describe("visitAfterDelete", () => {
     assert.deepEqual(profiles, [zosia, antek, basia]);
   });
 
+  void test("deleting a profile while nobody is active and none-profile is stored keeps nobody active, even with one profile left", () => {
+    assert.deepEqual(visitAfterDelete([zosia, antek], "z1", null, bar, lastUsed, "none"), {
+      profiles: [antek],
+      activeId: null,
+      character: "rakieta",
+      level: "lat3",
+      ask: false,
+    });
+  });
+
   void test("deleting active Zosia when only Antek remains activates Antek, his dinozaur, and his level", () => {
     assert.deepEqual(visitAfterDelete([zosia, antek], "z1", "z1", bar, lastUsed), {
       profiles: [antek],

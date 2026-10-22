@@ -14,6 +14,7 @@ import {
   type ChildProfile,
   type VisitAfterDelete,
 } from "@/lib/child-profiles";
+import { readActiveProfile } from "@/lib/active-profile";
 import { readLastUsed } from "@/lib/last-used";
 import { LEVELS, levelById, type LevelId } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow } from "@/lib/sheet/character";
@@ -186,6 +187,7 @@ export function ProfileCorner({
       activeId,
       { character: barCharacter, level: barLevel },
       readLastUsed(localStorage, ALLOWED_CHARACTER_IDS),
+      readActiveProfile(localStorage),
     );
     deleteLock.current = true;
     const saved = writeChildProfiles(localStorage, next.profiles);
