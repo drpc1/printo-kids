@@ -263,6 +263,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
 2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (`S-03` jest done. Katalog `S-08` dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Prawa przed publikacją zostają otwarte w PRD).
+3. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Dziś postać da się wybrać, a karta nastolatka jej nie rysuje. Blokada wyboru albo postać także u nastolatka; nowa zmiana poza S-11, issue #54. PRD Open Questions 4.
 
 ## Parked
 
