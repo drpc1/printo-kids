@@ -269,17 +269,17 @@ Zapisane profile i ostatnie parametry nie zmieniają kształtu. Nowy klucz `prin
 
 #### Automated
 
-- [ ] 2.1 Kontrakt druku i reszta testów przechodzą: `npm test`
-- [ ] 2.2 Lint i typy: `npm run lint` i `npx astro check`
-- [ ] 2.3 Build przechodzi: `npm run build`
-- [ ] 2.4 Smoke przechodzi na `/` i `/labirynt`: `npm run smoke` (przy działającym serwerze)
-- [ ] 2.5 E2E telefonu, poziomu i okien przechodzą lokalnie: `npx playwright test`
+- [x] 2.1 Kontrakt druku i reszta testów przechodzą: `npm test`
+- [x] 2.2 Lint i typy: `npm run lint` i `npx astro check`
+- [x] 2.3 Build przechodzi: `npm run build`
+- [x] 2.4 Smoke przechodzi na `/` i `/labirynt`: `npm run smoke` (przy działającym serwerze)
+- [x] 2.5 E2E telefonu, poziomu i okien przechodzą lokalnie: `npx playwright test`
 
 #### Manual
 
-- [ ] 2.6 `/labirynt`: generuj, zmień poziom i postać, drukuj; podgląd wydruku to jedna strona A4 z marginesem 10 mm, bez linku „Wszystkie karty”.
-- [ ] 2.7 Telefon 375 px: link w lewym górnym rogu nie zasłania profilu ani przycisków Generuj i Drukuj.
-- [ ] 2.8 Link „Wszystkie karty” prowadzi do `/`.
+- [x] 2.6 `/labirynt`: generuj, zmień poziom i postać, drukuj; podgląd wydruku to jedna strona A4 z marginesem 10 mm, bez linku „Wszystkie karty”.
+- [x] 2.7 Telefon 375 px: link w lewym górnym rogu nie zasłania profilu ani przycisków Generuj i Drukuj.
+- [x] 2.8 Link „Wszystkie karty” prowadzi do `/`.
 
 ### Phase 3: Katalog na / z miniaturą z generatora
 

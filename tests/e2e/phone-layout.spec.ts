@@ -65,7 +65,7 @@ async function generate(page: Page): Promise<void> {
 }
 
 test("the action bar fits the screen and its controls do not cover each other", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/labirynt");
   await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
   await expectNoSidewaysScroll(page);
 
@@ -100,7 +100,7 @@ test.describe("with a profile that has the longest allowed name", () => {
   });
 
   test("the Profil corner does not cover the heading", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/labirynt");
     const corner = page.getByRole("button", { name: LONG_NAME });
     const heading = page.getByRole("heading", { level: 1 });
     await expect(corner).toBeVisible();
@@ -111,12 +111,32 @@ test.describe("with a profile that has the longest allowed name", () => {
     expect(overlaps(await viewportBox(corner), await viewportBox(heading))).toBe(false);
   });
 
+  test("the Wszystkie karty link covers neither the Profil corner, the heading, nor the sheet", async ({ page }) => {
+    await page.goto("/labirynt");
+    const link = page.getByRole("link", { name: "Wszystkie karty" });
+    const corner = page.getByRole("button", { name: LONG_NAME });
+    const heading = page.getByRole("heading", { level: 1 });
+    await expect(link).toBeVisible();
+    await expect(corner).toBeVisible();
+
+    expect(overlaps(await viewportBox(link), await viewportBox(corner))).toBe(false);
+    expect(overlaps(await viewportBox(link), await viewportBox(heading))).toBe(false);
+    expect((await viewportBox(link)).height).toBeGreaterThanOrEqual(44);
+
+    await generate(page);
+    expect(overlaps(await viewportBox(link), await viewportBox(corner))).toBe(false);
+    expect(overlaps(await viewportBox(link), await viewportBox(heading))).toBe(false);
+    expect(overlaps(await viewportBox(link), await viewportBox(page.getByRole("img", { name: "Labirynt" })))).toBe(
+      false,
+    );
+  });
+
   test("on a touch screen the Profil corner scrolls away instead of covering the sheet", async ({ page }, testInfo) => {
     test.skip(testInfo.project.use.hasTouch !== true, "a mouse screen keeps the corner fixed on purpose");
 
     // A short window makes the sheet taller than the screen, so a fixed corner would land on it.
     await page.setViewportSize({ width: viewportWidth(page), height: 400 });
-    await page.goto("/");
+    await page.goto("/labirynt");
     await generate(page);
 
     const sheet = page.getByRole("img", { name: "Labirynt" });
@@ -155,7 +175,7 @@ test("a long profile list shows a scrollbar the eye can find", async ({ page }, 
     );
   }, PROFILES_KEY);
   await page.setViewportSize({ width: viewportWidth(page), height: 600 });
-  await page.goto("/");
+  await page.goto("/labirynt");
 
   // Two or more profiles and none chosen: the corner opens the list on its own.
   const dialog = page.getByRole("dialog");

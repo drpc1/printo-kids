@@ -6,7 +6,8 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
-const WORKSHEET_HOME = "src/components/WorksheetHome.astro";
+const WORKSHEET_HOME = "src/components/GeneratorShell.astro";
+const MAZE_PAGE = "src/pages/labirynt.astro";
 const WORKSHEET_GENERATOR = "src/components/WorksheetGenerator.tsx";
 const GLOBAL_CSS = "src/styles/global.css";
 
@@ -56,7 +57,7 @@ void describe("print contract", () => {
     const printCss = extractBlock(home, "@media print");
     assert.match(
       printCss,
-      /#worksheet-home h1,\s*#worksheet-home p,\s*#worksheet-home button\s*\{[^}]*display:\s*none\s*;/,
+      /#worksheet-home h1,\s*#worksheet-home p,\s*#worksheet-home a,\s*#worksheet-home button\s*\{[^}]*display:\s*none\s*;/,
     );
 
     const generator = readRepoFile(WORKSHEET_GENERATOR);
@@ -66,6 +67,12 @@ void describe("print contract", () => {
       "max-h-[calc(100dvh-2rem)] print:hidden",
       "max-h-[calc(100dvh-2rem)] print:hidden",
     ]);
+  });
+
+  void test("the maze page lives under /labirynt and uses the shared shell", () => {
+    const page = readRepoFile(MAZE_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<WorksheetGenerator\b/);
   });
 
   void test("the screen-only padding tweak stays inside @media screen", () => {
