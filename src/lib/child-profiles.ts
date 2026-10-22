@@ -1,3 +1,4 @@
+import { NO_PROFILE } from "./active-profile.ts";
 import { DEFAULT_LEVEL_ID, isLevelId, type LevelId } from "./maze/levels.ts";
 
 const CHILD_PROFILES_KEY = "printo-kids:child-profiles";
@@ -104,7 +105,7 @@ export function openingVisit(
     return { activeId: remembered.id, character: remembered.character, level: remembered.level, ask: false };
   }
 
-  if (stored === "none") {
+  if (stored === NO_PROFILE) {
     return { activeId: null, character: lastUsed.character, level: lastUsed.level, ask: false };
   }
 
@@ -131,6 +132,7 @@ export function visitAfterDelete(
   activeId: string | null,
   bar: BarChoice,
   lastUsed: BarChoice,
+  stored: string | null = null,
 ): VisitAfterDelete {
   if (!profiles.some((profile) => profile.id === deletedId)) {
     return {
@@ -153,7 +155,7 @@ export function visitAfterDelete(
     };
   }
 
-  return { profiles: remaining, ...openingVisit(remaining, lastUsed, null) };
+  return { profiles: remaining, ...openingVisit(remaining, lastUsed, stored) };
 }
 
 export function sortProfiles(profiles: readonly ChildProfile[]): ChildProfile[] {

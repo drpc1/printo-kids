@@ -150,11 +150,11 @@ export default function WorksheetGenerator() {
     setCharacter(characterChoice(next.character));
     applyLevel(next.level);
     setAsk(next.ask);
-    // No active profile after a delete clears the key, so the default rule (single profile, or ask) applies.
-    if (next.activeId === null) {
-      clearActiveProfile(localStorage);
-    } else {
+    if (next.activeId !== null) {
       writeActiveProfile(localStorage, next.activeId);
+    } else if (readActiveProfile(localStorage) !== NO_PROFILE) {
+      // An explicit "no profile" survives the delete; otherwise the default rule (single profile, or ask) applies.
+      clearActiveProfile(localStorage);
     }
   }
 
