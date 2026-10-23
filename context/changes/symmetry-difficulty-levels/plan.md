@@ -261,10 +261,10 @@ Nie dotyczy: poziom nie jest zapisywany (profil to S-14).
 
 #### Automated
 
-- [ ] 1.1 Testy przechodzą: `npm test`
-- [ ] 1.2 Lint przechodzi: `npm run lint`
-- [ ] 1.3 Typy przechodzą: `npx astro check`
-- [ ] 1.4 Każdy poziom mieści się w `layoutSymmetrySheet` (test w `levels.test.ts`)
+- [x] 1.1 Testy przechodzą: `npm test`
+- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.4 Każdy poziom mieści się w `layoutSymmetrySheet` (test w `levels.test.ts`)
 
 ### Phase 2: Katalogi szablonów 4 lat i 7 lat
 

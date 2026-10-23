@@ -1,3 +1,5 @@
+import type { SymmetryLevelId } from "./levels.ts";
+
 export const SYMMETRY_COLORS = ["red", "green", "yellow", "blue", "gray", "black"] as const;
 
 export type SymmetryColor = (typeof SYMMETRY_COLORS)[number];
@@ -16,6 +18,8 @@ export interface SymmetryPart {
 
 export interface SymmetryTemplate {
   id: string;
+  /** Columns of the drawing; the last one touches the axis. The card shifts the drawing right on a wider half. */
+  width: number;
   /** Rows of the drawing frame. The card moves the whole frame down by an offset that keeps it on the grid. */
   height: number;
   base: readonly SymmetryCell[];
@@ -58,6 +62,7 @@ function drawing(lines: readonly string[], top = 0, left = 0): SymmetryCell[] {
 
 const ROCKET: SymmetryTemplate = {
   id: "rakieta",
+  width: 6,
   height: 15,
   base: drawing([
     "......", // 0 nose (part)
@@ -94,6 +99,7 @@ const ROCKET: SymmetryTemplate = {
 
 const ROBOT: SymmetryTemplate = {
   id: "robot",
+  width: 6,
   height: 15,
   base: drawing([
     "......", // 0 antenna (part)
@@ -133,6 +139,7 @@ const ROBOT: SymmetryTemplate = {
 
 const STRAWBERRY: SymmetryTemplate = {
   id: "truskawka",
+  width: 6,
   height: 15,
   base: drawing([
     "......", // 0 leaves (part)
@@ -166,5 +173,17 @@ const STRAWBERRY: SymmetryTemplate = {
   ],
 };
 
-/** Every template is drawn as the left half of a 12-column grid: 6 columns, and column 5 touches the axis. */
-export const SYMMETRY_TEMPLATES: readonly SymmetryTemplate[] = [ROCKET, ROBOT, STRAWBERRY];
+/** Drawn as the left half of a 12-column grid: 6 columns, and column 5 touches the axis. Used by 5 and 6 lat. */
+const TEMPLATES_6_BY_15: readonly SymmetryTemplate[] = [ROCKET, ROBOT, STRAWBERRY];
+
+/** 4 lat (half 4 by 12) and 7 lat (half 9 by 24) get their own drawings in the next phase. */
+const TEMPLATES_BY_LEVEL: Readonly<Record<SymmetryLevelId, readonly SymmetryTemplate[]>> = {
+  lat4: [],
+  lat5: TEMPLATES_6_BY_15,
+  lat6: TEMPLATES_6_BY_15,
+  lat7: [],
+};
+
+export function symmetryTemplatesFor(levelId: SymmetryLevelId): readonly SymmetryTemplate[] {
+  return TEMPLATES_BY_LEVEL[levelId];
+}
