@@ -1,7 +1,7 @@
 ---
 change_id: card-catalog-home
 title: Katalog kart na stronie głównej; labirynt pod /labirynt
-status: implemented
+status: impl_reviewed
 created: 2026-10-22
 updated: 2026-10-23
 archived_at: null
