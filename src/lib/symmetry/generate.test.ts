@@ -8,13 +8,13 @@ import {
   symmetryRowOffsets,
   type SymmetryCard,
 } from "./generate.ts";
-import { symmetryLevelById, type SymmetryLevel, type SymmetryLevelId } from "./levels.ts";
+import { SYMMETRY_LEVELS, symmetryLevelById, type SymmetryLevel, type SymmetryLevelId } from "./levels.ts";
 import { SYMMETRY_COLORS, symmetryTemplatesFor, type SymmetryCell, type SymmetryTemplate } from "./templates.ts";
 
 const LAT4 = symmetryLevelById("lat4");
 const LAT5 = symmetryLevelById("lat5");
 const LAT6 = symmetryLevelById("lat6");
-const LEVELS_WITH_TEMPLATES: readonly SymmetryLevel[] = [LAT5, LAT6];
+const LEVELS_WITH_TEMPLATES: readonly SymmetryLevel[] = SYMMETRY_LEVELS;
 
 void describe("mirrorAnswer", () => {
   void test("reflects each cell across the vertical axis with its row and color (hand-written oracle)", () => {
@@ -149,13 +149,43 @@ void describe("symmetryTemplatesFor", () => {
   });
 
   void test("every cell stays in the half-grid frame and carries a palette color", () => {
-    for (const template of symmetryTemplatesFor("lat5")) {
-      const cells = [...template.base, ...template.parts.flatMap((part) => part.variants.flat())];
-      for (const cell of cells) {
-        assert.ok(cell.col >= 0 && cell.col < template.width, `${template.id} ${JSON.stringify(cell)}`);
-        assert.ok(cell.row >= 0 && cell.row < template.height, `${template.id} ${JSON.stringify(cell)}`);
-        assert.ok((SYMMETRY_COLORS as readonly string[]).includes(cell.color), template.id);
+    for (const level of LEVELS_WITH_TEMPLATES) {
+      for (const template of symmetryTemplatesFor(level.id)) {
+        const cells = [...template.base, ...template.parts.flatMap((part) => part.variants.flat())];
+        for (const cell of cells) {
+          assert.ok(cell.col >= 0 && cell.col < template.width, `${level.id} ${template.id} ${JSON.stringify(cell)}`);
+          assert.ok(cell.row >= 0 && cell.row < template.height, `${level.id} ${template.id} ${JSON.stringify(cell)}`);
+          assert.ok((SYMMETRY_COLORS as readonly string[]).includes(cell.color), template.id);
+        }
       }
+    }
+  });
+
+  void test("4 lat has three simple templates 4 wide and at most 12 tall, each with room for three hints", () => {
+    for (const template of symmetryTemplatesFor("lat4")) {
+      assert.equal(template.width, 4, template.id);
+      assert.ok(template.height <= LAT4.rows, template.id);
+      const frame = [...template.base, ...template.parts.flatMap((part) => part.variants[0])];
+      for (const variants of variantSets(template)) {
+        const card = composeSymmetryCard(template, variants, 0, LAT4);
+        assert.equal(card.hints.length, 3, `${template.id} ${variants.join("-")}`);
+      }
+      assert.ok(frame.length > 0);
+    }
+    assert.equal(symmetryTemplatesFor("lat4").length, 3);
+  });
+
+  void test("7 lat has three richer templates up to 9 wide and 24 tall with at least three parts", () => {
+    const rich = symmetryTemplatesFor("lat7");
+
+    assert.deepEqual(
+      rich.map((template) => template.id),
+      ["rakieta", "robot", "truskawka"],
+    );
+    for (const template of rich) {
+      assert.ok(template.width <= 9 && template.height <= 24, template.id);
+      assert.ok(template.parts.length >= 3, template.id);
+      assert.ok(template.parts.length > symmetryTemplatesFor("lat5")[0].parts.length - 1, template.id);
     }
   });
 
@@ -226,10 +256,6 @@ void describe("generateSymmetryCard", () => {
 
     assert.ok(first);
     assert.equal(generateSymmetryCard(always, first.key, LAT5), null);
-  });
-
-  void test("returns null for a level without templates", () => {
-    assert.equal(generateSymmetryCard(mulberry32(1), null, LAT4), null);
   });
 
   void test("a 6 lat card shifts the drawing so it touches the axis of the 7 column half", () => {
