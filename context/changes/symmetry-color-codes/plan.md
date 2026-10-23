@@ -261,6 +261,6 @@ Brak zmian zapisanych danych. Stan przełącznika nie jest zapisywany (S-14).
 
 #### Manual
 
-- [ ] 3.3 Wydruk 4, 5, 6 i 7 lat z kolorami: kolory rozróżnialne, żółty widoczny, jedna strona A4 z marginesem 10 mm
-- [ ] 3.4 Wydruk w czerni: sylwetka i blada podpowiedź odróżnialne od wzoru
-- [ ] 3.5 Wydruk z telefonu (iOS Safari i Chrome) zachowuje kolory
+- [x] 3.3 Wydruk 4, 5, 6 i 7 lat z kolorami: kolory rozróżnialne, żółty widoczny, jedna strona A4 z marginesem 10 mm — 836ee6f
+- [x] 3.4 Wydruk w czerni: sylwetka i blada podpowiedź odróżnialne od wzoru — 836ee6f
+- [x] 3.5 Wydruk z telefonu (iOS Safari i Chrome) zachowuje kolory — 836ee6f
