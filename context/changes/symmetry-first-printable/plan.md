@@ -342,15 +342,15 @@ Bez zmian w danych zapisanych u rodzica. Klucze `localStorage` i kształt profil
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi, w tym zaktualizowany `print-contract.test.ts`
-- [ ] 2.2 W `src/` nie ma `has-maze`
-- [ ] 2.3 `npm run lint` i `npx astro check` przechodzą
-- [ ] 2.4 `npm run build` przechodzi
-- [ ] 2.5 Lokalne e2e labiryntu (`npx playwright test`) przechodzą bez zmian w testach
+- [x] 2.1 `npm test` przechodzi, w tym zaktualizowany `print-contract.test.ts`
+- [x] 2.2 W `src/` nie ma `has-maze`
+- [x] 2.3 `npm run lint` i `npx astro check` przechodzą
+- [x] 2.4 `npm run build` przechodzi
+- [x] 2.5 Lokalne e2e labiryntu (`npx playwright test`) przechodzą bez zmian w testach
 
 #### Manual
 
-- [ ] 2.6 Na `/labirynt` profil, pytanie o dziecko i ostatnie parametry działają jak przed zmianą
+- [x] 2.6 Na `/labirynt` profil, pytanie o dziecko i ostatnie parametry działają jak przed zmianą
 
 ### Phase 3: Strona `/symetria`
 

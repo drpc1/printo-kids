@@ -3,9 +3,8 @@ import { ChevronDown, Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceRows, LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
-import { clearActiveProfile, NO_PROFILE, readActiveProfile, writeActiveProfile } from "@/lib/active-profile";
-import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
-import { readLastUsed, writeLastUsed } from "@/lib/last-used";
+import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
+import { writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
@@ -24,31 +23,19 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
 const ACTION_BUTTON_CLASS =
   "h-auto rounded-full px-6 py-2.5 text-base has-[>svg]:px-6 sm:px-8 sm:py-3.5 sm:text-lg sm:has-[>svg]:px-8";
 
-const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
-
 type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
 
-interface VisitStart {
-  profiles: ChildProfile[];
-  activeId: string | null;
-  character: CharacterChoice;
-  level: LevelId;
-  ask: boolean;
-}
-
 export default function WorksheetGenerator() {
-  const [visit] = useState(() => readVisitStart(localStorage));
-  const [profiles, setProfiles] = useState(visit.profiles);
-  const [activeId, setActiveId] = useState(visit.activeId);
-  const [character, setCharacter] = useState(visit.character);
-  const [level, setLevel] = useState(visit.level);
+  const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
+    onApply: applyProfileBar,
+  });
+  const [character, setCharacter] = useState(visitStart.character);
+  const [level, setLevel] = useState(visitStart.level);
   const [generateFailed, setGenerateFailed] = useState(false);
-  const [ask, setAsk] = useState(visit.ask);
   const [maze, setMaze] = useState<Maze | null>(null);
   const [sheetShown, setSheetShown] = useState(false);
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
-  const waitingForChild = profiles.length >= 2 && activeId === null;
   const selectedChoice = characterRow(character);
 
   useEffect(() => {
@@ -56,7 +43,7 @@ export default function WorksheetGenerator() {
     if (main === null) {
       return;
     }
-    main.classList.toggle("has-maze", sheetShown);
+    main.classList.toggle("has-sheet", sheetShown);
     main.classList.toggle("justify-start", sheetShown);
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
@@ -107,48 +94,9 @@ export default function WorksheetGenerator() {
     window.print();
   }
 
-  function handleProfileCreated(profile: ChildProfile): void {
-    setProfiles((current) => [...current, profile]);
-    setActiveId(profile.id);
-    setCharacter(characterChoice(profile.character));
-    applyLevel(profile.level);
-    writeActiveProfile(localStorage, profile.id);
-  }
-
-  function handleProfileChosen(profile: ChildProfile): void {
-    setActiveId(profile.id);
-    setCharacter(characterChoice(profile.character));
-    applyLevel(profile.level);
-    writeActiveProfile(localStorage, profile.id);
-  }
-
-  function handleProfileCleared(): void {
-    const lastUsed = readLastUsed(localStorage, ALLOWED_CHARACTER_IDS);
-    setActiveId(null);
-    setCharacter(characterChoice(lastUsed.character));
-    applyLevel(lastUsed.level);
-    setAsk(false);
-    writeActiveProfile(localStorage, NO_PROFILE);
-  }
-
-  function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string, nextLevel: LevelId): void {
-    setProfiles(nextProfiles);
-    setCharacter(characterChoice(nextBar));
-    applyLevel(nextLevel);
-  }
-
-  function handleDeleted(next: VisitAfterDelete): void {
-    setProfiles(next.profiles);
-    setActiveId(next.activeId);
-    setCharacter(characterChoice(next.character));
-    applyLevel(next.level);
-    setAsk(next.ask);
-    if (next.activeId !== null) {
-      writeActiveProfile(localStorage, next.activeId);
-    } else if (readActiveProfile(localStorage) !== NO_PROFILE) {
-      // An explicit "no profile" survives the delete; otherwise the default rule (single profile, or ask) applies.
-      clearActiveProfile(localStorage);
-    }
+  function applyProfileBar(bar: ProfileBar): void {
+    setCharacter(bar.character);
+    applyLevel(bar.level);
   }
 
   const sheetLevel = levelById(level);
@@ -169,11 +117,11 @@ export default function WorksheetGenerator() {
         barCharacter={character}
         barLevel={level}
         ask={ask}
-        onCreated={handleProfileCreated}
-        onChoose={handleProfileChosen}
-        onFavoriteSaved={handleFavoriteSaved}
-        onDeleted={handleDeleted}
-        onClearProfile={handleProfileCleared}
+        onCreated={corner.onCreated}
+        onChoose={corner.onChoose}
+        onFavoriteSaved={corner.onFavoriteSaved}
+        onDeleted={corner.onDeleted}
+        onClearProfile={corner.onClearProfile}
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
@@ -399,24 +347,4 @@ function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: Char
       </g>
     </svg>
   );
-}
-
-function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitStart {
-  const profiles = readChildProfiles(storage, ALLOWED_CHARACTER_IDS);
-  const opening = openingVisit(profiles, readLastUsed(storage, ALLOWED_CHARACTER_IDS), readActiveProfile(storage));
-  return {
-    profiles,
-    activeId: opening.activeId,
-    character: characterChoice(opening.character),
-    level: opening.level,
-    ask: opening.ask,
-  };
-}
-
-function characterChoice(value: string): CharacterChoice {
-  const match = CHARACTER_CHOICES.find((option) => option.id === value);
-  if (match === undefined) {
-    return "none";
-  }
-  return match.id;
 }
