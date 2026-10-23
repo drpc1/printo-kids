@@ -4,6 +4,7 @@ import {
   composeSymmetryCard,
   generateSymmetryCard,
   mirrorAnswer,
+  mirrorAnswerWithDetails,
   symmetryCardProblems,
   symmetryRowOffsets,
   type SymmetryCard,
@@ -27,6 +28,99 @@ void describe("mirrorAnswer", () => {
       { col: 6, row: 0, color: "red" },
       { col: 9, row: 3, color: "blue" },
     ]);
+  });
+});
+
+void describe("mirrorAnswerWithDetails", () => {
+  void test("reflects the pattern cells and the details with row and color, while mirrorAnswer leaves details out", () => {
+    const card: SymmetryCard = {
+      ...cardWith([{ col: 5, row: 0, color: "red" }]),
+      details: [{ col: 4, row: 2, color: "blue" }],
+    };
+
+    assert.deepEqual(mirrorAnswerWithDetails(card), [
+      { col: 6, row: 0, color: "red" },
+      { col: 7, row: 2, color: "blue" },
+    ]);
+    assert.deepEqual(mirrorAnswer(card), [{ col: 6, row: 0, color: "red" }]);
+  });
+});
+
+void describe("details", () => {
+  const rocket = symmetryTemplatesFor("lat5")[0];
+
+  void test("the 5 lat rocket with the open window has a 2 by 2 blue hole shifted by the row offset (hand-written oracle)", () => {
+    const card = composeSymmetryCard(rocket, [0, 0, 0], 3, LAT5);
+
+    assert.deepEqual(card.details, [
+      { col: 4, row: 7, color: "blue" },
+      { col: 5, row: 7, color: "blue" },
+      { col: 4, row: 8, color: "blue" },
+      { col: 5, row: 8, color: "blue" },
+    ]);
+  });
+
+  void test("a window variant that fills the cells leaves only the remaining hole, the 4 lat one leaves none", () => {
+    assert.deepEqual(composeSymmetryCard(rocket, [0, 1, 0], 0, LAT5).details, [
+      { col: 5, row: 4, color: "blue" },
+      { col: 5, row: 5, color: "blue" },
+    ]);
+    const rocket4 = symmetryTemplatesFor("lat4")[0];
+
+    assert.deepEqual(composeSymmetryCard(rocket4, [0, 0, 0], 0, LAT4).details, [{ col: 3, row: 4, color: "blue" }]);
+    assert.deepEqual(composeSymmetryCard(rocket4, [0, 1, 0], 0, LAT4).details, []);
+  });
+
+  void test("a gap open to the edge of the grid is not a hole", () => {
+    const card = composeSymmetryCard(symmetryTemplatesFor("lat5")[1], [0, 0, 0], 0, LAT5);
+
+    assert.ok(
+      card.details.every((cell) => cell.row >= 3 && cell.row <= 5),
+      JSON.stringify(card.details),
+    );
+  });
+
+  void test("every template, variant set, and offset keeps details out of the pattern cells and inside the palette", () => {
+    for (const level of LEVELS_WITH_TEMPLATES) {
+      for (const template of symmetryTemplatesFor(level.id)) {
+        for (const variants of variantSets(template)) {
+          const card = composeSymmetryCard(template, variants, 0, level);
+          const filled = new Set(card.cells.map((cell) => `${cell.col},${cell.row}`));
+
+          assert.ok(card.details.length > 0 || template.id === "rakieta", card.key);
+          for (const detail of card.details) {
+            assert.equal(detail.color, template.holeColor, card.key);
+            assert.ok(!filled.has(`${detail.col},${detail.row}`), card.key);
+            assert.ok(detail.col < level.columns / 2, card.key);
+          }
+        }
+      }
+    }
+  });
+
+  void test("rejects a detail on a filled cell, in the other half, off the grid, repeated, or of an unknown color", () => {
+    const base = cardWith([{ col: 5, row: 2, color: "red" }]);
+    const withDetails = (details: SymmetryCell[]): SymmetryCard => ({ ...base, details });
+
+    assert.deepEqual(symmetryCardProblems(withDetails([{ col: 5, row: 2, color: "blue" }])), ["detail-on-filled-cell"]);
+    assert.deepEqual(symmetryCardProblems(withDetails([{ col: 6, row: 3, color: "blue" }])), ["outside-pattern-half"]);
+    assert.deepEqual(symmetryCardProblems(withDetails([{ col: 4, row: 16, color: "blue" }])), ["outside-grid"]);
+    assert.deepEqual(
+      symmetryCardProblems(
+        withDetails([
+          { col: 4, row: 3, color: "blue" },
+          { col: 4, row: 3, color: "blue" },
+        ]),
+      ),
+      ["duplicate-cell"],
+    );
+    assert.deepEqual(symmetryCardProblems(withDetails([{ col: 4, row: 3, color: "pink" as SymmetryCell["color"] }])), [
+      "unknown-color",
+    ]);
+  });
+
+  void test("orange is in the palette", () => {
+    assert.ok((SYMMETRY_COLORS as readonly string[]).includes("orange"));
   });
 });
 
@@ -219,6 +313,7 @@ void describe("symmetryRowOffsets", () => {
   void test("a template as tall as the grid has one position, a taller or wider one throws", () => {
     const template = (height: number, width = 6): SymmetryTemplate => ({
       id: "wieza",
+      holeColor: "blue",
       width,
       height,
       base: [{ col: 5, row: 0, color: "black" }],
@@ -329,6 +424,7 @@ void describe("hints", () => {
   void test("the generator spreads the hints down the axis column of the answer, never all of it", () => {
     const template: SymmetryTemplate = {
       id: "slup",
+      holeColor: "blue",
       width: 4,
       height: 12,
       base: Array.from({ length: 10 }, (_, row) => ({ col: 3, row, color: "red" as const })),
@@ -355,6 +451,7 @@ function cardWith(cells: readonly SymmetryCell[], levelId: SymmetryLevelId = "la
     axis: "vertical",
     cells,
     hints: [],
+    details: [],
     key: "test",
   };
 }

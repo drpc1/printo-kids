@@ -14,6 +14,8 @@ export interface SymmetryCard {
   cells: readonly SymmetryCell[];
   /** Cells of the answer already filled in on the child's half. A subset of the mirror answer, never all of it. */
   hints: readonly SymmetryCell[];
+  /** Holes of the silhouette on the pattern half (a window, an eye, a seed) in the template's hole color. Never on a filled cell. */
+  details: readonly SymmetryCell[];
   /** Names the level, the template, the variant of every part, and the row offset, so two cards with one key look the same. */
   key: string;
 }
@@ -25,6 +27,7 @@ export type SymmetryProblem =
   | "outside-grid"
   | "duplicate-cell"
   | "unknown-color"
+  | "detail-on-filled-cell"
   | "not-touching-axis"
   | "hint-not-in-answer"
   | "hints-reveal-all"
@@ -96,6 +99,7 @@ export function composeSymmetryCard(
     axis: "vertical",
     cells,
     hints: pickHints(cells, level),
+    details: findHoles(cells, level).map((cell) => ({ ...cell, color: template.holeColor })),
     key: `${level.id}:${template.id}:${variants.join("-")}:${rowOffset}`,
   };
 }
@@ -109,6 +113,49 @@ function pickHints(cells: readonly SymmetryCell[], level: SymmetryLevel): readon
   const onAxis = cells.filter((cell) => cell.col === half - 1).sort((a, b) => a.row - b.row);
   const chosen = onAxis.length <= level.hintCount ? onAxis : spread(onAxis, level.hintCount);
   return chosen.map((cell) => ({ col: level.columns - 1 - cell.col, row: cell.row, color: cell.color }));
+}
+
+/**
+ * Empty cells of the pattern half that the full silhouette (pattern and its mirror) closes in: flooding the grid from
+ * outside, through empty cells only, never reaches them.
+ */
+function findHoles(cells: readonly SymmetryCell[], level: SymmetryLevel): readonly Pick<SymmetryCell, "col" | "row">[] {
+  const { columns, rows } = level;
+  const filled = new Set<number>();
+  for (const cell of cells) {
+    filled.add((cell.row + 1) * (columns + 2) + cell.col + 1);
+    filled.add((cell.row + 1) * (columns + 2) + (columns - 1 - cell.col) + 1);
+  }
+  // The grid is padded by one empty ring, so the flood starts at its corner and reaches every open edge.
+  const width = columns + 2;
+  const reached = new Set<number>([0]);
+  const queue = [0];
+  for (let index = queue.pop(); index !== undefined; index = queue.pop()) {
+    const col = index % width;
+    const row = Math.floor(index / width);
+    for (const [nextCol, nextRow] of [
+      [col - 1, row],
+      [col + 1, row],
+      [col, row - 1],
+      [col, row + 1],
+    ]) {
+      const next = nextRow * width + nextCol;
+      if (nextCol < 0 || nextCol >= width || nextRow < 0 || nextRow >= rows + 2) continue;
+      if (filled.has(next) || reached.has(next)) continue;
+      reached.add(next);
+      queue.push(next);
+    }
+  }
+  const holes: Pick<SymmetryCell, "col" | "row">[] = [];
+  for (let row = 0; row < rows; row += 1) {
+    for (let col = 0; col < columns / 2; col += 1) {
+      const index = (row + 1) * width + col + 1;
+      if (!filled.has(index) && !reached.has(index)) {
+        holes.push({ col, row });
+      }
+    }
+  }
+  return holes;
 }
 
 function spread<T>(items: readonly T[], count: number): T[] {
@@ -164,6 +211,33 @@ export function symmetryCardProblems(card: SymmetryCard): readonly SymmetryProbl
     problems.add("not-touching-axis");
   }
 
+  const filledPlaces = new Set(card.cells.map((cell) => `${cell.col},${cell.row}`));
+  const detailPlaces = new Set<string>();
+  for (const detail of card.details) {
+    if (!(SYMMETRY_COLORS as readonly string[]).includes(detail.color)) {
+      problems.add("unknown-color");
+    }
+    const place = `${detail.col},${detail.row}`;
+    if (detailPlaces.has(place)) {
+      problems.add("duplicate-cell");
+    }
+    detailPlaces.add(place);
+    if (
+      !Number.isInteger(detail.col) ||
+      !Number.isInteger(detail.row) ||
+      detail.col < 0 ||
+      detail.col >= card.columns ||
+      detail.row < 0 ||
+      detail.row >= card.rows
+    ) {
+      problems.add("outside-grid");
+    } else if (detail.col > lastPatternCol) {
+      problems.add("outside-pattern-half");
+    } else if (filledPlaces.has(place)) {
+      problems.add("detail-on-filled-cell");
+    }
+  }
+
   const answer = new Set(mirrorAnswer(card).map((cell) => `${cell.col},${cell.row},${cell.color}`));
   const hinted = new Set<string>();
   for (const hint of card.hints) {
@@ -185,6 +259,15 @@ export function symmetryCardProblems(card: SymmetryCard): readonly SymmetryProbl
 /** The one answer: every pattern cell reflected in the vertical axis, same row and color. */
 export function mirrorAnswer(card: SymmetryCard): readonly SymmetryCell[] {
   return card.cells.map((cell) => ({ col: card.columns - 1 - cell.col, row: cell.row, color: cell.color }));
+}
+
+/** The answer with its details: pattern cells and holes, both reflected, same row and color. */
+export function mirrorAnswerWithDetails(card: SymmetryCard): readonly SymmetryCell[] {
+  return [...card.cells, ...card.details].map((cell) => ({
+    col: card.columns - 1 - cell.col,
+    row: cell.row,
+    color: cell.color,
+  }));
 }
 
 function pick(random: () => number, count: number): number {

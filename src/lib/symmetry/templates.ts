@@ -1,6 +1,6 @@
 import type { SymmetryLevelId } from "./levels.ts";
 
-export const SYMMETRY_COLORS = ["red", "green", "yellow", "blue", "gray", "black"] as const;
+export const SYMMETRY_COLORS = ["red", "green", "yellow", "blue", "orange", "gray", "black"] as const;
 
 export type SymmetryColor = (typeof SYMMETRY_COLORS)[number];
 
@@ -24,6 +24,8 @@ export interface SymmetryTemplate {
   height: number;
   base: readonly SymmetryCell[];
   parts: readonly SymmetryPart[];
+  /** Color of the holes (empty cells enclosed by the silhouette: a window, an eye, a seed). */
+  holeColor: SymmetryColor;
 }
 
 const COLOR_LETTERS: Readonly<Record<string, SymmetryColor>> = {
@@ -31,13 +33,14 @@ const COLOR_LETTERS: Readonly<Record<string, SymmetryColor>> = {
   g: "green",
   y: "yellow",
   b: "blue",
+  o: "orange",
   s: "gray",
   k: "black",
 };
 
 /**
  * Reads a drawing of the left half: one string per row, "." is an empty cell and a letter is a filled cell of
- * that color (r red, g green, y yellow, b blue, s gray, k black). `top` and `left` place the drawing in the frame.
+ * that color (r red, g green, y yellow, b blue, o orange, s gray, k black). `top` and `left` place the drawing in the frame.
  */
 function drawing(lines: readonly string[], top = 0, left = 0): SymmetryCell[] {
   const cells: SymmetryCell[] = [];
@@ -57,13 +60,14 @@ function drawing(lines: readonly string[], top = 0, left = 0): SymmetryCell[] {
   return cells;
 }
 
-// Holes ("." inside the outline) are part of the shape: the card prints a black silhouette, so a window or an
-// eye only shows as an empty cell.
+// Holes ("." inside the outline) are part of the shape. Without colors a window or an eye shows as an empty cell;
+// with colors the card paints every hole in the template's `holeColor`.
 
 const ROCKET: SymmetryTemplate = {
   id: "rakieta",
   width: 6,
   height: 15,
+  holeColor: "blue",
   base: drawing([
     "......", // 0 nose (part)
     "......", // 1
@@ -77,9 +81,9 @@ const ROCKET: SymmetryTemplate = {
     "...sss", // 9
     "...sss", // 10
     "...sss", // 11
-    "....yy", // 12 flame
-    "....ry", // 13
-    ".....y", // 14
+    "....oy", // 12 flame
+    "....oy", // 13
+    ".....o", // 14
   ]),
   parts: [
     {
@@ -88,7 +92,7 @@ const ROCKET: SymmetryTemplate = {
     },
     {
       id: "window",
-      variants: [drawing(["..", ".."], 4, 4), drawing(["s.", "s."], 4, 4)],
+      variants: [drawing(["..", ".."], 4, 4), drawing(["b.", "b."], 4, 4)],
     },
     {
       id: "fins",
@@ -101,19 +105,20 @@ const ROBOT: SymmetryTemplate = {
   id: "robot",
   width: 6,
   height: 15,
+  holeColor: "yellow",
   base: drawing([
     "......", // 0 antenna (part)
     "......", // 1
-    "..ssss", // 2 head
-    "..s...", // 3 eyes (part)
-    "..ssss", // 4
-    "..ss..", // 5 mouth
-    "..ssss", // 6
-    "....kk", // 7 neck
-    "..ssss", // 8 body, arms (part) on columns 0-1
-    "..ssss", // 9
-    "..ssss", // 10
-    "..ssss", // 11
+    "..bbbb", // 2 head
+    "..b...", // 3 eyes (part)
+    "..bbbb", // 4
+    "..bb..", // 5 mouth
+    "..bbbb", // 6
+    "....ss", // 7 neck
+    "..bbbb", // 8 body, arms (part) on columns 0-1
+    "..bbbb", // 9
+    "..bbbb", // 10
+    "..bbbb", // 11
     "..ss..", // 12 legs
     "..ss..", // 13
     ".kkk..", // 14 feet
@@ -121,17 +126,17 @@ const ROBOT: SymmetryTemplate = {
   parts: [
     {
       id: "antenna",
-      variants: [drawing([".k", ".y"], 0, 4), drawing(["k.", "k."], 0, 4)],
+      variants: [drawing([".r", ".s"], 0, 4), drawing(["r.", "s."], 0, 4)],
     },
     {
       id: "eyes",
-      variants: [drawing([".ss"], 3, 3), drawing(["..s"], 3, 3)],
+      variants: [drawing([".bb"], 3, 3), drawing(["..b"], 3, 3)],
     },
     {
       id: "arms",
       variants: [
-        drawing(["..", "..", "..", "kk", "k.", "k.", "k."], 5, 0),
-        drawing(["k.", "k.", "k.", "kk", "..", "..", ".."], 5, 0),
+        drawing(["..", "..", "..", "ss", "s.", "s.", "s."], 5, 0),
+        drawing(["s.", "s.", "s.", "ss", "..", "..", ".."], 5, 0),
       ],
     },
   ],
@@ -141,11 +146,12 @@ const STRAWBERRY: SymmetryTemplate = {
   id: "truskawka",
   width: 6,
   height: 15,
+  holeColor: "yellow",
   base: drawing([
     "......", // 0 leaves (part)
     "......", // 1
     "......", // 2
-    ".rrrrr", // 3
+    ".ggggg", // 3
     "......", // 4 seeds (part)
     "......", // 5
     "......", // 6
@@ -180,6 +186,7 @@ const ROCKET_4: SymmetryTemplate = {
   id: "rakieta",
   width: 4,
   height: 12,
+  holeColor: "blue",
   base: drawing([
     "....", // 0 nose (part)
     "....", // 1
@@ -191,8 +198,8 @@ const ROCKET_4: SymmetryTemplate = {
     "..ss", // 7 fins (part) on columns 0-1
     "..ss", // 8
     "..ss", // 9
-    "..yy", // 10 flame
-    "...y", // 11
+    "..oy", // 10 flame
+    "...o", // 11
   ]),
   parts: [
     {
@@ -201,7 +208,7 @@ const ROCKET_4: SymmetryTemplate = {
     },
     {
       id: "window",
-      variants: [drawing([]), drawing(["s"], 4, 3)],
+      variants: [drawing([]), drawing(["b"], 4, 3)],
     },
     {
       id: "fins",
@@ -214,32 +221,33 @@ const ROBOT_4: SymmetryTemplate = {
   id: "robot",
   width: 4,
   height: 12,
+  holeColor: "yellow",
   base: drawing([
     "....", // 0 antenna (part)
     "....", // 1
-    ".sss", // 2 head
-    ".s..", // 3 eyes (part)
-    ".sss", // 4
-    ".sss", // 5
-    "...k", // 6 neck
-    ".sss", // 7 body, arms (part) on column 0
-    ".sss", // 8
-    ".sss", // 9
-    ".sss", // 10
+    ".bbb", // 2 head
+    ".b..", // 3 eyes (part)
+    ".bbb", // 4
+    ".bbb", // 5
+    "...s", // 6 neck
+    ".bbb", // 7 body, arms (part) on column 0
+    ".bbb", // 8
+    ".bbb", // 9
+    ".bbb", // 10
     "..kk", // 11 feet
   ]),
   parts: [
     {
       id: "antenna",
-      variants: [drawing(["y", "k"], 0, 3), drawing([".", "k"], 0, 3)],
+      variants: [drawing(["r", "s"], 0, 3), drawing([".", "s"], 0, 3)],
     },
     {
       id: "eyes",
-      variants: [drawing(["s"], 3, 3), drawing(["s"], 3, 2)],
+      variants: [drawing(["b"], 3, 3), drawing(["b"], 3, 2)],
     },
     {
       id: "arms",
-      variants: [drawing(["k", "k", "k"], 7, 0), drawing(["k", "k", "k"], 8, 0)],
+      variants: [drawing(["s", "s", "s"], 7, 0), drawing(["s", "s", "s"], 8, 0)],
     },
   ],
 };
@@ -248,10 +256,11 @@ const STRAWBERRY_4: SymmetryTemplate = {
   id: "truskawka",
   width: 4,
   height: 12,
+  holeColor: "yellow",
   base: drawing([
     "....", // 0 leaves (part)
     "....", // 1
-    ".rrr", // 2
+    ".ggg", // 2
     "....", // 3 seeds (part)
     "....", // 4
     "....", // 5
@@ -284,6 +293,7 @@ const ROCKET_7: SymmetryTemplate = {
   id: "rakieta",
   width: 9,
   height: 24,
+  holeColor: "blue",
   base: drawing([
     ".........", // 0 nose (part)
     ".........", // 1
@@ -332,8 +342,8 @@ const ROCKET_7: SymmetryTemplate = {
     {
       id: "flame",
       variants: [
-        drawing(["......yyy", ".......yy", "........r"], 21, 0),
-        drawing(["......yyy", "......yry", ".......yy"], 21, 0),
+        drawing(["......ooy", ".......oy", "........o"], 21, 0),
+        drawing(["......ooy", "......oyy", ".......oy"], 21, 0),
       ],
     },
   ],
@@ -343,27 +353,28 @@ const ROBOT_7: SymmetryTemplate = {
   id: "robot",
   width: 9,
   height: 23,
+  holeColor: "yellow",
   base: drawing([
     ".........", // 0 antenna (part)
     ".........", // 1
     ".........", // 2
-    "...ssssss", // 3 head
-    "...ssssss", // 4
-    "...s.....", // 5 eyes (part) on columns 4-8
-    "...s.....", // 6
-    "...ssssss", // 7
-    "...s.s.s.", // 8 mouth
-    "...ssssss", // 9
-    "......kkk", // 10 neck
-    "...ssssss", // 11 body, arms (part) on columns 0-2
-    "...ssssss", // 12
-    "...ss....", // 13 chest panel (part) on columns 5-8
-    "...ss....", // 14
-    "...ss....", // 15
-    "...ssssss", // 16
-    "...ssssss", // 17
-    "...ssssss", // 18
-    "...ssssss", // 19
+    "...bbbbbb", // 3 head
+    "...bbbbbb", // 4
+    "...b.....", // 5 eyes (part) on columns 4-8
+    "...b.....", // 6
+    "...bbbbbb", // 7
+    "...b.b.b.", // 8 mouth
+    "...bbbbbb", // 9
+    "......sss", // 10 neck
+    "...bbbbbb", // 11 body, arms (part) on columns 0-2
+    "...bbbbbb", // 12
+    "...bb....", // 13 chest panel (part) on columns 5-8
+    "...bb....", // 14
+    "...bb....", // 15
+    "...bbbbbb", // 16
+    "...bbbbbb", // 17
+    "...bbbbbb", // 18
+    "...bbbbbb", // 19
     "....ssss.", // 20 legs
     "....ssss.", // 21
     "...kkkk..", // 22 feet
@@ -371,21 +382,21 @@ const ROBOT_7: SymmetryTemplate = {
   parts: [
     {
       id: "antenna",
-      variants: [drawing([".y", ".k"], 0, 7), drawing(["y.", "k.", "k."], 0, 7)],
+      variants: [drawing([".r", ".s"], 0, 7), drawing(["r.", "s.", "s."], 0, 7)],
     },
     {
       id: "eyes",
-      variants: [drawing(["s..ss", "s..ss"], 5, 4), drawing(["ssss.", "ssss."], 5, 4)],
+      variants: [drawing(["b..bb", "b..bb"], 5, 4), drawing(["bbbb.", "bbbb."], 5, 4)],
     },
     {
       id: "panel",
-      variants: [drawing(["ssss", "s.ss", "ssss"], 13, 5), drawing(["s.ss", "ssss", "s.ss"], 13, 5)],
+      variants: [drawing(["bbbb", "b.bb", "bbbb"], 13, 5), drawing(["b.bb", "bbbb", "b.bb"], 13, 5)],
     },
     {
       id: "arms",
       variants: [
-        drawing(["k..", "k..", "kk.", ".kk", "..k"], 11, 0),
-        drawing(["..k", ".kk", ".k.", ".k.", ".k.", "kk.", "k.."], 12, 0),
+        drawing(["s..", "s..", "ss.", ".ss", "..s"], 11, 0),
+        drawing(["..s", ".ss", ".s.", ".s.", ".s.", "ss.", "s.."], 12, 0),
       ],
     },
   ],
@@ -395,6 +406,7 @@ const STRAWBERRY_7: SymmetryTemplate = {
   id: "truskawka",
   width: 9,
   height: 24,
+  holeColor: "yellow",
   base: drawing([
     ".........", // 0 leaves (part)
     ".........", // 1
@@ -431,7 +443,7 @@ const STRAWBERRY_7: SymmetryTemplate = {
     },
     {
       id: "cap",
-      variants: [drawing(["..rrrrrrr", ".rrrrrrrr"], 4, 0), drawing(["...rrrrrr", "..rrrrrrr"], 4, 0)],
+      variants: [drawing(["..ggggggg", ".gggggggg"], 4, 0), drawing(["...gggggg", "..ggggggg"], 4, 0)],
     },
     {
       id: "seeds",
