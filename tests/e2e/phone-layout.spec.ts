@@ -1,6 +1,7 @@
-// Provenance: phone-worksheet (S-09, US-04)
+// Provenance: phone-worksheet (S-09, US-04); symmetry-first-printable (phase 4, US-06)
 // Protects the screen around the sheet on phones, tablets and desktop: no sideways scroll,
-// Generuj, Drukuj and Postać do not cover each other, and the Profil corner does not cover
+// Generuj, Drukuj and Postać do not cover each other (on /symetria: Generuj, Drukuj and the
+// Profil corner, after Generuj), and the Profil corner does not cover
 // the heading or, on touch screens, the sheet. On a coarse pointer that corner is at least
 // 44 px tall and under 48 px; a precise pointer keeps it under 44 px. It does not prove
 // one printed page.
@@ -83,6 +84,33 @@ test("the action bar fits the screen and its controls do not cover each other", 
   expect(overlaps(boxes.generuj, boxes.drukuj)).toBe(false);
   expect(overlaps(boxes.generuj, boxes.postac)).toBe(false);
   expect(overlaps(boxes.drukuj, boxes.postac)).toBe(false);
+  for (const box of Object.values(boxes)) {
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width).toBeLessThanOrEqual(width);
+  }
+  expect(boxes.generuj.height).toBeGreaterThanOrEqual(44);
+  expect(boxes.drukuj.height).toBeGreaterThanOrEqual(44);
+});
+
+test("the symmetry page fits the screen and Generuj, Drukuj and Profil do not cover each other", async ({ page }) => {
+  await page.goto("/symetria");
+  await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
+  await expectNoSidewaysScroll(page);
+
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Symetria" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  expect(overlaps(boxes.generuj, boxes.drukuj)).toBe(false);
+  expect(overlaps(boxes.generuj, boxes.profil)).toBe(false);
+  expect(overlaps(boxes.drukuj, boxes.profil)).toBe(false);
   for (const box of Object.values(boxes)) {
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(width);

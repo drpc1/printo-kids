@@ -36,3 +36,16 @@ export function characterRow(id: string): (typeof CHARACTER_CHOICES)[number] {
 
   return noneChoice;
 }
+
+export type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
+
+export const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
+
+/** The catalog id for a stored value; anything the catalog no longer has falls back to "none". */
+export function characterChoice(value: string): CharacterChoice {
+  const match = CHARACTER_CHOICES.find((option) => option.id === value);
+  if (match === undefined) {
+    return "none";
+  }
+  return match.id;
+}

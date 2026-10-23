@@ -49,27 +49,27 @@ const { description } = Astro.props;
   }
 
   @media screen {
-    #worksheet-home.has-maze {
+    #worksheet-home.has-sheet {
       padding-top: 2rem;
       padding-bottom: 2rem;
     }
 
-    #worksheet-home.has-maze .max-w-xl {
+    #worksheet-home.has-sheet .max-w-xl {
       gap: 1.5rem;
     }
 
-    #worksheet-home.has-maze h1 {
+    #worksheet-home.has-sheet h1 {
       font-size: 1.5rem;
       line-height: 2rem;
     }
 
-    #worksheet-home.has-maze .max-w-xl > p {
+    #worksheet-home.has-sheet .max-w-xl > p {
       display: none;
     }
   }
 
   @media screen and (max-width: 639px) {
-    #worksheet-home.has-maze {
+    #worksheet-home.has-sheet {
       padding-top: 4.5rem;
     }
   }
@@ -84,14 +84,14 @@ const { description } = Astro.props;
     }
 
     #worksheet-home,
-    #worksheet-home.has-maze {
+    #worksheet-home.has-sheet {
       min-height: 0;
       padding: 0;
       background: none;
     }
 
     #worksheet-home .max-w-xl,
-    #worksheet-home.has-maze .max-w-xl {
+    #worksheet-home.has-sheet .max-w-xl {
       max-width: none;
       gap: 0;
     }
