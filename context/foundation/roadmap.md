@@ -25,7 +25,7 @@ milestone_status: open
 - **Intent:** Pokazać, że produkt unosi drugi rodzaj karty. Strona główna staje się katalogiem z miniaturami, a każdy rodzaj karty ma własną stronę generatora. Rodzic generuje kartę symetrii (dziecko dorysowuje drugą połowę wzoru na kratce, wiek około 4–7 lat), widzi podgląd i drukuje ją jako jedną stronę A4, także z telefonu. Potem poziomy symetrii, potem wspólny wiek w profilu i poziomy osobno dla każdego rodzaju karty.
 - **Source materials:** `context/foundation/prd.md` (v2)
 - **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcja „Po tym kamieniu” nie wlicza się.
-- **Scope anchors:** US-05–US-08, FR-014–FR-017, NFR „Karta symetrii spełnia te same granice co labirynt”, Business Logic „Karta symetrii”. Labirynt zostaje bez zmian.
+- **Scope anchors:** US-05–US-09, FR-014–FR-018, NFR „Karta symetrii spełnia te same granice co labirynt”, Business Logic „Karta symetrii”. Labirynt zostaje bez zmian.
 
 ## Vision recap
 
@@ -39,12 +39,13 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                  | Outcome (user can …)                                                                                                                                              | Prerequisites | PRD refs      | Status   |
-| ---- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
-| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora             | —             | US-05, FR-014 | done     |
-| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | proposed |
-| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, gęstość, oś) na pasku strony symetrii                                                                 | S-12          | US-07, FR-016 | proposed |
-| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek i osobny poziom każdego rodzaju karty; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13          | US-08, FR-017 | proposed |
+| ID   | Change ID                  | Outcome (user can …)                                                                                                                                                               | Prerequisites | PRD refs      | Status   |
+| ---- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
+| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora                              | —             | US-05, FR-014 | done     |
+| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z połową obiektu i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | proposed |
+| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, położenie obiektu, oś, podpowiedź) na pasku strony symetrii                                                            | S-12          | US-07, FR-016 | proposed |
+| S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: litery w kratkach i legenda, druk zostaje czarny                                                             | S-12          | US-09, FR-018 | proposed |
+| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek, osobny poziom każdego rodzaju karty i kolory symetrii; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13, S-15    | US-08, FR-017 | proposed |
 
 ## Baseline
 
@@ -81,21 +82,22 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 
 ### S-12: Karta symetrii na A4
 
-- **Outcome:** Rodzic może wejść z katalogu na stronę symetrii (`/symetria`), wygenerować kartę z jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.
+- **Outcome:** Rodzic może wejść z katalogu na stronę symetrii (`/symetria`), wygenerować kartę z połową obiektu (np. rakieta, robot, truskawka) i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.
 - **Change ID:** symmetry-first-printable
 - **PRD refs:** US-06, FR-015
 - **Prerequisites:** F-03
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
-  - Jak wygląda zamalowana kratka i oś na czarnym druku? Rekomendacja: czarne wypełnione kratki, przerywana linia osi, cienka siatka w obu połowach. — Owner: user. Block: no.
-  - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „5 lat” z tabeli PRD (kratka około 15 mm, 12×16, pionowa oś); poziomy dochodzą w S-13. — Owner: team. Block: no.
-- **Risk:** Gwiazda przewodnia. Karta musi mieć odpowiedź wyliczoną i sprawdzoną tą samą funkcją w testach i przed pokazaniem (połowa pusta, nic na osi, wzór ani pusty, ani pełny). Kryteria z US-04 wchodzą do tego plasterka, nie są doklejane później: bez nachodzących się przycisków, jedna strona A4 w szerokości i w długości, margines 10 mm, Brave razem z resztą przeglądarek. Strona symetrii nie ma paska „Postać”. Do katalogu dochodzi miniatura symetrii i link do strony. Profil i ostatnie parametry na tej stronie jeszcze nie pamiętają niczego własnego (S-14). Nowe pliki testów trzeba dopisać do skryptu `npm test`. Wzór nie może wyglądać na losowy szum: gęstość i skupienie kratek decydują, czy dziecko ma co dorysować.
+  - ~~Jak wygląda zamalowana kratka i oś na czarnym druku?~~ — Ustalone 2026-10-23 na makiecie: czarne wypełnione kratki, gruba przerywana oś, cienka siatka w obu połowach, jedno zdanie polecenia nad kratką.
+  - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „5 lat” z tabeli PRD (kratka około 15 mm, 12×16, pionowa oś, obiekt przy osi, sylwetka bez kolorów); poziomy dochodzą w S-13, kolory w S-15. — Owner: team. Block: no.
+  - Ile szablonów obiektów i jakie warianty części wchodzą w S-12? Rekomendacja: 3–5 szablonów z losowanymi częściami, katalog rośnie później. — Owner: team. Block: no. PRD Open Questions 7.
+- **Risk:** Gwiazda przewodnia. Karta musi mieć odpowiedź wyliczoną i sprawdzoną tą samą funkcją w testach i przed pokazaniem (połowa pusta, nic na osi, wzór ani pusty, ani pełny). Kryteria z US-04 wchodzą do tego plasterka, nie są doklejane później: bez nachodzących się przycisków, jedna strona A4 w szerokości i w długości, margines 10 mm, Brave razem z resztą przeglądarek. Strona symetrii nie ma paska „Postać”. Do katalogu dochodzi miniatura symetrii i link do strony. Profil i ostatnie parametry na tej stronie jeszcze nie pamiętają niczego własnego (S-14). Nowe pliki testów trzeba dopisać do skryptu `npm test`. Wzór to połowa rozpoznawalnego obiektu z szablonu, nie przypadkowa plama (decyzja 2026-10-23); szablon musi mieścić się w połowie siatki, a losowane warianty nie mogą psuć jego czytelności.
 - **Status:** proposed
 
 ### S-13: Poziomy symetrii
 
-- **Outcome:** Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, gęstość, oś) na pasku strony symetrii.
+- **Outcome:** Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, położenie obiektu względem osi, oś, podpowiedź) na pasku strony symetrii.
 - **Change ID:** symmetry-difficulty-levels
 - **PRD refs:** US-07, FR-016
 - **Prerequisites:** S-12
@@ -103,15 +105,29 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 - **Blockers:** —
 - **Unknowns:**
   - Czy startowe wartości z tabeli PRD pasują dziecku? — Owner: user. Block: no. Potwierdza je wydruk, nie planowanie (PRD Open Questions 5).
-- **Risk:** Każdy z czterech poziomów musi się mieścić na jednej stronie A4 z marginesem 10 mm, także gdy oś jest pozioma. To to samo ryzyko, które przy labiryncie rozjeżdżała zmiana siatki. Poziom żyje tylko na pasku strony; do profilu trafia dopiero w S-14.
+- **Risk:** Każdy z czterech poziomów musi się mieścić na jednej stronie A4 z marginesem 10 mm, także gdy oś jest pozioma. To to samo ryzyko, które przy labiryncie rozjeżdżała zmiana siatki. Każdy szablon obiektu musi zmieścić się w połowie siatki każdego poziomu albo być wyłączony z poziomów, na których się nie mieści; połowa siatki 8×12 ma tylko 4 kratki szerokości. Kratki podpowiedzi muszą być częścią odbicia i nie mogą go zdradzić w całości. Poziom żyje tylko na pasku strony; do profilu trafia dopiero w S-14.
+- **Status:** proposed
+
+### S-15: Kody kolorów na karcie symetrii
+
+- **Outcome:** Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: kratki obiektu mają litery kolorów, pod kratką jest legenda, a dziecko koloruje odbicie kredkami. Druk zostaje czarny.
+- **Change ID:** symmetry-color-codes
+- **PRD refs:** US-09, FR-018
+- **Prerequisites:** S-12
+- **Parallel with:** S-13
+- **Blockers:** —
+- **Unknowns:**
+  - Jakie litery dla polskich nazw kolorów, gdy dwie zaczynają się tak samo (np. zielony i żółty: Z i Ż)? — Owner: user. Block: no.
+  - Czy litera mieści się czytelnie w kratce 10 mm na poziomie 7 lat? — Owner: team. Block: no. Sprawdza wydruk.
+- **Risk:** Przełącznik kolorów żyje tylko na pasku strony, niezależnie od poziomu; do profilu trafia w S-14. Odpowiedź musi uwzględniać literę każdej kratki. Legenda nie może wypchnąć kratki poza jedną stronę A4 z marginesem 10 mm. Szablony z S-12 muszą od początku nieść kolor każdej kratki, żeby S-15 nie przerabiało katalogu.
 - **Status:** proposed
 
 ### S-14: Wiek w profilu i poziomy osobno dla każdego rodzaju karty
 
-- **Outcome:** Rodzic może zapamiętać w profilu dziecka wspólny wiek i osobny poziom każdego rodzaju karty (labirynt, symetria), a ostatnie parametry są pamiętane osobno dla każdego rodzaju; zapisane wcześniej profile i parametry nadal się wczytują.
+- **Outcome:** Rodzic może zapamiętać w profilu dziecka wspólny wiek, osobny poziom każdego rodzaju karty (labirynt, symetria) i kolory symetrii jako dodatkowe ustawienie, a ostatnie parametry są pamiętane osobno dla każdego rodzaju; zapisane wcześniej profile i parametry nadal się wczytują.
 - **Change ID:** profile-age-and-levels
 - **PRD refs:** US-08, FR-017
-- **Prerequisites:** S-13
+- **Prerequisites:** S-13, S-15
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
@@ -124,12 +140,13 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcja „Po tym kamieniu” nie dostaje issue, dopóki kamień nie jest otwarty.
 
-| Roadmap ID | Change ID                  | Suggested issue title                                     | Ready for `/10x-plan` | Notes                                               |
-| ---------- | -------------------------- | --------------------------------------------------------- | --------------------- | --------------------------------------------------- |
-| F-03       | card-catalog-home          | Katalog kart na stronie głównej; labirynt pod `/labirynt` | yes                   | Run `/10x-new card-catalog-home`, potem `/10x-plan` |
-| S-12       | symmetry-first-printable   | Karta symetrii: strona, generowanie, podgląd i druk A4    | no                    | Czeka na F-03. Gwiazda przewodnia kamienia          |
-| S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, gęstość, oś                     | no                    | Czeka na S-12                                       |
-| S-14       | profile-age-and-levels     | Wiek w profilu i poziomy osobno dla każdego rodzaju karty | no                    | Czeka na S-13. Zmienia kształt zapisanych danych    |
+| Roadmap ID | Change ID                  | Suggested issue title                                       | Ready for `/10x-plan` | Notes                                                   |
+| ---------- | -------------------------- | ----------------------------------------------------------- | --------------------- | ------------------------------------------------------- |
+| F-03       | card-catalog-home          | Katalog kart na stronie głównej; labirynt pod `/labirynt`   | yes                   | Run `/10x-new card-catalog-home`, potem `/10x-plan`     |
+| S-12       | symmetry-first-printable   | Karta symetrii: strona, generowanie, podgląd i druk A4      | yes                   | F-03 done. Gwiazda przewodnia kamienia. Research gotowy |
+| S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, położenie obiektu, oś, podpowiedź | no                    | Czeka na S-12                                           |
+| S-15       | symmetry-color-codes       | Kody kolorów na karcie symetrii                             | no                    | Czeka na S-12. Równolegle z S-13                        |
+| S-14       | profile-age-and-levels     | Wiek w profilu i poziomy osobno dla każdego rodzaju karty   | no                    | Czeka na S-13 i S-15. Zmienia kształt zapisanych danych |
 
 ## Open Roadmap Questions
 
@@ -150,7 +167,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 
 ## Po tym kamieniu
 
-Nie wlicza się do „Done when” M-2. Kamień nie jest otwarty. Stary zapis S-10 (`symmetry-worksheet`) zastąpiły F-03 i S-12–S-14; numer S-10 zostaje nieużyty.
+Nie wlicza się do „Done when” M-2. Kamień nie jest otwarty. Stary zapis S-10 (`symmetry-worksheet`) zastąpiły F-03 i S-12–S-15; numer S-10 zostaje nieużyty.
 
 Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4, czarny druk, bez modelu językowego.
 
