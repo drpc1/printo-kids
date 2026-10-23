@@ -46,7 +46,7 @@ void describe("print contract", () => {
     // Safari on iOS prints backgrounds, so the screen color showed as strips inside the printer margins.
     const printCss = extractBlock(readRepoFile(WORKSHEET_HOME), "@media print");
     assert.match(printCss, /html,\s*body\s*\{[^}]*background:\s*none\s*;/);
-    assert.match(printCss, /#worksheet-home\.has-maze\s*\{[^}]*background:\s*none\s*;/);
+    assert.match(printCss, /#worksheet-home\.has-sheet\s*\{[^}]*background:\s*none\s*;/);
   });
 
   void test("print hides the heading, the purpose line, and the controls", () => {
@@ -78,7 +78,7 @@ void describe("print contract", () => {
   void test("the screen-only padding tweak stays inside @media screen", () => {
     const home = readRepoFile(WORKSHEET_HOME);
     const screenCss = extractBlock(home, "@media screen");
-    assert.match(screenCss, /#worksheet-home\.has-maze\s*\{\s*padding-top:\s*2rem;\s*padding-bottom:\s*2rem;\s*}/);
+    assert.match(screenCss, /#worksheet-home\.has-sheet\s*\{\s*padding-top:\s*2rem;\s*padding-bottom:\s*2rem;\s*}/);
 
     const withoutScreen = removeBlock(home, "@media screen");
     assert.equal(withoutScreen.includes("padding-top: 2rem"), false);
