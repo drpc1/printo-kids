@@ -32,7 +32,7 @@ Sprawdzone: `npm test` (197/197), `npm run lint`, `npx astro check` zielone; poz
 - **Location**: src/lib/symmetry/generate.test.ts (describe "details")
 - **Detail**: Test dla robota 5 lat 0-0-0 zakłada, że dziury leżą w wierszach 3–5; nie trzyma konkretnej listy, więc nie złapałby nowej, niechcianej kieszeni w tym zakresie. Pokrycie reszty daje pętla po wszystkich szablonach i lista z kroku 1.7.
 - **Fix**: Zamienić na ręczny oracle (lista kratek dziur robota 5 lat 0-0-0).
-- **Decision**: PENDING
+- **Decision**: FIXED
 
 ### F2 — Jednoliniowe `if (...) continue;` w `findHoles`
 
@@ -42,4 +42,4 @@ Sprawdzone: `npm test` (197/197), `npm run lint`, `npx astro check` zielone; poz
 - **Location**: src/lib/symmetry/generate.ts (findHoles, pętla zalewania)
 - **Detail**: Reszta pliku używa bloków z nawiasami; ESLint przepuszcza, ale to drobna niespójność.
 - **Fix**: Zamienić na jeden warunek `if (inGrid && !filled.has(next) && !reached.has(next)) { ... }`.
-- **Decision**: PENDING
+- **Decision**: FIXED
