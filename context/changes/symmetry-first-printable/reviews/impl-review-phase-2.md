@@ -20,7 +20,7 @@
 | Pattern Consistency | WARNING |
 | Success Criteria    | PASS    |
 
-Commit `2ebcc90`. Kolejność zmian stanu i zapisów `localStorage` w pięciu handlerach profilu jest identyczna z wersją sprzed refaktoru; hook nie zapisuje `printo-kids:last-used`; `ProfileCorner.tsx` nietknięty; brak nieaktualnych domknięć (handlery budowane co render, wywoływane synchronicznie z eventów). Automatyka przy commicie: `npm test` 170/170, brak `has-maze`, lint, astro check, build, e2e 38/38 jak w bazie; 2.6 potwierdzone ręcznie przez użytkownika.
+Commit `2ebcc90`. Kolejność zmian stanu i zapisów `localStorage` w pięciu handlerach profilu jest identyczna z wersją sprzed refaktoru; hook nie zapisuje `printo-kids:last-used`; `ProfileCorner.tsx` nietknięty w commicie fazy (później zmieniony tylko przez poprawkę F1 poniżej: import wspólnych helperów postaci, bez zmiany zachowania); brak nieaktualnych domknięć (handlery budowane co render, wywoływane synchronicznie z eventów). Automatyka przy commicie: `npm test` 170/170, brak `has-maze`, lint, astro check, build, e2e 38/38 jak w bazie; 2.6 potwierdzone ręcznie przez użytkownika.
 
 ## Findings
 

@@ -5,19 +5,10 @@ import { ProfileCorner } from "@/components/ProfileCorner";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { generateSymmetryCard, SYMMETRY_SETTING, type SymmetryCard } from "@/lib/symmetry/generate";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
+import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
 import { cn } from "@/lib/utils";
 
-const PAGE_WIDTH = 210;
-const PAGE_HEIGHT = 297;
-const INSET = 10;
-const INSTRUCTION_SIZE = 7;
-const INSTRUCTION_GAP = 6;
-const INSTRUCTION_TEXT = "Dorysuj drugą połowę tak, jak w lustrze.";
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
-const GRID_STROKE = 0.3;
-const FRAME_STROKE = 0.65;
-const AXIS_STROKE = 1.4;
-const AXIS_DASH = "4 2.5";
 
 // Button's default size adds has-[>svg]:px-3; the has-[>svg] entries replace it so the icon keeps the full padding.
 const ACTION_BUTTON_CLASS =
@@ -148,14 +139,14 @@ function GenerateButton({
 
 function SymmetrySheet({ card }: { card: SymmetryCard }) {
   const sheet = layoutSymmetrySheet({
-    pageWidth: PAGE_WIDTH,
-    pageHeight: PAGE_HEIGHT,
-    inset: INSET,
+    pageWidth: SYMMETRY_SHEET.pageWidth,
+    pageHeight: SYMMETRY_SHEET.pageHeight,
+    inset: SYMMETRY_SHEET.inset,
     columns: card.columns,
     rows: card.rows,
     cellSize: SYMMETRY_SETTING.cellSize,
-    instructionHeight: INSTRUCTION_SIZE,
-    instructionGap: INSTRUCTION_GAP,
+    instructionHeight: SYMMETRY_SHEET.instructionSize,
+    instructionGap: SYMMETRY_SHEET.instructionGap,
   });
   const grid = sheet.grid;
   const cellSize = grid.width / card.columns;
@@ -177,11 +168,11 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
         y={sheet.instruction.y}
         fill="var(--foreground)"
         fontFamily="ui-sans-serif, system-ui, sans-serif"
-        fontSize={INSTRUCTION_SIZE}
+        fontSize={SYMMETRY_SHEET.instructionSize}
         textAnchor="middle"
         dominantBaseline="middle"
       >
-        {INSTRUCTION_TEXT}
+        {SYMMETRY_SHEET.instructionText}
       </text>
       {/* Colors arrive in S-15; every pattern cell prints black for now. */}
       <g fill="var(--foreground)">
@@ -195,7 +186,7 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
           />
         ))}
       </g>
-      <g fill="none" stroke="var(--foreground)" strokeWidth={GRID_STROKE}>
+      <g fill="none" stroke="var(--foreground)" strokeWidth={SYMMETRY_SHEET.gridStroke}>
         {columnLines.map((x) => (
           <line key={`c${x}`} x1={x} y1={grid.y} x2={x} y2={grid.y + grid.height} />
         ))}
@@ -210,7 +201,7 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
         height={grid.height}
         fill="none"
         stroke="var(--foreground)"
-        strokeWidth={FRAME_STROKE}
+        strokeWidth={SYMMETRY_SHEET.frameStroke}
         strokeLinejoin="miter"
       />
       <line
@@ -219,8 +210,8 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
         x2={sheet.axis.x2}
         y2={sheet.axis.y2}
         stroke="var(--foreground)"
-        strokeWidth={AXIS_STROKE}
-        strokeDasharray={AXIS_DASH}
+        strokeWidth={SYMMETRY_SHEET.axisStroke}
+        strokeDasharray={SYMMETRY_SHEET.axisDash}
       />
     </svg>
   );
