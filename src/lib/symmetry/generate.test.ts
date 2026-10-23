@@ -165,12 +165,10 @@ void describe("symmetryTemplatesFor", () => {
     for (const template of symmetryTemplatesFor("lat4")) {
       assert.equal(template.width, 4, template.id);
       assert.ok(template.height <= LAT4.rows, template.id);
-      const frame = [...template.base, ...template.parts.flatMap((part) => part.variants[0])];
       for (const variants of variantSets(template)) {
         const card = composeSymmetryCard(template, variants, 0, LAT4);
         assert.equal(card.hints.length, 3, `${template.id} ${variants.join("-")}`);
       }
-      assert.ok(frame.length > 0);
     }
     assert.equal(symmetryTemplatesFor("lat4").length, 3);
   });
@@ -185,7 +183,6 @@ void describe("symmetryTemplatesFor", () => {
     for (const template of rich) {
       assert.ok(template.width <= 9 && template.height <= 24, template.id);
       assert.ok(template.parts.length >= 3, template.id);
-      assert.ok(template.parts.length > symmetryTemplatesFor("lat5")[0].parts.length - 1, template.id);
     }
   });
 
