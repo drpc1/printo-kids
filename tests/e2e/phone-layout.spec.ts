@@ -119,7 +119,9 @@ test("the symmetry page fits the screen and Generuj, Drukuj and Profil do not co
   expect(boxes.drukuj.height).toBeGreaterThanOrEqual(44);
 });
 
-test("every symmetry level fits the screen and keeps Poziom, Generuj, Drukuj and Profil apart", async ({ page }) => {
+test("every symmetry level fits the screen and keeps Poziom, Kolory, Generuj, Drukuj and Profil apart", async ({
+  page,
+}) => {
   await page.goto("/symetria");
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect(page.getByRole("img", { name: "Symetria" })).toBeVisible();
@@ -135,6 +137,7 @@ test("every symmetry level fits the screen and keeps Poziom, Generuj, Drukuj and
     const width = viewportWidth(page);
     const boxes = {
       poziom: await viewportBox(page.getByRole("button", { name: /^Poziom:/ })),
+      kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
       generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
       drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
       profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),

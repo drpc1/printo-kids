@@ -243,9 +243,9 @@ Brak zmian zapisanych danych. Stan przełącznika nie jest zapisywany (S-14).
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint, typy i build: `npm run lint`, `npx astro check`, `npm run build`
-- [ ] 2.3 E2E przechodzi: `npx playwright test tests/e2e/phone-layout.spec.ts tests/e2e/symmetry-colors.spec.ts`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint, typy i build: `npm run lint`, `npx astro check`, `npm run build`
+- [x] 2.3 E2E przechodzi: `npx playwright test tests/e2e/phone-layout.spec.ts tests/e2e/symmetry-colors.spec.ts`
 
 #### Manual
 

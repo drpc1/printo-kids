@@ -3,7 +3,9 @@ import { Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { SymmetryLevelChoice } from "@/components/SymmetryLevelChoice";
+import { Switch } from "@/components/ui/switch";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
+import { symmetryDrawnCells } from "@/lib/symmetry/colors";
 import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
 import { DEFAULT_SYMMETRY_LEVEL_ID, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
@@ -17,9 +19,10 @@ const ACTION_BUTTON_CLASS =
   "h-auto rounded-full px-6 py-2.5 text-base has-[>svg]:px-6 sm:px-8 sm:py-3.5 sm:text-lg sm:has-[>svg]:px-8";
 
 /**
- * The symmetry card page: Generuj, the level button, the card, Drukuj, and the shared profile corner. It has no
- * character bar. The symmetry level lives only in this component (the profile remembers it in a later change), and
- * the page never touches the maze's last-used parameters; it only keeps the bar values the profile corner shows.
+ * The symmetry card page: Generuj, the level button, the colors switch, the card, Drukuj, and the shared profile
+ * corner. It has no character bar. The symmetry level and the colors switch live only in this component (the profile
+ * remembers them in a later change), and the page never touches the maze's last-used parameters; it only keeps the
+ * bar values the profile corner shows. Switching colors redraws the same card; it never generates a new one.
  */
 export default function SymmetryGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
@@ -29,6 +32,7 @@ export default function SymmetryGenerator() {
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const [levelId, setLevelId] = useState<SymmetryLevelId>(DEFAULT_SYMMETRY_LEVEL_ID);
   const [levelOpen, setLevelOpen] = useState(false);
+  const [colors, setColors] = useState(false);
   const [card, setCard] = useState<SymmetryCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
@@ -84,6 +88,12 @@ export default function SymmetryGenerator() {
       onSelect={handleLevelSelect}
     />
   );
+  const colorsControl = (
+    <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
+      <Switch checked={colors} onCheckedChange={setColors} />
+      Kolory
+    </label>
+  );
   const failedNote = generateFailed ? (
     <p role="alert" className={cn("text-destructive text-sm")}>
       {GENERATE_FAILED_TEXT}
@@ -108,6 +118,7 @@ export default function SymmetryGenerator() {
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
             {levelControl}
+            {colorsControl}
             {failedNote}
           </div>
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
@@ -130,12 +141,15 @@ export default function SymmetryGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          {levelControl}
+          <div className={cn("flex flex-wrap items-center justify-center gap-3")}>
+            {levelControl}
+            {colorsControl}
+          </div>
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
       )}
-      {card !== null ? <SymmetrySheet card={card} /> : null}
+      {card !== null ? <SymmetrySheet card={card} colors={colors} /> : null}
     </div>
   );
 }
@@ -165,7 +179,7 @@ function GenerateButton({
   );
 }
 
-function SymmetrySheet({ card }: { card: SymmetryCard }) {
+function SymmetrySheet({ card, colors }: { card: SymmetryCard; colors: boolean }) {
   const sheet = layoutSymmetrySheet({
     pageWidth: SYMMETRY_SHEET.pageWidth,
     pageHeight: SYMMETRY_SHEET.pageHeight,
@@ -187,6 +201,7 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
       className={cn(
         "aspect-[210/297] h-auto w-full ring-1 ring-[var(--foreground)] print:block print:h-[297mm] print:max-h-[297mm] print:w-[210mm] print:overflow-hidden print:ring-0",
       )}
+      style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
       aria-label="Symetria"
     >
@@ -202,15 +217,16 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
       >
         {SYMMETRY_SHEET.instructionText}
       </text>
-      {/* Colors arrive in S-15; every pattern cell and hint prints black for now. */}
-      <g fill="var(--foreground)">
-        {[...card.cells, ...card.hints].map((cell) => (
+      <g>
+        {symmetryDrawnCells(card, colors).map(({ cell, fill, opacity }) => (
           <rect
             key={`${cell.col},${cell.row}`}
             x={grid.x + cell.col * cellSize}
             y={grid.y + cell.row * cellSize}
             width={cellSize}
             height={cellSize}
+            fill={fill}
+            fillOpacity={opacity}
           />
         ))}
       </g>
