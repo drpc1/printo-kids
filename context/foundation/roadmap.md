@@ -39,13 +39,13 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                  | Outcome (user can …)                                                                                                                                                               | Prerequisites | PRD refs      | Status   |
-| ---- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
-| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora                              | —             | US-05, FR-014 | done     |
-| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z połową obiektu i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | done     |
-| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii                                                                          | S-12          | US-07, FR-016 | done     |
-| S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: litery w kratkach i legenda, druk zostaje czarny                                                             | S-12, S-13    | US-09, FR-018 | proposed |
-| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek, osobny poziom każdego rodzaju karty i kolory symetrii; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13, S-15    | US-08, FR-017 | proposed |
+| ID   | Change ID                  | Outcome (user can …)                                                                                                                                                               | Prerequisites | PRD refs      | Status      |
+| ---- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | ----------- |
+| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora                              | —             | US-05, FR-014 | done        |
+| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z połową obiektu i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | done        |
+| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii                                                                          | S-12          | US-07, FR-016 | done        |
+| S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: prawdziwe kolory kratek, bez liter i legendy                                                                 | S-12, S-13    | US-09, FR-018 | in-progress |
+| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek, osobny poziom każdego rodzaju karty i kolory symetrii; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13, S-15    | US-08, FR-017 | proposed    |
 
 ## Baseline
 
@@ -108,20 +108,21 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 - **Risk:** Każdy z czterech poziomów musi się mieścić na jednej stronie A4 z marginesem 10 mm (oś zawsze pionowa, decyzja 2026-10-23). To to samo ryzyko, które przy labiryncie rozjeżdżała zmiana siatki. Każdy szablon obiektu musi zmieścić się w połowie siatki każdego poziomu albo być wyłączony z poziomów, na których się nie mieści; połowa siatki 8×12 ma tylko 4 kratki szerokości, więc poziom 4 lat dostaje własne, prostsze warianty obiektów (decyzja 2026-10-23). Kratki podpowiedzi muszą być częścią odbicia i nie mogą go zdradzić w całości. Poziom żyje tylko na pasku strony; do profilu trafia dopiero w S-14.
 - **Status:** done
 
-### S-15: Kody kolorów na karcie symetrii
+### S-15: Kolory na karcie symetrii
 
-- **Outcome:** Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: kratki obiektu mają litery kolorów, pod kratką jest legenda, a dziecko koloruje odbicie kredkami. Druk zostaje czarny.
+- **Outcome:** Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: kratki obiektu (także okno, oczy i pestki) mają prawdziwe kolory, bez liter i bez legendy, a dziecko koloruje odbicie kredkami według wzoru. Domyślnie obiekt jest czarną sylwetką.
 - **Change ID:** symmetry-color-codes
 - **PRD refs:** US-09, FR-018
 - **Prerequisites:** S-12, S-13
 - **Parallel with:** — (po kolei: najpierw S-13, potem S-15; oba zmieniają `src/lib/symmetry/templates.ts`, `generate.ts` i `src/components/SymmetryGenerator.tsx`)
 - **Blockers:** —
 - **Unknowns:**
-  - Jakie litery dla polskich nazw kolorów, gdy dwie zaczynają się tak samo (np. zielony i żółty: Z i Ż)? — Owner: user. Block: no.
-  - Czy litera mieści się czytelnie w kratce 10 mm na poziomie 7 lat? — Owner: team. Block: no. Sprawdza wydruk.
-  - Co z detalami, które w sylwetce S-12 są pustymi kratkami (okno rakiety, oczy robota, pestki truskawki)? W trybie kolorów zostałyby białe. Rekomendacja: szablon dostaje kolor dla tych kratek, który działa tylko przy włączonych kolorach. — Owner: user. Block: no. Z przeglądu fazy 1 S-12 (2026-10-23).
-- **Risk:** Przełącznik kolorów żyje tylko na pasku strony, niezależnie od poziomu; do profilu trafia w S-14. Odpowiedź musi uwzględniać literę każdej kratki. Legenda nie może wypchnąć kratki poza jedną stronę A4 z marginesem 10 mm. Szablony z S-12 muszą od początku nieść kolor każdej kratki, żeby S-15 nie przerabiało katalogu.
-- **Status:** proposed
+  - ~~Jakie litery dla polskich nazw kolorów?~~ Rozstrzygnięte 2026-10-23: liter nie ma, kolor to prawdziwy kolor kratki (decyzja użytkownika po makiecie).
+  - ~~Czy litera mieści się w kratce 10 mm na poziomie 7 lat?~~ Rozstrzygnięte 2026-10-23: bez liter pytanie odpada.
+  - ~~Co z detalami, które są pustymi kratkami?~~ Rozstrzygnięte 2026-10-23: generator wykrywa dziury w odbitej sylwetce i maluje je kolorem szablonu (`holeColor`).
+  - Czy żółty i pomarańczowy są czytelne na papierze, a blada podpowiedź (35%) odróżnia się od wzoru w czerni? — Owner: user. Block: no. Sprawdza wydruk (faza 3).
+- **Risk:** Przełącznik kolorów żyje tylko na pasku strony, niezależnie od poziomu; do profilu trafia w S-14. Odpowiedź musi uwzględniać kolor każdej kratki i detali. Bez legendy układ strony zostaje (blok 7 lat 257 z 277 mm). Na drukarce czarno-białej kolory schodzą do szarości (świadoma decyzja). Szablony z S-12 muszą od początku nieść kolor każdej kratki, żeby S-15 nie przerabiało katalogu.
+- **Status:** in-progress
 
 ### S-14: Wiek w profilu i poziomy osobno dla każdego rodzaju karty
 
@@ -146,7 +147,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 | F-03       | card-catalog-home          | Katalog kart na stronie głównej; labirynt pod `/labirynt` | yes                   | Run `/10x-new card-catalog-home`, potem `/10x-plan`                                 |
 | S-12       | symmetry-first-printable   | Karta symetrii: strona, generowanie, podgląd i druk A4    | yes                   | F-03 done. Gwiazda przewodnia kamienia. Research gotowy                             |
 | S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, obiekty, podpowiedź             | yes                   | S-12 done. Run `/10x-new symmetry-difficulty-levels`, potem `/10x-plan`. Przed S-15 |
-| S-15       | symmetry-color-codes       | Kody kolorów na karcie symetrii                           | no                    | Odblokowane po S-13 (te same pliki: szablony, generator, strona symetrii)           |
+| S-15       | symmetry-color-codes       | Kolory na karcie symetrii                                 | no                    | Odblokowane po S-13 (te same pliki: szablony, generator, strona symetrii)           |
 | S-14       | profile-age-and-levels     | Wiek w profilu i poziomy osobno dla każdego rodzaju karty | no                    | Czeka na S-13 i S-15. Zmienia kształt zapisanych danych                             |
 
 ## Open Roadmap Questions
