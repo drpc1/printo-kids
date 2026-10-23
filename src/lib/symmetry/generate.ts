@@ -27,6 +27,10 @@ export type SymmetryProblem =
 /** Draws again at most this many times before giving up, so a single possible card cannot loop forever. */
 const MAX_ATTEMPTS = 20;
 
+/**
+ * A valid card whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. The key includes the row offset,
+ * so the same picture one row lower counts as a new card (plan: parts plus vertical shift are the variants).
+ */
 export function generateSymmetryCard(random: () => number, previousKey: string | null): SymmetryCard | null {
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     const template = SYMMETRY_TEMPLATES[pick(random, SYMMETRY_TEMPLATES.length)];
@@ -40,9 +44,15 @@ export function generateSymmetryCard(random: () => number, previousKey: string |
   return null;
 }
 
-/** How many vertical positions the template frame has on the grid of the fixed setting. */
+/**
+ * How many vertical positions the template frame has on the grid of the fixed setting. Throws for a template taller
+ * than the grid: that is a broken template, not a card that failed to come out.
+ */
 export function symmetryRowOffsets(template: SymmetryTemplate): number {
-  return Math.max(0, SYMMETRY_SETTING.rows - template.height + 1);
+  if (template.height > SYMMETRY_SETTING.rows) {
+    throw new Error(`Template ${template.id} is ${template.height} rows tall, the grid has ${SYMMETRY_SETTING.rows}`);
+  }
+  return SYMMETRY_SETTING.rows - template.height + 1;
 }
 
 /** Builds the card for one template, one variant index per part, and one row offset. Does not validate. */
@@ -90,7 +100,14 @@ export function symmetryCardProblems(card: SymmetryCard): readonly SymmetryProbl
       continue;
     }
     seen.add(place);
-    if (cell.col < 0 || cell.col >= card.columns || cell.row < 0 || cell.row >= card.rows) {
+    if (
+      !Number.isInteger(cell.col) ||
+      !Number.isInteger(cell.row) ||
+      cell.col < 0 ||
+      cell.col >= card.columns ||
+      cell.row < 0 ||
+      cell.row >= card.rows
+    ) {
       problems.add("outside-grid");
     } else if (cell.col > lastPatternCol) {
       // On an odd grid the middle column is the axis itself, so it also lands here.

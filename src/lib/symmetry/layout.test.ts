@@ -41,8 +41,8 @@ void describe("layoutSymmetrySheet", () => {
 
     assert.equal(sheet.axis.x1, 105);
     assert.equal(sheet.axis.x2, 105);
-    assert.ok(sheet.axis.y1 < sheet.grid.y);
-    assert.ok(sheet.axis.y2 > sheet.grid.y + sheet.grid.height);
+    assert.equal(sheet.axis.y1, sheet.grid.y - 4);
+    assert.equal(sheet.axis.y2, sheet.grid.y + sheet.grid.height + 4);
   });
 
   void test("the instruction sits above the grid without touching the axis", () => {
@@ -67,6 +67,23 @@ void describe("layoutSymmetrySheet", () => {
     assert.throws(() => layoutSymmetrySheet({ ...FIVE_YEARS, columns: 13 }));
     assert.throws(() => layoutSymmetrySheet({ ...FIVE_YEARS, rows: 18 }));
     assert.throws(() => layoutSymmetrySheet({ ...FIVE_YEARS, cellSize: 16 }));
+  });
+
+  void test("the tallest grid that fits is laid out, one row more throws", () => {
+    // 7 + 8 + 17 × 15 + 4 = 274 mm fits the 277 mm inside the margin; 18 rows need 289 mm.
+    const tallest = layoutSymmetrySheet({ ...FIVE_YEARS, rows: 17 });
+
+    assertInsideMargin(tallest);
+    assert.throws(() => layoutSymmetrySheet({ ...FIVE_YEARS, rows: 18 }));
+  });
+
+  void test("a block that fills the margin exactly still fits", () => {
+    // 7 + 8 + 16 × 16.125 + 4 = 277 mm, the full height inside the margin; 12 × 16.125 = 193.5 mm is too wide, so
+    // the width is checked with 11 columns (177.375 mm).
+    const exact = layoutSymmetrySheet({ ...FIVE_YEARS, columns: 11, cellSize: 16.125 });
+
+    assert.equal(exact.instruction.y - INSTRUCTION_HEIGHT / 2, INSET);
+    assert.equal(exact.axis.y2, PAGE_HEIGHT - INSET);
   });
 
   void test("a gap smaller than the axis overhang throws", () => {
