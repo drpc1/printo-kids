@@ -249,8 +249,8 @@ Brak zmian zapisanych danych. Stan przełącznika nie jest zapisywany (S-14).
 
 #### Manual
 
-- [ ] 2.4 Przełącznik „Kolory” włącza i wyłącza kolory na tej samej karcie na komputerze i na telefonie
-- [ ] 2.5 Blada podpowiedź 4 lat jest czytelna i odróżnia się od wzoru w obu trybach
+- [x] 2.4 Przełącznik „Kolory” włącza i wyłącza kolory na tej samej karcie na komputerze i na telefonie — dd506d7
+- [x] 2.5 Blada podpowiedź 4 lat jest czytelna i odróżnia się od wzoru w obu trybach — dd506d7
 
 ### Phase 3: Dokumenty i przegląd wydruku
 
