@@ -43,7 +43,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej i wejść na stronę generatora tego rodzaju.
 - Rodzic może wygenerować kartę symetrii, na której dziecko dorysowuje drugą połowę obiektu (np. rakiety, robota, truskawki) na kratce, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wybrać poziom karty symetrii (rozmiar kratki, katalog obiektów, podpowiedź).
-- Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; druk zostaje czarny, a kolor oznaczają litery w kratkach.
+- Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; kratki wzoru drukują się w prawdziwych kolorach kredek, bez liter i bez legendy; domyślnie obiekt jest czarną sylwetką.
 - Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, także jako ostatnie parametry.
 
 ### Guardrails
@@ -145,7 +145,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Wzór nie jest pusty i nie jest już symetryczny w całości.
 - Każde Generuj daje nowy wzór: inny obiekt albo inny wariant tego samego obiektu niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm (ściany i ramka kratki) i drukuje się jako jedna strona.
-- Druk jest czarny i bez odpowiedzi na kartce. Kolory, gdy rodzic je włączy, są literami w kratkach (US-09).
+- Bez odpowiedzi na kartce. Domyślnie druk jest czarny; kolory, gdy rodzic je włączy, są prawdziwymi kolorami kratek (US-09).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
 
 ### US-07: Rodzic wybiera poziom karty symetrii
@@ -156,7 +156,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Poziom zmienia rozmiar kratki, katalog obiektów (4 lata prostsze, 7 lat bogatsze) i podpowiedź (kilka kratek odpowiedzi już zamalowanych). Reguły są w Business Logic.
+- Poziom zmienia rozmiar kratki, katalog obiektów (4 lata prostsze, 7 lat bogatsze) i podpowiedź (kilka kratek odpowiedzi już zamalowanych, bledszych niż wzór także bez kolorów). Reguły są w Business Logic.
 - Poziom nie włącza kolorów; to osobne ustawienie rodzica (US-09).
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
 - Poziom jest na pasku strony symetrii. Wybór poziomu w profilu dla symetrii dochodzi z US-08.
@@ -182,13 +182,14 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic jest na stronie „Symetria”
 - **When** włączy kolory, niezależnie od wybranego poziomu
-- **Then** kratki obiektu mają litery kolorów, kartka ma legendę, a dziecko dorysowuje odbicie i koloruje je kredkami według liter
+- **Then** kratki obiektu mają prawdziwe kolory, a dziecko dorysowuje odbicie i koloruje je kredkami według wzoru
 
 #### Acceptance Criteria
 
 - Kolory to osobny przełącznik na pasku strony symetrii, niezależny od poziomu i wieku. Domyślnie są wyłączone: obiekt jest czarną sylwetką.
-- Druk zostaje czarny: kolor oznacza litera w kratce, a legenda pod kratką tłumaczy litery (np. C = czerwony, Z = zielony). Legenda pokazuje tylko kolory użyte na karcie.
-- Odpowiedź nadal jest jedna: odbicie obiektu razem z literą każdej kratki.
+- Kolor to prawdziwy kolor kratki, bez liter i bez legendy (decyzja 2026-10-23 po makiecie). Detale będące pustymi kratkami wewnątrz sylwetki (okno rakiety, oczy robota, pestki truskawki) też dostają kolor. Na drukarce czarno-białej kolory schodzą do odcieni szarości.
+- Odpowiedź nadal jest jedna: odbicie obiektu razem z kolorem każdej kratki.
+- Przełączenie kolorów zostawia tę samą kartę; nie generuje nowej.
 - Wyłączenie kolorów daje ten sam rodzaj obiektu jako czarną sylwetkę.
 - Zapis kolorów w profilu i w ostatnich parametrach dochodzi z US-08 jako dodatkowe ustawienie karty symetrii.
 
@@ -240,8 +241,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
   > Socrates: Counter-argument considered: bez mierzalnych reguł nazwy poziomów mogą wprowadzać w błąd, a sam rozmiar kratki zmienia głównie motorykę, nie trudność odbicia. Resolution: revised (2026-10-23); poziom łączy kratkę z położeniem obiektu, osią i podpowiedzią, a reguły są w Business Logic.
 - FR-017: Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, a ostatnie parametry są pamiętane osobno dla każdego rodzaju. Priority: must-have
   > Socrates: Counter-argument considered: nowe pola w zapisanych profilach mogą zepsuć istniejące dane. Resolution: revised; stare profile i ostatnie parametry nadal się wczytują, a dawny poziom labiryntu zostaje poziomem labiryntu. Wiek ustawia poziomy tylko na starcie; rodzic może je zmienić niezależnie.
-- FR-018: Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; kolory są literami w kratkach z legendą, a druk zostaje czarny. Priority: must-have
-  > Socrates: Counter-argument considered: kolorowy druk wymaga kolorowej drukarki i łamie wspólną umowę czarnego druku. Resolution: revised (2026-10-23); kolor oznacza litera w kratce, dziecko koloruje kredkami, a druk zostaje czarny.
+- FR-018: Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; kratki wzoru mają prawdziwe kolory, bez liter i bez legendy, domyślnie czarna sylwetka. Priority: must-have
+  > Socrates: Counter-argument considered: kolorowy druk wymaga kolorowej drukarki i łamie wspólną umowę czarnego druku. Resolution: revised (2026-10-23); po makiecie użytkownik wybrał prawdziwe kolory zamiast liter i legendy, a domyślny druk zostaje czarną sylwetką; kolor wymaga kolorowej drukarki, na czarno-białej schodzi do szarości.
 
 ## Non-Functional Requirements
 
@@ -251,7 +252,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Generowanie, podgląd i druk działają na telefonie w aktualnych mobilnych wersjach Chrome, Edge, Brave, Firefox i Safari.
 - Na telefonie kontrolki generowania i drukowania nie nachodzą na siebie.
 - Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
-- Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), czarny druk także przy włączonych kolorach, te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), domyślny druk czarny, a przy włączonych kolorach prawdziwe kolory kratek bez liter i legendy, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
@@ -287,16 +288,16 @@ Rodzic wybiera jeden z czterech poziomów nazwanych wiekiem. Kartka to pionowy p
 
 Obiekty pochodzą z katalogu szablonów zapisanych w kodzie. Szablon ma części, które generator losuje (np. liczba okien i kształt skrzydeł rakiety, pestki truskawki, oczy i ramiona robota), więc ten sam obiekt daje różne karty. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Szablon musi zmieścić się w połowie siatki danego poziomu. Poziom 4 lat ma własne, prostsze warianty obiektów rysowane na połowie 4×12; poziomy 5 i 6 lat używają szablonów 6×15; poziom 7 lat ma bogatsze warianty (więcej części i szczegółów) rysowane na połowie 9×24.
 
-| Poziom | Kratka      | Siatka (cała) | Obiekty             | Podpowiedź                |
-| ------ | ----------- | ------------- | ------------------- | ------------------------- |
-| 4 lata | około 20 mm | 8×12          | proste, połowa 4×12 | 3 kratki odbicia przy osi |
-| 5 lat  | około 15 mm | 12×16         | szablony 6×15       | brak                      |
-| 6 lat  | około 12 mm | 14×20         | szablony 6×15       | brak                      |
-| 7 lat  | około 10 mm | 18×24         | bogate, połowa 9×24 | brak                      |
+| Poziom | Kratka      | Siatka (cała) | Obiekty             | Podpowiedź                       |
+| ------ | ----------- | ------------- | ------------------- | -------------------------------- |
+| 4 lata | około 20 mm | 8×12          | proste, połowa 4×12 | 3 kratki odbicia przy osi, blade |
+| 5 lat  | około 15 mm | 12×16         | szablony 6×15       | brak                             |
+| 6 lat  | około 12 mm | 14×20         | szablony 6×15       | brak                             |
+| 7 lat  | około 10 mm | 18×24         | bogate, połowa 9×24 | brak                             |
 
 Obiekt zawsze dotyka osi, a dziecko go przedłuża. Odsunięcie obiektu od osi odpadło (2026-10-23): odsunięta połowa przestaje być jednym obiektem. Trudność rośnie przez mniejszą kratkę, większą siatkę, bogatsze obiekty i brak podpowiedzi. Wartości są startowe i zostają potwierdzone na wydruku.
 
-Kolory (US-09): przy włączonych kolorach każda kratka obiektu ma literę jednego koloru z legendy, a legenda pod kratką pokazuje tylko użyte kolory. Druk zostaje czarny. Przy wyłączonych kolorach obiekt jest czarną sylwetką.
+Kolory (US-09): przy włączonych kolorach każda kratka obiektu ma prawdziwy kolor kredki (czerwony, zielony, żółty, niebieski, pomarańczowy, szary albo czarny), bez liter i bez legendy. Detale będące dziurami w sylwetce (okno, oczy, usta, pestki) wykrywa generator i maluje kolorem szablonu. Odpowiedź to odbicie wraz z kolorem każdej kratki. Przełącznik nie zmienia karty. Przy wyłączonych kolorach obiekt jest czarną sylwetką.
 
 Reguły, które generator sprawdza: wzór ma co najmniej jedną zamalowaną kratkę i co najmniej jedną pustą w swojej połowie; żadna zamalowana kratka nie leży na osi; druga połowa zawiera wyłącznie kratki podpowiedzi, które są częścią odbicia, i nie całe odbicie; odpowiedź jest dokładnie odbiciem, przy kolorach razem z literą każdej kratki; obiekt dotyka osi, a liczba podpowiedzi zgadza się z poziomem. Karta, która łamie którąś z tych reguł, nie jest pokazana.
 

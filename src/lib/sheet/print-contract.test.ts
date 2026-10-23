@@ -89,6 +89,13 @@ void describe("print contract", () => {
     assert.ok(svgClass.includes("print:ring-0"));
   });
 
+  void test("the symmetry SVG asks the printer to keep its colors", () => {
+    const source = readRepoFile(SYMMETRY_GENERATOR);
+
+    assert.match(source, /printColorAdjust:\s*"exact"/);
+    assert.match(source, /WebkitPrintColorAdjust:\s*"exact"/);
+  });
+
   void test("print hides the symmetry controls", () => {
     assert.deepEqual(classNamesContaining(readRepoFile(SYMMETRY_GENERATOR), "print:hidden"), [
       "flex w-full flex-col gap-3 print:hidden",
