@@ -256,8 +256,8 @@ Brak zmian zapisanych danych. Stan przełącznika nie jest zapisywany (S-14).
 
 #### Automated
 
-- [ ] 3.1 Testy i lint przechodzą: `npm test`, `npm run lint`
-- [ ] 3.2 Format dokumentów: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
+- [x] 3.1 Testy i lint przechodzą: `npm test`, `npm run lint`
+- [x] 3.2 Format dokumentów: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
 
 #### Manual
 
