@@ -1,10 +1,10 @@
 ---
 change_id: touch-targets
 title: Większe pola dotyku przycisku profilu i krzyżyka w oknach
-status: impl_reviewed
+status: archived
 created: 2026-10-18
 updated: 2026-10-23
-archived_at: null
+archived_at: 2026-10-23T07:45:34Z
 ---
 
 ## Notes
