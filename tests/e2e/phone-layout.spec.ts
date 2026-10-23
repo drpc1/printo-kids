@@ -119,6 +119,37 @@ test("the symmetry page fits the screen and Generuj, Drukuj and Profil do not co
   expect(boxes.drukuj.height).toBeGreaterThanOrEqual(44);
 });
 
+test("every symmetry level fits the screen and keeps Poziom, Generuj, Drukuj and Profil apart", async ({ page }) => {
+  await page.goto("/symetria");
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Symetria" })).toBeVisible();
+
+  for (const label of ["4 lata", "5 lat", "6 lat", "7 lat"]) {
+    await page.getByRole("button", { name: /^Poziom:/ }).click();
+    await page.getByRole("button", { name: label, exact: true }).click();
+    await expect(page.getByRole("button", { name: `Poziom: ${label}` })).toBeVisible();
+    await expect(page.getByRole("img", { name: "Symetria" })).toBeVisible();
+    await settle(page);
+    await expectNoSidewaysScroll(page);
+
+    const width = viewportWidth(page);
+    const boxes = {
+      poziom: await viewportBox(page.getByRole("button", { name: /^Poziom:/ })),
+      generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+      drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+      profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+    };
+    const names = Object.keys(boxes) as (keyof typeof boxes)[];
+    for (const [index, first] of names.entries()) {
+      for (const second of names.slice(index + 1)) {
+        expect(overlaps(boxes[first], boxes[second]), `${label}: ${first} / ${second}`).toBe(false);
+      }
+      expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+      expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+    }
+  }
+});
+
 test("the Profil corner grows on a touch screen and stays short on a mouse", async ({ page }, testInfo) => {
   // No profile is chosen, so the corner reads "Profil". pointer-coarse:min-h-11 is 44 px at a
   // 16 px root and does not apply to a precise pointer, which keeps the height of the text.

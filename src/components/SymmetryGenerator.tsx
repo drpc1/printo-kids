@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
+import { SymmetryLevelChoice } from "@/components/SymmetryLevelChoice";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
-import { generateSymmetryCard, SYMMETRY_SETTING, type SymmetryCard } from "@/lib/symmetry/generate";
+import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
+import { DEFAULT_SYMMETRY_LEVEL_ID, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
 import { cn } from "@/lib/utils";
@@ -15,8 +17,9 @@ const ACTION_BUTTON_CLASS =
   "h-auto rounded-full px-6 py-2.5 text-base has-[>svg]:px-6 sm:px-8 sm:py-3.5 sm:text-lg sm:has-[>svg]:px-8";
 
 /**
- * The symmetry card page: Generuj, the card, Drukuj, and the shared profile corner. It has no character or level
- * bar and never touches the maze's last-used parameters; it only keeps the bar values the profile corner shows.
+ * The symmetry card page: Generuj, the level button, the card, Drukuj, and the shared profile corner. It has no
+ * character bar. The symmetry level lives only in this component (the profile remembers it in a later change), and
+ * the page never touches the maze's last-used parameters; it only keeps the bar values the profile corner shows.
  */
 export default function SymmetryGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
@@ -24,6 +27,8 @@ export default function SymmetryGenerator() {
   });
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const [levelId, setLevelId] = useState<SymmetryLevelId>(DEFAULT_SYMMETRY_LEVEL_ID);
+  const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SymmetryCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
@@ -38,17 +43,28 @@ export default function SymmetryGenerator() {
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
 
-  function handleGenerate(): void {
-    if (waitingForChild) {
-      return;
-    }
-    const next = generateSymmetryCard(Math.random, card?.key ?? null);
+  function generateFor(id: SymmetryLevelId): void {
+    const next = generateSymmetryCard(Math.random, card?.key ?? null, symmetryLevelById(id));
     if (next === null) {
       setGenerateFailed(true);
       return;
     }
     setGenerateFailed(false);
     setCard(next);
+  }
+
+  function handleGenerate(): void {
+    if (waitingForChild) {
+      return;
+    }
+    generateFor(levelId);
+  }
+
+  function handleLevelSelect(id: SymmetryLevelId): void {
+    setLevelId(id);
+    if (card !== null && !waitingForChild) {
+      generateFor(id);
+    }
   }
 
   function handlePrint(): void {
@@ -60,6 +76,14 @@ export default function SymmetryGenerator() {
     setBarLevel(bar.level);
   }
 
+  const levelControl = (
+    <SymmetryLevelChoice
+      level={symmetryLevelById(levelId)}
+      open={levelOpen}
+      onOpenChange={setLevelOpen}
+      onSelect={handleLevelSelect}
+    />
+  );
   const failedNote = generateFailed ? (
     <p role="alert" className={cn("text-destructive text-sm")}>
       {GENERATE_FAILED_TEXT}
@@ -82,7 +106,10 @@ export default function SymmetryGenerator() {
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
-          {failedNote}
+          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {levelControl}
+            {failedNote}
+          </div>
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -103,6 +130,7 @@ export default function SymmetryGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
+          {levelControl}
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
@@ -144,7 +172,7 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
     inset: SYMMETRY_SHEET.inset,
     columns: card.columns,
     rows: card.rows,
-    cellSize: SYMMETRY_SETTING.cellSize,
+    cellSize: card.cellSize,
     instructionHeight: SYMMETRY_SHEET.instructionSize,
     instructionGap: SYMMETRY_SHEET.instructionGap,
   });
@@ -174,9 +202,9 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
       >
         {SYMMETRY_SHEET.instructionText}
       </text>
-      {/* Colors arrive in S-15; every pattern cell prints black for now. */}
+      {/* Colors arrive in S-15; every pattern cell and hint prints black for now. */}
       <g fill="var(--foreground)">
-        {card.cells.map((cell) => (
+        {[...card.cells, ...card.hints].map((cell) => (
           <rect
             key={`${cell.col},${cell.row}`}
             x={grid.x + cell.col * cellSize}
