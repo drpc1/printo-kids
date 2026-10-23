@@ -237,7 +237,7 @@ Brak zmian zapisanych danych. Stan przełącznika nie jest zapisywany (S-14).
 
 #### Manual
 
-- [ ] 1.7 Lista wykrytych dziur zgadza się z zakresami i nie zawiera niechcianych kieszeni
+- [x] 1.7 Lista wykrytych dziur zgadza się z zakresami i nie zawiera niechcianych kieszeni — 1fa187e
 
 ### Phase 2: Strona — tokeny, rysowanie, przełącznik, druk
 
