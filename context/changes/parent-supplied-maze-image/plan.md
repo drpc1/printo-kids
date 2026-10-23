@@ -241,24 +241,24 @@ Istniejące klucze `printo-kids:last-used`, `printo-kids:child-profiles` i `prin
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, a testy kopii pilnują progu 8 × 1024 × 1024, odmowy GIF, skali 1024×512 → 512×256, zostawienia 200×100, JPEG dla nieprzezroczystej bitmapy, PNG dla przezroczystego piksela i obrotu z etykiety orientacji.
-- [x] 1.2 `npm run lint` przechodzi.
-- [x] 1.3 `npx astro check` przechodzi.
+- [x] 1.1 `npm test` przechodzi, a testy kopii pilnują progu 8 × 1024 × 1024, odmowy GIF, skali 1024×512 → 512×256, zostawienia 200×100, JPEG dla nieprzezroczystej bitmapy, PNG dla przezroczystego piksela i obrotu z etykiety orientacji. — f8fe8b1
+- [x] 1.2 `npm run lint` przechodzi. — f8fe8b1
+- [x] 1.3 `npx astro check` przechodzi. — f8fe8b1
 
 ### Phase 2: Wiersz i kartka
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi: `character` bywa `wlasne` i nigdy nie zawiera data URL; wybór Kota zostawia klucz urządzenia; profil dostaje `image` przy „Utwórz” i „Zapisz”, a zapis katalogowy je czyści; zła wartość `image` nie usuwa profilu; `wlasne` bez kopii czyta się jako `none` i nic nie zapisuje; dotychczasowe testy ostatnio użytych i profili przechodzą.
-- [ ] 2.2 `npx playwright test tests/e2e/own-image.spec.ts` przechodzi: wskazany PNG jest na kartce jako `href` zaczynający się od `data:image/`; Kot zdejmuje go z kartki; ponowne otwarcie „Postać” pokazuje miniaturę; profil Ala z ulubionym Kotem po odświeżeniu ma Kota na kartce i miniaturę w oknie; GIF zostawia Kota, okno zostaje otwarte i widać zdanie o JPEG, PNG albo WebP; żądanie z tej ścieżki nie niesie bajtów obrazka w treści.
-- [ ] 2.3 `npm run lint` i `npx astro check` przechodzą.
+- [x] 2.1 `npm test` przechodzi: `character` bywa `wlasne` i nigdy nie zawiera data URL; wybór Kota zostawia klucz urządzenia; profil dostaje `image` przy „Utwórz” i „Zapisz”, a zapis katalogowy je czyści; zła wartość `image` nie usuwa profilu; `wlasne` bez kopii czyta się jako `none` i nic nie zapisuje; dotychczasowe testy ostatnio użytych i profili przechodzą.
+- [x] 2.2 `npx playwright test tests/e2e/own-image.spec.ts` przechodzi: wskazany PNG jest na kartce jako `href` zaczynający się od `data:image/`; Kot zdejmuje go z kartki; ponowne otwarcie „Postać” pokazuje miniaturę; profil Ala z ulubionym Kotem po odświeżeniu ma Kota na kartce i miniaturę w oknie; GIF zostawia Kota, okno zostaje otwarte i widać zdanie o JPEG, PNG albo WebP; żądanie z tej ścieżki nie niesie bajtów obrazka w treści.
+- [x] 2.3 `npm run lint` i `npx astro check` przechodzą.
 
 #### Manual
 
-- [ ] 2.4 Wydruk z Safari na iPhonie i z jednej przeglądarki na komputerze mieści całe zdjęcie w kwadracie przy starcie, a przezroczyste piksele przepuszczają labirynt.
-- [ ] 2.5 Zdjęcie z rolki iPhone’a, zapisane jako HEIC, staje na kartce w Safari.
-- [ ] 2.6 Surowy plik HEIC otwarty w Chrome zostawia Kota i w otwartym oknie pokazuje „Nie da się otworzyć tego pliku.”
-- [ ] 2.7 Na poziomie nastolatka pasek pozwala wybrać zdjęcie, a kartka pokazuje „Start”.
+- [x] 2.4 Wydruk z Safari na iPhonie i z jednej przeglądarki na komputerze mieści całe zdjęcie w kwadracie przy starcie, a przezroczyste piksele przepuszczają labirynt.
+- [x] 2.5 Zdjęcie z rolki iPhone’a, zapisane jako HEIC, staje na kartce w Safari.
+- [x] 2.6 Surowy plik HEIC otwarty w Chrome zostawia Kota i w otwartym oknie pokazuje „Nie da się otworzyć tego pliku.”
+- [x] 2.7 Na poziomie nastolatka pasek pozwala wybrać zdjęcie, a kartka pokazuje „Start”.
 
 ### Phase 3: PRD i Parked
 

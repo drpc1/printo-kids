@@ -7,6 +7,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import {
   barAfterFavoriteSave,
   profileNameError,
+  hrefForFavoriteSave,
+  profileToCreate,
   sortProfiles,
   visitAfterDelete,
   withFavorite,
@@ -22,8 +24,12 @@ import {
   CHARACTER_CHOICES,
   characterChoice,
   characterRow,
-  type CharacterChoice,
+  OWN_IMAGE_ID,
+  OWN_IMAGE_LABEL,
+  type SheetCharacterId,
 } from "@/lib/sheet/character";
+import { copyOwnImage } from "@/lib/sheet/own-image";
+import { isOwnImageDataUrl, readOwnImage, writeOwnImage } from "@/lib/sheet/own-image-store";
 import { cn } from "@/lib/utils";
 
 // Dialog rows stay at the size of Generuj and Drukuj: 16 px text below sm, 18 px from sm, 44 px tall either way.
@@ -36,6 +42,13 @@ const NAME_ERROR_TEXT = {
 } as const;
 
 const SAVE_ERROR_TEXT = "Nie udało się zapisać profilu";
+const OWN_IMAGE_ACCEPT = "image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif";
+const FILE_ERROR_TEXT = {
+  size: "Plik jest większy niż 8 MB.",
+  type: "Wybierz plik JPEG, PNG albo WebP.",
+  decode: "Nie da się otworzyć tego pliku.",
+} as const;
+const STORE_ERROR_TEXT = "Nie udało się zachować zdjęcia.";
 
 type ProfilePanel =
   "menu" | "form" | "delete" | "edit" | "favorite-list" | "draft-list" | "favorite-level-list" | "draft-level-list";
@@ -54,12 +67,17 @@ export function ProfileCorner({
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
-  barCharacter: CharacterChoice;
+  barCharacter: SheetCharacterId;
   barLevel: LevelId;
   ask: boolean;
   onCreated: (profile: ChildProfile) => void;
   onChoose: (profile: ChildProfile) => void;
-  onFavoriteSaved: (profiles: ChildProfile[], barCharacter: string, barLevel: LevelId) => void;
+  onFavoriteSaved: (
+    profiles: ChildProfile[],
+    barCharacter: string,
+    barLevel: LevelId,
+    ownImageHref?: string | null,
+  ) => void;
   onDeleted: (next: VisitAfterDelete) => void;
   onClearProfile: () => void;
 }) {
@@ -71,12 +89,15 @@ export function ProfileCorner({
   const favoriteLock = useRef(false);
   const deleteLock = useRef(false);
   const [draftName, setDraftName] = useState("");
-  const [draftCharacter, setDraftCharacter] = useState<CharacterChoice>("none");
+  const [draftCharacter, setDraftCharacter] = useState<SheetCharacterId>("none");
+  const [draftImageHref, setDraftImageHref] = useState<string | null>(null);
   const [draftLevel, setDraftLevel] = useState<LevelId>(barLevel);
   const [formError, setFormError] = useState<string | null>(null);
-  const [favoriteDraft, setFavoriteDraft] = useState<CharacterChoice>(
+  const [favoriteDraft, setFavoriteDraft] = useState<SheetCharacterId>(
     activeProfile === null ? barCharacter : characterChoice(activeProfile.character),
   );
+  const [favoriteImageHref, setFavoriteImageHref] = useState<string | null>(savedOwnImage(activeProfile));
+  const [favoriteImageTouched, setFavoriteImageTouched] = useState(false);
   const [favoriteLevelDraft, setFavoriteLevelDraft] = useState<LevelId>(
     activeProfile === null ? barLevel : activeProfile.level,
   );
@@ -86,8 +107,11 @@ export function ProfileCorner({
 
   function abandonFavoriteDraft(): void {
     favoriteLock.current = false;
-    setFavoriteDraft(activeProfile === null ? barCharacter : characterChoice(activeProfile.character));
-    setFavoriteLevelDraft(activeProfile === null ? barLevel : activeProfile.level);
+    const source = activeProfile;
+    setFavoriteDraft(source === null ? barCharacter : characterChoice(source.character));
+    setFavoriteImageHref(savedOwnImage(source));
+    setFavoriteImageTouched(false);
+    setFavoriteLevelDraft(source === null ? barLevel : source.level);
     setFavoriteError(null);
   }
 
@@ -102,6 +126,7 @@ export function ProfileCorner({
     clearPendingViews();
     setDraftName("");
     setDraftCharacter("none");
+    setDraftImageHref(null);
     setDraftLevel(barLevel);
     setFormError(null);
     abandonFavoriteDraft();
@@ -161,12 +186,16 @@ export function ProfileCorner({
         return;
       }
       setFavoriteDraft(characterChoice(activeProfile.character));
+      setFavoriteImageHref(savedOwnImage(activeProfile));
+      setFavoriteImageTouched(false);
       setFavoriteLevelDraft(activeProfile.level);
       setFavoriteError(null);
       setPanel("edit");
       return;
     }
     setFavoriteDraft(characterChoice(profile.character));
+    setFavoriteImageHref(savedOwnImage(profile));
+    setFavoriteImageTouched(false);
     setFavoriteLevelDraft(profile.level);
     setFavoriteError(null);
     onChoose(profile);
@@ -205,6 +234,8 @@ export function ProfileCorner({
       const nextActive = next.profiles.find((profile) => profile.id === next.activeId) ?? null;
       favoriteLock.current = false;
       setFavoriteDraft(nextActive === null ? characterChoice(next.character) : characterChoice(nextActive.character));
+      setFavoriteImageHref(savedOwnImage(nextActive));
+      setFavoriteImageTouched(false);
       setFavoriteLevelDraft(nextActive === null ? next.level : nextActive.level);
       setFavoriteError(null);
     }
@@ -215,9 +246,15 @@ export function ProfileCorner({
     }
   }
 
-  function handleFavoriteSelect(id: CharacterChoice): void {
+  function handleFavoriteSelect(id: SheetCharacterId): void {
     favoriteLock.current = false;
     setFavoriteDraft(id);
+    if (id === OWN_IMAGE_ID) {
+      setFavoriteImageHref(readOwnImage(localStorage));
+      setFavoriteImageTouched(true);
+      return;
+    }
+    setFavoriteImageTouched(false);
   }
 
   function openFavoriteList(): void {
@@ -236,13 +273,30 @@ export function ProfileCorner({
     setPanel("draft-level-list");
   }
 
-  function handleFavoritePicked(id: CharacterChoice): void {
+  function handleFavoritePicked(id: SheetCharacterId): void {
     handleFavoriteSelect(id);
     setPanel("edit");
   }
 
-  function handleDraftPicked(id: CharacterChoice): void {
+  function handleDraftPicked(id: SheetCharacterId): void {
     setDraftCharacter(id);
+    if (id === OWN_IMAGE_ID) {
+      setDraftImageHref(readOwnImage(localStorage));
+    }
+    setPanel("form");
+  }
+
+  function handleFavoriteCopied(href: string): void {
+    favoriteLock.current = false;
+    setFavoriteDraft(OWN_IMAGE_ID);
+    setFavoriteImageHref(href);
+    setFavoriteImageTouched(true);
+    setPanel("edit");
+  }
+
+  function handleDraftCopied(href: string): void {
+    setDraftCharacter(OWN_IMAGE_ID);
+    setDraftImageHref(href);
     setPanel("form");
   }
 
@@ -263,17 +317,28 @@ export function ProfileCorner({
     }
     const previousFavorite = activeProfile.character;
     const previousLevel = activeProfile.level;
-    if (favoriteDraft === previousFavorite && favoriteLevelDraft === previousLevel) {
+    const sameStoredFavorite = favoriteDraft === previousFavorite && favoriteLevelDraft === previousLevel;
+    if (sameStoredFavorite && !(favoriteImageTouched && favoriteDraft === OWN_IMAGE_ID)) {
       return;
     }
+    const imageHref = hrefForFavoriteSave(
+      favoriteDraft,
+      favoriteImageTouched,
+      readOwnImage(localStorage),
+      activeProfile.image,
+    );
     const nextProfiles = withFavorite(
       profiles,
       activeProfile.id,
       favoriteDraft,
       favoriteLevelDraft,
       ALLOWED_CHARACTER_IDS,
+      imageHref,
     );
     if (nextProfiles === null) {
+      if (favoriteDraft === OWN_IMAGE_ID) {
+        setFavoriteError(SAVE_ERROR_TEXT);
+      }
       return;
     }
     favoriteLock.current = true;
@@ -283,10 +348,13 @@ export function ProfileCorner({
       setFavoriteError(SAVE_ERROR_TEXT);
       return;
     }
+    const nextCharacter = barAfterFavoriteSave(barCharacter, previousFavorite, favoriteDraft);
+    const sheetHref = nextCharacter !== OWN_IMAGE_ID ? null : favoriteDraft === OWN_IMAGE_ID ? imageHref : undefined;
     onFavoriteSaved(
       nextProfiles,
-      barAfterFavoriteSave(barCharacter, previousFavorite, favoriteDraft),
+      nextCharacter,
       barAfterFavoriteSave(barLevel, previousLevel, favoriteLevelDraft),
+      sheetHref,
     );
     setFavoriteError(null);
     setPanel("menu");
@@ -316,12 +384,17 @@ export function ProfileCorner({
       return;
     }
 
-    const profile: ChildProfile = {
-      id: crypto.randomUUID(),
-      name: draftName.trim(),
-      character: draftCharacter,
-      level: draftLevel,
-    };
+    const profile = profileToCreate(
+      crypto.randomUUID(),
+      draftName.trim(),
+      draftCharacter,
+      draftLevel,
+      draftCharacter === OWN_IMAGE_ID ? readOwnImage(localStorage) : null,
+    );
+    if (profile === null) {
+      setFormError(SAVE_ERROR_TEXT);
+      return;
+    }
     createLock.current = true;
     const saved = writeChildProfiles(localStorage, [...profiles, profile]);
     if (!saved) {
@@ -395,6 +468,7 @@ export function ProfileCorner({
             <CharacterChoiceRows
               selected={panel === "draft-list" ? draftCharacter : favoriteDraft}
               onSelect={panel === "draft-list" ? handleDraftPicked : handleFavoritePicked}
+              onCopied={panel === "draft-list" ? handleDraftCopied : handleFavoriteCopied}
             />
           </div>
         ) : panel === "favorite-level-list" || panel === "draft-level-list" ? (
@@ -408,7 +482,11 @@ export function ProfileCorner({
         ) : panel === "edit" && activeProfile !== null ? (
           <div className={cn("flex flex-col gap-4")}>
             <DialogTitle className={cn("break-words")}>{activeProfile.name}</DialogTitle>
-            <ProfileCharacterControl character={favoriteDraft} onOpen={openFavoriteList} />
+            <ProfileCharacterControl
+              character={favoriteDraft}
+              thumbHref={favoriteDraft === OWN_IMAGE_ID ? favoriteImageHref : null}
+              onOpen={openFavoriteList}
+            />
             <ProfileLevelControl level={favoriteLevelDraft} onOpen={openFavoriteLevelList} />
             {favoriteError !== null ? (
               <p id="child-profile-save-error" role="alert" className={cn("text-destructive text-sm")}>
@@ -421,7 +499,11 @@ export function ProfileCorner({
               </Button>
               <Button
                 type="button"
-                disabled={favoriteDraft === activeProfile.character && favoriteLevelDraft === activeProfile.level}
+                disabled={
+                  favoriteDraft === activeProfile.character &&
+                  favoriteLevelDraft === activeProfile.level &&
+                  !(favoriteImageTouched && favoriteDraft === OWN_IMAGE_ID)
+                }
                 aria-describedby={favoriteError !== null ? "child-profile-save-error" : undefined}
                 onClick={handleSaveFavorite}
               >
@@ -530,7 +612,11 @@ export function ProfileCorner({
                 </p>
               ) : null}
             </div>
-            <ProfileCharacterControl character={draftCharacter} onOpen={openDraftList} />
+            <ProfileCharacterControl
+              character={draftCharacter}
+              thumbHref={draftCharacter === OWN_IMAGE_ID ? draftImageHref : null}
+              onOpen={openDraftList}
+            />
             <ProfileLevelControl level={draftLevel} onOpen={openDraftLevelList} />
             <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end")}>
               <Button type="button" variant="outline" onClick={handleCancel}>
@@ -545,18 +631,35 @@ export function ProfileCorner({
   );
 }
 
-function ProfileCharacterControl({ character, onOpen }: { character: CharacterChoice; onOpen: () => void }) {
-  const choice = characterRow(character);
+function savedOwnImage(profile: ChildProfile | null): string | null {
+  if (profile !== null && profile.character === OWN_IMAGE_ID && isOwnImageDataUrl(profile.image)) {
+    return profile.image;
+  }
+  return null;
+}
+
+function ProfileCharacterControl({
+  character,
+  thumbHref,
+  onOpen,
+}: {
+  character: SheetCharacterId;
+  thumbHref: string | null;
+  onOpen: () => void;
+}) {
+  const catalog = character === OWN_IMAGE_ID ? null : characterRow(character);
+  const label = catalog === null ? OWN_IMAGE_LABEL : catalog.label;
+  const src = catalog === null ? thumbHref : catalog.src;
   return (
     <Button
       type="button"
       variant="ghost"
-      aria-label={`Postać: ${choice.label}`}
+      aria-label={`Postać: ${label}`}
       className={cn(DIALOG_ROW_CLASS, "w-full")}
       onClick={onOpen}
     >
-      {choice.src !== null ? <img src={choice.src} alt="" width={40} height={40} className={cn("size-10")} /> : null}
-      {choice.label}
+      {src !== null ? <img src={src} alt="" width={40} height={40} className={cn("size-10")} /> : null}
+      {label}
       <ChevronDown className={cn("size-4")} aria-hidden />
     </Button>
   );
@@ -603,10 +706,45 @@ export function LevelChoiceRows({ selected, onSelect }: { selected: LevelId; onS
 export function CharacterChoiceRows({
   selected,
   onSelect,
+  onCopied,
 }: {
-  selected: CharacterChoice;
-  onSelect: (id: CharacterChoice) => void;
+  selected: SheetCharacterId;
+  onSelect: (id: SheetCharacterId) => void;
+  onCopied: (href: string) => void;
 }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const request = useRef(0);
+  const [deviceHref, setDeviceHref] = useState<string | null>(() => readOwnImage(localStorage));
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  function openFile(): void {
+    inputRef.current?.click();
+  }
+
+  async function handleFile(file: File): Promise<void> {
+    const ticket = request.current + 1;
+    request.current = ticket;
+    const result = await copyOwnImage(file);
+    if (ticket !== request.current) {
+      return;
+    }
+    if ("reason" in result) {
+      setFileError(FILE_ERROR_TEXT[result.reason]);
+      return;
+    }
+    const saved = writeOwnImage(localStorage, result.href);
+    if (ticket !== request.current) {
+      return;
+    }
+    if (!saved) {
+      setFileError(STORE_ERROR_TEXT);
+      return;
+    }
+    setDeviceHref(result.href);
+    setFileError(null);
+    onCopied(result.href);
+  }
+
   return (
     <div className={cn("flex flex-col gap-2")}>
       {CHARACTER_CHOICES.map((option) => (
@@ -626,6 +764,51 @@ export function CharacterChoiceRows({
           {option.label}
         </Button>
       ))}
+      <div className={cn("flex w-full items-start gap-2")}>
+        <Button
+          type="button"
+          variant="ghost"
+          aria-pressed={selected === OWN_IMAGE_ID}
+          className={cn(DIALOG_ROW_CLASS, "min-w-0 flex-1", selected === OWN_IMAGE_ID && "bg-muted")}
+          onClick={() => {
+            if (deviceHref === null) {
+              openFile();
+              return;
+            }
+            onSelect(OWN_IMAGE_ID);
+          }}
+        >
+          {deviceHref !== null ? (
+            <img src={deviceHref} alt="" width={40} height={40} className={cn("size-10 object-contain")} />
+          ) : null}
+          {OWN_IMAGE_LABEL}
+        </Button>
+        {deviceHref !== null ? (
+          <Button type="button" variant="ghost" className={cn("shrink-0")} onClick={openFile}>
+            Zmień
+          </Button>
+        ) : null}
+      </div>
+      {fileError !== null ? (
+        <p role="alert" className={cn("text-destructive text-sm")}>
+          {fileError}
+        </p>
+      ) : null}
+      <input
+        ref={inputRef}
+        type="file"
+        accept={OWN_IMAGE_ACCEPT}
+        tabIndex={-1}
+        aria-hidden="true"
+        className={cn("sr-only")}
+        onChange={(event) => {
+          const file = event.currentTarget.files?.[0];
+          event.currentTarget.value = "";
+          if (file !== undefined) {
+            void handleFile(file);
+          }
+        }}
+      />
     </div>
   );
 }
