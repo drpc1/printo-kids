@@ -39,13 +39,13 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                  | Outcome (user can …)                                                                                                                                                               | Prerequisites | PRD refs      | Status      |
-| ---- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | ----------- |
-| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora                              | —             | US-05, FR-014 | done        |
-| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z połową obiektu i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | done        |
-| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii                                                                          | S-12          | US-07, FR-016 | done        |
-| S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: prawdziwe kolory kratek, bez liter i legendy                                                                 | S-12, S-13    | US-09, FR-018 | in-progress |
-| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek, osobny poziom każdego rodzaju karty i kolory symetrii; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13, S-15    | US-08, FR-017 | proposed    |
+| ID   | Change ID                  | Outcome (user can …)                                                                                                                                                               | Prerequisites | PRD refs      | Status   |
+| ---- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
+| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora                              | —             | US-05, FR-014 | done     |
+| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z połową obiektu i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | done     |
+| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii                                                                          | S-12          | US-07, FR-016 | done     |
+| S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: prawdziwe kolory kratek, bez liter i legendy                                                                 | S-12, S-13    | US-09, FR-018 | done     |
+| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek, osobny poziom każdego rodzaju karty i kolory symetrii; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13, S-15    | US-08, FR-017 | proposed |
 
 ## Baseline
 
@@ -122,7 +122,7 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
   - ~~Co z detalami, które są pustymi kratkami?~~ Rozstrzygnięte 2026-10-23: generator wykrywa dziury w odbitej sylwetce i maluje je kolorem szablonu (`holeColor`).
   - Czy żółty i pomarańczowy są czytelne na papierze, a blada podpowiedź (35%) odróżnia się od wzoru w czerni? — Owner: user. Block: no. Sprawdza wydruk (faza 3).
 - **Risk:** Przełącznik kolorów żyje tylko na pasku strony, niezależnie od poziomu; do profilu trafia w S-14. Odpowiedź musi uwzględniać kolor każdej kratki i detali. Bez legendy układ strony zostaje (blok 7 lat 257 z 277 mm). Na drukarce czarno-białej kolory schodzą do szarości (świadoma decyzja). Szablony z S-12 muszą od początku nieść kolor każdej kratki, żeby S-15 nie przerabiało katalogu.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-14: Wiek w profilu i poziomy osobno dla każdego rodzaju karty
 
@@ -212,3 +212,4 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **F-03: (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora** — Archived 2026-10-23 → `context/archive/2026-10-22-card-catalog-home/`. Lesson: —.
 - **S-12: Rodzic może wejść z katalogu na stronę symetrii (`/symetria`), wygenerować kartę z połową obiektu (np. rakieta, robot, truskawka) i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.** — Archived 2026-10-23 → `context/archive/2026-10-23-symmetry-first-printable/`. Lesson: —.
 - **S-13: Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii.** — Archived 2026-10-23 → `context/archive/2026-10-23-symmetry-difficulty-levels/`. Lesson: —.
+- **S-15: Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: kratki obiektu (także okno, oczy i pestki) mają prawdziwe kolory, bez liter i bez legendy, a dziecko koloruje odbicie kredkami według wzoru. Domyślnie obiekt jest czarną sylwetką.** — Archived 2026-10-23 → `context/archive/2026-10-23-symmetry-color-codes/`. Lesson: —.
