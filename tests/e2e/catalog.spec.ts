@@ -70,6 +70,23 @@ test("the Symetria card on the catalog opens the symmetry generator and leads ba
   await expect(page.getByRole("link", { name: "Symetria" })).toBeVisible();
 });
 
+test("each Generuj on the symmetry page draws a different card", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/symetria");
+
+  const generuj = page.getByRole("button", { name: "Generuj" });
+  const sheet = page.getByRole("img", { name: "Symetria" });
+  await generuj.click();
+  await expect(sheet).toBeVisible();
+
+  // The page passes the card on screen to the generator, so the next card never repeats it.
+  for (let round = 0; round < 3; round += 1) {
+    const before = await sheet.innerHTML();
+    await generuj.click();
+    await expect.poll(() => sheet.innerHTML()).not.toBe(before);
+  }
+});
+
 test("the profile chosen on the symmetry page persists across the catalog round trip", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   // Seed once: the init script runs on every navigation and must not overwrite later changes.
@@ -91,6 +108,14 @@ test("the profile chosen on the symmetry page persists across the catalog round 
 
   // Two profiles and none chosen: the dialog opens by itself on the symmetry page too.
   const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+
+  // Closed without a choice, Generuj waits for the child, as on the maze page.
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("button", { name: "Generuj" })).toBeDisabled();
+
+  await page.getByRole("button", { name: "Profil", exact: true }).click();
   await dialog.getByRole("button", { name: "Ania", exact: true }).click();
   await expect(dialog).toBeHidden();
   await expect(page.getByRole("button", { name: "Ania", exact: true })).toBeVisible();

@@ -10,6 +10,7 @@ import { layoutSheet } from "../src/lib/sheet/layout.ts";
 import { collectWalls } from "../src/lib/sheet/walls.ts";
 import { generateSymmetryCard, SYMMETRY_SETTING } from "../src/lib/symmetry/generate.ts";
 import { layoutSymmetrySheet } from "../src/lib/symmetry/layout.ts";
+import { SYMMETRY_SHEET } from "../src/lib/symmetry/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -83,15 +84,21 @@ mkdirSync(dirname(outFile), { recursive: true });
 writeFileSync(outFile, lines.join("\n"));
 console.log(`Wrote ${outFile} (${walls.length} wall segments)`);
 
-// Symmetry card: the same elements SymmetrySheet draws (src/components/SymmetryGenerator.tsx), in literal black.
+// Symmetry card: the same elements SymmetrySheet draws (src/components/SymmetryGenerator.tsx), in literal black,
+// with the shared drawing constants from src/lib/symmetry/sheet.ts.
 const SYMMETRY_SEED = 20261024;
-const INSTRUCTION_SIZE = 7;
-const INSTRUCTION_GAP = 6;
-const INSTRUCTION_TEXT = "Dorysuj drugą połowę tak, jak w lustrze.";
-const GRID_STROKE = 0.3;
-const FRAME_STROKE = 0.65;
-const AXIS_STROKE = 1.4;
-const AXIS_DASH = "4 2.5";
+const {
+  pageWidth: SYMMETRY_PAGE_WIDTH,
+  pageHeight: SYMMETRY_PAGE_HEIGHT,
+  inset: SYMMETRY_INSET,
+  instructionSize: INSTRUCTION_SIZE,
+  instructionGap: INSTRUCTION_GAP,
+  instructionText: INSTRUCTION_TEXT,
+  gridStroke: GRID_STROKE,
+  frameStroke: FRAME_STROKE,
+  axisStroke: AXIS_STROKE,
+  axisDash: AXIS_DASH,
+} = SYMMETRY_SHEET;
 
 const card = generateSymmetryCard(mulberry32(SYMMETRY_SEED), null);
 if (card === null) {
@@ -99,9 +106,9 @@ if (card === null) {
 }
 
 const symmetrySheet = layoutSymmetrySheet({
-  pageWidth: PAGE_WIDTH,
-  pageHeight: PAGE_HEIGHT,
-  inset: INSET,
+  pageWidth: SYMMETRY_PAGE_WIDTH,
+  pageHeight: SYMMETRY_PAGE_HEIGHT,
+  inset: SYMMETRY_INSET,
   columns: card.columns,
   rows: card.rows,
   cellSize: SYMMETRY_SETTING.cellSize,
@@ -112,9 +119,9 @@ const grid = symmetrySheet.grid;
 const symmetryCellSize = grid.width / card.columns;
 
 const symmetryLines = [
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}" width="${PAGE_WIDTH}" height="${PAGE_HEIGHT}">`,
-  `<rect width="${PAGE_WIDTH}" height="${PAGE_HEIGHT}" fill="#fff"/>`,
-  `<rect x="0.25" y="0.25" width="${PAGE_WIDTH - 0.5}" height="${PAGE_HEIGHT - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SYMMETRY_PAGE_WIDTH} ${SYMMETRY_PAGE_HEIGHT}" width="${SYMMETRY_PAGE_WIDTH}" height="${SYMMETRY_PAGE_HEIGHT}">`,
+  `<rect width="${SYMMETRY_PAGE_WIDTH}" height="${SYMMETRY_PAGE_HEIGHT}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${SYMMETRY_PAGE_WIDTH - 0.5}" height="${SYMMETRY_PAGE_HEIGHT - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
   `<text x="${num(symmetrySheet.instruction.x)}" y="${num(symmetrySheet.instruction.y)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${INSTRUCTION_SIZE}" text-anchor="middle" dominant-baseline="middle">${INSTRUCTION_TEXT}</text>`,
   `<g fill="#000">`,
 ];
