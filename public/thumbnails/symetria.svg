@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297" width="210" height="297">
+<rect width="210" height="297" fill="#fff"/>
+<rect x="0.25" y="0.25" width="209.5" height="296.5" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>
+<text x="105" y="23.5" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle" dominant-baseline="middle">Dorysuj drugą połowę tak, jak w lustrze.</text>
+<g fill="#000">
+<rect x="60" y="93" width="15" height="15"/>
+<rect x="75" y="93" width="15" height="15"/>
+<rect x="90" y="93" width="15" height="15"/>
+<rect x="60" y="108" width="15" height="15"/>
+<rect x="60" y="123" width="15" height="15"/>
+<rect x="60" y="138" width="15" height="15"/>
+<rect x="75" y="138" width="15" height="15"/>
+<rect x="90" y="138" width="15" height="15"/>
+<rect x="60" y="153" width="15" height="15"/>
+<rect x="75" y="153" width="15" height="15"/>
+<rect x="90" y="153" width="15" height="15"/>
+<rect x="60" y="168" width="15" height="15"/>
+<rect x="75" y="168" width="15" height="15"/>
+<rect x="90" y="168" width="15" height="15"/>
+<rect x="60" y="183" width="15" height="15"/>
+<rect x="75" y="183" width="15" height="15"/>
+<rect x="90" y="183" width="15" height="15"/>
+<rect x="60" y="198" width="15" height="15"/>
+<rect x="75" y="198" width="15" height="15"/>
+<rect x="90" y="198" width="15" height="15"/>
+<rect x="60" y="213" width="15" height="15"/>
+<rect x="75" y="213" width="15" height="15"/>
+<rect x="90" y="213" width="15" height="15"/>
+<rect x="75" y="228" width="15" height="15"/>
+<rect x="90" y="228" width="15" height="15"/>
+<rect x="75" y="243" width="15" height="15"/>
+<rect x="90" y="243" width="15" height="15"/>
+<rect x="90" y="258" width="15" height="15"/>
+<rect x="75" y="48" width="15" height="15"/>
+<rect x="90" y="48" width="15" height="15"/>
+<rect x="60" y="63" width="15" height="15"/>
+<rect x="75" y="63" width="15" height="15"/>
+<rect x="90" y="63" width="15" height="15"/>
+<rect x="60" y="78" width="15" height="15"/>
+<rect x="75" y="78" width="15" height="15"/>
+<rect x="90" y="78" width="15" height="15"/>
+<rect x="75" y="108" width="15" height="15"/>
+<rect x="75" y="123" width="15" height="15"/>
+<rect x="45" y="168" width="15" height="15"/>
+<rect x="30" y="183" width="15" height="15"/>
+<rect x="45" y="183" width="15" height="15"/>
+<rect x="15" y="198" width="15" height="15"/>
+<rect x="30" y="198" width="15" height="15"/>
+<rect x="45" y="198" width="15" height="15"/>
+<rect x="15" y="213" width="15" height="15"/>
+<rect x="30" y="213" width="15" height="15"/>
+</g>
+<g fill="none" stroke="#000" stroke-width="0.3">
+<line x1="30" y1="33" x2="30" y2="273"/>
+<line x1="45" y1="33" x2="45" y2="273"/>
+<line x1="60" y1="33" x2="60" y2="273"/>
+<line x1="75" y1="33" x2="75" y2="273"/>
+<line x1="90" y1="33" x2="90" y2="273"/>
+<line x1="105" y1="33" x2="105" y2="273"/>
+<line x1="120" y1="33" x2="120" y2="273"/>
+<line x1="135" y1="33" x2="135" y2="273"/>
+<line x1="150" y1="33" x2="150" y2="273"/>
+<line x1="165" y1="33" x2="165" y2="273"/>
+<line x1="180" y1="33" x2="180" y2="273"/>
+<line x1="15" y1="48" x2="195" y2="48"/>
+<line x1="15" y1="63" x2="195" y2="63"/>
+<line x1="15" y1="78" x2="195" y2="78"/>
+<line x1="15" y1="93" x2="195" y2="93"/>
+<line x1="15" y1="108" x2="195" y2="108"/>
+<line x1="15" y1="123" x2="195" y2="123"/>
+<line x1="15" y1="138" x2="195" y2="138"/>
+<line x1="15" y1="153" x2="195" y2="153"/>
+<line x1="15" y1="168" x2="195" y2="168"/>
+<line x1="15" y1="183" x2="195" y2="183"/>
+<line x1="15" y1="198" x2="195" y2="198"/>
+<line x1="15" y1="213" x2="195" y2="213"/>
+<line x1="15" y1="228" x2="195" y2="228"/>
+<line x1="15" y1="243" x2="195" y2="243"/>
+<line x1="15" y1="258" x2="195" y2="258"/>
+</g>
+<rect x="15" y="33" width="180" height="240" fill="none" stroke="#000" stroke-width="0.65" stroke-linejoin="miter"/>
+<line x1="105" y1="29" x2="105" y2="277" stroke="#000" stroke-width="1.4" stroke-dasharray="4 2.5"/>
+</svg>

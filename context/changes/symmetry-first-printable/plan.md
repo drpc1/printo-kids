@@ -356,29 +356,29 @@ Bez zmian w danych zapisanych u rodzica. Klucze `localStorage` i kształt profil
 
 #### Automated
 
-- [x] 3.1 `npm test` przechodzi, w tym nowe asercje kontraktu druku
-- [x] 3.2 `npm run lint` i `npx astro check` przechodzą
-- [x] 3.3 `npm run build` przechodzi
-- [x] 3.4 `npm run smoke` przeciw `npm run preview` przechodzi, w tym krok `/symetria`
+- [x] 3.1 `npm test` przechodzi, w tym nowe asercje kontraktu druku — af9c32f
+- [x] 3.2 `npm run lint` i `npx astro check` przechodzą — af9c32f
+- [x] 3.3 `npm run build` przechodzi — af9c32f
+- [x] 3.4 `npm run smoke` przeciw `npm run preview` przechodzi, w tym krok `/symetria` — af9c32f
 
 #### Manual
 
-- [x] 3.5 Na `/symetria` Generuj daje kartę z poleceniem, kratką, osią i połową obiektu; kolejne Generuj zmienia kartę
-- [x] 3.6 Podgląd druku w Chrome: jedna strona A4, kratka cała, margines co najmniej 10 mm, bez przycisków i nagłówka
-- [x] 3.7 Pytanie o dziecko i blokada Generuj przy 2 profilach; profil wspólny z `/labirynt`
+- [x] 3.5 Na `/symetria` Generuj daje kartę z poleceniem, kratką, osią i połową obiektu; kolejne Generuj zmienia kartę — af9c32f
+- [x] 3.6 Podgląd druku w Chrome: jedna strona A4, kratka cała, margines co najmniej 10 mm, bez przycisków i nagłówka — af9c32f
+- [x] 3.7 Pytanie o dziecko i blokada Generuj przy 2 profilach; profil wspólny z `/labirynt` — af9c32f
 
 ### Phase 4: Katalog, miniatura i e2e
 
 #### Automated
 
-- [ ] 4.1 `npm run thumbnails` dwa razy daje ten sam `symetria.svg`
-- [ ] 4.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
-- [ ] 4.3 `npm run smoke` przeciw podglądowi przechodzi
-- [ ] 4.4 Lokalne `npx playwright test` przechodzi, w tym nowe przypadki symetrii
+- [x] 4.1 `npm run thumbnails` dwa razy daje ten sam `symetria.svg`
+- [x] 4.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
+- [x] 4.3 `npm run smoke` przeciw podglądowi przechodzi
+- [x] 4.4 Lokalne `npx playwright test` przechodzi, w tym nowe przypadki symetrii
 
 #### Manual
 
-- [ ] 4.5 Katalog na telefonie i komputerze pokazuje dwie czytelne miniatury
-- [ ] 4.6 Druk jednej strony A4 w Edge, Firefox, Brave i Safari na komputerze
-- [ ] 4.7 Na telefonie przyciski nie nachodzą na siebie, podgląd zostaje, wydruk to jedna strona A4
-- [ ] 4.8 Wydruk testowy: dziecko rozpoznaje obiekt, a kratka 15 mm daje się zamalować kredką
+- [x] 4.5 Katalog na telefonie i komputerze pokazuje dwie czytelne miniatury
+- [x] 4.6 Druk jednej strony A4 w Edge, Firefox, Brave i Safari na komputerze
+- [x] 4.7 Na telefonie przyciski nie nachodzą na siebie, podgląd zostaje, wydruk to jedna strona A4
+- [x] 4.8 Wydruk testowy: dziecko rozpoznaje obiekt, a kratka 15 mm daje się zamalować kredką
