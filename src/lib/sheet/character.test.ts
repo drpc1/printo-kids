@@ -3,7 +3,13 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "./character.ts";
+import {
+  ALLOWED_CHARACTER_IDS,
+  CHARACTER_CHOICES,
+  characterChoice,
+  characterRow,
+  characterSheetSrc,
+} from "./character.ts";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
@@ -73,3 +79,20 @@ void describe("character catalog", () => {
 function readRepoFile(relativePath: string): string {
   return readFileSync(path.join(repoRoot, relativePath), "utf8");
 }
+
+void describe("characterChoice", () => {
+  void test("keeps a catalog id and turns anything else into none", () => {
+    assert.equal(characterChoice("kot"), "kot");
+    assert.equal(characterChoice("none"), "none");
+    assert.equal(characterChoice("kangur"), "none");
+    assert.equal(characterChoice(""), "none");
+  });
+
+  void test("the allowed ids are the catalog ids in catalog order", () => {
+    assert.deepEqual(
+      ALLOWED_CHARACTER_IDS,
+      CHARACTER_CHOICES.map((option) => option.id),
+    );
+    assert.equal(ALLOWED_CHARACTER_IDS[0], "none");
+  });
+});

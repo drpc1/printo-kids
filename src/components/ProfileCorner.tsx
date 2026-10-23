@@ -17,10 +17,14 @@ import {
 import { readActiveProfile } from "@/lib/active-profile";
 import { readLastUsed } from "@/lib/last-used";
 import { LEVELS, levelById, type LevelId } from "@/lib/maze/levels";
-import { CHARACTER_CHOICES, characterRow } from "@/lib/sheet/character";
+import {
+  ALLOWED_CHARACTER_IDS,
+  CHARACTER_CHOICES,
+  characterChoice,
+  characterRow,
+  type CharacterChoice,
+} from "@/lib/sheet/character";
 import { cn } from "@/lib/utils";
-
-const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
 
 // Dialog rows stay at the size of Generuj and Drukuj: 16 px text below sm, 18 px from sm, 44 px tall either way.
 export const DIALOG_ROW_CLASS = "h-auto justify-start px-4 py-2.5 text-base sm:py-2 sm:text-lg";
@@ -33,7 +37,6 @@ const NAME_ERROR_TEXT = {
 
 const SAVE_ERROR_TEXT = "Nie udało się zapisać profilu";
 
-type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
 type ProfilePanel =
   "menu" | "form" | "delete" | "edit" | "favorite-list" | "draft-list" | "favorite-level-list" | "draft-level-list";
 
@@ -625,12 +628,4 @@ export function CharacterChoiceRows({
       ))}
     </div>
   );
-}
-
-function characterChoice(value: string): CharacterChoice {
-  const match = CHARACTER_CHOICES.find((option) => option.id === value);
-  if (match === undefined) {
-    return "none";
-  }
-  return match.id;
 }

@@ -41,8 +41,9 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać dowolną postać z katalogu jedenastu dostarczonych postaci.
 - Rodzic może na telefonie wygenerować kartę i wydrukować ją jako jedną stronę A4.
 - Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej i wejść na stronę generatora tego rodzaju.
-- Rodzic może wygenerować kartę symetrii, na której dziecko dorysowuje drugą połowę wzoru na kratce, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
-- Rodzic może wybrać poziom karty symetrii (rozmiar kratki, gęstość wzoru, oś).
+- Rodzic może wygenerować kartę symetrii, na której dziecko dorysowuje drugą połowę obiektu (np. rakiety, robota, truskawki) na kratce, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
+- Rodzic może wybrać poziom karty symetrii (rozmiar kratki, położenie obiektu względem osi, oś, podpowiedź).
+- Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; druk zostaje czarny, a kolor oznaczają litery w kratkach.
 - Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, także jako ostatnie parametry.
 
 ### Guardrails
@@ -134,27 +135,29 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic otworzył z katalogu stronę „Symetria”
 - **When** uruchomi generowanie
-- **Then** otrzymuje gotową do wydruku kartę A4: połowa wzoru jest narysowana na kratce, druga połowa jest pusta, a dziecko ma ją dorysować jako odbicie
+- **Then** otrzymuje gotową do wydruku kartę A4: połowa obiektu jest narysowana na kratce, druga połowa jest pusta, a dziecko ma ją dorysować jako odbicie
 
 #### Acceptance Criteria
 
 - Kratka jest oddzielona osią symetrii; wzór leży po jednej stronie osi, druga strona jest pusta.
 - Odpowiedź jest jedna: odbicie wzoru względem osi. Aplikacja potrafi ją wyliczyć i sprawdzić.
+- Wzór to połowa rozpoznawalnego obiektu z katalogu szablonów (np. rakieta, robot, truskawka, jabłko, motyl), a nie przypadkowa plama. Nad kratką jest jedno zdanie polecenia.
 - Wzór nie jest pusty i nie jest już symetryczny w całości.
-- Każde Generuj daje nowy wzór.
+- Każde Generuj daje nowy wzór: inny obiekt albo inny wariant tego samego obiektu niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm (ściany i ramka kratki) i drukuje się jako jedna strona.
-- Druk jest czarny, bez koloru i bez odpowiedzi na kartce.
+- Druk jest czarny i bez odpowiedzi na kartce. Kolory, gdy rodzic je włączy, są literami w kratkach (US-09).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
 
 ### US-07: Rodzic wybiera poziom karty symetrii
 
 - **Given** rodzic jest na stronie „Symetria”
 - **When** wybierze poziom nazwany wiekiem (około 4–7 lat)
-- **Then** karta ma kratkę, gęstość wzoru i oś zgodne z tym poziomem
+- **Then** karta ma kratkę, położenie obiektu, oś i podpowiedź zgodne z tym poziomem
 
 #### Acceptance Criteria
 
-- Poziom zmienia rozmiar kratki, gęstość wzoru i oś symetrii (pionowa lub pozioma). Reguły są w Business Logic.
+- Poziom zmienia rozmiar kratki, położenie obiektu względem osi (przy osi albo odsunięty), oś symetrii (pionowa lub pozioma) i podpowiedź (kilka kratek odpowiedzi już zamalowanych). Reguły są w Business Logic.
+- Poziom nie włącza kolorów; to osobne ustawienie rodzica (US-09).
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
 - Poziom jest na pasku strony symetrii. Wybór poziomu w profilu dla symetrii dochodzi z US-08.
 
@@ -169,11 +172,25 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Profil dziecka ma wspólne ustawienia: wiek i ulubioną postać. Obowiązują wszystkie rodzaje kart.
 - Każdy rodzaj karty ma własny poziom. Wiek ustawia go na starcie na najbliższy poziom tego rodzaju (symetria zaczyna się od 4 lat, więc wiek 3 lat daje jej poziom 4 lat).
 - Rodzic może wybrać poziom danego rodzaju niezależnie od wieku dziecka, na przykład labirynt trudniejszy niż wiek, i zapisać go w profilu.
-- Rodzaje kart mogą mieć własne dodatkowe ustawienia (np. oś symetrii). Dochodzą osobno i nie zmieniają wspólnych pól.
+- Rodzaje kart mogą mieć własne dodatkowe ustawienia (np. kolory karty symetrii, US-09). Dochodzą osobno i nie zmieniają wspólnych pól.
 - Ostatnio użyte parametry są pamiętane osobno dla każdego rodzaju karty i są widocznymi, edytowalnymi wartościami domyślnymi (jak FR-006).
 - Profil zmienia się tylko po wyraźnym zapisie (FR-009).
 - Zapisane wcześniej profile i ostatnie parametry nadal się wczytują; poziom labiryntu z dawnego profilu zostaje poziomem labiryntu.
 - Dane zostają na urządzeniu.
+
+### US-09: Rodzic włącza kolory na karcie symetrii
+
+- **Given** rodzic jest na stronie „Symetria”
+- **When** włączy kolory, niezależnie od wybranego poziomu
+- **Then** kratki obiektu mają litery kolorów, kartka ma legendę, a dziecko dorysowuje odbicie i koloruje je kredkami według liter
+
+#### Acceptance Criteria
+
+- Kolory to osobny przełącznik na pasku strony symetrii, niezależny od poziomu i wieku. Domyślnie są wyłączone: obiekt jest czarną sylwetką.
+- Druk zostaje czarny: kolor oznacza litera w kratce, a legenda pod kratką tłumaczy litery (np. C = czerwony, Z = zielony). Legenda pokazuje tylko kolory użyte na karcie.
+- Odpowiedź nadal jest jedna: odbicie obiektu razem z literą każdej kratki.
+- Wyłączenie kolorów daje ten sam rodzaj obiektu jako czarną sylwetkę.
+- Zapis kolorów w profilu i w ostatnich parametrach dochodzi z US-08 jako dodatkowe ustawienie karty symetrii.
 
 ## Functional Requirements
 
@@ -217,12 +234,14 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - FR-014: Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej; każdy rodzaj ma własną stronę generatora, a labirynt na niej nie zmienia działania. Priority: must-have
   > Socrates: Counter-argument considered: katalog to dodatkowe kliknięcie dla rodzica, który chce tylko labirynt. Resolution: kept; miniatura pokazuje, jak wygląda karta, więc rodzic nie zgaduje po nazwie, a strona generatora zostaje taka jak dziś. Skrót „ostatnio użyte” jest możliwym dodatkiem poza tym kamieniem.
-- FR-015: Rodzic może wygenerować kartę symetrii z jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+- FR-015: Rodzic może wygenerować kartę symetrii z połową obiektu z katalogu szablonów i jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dorysowanie odbicia na kratce może być za łatwe do zrobienia samemu bez aplikacji. Resolution: kept; wartość to nowa karta na właściwym poziomie na żądanie, ten sam problem co przy labiryncie.
-- FR-016: Rodzic może wybrać poziom karty symetrii nazwany wiekiem (rozmiar kratki, gęstość wzoru, oś). Priority: must-have
-  > Socrates: Counter-argument considered: bez mierzalnych reguł nazwy poziomów mogą wprowadzać w błąd. Resolution: kept; reguły kratki, gęstości i osi są w Business Logic.
+- FR-016: Rodzic może wybrać poziom karty symetrii nazwany wiekiem (rozmiar kratki, położenie obiektu względem osi, oś, podpowiedź). Priority: must-have
+  > Socrates: Counter-argument considered: bez mierzalnych reguł nazwy poziomów mogą wprowadzać w błąd, a sam rozmiar kratki zmienia głównie motorykę, nie trudność odbicia. Resolution: revised (2026-10-23); poziom łączy kratkę z położeniem obiektu, osią i podpowiedzią, a reguły są w Business Logic.
 - FR-017: Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, a ostatnie parametry są pamiętane osobno dla każdego rodzaju. Priority: must-have
   > Socrates: Counter-argument considered: nowe pola w zapisanych profilach mogą zepsuć istniejące dane. Resolution: revised; stare profile i ostatnie parametry nadal się wczytują, a dawny poziom labiryntu zostaje poziomem labiryntu. Wiek ustawia poziomy tylko na starcie; rodzic może je zmienić niezależnie.
+- FR-018: Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; kolory są literami w kratkach z legendą, a druk zostaje czarny. Priority: must-have
+  > Socrates: Counter-argument considered: kolorowy druk wymaga kolorowej drukarki i łamie wspólną umowę czarnego druku. Resolution: revised (2026-10-23); kolor oznacza litera w kratce, dziecko koloruje kredkami, a druk zostaje czarny.
 
 ## Non-Functional Requirements
 
@@ -232,7 +251,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Generowanie, podgląd i druk działają na telefonie w aktualnych mobilnych wersjach Chrome, Edge, Brave, Firefox i Safari.
 - Na telefonie kontrolki generowania i drukowania nie nachodzą na siebie.
 - Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
-- Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), czarny druk, te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), czarny druk także przy włączonych kolorach, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
@@ -262,20 +281,24 @@ Wynikiem jest karta A4. Labirynt zajmuje większą część strony, zachowuje ma
 
 ### Karta symetrii
 
-Aplikacja zawsze tworzy kartę z dokładnie jedną odpowiedzią: odbiciem wzoru względem osi. Poziom wyznaczają rozmiar kratki, gęstość wzoru i oś.
+Aplikacja zawsze tworzy kartę z dokładnie jedną odpowiedzią: odbiciem wzoru względem osi. Poziom wyznaczają rozmiar kratki, położenie obiektu względem osi, oś i podpowiedź. Kolory są osobnym ustawieniem rodzica, niezależnym od poziomu.
 
-Rodzic wybiera jeden z czterech poziomów nazwanych wiekiem. Kartka to pionowy prostokąt A4 z kratką podzieloną osią na dwie równe połowy. Wzór jest zamalowanymi kratkami po jednej stronie osi, druga strona jest pusta. Dziecko zamalowuje albo dorysowuje kratki po drugiej stronie tak, by wzór odbijał się w osi. Karta nie pokazuje postaci. Każde Generuj daje nowy wzór.
+Rodzic wybiera jeden z czterech poziomów nazwanych wiekiem. Kartka to pionowy prostokąt A4 z kratką podzieloną osią na dwie równe połowy i jednym zdaniem polecenia nad kratką. Wzór jest połową symetrycznego obiektu (np. rakieta, robot, truskawka, jabłko, motyl, korona) zamalowaną na kratkach po jednej stronie osi; druga strona jest pusta poza kratkami podpowiedzi. Dziecko zamalowuje kratki po drugiej stronie tak, by obiekt odbijał się w osi. Karta nie pokazuje postaci z katalogu labiryntu.
 
-| Poziom | Kratka      | Siatka (cała) | Gęstość wzoru | Oś                   |
-| ------ | ----------- | ------------- | ------------- | -------------------- |
-| 4 lata | około 20 mm | 8×12          | około 25%     | pionowa              |
-| 5 lat  | około 15 mm | 12×16         | około 30%     | pionowa              |
-| 6 lat  | około 12 mm | 14×20         | około 35%     | pionowa albo pozioma |
-| 7 lat  | około 10 mm | 18×24         | około 40%     | pionowa albo pozioma |
+Obiekty pochodzą z katalogu szablonów zapisanych w kodzie. Szablon ma części, które generator losuje (np. liczba okien i kształt skrzydeł rakiety, pestki truskawki, oczy i ramiona robota), więc ten sam obiekt daje różne karty. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Szablon musi zmieścić się w połowie siatki danego poziomu.
 
-Gęstość to udział zamalowanych kratek w połowie ze wzorem. Wartości są startowe i zostają potwierdzone na wydruku w kamieniu poziomów; pojedyncza karta może się różnić o kilka punktów.
+| Poziom | Kratka      | Siatka (cała) | Położenie obiektu | Oś                   | Podpowiedź                           |
+| ------ | ----------- | ------------- | ----------------- | -------------------- | ------------------------------------ |
+| 4 lata | około 20 mm | 8×12          | przy osi          | pionowa              | kilka kratek odpowiedzi zamalowanych |
+| 5 lat  | około 15 mm | 12×16         | przy osi          | pionowa              | brak                                 |
+| 6 lat  | około 12 mm | 14×20         | przy osi          | pionowa albo pozioma | brak                                 |
+| 7 lat  | około 10 mm | 18×24         | odsunięty od osi  | pionowa albo pozioma | brak                                 |
 
-Reguły, które generator sprawdza: wzór ma co najmniej jedną zamalowaną kratkę i co najmniej jedną pustą w swojej połowie; żadna zamalowana kratka nie leży na osi; druga połowa jest pusta; odpowiedź jest dokładnie odbiciem. Karta, która łamie którąś z tych reguł, nie jest pokazana.
+„Przy osi” znaczy, że obiekt dotyka osi i dziecko go przedłuża. „Odsunięty” znaczy, że między obiektem a osią jest co najmniej jedna pusta kolumna (albo wiersz przy osi poziomej), więc dziecko musi odmierzyć odległość. Wartości są startowe i zostają potwierdzone na wydruku w kamieniu poziomów.
+
+Kolory (US-09): przy włączonych kolorach każda kratka obiektu ma literę jednego koloru z legendy, a legenda pod kratką pokazuje tylko użyte kolory. Druk zostaje czarny. Przy wyłączonych kolorach obiekt jest czarną sylwetką.
+
+Reguły, które generator sprawdza: wzór ma co najmniej jedną zamalowaną kratkę i co najmniej jedną pustą w swojej połowie; żadna zamalowana kratka nie leży na osi; druga połowa zawiera wyłącznie kratki podpowiedzi, które są częścią odbicia, i nie całe odbicie; odpowiedź jest dokładnie odbiciem, przy kolorach razem z literą każdej kratki; położenie obiektu względem osi zgadza się z poziomem. Karta, która łamie którąś z tych reguł, nie jest pokazana.
 
 Wynikiem jest karta A4. Kratka zajmuje większą część strony, zachowuje margines co najmniej 10 mm i spełnia reguły wybranego poziomu.
 
@@ -289,7 +312,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 ## Non-Goals
 
-- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-08, FR-014–FR-017). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
+- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
@@ -303,7 +326,7 @@ Zapisane 2026-10-10, żeby nie zginęło. Poza bieżącym kamieniem. Żaden z ty
 
 Wspólna umowa z labiryntem: generator algorytmiczny, jedna sprawdzalna odpowiedź, trudność nazwana wiekiem, jedna strona A4, czarny druk. Bez modelu językowego.
 
-Symetria przeszła z tej listy do zakresu (2026-10-22): US-05–US-08, FR-014–FR-017, Business Logic „Karta symetrii”. Strona główna staje się katalogiem z miniaturami, a każdy rodzaj karty dostaje własną stronę generatora; druk, margines, ostatnie parametry i profil dziecka zostają. Ta przebudowa mieści kolejne rodzaje, ale nie dostarcza całej listy poniżej.
+Symetria przeszła z tej listy do zakresu (2026-10-22): US-05–US-09, FR-014–FR-018, Business Logic „Karta symetrii”. Strona główna staje się katalogiem z miniaturami, a każdy rodzaj karty dostaje własną stronę generatora; druk, margines, ostatnie parametry i profil dziecka zostają. Ta przebudowa mieści kolejne rodzaje, ale nie dostarcza całej listy poniżej.
 
 Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero przy otwarciu jego kamienia.
 
@@ -323,5 +346,6 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 2. ~~**Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej?**~~ — Zamknięte 2026-10-16 jako nieaktualne: poziom wyznacza sposób losowania, nie próg głębokości odnogi (`random-maze-generator`).
 3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka. Własny plik rodzica jest US-02 i zostaje poza MVP.
 4. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Dziś pasek „Postać” zostaje aktywny przy nastolatku, a karta postaci nie rysuje, co myli rodzica. Albo wybór postaci blokuje się przy nastolatku, albo nastolatek też dostaje postać, bo młodsze dzieci mogą chcieć ten poziom. Nowa zmiana, issue drpc1/printo-kids#54 (2026-10-22).
-5. **Czy startowe wartości poziomów symetrii (kratka, siatka, gęstość) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22; potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie.
-6. **Czy karta symetrii ma kiedyś używać postaci (np. połowa sylwetki)?** — Owner: user. Block: no. Dziś karta postaci nie pokazuje, a strona symetrii nie ma paska „Postać” (US-05). Zależy od obrysów postaci, jak „Połącz kropki”.
+5. **Czy startowe wartości poziomów symetrii (kratka, siatka, położenie obiektu, podpowiedź) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22, przebudowaną 2026-10-23 (obiekty zamiast gęstości plamy); potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie. Połowa siatki 8×12 ma 4 kratki szerokości, co może być za wąsko na rozpoznawalny obiekt; poziom 4 lat może potrzebować innej siatki.
+6. **Czy karta symetrii ma kiedyś używać postaci (np. połowa sylwetki)?** — Owner: user. Block: no. Dziś karta postaci nie pokazuje, a strona symetrii nie ma paska „Postać” (US-05). Zależy od obrysów postaci, jak „Połącz kropki”. Szablony obiektów karty symetrii (2026-10-23) to osobny katalog i nie czekają na tę decyzję.
+7. **Ile szablonów obiektów i jakich wariantów wystarczy, żeby kolejne karty się nie powtarzały?** — Owner: team. Block: no. Ustalone 2026-10-23: obiekty zamiast przypadkowych plam. Gotowa lista szablonów to skończona biblioteka, czyli problem z wizji produktu; warianty części mają go zmiękczyć. Otwarte: czy starszy poziom ma też dostawać ornamenty budowane z reguł (np. romby, pierścienie), które dają się generować bez końca.
