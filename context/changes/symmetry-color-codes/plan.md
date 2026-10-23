@@ -228,12 +228,12 @@ Brak zmian zapisanych danych. Stan przełącznika nie jest zapisywany (S-14).
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Dziury rakiety 5 lat (wariant 0 okna) to dokładnie 4 kratki, kolor niebieski (ręczny oracle)
-- [x] 1.3 Każdy szablon, zestaw wariantów i offset daje poprawną kartę, a każda dziura ma kolor z palety i leży poza `cells`; liczba dziur mieści się w zakresie zmierzonym na `main` (po wszystkich wariantach części, 5 i 6 lat dzielą katalog): 4 lata rakieta 0–1, robot 1, truskawka 3–4; 5/6 lat rakieta 2–4, robot 3–4, truskawka 6–8; 7 lat rakieta 4–6, robot 6–9, truskawka 13
-- [x] 1.4 Pozycje kratek wszystkich szablonów i wariantów zgadzają się z `main`
-- [x] 1.5 `mirrorAnswerWithDetails` odbija kolor i wiersz detalu, `mirrorAnswer` go pomija
-- [x] 1.6 Lint i typy: `npm run lint` i `npx astro check`
+- [x] 1.1 Testy przechodzą: `npm test` — 1fa187e
+- [x] 1.2 Dziury rakiety 5 lat (wariant 0 okna) to dokładnie 4 kratki, kolor niebieski (ręczny oracle) — 1fa187e
+- [x] 1.3 Każdy szablon, zestaw wariantów i offset daje poprawną kartę, a każda dziura ma kolor z palety i leży poza `cells`; liczba dziur mieści się w zakresie zmierzonym na `main` (po wszystkich wariantach części, 5 i 6 lat dzielą katalog): 4 lata rakieta 0–1, robot 1, truskawka 3–4; 5/6 lat rakieta 2–4, robot 3–4, truskawka 6–8; 7 lat rakieta 4–6, robot 6–9, truskawka 13 — 1fa187e
+- [x] 1.4 Pozycje kratek wszystkich szablonów i wariantów zgadzają się z `main` — 1fa187e
+- [x] 1.5 `mirrorAnswerWithDetails` odbija kolor i wiersz detalu, `mirrorAnswer` go pomija — 1fa187e
+- [x] 1.6 Lint i typy: `npm run lint` i `npx astro check` — 1fa187e
 
 #### Manual
 
