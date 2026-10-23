@@ -140,10 +140,11 @@ function findHoles(cells: readonly SymmetryCell[], level: SymmetryLevel): readon
       [col, row + 1],
     ]) {
       const next = nextRow * width + nextCol;
-      if (nextCol < 0 || nextCol >= width || nextRow < 0 || nextRow >= rows + 2) continue;
-      if (filled.has(next) || reached.has(next)) continue;
-      reached.add(next);
-      queue.push(next);
+      const inPaddedGrid = nextCol >= 0 && nextCol < width && nextRow >= 0 && nextRow < rows + 2;
+      if (inPaddedGrid && !filled.has(next) && !reached.has(next)) {
+        reached.add(next);
+        queue.push(next);
+      }
     }
   }
   const holes: Pick<SymmetryCell, "col" | "row">[] = [];

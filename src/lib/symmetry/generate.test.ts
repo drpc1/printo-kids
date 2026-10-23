@@ -71,13 +71,14 @@ void describe("details", () => {
     assert.deepEqual(composeSymmetryCard(rocket4, [0, 1, 0], 0, LAT4).details, []);
   });
 
-  void test("a gap open to the edge of the grid is not a hole", () => {
+  void test("the robot keeps its eye and mouth as holes, while the gap beside the arm is not one (hand-written oracle)", () => {
     const card = composeSymmetryCard(symmetryTemplatesFor("lat5")[1], [0, 0, 0], 0, LAT5);
 
-    assert.ok(
-      card.details.every((cell) => cell.row >= 3 && cell.row <= 5),
-      JSON.stringify(card.details),
-    );
+    assert.deepEqual(card.details, [
+      { col: 3, row: 3, color: "yellow" },
+      { col: 4, row: 5, color: "yellow" },
+      { col: 5, row: 5, color: "yellow" },
+    ]);
   });
 
   void test("every template, variant set, and offset keeps details out of the pattern cells and inside the palette", () => {
