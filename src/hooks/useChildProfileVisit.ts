@@ -3,11 +3,7 @@ import { clearActiveProfile, NO_PROFILE, readActiveProfile, writeActiveProfile }
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed } from "@/lib/last-used";
 import type { LevelId } from "@/lib/maze/levels";
-import { CHARACTER_CHOICES } from "@/lib/sheet/character";
-
-const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
-
-type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
+import { ALLOWED_CHARACTER_IDS, characterChoice, type CharacterChoice } from "@/lib/sheet/character";
 
 export interface ProfileBar {
   character: CharacterChoice;
@@ -113,12 +109,4 @@ function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitSta
     level: opening.level,
     ask: opening.ask,
   };
-}
-
-function characterChoice(value: string): CharacterChoice {
-  const match = CHARACTER_CHOICES.find((option) => option.id === value);
-  if (match === undefined) {
-    return "none";
-  }
-  return match.id;
 }

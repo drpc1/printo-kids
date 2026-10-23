@@ -7,7 +7,7 @@ import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVi
 import { writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
-import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
+import { CHARACTER_CHOICES, characterRow, characterSheetSrc, type CharacterChoice } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
 import { collectWalls } from "@/lib/sheet/walls";
 import { cn } from "@/lib/utils";
@@ -22,8 +22,6 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
 // Button's default size adds has-[>svg]:px-3; the has-[>svg] entries replace it so the icon keeps the full padding.
 const ACTION_BUTTON_CLASS =
   "h-auto rounded-full px-6 py-2.5 text-base has-[>svg]:px-6 sm:px-8 sm:py-3.5 sm:text-lg sm:has-[>svg]:px-8";
-
-type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
 
 export default function WorksheetGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
