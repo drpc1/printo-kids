@@ -4,163 +4,156 @@ version: 1
 status: draft
 created: 2026-09-27
 updated: 2026-10-23
-prd_version: 2
+prd_version: 3
 main_goal: low-complexity
 top_blocker: capacity
-milestone_id: symmetry-card-a4
-milestone_seq: 2
+milestone_id: sequences-and-sudoku-cards
+milestone_seq: 3
 milestone_status: open
 ---
 
 # Roadmap: PrintoKids
 
-> Derived from `context/foundation/prd.md` (v2) + auto-researched codebase baseline.
+> Derived from `context/foundation/prd.md` (v3) + auto-researched codebase baseline.
 > Edit-in-place; archive when superseded.
 > Slices below are listed in dependency order. The "At a glance" table is the index.
 
 ## Milestone
 
-**M-2: Karta symetrii na A4** — Status: open
+**M-3: Sekwencje i sudoku obrazkowe** — Status: open
 
-- **Intent:** Pokazać, że produkt unosi drugi rodzaj karty. Strona główna staje się katalogiem z miniaturami, a każdy rodzaj karty ma własną stronę generatora. Rodzic generuje kartę symetrii (dziecko dorysowuje drugą połowę wzoru na kratce, wiek około 4–7 lat), widzi podgląd i drukuje ją jako jedną stronę A4, także z telefonu. Potem poziomy symetrii, potem wspólny wiek w profilu i poziomy osobno dla każdego rodzaju karty.
-- **Source materials:** `context/foundation/prd.md` (v2)
-- **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcja „Po tym kamieniu” nie wlicza się.
-- **Scope anchors:** US-05–US-09, FR-014–FR-018, NFR „Karta symetrii spełnia te same granice co labirynt”, Business Logic „Karta symetrii”. Labirynt zostaje bez zmian.
+- **Intent:** Pokazać, że katalog kart rośnie o dwa rodzaje naraz bez przebudowy: karta sekwencji (dziecko uzupełnia brakujące elementy ciągu liczb i kształtów) i karta sudoku obrazkowego 4×4 z postaciami z katalogu. Każda ma własną stronę, własne poziomy nazwane wiekiem, podgląd i druk jako jedna strona A4, także z telefonu. Dwa strumienie idą równolegle. Profil z wiekiem i poziomami per rodzaj karty (S-14) zostaje poza tym kamieniem.
+- **Source materials:** `context/foundation/prd.md` (v3)
+- **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcje „Po tym kamieniu” i „Parked” nie wliczają się.
+- **Scope anchors:** US-10–US-13, FR-019–FR-022, NFR „Karty sekwencji i sudoku obrazkowego spełniają te same granice co labirynt”, Business Logic „Karta sekwencji” i „Karta sudoku obrazkowego”. Labirynt i symetria zostają bez zmian.
 
 ## Vision recap
 
-Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności, a dziecko wciąż chce kolejną kartę. Szukanie i ściąganie z wielu stron nie daje nowej karty na tym samym poziomie. Brakuje sposobu, żeby wygenerować nową kartę, gdy skończy się dopasowana gotowa biblioteka. M-2 dokłada drugi rodzaj karty na tych samych zasadach: algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4, czarny druk.
+Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności, a dziecko wciąż chce kolejną kartę. Szukanie i ściąganie z wielu stron nie daje nowej karty na tym samym poziomie. Brakuje sposobu, żeby wygenerować nową kartę, gdy skończy się dopasowana gotowa biblioteka. M-3 dokłada dwa kolejne rodzaje kart na tych samych zasadach: algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4.
 
 ## North star
 
-**S-12: Rodzic może wygenerować kartę symetrii, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie** — to najmniejszy kompletny przepływ, który dowodzi, że druga karta działa w całym łańcuchu (katalog, generowanie, podgląd, druk) na własnej stronie. Poziomy i pamięć dochodzą dopiero po nim.
+**S-16: Rodzic może wygenerować kartę sekwencji, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie** — najmniejszy kompletny przepływ, który dowodzi, że trzeci rodzaj karty przechodzi cały łańcuch (katalog, generowanie z jawną regułą jednej odpowiedzi, podgląd, druk) na własnej stronie. Ryzykiem jest sprawdzenie, że do pustego pola pasuje dokładnie jedna reguła; sudoku powtarza ten wzorzec z innym sprawdzeniem (jedno rozwiązanie).
 
 > North star — tu: najmniejszy kompletny przepływ, którego udane dowiezienie pokazuje, że kamień ma sens. Stoi możliwie wcześnie, bo reszta ma sens tylko jeśli ten przepływ działa.
 
 ## At a glance
 
-| ID   | Change ID                  | Outcome (user can …)                                                                                                                                                               | Prerequisites | PRD refs      | Status   |
-| ---- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
-| F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora                              | —             | US-05, FR-014 | done     |
-| S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z połową obiektu i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | done     |
-| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii                                                                          | S-12          | US-07, FR-016 | done     |
-| S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: prawdziwe kolory kratek, bez liter i legendy                                                                 | S-12, S-13    | US-09, FR-018 | done     |
-| S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek, osobny poziom każdego rodzaju karty i kolory symetrii; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13, S-15    | US-08, FR-017 | proposed |
+| ID   | Change ID                      | Outcome (user can …)                                                                                                                                                                                                            | Prerequisites | PRD refs      | Status   |
+| ---- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
+| S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-10, FR-019 | ready    |
+| S-18 | picture-sudoku-first-printable | Rodzic może wejść z katalogu na stronę sudoku obrazkowego, wygenerować planszę 4×4 z postaciami z katalogu i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie                     | —             | US-12, FR-021 | ready    |
+| S-17 | sequence-difficulty-levels     | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                 | S-16          | US-11, FR-020 | proposed |
+| S-19 | picture-sudoku-levels          | Rodzic może wybrać poziom sudoku obrazkowego nazwany wiekiem (liczba pól wypełnionych na starcie) na pasku strony sudoku                                                                                                        | S-18          | US-13, FR-022 | proposed |
+
+## Streams
+
+Navigation aid — groups items that share a Prerequisites chain. Canonical ordering still lives in the dependency graph below; this table is the proposed reading order across parallel tracks.
+
+| Stream | Theme     | Chain           | Note                                                                                    |
+| ------ | --------- | --------------- | --------------------------------------------------------------------------------------- |
+| A      | Sekwencje | `S-16` → `S-17` | Gwiazda przewodnia kamienia; poziomy dopiero po pierwszej drukowalnej karcie.           |
+| B      | Sudoku    | `S-18` → `S-19` | Równolegle do strumienia A; obie pierwsze karty dotykają katalogu (`src/lib/cards.ts`). |
 
 ## Baseline
 
-What's already in place in the codebase as of `2026-10-22` (z kodu i z `tech-stack.md`, M-1 zamknięty).
+What's already in place in the codebase as of `2026-10-23` (z kodu i z `tech-stack.md`, M-2 zamknięty).
 Foundations below assume these are present and do NOT re-scaffold them.
 
-- **Frontend:** present — jedna strona `/` z generatorem labiryntu w dużym komponencie React (`src/components/WorksheetGenerator.tsx`, ~455 linii: stan labiryntu, profili, paska, okien dialogowych), układ i `@page` w `WorksheetHome.astro`, kit `src/components/ui`. Brak katalogu kart i osobnych stron generatorów.
+- **Frontend:** present — katalog kart na `/` (`src/components/CardCatalog.astro`, `src/lib/cards.ts` z rodzajami `labirynt` i `symetria`), wspólna powłoka strony generatora (`GeneratorShell.astro`), strony `/labirynt` i `/symetria`, kit `src/components/ui`. Wzorzec strony karty: `SymmetryGenerator.tsx` (Generuj, przycisk poziomu, karta SVG, Drukuj, róg profilu).
 - **Backend / API:** absent by design — strona renderowana po stronie serwera, bez endpointu generowania; generowanie działa w przeglądarce.
-- **Data:** present — tylko na urządzeniu: ostatnio użyte parametry (`src/lib/last-used.ts`) i profile dzieci (`src/lib/child-profiles.ts`). Oba pamiętają dziś postać i poziom labiryntu; nie ma wspólnego wieku ani poziomów osobnych dla rodzajów kart.
+- **Data:** present — tylko na urządzeniu: ostatnio użyte parametry (`src/lib/last-used.ts`) i profile dzieci (`src/lib/child-profiles.ts`), oba tylko dla postaci i poziomu labiryntu. Poziom symetrii i kolory żyją w stanie strony. Nowe karty trzymają poziom w stanie strony tak samo.
 - **Auth:** absent by design — konta usunięte w F-02; PRD: jeden lokalny rodzic.
 - **Deploy / infra:** present — CI (lint, test, check, build, smoke). `npm test` wylicza pliki testów jawnie, więc nowe pliki testów trzeba dopisać do skryptu.
 - **Observability:** partial — dzienniki platformy, bez śledzenia błędów aplikacji.
 
-Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), profile i ostatnie parametry, katalog postaci (dla labiryntu), `src/components/ui`. Specyficzne dla labiryntu: `src/lib/maze/` (`generate.ts`, `levels.ts`) i `src/lib/sheet/layout.ts`.
+Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), układ strony SVG z `src/lib/symmetry/layout.ts` i `sheet.ts` jako wzorzec, katalog postaci (`src/lib/sheet/character.ts`, dla sudoku), profil w rogu (bez zmian).
 
 ## Foundations
 
-### F-03: Katalog kart na stronie głównej
-
-- **Outcome:** (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem (`/labirynt`), ze wspólną powłoką strony generatora (profil w rogu, link „Wszystkie karty”, druk).
-- **Change ID:** card-catalog-home
-- **PRD refs:** US-05, FR-014
-- **Unlocks:** S-12
-- **Prerequisites:** —
-- **Parallel with:** —
-- **Blockers:** —
-- **Unknowns:**
-  - Skąd miniatury? Rekomendacja: statyczne SVG na rodzaj karty, wygenerowane z prawdziwego generatora przy budowaniu, żeby miniatura nie rozjechała się z wyglądem karty. — Owner: team. Block: no.
-  - Co z adresem `/` po zmianie? Dziś to labirynt, a sprawdzian HTTP (`npm run smoke`) i CI sprawdzają `/`. Rekomendacja: `/` to katalog, a sprawdzian dostaje też `/labirynt`. — Owner: team. Block: no.
-- **Risk:** Najtrudniejsze miejsce kamienia. Strona labiryntu przenosi się z `/` pod `/labirynt`, więc razem z nią muszą pójść `@page` i reguły druku (dziś w `WorksheetHome.astro`), profil w rogu i sprawdzian HTTP. Duży komponent `WorksheetGenerator.tsx` zostaje cały na stronie labiryntu; nie rozbijamy go warunkami, bo drugi rodzaj dostaje własną stronę. Wspólna jest tylko powłoka (profil, link powrotu, układ). Profil wybrany w katalogu musi zostać na stronie generatora (wspólny `localStorage`). Nie zmieniamy ani druku, ani marginesu, ani zapisanych danych; naprawiały je S-09 i S-11. Katalog z jedną miniaturą jest celowo skromny: drugą dokłada S-12. Jeśli plan okaże się za duży, rozdzielić na „labirynt pod własnym adresem” i „katalog”.
-- **Status:** done
+Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec strony karty istnieje (S-12). Każda z pierwszych kart dokłada do niego własny wpis, stronę i miniaturę.
 
 ## Slices
 
-### S-12: Karta symetrii na A4
+### S-16: Karta sekwencji: strona, generowanie, podgląd i druk A4
 
-- **Outcome:** Rodzic może wejść z katalogu na stronę symetrii (`/symetria`), wygenerować kartę z połową obiektu (np. rakieta, robot, truskawka) i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.
-- **Change ID:** symmetry-first-printable
-- **PRD refs:** US-06, FR-015
-- **Prerequisites:** F-03
-- **Parallel with:** —
+- **Outcome:** Rodzic może wejść z katalogu na stronę „Sekwencje” (`/sekwencje`), wygenerować kartę z kilkoma ciągami liczb i kształtów, w których brakuje elementów, i jedną odpowiedzią każdego ciągu, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.
+- **Change ID:** sequences-first-printable
+- **PRD refs:** US-10, FR-019
+- **Prerequisites:** —
+- **Parallel with:** S-18
 - **Blockers:** —
 - **Unknowns:**
-  - ~~Jak wygląda zamalowana kratka i oś na czarnym druku?~~ — Ustalone 2026-10-23 na makiecie: czarne wypełnione kratki, gruba przerywana oś, cienka siatka w obu połowach, jedno zdanie polecenia nad kratką.
-  - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „5 lat” z tabeli PRD (kratka około 15 mm, 12×16, pionowa oś, obiekt przy osi, sylwetka bez kolorów); poziomy dochodzą w S-13, kolory w S-15. — Owner: team. Block: no.
-  - Ile szablonów obiektów i jakie warianty części wchodzą w S-12? Rekomendacja: 3–5 szablonów z losowanymi częściami, katalog rośnie później. — Owner: team. Block: no. PRD Open Questions 7.
-- **Risk:** Gwiazda przewodnia. Karta musi mieć odpowiedź wyliczoną i sprawdzoną tą samą funkcją w testach i przed pokazaniem (połowa pusta, nic na osi, wzór ani pusty, ani pełny). Kryteria z US-04 wchodzą do tego plasterka, nie są doklejane później: bez nachodzących się przycisków, jedna strona A4 w szerokości i w długości, margines 10 mm, Brave razem z resztą przeglądarek. Strona symetrii nie ma paska „Postać”. Do katalogu dochodzi miniatura symetrii i link do strony. Profil i ostatnie parametry na tej stronie jeszcze nie pamiętają niczego własnego (S-14). Nowe pliki testów trzeba dopisać do skryptu `npm test`. Wzór to połowa rozpoznawalnego obiektu z szablonu, nie przypadkowa plama (decyzja 2026-10-23); szablon musi mieścić się w połowie siatki, a losowane warianty nie mogą psuć jego czytelności.
-- **Status:** done
+  - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „5 lat” z tabeli PRD (ciągi 7-polowe, wzór AB/AAB/ABC z kształtami, 1–2 puste pola, 6 ciągów); poziomy dochodzą w S-17. — Owner: team. Block: no.
+  - Jak wygląda puste pole do wpisania i jak wygląda liczba w polu na czarnym druku? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+- **Risk:** Sprawdzenie, że do pustego pola pasuje dokładnie jedna reguła z jawnej listy, to jedyne nietrywialne miejsce. Odrzucenie ciągu zbyt często psuje szybkość generowania (limit 5 s) albo zmniejsza różnorodność kart. Pierwszy wpis w `src/lib/cards.ts` i miniatura w `public/thumbnails/` dzielą pliki ze S-18, więc strumienie nie powinny edytować ich jednocześnie bez uzgodnienia.
+- **Status:** ready
 
-### S-13: Poziomy symetrii
+### S-18: Sudoku obrazkowe 4×4: strona, generowanie, podgląd i druk A4
 
-- **Outcome:** Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii.
-- **Change ID:** symmetry-difficulty-levels
-- **PRD refs:** US-07, FR-016
-- **Prerequisites:** S-12
-- **Parallel with:** — (po kolei: najpierw S-13, potem S-15; oba zmieniają `src/lib/symmetry/templates.ts`, `generate.ts` i `src/components/SymmetryGenerator.tsx`)
+- **Outcome:** Rodzic może wejść z katalogu na stronę „Sudoku obrazkowe” (`/sudoku`), wygenerować planszę 4×4 z czterema postaciami z katalogu, częścią pól wypełnionych i jednym rozwiązaniem, z legendą numerów 1–4, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.
+- **Change ID:** picture-sudoku-first-printable
+- **PRD refs:** US-12, FR-021
+- **Prerequisites:** —
+- **Parallel with:** S-16
 - **Blockers:** —
 - **Unknowns:**
-  - Czy startowe wartości z tabeli PRD pasują dziecku? — Owner: user. Block: no. Potwierdza je wydruk, nie planowanie (PRD Open Questions 5).
-- **Risk:** Każdy z czterech poziomów musi się mieścić na jednej stronie A4 z marginesem 10 mm (oś zawsze pionowa, decyzja 2026-10-23). To to samo ryzyko, które przy labiryncie rozjeżdżała zmiana siatki. Każdy szablon obiektu musi zmieścić się w połowie siatki każdego poziomu albo być wyłączony z poziomów, na których się nie mieści; połowa siatki 8×12 ma tylko 4 kratki szerokości, więc poziom 4 lat dostaje własne, prostsze warianty obiektów (decyzja 2026-10-23). Kratki podpowiedzi muszą być częścią odbicia i nie mogą go zdradzić w całości. Poziom żyje tylko na pasku strony; do profilu trafia dopiero w S-14.
-- **Status:** done
+  - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „6 lat” (8 pól wypełnionych z 16); poziomy dochodzą w S-19. — Owner: team. Block: no.
+  - Prawa do postaci użytych w sudoku. — Owner: user. Block: no (PRD Open Questions 3, dotyczy publikacji katalogu postaci).
+  - Czy dziecko wpisze numer z legendy, czy narysuje postać (PRD Open Questions 8)? — Owner: user. Block: no. Potwierdza wydruk.
+- **Risk:** Generator musi dawać jedno rozwiązanie (usuwanie pól z kontrolą jednoznaczności), co przy 4×4 jest szybkie. Postacie z `public/characters/*.png` muszą dać się ułożyć w polu planszy i zmieścić w czarnym druku bez przesłaniania siatki. Dzieli z S-16 katalog kart i miniatury.
+- **Status:** ready
 
-### S-15: Kolory na karcie symetrii
+### S-17: Poziomy sekwencji
 
-- **Outcome:** Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: kratki obiektu (także okno, oczy i pestki) mają prawdziwe kolory, bez liter i bez legendy, a dziecko koloruje odbicie kredkami według wzoru. Domyślnie obiekt jest czarną sylwetką.
-- **Change ID:** symmetry-color-codes
-- **PRD refs:** US-09, FR-018
-- **Prerequisites:** S-12, S-13
-- **Parallel with:** — (po kolei: najpierw S-13, potem S-15; oba zmieniają `src/lib/symmetry/templates.ts`, `generate.ts` i `src/components/SymmetryGenerator.tsx`)
+- **Outcome:** Rodzic może wybrać poziom sekwencji nazwany wiekiem (4–7 lat: długość ciągu, rodzaj reguł, liczba pustych pól i ciągów) na pasku strony sekwencji.
+- **Change ID:** sequence-difficulty-levels
+- **PRD refs:** US-11, FR-020
+- **Prerequisites:** S-16
+- **Parallel with:** S-18, S-19
 - **Blockers:** —
 - **Unknowns:**
-  - ~~Jakie litery dla polskich nazw kolorów?~~ Rozstrzygnięte 2026-10-23: liter nie ma, kolor to prawdziwy kolor kratki (decyzja użytkownika po makiecie).
-  - ~~Czy litera mieści się w kratce 10 mm na poziomie 7 lat?~~ Rozstrzygnięte 2026-10-23: bez liter pytanie odpada.
-  - ~~Co z detalami, które są pustymi kratkami?~~ Rozstrzygnięte 2026-10-23: generator wykrywa dziury w odbitej sylwetce i maluje je kolorem szablonu (`holeColor`).
-  - Czy żółty i pomarańczowy są czytelne na papierze, a blada podpowiedź (35%) odróżnia się od wzoru w czerni? — Owner: user. Block: no. Sprawdza wydruk (faza 3).
-- **Risk:** Przełącznik kolorów żyje tylko na pasku strony, niezależnie od poziomu; do profilu trafia w S-14. Odpowiedź musi uwzględniać kolor każdej kratki i detali. Bez legendy układ strony zostaje (blok 7 lat 257 z 277 mm). Na drukarce czarno-białej kolory schodzą do szarości (świadoma decyzja). Szablony z S-12 muszą od początku nieść kolor każdej kratki, żeby S-15 nie przerabiało katalogu.
-- **Status:** done
+  - Czy startowe wartości z tabeli PRD pasują dziecku? — Owner: user. Block: no. Potwierdza je wydruk (PRD Open Questions 9).
+- **Risk:** Każdy poziom musi mieścić się na jednej stronie A4 z marginesem 10 mm, a bogatsze reguły zwiększają szansę na odrzucone ciągi (więcej niż jedna pasująca reguła). Poziom żyje w stanie strony, jak poziom symetrii.
+- **Status:** proposed
 
-### S-14: Wiek w profilu i poziomy osobno dla każdego rodzaju karty
+### S-19: Poziomy sudoku obrazkowego
 
-- **Outcome:** Rodzic może zapamiętać w profilu dziecka wspólny wiek, osobny poziom każdego rodzaju karty (labirynt, symetria) i kolory symetrii jako dodatkowe ustawienie, a ostatnie parametry są pamiętane osobno dla każdego rodzaju; zapisane wcześniej profile i parametry nadal się wczytują.
-- **Change ID:** profile-age-and-levels
-- **PRD refs:** US-08, FR-017
-- **Prerequisites:** S-13, S-15
-- **Parallel with:** —
+- **Outcome:** Rodzic może wybrać poziom sudoku obrazkowego nazwany wiekiem (5–7 lat: liczba pól wypełnionych na starcie) na pasku strony sudoku.
+- **Change ID:** picture-sudoku-levels
+- **PRD refs:** US-13, FR-022
+- **Prerequisites:** S-18
+- **Parallel with:** S-16, S-17
 - **Blockers:** —
 - **Unknowns:**
-  - Co dokładnie znaczy „wiek” dla labiryntu, który ma 6 poziomów (od 3 lat do nastolatka), i dla symetrii, która zaczyna się od 4 lat? Rekomendacja: wiek ustawia poziom na starcie na najbliższy dostępny, a rodzic może go zmienić i zapisać osobno. — Owner: user. Block: no.
-  - Czy dawny poziom labiryntu w profilu zostaje poziomem labiryntu, a wiek jest wyliczany z niego? Rekomendacja: tak, bez gubienia zapisanych danych. — Owner: team. Block: no.
-- **Risk:** Jedyny plasterek, który zmienia kształt danych zapisanych u rodzica, i dotyka też okien profilu (tworzenie, edycja, zapis, usunięcie). Stare wpisy muszą się wczytywać i nie wolno ich gubić. Profil zmienia się tylko po wyraźnym zapisie (FR-009), tak samo jak dotąd. Wspólne pola (wiek, postać) nie mogą wymuszać zmian w poziomach, a poziom rodzaju karty musi dać się wybrać niezależnie od wieku.
+  - Czy 10, 8 i 6 wypełnionych pól z 16 daje właściwy odstęp trudności? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 9).
+- **Risk:** Przy 6 wypełnionych polach jednoznaczne rozwiązanie jest trudniejsze do wylosowania; generator może potrzebować kilku prób, w granicy 5 s.
 - **Status:** proposed
 
 ## Backlog Handoff
 
-Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcja „Po tym kamieniu” nie dostaje issue, dopóki kamień nie jest otwarty.
+Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty.
 
-| Roadmap ID | Change ID                  | Suggested issue title                                     | Ready for `/10x-plan` | Notes                                                                               |
-| ---------- | -------------------------- | --------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------- |
-| F-03       | card-catalog-home          | Katalog kart na stronie głównej; labirynt pod `/labirynt` | yes                   | Run `/10x-new card-catalog-home`, potem `/10x-plan`                                 |
-| S-12       | symmetry-first-printable   | Karta symetrii: strona, generowanie, podgląd i druk A4    | yes                   | F-03 done. Gwiazda przewodnia kamienia. Research gotowy                             |
-| S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, obiekty, podpowiedź             | yes                   | S-12 done. Run `/10x-new symmetry-difficulty-levels`, potem `/10x-plan`. Przed S-15 |
-| S-15       | symmetry-color-codes       | Kolory na karcie symetrii                                 | no                    | Odblokowane po S-13 (te same pliki: szablony, generator, strona symetrii)           |
-| S-14       | profile-age-and-levels     | Wiek w profilu i poziomy osobno dla każdego rodzaju karty | no                    | Czeka na S-13 i S-15. Zmienia kształt zapisanych danych                             |
+| Roadmap ID | Change ID                      | Suggested issue title                                        | Ready for `/10x-plan` | Notes                                                                                |
+| ---------- | ------------------------------ | ------------------------------------------------------------ | --------------------- | ------------------------------------------------------------------------------------ |
+| S-16       | sequences-first-printable      | Karta sekwencji: strona, generowanie, podgląd i druk A4      | yes                   | Run `/10x-new sequences-first-printable`, potem `/10x-plan`. Równolegle do S-18      |
+| S-18       | picture-sudoku-first-printable | Sudoku obrazkowe 4×4: strona, generowanie, podgląd i druk A4 | yes                   | Run `/10x-new picture-sudoku-first-printable`, potem `/10x-plan`. Równolegle do S-16 |
+| S-17       | sequence-difficulty-levels     | Poziomy sekwencji                                            | no                    | Czeka na S-16                                                                        |
+| S-19       | picture-sudoku-levels          | Poziomy sudoku obrazkowego                                   | no                    | Czeka na S-18                                                                        |
 
 ## Open Roadmap Questions
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
-2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (dotyczy katalogu postaci labiryntu; karta symetrii postaci nie używa).
-3. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Issue #54, PRD Open Questions 4. Nie należy do M-2.
-4. **Czy startowe wartości poziomów symetrii pasują dziecku?** — Owner: user. Block: no (S-13). PRD Open Questions 5.
-5. **Czy karta symetrii ma kiedyś używać postaci?** — Owner: user. Block: no. PRD Open Questions 6.
+2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (sudoku obrazkowe używa postaci; publikacja szerszego katalogu czeka).
+3. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Issue #54, PRD Open Questions 4. Nie należy do M-3.
+4. **Czy startowe wartości poziomów symetrii, sekwencji i sudoku pasują dziecku?** — Owner: user. Block: no. PRD Open Questions 5 i 9.
+5. **Czy sudoku obrazkowe uzupełnia się numerem z legendy, czy rysunkiem postaci?** — Owner: user. Block: no. PRD Open Questions 8.
+6. **Kiedy wraca S-14 (profil z wiekiem i poziomami per rodzaj karty)?** — Owner: user. Block: no. PRD Open Questions 10.
 
 ## Parked
 
-- **Inne typy kart pracy poza symetrią** — Why parked: PRD §Non-Goals: kolejne rodzaje wchodzą jako osobne kamienie, po jednym. Zarys następnej karty jest w „Po tym kamieniu”.
+- **S-14: Wiek w profilu i poziomy osobno dla każdego rodzaju karty** — Why parked: odłożone 2026-10-23 do czasu, gdy będzie więcej rodzajów kart i wiadomo, które ustawienia mają sens w profilu. Change ID: `profile-age-and-levels` (jest `change.md` i `research.md`, bez planu). PRD refs: US-08, FR-017; wraca jako slice następnego kamienia. Wcześniej wykluczony z M-2, który zamknięto bez niego.
+- **Inne typy kart pracy poza symetrią, sekwencjami i sudoku** — Why parked: PRD §Non-Goals: kolejne rodzaje wchodzą jako osobne kamienie. Lista jest w „Po tym kamieniu”.
 - **Generowanie albo ocena kart modelem językowym** — Why parked: PRD §Non-Goals; rezultat ma wynikać z jawnych reguł algorytmicznych.
 - **Konta rodziców i synchronizacja między urządzeniami** — Why parked: PRD §Non-Goals; ustawienia i profile zostają na urządzeniu.
 - **Zapis i archiwum wygenerowanych kart** — Why parked: PRD §Non-Goals; cykl życia karty kończy się po wydruku.
@@ -169,16 +162,9 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 
 ## Po tym kamieniu
 
-Nie wlicza się do „Done when” M-2. Kamień nie jest otwarty. Stary zapis S-10 (`symmetry-worksheet`) zastąpiły F-03 i S-12–S-15; numer S-10 zostaje nieużyty.
+Nie wlicza się do „Done when” M-3. Kamień nie jest otwarty. Numer S-10 (`symmetry-worksheet`) zostaje nieużyty.
 
 Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4, czarny druk, bez modelu językowego.
-
-**Zarys trzeciej karty: Sekwencje** (bez numeru i bez Change ID; kamień M-3 powstanie z `/10x-roadmap` po zamknięciu M-2):
-
-- **Co robi dziecko:** wskazuje, co będzie dalej w ciągu obrazków.
-- **Co dostaje po M-2:** katalog kart i wspólną powłokę strony generatora z F-03, wzorzec „generator, sprawdzenie odpowiedzi, układ A4, podgląd, druk” z S-12, poziomy i pamięć w profilu z S-13 i S-14. Trzecia karta dostaje własną stronę i miniaturę w tym samym katalogu.
-- **Czego brakuje:** zestawu obrazków do ciągów (z katalogu postaci czy osobny) i jawnych reguł ciągu. Kartka odpada, gdy do pustego miejsca pasują dwie reguły, więc generator musi to sprawdzać.
-- **Wiek i poziomy:** do ustalenia przy otwarciu kamienia.
 
 Bez numeru, ta sama umowa:
 
@@ -186,13 +172,14 @@ Bez numeru, ta sama umowa:
 - **Który nie pasuje** — jedna złamana reguła. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
 - **Nonogram postaci** — rozwiązanie odsłania postać. Czeka na bitmapę.
 - **Karty kodowania** — kratka, postać, meta, strzałki, jedna najkrótsza droga.
-- **Sudoku obrazkowe** — 4×4 z symbolami. Układ 9×9 zostaje przy nastolatku.
+- **Sudoku 9×9** — poziom nastolatka sudoku obrazkowego, po M-3.
 - **Porównywanie kwot w złotych** — wartość kupek monet, nie liczba sztuk. „Ułóż dokładnie tę kwotę” czeka na jeden układ.
 
 Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą listą.
 
 ## Milestone History
 
+- **M-2: Karta symetrii na A4** (`symmetry-card-a4`) — closed 2026-10-23. Rodzic wybiera rodzaj karty w katalogu, generuje kartę symetrii na poziomie nazwanym wiekiem, włącza kolory i drukuje ją jako jedną stronę A4 także z telefonu. S-14 (wiek i poziomy w profilu) wyjęty z kamienia i odłożony na prośbę użytkownika do czasu, gdy będzie więcej rodzajów kart.
 - **M-1: Pierwsza drukowalna karta A4** (`first-printable-a4-maze`) — closed 2026-10-22. Rodzic generuje labirynt na wybranym poziomie, wybiera postać, korzysta z profili dzieci i drukuje kartę jako jedną stronę A4 także z telefonu.
 
 ## Done
