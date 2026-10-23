@@ -1,10 +1,10 @@
 ---
 change_id: symmetry-difficulty-levels
 title: Poziomy karty symetrii nazwane wiekiem
-status: impl_reviewed
+status: archived
 created: 2026-10-23
 updated: 2026-10-23
-archived_at: null
+archived_at: 2026-10-23T13:04:04Z
 ---
 
 ## Notes
