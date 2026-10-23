@@ -3,7 +3,8 @@ import { Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
-import { generateSymmetryCard, SYMMETRY_SETTING, type SymmetryCard } from "@/lib/symmetry/generate";
+import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
+import { DEFAULT_SYMMETRY_LEVEL_ID, symmetryLevelById } from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
 import { cn } from "@/lib/utils";
@@ -42,7 +43,7 @@ export default function SymmetryGenerator() {
     if (waitingForChild) {
       return;
     }
-    const next = generateSymmetryCard(Math.random, card?.key ?? null);
+    const next = generateSymmetryCard(Math.random, card?.key ?? null, symmetryLevelById(DEFAULT_SYMMETRY_LEVEL_ID));
     if (next === null) {
       setGenerateFailed(true);
       return;
@@ -144,7 +145,7 @@ function SymmetrySheet({ card }: { card: SymmetryCard }) {
     inset: SYMMETRY_SHEET.inset,
     columns: card.columns,
     rows: card.rows,
-    cellSize: SYMMETRY_SETTING.cellSize,
+    cellSize: card.cellSize,
     instructionHeight: SYMMETRY_SHEET.instructionSize,
     instructionGap: SYMMETRY_SHEET.instructionGap,
   });

@@ -1,17 +1,20 @@
-import { SYMMETRY_COLORS, SYMMETRY_TEMPLATES, type SymmetryCell, type SymmetryTemplate } from "./templates.ts";
+import { symmetryLevelById, type SymmetryLevel } from "./levels.ts";
+import { SYMMETRY_COLORS, symmetryTemplatesFor, type SymmetryCell, type SymmetryTemplate } from "./templates.ts";
 
 export type SymmetryAxis = "vertical";
 
-/** The one fixed setting of S-12, the "5 lat" row of the PRD. Levels arrive in S-13. */
-export const SYMMETRY_SETTING = { columns: 12, rows: 16, cellSize: 15, axis: "vertical" } as const;
-
 export interface SymmetryCard {
+  levelId: SymmetryLevel["id"];
   columns: number;
   rows: number;
+  /** Side of one grid cell in mm on the A4 sheet. */
+  cellSize: number;
   axis: SymmetryAxis;
   /** Only the half with the pattern (columns 0..columns / 2 - 1). The other half is left for the child. */
   cells: readonly SymmetryCell[];
-  /** Names the template, the variant of every part, and the row offset, so two cards with one key look the same. */
+  /** Cells of the answer already filled in on the child's half. A subset of the mirror answer, never all of it. */
+  hints: readonly SymmetryCell[];
+  /** Names the level, the template, the variant of every part, and the row offset, so two cards with one key look the same. */
   key: string;
 }
 
@@ -22,21 +25,32 @@ export type SymmetryProblem =
   | "outside-grid"
   | "duplicate-cell"
   | "unknown-color"
-  | "not-touching-axis";
+  | "not-touching-axis"
+  | "hint-not-in-answer"
+  | "hints-reveal-all"
+  | "hint-count-mismatch";
 
 /** Draws again at most this many times before giving up, so a single possible card cannot loop forever. */
 const MAX_ATTEMPTS = 20;
 
 /**
- * A valid card whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. The key includes the row offset,
- * so the same picture one row lower counts as a new card (plan: parts plus vertical shift are the variants).
+ * A valid card of the level whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws or when the level
+ * has no templates yet. The key includes the row offset, so the same picture one row lower counts as a new card.
  */
-export function generateSymmetryCard(random: () => number, previousKey: string | null): SymmetryCard | null {
+export function generateSymmetryCard(
+  random: () => number,
+  previousKey: string | null,
+  level: SymmetryLevel,
+): SymmetryCard | null {
+  const templates = symmetryTemplatesFor(level.id);
+  if (templates.length === 0) {
+    return null;
+  }
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
-    const template = SYMMETRY_TEMPLATES[pick(random, SYMMETRY_TEMPLATES.length)];
+    const template = templates[pick(random, templates.length)];
     const variants = template.parts.map((part) => pick(random, part.variants.length));
-    const rowOffset = pick(random, symmetryRowOffsets(template));
-    const card = composeSymmetryCard(template, variants, rowOffset);
+    const rowOffset = pick(random, symmetryRowOffsets(template, level));
+    const card = composeSymmetryCard(template, variants, rowOffset, level);
     if (card.key !== previousKey && symmetryCardProblems(card).length === 0) {
       return card;
     }
@@ -45,14 +59,19 @@ export function generateSymmetryCard(random: () => number, previousKey: string |
 }
 
 /**
- * How many vertical positions the template frame has on the grid of the fixed setting. Throws for a template taller
- * than the grid: that is a broken template, not a card that failed to come out.
+ * How many vertical positions the template frame has on the grid of the level. Throws for a template taller or wider
+ * than the half grid: that is a broken template, not a card that failed to come out.
  */
-export function symmetryRowOffsets(template: SymmetryTemplate): number {
-  if (template.height > SYMMETRY_SETTING.rows) {
-    throw new Error(`Template ${template.id} is ${template.height} rows tall, the grid has ${SYMMETRY_SETTING.rows}`);
+export function symmetryRowOffsets(template: SymmetryTemplate, level: SymmetryLevel): number {
+  if (template.height > level.rows) {
+    throw new Error(`Template ${template.id} is ${template.height} rows tall, the ${level.id} grid has ${level.rows}`);
   }
-  return SYMMETRY_SETTING.rows - template.height + 1;
+  if (template.width > level.columns / 2) {
+    throw new Error(
+      `Template ${template.id} is ${template.width} columns wide, the ${level.id} half grid has ${level.columns / 2}`,
+    );
+  }
+  return level.rows - template.height + 1;
 }
 
 /** Builds the card for one template, one variant index per part, and one row offset. Does not validate. */
@@ -60,6 +79,7 @@ export function composeSymmetryCard(
   template: SymmetryTemplate,
   variants: readonly number[],
   rowOffset: number,
+  level: SymmetryLevel,
 ): SymmetryCard {
   const frame: SymmetryCell[] = [...template.base];
   template.parts.forEach((part, index) => {
@@ -69,13 +89,34 @@ export function composeSymmetryCard(
     }
     frame.push(...variant);
   });
+  const half = level.columns / 2;
+  const shift = half - template.width;
+  const cells = frame.map((cell) => ({ col: cell.col + shift, row: cell.row + rowOffset, color: cell.color }));
   return {
-    columns: SYMMETRY_SETTING.columns,
-    rows: SYMMETRY_SETTING.rows,
-    axis: SYMMETRY_SETTING.axis,
-    cells: frame.map((cell) => ({ col: cell.col, row: cell.row + rowOffset, color: cell.color })),
-    key: `${template.id}:${variants.join("-")}:${rowOffset}`,
+    levelId: level.id,
+    columns: level.columns,
+    rows: level.rows,
+    cellSize: level.cellSize,
+    axis: "vertical",
+    cells,
+    hints: pickHints(cells, level),
+    key: `${level.id}:${template.id}:${variants.join("-")}:${rowOffset}`,
   };
+}
+
+/** The level's hint cells: mirrors of pattern cells on the axis column, spread evenly down the object. */
+function pickHints(cells: readonly SymmetryCell[], level: SymmetryLevel): readonly SymmetryCell[] {
+  if (level.hintCount === 0) {
+    return [];
+  }
+  const half = level.columns / 2;
+  const onAxis = cells.filter((cell) => cell.col === half - 1).sort((a, b) => a.row - b.row);
+  const chosen = onAxis.length <= level.hintCount ? onAxis : spread(onAxis, level.hintCount);
+  return chosen.map((cell) => ({ col: level.columns - 1 - cell.col, row: cell.row, color: cell.color }));
+}
+
+function spread<T>(items: readonly T[], count: number): T[] {
+  return Array.from({ length: count }, (_, index) => items[Math.floor(((index + 0.5) * items.length) / count)]);
 }
 
 /** The PRD rules for a symmetry card. An empty list means the card may be shown. */
@@ -125,6 +166,22 @@ export function symmetryCardProblems(card: SymmetryCard): readonly SymmetryProbl
   }
   if (card.cells.length > 0 && !touchesAxis) {
     problems.add("not-touching-axis");
+  }
+
+  const answer = new Set(mirrorAnswer(card).map((cell) => `${cell.col},${cell.row},${cell.color}`));
+  const hinted = new Set<string>();
+  for (const hint of card.hints) {
+    const place = `${hint.col},${hint.row},${hint.color}`;
+    if (!answer.has(place)) {
+      problems.add("hint-not-in-answer");
+    }
+    hinted.add(place);
+  }
+  if (card.hints.length !== symmetryLevelById(card.levelId).hintCount || hinted.size !== card.hints.length) {
+    problems.add("hint-count-mismatch");
+  }
+  if (card.cells.length > 0 && hinted.size >= answer.size) {
+    problems.add("hints-reveal-all");
   }
   return [...problems];
 }
