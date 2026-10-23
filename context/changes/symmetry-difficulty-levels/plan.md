@@ -75,7 +75,7 @@ Poziom staje się parametrem generatora, walidatora i klucza karty; podpowiedzi 
 
 **Intent**: Szablon deklaruje szerokość, żeby generator mógł go ustawić przy osi na dowolnej połowie. Obecne trzy szablony dostają `width: 6`; eksport katalogu staje się mapą poziom → szablony (na razie 5 i 6 lat wskazują obecne, 4 i 7 lat dochodzą w fazie 2).
 
-**Contract**: `SymmetryTemplate.width`; `symmetryTemplatesFor(levelId)`.
+**Contract**: `SymmetryTemplate.width`; `symmetryTemplatesFor(levelId)`. Dla poziomu z pustym katalogiem (4 i 7 lat do fazy 2) `generateSymmetryCard` zwraca `null` zamiast losować z pustej listy; test to pokrywa.
 
 #### 4. Testy
 
@@ -133,11 +133,7 @@ Sześć nowych rysunków: rakieta, robot i truskawka w prostej wersji na połow�
 - Testy przechodzą: `npm test`
 - Lint przechodzi: `npm run lint`
 
-#### Manual Verification:
-
-- Nowe obiekty 4 lat i 7 lat są rozpoznawalne (rakieta, robot, truskawka) na podglądzie z fazy 3
-
-**Implementation Note**: Rysunki ocenia człowiek na podglądzie w fazie 3; poprawki rysunków wracają do tej fazy.
+**Implementation Note**: Brak kryteriów ręcznych; rozpoznawalność rysunków ocenia się na podglądzie w fazie 3 (kryterium 3.6), poprawki rysunków wracają do tej fazy.
 
 ---
 
@@ -153,7 +149,7 @@ Strona dostaje wybór poziomu i rysuje kartę z jej własnym rozmiarem kratki or
 
 **File**: `src/components/SymmetryGenerator.tsx`
 
-**Intent**: Przycisk „Poziom: …” z listą czterech poziomów w oknie dialogowym, wzorowany na `LevelChoiceControl` z labiryntu, dostępny przed pierwszą kartą i nad kartą. Stan poziomu (domyślnie `lat5`) żyje tylko w komponencie. Zmiana poziomu generuje od razu nową kartę tego poziomu. Pasek nie dotyka profilu; `barLevel` w `ProfileCorner` zostaje poziomem labiryntu.
+**Intent**: Przycisk „Poziom: …” z listą czterech poziomów w oknie dialogowym, wzorowany na `LevelChoiceControl` z labiryntu (`LevelChoiceRows` z `ProfileCorner.tsx:582` jest związany z poziomami labiryntu, więc symetria dostaje własny komponent `src/components/SymmetryLevelChoice.tsx` z przyciskiem, oknem i wierszami; `ProfileCorner` bez zmian), dostępny przed pierwszą kartą i nad kartą. Stan poziomu (domyślnie `lat5`) żyje tylko w komponencie. Zmiana poziomu generuje od razu nową kartę tego poziomu. Pasek nie dotyka profilu; `barLevel` w `ProfileCorner` zostaje poziomem labiryntu.
 
 **Contract**: Komponent nie dodaje kolorów spoza tokenów i używa `cn()`. Przyciski Generuj, Drukuj i Profil nie nachodzą na siebie na telefonie.
 
@@ -182,7 +178,7 @@ Strona dostaje wybór poziomu i rysuje kartę z jej własnym rozmiarem kratki or
 - Testy przechodzą: `npm test`
 - Lint, typy i build przechodzą: `npm run lint`, `npx astro check`, `npm run build`
 - E2E przechodzą: `npx playwright test`
-- Miniatura buduje się bez zmiany obrazka: `node scripts/build-thumbnails.mjs` i `git diff --stat public`
+- Miniatura buduje się bez zmiany obrazka: `npm run thumbnails` i `git diff --stat public`
 
 #### Manual Verification:
 
@@ -277,10 +273,6 @@ Nie dotyczy: poziom nie jest zapisywany (profil to S-14).
 - [ ] 2.1 Testy przechodzą: `npm test`
 - [ ] 2.2 Lint przechodzi: `npm run lint`
 
-#### Manual
-
-- [ ] 2.3 Nowe obiekty 4 lat i 7 lat są rozpoznawalne (rakieta, robot, truskawka) na podglądzie z fazy 3
-
 ### Phase 3: Pasek poziomu, podpowiedzi i miniatura
 
 #### Automated
@@ -288,7 +280,7 @@ Nie dotyczy: poziom nie jest zapisywany (profil to S-14).
 - [ ] 3.1 Testy przechodzą: `npm test`
 - [ ] 3.2 Lint, typy i build przechodzą: `npm run lint`, `npx astro check`, `npm run build`
 - [ ] 3.3 E2E przechodzą: `npx playwright test`
-- [ ] 3.4 Miniatura buduje się bez zmiany obrazka: `node scripts/build-thumbnails.mjs` i `git diff --stat public`
+- [ ] 3.4 Miniatura buduje się bez zmiany obrazka: `npm run thumbnails` i `git diff --stat public`
 
 #### Manual
 
