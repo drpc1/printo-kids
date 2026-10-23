@@ -292,9 +292,9 @@ Nie dotyczy: poziom nie jest zapisywany (profil to S-14).
 
 #### Automated
 
-- [x] 4.1 Pliki sformatowane: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
+- [x] 4.1 Pliki sformatowane: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md` — c464760
 
 #### Manual
 
-- [x] 4.2 Podgląd druku Chrome każdego z czterech poziomów: jedna strona A4, margines 10 mm, czarny druk
-- [x] 4.3 Przegląd poziomu 4 i 7 lat na papierze lub w PDF: kratka, podpowiedź i trudność odpowiednie
+- [x] 4.2 Podgląd druku Chrome każdego z czterech poziomów: jedna strona A4, margines 10 mm, czarny druk — c464760
+- [x] 4.3 Przegląd poziomu 4 i 7 lat na papierze lub w PDF: kratka, podpowiedź i trudność odpowiednie — c464760
