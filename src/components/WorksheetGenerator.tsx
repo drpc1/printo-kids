@@ -4,11 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceRows, LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
-import { writeLastUsed } from "@/lib/last-used";
 import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
-import { CHARACTER_CHOICES, characterRow, characterSheetSrc, type CharacterChoice } from "@/lib/sheet/character";
+import {
+  characterRow,
+  characterSheetSrc,
+  OWN_IMAGE_ID,
+  OWN_IMAGE_LABEL,
+  type SheetCharacterId,
+} from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
+import { readOwnImage, recordBarCharacter } from "@/lib/sheet/own-image-store";
 import { collectWalls } from "@/lib/sheet/walls";
 import { cn } from "@/lib/utils";
 
@@ -28,13 +34,16 @@ export default function WorksheetGenerator() {
     onApply: applyProfileBar,
   });
   const [character, setCharacter] = useState(visitStart.character);
+  const [ownImageHref, setOwnImageHref] = useState(visitStart.ownImageHref ?? null);
   const [level, setLevel] = useState(visitStart.level);
   const [generateFailed, setGenerateFailed] = useState(false);
   const [maze, setMaze] = useState<Maze | null>(null);
   const [sheetShown, setSheetShown] = useState(false);
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
-  const selectedChoice = characterRow(character);
+  const catalogChoice = characterRow(character === OWN_IMAGE_ID ? "none" : character);
+  const barLabel = character === OWN_IMAGE_ID ? OWN_IMAGE_LABEL : catalogChoice.label;
+  const barThumb = character === OWN_IMAGE_ID ? ownImageHref : catalogChoice.src;
 
   useEffect(() => {
     const main = document.getElementById("worksheet-home");
@@ -74,17 +83,30 @@ export default function WorksheetGenerator() {
     setGenerateFailed(redrawn === null);
   }
 
-  function handleCharacterSelect(id: CharacterChoice): void {
-    setCharacter(id);
-    if (activeId === null) {
-      writeLastUsed(localStorage, { character: id, level });
+  function handleCharacterSelect(id: SheetCharacterId): void {
+    if (id === OWN_IMAGE_ID) {
+      const href = readOwnImage(localStorage);
+      if (href === null) {
+        return;
+      }
+      setOwnImageHref(href);
+    } else {
+      setOwnImageHref(null);
     }
+    setCharacter(id);
+    recordBarCharacter(localStorage, activeId, id, level);
+  }
+
+  function handleOwnImage(href: string): void {
+    setCharacter(OWN_IMAGE_ID);
+    setOwnImageHref(href);
+    recordBarCharacter(localStorage, activeId, OWN_IMAGE_ID, level);
   }
 
   function handleLevelSelect(id: LevelId): void {
     applyLevel(id);
     if (activeId === null) {
-      writeLastUsed(localStorage, { character, level: id });
+      recordBarCharacter(localStorage, null, character, id);
     }
   }
 
@@ -94,6 +116,11 @@ export default function WorksheetGenerator() {
 
   function applyProfileBar(bar: ProfileBar): void {
     setCharacter(bar.character);
+    if (bar.ownImageHref !== undefined) {
+      setOwnImageHref(bar.character === OWN_IMAGE_ID ? bar.ownImageHref : null);
+    } else if (bar.character !== OWN_IMAGE_ID) {
+      setOwnImageHref(null);
+    }
     applyLevel(bar.level);
   }
 
@@ -126,10 +153,12 @@ export default function WorksheetGenerator() {
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
             <CharacterChoiceControl
               character={character}
-              selectedChoice={selectedChoice}
+              label={barLabel}
+              thumbSrc={barThumb}
               choiceOpen={choiceOpen}
               onOpenChange={setChoiceOpen}
               onSelect={handleCharacterSelect}
+              onCopied={handleOwnImage}
             />
             {levelControl}
             {failedNote}
@@ -158,10 +187,12 @@ export default function WorksheetGenerator() {
           <div className={cn("flex flex-wrap items-center justify-center gap-2")}>
             <CharacterChoiceControl
               character={character}
-              selectedChoice={selectedChoice}
+              label={barLabel}
+              thumbSrc={barThumb}
               choiceOpen={choiceOpen}
               onOpenChange={setChoiceOpen}
               onSelect={handleCharacterSelect}
+              onCopied={handleOwnImage}
             />
             {levelControl}
           </div>
@@ -169,7 +200,9 @@ export default function WorksheetGenerator() {
           {failedNote}
         </div>
       )}
-      {maze !== null ? <MazeSheet maze={maze} characterId={character} level={sheetLevel} /> : null}
+      {maze !== null ? (
+        <MazeSheet maze={maze} characterId={character} level={sheetLevel} ownImageHref={ownImageHref} />
+      ) : null}
     </div>
   );
 }
@@ -201,16 +234,20 @@ function GenerateButton({
 
 function CharacterChoiceControl({
   character,
-  selectedChoice,
+  label,
+  thumbSrc,
   choiceOpen,
   onOpenChange,
   onSelect,
+  onCopied,
 }: {
-  character: CharacterChoice;
-  selectedChoice: (typeof CHARACTER_CHOICES)[number];
+  character: SheetCharacterId;
+  label: string;
+  thumbSrc: string | null;
   choiceOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onSelect: (id: CharacterChoice) => void;
+  onSelect: (id: SheetCharacterId) => void;
+  onCopied: (href: string) => void;
 }) {
   return (
     <Dialog open={choiceOpen} onOpenChange={onOpenChange}>
@@ -218,14 +255,12 @@ function CharacterChoiceControl({
         <Button
           type="button"
           variant="ghost"
-          aria-label={`Postać: ${selectedChoice.label}`}
+          aria-label={`Postać: ${label}`}
           className={cn("text-muted-foreground hover:text-foreground h-auto gap-1.5 px-2 py-1 text-base font-normal")}
         >
           <span>Postać:</span>
-          {selectedChoice.src !== null ? (
-            <img src={selectedChoice.src} alt="" width={24} height={24} className={cn("size-6")} />
-          ) : null}
-          {selectedChoice.label}
+          {thumbSrc !== null ? <img src={thumbSrc} alt="" width={24} height={24} className={cn("size-6")} /> : null}
+          {label}
           <ChevronDown className={cn("size-4")} aria-hidden />
         </Button>
       </DialogTrigger>
@@ -235,6 +270,10 @@ function CharacterChoiceControl({
           selected={character}
           onSelect={(id) => {
             onSelect(id);
+            onOpenChange(false);
+          }}
+          onCopied={(href) => {
+            onCopied(href);
             onOpenChange(false);
           }}
         />
@@ -282,8 +321,18 @@ function LevelChoiceControl({
   );
 }
 
-function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: CharacterChoice; level: Level }) {
-  const characterSrc = characterSheetSrc(characterId);
+function MazeSheet({
+  maze,
+  characterId,
+  level,
+  ownImageHref,
+}: {
+  maze: Maze;
+  characterId: SheetCharacterId;
+  level: Level;
+  ownImageHref: string | null;
+}) {
+  const characterSrc = characterId === OWN_IMAGE_ID ? ownImageHref : characterSheetSrc(characterId);
   const sheet = layoutSheet({
     pageWidth: PAGE_WIDTH,
     pageHeight: PAGE_HEIGHT,
@@ -313,7 +362,14 @@ function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: Char
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {mark !== null && characterSrc !== null ? (
-        <image href={characterSrc} x={mark.x} y={mark.y} width={mark.width} height={mark.height} />
+        <image
+          href={characterSrc}
+          x={mark.x}
+          y={mark.y}
+          width={mark.width}
+          height={mark.height}
+          preserveAspectRatio="xMidYMid meet"
+        />
       ) : start !== null ? (
         <text
           x={start.x}

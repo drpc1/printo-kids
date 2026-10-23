@@ -2,8 +2,10 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import {
   barAfterFavoriteSave,
+  hrefForFavoriteSave,
   openingVisit,
   profileNameError,
+  profileToCreate,
   readChildProfiles,
   sortProfiles,
   visitAfterDelete,
@@ -322,6 +324,93 @@ void describe("withFavorite", () => {
     const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5" }];
 
     assert.equal(withFavorite(profiles, "z1", "rakieta", "dorosly" as LevelId, ALLOWED), null);
+  });
+});
+
+const JPEG = "data:image/jpeg;base64,aaaa";
+const PNG = "data:image/png;base64,bbbb";
+const WITH_OWN = [...ALLOWED, "wlasne"];
+
+void describe("profile image", () => {
+  void test("a bad image value drops the field and keeps the profile", () => {
+    const storage = memoryStorage(
+      stored([{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5", image: "nope" }]),
+    );
+    assert.deepEqual(readChildProfiles(storage, WITH_OWN), [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat5" },
+    ]);
+    assert.deepEqual(storage.writes, []);
+  });
+
+  void test("wlasne without a drawable copy reads as none and does not write", () => {
+    const missing = memoryStorage(stored([{ id: "z1", name: "Zosia", character: "wlasne", level: "lat6" }]));
+    assert.deepEqual(readChildProfiles(missing, WITH_OWN), [
+      { id: "z1", name: "Zosia", character: "none", level: "lat6" },
+    ]);
+    assert.deepEqual(missing.writes, []);
+
+    const bad = memoryStorage(
+      stored([{ id: "z1", name: "Zosia", character: "wlasne", level: "lat6", image: "data:image/gif;base64,aaaa" }]),
+    );
+    assert.deepEqual(readChildProfiles(bad, WITH_OWN), [{ id: "z1", name: "Zosia", character: "none", level: "lat6" }]);
+    assert.deepEqual(bad.writes, []);
+  });
+
+  void test("wlasne keeps a JPEG or PNG data URL in image and never in character", () => {
+    const storage = memoryStorage(
+      stored([{ id: "z1", name: "Zosia", character: "wlasne", level: "lat5", image: JPEG }]),
+    );
+    const profiles = readChildProfiles(storage, WITH_OWN);
+    assert.deepEqual(profiles, [{ id: "z1", name: "Zosia", character: "wlasne", level: "lat5", image: JPEG }]);
+    assert.equal(profiles[0].character.includes("data:"), false);
+    assert.deepEqual(storage.writes, []);
+  });
+
+  void test("a data URL stored as the character drops that profile", () => {
+    const storage = memoryStorage(
+      stored([{ id: "z1", name: "Zosia", character: "data:image/png;base64,aaaa", level: "lat5", image: PNG }]),
+    );
+    assert.deepEqual(readChildProfiles(storage, WITH_OWN), []);
+    assert.deepEqual(storage.writes, []);
+  });
+
+  void test("Utwórz stores the device href on image and a catalog create clears it", () => {
+    const created = profileToCreate("z1", "Zosia", "wlasne", "lat5", JPEG);
+    assert.ok(created);
+    assert.equal(created.character, "wlasne");
+    assert.equal(created.image, JPEG);
+    assert.equal(created.character.includes("data:"), false);
+    assert.equal(profileToCreate("z1", "Zosia", "wlasne", "lat5", null), null);
+    assert.equal(profileToCreate("z1", "Zosia", "data:image/png;base64,aaaa", "lat5", JPEG), null);
+
+    assert.deepEqual(profileToCreate("z1", "Zosia", "dinozaur", "lat5", JPEG), {
+      id: "z1",
+      name: "Zosia",
+      character: "dinozaur",
+      level: "lat5",
+    });
+  });
+
+  void test("Zapisz stores image for wlasne and a catalog save clears it", () => {
+    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5", image: JPEG }];
+
+    assert.deepEqual(withFavorite(profiles, "z1", "wlasne", "lat5", WITH_OWN, JPEG), [
+      { id: "z1", name: "Zosia", character: "wlasne", level: "lat5", image: JPEG },
+    ]);
+    assert.equal(withFavorite(profiles, "z1", "wlasne", "lat5", WITH_OWN, null), null);
+    assert.equal(withFavorite(profiles, "z1", "wlasne", "lat5", WITH_OWN, "data:image/gif;base64,aaaa"), null);
+    assert.deepEqual(withFavorite(profiles, "z1", "dinozaur", "lat6", WITH_OWN, JPEG), [
+      { id: "z1", name: "Zosia", character: "dinozaur", level: "lat6" },
+    ]);
+    const cleared = withFavorite(profiles, "z1", "dinozaur", "lat6", WITH_OWN);
+    assert.ok(cleared);
+    assert.equal("image" in cleared[0], false);
+  });
+
+  void test("an untouched wlasne save keeps the profile snapshot when the device copy differs", () => {
+    assert.equal(hrefForFavoriteSave("wlasne", false, PNG, JPEG), JPEG);
+    assert.equal(hrefForFavoriteSave("wlasne", true, PNG, JPEG), PNG);
+    assert.equal(hrefForFavoriteSave("kot", true, PNG, JPEG), null);
   });
 });
 
