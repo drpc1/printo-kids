@@ -87,6 +87,22 @@ test("each Generuj on the symmetry page draws a different card", async ({ page }
   }
 });
 
+test("choosing a level on the symmetry page draws a new card of that level", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/symetria");
+
+  await page.getByRole("button", { name: "Generuj" }).click();
+  const sheet = page.getByRole("img", { name: "Symetria" });
+  await expect(sheet).toBeVisible();
+  const before = await sheet.innerHTML();
+
+  await page.getByRole("button", { name: "Poziom: 5 lat" }).click();
+  await page.getByRole("button", { name: "4 lata" }).click();
+
+  await expect(page.getByRole("button", { name: "Poziom: 4 lata" })).toBeVisible();
+  await expect.poll(() => sheet.innerHTML()).not.toBe(before);
+});
+
 test("the profile chosen on the symmetry page persists across the catalog round trip", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   // Seed once: the init script runs on every navigation and must not overwrite later changes.

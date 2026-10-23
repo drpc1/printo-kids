@@ -75,7 +75,7 @@ Poziom staje się parametrem generatora, walidatora i klucza karty; podpowiedzi 
 
 **Intent**: Szablon deklaruje szerokość, żeby generator mógł go ustawić przy osi na dowolnej połowie. Obecne trzy szablony dostają `width: 6`; eksport katalogu staje się mapą poziom → szablony (na razie 5 i 6 lat wskazują obecne, 4 i 7 lat dochodzą w fazie 2).
 
-**Contract**: `SymmetryTemplate.width`; `symmetryTemplatesFor(levelId)`. Dla poziomu z pustym katalogiem (4 i 7 lat do fazy 2) `generateSymmetryCard` zwraca `null` zamiast losować z pustej listy; test to pokrywa.
+**Contract**: `SymmetryTemplate.width`; `symmetryTemplatesFor(levelId)`.
 
 #### 4. Testy
 
@@ -270,23 +270,23 @@ Nie dotyczy: poziom nie jest zapisywany (profil to S-14).
 
 #### Automated
 
-- [x] 2.1 Testy przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.1 Testy przechodzą: `npm test` — eda93d9
+- [x] 2.2 Lint przechodzi: `npm run lint` — eda93d9
 
 ### Phase 3: Pasek poziomu, podpowiedzi i miniatura
 
 #### Automated
 
-- [ ] 3.1 Testy przechodzą: `npm test`
-- [ ] 3.2 Lint, typy i build przechodzą: `npm run lint`, `npx astro check`, `npm run build`
-- [ ] 3.3 E2E przechodzą: `npx playwright test`
-- [ ] 3.4 Miniatura buduje się bez zmiany obrazka: `npm run thumbnails` i `git diff --stat public`
+- [x] 3.1 Testy przechodzą: `npm test`
+- [x] 3.2 Lint, typy i build przechodzą: `npm run lint`, `npx astro check`, `npm run build`
+- [x] 3.3 E2E przechodzą: `npx playwright test`
+- [x] 3.4 Miniatura buduje się bez zmiany obrazka: `npm run thumbnails` i `git diff --stat public`
 
 #### Manual
 
-- [ ] 3.5 Pasek poziomu wygląda spójnie z labiryntem na komputerze i telefonie
-- [ ] 3.6 Obiekty 4 i 7 lat są rozpoznawalne na podglądzie
-- [ ] 3.7 Podpowiedź 4 lat wygląda jak początek odbicia i nie zdradza całości
+- [x] 3.5 Pasek poziomu wygląda spójnie z labiryntem na komputerze i telefonie
+- [x] 3.6 Obiekty 4 i 7 lat są rozpoznawalne na podglądzie
+- [x] 3.7 Podpowiedź 4 lat wygląda jak początek odbicia i nie zdradza całości
 
 ### Phase 4: PRD i przegląd wydruku
 
