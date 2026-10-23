@@ -43,7 +43,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | ---- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | ----------- |
 | F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora                              | —             | US-05, FR-014 | done        |
 | S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z połową obiektu i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | done        |
-| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, położenie obiektu, podpowiedź) na pasku strony symetrii                                                                | S-12          | US-07, FR-016 | in-progress |
+| S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii                                                                          | S-12          | US-07, FR-016 | in-progress |
 | S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: litery w kratkach i legenda, druk zostaje czarny                                                             | S-12, S-13    | US-09, FR-018 | proposed    |
 | S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek, osobny poziom każdego rodzaju karty i kolory symetrii; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13, S-15    | US-08, FR-017 | proposed    |
 
@@ -97,7 +97,7 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 
 ### S-13: Poziomy symetrii
 
-- **Outcome:** Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, położenie obiektu względem osi, podpowiedź) na pasku strony symetrii.
+- **Outcome:** Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii.
 - **Change ID:** symmetry-difficulty-levels
 - **PRD refs:** US-07, FR-016
 - **Prerequisites:** S-12
@@ -145,7 +145,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 | ---------- | -------------------------- | --------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------- |
 | F-03       | card-catalog-home          | Katalog kart na stronie głównej; labirynt pod `/labirynt` | yes                   | Run `/10x-new card-catalog-home`, potem `/10x-plan`                                 |
 | S-12       | symmetry-first-printable   | Karta symetrii: strona, generowanie, podgląd i druk A4    | yes                   | F-03 done. Gwiazda przewodnia kamienia. Research gotowy                             |
-| S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, położenie obiektu, podpowiedź   | yes                   | S-12 done. Run `/10x-new symmetry-difficulty-levels`, potem `/10x-plan`. Przed S-15 |
+| S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, obiekty, podpowiedź             | yes                   | S-12 done. Run `/10x-new symmetry-difficulty-levels`, potem `/10x-plan`. Przed S-15 |
 | S-15       | symmetry-color-codes       | Kody kolorów na karcie symetrii                           | no                    | Odblokowane po S-13 (te same pliki: szablony, generator, strona symetrii)           |
 | S-14       | profile-age-and-levels     | Wiek w profilu i poziomy osobno dla każdego rodzaju karty | no                    | Czeka na S-13 i S-15. Zmienia kształt zapisanych danych                             |
 

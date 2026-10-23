@@ -277,24 +277,24 @@ Nie dotyczy: poziom nie jest zapisywany (profil to S-14).
 
 #### Automated
 
-- [x] 3.1 Testy przechodzą: `npm test`
-- [x] 3.2 Lint, typy i build przechodzą: `npm run lint`, `npx astro check`, `npm run build`
-- [x] 3.3 E2E przechodzą: `npx playwright test`
-- [x] 3.4 Miniatura buduje się bez zmiany obrazka: `npm run thumbnails` i `git diff --stat public`
+- [x] 3.1 Testy przechodzą: `npm test` — 1e018bb
+- [x] 3.2 Lint, typy i build przechodzą: `npm run lint`, `npx astro check`, `npm run build` — 1e018bb
+- [x] 3.3 E2E przechodzą: `npx playwright test` — 1e018bb
+- [x] 3.4 Miniatura buduje się bez zmiany obrazka: `npm run thumbnails` i `git diff --stat public` — 1e018bb
 
 #### Manual
 
-- [x] 3.5 Pasek poziomu wygląda spójnie z labiryntem na komputerze i telefonie
-- [x] 3.6 Obiekty 4 i 7 lat są rozpoznawalne na podglądzie
-- [x] 3.7 Podpowiedź 4 lat wygląda jak początek odbicia i nie zdradza całości
+- [x] 3.5 Pasek poziomu wygląda spójnie z labiryntem na komputerze i telefonie — 1e018bb
+- [x] 3.6 Obiekty 4 i 7 lat są rozpoznawalne na podglądzie — 1e018bb
+- [x] 3.7 Podpowiedź 4 lat wygląda jak początek odbicia i nie zdradza całości — 1e018bb
 
 ### Phase 4: PRD i przegląd wydruku
 
 #### Automated
 
-- [ ] 4.1 Pliki sformatowane: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
+- [x] 4.1 Pliki sformatowane: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
 
 #### Manual
 
-- [ ] 4.2 Podgląd druku Chrome każdego z czterech poziomów: jedna strona A4, margines 10 mm, czarny druk
-- [ ] 4.3 Przegląd poziomu 4 i 7 lat na papierze lub w PDF: kratka, podpowiedź i trudność odpowiednie
+- [x] 4.2 Podgląd druku Chrome każdego z czterech poziomów: jedna strona A4, margines 10 mm, czarny druk
+- [x] 4.3 Przegląd poziomu 4 i 7 lat na papierze lub w PDF: kratka, podpowiedź i trudność odpowiednie
