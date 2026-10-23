@@ -200,7 +200,7 @@ void describe("openingVisit", () => {
   const lastUsed = { character: "samochodzik", level: "lat3" } as const;
 
   void test("zero profiles keep the last-used character and level and do not ask", () => {
-    assert.deepEqual(openingVisit([], lastUsed), {
+    assert.deepEqual(openingVisit([], lastUsed, null), {
       activeId: null,
       character: "samochodzik",
       level: "lat3",
@@ -209,7 +209,7 @@ void describe("openingVisit", () => {
   });
 
   void test("one profile Zosia uses her id, character, and level and does not ask", () => {
-    assert.deepEqual(openingVisit([{ id: "z1", name: "Zosia", character: "rakieta", level: "lat6" }], lastUsed), {
+    assert.deepEqual(openingVisit([{ id: "z1", name: "Zosia", character: "rakieta", level: "lat6" }], lastUsed, null), {
       activeId: "z1",
       character: "rakieta",
       level: "lat6",
@@ -225,6 +225,7 @@ void describe("openingVisit", () => {
           { id: "a1", name: "Antek", character: "dinozaur", level: "lat4" },
         ],
         lastUsed,
+        null,
       ),
       {
         activeId: null,
@@ -233,6 +234,56 @@ void describe("openingVisit", () => {
         ask: true,
       },
     );
+  });
+
+  void describe("with a remembered active profile", () => {
+    const zosia: ChildProfile = { id: "z1", name: "Zosia", character: "rakieta", level: "lat6" };
+    const antek: ChildProfile = { id: "a1", name: "Antek", character: "dinozaur", level: "lat4" };
+
+    void test("a stored id of an existing profile among two activates it with its character and level and does not ask", () => {
+      assert.deepEqual(openingVisit([zosia, antek], lastUsed, "a1"), {
+        activeId: "a1",
+        character: "dinozaur",
+        level: "lat4",
+        ask: false,
+      });
+    });
+
+    void test('"none" with two profiles keeps nobody active, takes lastUsed, and does not ask', () => {
+      assert.deepEqual(openingVisit([zosia, antek], lastUsed, "none"), {
+        activeId: null,
+        character: "samochodzik",
+        level: "lat3",
+        ask: false,
+      });
+    });
+
+    void test('"none" with one profile does not fall back to that profile', () => {
+      assert.deepEqual(openingVisit([zosia], lastUsed, "none"), {
+        activeId: null,
+        character: "samochodzik",
+        level: "lat3",
+        ask: false,
+      });
+    });
+
+    void test("a stored id of a deleted profile falls back to the default rule for two profiles", () => {
+      assert.deepEqual(openingVisit([zosia, antek], lastUsed, "gone"), {
+        activeId: null,
+        character: "samochodzik",
+        level: "lat3",
+        ask: true,
+      });
+    });
+
+    void test("a stored id of a deleted profile falls back to the only remaining profile", () => {
+      assert.deepEqual(openingVisit([zosia], lastUsed, "gone"), {
+        activeId: "z1",
+        character: "rakieta",
+        level: "lat6",
+        ask: false,
+      });
+    });
   });
 });
 
@@ -310,6 +361,16 @@ void describe("visitAfterDelete", () => {
       ask: false,
     });
     assert.deepEqual(profiles, [zosia, antek, basia]);
+  });
+
+  void test("deleting a profile while nobody is active and none-profile is stored keeps nobody active, even with one profile left", () => {
+    assert.deepEqual(visitAfterDelete([zosia, antek], "z1", null, bar, lastUsed, "none"), {
+      profiles: [antek],
+      activeId: null,
+      character: "rakieta",
+      level: "lat3",
+      ask: false,
+    });
   });
 
   void test("deleting active Zosia when only Antek remains activates Antek, his dinozaur, and his level", () => {

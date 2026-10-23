@@ -1,8 +1,18 @@
 ---
-import WorksheetHome from "@/components/WorksheetHome.astro";
+import CardCatalog from "@/components/CardCatalog.astro";
 import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout title="PrintoKids" lang="pl">
-  <WorksheetHome />
+  <main class="min-h-dvh bg-background px-6 py-12 text-foreground">
+    <div class="mx-auto flex w-full max-w-3xl flex-col gap-8">
+      <div class="flex flex-col gap-4 text-center">
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">PrintoKids</h1>
+        <p class="text-lg leading-relaxed text-muted-foreground sm:text-xl">
+          Wybierz rodzaj karty i wydrukuj ją na kartce A4.
+        </p>
+      </div>
+      <CardCatalog />
+    </div>
+  </main>
 </Layout>

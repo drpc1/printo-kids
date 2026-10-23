@@ -14,6 +14,7 @@ import {
   type ChildProfile,
   type VisitAfterDelete,
 } from "@/lib/child-profiles";
+import { readActiveProfile } from "@/lib/active-profile";
 import { readLastUsed } from "@/lib/last-used";
 import { LEVELS, levelById, type LevelId } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow } from "@/lib/sheet/character";
@@ -46,6 +47,7 @@ export function ProfileCorner({
   onChoose,
   onFavoriteSaved,
   onDeleted,
+  onClearProfile,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
@@ -56,6 +58,7 @@ export function ProfileCorner({
   onChoose: (profile: ChildProfile) => void;
   onFavoriteSaved: (profiles: ChildProfile[], barCharacter: string, barLevel: LevelId) => void;
   onDeleted: (next: VisitAfterDelete) => void;
+  onClearProfile: () => void;
 }) {
   const activeProfile = profiles.find((profile) => profile.id === activeId) ?? null;
   const cornerLabel = activeProfile === null ? "Profil" : activeProfile.name;
@@ -143,6 +146,12 @@ export function ProfileCorner({
     setProfileOpen(false);
   }
 
+  function handleClearProfile(): void {
+    abandonFavoriteDraft();
+    onClearProfile();
+    setProfileOpen(false);
+  }
+
   function openEdit(profile: ChildProfile): void {
     if (profile.id === activeId) {
       if (activeProfile === null) {
@@ -178,6 +187,7 @@ export function ProfileCorner({
       activeId,
       { character: barCharacter, level: barLevel },
       readLastUsed(localStorage, ALLOWED_CHARACTER_IDS),
+      readActiveProfile(localStorage),
     );
     deleteLock.current = true;
     const saved = writeChildProfiles(localStorage, next.profiles);
@@ -476,6 +486,16 @@ export function ProfileCorner({
                     </div>
                   ))}
                 </TooltipProvider>
+                {activeProfile !== null ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className={cn(DIALOG_ROW_CLASS, "w-full")}
+                    onClick={handleClearProfile}
+                  >
+                    Bez profilu
+                  </Button>
+                ) : null}
               </>
             ) : (
               <DialogTitle className={cn("break-words")}>Profil</DialogTitle>
