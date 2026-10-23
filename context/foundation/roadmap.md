@@ -44,7 +44,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | F-03 | card-catalog-home          | (foundation) Strona główna to katalog kart z miniaturą labiryntu; labirynt działa bez zmian pod własnym adresem, ze wspólną powłoką strony generatora                              | —             | US-05, FR-014 | done     |
 | S-12 | symmetry-first-printable   | Rodzic może wejść z katalogu na stronę symetrii, wygenerować kartę z połową obiektu i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | F-03          | US-06, FR-015 | done     |
 | S-13 | symmetry-difficulty-levels | Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, położenie obiektu, oś, podpowiedź) na pasku strony symetrii                                                            | S-12          | US-07, FR-016 | proposed |
-| S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: litery w kratkach i legenda, druk zostaje czarny                                                             | S-12          | US-09, FR-018 | proposed |
+| S-15 | symmetry-color-codes       | Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: litery w kratkach i legenda, druk zostaje czarny                                                             | S-12, S-13    | US-09, FR-018 | proposed |
 | S-14 | profile-age-and-levels     | Rodzic może zapamiętać w profilu wspólny wiek, osobny poziom każdego rodzaju karty i kolory symetrii; ostatnie parametry są osobne dla każdego rodzaju; stare dane działają        | S-13, S-15    | US-08, FR-017 | proposed |
 
 ## Baseline
@@ -101,7 +101,7 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 - **Change ID:** symmetry-difficulty-levels
 - **PRD refs:** US-07, FR-016
 - **Prerequisites:** S-12
-- **Parallel with:** —
+- **Parallel with:** — (po kolei: najpierw S-13, potem S-15; oba zmieniają `src/lib/symmetry/templates.ts`, `generate.ts` i `src/components/SymmetryGenerator.tsx`)
 - **Blockers:** —
 - **Unknowns:**
   - Czy startowe wartości z tabeli PRD pasują dziecku? — Owner: user. Block: no. Potwierdza je wydruk, nie planowanie (PRD Open Questions 5).
@@ -113,8 +113,8 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 - **Outcome:** Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: kratki obiektu mają litery kolorów, pod kratką jest legenda, a dziecko koloruje odbicie kredkami. Druk zostaje czarny.
 - **Change ID:** symmetry-color-codes
 - **PRD refs:** US-09, FR-018
-- **Prerequisites:** S-12
-- **Parallel with:** S-13
+- **Prerequisites:** S-12, S-13
+- **Parallel with:** — (po kolei: najpierw S-13, potem S-15; oba zmieniają `src/lib/symmetry/templates.ts`, `generate.ts` i `src/components/SymmetryGenerator.tsx`)
 - **Blockers:** —
 - **Unknowns:**
   - Jakie litery dla polskich nazw kolorów, gdy dwie zaczynają się tak samo (np. zielony i żółty: Z i Ż)? — Owner: user. Block: no.
@@ -141,13 +141,13 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcja „Po tym kamieniu” nie dostaje issue, dopóki kamień nie jest otwarty.
 
-| Roadmap ID | Change ID                  | Suggested issue title                                       | Ready for `/10x-plan` | Notes                                                   |
-| ---------- | -------------------------- | ----------------------------------------------------------- | --------------------- | ------------------------------------------------------- |
-| F-03       | card-catalog-home          | Katalog kart na stronie głównej; labirynt pod `/labirynt`   | yes                   | Run `/10x-new card-catalog-home`, potem `/10x-plan`     |
-| S-12       | symmetry-first-printable   | Karta symetrii: strona, generowanie, podgląd i druk A4      | yes                   | F-03 done. Gwiazda przewodnia kamienia. Research gotowy |
-| S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, położenie obiektu, oś, podpowiedź | no                    | Czeka na S-12                                           |
-| S-15       | symmetry-color-codes       | Kody kolorów na karcie symetrii                             | no                    | Czeka na S-12. Równolegle z S-13                        |
-| S-14       | profile-age-and-levels     | Wiek w profilu i poziomy osobno dla każdego rodzaju karty   | no                    | Czeka na S-13 i S-15. Zmienia kształt zapisanych danych |
+| Roadmap ID | Change ID                  | Suggested issue title                                       | Ready for `/10x-plan` | Notes                                                                               |
+| ---------- | -------------------------- | ----------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------- |
+| F-03       | card-catalog-home          | Katalog kart na stronie głównej; labirynt pod `/labirynt`   | yes                   | Run `/10x-new card-catalog-home`, potem `/10x-plan`                                 |
+| S-12       | symmetry-first-printable   | Karta symetrii: strona, generowanie, podgląd i druk A4      | yes                   | F-03 done. Gwiazda przewodnia kamienia. Research gotowy                             |
+| S-13       | symmetry-difficulty-levels | Poziomy symetrii: kratka, położenie obiektu, oś, podpowiedź | yes                   | S-12 done. Run `/10x-new symmetry-difficulty-levels`, potem `/10x-plan`. Przed S-15 |
+| S-15       | symmetry-color-codes       | Kody kolorów na karcie symetrii                             | no                    | Odblokowane po S-13 (te same pliki: szablony, generator, strona symetrii)           |
+| S-14       | profile-age-and-levels     | Wiek w profilu i poziomy osobno dla każdego rodzaju karty   | no                    | Czeka na S-13 i S-15. Zmienia kształt zapisanych danych                             |
 
 ## Open Roadmap Questions
 
