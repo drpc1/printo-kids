@@ -119,6 +119,7 @@ Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), pro
 - **Unknowns:**
   - Jakie litery dla polskich nazw kolorów, gdy dwie zaczynają się tak samo (np. zielony i żółty: Z i Ż)? — Owner: user. Block: no.
   - Czy litera mieści się czytelnie w kratce 10 mm na poziomie 7 lat? — Owner: team. Block: no. Sprawdza wydruk.
+  - Co z detalami, które w sylwetce S-12 są pustymi kratkami (okno rakiety, oczy robota, pestki truskawki)? W trybie kolorów zostałyby białe. Rekomendacja: szablon dostaje kolor dla tych kratek, który działa tylko przy włączonych kolorach. — Owner: user. Block: no. Z przeglądu fazy 1 S-12 (2026-10-23).
 - **Risk:** Przełącznik kolorów żyje tylko na pasku strony, niezależnie od poziomu; do profilu trafia w S-14. Odpowiedź musi uwzględniać literę każdej kratki. Legenda nie może wypchnąć kratki poza jedną stronę A4 z marginesem 10 mm. Szablony z S-12 muszą od początku nieść kolor każdej kratki, żeby S-15 nie przerabiało katalogu.
 - **Status:** proposed
 

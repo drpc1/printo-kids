@@ -90,6 +90,21 @@ void describe("symmetryCardProblems", () => {
     }
   });
 
+  void test("rejects a cell between grid lines", () => {
+    for (const place of [
+      { col: 4.5, row: 0 },
+      { col: 5, row: 2.5 },
+      { col: Number.NaN, row: 0 },
+    ]) {
+      const card = cardWith([
+        { col: 5, row: 2, color: "red" },
+        { ...place, color: "red" },
+      ]);
+
+      assert.deepEqual(symmetryCardProblems(card), ["outside-grid"], JSON.stringify(place));
+    }
+  });
+
   void test("rejects a repeated cell", () => {
     const card = cardWith([
       { col: 5, row: 2, color: "red" },
@@ -122,7 +137,7 @@ void describe("SYMMETRY_TEMPLATES", () => {
       ["rakieta", "robot", "truskawka"],
     );
     for (const template of SYMMETRY_TEMPLATES) {
-      assert.ok(template.height <= 16, template.id);
+      assert.ok(template.height <= SYMMETRY_SETTING.rows, template.id);
       assert.ok(template.parts.length >= 2 && template.parts.length <= 3, template.id);
       for (const part of template.parts) {
         assert.ok(part.variants.length >= 2, `${template.id} ${part.id}`);
@@ -130,11 +145,11 @@ void describe("SYMMETRY_TEMPLATES", () => {
     }
   });
 
-  void test("every cell stays in the 6-column frame and carries a palette color", () => {
+  void test("every cell stays in the half-grid frame and carries a palette color", () => {
     for (const template of SYMMETRY_TEMPLATES) {
       const cells = [...template.base, ...template.parts.flatMap((part) => part.variants.flat())];
       for (const cell of cells) {
-        assert.ok(cell.col >= 0 && cell.col < 6, `${template.id} ${JSON.stringify(cell)}`);
+        assert.ok(cell.col >= 0 && cell.col < SYMMETRY_SETTING.columns / 2, `${template.id} ${JSON.stringify(cell)}`);
         assert.ok(cell.row >= 0 && cell.row < template.height, `${template.id} ${JSON.stringify(cell)}`);
         assert.ok((SYMMETRY_COLORS as readonly string[]).includes(cell.color), template.id);
       }
@@ -165,6 +180,20 @@ void describe("SYMMETRY_TEMPLATES", () => {
 
       assert.equal(pictures.size, variantSets(template).length, template.id);
     }
+  });
+});
+
+void describe("symmetryRowOffsets", () => {
+  void test("a template as tall as the grid has one position, a taller one throws", () => {
+    const template = (height: number): SymmetryTemplate => ({
+      id: "wieza",
+      height,
+      base: [{ col: 5, row: 0, color: "black" }],
+      parts: [],
+    });
+
+    assert.equal(symmetryRowOffsets(template(SYMMETRY_SETTING.rows)), 1);
+    assert.throws(() => symmetryRowOffsets(template(SYMMETRY_SETTING.rows + 1)), /wieza/);
   });
 });
 

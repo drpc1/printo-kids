@@ -330,13 +330,13 @@ Bez zmian w danych zapisanych u rodzica. Klucze `localStorage` i kształt profil
 
 #### Automated
 
-- [x] 1.1 Testy symetrii i całe `npm test` przechodzą
-- [x] 1.2 `npm run lint` przechodzi bez błędów
-- [x] 1.3 `npx astro check` przechodzi bez błędów
+- [x] 1.1 Testy symetrii i całe `npm test` przechodzą — d2667ee
+- [x] 1.2 `npm run lint` przechodzi bez błędów — d2667ee
+- [x] 1.3 `npx astro check` przechodzi bez błędów — d2667ee
 
 #### Manual
 
-- [x] 1.4 Wydruk tekstowy kilku kart z testu pokazuje rozpoznawalną rakietę, robota i truskawkę w każdej kombinacji wariantów
+- [x] 1.4 Wydruk tekstowy kilku kart z testu pokazuje rozpoznawalną rakietę, robota i truskawkę w każdej kombinacji wariantów — d2667ee
 
 ### Phase 2: Wspólna powłoka i hook profilu
 
