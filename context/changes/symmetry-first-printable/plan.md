@@ -371,14 +371,14 @@ Bez zmian w danych zapisanych u rodzica. Klucze `localStorage` i kształt profil
 
 #### Automated
 
-- [x] 4.1 `npm run thumbnails` dwa razy daje ten sam `symetria.svg`
-- [x] 4.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
-- [x] 4.3 `npm run smoke` przeciw podglądowi przechodzi
-- [x] 4.4 Lokalne `npx playwright test` przechodzi, w tym nowe przypadki symetrii
+- [x] 4.1 `npm run thumbnails` dwa razy daje ten sam `symetria.svg` — aa5b1e2
+- [x] 4.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą — aa5b1e2
+- [x] 4.3 `npm run smoke` przeciw podglądowi przechodzi — aa5b1e2
+- [x] 4.4 Lokalne `npx playwright test` przechodzi, w tym nowe przypadki symetrii — aa5b1e2
 
 #### Manual
 
-- [x] 4.5 Katalog na telefonie i komputerze pokazuje dwie czytelne miniatury
-- [x] 4.6 Druk jednej strony A4 w Edge, Firefox, Brave i Safari na komputerze
-- [x] 4.7 Na telefonie przyciski nie nachodzą na siebie, podgląd zostaje, wydruk to jedna strona A4
-- [x] 4.8 Wydruk testowy: dziecko rozpoznaje obiekt, a kratka 15 mm daje się zamalować kredką
+- [x] 4.5 Katalog na telefonie i komputerze pokazuje dwie czytelne miniatury — aa5b1e2
+- [x] 4.6 Druk jednej strony A4 w Edge, Firefox, Brave i Safari na komputerze — aa5b1e2
+- [x] 4.7 Na telefonie przyciski nie nachodzą na siebie, podgląd zostaje, wydruk to jedna strona A4 — aa5b1e2
+- [x] 4.8 Wydruk testowy: dziecko rozpoznaje obiekt, a kratka 15 mm daje się zamalować kredką — aa5b1e2
