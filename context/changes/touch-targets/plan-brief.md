@@ -17,15 +17,15 @@ Na dotyku Profil ma co najmniej 44 px wysokości, z tym samym napisem. Krzyżyk 
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| Zakres | Tylko Profil i krzyżyk | Tytuł i odłożone przeglądy nie obejmują Postaci ani Poziomu na pasku | Plan |
-| Kolumna na dotyku | Cała szyna pod ikoną, ikona w oknie | Wspólne obie krawędzie ramki 16 px i szyny 6 px są niemożliwe, a wyśrodkowanie na dzisiejszej szynie obcina glif | Plan |
-| Pole krzyżyka | 44×44 px, dół na 52 px | Ten sam cel co Generuj na telefonie, 4 px nad wierszem, który zaczyna się na 56 px | Plan |
-| Myszka | Ikona nad natywnym paskiem, `right-3` | Pomiar 2026-10-22: pasek ma 16 px i jest 4 px na prawo od dzisiejszego glifu | Plan |
-| Profil | Co najmniej 44 px tylko na `pointer-coarse` | Tak jest zapisane w notatce zmiany; na myszce wysokość treści zostaje | Research |
-| Szyna | Wzór `+ 3` bez zmian | Wybrany układ dosuwa ikonę do szyny, nie szynę do ikony | Plan |
-| Hover krzyżyka | Płytka 36 px jak u ołówka i kosza | Pole 44 px pomalowane w całości zasłaniałoby róg; płytka siedzi pod glifem | Plan |
+| Decision          | Choice                                      | Why (1 sentence)                                                                                                 | Source   |
+| ----------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------- |
+| Zakres            | Tylko Profil i krzyżyk                      | Tytuł i odłożone przeglądy nie obejmują Postaci ani Poziomu na pasku                                             | Plan     |
+| Kolumna na dotyku | Cała szyna pod ikoną, ikona w oknie         | Wspólne obie krawędzie ramki 16 px i szyny 6 px są niemożliwe, a wyśrodkowanie na dzisiejszej szynie obcina glif | Plan     |
+| Pole krzyżyka     | 44×44 px, dół na 52 px                      | Ten sam cel co Generuj na telefonie, 4 px nad wierszem, który zaczyna się na 56 px                               | Plan     |
+| Myszka            | Ikona nad natywnym paskiem, `right-3`       | Pomiar 2026-10-22: pasek ma 16 px i jest 4 px na prawo od dzisiejszego glifu                                     | Plan     |
+| Profil            | Co najmniej 44 px tylko na `pointer-coarse` | Tak jest zapisane w notatce zmiany; na myszce wysokość treści zostaje                                            | Research |
+| Szyna             | Wzór `+ 3` bez zmian                        | Wybrany układ dosuwa ikonę do szyny, nie szynę do ikony                                                          | Plan     |
+| Hover krzyżyka    | Płytka 36 px jak u ołówka i kosza           | Pole 44 px pomalowane w całości zasłaniałoby róg; płytka siedzi pod glifem                                       | Plan     |
 
 ## Scope
 
@@ -39,10 +39,10 @@ Oba ruchy są klasami. Profil dostaje minimalną wysokość 44 px tylko na `poin
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Profil na dotyku | Wysokość ≥ 44 px na `pointer-coarse`, napis bez zmian | Dodatkowe 12 px w dół może spotkać nagłówek; wtedy wolno ruszyć tylko `padding-top` telefonu |
-| 2. Róg okna | Pole 44 px, kolumna ze szyną na dotyku, ikona nad natywnym paskiem na myszce, płytka hovera 36 px, fokus jak u `Button` | Zły `right` obcina glif albo zostawia przerwę obok paska |
+| Phase               | What it delivers                                                                                                        | Key risk                                                                                     |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| 1. Profil na dotyku | Wysokość ≥ 44 px na `pointer-coarse`, napis bez zmian                                                                   | Dodatkowe 12 px w dół może spotkać nagłówek; wtedy wolno ruszyć tylko `padding-top` telefonu |
+| 2. Róg okna         | Pole 44 px, kolumna ze szyną na dotyku, ikona nad natywnym paskiem na myszce, płytka hovera 36 px, fokus jak u `Button` | Zły `right` obcina glif albo zostawia przerwę obok paska                                     |
 
 **Prerequisites:** research w tym folderze; issue #37 zostaje otwarte do czasu wdrożenia.
 **Estimated effort:** jedna sesja, dwie fazy.

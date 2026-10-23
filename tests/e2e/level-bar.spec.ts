@@ -73,7 +73,7 @@ for (const barCase of BAR_CASES) {
       },
       [barCase.character, barCase.level] as const,
     );
-    await page.goto("/");
+    await page.goto("/labirynt");
     await page.getByRole("button", { name: "Generuj" }).click();
     await expect(page.getByRole("img", { name: "Labirynt" })).toBeVisible();
     await expect(page.getByRole("button", { name: `Poziom: ${barCase.levelLabel}` })).toBeVisible();
@@ -99,7 +99,7 @@ for (const barCase of BAR_CASES) {
 }
 
 test("changing the level on a sheet redraws the maze for that level", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/labirynt");
 
   // client:only island: Generuj is absent until React mounts. The click waits for it.
   await page.getByRole("button", { name: "Generuj" }).click();

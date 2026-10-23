@@ -1,7 +1,8 @@
-// Smoke test: the product page is served and the starter account routes are gone.
+// Smoke test: the product pages (/ card catalog, /labirynt maze generator) are served and the starter account routes are gone.
 // Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
+const CATALOG_SENTENCE = "Wybierz rodzaj karty i wydrukuj ją na kartce A4.";
 const HOME_SENTENCE = "Wygeneruj labirynt i wydrukuj go na kartce A4.";
 
 async function request(path) {
@@ -12,8 +13,14 @@ async function request(path) {
 
 const steps = [
   [
-    "home renders the worksheet sentence",
+    "home renders the card catalog sentence",
     () => request("/"),
+    (actual) => actual.status === 200 && actual.body.includes(CATALOG_SENTENCE),
+    `200 and ${CATALOG_SENTENCE}`,
+  ],
+  [
+    "labirynt renders the worksheet sentence",
+    () => request("/labirynt"),
     (actual) => actual.status === 200 && actual.body.includes(HOME_SENTENCE),
     `200 and ${HOME_SENTENCE}`,
   ],

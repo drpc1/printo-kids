@@ -1,0 +1,23 @@
+---
+import { CARD_KINDS } from "@/lib/cards";
+---
+
+<ul class="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
+  {CARD_KINDS.map((kind) => (
+    <li>
+      <a
+        href={kind.href}
+        class="focus-visible:border-ring focus-visible:ring-ring/50 flex min-h-11 flex-col gap-2 rounded-md text-foreground outline-none focus-visible:ring-[3px]"
+      >
+        <img
+          src={kind.thumbnail}
+          alt=""
+          width="210"
+          height="297"
+          class="aspect-[210/297] h-auto w-full rounded-md border border-border bg-card object-contain"
+        />
+        <span class="text-center text-base font-medium sm:text-lg">{kind.title}</span>
+      </a>
+    </li>
+  ))}
+</ul>

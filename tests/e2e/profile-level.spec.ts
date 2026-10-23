@@ -16,7 +16,7 @@ async function storedLevels(page: Page): Promise<unknown> {
 
 test("the profile dialog saves the picked level and the bar follows it", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
-  await page.goto("/");
+  await page.goto("/labirynt");
 
   // client:only island: the Profil corner is absent until React mounts. The click waits for it.
   await page.getByRole("button", { name: "Profil" }).click();

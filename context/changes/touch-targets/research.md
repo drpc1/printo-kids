@@ -63,10 +63,10 @@ To samo liczenie przy szerokości viewportu 375 px, obramowaniu `border` 1 px i 
 
 Pole 36 px lub 44 px, liczone od krawędzi paddingu, przy dwóch kotwicach:
 
-| Pole | Środek na dzisiejszej ikonie (środek 24 px od góry i od prawej) | Przypięte do `top-4 right-4` (rośnie w lewo i w dół) |
-| --- | --- | --- |
+| Pole  | Środek na dzisiejszej ikonie (środek 24 px od góry i od prawej)                                                                                      | Przypięte do `top-4 right-4` (rośnie w lewo i w dół)                        |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | 36 px | y 6–42, prawa krawędź 6 px od prawej. Nad pierwszym wierszem (56) o 14 px i nad szyną (52) o 10 px. Nachodzi na zakres x szyny, ale zostaje nad nią. | Dół na 52. Nad wierszem o 4 px. Od szyny wciąż 7 px, bo nie rośnie w prawo. |
-| 44 px | y 2–46, prawa krawędź 2 px od prawej. Nad wierszem o 10 px, nad szyną o 6 px. Też tylko nachodzi na zakres x szyny. | Dół na 60. Wchodzi w pierwszy wiersz o 4 px. Od szyny wciąż 7 px. |
+| 44 px | y 2–46, prawa krawędź 2 px od prawej. Nad wierszem o 10 px, nad szyną o 6 px. Też tylko nachodzi na zakres x szyny.                                  | Dół na 60. Wchodzi w pierwszy wiersz o 4 px. Od szyny wciąż 7 px.           |
 
 Przegląd `dialog-close-button` proponował `size-9`/`size-11` przy `top-2 right-2` i liczył, że 44 px od `top-2` kończy się na 52 px, pod pasem 56 px (`context/archive/2026-10-16-dialog-close-button/reviews/impl-review.md:46-49`). Ta propozycja nie jest przyjęta. Przy `right-2` (8 px od prawej) ramka 44 px i szyna (3–9 px od prawej) stykają się na 1 px szerokości.
 

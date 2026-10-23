@@ -1,3 +1,4 @@
+import { NO_PROFILE } from "./active-profile.ts";
 import { DEFAULT_LEVEL_ID, isLevelId, type LevelId } from "./maze/levels.ts";
 
 const CHILD_PROFILES_KEY = "printo-kids:child-profiles";
@@ -94,7 +95,20 @@ export function barAfterFavoriteSave<T extends string>(bar: T, previousFavorite:
   return bar === previousFavorite ? nextFavorite : bar;
 }
 
-export function openingVisit(profiles: readonly ChildProfile[], lastUsed: BarChoice): OpeningVisit {
+export function openingVisit(
+  profiles: readonly ChildProfile[],
+  lastUsed: BarChoice,
+  stored: string | null,
+): OpeningVisit {
+  const remembered = stored === null ? undefined : profiles.find((profile) => profile.id === stored);
+  if (remembered !== undefined) {
+    return { activeId: remembered.id, character: remembered.character, level: remembered.level, ask: false };
+  }
+
+  if (stored === NO_PROFILE) {
+    return { activeId: null, character: lastUsed.character, level: lastUsed.level, ask: false };
+  }
+
   const only = profiles.length === 1 ? profiles[0] : undefined;
   if (only !== undefined) {
     return { activeId: only.id, character: only.character, level: only.level, ask: false };
@@ -118,6 +132,7 @@ export function visitAfterDelete(
   activeId: string | null,
   bar: BarChoice,
   lastUsed: BarChoice,
+  stored: string | null = null,
 ): VisitAfterDelete {
   if (!profiles.some((profile) => profile.id === deletedId)) {
     return {
@@ -140,7 +155,7 @@ export function visitAfterDelete(
     };
   }
 
-  return { profiles: remaining, ...openingVisit(remaining, lastUsed) };
+  return { profiles: remaining, ...openingVisit(remaining, lastUsed, stored) };
 }
 
 export function sortProfiles(profiles: readonly ChildProfile[]): ChildProfile[] {

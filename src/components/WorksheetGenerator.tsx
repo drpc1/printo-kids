@@ -3,12 +3,14 @@ import { ChevronDown, Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceRows, LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
+import { clearActiveProfile, NO_PROFILE, readActiveProfile, writeActiveProfile } from "@/lib/active-profile";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsed } from "@/lib/last-used";
-import { generateMaze, mazeForSheet, type Maze, type MazeCell } from "@/lib/maze/generate";
+import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
 import { CHARACTER_CHOICES, characterRow, characterSheetSrc } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
+import { collectWalls } from "@/lib/sheet/walls";
 import { cn } from "@/lib/utils";
 
 const PAGE_WIDTH = 210;
@@ -32,14 +34,6 @@ interface VisitStart {
   character: CharacterChoice;
   level: LevelId;
   ask: boolean;
-}
-
-interface WallSegment {
-  id: string;
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
 }
 
 export default function WorksheetGenerator() {
@@ -118,12 +112,23 @@ export default function WorksheetGenerator() {
     setActiveId(profile.id);
     setCharacter(characterChoice(profile.character));
     applyLevel(profile.level);
+    writeActiveProfile(localStorage, profile.id);
   }
 
   function handleProfileChosen(profile: ChildProfile): void {
     setActiveId(profile.id);
     setCharacter(characterChoice(profile.character));
     applyLevel(profile.level);
+    writeActiveProfile(localStorage, profile.id);
+  }
+
+  function handleProfileCleared(): void {
+    const lastUsed = readLastUsed(localStorage, ALLOWED_CHARACTER_IDS);
+    setActiveId(null);
+    setCharacter(characterChoice(lastUsed.character));
+    applyLevel(lastUsed.level);
+    setAsk(false);
+    writeActiveProfile(localStorage, NO_PROFILE);
   }
 
   function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string, nextLevel: LevelId): void {
@@ -138,6 +143,12 @@ export default function WorksheetGenerator() {
     setCharacter(characterChoice(next.character));
     applyLevel(next.level);
     setAsk(next.ask);
+    if (next.activeId !== null) {
+      writeActiveProfile(localStorage, next.activeId);
+    } else if (readActiveProfile(localStorage) !== NO_PROFILE) {
+      // An explicit "no profile" survives the delete; otherwise the default rule (single profile, or ask) applies.
+      clearActiveProfile(localStorage);
+    }
   }
 
   const sheetLevel = levelById(level);
@@ -162,6 +173,7 @@ export default function WorksheetGenerator() {
         onChoose={handleProfileChosen}
         onFavoriteSaved={handleFavoriteSaved}
         onDeleted={handleDeleted}
+        onClearProfile={handleProfileCleared}
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
@@ -389,54 +401,9 @@ function MazeSheet({ maze, characterId, level }: { maze: Maze; characterId: Char
   );
 }
 
-function collectWalls(maze: Maze, originX: number, originY: number, cellSize: number): WallSegment[] {
-  const walls: WallSegment[] = [];
-
-  for (let row = 0; row < maze.height; row += 1) {
-    for (let col = 0; col < maze.width; col += 1) {
-      const cell = mazeCell(maze, row, col);
-      if (cell === undefined) {
-        continue;
-      }
-      const x = originX + col * cellSize;
-      const y = originY + row * cellSize;
-      if (row === 0 && cell.north) {
-        walls.push({ id: `${row},${col},north`, x1: x, y1: y, x2: x + cellSize, y2: y });
-      }
-      if (cell.east) {
-        walls.push({
-          id: `${row},${col},east`,
-          x1: x + cellSize,
-          y1: y,
-          x2: x + cellSize,
-          y2: y + cellSize,
-        });
-      }
-      if (cell.south) {
-        walls.push({
-          id: `${row},${col},south`,
-          x1: x,
-          y1: y + cellSize,
-          x2: x + cellSize,
-          y2: y + cellSize,
-        });
-      }
-      if (col === 0 && cell.west) {
-        walls.push({ id: `${row},${col},west`, x1: x, y1: y, x2: x, y2: y + cellSize });
-      }
-    }
-  }
-
-  return walls;
-}
-
-function mazeCell(maze: Maze, row: number, col: number): MazeCell | undefined {
-  return maze.cells[row]?.[col];
-}
-
 function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitStart {
   const profiles = readChildProfiles(storage, ALLOWED_CHARACTER_IDS);
-  const opening = openingVisit(profiles, readLastUsed(storage, ALLOWED_CHARACTER_IDS));
+  const opening = openingVisit(profiles, readLastUsed(storage, ALLOWED_CHARACTER_IDS), readActiveProfile(storage));
   return {
     profiles,
     activeId: opening.activeId,
