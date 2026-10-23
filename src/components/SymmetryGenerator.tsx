@@ -62,7 +62,7 @@ export default function SymmetryGenerator() {
 
   function handleLevelSelect(id: SymmetryLevelId): void {
     setLevelId(id);
-    if (card !== null) {
+    if (card !== null && !waitingForChild) {
       generateFor(id);
     }
   }
