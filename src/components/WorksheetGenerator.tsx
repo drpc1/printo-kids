@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, Printer, Shuffle } from "lucide-react";
+import { ChevronDown, Printer } from "lucide-react";
+import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceRows, LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
@@ -24,10 +25,6 @@ const INSET = 10;
 const CHARACTER_MARK_SIZE = 30;
 const SHEET_LABEL_SIZE = 7;
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
-
-// Button's default size adds has-[>svg]:px-3; the has-[>svg] entries replace it so the icon keeps the full padding.
-const ACTION_BUTTON_CLASS =
-  "h-auto rounded-full px-6 py-2.5 text-base has-[>svg]:px-6 sm:px-8 sm:py-3.5 sm:text-lg sm:has-[>svg]:px-8";
 
 export default function WorksheetGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
@@ -204,31 +201,6 @@ export default function WorksheetGenerator() {
         <MazeSheet maze={maze} characterId={character} level={sheetLevel} ownImageHref={ownImageHref} />
       ) : null}
     </div>
-  );
-}
-
-function GenerateButton({
-  onClick,
-  tone,
-  disabled,
-  className,
-}: {
-  onClick: () => void;
-  tone: "hero" | "quiet";
-  disabled: boolean;
-  className?: string;
-}) {
-  return (
-    <Button
-      type="button"
-      variant={tone === "hero" ? "default" : "outline"}
-      onClick={onClick}
-      disabled={disabled}
-      className={cn(ACTION_BUTTON_CLASS, className)}
-    >
-      <Shuffle aria-hidden />
-      Generuj
-    </Button>
   );
 }
 
