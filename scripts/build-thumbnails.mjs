@@ -262,12 +262,11 @@ sequenceCard.rows.forEach((row, rowIndex) => {
       );
       return;
     }
-    const outline = sequenceShapeOutline(
-      row.values[fieldIndex],
-      field.x + fieldSize / 2,
-      field.y + fieldSize / 2,
-      shapeSize,
-    );
+    const item = row.values[fieldIndex];
+    if (typeof item === "number") {
+      throw new Error("The 5 lat thumbnail has shapes only; draw numbers here before using a level that has them");
+    }
+    const outline = sequenceShapeOutline(item, field.x + fieldSize / 2, field.y + fieldSize / 2, shapeSize);
     const common = `fill="none" stroke="#000" stroke-width="${SEQUENCE.shapeStroke}"`;
     sequenceLines.push(
       outline.kind === "circle"
