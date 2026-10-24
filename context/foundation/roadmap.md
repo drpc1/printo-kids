@@ -39,12 +39,12 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                      | Outcome (user can …)                                                                                                                                                                                                            | Prerequisites | PRD refs      | Status      |
-| ---- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | ----------- |
-| S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-10, FR-019 | in-progress |
-| S-18 | picture-sudoku-first-printable | Rodzic może wejść z katalogu na stronę sudoku obrazkowego, wygenerować planszę 4×4 z postaciami z katalogu i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie                     | —             | US-12, FR-021 | ready       |
-| S-17 | sequence-difficulty-levels     | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                 | S-16          | US-11, FR-020 | proposed    |
-| S-19 | picture-sudoku-levels          | Rodzic może wybrać poziom sudoku obrazkowego nazwany wiekiem (liczba pól wypełnionych na starcie) na pasku strony sudoku                                                                                                        | S-18          | US-13, FR-022 | proposed    |
+| ID   | Change ID                      | Outcome (user can …)                                                                                                                                                                                                            | Prerequisites | PRD refs      | Status   |
+| ---- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
+| S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-10, FR-019 | done     |
+| S-18 | picture-sudoku-first-printable | Rodzic może wejść z katalogu na stronę sudoku obrazkowego, wygenerować planszę 4×4 z postaciami z katalogu i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie                     | —             | US-12, FR-021 | ready    |
+| S-17 | sequence-difficulty-levels     | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                 | S-16          | US-11, FR-020 | proposed |
+| S-19 | picture-sudoku-levels          | Rodzic może wybrać poziom sudoku obrazkowego nazwany wiekiem (liczba pól wypełnionych na starcie) na pasku strony sudoku                                                                                                        | S-18          | US-13, FR-022 | proposed |
 
 ## Streams
 
@@ -87,7 +87,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
   - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „5 lat” z tabeli PRD (ciągi 7-polowe, wzór AB/AAB/ABC z kształtami, 1–2 puste pola, 6 ciągów); poziomy dochodzą w S-17. — Owner: team. Block: no.
   - Jak wygląda puste pole do wpisania i jak wygląda liczba w polu na czarnym druku? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
 - **Risk:** Sprawdzenie, że do pustego pola pasuje dokładnie jedna reguła z jawnej listy, to jedyne nietrywialne miejsce. Odrzucenie ciągu zbyt często psuje szybkość generowania (limit 5 s) albo zmniejsza różnorodność kart. Pierwszy wpis w `src/lib/cards.ts` i miniatura w `public/thumbnails/` dzielą pliki ze S-18, więc strumienie nie powinny edytować ich jednocześnie bez uzgodnienia.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-18: Sudoku obrazkowe 4×4: strona, generowanie, podgląd i druk A4
 
@@ -199,3 +199,4 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-12: Rodzic może wejść z katalogu na stronę symetrii (`/symetria`), wygenerować kartę z połową obiektu (np. rakieta, robot, truskawka) i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.** — Archived 2026-10-23 → `context/archive/2026-10-23-symmetry-first-printable/`. Lesson: —.
 - **S-13: Rodzic może wybrać poziom symetrii nazwany wiekiem (kratka, obiekty, podpowiedź) na pasku strony symetrii.** — Archived 2026-10-23 → `context/archive/2026-10-23-symmetry-difficulty-levels/`. Lesson: —.
 - **S-15: Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii: kratki obiektu (także okno, oczy i pestki) mają prawdziwe kolory, bez liter i bez legendy, a dziecko koloruje odbicie kredkami według wzoru. Domyślnie obiekt jest czarną sylwetką.** — Archived 2026-10-23 → `context/archive/2026-10-23-symmetry-color-codes/`. Lesson: —.
+- **S-16: Rodzic może wejść z katalogu na stronę „Sekwencje” (`/sekwencje`), wygenerować kartę z kilkoma ciągami liczb i kształtów, w których brakuje elementów, i jedną odpowiedzią każdego ciągu, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.** — Archived 2026-10-24 → `context/archive/2026-10-23-sequences-first-printable/`. Lesson: —.
