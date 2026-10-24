@@ -303,6 +303,12 @@ Brak. Nowa strona i nowe pliki; zapisane profile i ostatnie parametry się nie z
 - Kontrakt druku: `src/lib/sheet/print-contract.test.ts:80-111,160-175`
 - Plan testów, ryzyko 7: `context/foundation/test-plan.md`
 
+## Addendum (po przeglądzie faz 1–2, 2026-10-24)
+
+- **Układ rzuca zamiast ograniczać wysokością.** `layoutSequenceSheet` liczy pole tylko z szerokości (`innerWidth / (n + (n − 1) · ratio)`) i rzuca, gdy wiersze z minimalnym odstępem nie mieszczą się pod poleceniem. Nie zmniejsza pola wysokością, więc „ograniczona też wysokością” w kontrakcie fazy 1 nie obowiązuje. Dla „5 lat” wynik jest ten sam (około 23,2 mm). S-17 przy krótszych ciągach nie powinno szukać tego ograniczenia.
+- **Test kształtów.** Faza 1 dostała też `src/lib/sequence/shapes.test.ts` (kształt mieści się w kwadracie `size`, jest wyśrodkowany, cztery różne obrysy). Skrypt `test` w fazie 3 dostaje ten plik obok `generate.test.ts` i `layout.test.ts`.
+- **Pozycja „?”.** `dominantBaseline="hanging"` zostaje; różnice przeglądarek sprawdza ręczny druk fazy 3 (3.9–3.11).
+
 ## Progress
 
 > Convention: `- [ ]` pending, `- [x]` done. Append ` — <commit sha>` when a step lands. Do not rename step titles. See `references/progress-format.md`.
@@ -319,17 +325,17 @@ Brak. Nowa strona i nowe pliki; zapisane profile i ostatnie parametry się nie z
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi: `npm run lint`
-- [x] 2.2 Typy przechodzą: `npx astro check`
-- [x] 2.3 Build przechodzi: `npm run build`
-- [x] 2.4 Testy produktu nadal przechodzą: `npm test`
+- [x] 2.1 Lint przechodzi: `npm run lint` — e40e4a5
+- [x] 2.2 Typy przechodzą: `npx astro check` — e40e4a5
+- [x] 2.3 Build przechodzi: `npm run build` — e40e4a5
+- [x] 2.4 Testy produktu nadal przechodzą: `npm test` — e40e4a5
 
 #### Manual
 
-- [x] 2.5 Na `npm run dev` pod `/sekwencje` duży Generuj pokazuje kartę z poleceniem i 6 wierszami po 7 pól. Kolejne Generuj daje inną kartę.
-- [x] 2.6 Kształty są czytelnymi obrysami, a puste pole ma przerywaną ramkę i mały „?” w rogu, który nie wchodzi w środek pola.
-- [x] 2.7 Podgląd druku w Chrome na komputerze pokazuje jedną stronę A4 bez paska, nagłówka i profilu, z marginesem co najmniej 10 mm.
-- [x] 2.8 Profil w rogu działa jak na `/symetria` (wybór, tworzenie, pytanie o dziecko przy 2 profilach).
+- [x] 2.5 Na `npm run dev` pod `/sekwencje` duży Generuj pokazuje kartę z poleceniem i 6 wierszami po 7 pól. Kolejne Generuj daje inną kartę. — e40e4a5
+- [x] 2.6 Kształty są czytelnymi obrysami, a puste pole ma przerywaną ramkę i mały „?” w rogu, który nie wchodzi w środek pola. — e40e4a5
+- [x] 2.7 Podgląd druku w Chrome na komputerze pokazuje jedną stronę A4 bez paska, nagłówka i profilu, z marginesem co najmniej 10 mm. — e40e4a5
+- [x] 2.8 Profil w rogu działa jak na `/symetria` (wybór, tworzenie, pytanie o dziecko przy 2 profilach). — e40e4a5
 
 ### Phase 3: Katalog, wspólne pliki i e2e
 
