@@ -1,48 +1,50 @@
-import type { SequenceLevel } from "./levels.ts";
-import { SEQUENCE_SHAPES, type SequenceShape } from "./shapes.ts";
-
-export type SequencePattern = "AB" | "AAB" | "ABC";
+import type { SequenceLevel, SequenceLevelId } from "./levels.ts";
+import { pick, shuffle } from "./random.ts";
+import {
+  followsRule,
+  hypotheses,
+  rowFromRule,
+  SEQUENCE_NUMBER_MAX,
+  shownBefore,
+  type SequenceItem,
+  type SequenceRuleId,
+} from "./rules.ts";
+import { SEQUENCE_SHAPES } from "./shapes.ts";
 
 export interface SequenceRow {
-  pattern: SequencePattern;
+  rule: SequenceRuleId;
   /** The full sequence, answer included. Only the fields outside `gaps` are drawn. */
-  values: readonly SequenceShape[];
+  values: readonly SequenceItem[];
   /** Ascending indexes of the fields the child fills in. */
   gaps: readonly number[];
 }
 
 export interface SequenceCard {
-  levelId: SequenceLevel["id"];
+  levelId: SequenceLevelId;
   fieldsPerRow: number;
   rows: readonly SequenceRow[];
-  /** Names every row (pattern, shapes, gaps), so two cards with one key look the same. */
+  /** Names every row (rule, items, gaps), so two cards with one key look the same. */
   key: string;
 }
 
 export type SequenceRowProblem =
   | "wrong-length"
-  | "unknown-shape"
-  | "pattern-mismatch"
+  | "unknown-item"
+  | "rule-mismatch"
   | "gap-count"
   | "last-not-gap"
   | "second-gap-outside-second-half"
-  | "gap-before-pattern-shown"
+  | "gap-before-rule-shown"
   | "no-answer"
   | "ambiguous"
   | "answer-mismatch";
 
-export type SequenceProblem =
-  SequenceRowProblem | "row-count" | "missing-pattern" | "two-gap-row-count" | "duplicate-row";
+export type SequenceProblem = SequenceRowProblem | "row-count" | "missing-rule" | "gap-row-count" | "duplicate-row";
 
 /** Draws again at most this many times before giving up, so a single possible card cannot loop forever. */
 const MAX_ATTEMPTS = 20;
-
-/** Which distinct shape of the pattern unit sits at each position of the unit. */
-const PATTERN_UNITS: Record<SequencePattern, readonly number[]> = {
-  AB: [0, 1],
-  AAB: [0, 0, 1],
-  ABC: [0, 1, 2],
-};
+/** Draws a row again at most this many times, since many draws are ambiguous at the longer, gappier levels. */
+const MAX_ROW_ATTEMPTS = 50;
 
 /** A valid card of the level whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. */
 export function generateSequenceCard(
@@ -52,136 +54,154 @@ export function generateSequenceCard(
 ): SequenceCard | null {
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     const card = drawSequenceCard(random, level);
-    if (card.key !== previousKey && sequenceCardProblems(card, level).length === 0) {
+    if (card !== null && card.key !== previousKey && sequenceCardProblems(card, level).length === 0) {
       return card;
     }
   }
   return null;
 }
 
-function drawSequenceCard(random: () => number, level: SequenceLevel): SequenceCard {
-  const n = level.fieldsPerRow;
-  const patterns: SequencePattern[] = [...level.patterns];
-  while (patterns.length < level.rowCount) {
-    patterns.push(level.patterns[pick(random, level.patterns.length)]);
+function drawSequenceCard(random: () => number, level: SequenceLevel): SequenceCard | null {
+  const rules: SequenceRuleId[] = level.rules.flatMap(({ rule, minRows }) => Array<SequenceRuleId>(minRows).fill(rule));
+  while (rules.length < level.rowCount) {
+    rules.push(level.rules[pick(random, level.rules.length)].rule);
   }
-  shuffle(random, patterns);
-  const twoGapRows = new Set(shuffle(random, [...patterns.keys()]).slice(0, level.twoGapRows));
-  const firstOfSecondHalf = Math.ceil(n / 2);
+  shuffle(random, rules);
+  const extraGapRows = new Set(shuffle(random, [...rules.keys()]).slice(0, level.extraGapRows));
 
-  const rows = patterns.map((pattern, index): SequenceRow => {
-    const shapes = shuffle(random, [...SEQUENCE_SHAPES]);
-    const unit = PATTERN_UNITS[pattern].map((slot) => shapes[slot]);
-    const values = Array.from({ length: n }, (_, position) => unit[position % unit.length]);
-    const secondGap = firstOfSecondHalf + pick(random, n - 1 - firstOfSecondHalf);
-    return { pattern, values, gaps: twoGapRows.has(index) ? [secondGap, n - 1] : [n - 1] };
-  });
+  const rows: SequenceRow[] = [];
+  const taken = new Set<string>();
+  for (const [index, rule] of rules.entries()) {
+    const gapCount = level.gaps + (extraGapRows.has(index) ? 1 : 0);
+    const row = drawRow(random, level, rule, gapCount, taken);
+    if (row === null) {
+      return null;
+    }
+    taken.add(rowKey(row));
+    rows.push(row);
+  }
+  return {
+    levelId: level.id,
+    fieldsPerRow: level.fieldsPerRow,
+    rows,
+    key: `${level.id}:${rows.map(rowKey).join("|")}`,
+  };
+}
 
-  return { levelId: level.id, fieldsPerRow: n, rows, key: `${level.id}:${rows.map(rowKey).join("|")}` };
+/** A row of `rule` with `gapCount` gaps that passes the row rules and is not in `taken`, or null. */
+function drawRow(
+  random: () => number,
+  level: SequenceLevel,
+  rule: SequenceRuleId,
+  gapCount: number,
+  taken: ReadonlySet<string>,
+): SequenceRow | null {
+  const n = level.fieldsPerRow;
+  for (let attempt = 0; attempt < MAX_ROW_ATTEMPTS; attempt += 1) {
+    const row: SequenceRow = {
+      rule,
+      values: rowFromRule(rule, n, random),
+      gaps: drawGaps(random, level, rule, gapCount),
+    };
+    if (!taken.has(rowKey(row)) && sequenceRowProblems(row, level).length === 0) {
+      return row;
+    }
+  }
+  return null;
+}
+
+function drawGaps(random: () => number, level: SequenceLevel, rule: SequenceRuleId, gapCount: number): number[] {
+  const n = level.fieldsPerRow;
+  if (level.gapPlacement === "end") {
+    if (gapCount === 1) {
+      return [n - 1];
+    }
+    const firstOfSecondHalf = Math.ceil(n / 2);
+    return [firstOfSecondHalf + pick(random, n - 1 - firstOfSecondHalf), n - 1];
+  }
+  const candidates = Array.from({ length: n - shownBefore(rule) }, (_, offset) => shownBefore(rule) + offset);
+  return shuffle(random, candidates)
+    .slice(0, gapCount)
+    .sort((a, b) => a - b);
 }
 
 function rowKey(row: SequenceRow): string {
-  return `${row.pattern}.${row.values.join("-")}.${row.gaps.join("-")}`;
+  return `${row.rule}.${row.values.join("-")}.${row.gaps.join("-")}`;
 }
 
 /**
- * What the visible fields of one row allow in the gaps. Tries every repeating period from 1 to `maxPeriod` whose
- * visible fields agree (fields with the same index modulo the period are equal). A period gives an answer tuple when
- * every gap shares its remainder class with a visible field. `answers` holds the distinct tuples; `undetermined`
- * is true when an agreeing period leaves some gap without a visible counterpart, so any shape would fit there.
+ * What the visible fields of one row allow in the gaps: the distinct tuples that the gaps take in the rows of the whole
+ * list of rules (`hypotheses`) that agree with every visible field.
  */
-export function sequenceAnswers(
-  visible: readonly (SequenceShape | null)[],
-  maxPeriod: number,
-): { answers: readonly (readonly SequenceShape[])[]; undetermined: boolean } {
-  const gapIndexes = visible.flatMap((shape, index) => (shape === null ? [index] : []));
-  const answers = new Map<string, readonly SequenceShape[]>();
-  let undetermined = false;
-
-  for (let period = 1; period <= maxPeriod; period += 1) {
-    const classes = new Map<number, SequenceShape>();
-    let agrees = true;
-    for (const [index, shape] of visible.entries()) {
-      if (shape === null) {
-        continue;
-      }
-      const known = classes.get(index % period);
-      if (known !== undefined && known !== shape) {
-        agrees = false;
-      }
-      classes.set(index % period, shape);
-    }
-    if (!agrees) {
-      continue;
-    }
-    const tuple: SequenceShape[] = [];
-    for (const index of gapIndexes) {
-      const shape = classes.get(index % period);
-      if (shape === undefined) {
-        undetermined = true;
-        break;
-      }
-      tuple.push(shape);
-    }
-    if (tuple.length === gapIndexes.length) {
+export function sequenceAnswers(visible: readonly (SequenceItem | null)[]): {
+  answers: readonly (readonly SequenceItem[])[];
+} {
+  const gapIndexes = visible.flatMap((item, index) => (item === null ? [index] : []));
+  const answers = new Map<string, readonly SequenceItem[]>();
+  for (const candidate of hypotheses(visible.length)) {
+    if (visible.every((item, index) => item === null || item === candidate[index])) {
+      const tuple = gapIndexes.map((index) => candidate[index]);
       answers.set(tuple.join("-"), tuple);
     }
   }
-  return { answers: [...answers.values()], undetermined };
+  return { answers: [...answers.values()] };
+}
+
+function isKnownItem(item: SequenceItem): boolean {
+  return typeof item === "number"
+    ? Number.isInteger(item) && item >= 1 && item <= SEQUENCE_NUMBER_MAX
+    : (SEQUENCE_SHAPES as readonly string[]).includes(item);
 }
 
 /** The rules of one row. An empty list means the row may be shown. The answer is derived from the visible fields only. */
-export function sequenceRowProblems(row: SequenceRow, n: number): readonly SequenceRowProblem[] {
+export function sequenceRowProblems(row: SequenceRow, level: SequenceLevel): readonly SequenceRowProblem[] {
+  const n = level.fieldsPerRow;
   const problems = new Set<SequenceRowProblem>();
 
   if (row.values.length !== n) {
     problems.add("wrong-length");
     return [...problems];
   }
-  if (row.values.some((shape) => !(SEQUENCE_SHAPES as readonly string[]).includes(shape))) {
-    problems.add("unknown-shape");
+  if (!row.values.every(isKnownItem)) {
+    problems.add("unknown-item");
+  }
+  if (!followsRule(row.rule, row.values)) {
+    problems.add("rule-mismatch");
   }
 
-  const slots = PATTERN_UNITS[row.pattern];
-  const unitShapes = new Map<number, SequenceShape>();
-  slots.forEach((slot, position) => unitShapes.set(slot, row.values[position]));
-  const distinct = new Set(unitShapes.values());
-  const matches = row.values.every((shape, position) => shape === unitShapes.get(slots[position % slots.length]));
-  if (!matches || distinct.size !== unitShapes.size) {
-    problems.add("pattern-mismatch");
-  }
-
-  if (row.gaps.length < 1 || row.gaps.length > 2) {
+  if (row.gaps.length < level.gaps || row.gaps.length > level.gaps + 1) {
     problems.add("gap-count");
   }
-  const gapsValid =
-    row.gaps.length >= 1 &&
+  const gapsWellFormed =
+    row.gaps.length > 0 &&
     row.gaps.every(
       (gap, position) =>
         Number.isInteger(gap) && gap >= 0 && gap < n && (position === 0 || gap > row.gaps[position - 1]),
     );
-  if (!gapsValid) {
+  if (!gapsWellFormed) {
     problems.add("gap-count");
     return [...problems];
   }
 
-  if (row.gaps[row.gaps.length - 1] !== n - 1) {
-    problems.add("last-not-gap");
+  if (level.gapPlacement === "end") {
+    if (row.gaps[row.gaps.length - 1] !== n - 1) {
+      problems.add("last-not-gap");
+    }
+    if (row.gaps.length === 2 && (row.gaps[0] < Math.ceil(n / 2) || row.gaps[0] > n - 2)) {
+      problems.add("second-gap-outside-second-half");
+    }
   }
-  if (row.gaps.length === 2 && (row.gaps[0] < Math.ceil(n / 2) || row.gaps[0] > n - 2)) {
-    problems.add("second-gap-outside-second-half");
-  }
-  if (row.gaps[0] < slots.length) {
-    problems.add("gap-before-pattern-shown");
+  if (row.gaps[0] < shownBefore(row.rule)) {
+    problems.add("gap-before-rule-shown");
   }
 
-  const visible = row.values.map((shape, index) => (row.gaps.includes(index) ? null : shape));
-  const { answers, undetermined } = sequenceAnswers(visible, Math.floor(n / 2));
-  if (answers.length === 0 && !undetermined) {
+  const visible = row.values.map((item, index) => (row.gaps.includes(index) ? null : item));
+  const { answers } = sequenceAnswers(visible);
+  if (answers.length === 0) {
     problems.add("no-answer");
-  } else if (undetermined || answers.length > 1) {
+  } else if (answers.length > 1) {
     problems.add("ambiguous");
-  } else if (answers[0].some((shape, position) => shape !== row.values[row.gaps[position]])) {
+  } else if (answers[0].some((item, position) => item !== row.values[row.gaps[position]])) {
     problems.add("answer-mismatch");
   }
   return [...problems];
@@ -194,13 +214,13 @@ export function sequenceCardProblems(card: SequenceCard, level: SequenceLevel): 
   if (card.rows.length !== level.rowCount) {
     problems.add("row-count");
   }
-  for (const pattern of level.patterns) {
-    if (!card.rows.some((row) => row.pattern === pattern)) {
-      problems.add("missing-pattern");
+  for (const { rule, minRows } of level.rules) {
+    if (card.rows.filter((row) => row.rule === rule).length < minRows) {
+      problems.add("missing-rule");
     }
   }
-  if (card.rows.filter((row) => row.gaps.length === 2).length !== level.twoGapRows) {
-    problems.add("two-gap-row-count");
+  if (card.rows.filter((row) => row.gaps.length === level.gaps + 1).length !== level.extraGapRows) {
+    problems.add("gap-row-count");
   }
   const seen = new Set<string>();
   for (const row of card.rows) {
@@ -209,22 +229,9 @@ export function sequenceCardProblems(card: SequenceCard, level: SequenceLevel): 
       problems.add("duplicate-row");
     }
     seen.add(key);
-    for (const problem of sequenceRowProblems(row, level.fieldsPerRow)) {
+    for (const problem of sequenceRowProblems(row, level)) {
       problems.add(problem);
     }
   }
   return [...problems];
-}
-
-function pick(random: () => number, count: number): number {
-  return Math.min(count - 1, Math.floor(random() * count));
-}
-
-/** Fisher-Yates, in place. Returns the same array. */
-function shuffle<T>(random: () => number, items: T[]): T[] {
-  for (let index = items.length - 1; index > 0; index -= 1) {
-    const other = pick(random, index + 1);
-    [items[index], items[other]] = [items[other], items[index]];
-  }
-  return items;
 }
