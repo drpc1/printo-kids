@@ -345,13 +345,13 @@ Brak. Nowa strona i nowe pliki; profil i ostatnie parametry bez zmian.
 
 #### Automated
 
-- [x] 3.1 `npm test` przechodzi, w tym nowe przypadki kontraktu druku
-- [x] 3.2 `npm run lint`, `npx astro check` i `npm run build` przechodzą
+- [x] 3.1 `npm test` przechodzi, w tym nowe przypadki kontraktu druku — 3f2acbe
+- [x] 3.2 `npm run lint`, `npx astro check` i `npm run build` przechodzą — 3f2acbe
 
 #### Manual
 
-- [x] 3.3 Na `/sudoku` w `npm run dev`: Generuj pokazuje kartę zgodną z zaakceptowaną makietą, kolejne Generuj daje inną kartę
-- [x] 3.4 Podgląd wydruku w Chrome to jedna strona A4 bez elementów ekranu
+- [x] 3.3 Na `/sudoku` w `npm run dev`: Generuj pokazuje kartę zgodną z zaakceptowaną makietą, kolejne Generuj daje inną kartę — 3f2acbe
+- [x] 3.4 Podgląd wydruku w Chrome to jedna strona A4 bez elementów ekranu — 3f2acbe
 
 ### Phase 4: Katalog, miniatura, smoke i e2e
 
