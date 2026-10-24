@@ -12,7 +12,7 @@ import { generateSymmetryCard } from "../src/lib/symmetry/generate.ts";
 import { symmetryLevelById } from "../src/lib/symmetry/levels.ts";
 import { layoutSymmetrySheet } from "../src/lib/symmetry/layout.ts";
 import { SYMMETRY_SHEET } from "../src/lib/symmetry/sheet.ts";
-import { generateSudokuCard } from "../src/lib/sudoku/generate.ts";
+import { generateSudokuCard, sudokuBlock } from "../src/lib/sudoku/generate.ts";
 import { layoutSudokuSheet } from "../src/lib/sudoku/layout.ts";
 import { SUDOKU_SHEET } from "../src/lib/sudoku/sheet.ts";
 import { sudokuShapePath } from "../src/lib/sudoku/shapes.ts";
@@ -174,16 +174,16 @@ const sudokuSheet = layoutSudokuSheet({
   pageHeight: SUDOKU_SHEET.pageHeight,
   inset: SUDOKU_SHEET.inset,
   size: sudokuCard.size,
-  blockRows: 2,
-  blockColumns: 2,
-  cellSize: SUDOKU_SHEET.cellSize[4],
+  blockRows: sudokuBlock(sudokuCard.size).rows,
+  blockColumns: sudokuBlock(sudokuCard.size).columns,
+  cellSize: SUDOKU_SHEET.cellSize[sudokuCard.size],
   instructionLineCount: SUDOKU_SHEET.instructionLines.length,
   instructionSize: SUDOKU_SHEET.instructionSize,
   instructionLineGap: SUDOKU_SHEET.instructionLineGap,
   instructionGap: SUDOKU_SHEET.instructionGap,
 });
 const sudokuGrid = sudokuSheet.grid;
-const sudokuShapeSize = SUDOKU_SHEET.cellSize[4] * SUDOKU_SHEET.shapeScale;
+const sudokuShapeSize = SUDOKU_SHEET.cellSize[sudokuCard.size] * SUDOKU_SHEET.shapeScale;
 const sudokuLine = (line, width) =>
   `<line x1="${num(line.x1)}" y1="${num(line.y1)}" x2="${num(line.x2)}" y2="${num(line.y2)}" stroke="#000" stroke-width="${width}"/>`;
 
