@@ -1,6 +1,6 @@
-// Provenance: card-catalog-home (phase 3); symmetry-first-printable (phase 4, US-05)
-// Protects the card catalog on /: the Labirynt and Symetria thumbnails open their generators, Symetria
-// shows its card after Generuj and leads back with "Wszystkie karty", and the chosen child profile stays
+// Provenance: card-catalog-home (phase 3); symmetry-first-printable (phase 4, US-05); sequences-first-printable (phase 3)
+// Protects the card catalog on /: the Labirynt, Symetria and Sekwencje thumbnails open their generators, Symetria
+// and Sekwencje show their card after Generuj and lead back with "Wszystkie karty", and the chosen child profile stays
 // chosen across the round trip catalog -> generator -> catalog -> generator on both pages.
 // The flow is the same on every screen size, so it runs on desktop Chromium only.
 import { expect, test } from "@playwright/test";
@@ -68,6 +68,22 @@ test("the Symetria card on the catalog opens the symmetry generator and leads ba
   await page.getByRole("link", { name: "Wszystkie karty" }).click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole("link", { name: "Symetria" })).toBeVisible();
+});
+
+test("the Sekwencje card on the catalog opens the sequence generator and leads back", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/");
+
+  await page.getByRole("link", { name: "Sekwencje" }).click();
+  await expect(page).toHaveURL(/\/sekwencje$/);
+
+  // client:only island: Generuj is absent until React mounts. The click waits for it.
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Sekwencje" })).toBeVisible();
+
+  await page.getByRole("link", { name: "Wszystkie karty" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByRole("link", { name: "Sekwencje" })).toBeVisible();
 });
 
 test("each Generuj on the symmetry page draws a different card", async ({ page }, testInfo) => {
