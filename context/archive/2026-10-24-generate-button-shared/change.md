@@ -1,10 +1,10 @@
 ---
 change_id: generate-button-shared
 title: Wspólny GenerateButton zamiast kopii w generatorach
-status: impl_reviewed
+status: archived
 created: 2026-10-24
 updated: 2026-10-24
-archived_at: null
+archived_at: 2026-10-24T19:59:10Z
 ---
 
 ## Notes
