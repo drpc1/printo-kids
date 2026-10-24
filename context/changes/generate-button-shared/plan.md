@@ -102,14 +102,14 @@ Brak.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Testy przechodzą (w tym `print-contract.test.ts`): `npm test`
-- [x] 1.3 Typy przechodzą: `npx astro check`
-- [x] 1.4 Build przechodzi: `npm run build`
-- [x] 1.5 E2E przechodzi: `E2E_PORT=4398 npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts`
+- [x] 1.1 Lint przechodzi: `npm run lint` — 4b7f19c
+- [x] 1.2 Testy przechodzą (w tym `print-contract.test.ts`): `npm test` — 4b7f19c
+- [x] 1.3 Typy przechodzą: `npx astro check` — 4b7f19c
+- [x] 1.4 Build przechodzi: `npm run build` — 4b7f19c
+- [x] 1.5 E2E przechodzi: `E2E_PORT=4398 npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts` — 4b7f19c
 - [x] 1.6 W generatorach nie ma lokalnych kopii: `grep -nE "^function GenerateButton|^const ACTION_BUTTON_CLASS" src/components/*Generator.tsx` nic nie zwraca
 
 #### Manual
 
 - [x] 1.7 `/labirynt`, `/symetria`, `/sudoku`: duży przycisk Generuj na starcie wygląda jak dotąd
-- [x] 1.8 Po wygenerowaniu karty pasek Generuj/Drukuj jest w jednym rzędzie, na telefonie przyciski nie nakładają się
+- [x] 1.8 Po wygenerowaniu karty pasek Generuj/Drukuj jest w jednym rzędzie, na telefonie przyciski nie nakładają się — 4b7f19c
