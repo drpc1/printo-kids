@@ -48,6 +48,9 @@ async function encodeCopy(file: Blob): Promise<OwnImageResult> {
   let bitmap: ImageBitmap | undefined;
   try {
     const resize = await resizeForDecode(file);
+    if (resize !== undefined && "reason" in resize) {
+      return resize;
+    }
     bitmap = await globalThis.createImageBitmap(file, {
       imageOrientation: "from-image",
       ...resize,
@@ -79,11 +82,13 @@ async function encodeCopy(file: Blob): Promise<OwnImageResult> {
   }
 }
 
-async function resizeForDecode(file: Blob): Promise<{ resizeWidth: number; resizeHeight: number } | undefined> {
+async function resizeForDecode(
+  file: Blob,
+): Promise<{ resizeWidth: number; resizeHeight: number } | { reason: "decode" } | undefined> {
   const bytes = new Uint8Array(await file.arrayBuffer());
-  const display = jpegGallerySize(bytes) ?? pngSize(bytes);
+  const display = jpegGallerySize(bytes) ?? pngSize(bytes) ?? webpSize(bytes) ?? heicSize(bytes);
   if (display === null) {
-    return undefined;
+    return { reason: "decode" };
   }
 
   const scaled = scaleToMaxEdge(display.width, display.height);
@@ -265,6 +270,126 @@ function isPng(bytes: Uint8Array): boolean {
   );
 }
 
+function webpSize(bytes: Uint8Array): { width: number; height: number } | null {
+  if (!isWebp(bytes)) {
+    return null;
+  }
+
+  let offset = 12;
+  while (offset + 8 <= bytes.length) {
+    const fourcc = readAscii(bytes, offset, 4);
+    const size = readUint32LE(bytes, offset + 4);
+    const payload = offset + 8;
+    if (size > bytes.length - payload) {
+      return null;
+    }
+
+    const display = webpChunkSize(fourcc, bytes, payload, size);
+    if (display !== null) {
+      return display;
+    }
+
+    offset = payload + size + (size % 2);
+  }
+  return null;
+}
+
+function webpChunkSize(
+  fourcc: string,
+  bytes: Uint8Array,
+  payload: number,
+  size: number,
+): { width: number; height: number } | null {
+  if (fourcc === "VP8 ") {
+    return vp8Size(bytes, payload, size);
+  }
+  if (fourcc === "VP8L") {
+    return vp8lSize(bytes, payload, size);
+  }
+  if (fourcc === "VP8X") {
+    return vp8xSize(bytes, payload, size);
+  }
+  return null;
+}
+
+function vp8Size(bytes: Uint8Array, payload: number, size: number): { width: number; height: number } | null {
+  if (size < 10 || (bytes[payload] & 1) !== 0) {
+    return null;
+  }
+  if (bytes[payload + 3] !== 0x9d || bytes[payload + 4] !== 0x01 || bytes[payload + 5] !== 0x2a) {
+    return null;
+  }
+
+  const width = readUint16LE(bytes, payload + 6) & 0x3fff;
+  const height = readUint16LE(bytes, payload + 8) & 0x3fff;
+  if (width < 1 || height < 1) {
+    return null;
+  }
+  return { width, height };
+}
+
+function vp8lSize(bytes: Uint8Array, payload: number, size: number): { width: number; height: number } | null {
+  if (size < 5 || bytes[payload] !== 0x2f) {
+    return null;
+  }
+
+  const bits = bytes[payload + 1] | (bytes[payload + 2] << 8) | (bytes[payload + 3] << 16) | (bytes[payload + 4] << 24);
+  const width = (bits & 0x3fff) + 1;
+  const height = ((bits >>> 14) & 0x3fff) + 1;
+  if (width < 1 || height < 1) {
+    return null;
+  }
+  return { width, height };
+}
+
+function vp8xSize(bytes: Uint8Array, payload: number, size: number): { width: number; height: number } | null {
+  if (size < 10) {
+    return null;
+  }
+
+  const width = 1 + bytes[payload + 4] + (bytes[payload + 5] << 8) + (bytes[payload + 6] << 16);
+  const height = 1 + bytes[payload + 7] + (bytes[payload + 8] << 8) + (bytes[payload + 9] << 16);
+  if (width < 1 || height < 1) {
+    return null;
+  }
+  return { width, height };
+}
+
+function heicSize(bytes: Uint8Array): { width: number; height: number } | null {
+  if (!isHeic(bytes)) {
+    return null;
+  }
+
+  let largest: { width: number; height: number } | null = null;
+  let quarterTurn = false;
+  for (let typeAt = 4; typeAt + 4 <= bytes.length; typeAt += 1) {
+    const type = readAscii(bytes, typeAt, 4);
+    if (type === "ispe" && typeAt + 16 <= bytes.length) {
+      const width = readUint32BE(bytes, typeAt + 8);
+      const height = readUint32BE(bytes, typeAt + 12);
+      const longEdge = Math.max(width, height);
+      const largestEdge = largest === null ? 0 : Math.max(largest.width, largest.height);
+      if (width > 0 && height > 0 && longEdge >= largestEdge) {
+        largest = { width, height };
+      }
+    }
+    if (type === "irot") {
+      const angle = bytes[typeAt + 8] & 0x03;
+      if (angle === 1 || angle === 3) {
+        quarterTurn = true;
+      }
+    }
+  }
+
+  if (largest === null) {
+    return null;
+  }
+  if (quarterTurn) {
+    return { width: largest.height, height: largest.width };
+  }
+  return largest;
+}
+
 function isWebp(bytes: Uint8Array): boolean {
   return hasAscii(bytes, 0, "RIFF") && hasAscii(bytes, 8, "WEBP");
 }
@@ -312,4 +437,14 @@ function readAscii(bytes: Uint8Array, offset: number, length: number): string {
 function readUint32BE(bytes: Uint8Array, offset: number): number {
   const view = new DataView(bytes.buffer, bytes.byteOffset + offset, 4);
   return view.getUint32(0);
+}
+
+function readUint32LE(bytes: Uint8Array, offset: number): number {
+  const view = new DataView(bytes.buffer, bytes.byteOffset + offset, 4);
+  return view.getUint32(0, true);
+}
+
+function readUint16LE(bytes: Uint8Array, offset: number): number {
+  const view = new DataView(bytes.buffer, bytes.byteOffset + offset, 2);
+  return view.getUint16(0, true);
 }
