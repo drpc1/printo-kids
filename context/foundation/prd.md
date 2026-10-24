@@ -235,7 +235,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Plansza 4×4 używa czterech prostych kształtów do narysowania z zestawu: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla. Kształty są czarnymi konturami.
+- Plansza 4×4 używa czterech kształtów wylosowanych z pięciu najprostszych: koło, kwadrat, trójkąt, serce, krzyżyk (decyzja 2026-10-24). Kształty są grubymi czarnymi konturami z pustym środkiem. Nad planszą jest zdanie polecenia, bez paska kształtów i bez legendy.
 - W każdym wierszu jest dokładnie jedno puste pole; jego miejsce w wierszu jest losowe.
 - Rozwiązanie jest dokładnie jedno: plansza ma jedno poprawne uzupełnienie, które aplikacja potrafi wyliczyć i sprawdzić. Plansza z więcej niż jednym uzupełnieniem nie jest pokazana.
 - Każde Generuj daje nową planszę: inny układ albo inne kształty niż poprzednia karta.
@@ -418,7 +418,7 @@ Przebudowane 2026-10-24: zamiast planszy 4×4 z postaciami z katalogu trzy rozmi
 
 Aplikacja zawsze tworzy planszę z dokładnie jednym rozwiązaniem. Zasada: w każdym wierszu, w każdej kolumnie i w każdym bloku każdy symbol występuje raz. Generator układa pełne poprawne sudoku, potem usuwa pola tak, by pozostałe wypełnione pola nadal miały jedno rozwiązanie, aż do liczby pustych pól dla rozmiaru i poziomu. Plansza, która tego nie spełnia, nie jest pokazana. Karta nie pokazuje postaci z katalogu labiryntu.
 
-Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla — proste do narysowania przez dziecko. Plansza 4×4 losuje cztery z nich, 6×6 sześć, 9×9 używa wszystkich dziewięciu. Przy 6×6 i 9×9 rodzic wybiera kształty albo cyfry (przełącznik „Kształty / Cyfry”, 9×9 z cyframi to zwykłe sudoku).
+Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla — proste do narysowania przez dziecko. Plansza 4×4 losuje cztery z pięciu najprostszych (koło, kwadrat, trójkąt, serce, krzyżyk), 6×6 sześć, 9×9 używa wszystkich dziewięciu. Przy 6×6 i 9×9 rodzic wybiera kształty albo cyfry (przełącznik „Kształty / Cyfry”, 9×9 z cyframi to zwykłe sudoku).
 
 | Rozmiar | Bloki | Symbole                                  | Poziom | Puste pola                                     |
 | ------- | ----- | ---------------------------------------- | ------ | ---------------------------------------------- |
