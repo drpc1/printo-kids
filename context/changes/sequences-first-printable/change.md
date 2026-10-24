@@ -1,9 +1,9 @@
 ---
 change_id: sequences-first-printable
 title: Sequences first printable
-status: new
+status: implementing
 created: 2026-10-23
-updated: 2026-10-23
+updated: 2026-10-24
 archived_at: null
 ---
 
