@@ -1,10 +1,10 @@
 ---
 change_id: sequence-difficulty-levels
 title: Poziomy 4–7 lat karty sekwencji (S-17)
-status: impl_reviewed
+status: archived
 created: 2026-10-24
 updated: 2026-10-24
-archived_at: null
+archived_at: 2026-10-24T21:06:29Z
 ---
 
 ## Notes
