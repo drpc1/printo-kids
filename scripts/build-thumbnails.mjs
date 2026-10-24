@@ -12,7 +12,7 @@ import { generateSymmetryCard } from "../src/lib/symmetry/generate.ts";
 import { symmetryLevelById } from "../src/lib/symmetry/levels.ts";
 import { layoutSymmetrySheet } from "../src/lib/symmetry/layout.ts";
 import { SYMMETRY_SHEET } from "../src/lib/symmetry/sheet.ts";
-import { generateSudokuCard4 } from "../src/lib/sudoku/generate.ts";
+import { generateSudokuCard } from "../src/lib/sudoku/generate.ts";
 import { layoutSudokuSheet } from "../src/lib/sudoku/layout.ts";
 import { SUDOKU_SHEET } from "../src/lib/sudoku/sheet.ts";
 import { sudokuShapePath } from "../src/lib/sudoku/shapes.ts";
@@ -164,7 +164,7 @@ console.log(`Wrote ${symmetryOutFile} (${card.key}, ${card.cells.length} cells)`
 // Sudoku card: the same elements SudokuSheet draws (src/components/SudokuGenerator.tsx), in literal black, with the
 // shared drawing constants from src/lib/sudoku/sheet.ts.
 const SUDOKU_SEED = 20261025;
-const sudokuCard = generateSudokuCard4(mulberry32(SUDOKU_SEED), null);
+const sudokuCard = generateSudokuCard(mulberry32(SUDOKU_SEED), null);
 if (sudokuCard === null) {
   throw new Error(`Seed ${SUDOKU_SEED} did not produce a valid sudoku card`);
 }
