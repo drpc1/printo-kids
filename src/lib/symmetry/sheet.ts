@@ -13,4 +13,6 @@ export const SYMMETRY_SHEET = {
   frameStroke: 0.65,
   axisStroke: 1.4,
   axisDash: "4 2.5",
+  /** How strong the hint cells are drawn: paler than the pattern, so the child sees where to continue. */
+  hintOpacity: 0.35,
 } as const;
