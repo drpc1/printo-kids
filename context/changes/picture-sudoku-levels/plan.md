@@ -332,13 +332,13 @@ Brak danych do migracji: sudoku niczego nie zapisuje w profilu ani w ostatnich p
 
 #### Automated
 
-- [x] 4.1 Wszystkie testy: `npm test`
-- [x] 4.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build`
-- [x] 4.3 e2e: `npx playwright test`
-- [x] 4.4 Smoke: `npm run smoke` na działającym serwerze
+- [x] 4.1 Wszystkie testy: `npm test` — 4b3abf9
+- [x] 4.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build` — 4b3abf9
+- [x] 4.3 e2e: `npx playwright test` — 4b3abf9
+- [x] 4.4 Smoke: `npm run smoke` na działającym serwerze — 4b3abf9
 
 #### Manual
 
-- [ ] 4.5 Wydruk jednej strony A4 każdego z siedmiu ustawień, także z telefonu, w co najmniej Chrome i Safari (iOS)
-- [ ] 4.6 Brave i Firefox na komputerze drukują 9×9 jako jedną stronę
-- [ ] 4.7 Dziecko radzi sobie z poziomem łatwym 6×6 i z 4×4; liczby pustych pól 6×6 i 9×9 uznajesz za dobre albo podajesz nowe (PRD, pytanie otwarte 9)
+- [x] 4.5 Wydruk jednej strony A4 każdego z siedmiu ustawień, także z telefonu, w co najmniej Chrome i Safari (iOS) — 4b3abf9
+- [x] 4.6 Brave i Firefox na komputerze drukują 9×9 jako jedną stronę — 4b3abf9
+- [x] 4.7 Dziecko radzi sobie z poziomem łatwym 6×6 i z 4×4; liczby pustych pól 6×6 i 9×9 uznajesz za dobre albo podajesz nowe (PRD, pytanie otwarte 9) — 4b3abf9
