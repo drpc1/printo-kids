@@ -258,31 +258,31 @@ Brak danych do migracji: poziom żyje w stanie strony. Zmieniają się nazwy w t
 
 #### Automated
 
-- [x] 1.1 Testy logiki sekwencji przechodzą dla czterech poziomów: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
-- [x] 1.4 Break-check: po osłabieniu walidatora (`ambiguous` przestaje odrzucać) test wyroczni jest czerwony
+- [x] 1.1 Testy logiki sekwencji przechodzą dla czterech poziomów: `npm test` — 7d48298
+- [x] 1.2 Lint przechodzi: `npm run lint` — 7d48298
+- [x] 1.3 Typy przechodzą: `npx astro check` — 7d48298
+- [x] 1.4 Break-check: po osłabieniu walidatora (`ambiguous` przestaje odrzucać) test wyroczni jest czerwony — 7d48298
 
 #### Manual
 
-- [x] 1.5 Pomiar reguła × liczba luk jest zapisany w opisie fazy i uzasadnia `maxGaps`
-- [x] 1.6 Generowanie karty 7 lat trwa poniżej 5 s (typowo poniżej 100 ms) przy 100 kolejnych Generuj w skrypcie
+- [x] 1.5 Pomiar reguła × liczba luk jest zapisany w opisie fazy i uzasadnia `maxGaps` — 7d48298
+- [x] 1.6 Generowanie karty 7 lat trwa poniżej 5 s (typowo poniżej 100 ms) przy 100 kolejnych Generuj w skrypcie — 7d48298
 
 ### Phase 2: Strona: liczba w polu i pasek poziomu
 
 #### Automated
 
-- [ ] 2.1 Testy układu dla czterech poziomów i kontrakt druku przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Typy przechodzą: `npx astro check`
-- [ ] 2.4 Build przechodzi: `npm run build`
+- [x] 2.1 Testy układu dla czterech poziomów i kontrakt druku przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.3 Typy przechodzą: `npx astro check`
+- [x] 2.4 Build przechodzi: `npm run build`
 
 #### Manual
 
-- [ ] 2.5 Na `npm run dev` pod `/sekwencje` przycisk „Poziom: 5 lat” otwiera listę czterech poziomów, a wybór poziomu przy widocznej karcie daje od razu nową kartę tego poziomu
-- [ ] 2.6 Liczby są czytelnymi grubymi cyframi na środku pola, dwucyfrowe też, i nie wchodzą na ramkę ani na „?”
-- [ ] 2.7 Podgląd druku w Chrome na komputerze: jedna strona A4 bez paska, z marginesem co najmniej 10 mm, dla każdego z czterech poziomów
-- [ ] 2.8 Profil w rogu i pasek poziomu nie zasłaniają kart ani przycisków na telefonie
+- [x] 2.5 Na `npm run dev` pod `/sekwencje` przycisk „Poziom: 5 lat” otwiera listę czterech poziomów, a wybór poziomu przy widocznej karcie daje od razu nową kartę tego poziomu
+- [x] 2.6 Liczby są czytelnymi grubymi cyframi na środku pola, dwucyfrowe też, i nie wchodzą na ramkę ani na „?”
+- [x] 2.7 Podgląd druku w Chrome na komputerze: jedna strona A4 bez paska, z marginesem co najmniej 10 mm, dla każdego z czterech poziomów
+- [x] 2.8 Profil w rogu i pasek poziomu nie zasłaniają kart ani przycisków na telefonie
 
 ### Phase 3: Miniatura, e2e, dokumenty i druk
 

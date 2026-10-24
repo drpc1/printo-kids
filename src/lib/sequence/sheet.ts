@@ -17,6 +17,9 @@ export const SEQUENCE_SHEET = {
   shapeStroke: 0.9,
   /** Side of the square a shape is inscribed in, as a fraction of the field side. */
   shapeScale: 0.6,
+  /** Font size of a number in a field, as a fraction of the field side. */
+  numberFontScale: 0.5,
+  numberFontWeight: 700,
   /** Font size of the "?" in the top right corner of an empty field. */
   questionSize: 5,
   /** Distance of the "?" from the top and right edge of the field. */
