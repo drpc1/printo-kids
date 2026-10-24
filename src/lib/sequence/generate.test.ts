@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import {
   generateSequenceCard,
+  type SequenceCard,
   sequenceAnswers,
   sequenceCardProblems,
   sequenceRowProblems,
@@ -207,14 +208,19 @@ void describe("generateSequenceCard", () => {
     assert.ok(Math.min(...numbers) === 1 && Math.max(...numbers) === 20, [...numbers].join(","));
   });
 
-  void test("the next card never has the key of the previous one", () => {
+  void test("the next card never has the key of the previous one or the same sequences with other gaps", () => {
     for (const level of SEQUENCE_LEVELS) {
       const random = mulberry32(7);
       let previous: string | null = null;
+      let previousSequences = "";
+      const sequencesOf = (card: SequenceCard): string =>
+        card.rows.map((row) => `${row.rule}.${row.values.join("-")}`).join("|");
       for (let step = 0; step < 100; step += 1) {
         const card = generateSequenceCard(random, previous, level);
         assert.ok(card, `${level.id} step ${step}`);
         assert.notEqual(card.key, previous, `${level.id} step ${step}`);
+        assert.notEqual(sequencesOf(card), previousSequences, `${level.id} step ${step} differs only in its gaps`);
+        previousSequences = sequencesOf(card);
         previous = card.key;
       }
     }
@@ -374,10 +380,59 @@ void describe("sequenceRowProblems", () => {
   });
 });
 
+void describe("sequenceRowProblems against the oracle", () => {
+  const fixedRows: SequenceRow[] = [
+    { rule: "AB", values: [KOLO, KWADRAT, KOLO, KWADRAT, KOLO, KWADRAT, KOLO, KWADRAT], gaps: [] },
+    { rule: "AAB", values: [KOLO, KOLO, KWADRAT, KOLO, KOLO, KWADRAT, KOLO, KOLO], gaps: [] },
+    { rule: "ABC", values: [KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT], gaps: [] },
+    { rule: "up1", values: [3, 4, 5, 6, 7, 8, 9, 10], gaps: [] },
+    { rule: "up2", values: [2, 4, 6, 8, 10, 12, 14, 16], gaps: [] },
+    { rule: "down1", values: [14, 13, 12, 11, 10, 9, 8, 7], gaps: [] },
+    { rule: "groups", values: [KOLO, KOLO, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT], gaps: [] },
+    { rule: "mixed", values: [GWIAZDKA, 1, GWIAZDKA, 2, GWIAZDKA, 3, GWIAZDKA, 4], gaps: [] },
+  ];
+
+  /** Every set of `size` field indexes out of 0..7, in ascending order. */
+  function gapSets(size: number, from = 0): number[][] {
+    if (size === 0) {
+      return [[]];
+    }
+    return Array.from({ length: 8 - from }, (_, offset) => from + offset).flatMap((index) =>
+      gapSets(size - 1, index + 1).map((rest) => [index, ...rest]),
+    );
+  }
+
+  void test("the validator calls a row ambiguous exactly when the oracle finds more than one filling", () => {
+    let ambiguous = 0;
+    let unambiguous = 0;
+    for (const base of fixedRows) {
+      for (const size of [2, 3]) {
+        const level: SequenceLevel = { ...LAT7, gaps: size, extraGapRows: 0, gapPlacement: "free" };
+        for (const gaps of gapSets(size)) {
+          const row: SequenceRow = { ...base, gaps };
+          const label = `${base.rule} gaps ${gaps.join(",")}`;
+          const fillings = fillingsThatFollowARule(row).length;
+          const isAmbiguous = sequenceRowProblems(row, level).includes("ambiguous");
+
+          assert.ok(fillings >= 1, label);
+          assert.equal(isAmbiguous, fillings > 1, label);
+          if (isAmbiguous) {
+            ambiguous += 1;
+          } else {
+            unambiguous += 1;
+          }
+        }
+      }
+    }
+    // Both sides of the comparison are exercised, not only rows that happen to be unambiguous.
+    assert.ok(ambiguous > 20 && unambiguous > 20, `${ambiguous} ambiguous, ${unambiguous} unambiguous`);
+  });
+});
+
 void describe("sequenceCardProblems", () => {
   const card = generateSequenceCard(mulberry32(1), null, LAT5);
 
-  void test("a card of five rows is reported", () => {
+  void test("a card with a row missing is reported", () => {
     assert.ok(card);
     assert.ok(sequenceCardProblems({ ...card, rows: card.rows.slice(1) }, LAT5).includes("row-count"));
   });

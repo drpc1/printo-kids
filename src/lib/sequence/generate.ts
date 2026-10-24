@@ -23,7 +23,7 @@ export interface SequenceCard {
   levelId: SequenceLevelId;
   fieldsPerRow: number;
   rows: readonly SequenceRow[];
-  /** Names every row (rule, items, gaps), so two cards with one key look the same. */
+  /** Names every row (rule and items, not the gaps), so two cards with one key show the same sequences. */
   key: string;
 }
 
@@ -84,7 +84,7 @@ function drawSequenceCard(random: () => number, level: SequenceLevel): SequenceC
     levelId: level.id,
     fieldsPerRow: level.fieldsPerRow,
     rows,
-    key: `${level.id}:${rows.map(rowKey).join("|")}`,
+    key: `${level.id}:${rows.map(valuesKey).join("|")}`,
   };
 }
 
@@ -128,10 +128,6 @@ function drawGaps(random: () => number, level: SequenceLevel, rule: SequenceRule
 /** The row without its gaps: one card never shows the same sequence twice, even with the gaps in other places. */
 function valuesKey(row: SequenceRow): string {
   return `${row.rule}.${row.values.join("-")}`;
-}
-
-function rowKey(row: SequenceRow): string {
-  return `${row.rule}.${row.values.join("-")}.${row.gaps.join("-")}`;
 }
 
 /**
