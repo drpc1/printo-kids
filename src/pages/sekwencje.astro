@@ -1,0 +1,11 @@
+---
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import SequenceGenerator from "@/components/SequenceGenerator";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="PrintoKids" lang="pl">
+  <GeneratorShell description="Wygeneruj kartę sekwencji i wydrukuj ją na kartce A4.">
+    <SequenceGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>

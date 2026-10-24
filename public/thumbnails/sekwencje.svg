@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297" width="210" height="297">
+<rect width="210" height="297" fill="#fff"/>
+<rect x="0.25" y="0.25" width="209.5" height="296.5" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>
+<text x="105" y="13.5" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle" dominant-baseline="middle">Co pasuje w puste pole? Uzupełnij.</text>
+<rect x="10" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="21.585,30.329 28.537,42.841 14.634,42.841" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="37.805" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<circle cx="49.39" cy="36.585" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
+<rect x="65.61" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="77.195,30.329 84.146,42.841 70.244,42.841" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="93.415" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<circle cx="105" cy="36.585" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
+<rect x="121.22" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="132.805,30.329 139.756,42.841 125.854,42.841" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="149.024" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<circle cx="160.61" cy="36.585" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
+<rect x="176.829" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="198.5" y="26.5" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+<rect x="10" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="21.585,78.064 23.301,82.653 28.196,82.867 24.362,85.917 25.671,90.639 21.585,87.935 17.5,90.639 18.809,85.917 14.974,82.867 19.869,82.653" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="37.805" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="49.39,78.064 51.106,82.653 56.001,82.867 52.167,85.917 53.476,90.639 49.39,87.935 45.304,90.639 46.614,85.917 42.779,82.867 47.674,82.653" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="65.61" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="71.078,78.234 83.312,78.234 83.312,90.468 71.078,90.468" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="93.415" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="105,78.064 106.716,82.653 111.611,82.867 107.777,85.917 109.086,90.639 105,87.935 100.914,90.639 102.223,85.917 98.389,82.867 103.284,82.653" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="121.22" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="142.89" y="74.266" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+<rect x="149.024" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="154.493,78.234 166.727,78.234 166.727,90.468 154.493,90.468" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="176.829" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="198.5" y="74.266" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+<rect x="10" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="21.585,125.83 23.301,130.419 28.196,130.633 24.362,133.683 25.671,138.405 21.585,135.7 17.5,138.405 18.809,133.683 14.974,130.633 19.869,130.419" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="37.805" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="43.273,126 55.507,126 55.507,138.234 43.273,138.234" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="65.61" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="77.195,125.83 78.911,130.419 83.806,130.633 79.972,133.683 81.281,138.405 77.195,135.7 73.109,138.405 74.419,133.683 70.584,130.633 75.479,130.419" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="93.415" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="98.883,126 111.117,126 111.117,138.234 98.883,138.234" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="121.22" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="132.805,125.83 134.521,130.419 139.416,130.633 135.581,133.683 136.891,138.405 132.805,135.7 128.719,138.405 130.028,133.683 126.194,130.633 131.089,130.419" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="149.024" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="170.695" y="122.032" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+<rect x="176.829" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="198.5" y="122.032" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+<rect x="10" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<circle cx="21.585" cy="179.883" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
+<rect x="37.805" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="49.39,173.595 51.106,178.185 56.001,178.399 52.167,181.449 53.476,186.17 49.39,183.466 45.304,186.17 46.614,181.449 42.779,178.399 47.674,178.185" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="65.61" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="71.078,173.766 83.312,173.766 83.312,186 71.078,186" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="93.415" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<circle cx="105" cy="179.883" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
+<rect x="121.22" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="132.805,173.595 134.521,178.185 139.416,178.399 135.581,181.449 136.891,186.17 132.805,183.466 128.719,186.17 130.028,181.449 126.194,178.399 131.089,178.185" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="149.024" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="154.493,173.766 166.727,173.766 166.727,186 154.493,186" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="176.829" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="198.5" y="169.798" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+<rect x="10" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="21.585,221.393 28.537,233.905 14.634,233.905" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="37.805" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="49.39,221.393 56.341,233.905 42.439,233.905" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="65.61" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="71.078,221.532 83.312,221.532 83.312,233.766 71.078,233.766" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="93.415" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="105,221.393 111.951,233.905 98.049,233.905" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="121.22" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="132.805,221.393 139.756,233.905 125.854,233.905" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="149.024" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="170.695" y="217.563" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+<rect x="176.829" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="198.5" y="217.563" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+<rect x="10" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="15.468,269.298 27.702,269.298 27.702,281.532 15.468,281.532" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="37.805" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="43.273,269.298 55.507,269.298 55.507,281.532 43.273,281.532" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="65.61" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="77.195,269.159 84.146,281.671 70.244,281.671" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="93.415" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="98.883,269.298 111.117,269.298 111.117,281.532 98.883,281.532" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="121.22" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="126.688,269.298 138.922,269.298 138.922,281.532 126.688,281.532" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="149.024" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="160.61,269.159 167.561,281.671 153.659,281.671" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="176.829" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="198.5" y="265.329" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
+</svg>

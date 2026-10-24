@@ -41,7 +41,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 | ID   | Change ID                      | Outcome (user can …)                                                                                                                                                                                                             | Prerequisites | PRD refs      | Status      |
 | ---- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | ----------- |
-| S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie  | —             | US-10, FR-019 | ready       |
+| S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie  | —             | US-10, FR-019 | in-progress |
 | S-18 | picture-sudoku-first-printable | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-12, FR-021 | in-progress |
 | S-17 | sequence-difficulty-levels     | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                  | S-16          | US-11, FR-020 | proposed    |
 | S-19 | picture-sudoku-levels          | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                     | S-18          | US-13, FR-022 | proposed    |
@@ -88,7 +88,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
   - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „5 lat” z tabeli PRD (ciągi 7-polowe, wzór AB/AAB/ABC z kształtami, 1–2 puste pola, 6 ciągów); poziomy dochodzą w S-17. — Owner: team. Block: no.
   - Jak wygląda puste pole do wpisania i jak wygląda liczba w polu na czarnym druku? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
 - **Risk:** Sprawdzenie, że do pustego pola pasuje dokładnie jedna reguła z jawnej listy, to jedyne nietrywialne miejsce. Odrzucenie ciągu zbyt często psuje szybkość generowania (limit 5 s) albo zmniejsza różnorodność kart. Pierwszy wpis w `src/lib/cards.ts` i miniatura w `public/thumbnails/` dzielą pliki ze S-18, więc strumienie nie powinny edytować ich jednocześnie bez uzgodnienia.
-- **Status:** ready
+- **Status:** in-progress
 
 ### S-18: Sudoku 4×4 z kształtami: strona, generowanie, podgląd i druk A4
 
@@ -171,7 +171,6 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 - **Konta rodziców i synchronizacja między urządzeniami** — Why parked: PRD §Non-Goals; ustawienia i profile zostają na urządzeniu.
 - **Zapis i archiwum wygenerowanych kart** — Why parked: PRD §Non-Goals; cykl życia karty kończy się po wydruku.
 - **Biblioteka gotowych kart (FR-011)** — Why parked: PRD §Non-Goals; nice-to-have poza MVP.
-- **Własny obrazek rodzica (US-02)** — Why parked: świadomie poza MVP, zapisane 2026-10-04. Change ID do odblokowania: `parent-supplied-maze-image`.
 
 ## Po tym kamieniu
 

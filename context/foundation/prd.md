@@ -73,7 +73,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Na poziomach od 3 lat do 7–8 lat przy starcie znajduje się wybrana postać. Poziom nastolatka postaci nie pokazuje.
 - Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, a napis „Meta” na środku dolnej. Poziom nastolatka ma start i metę w narożnikach.
 
-### US-02: Rodzic wstawia własny obrazek — poza MVP
+### US-02: Rodzic wskazuje własny obrazek, który zostaje w przeglądarce i staje przy starcie
 
 - **Given** rodzic ma własny plik obrazka, na przykład zdjęcie dziecka
 - **When** wskaże ten plik przed generowaniem labiryntu
@@ -81,7 +81,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Ta historyjka jest poza MVP. Jest zapisana, żeby do niej wrócić po katalogu dostarczonych postaci.
+- Rodzic wskazuje własny obrazek, który zostaje w przeglądarce i staje przy starcie.
 - Plik nie trafia na serwer, także na czas generowania.
 - Po złożeniu karty usługa nie przechowuje kopii pliku.
 
@@ -98,7 +98,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Wygląd dodawania profilu i zapisu ulubionej postaci może się zmienić, żeby zmieścić pełną listę.
 - Przy niższej rozdzielczości pełna lista jest widoczna, a nie ucięta.
 - Ostatnio użyta postać i ulubiona postać profilu mogą być dowolną postacią z katalogu.
-- Własny obrazek rodzica zostaje przy US-02.
+- Ulubiona postać profilu może być własnym obrazkiem rodzica po „Zapisz”, a postać z katalogu nadal może być ulubioną.
 - Pasek nadal pokazuje wybraną postać. Poziom nastolatka postaci nie pokazuje.
 
 ### US-04: Rodzic korzysta ze strony na telefonie
@@ -405,10 +405,12 @@ Elementy to cztery kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Reg
 
 | Poziom | Długość ciągu | Reguły                                               | Puste pola w ciągu | Liczba ciągów |
 | ------ | ------------- | ---------------------------------------------------- | ------------------ | ------------- |
-| 4 lata | 6 pól         | wzór AB z dwoma kształtami                           | 1                  | 5             |
+| 4 lata | 5 pól         | wzór AB z dwoma kształtami                           | 1                  | 5             |
 | 5 lat  | 7 pól         | wzór AB, AAB, ABC z kształtami                       | 1–2                | 6             |
 | 6 lat  | 8 pól         | liczby rosnące o 1 lub o 2, wzory kształtów          | 2                  | 7             |
 | 7 lat  | 8 pól         | mieszane: kształt z liczbą, malejące i rosnące grupy | 2–3                | 7             |
+
+Pola wypełniają szerokość wiersza, więc krótszy ciąg daje większe pole na odpowiedź; dlatego najłatwiejszy poziom ma najkrótszy ciąg. Wszystkie pola mają cienką ramkę, puste pole ma ramkę przerywaną i mały znak zapytania w rogu. Kształty są obrysami. Polecenie: „Co pasuje w puste pole? Uzupełnij.” Na poziomach 4 i 5 lat jedno puste pole jest zawsze na końcu ciągu, drugie (jeśli jest) leży w drugiej połowie, a wzór pokazuje się w całości przed pierwszą luką.
 
 Wartości są startowe i zostają potwierdzone na wydruku. Wynikiem jest karta A4; ciągi zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
@@ -451,7 +453,6 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
 - MVP nie dostarcza biblioteki gotowych kart — FR-011 pozostaje możliwym rozszerzeniem poza MVP.
-- MVP nie przyjmuje własnego obrazka od rodzica — US-02 zostaje poza MVP. Katalog dostarczonych postaci idzie pierwszy.
 - MVP nie ma poziomu dla osoby dorosłej. Najstarszy poziom to nastolatek.
 
 ## Po MVP
@@ -478,7 +479,7 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — TBD by user. Block: no (pain and missing capability are captured; the second vision paragraph is incomplete until this lands).
 2. ~~**Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej?**~~ — Zamknięte 2026-10-16 jako nieaktualne: poziom wyznacza sposób losowania, nie próg głębokości odnogi (`random-maze-generator`).
-3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka. Własny plik rodzica jest US-02 i zostaje poza MVP.
+3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka.
 4. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Dziś pasek „Postać” zostaje aktywny przy nastolatku, a karta postaci nie rysuje, co myli rodzica. Albo wybór postaci blokuje się przy nastolatku, albo nastolatek też dostaje postać, bo młodsze dzieci mogą chcieć ten poziom. Nowa zmiana, issue drpc1/printo-kids#54 (2026-10-22).
 5. **Czy startowe wartości poziomów symetrii (kratka, siatka, obiekty, podpowiedź) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22, przebudowaną 2026-10-23 (obiekty zamiast gęstości plamy); potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie. Połowa siatki 8×12 ma 4 kratki szerokości: rozstrzygnięte 2026-10-23 po makiecie, poziom 4 lat ma własne, prostsze warianty obiektów, a poziom 7 lat bogatsze. Oś pozioma i odsunięcie od osi wycofane z poziomów. Czeka na wydruk w S-13 (faza 4).
 6. **Czy karta symetrii ma kiedyś używać postaci (np. połowa sylwetki)?** — Owner: user. Block: no. Dziś karta postaci nie pokazuje, a strona symetrii nie ma paska „Postać” (US-05). Zależy od obrysów postaci, jak „Połącz kropki”. Szablony obiektów karty symetrii (2026-10-23) to osobny katalog i nie czekają na tę decyzję.
