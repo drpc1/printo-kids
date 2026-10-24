@@ -3,13 +3,13 @@ change_id: parent-supplied-maze-image
 title: Własny plik rodzica jako postać labiryntu
 status: impl_reviewed
 created: 2026-10-23
-updated: 2026-10-23
+updated: 2026-10-24
 archived_at: null
 ---
 
 ## Notes
 
-Dodanie jako postaci swojego pliku. US-02: rodzic wskazuje własny obrazek, obrazek staje przy starcie labiryntu, plik zostaje w przeglądarce i nie idzie na serwer. S-12 zostaje przy Claude. Na roadmapie historyjka jest nadal zaparkowana jako `parent-supplied-maze-image`.
+Dodanie jako postaci swojego pliku. US-02: rodzic wskazuje własny obrazek, obrazek staje przy starcie labiryntu, plik zostaje w przeglądarce i nie idzie na serwer. S-12 zostaje przy Claude. US-02 jest w PRD, a bullet z Parked zszedł. Kamień M-2 nie dostał wiersza `parent-supplied-maze-image`.
 
 ## Ustalenia
 

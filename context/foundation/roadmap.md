@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-23
+updated: 2026-10-24
 prd_version: 2
 main_goal: low-complexity
 top_blocker: capacity
@@ -164,7 +164,6 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 - **Konta rodziców i synchronizacja między urządzeniami** — Why parked: PRD §Non-Goals; ustawienia i profile zostają na urządzeniu.
 - **Zapis i archiwum wygenerowanych kart** — Why parked: PRD §Non-Goals; cykl życia karty kończy się po wydruku.
 - **Biblioteka gotowych kart (FR-011)** — Why parked: PRD §Non-Goals; nice-to-have poza MVP.
-- **Własny obrazek rodzica (US-02)** — Why parked: świadomie poza MVP, zapisane 2026-10-04. Change ID do odblokowania: `parent-supplied-maze-image`.
 
 ## Po tym kamieniu
 
