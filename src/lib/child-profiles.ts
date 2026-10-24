@@ -1,5 +1,7 @@
 import { NO_PROFILE } from "./active-profile.ts";
 import { DEFAULT_LEVEL_ID, isLevelId, type LevelId } from "./maze/levels.ts";
+import { OWN_IMAGE_ID } from "./sheet/character.ts";
+import { isOwnImageDataUrl } from "./sheet/own-image-store.ts";
 
 const CHILD_PROFILES_KEY = "printo-kids:child-profiles";
 const MAX_NAME_CODE_POINTS = 40;
@@ -14,6 +16,7 @@ export interface ChildProfile {
   name: string;
   character: string;
   level: LevelId;
+  image?: string;
 }
 
 export function readChildProfiles(storage: ChildProfileStorage, allowed: readonly string[]): ChildProfile[] {
@@ -83,12 +86,60 @@ export function withFavorite(
   character: string,
   level: LevelId,
   allowed: readonly string[],
+  imageHref?: string | null,
 ): ChildProfile[] | null {
   if (!allowed.includes(character) || !isLevelId(level) || !profiles.some((profile) => profile.id === id)) {
     return null;
   }
+  if (character === OWN_IMAGE_ID && !isOwnImageDataUrl(imageHref)) {
+    return null;
+  }
 
-  return profiles.map((profile) => (profile.id === id ? { ...profile, character, level } : profile));
+  return profiles.map((profile) => {
+    if (profile.id !== id) {
+      return profile;
+    }
+    if (character === OWN_IMAGE_ID && isOwnImageDataUrl(imageHref)) {
+      return { id: profile.id, name: profile.name, character, level, image: imageHref };
+    }
+    return { id: profile.id, name: profile.name, character, level };
+  });
+}
+
+/** Href passed to withFavorite. A catalog id clears the snapshot. An untouched `wlasne` keeps the saved one. */
+export function hrefForFavoriteSave(
+  character: string,
+  touched: boolean,
+  deviceHref: string | null,
+  profileHref: string | undefined,
+): string | null {
+  if (character !== OWN_IMAGE_ID) {
+    return null;
+  }
+  if (touched) {
+    return deviceHref;
+  }
+  return profileHref ?? null;
+}
+
+/** A profile row for Utwórz. `wlasne` keeps the device href in `image`; the character field stays the id. */
+export function profileToCreate(
+  id: string,
+  name: string,
+  character: string,
+  level: LevelId,
+  imageHref: string | null,
+): ChildProfile | null {
+  if (character === OWN_IMAGE_ID) {
+    if (!isOwnImageDataUrl(imageHref)) {
+      return null;
+    }
+    return { id, name, character, level, image: imageHref };
+  }
+  if (character.startsWith("data:")) {
+    return null;
+  }
+  return { id, name, character, level };
 }
 
 export function barAfterFavoriteSave<T extends string>(bar: T, previousFavorite: T, nextFavorite: T): T {
@@ -217,8 +268,16 @@ function acceptEntry(entry: unknown, allowed: readonly string[], kept: readonly 
   }
 
   const level = isLevelId(entry.level) ? entry.level : DEFAULT_LEVEL_ID;
+  const image = isOwnImageDataUrl(entry.image) ? entry.image : undefined;
+  const keptName = name.trim();
 
-  return { id, name: name.trim(), character, level };
+  if (character === OWN_IMAGE_ID && image === undefined) {
+    return { id, name: keptName, character: "none", level };
+  }
+  if (image === undefined) {
+    return { id, name: keptName, character, level };
+  }
+  return { id, name: keptName, character, level, image };
 }
 
 function codePointLength(value: string): number {
