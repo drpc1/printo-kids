@@ -3,10 +3,11 @@ import { Printer } from "lucide-react";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
+import { SequenceLevelChoice } from "@/components/SequenceLevelChoice";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { generateSequenceCard, type SequenceCard } from "@/lib/sequence/generate";
 import { layoutSequenceSheet } from "@/lib/sequence/layout";
-import { SEQUENCE_LEVEL_LAT5 } from "@/lib/sequence/levels";
+import { DEFAULT_SEQUENCE_LEVEL_ID, sequenceLevelById, type SequenceLevelId } from "@/lib/sequence/levels";
 import { SEQUENCE_SHEET } from "@/lib/sequence/sheet";
 import { sequenceShapeOutline } from "@/lib/sequence/shapes";
 import { cn } from "@/lib/utils";
@@ -14,9 +15,9 @@ import { cn } from "@/lib/utils";
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The sequence card page: Generuj, the card, Drukuj, and the shared profile corner. It has one fixed setting (5 lat),
- * so no level button, and no character bar. The page never touches the maze's last-used parameters; it only keeps
- * the bar values the profile corner shows.
+ * The sequence card page: Generuj, the level button, the card, Drukuj, and the shared profile corner. It has no
+ * character bar. The level lives only in this component (the profile remembers it in a later change), and the page
+ * never touches the maze's last-used parameters; it only keeps the bar values the profile corner shows.
  */
 export default function SequenceGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
@@ -24,6 +25,8 @@ export default function SequenceGenerator() {
   });
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const [levelId, setLevelId] = useState<SequenceLevelId>(DEFAULT_SEQUENCE_LEVEL_ID);
+  const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SequenceCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
@@ -38,17 +41,28 @@ export default function SequenceGenerator() {
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
 
-  function handleGenerate(): void {
-    if (waitingForChild) {
-      return;
-    }
-    const next = generateSequenceCard(Math.random, card?.key ?? null, SEQUENCE_LEVEL_LAT5);
+  function generateFor(id: SequenceLevelId): void {
+    const next = generateSequenceCard(Math.random, card?.key ?? null, sequenceLevelById(id));
     if (next === null) {
       setGenerateFailed(true);
       return;
     }
     setGenerateFailed(false);
     setCard(next);
+  }
+
+  function handleGenerate(): void {
+    if (waitingForChild) {
+      return;
+    }
+    generateFor(levelId);
+  }
+
+  function handleLevelSelect(id: SequenceLevelId): void {
+    setLevelId(id);
+    if (card !== null && !waitingForChild) {
+      generateFor(id);
+    }
   }
 
   function handlePrint(): void {
@@ -60,6 +74,14 @@ export default function SequenceGenerator() {
     setBarLevel(bar.level);
   }
 
+  const levelControl = (
+    <SequenceLevelChoice
+      level={sequenceLevelById(levelId)}
+      open={levelOpen}
+      onOpenChange={setLevelOpen}
+      onSelect={handleLevelSelect}
+    />
+  );
   const failedNote = generateFailed ? (
     <p role="alert" className={cn("text-destructive text-sm")}>
       {GENERATE_FAILED_TEXT}
@@ -82,7 +104,10 @@ export default function SequenceGenerator() {
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
-          {failedNote}
+          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {levelControl}
+            {failedNote}
+          </div>
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -103,6 +128,7 @@ export default function SequenceGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
+          {levelControl}
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
@@ -156,6 +182,7 @@ function SequenceSheet({ card }: { card: SequenceCard }) {
             empty || typeof item === "number"
               ? null
               : sequenceShapeOutline(item, field.x + fieldSize / 2, field.y + fieldSize / 2, shapeSize);
+          const number = !empty && typeof item === "number" ? item : null;
           return (
             <g key={`${rowIndex},${fieldIndex}`}>
               <rect
@@ -179,6 +206,20 @@ function SequenceSheet({ card }: { card: SequenceCard }) {
                   dominantBaseline="hanging"
                 >
                   ?
+                </text>
+              ) : null}
+              {number !== null ? (
+                <text
+                  x={field.x + fieldSize / 2}
+                  y={field.y + fieldSize / 2}
+                  fill="var(--foreground)"
+                  fontFamily="ui-sans-serif, system-ui, sans-serif"
+                  fontSize={fieldSize * SEQUENCE_SHEET.numberFontScale}
+                  fontWeight={SEQUENCE_SHEET.numberFontWeight}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                >
+                  {number}
                 </text>
               ) : null}
               {outline?.kind === "circle" ? (

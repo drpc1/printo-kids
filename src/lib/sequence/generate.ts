@@ -77,7 +77,7 @@ function drawSequenceCard(random: () => number, level: SequenceLevel): SequenceC
     if (row === null) {
       return null;
     }
-    taken.add(rowKey(row));
+    taken.add(valuesKey(row));
     rows.push(row);
   }
   return {
@@ -103,7 +103,7 @@ function drawRow(
       values: rowFromRule(rule, n, random),
       gaps: drawGaps(random, level, rule, gapCount),
     };
-    if (!taken.has(rowKey(row)) && sequenceRowProblems(row, level).length === 0) {
+    if (!taken.has(valuesKey(row)) && sequenceRowProblems(row, level).length === 0) {
       return row;
     }
   }
@@ -123,6 +123,11 @@ function drawGaps(random: () => number, level: SequenceLevel, rule: SequenceRule
   return shuffle(random, candidates)
     .slice(0, gapCount)
     .sort((a, b) => a - b);
+}
+
+/** The row without its gaps: one card never shows the same sequence twice, even with the gaps in other places. */
+function valuesKey(row: SequenceRow): string {
+  return `${row.rule}.${row.values.join("-")}`;
 }
 
 function rowKey(row: SequenceRow): string {
@@ -224,7 +229,7 @@ export function sequenceCardProblems(card: SequenceCard, level: SequenceLevel): 
   }
   const seen = new Set<string>();
   for (const row of card.rows) {
-    const key = rowKey(row);
+    const key = valuesKey(row);
     if (seen.has(key)) {
       problems.add("duplicate-row");
     }

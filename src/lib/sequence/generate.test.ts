@@ -128,7 +128,7 @@ void describe("generateSequenceCard", () => {
         assert.equal(card.fieldsPerRow, expected.n, label);
         assert.equal(card.rows.length, expected.rows, label);
         assert.deepEqual(card.rows.map((row) => row.gaps.length).sort(), expected.gaps, label);
-        assert.equal(new Set(card.rows.map((row) => JSON.stringify(row))).size, expected.rows, label);
+        assert.equal(new Set(card.rows.map((row) => row.values.join(","))).size, expected.rows, label);
         for (const row of card.rows) {
           assert.equal(row.values.length, expected.n, label);
           assert.ok(row.gaps[0] >= FIRST_GAP_BY_RULE[row.rule], `${label} ${row.rule} gap ${row.gaps[0]}`);
