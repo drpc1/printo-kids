@@ -341,18 +341,18 @@ Brak. Nowa strona i nowe pliki; zapisane profile i ostatnie parametry się nie z
 
 #### Automated
 
-- [x] 3.1 Testy produktu przechodzą, razem z testami sekwencji: `npm test`
-- [x] 3.2 Lint przechodzi: `npm run lint`
-- [x] 3.3 Typy przechodzą: `npx astro check`
-- [x] 3.4 Build przechodzi: `npm run build`
-- [x] 3.5 Miniatury są powtarzalne: po pierwszym `npm run thumbnails` pliki w `public/thumbnails` są w stage (`git add`), a po drugim `git diff --exit-code public/thumbnails` nie pokazuje zmian
-- [x] 3.6 Smoke przechodzi na podglądzie: `npm run smoke`
-- [x] 3.7 E2E katalogu i telefonu przechodzą: `npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts`
+- [x] 3.1 Testy produktu przechodzą, razem z testami sekwencji: `npm test` — 751942e
+- [x] 3.2 Lint przechodzi: `npm run lint` — 751942e
+- [x] 3.3 Typy przechodzą: `npx astro check` — 751942e
+- [x] 3.4 Build przechodzi: `npm run build` — 751942e
+- [x] 3.5 Miniatury są powtarzalne: po pierwszym `npm run thumbnails` pliki w `public/thumbnails` są w stage (`git add`), a po drugim `git diff --exit-code public/thumbnails` nie pokazuje zmian — 751942e
+- [x] 3.6 Smoke przechodzi na podglądzie: `npm run smoke` — 751942e
+- [x] 3.7 E2E katalogu i telefonu przechodzą: `npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts` — 751942e
 
 #### Manual
 
-- [x] 3.8 Miniatura „Sekwencje” w katalogu wygląda jak karta, czytelnie na telefonie (2 kolumny) i na komputerze.
-- [x] 3.9 Druk z `/sekwencje` to jedna strona A4 z marginesem co najmniej 10 mm w Chrome, Edge, Brave, Firefox i Safari na komputerze.
-- [x] 3.10 Druk z telefonu (Safari na iOS i Chrome na Androidzie) to jedna strona A4, a Generuj i Drukuj nie nachodzą na siebie.
-- [x] 3.11 Wydrukowana karta: kształty i „?” czytelne, pole około 23 mm wystarcza 5-latkowi na dorysowanie kształtu.
-- [x] 3.12 Labirynt i symetria działają jak przed zmianą.
+- [x] 3.8 Miniatura „Sekwencje” w katalogu wygląda jak karta, czytelnie na telefonie (2 kolumny) i na komputerze. — 751942e
+- [x] 3.9 Druk z `/sekwencje` to jedna strona A4 z marginesem co najmniej 10 mm w Chrome, Edge, Brave, Firefox i Safari na komputerze. — 751942e
+- [x] 3.10 Druk z telefonu (Safari na iOS i Chrome na Androidzie) to jedna strona A4, a Generuj i Drukuj nie nachodzą na siebie. — 751942e
+- [x] 3.11 Wydrukowana karta: kształty i „?” czytelne, pole około 23 mm wystarcza 5-latkowi na dorysowanie kształtu. — 751942e
+- [x] 3.12 Labirynt i symetria działają jak przed zmianą. — 751942e
