@@ -334,12 +334,12 @@ Brak. Nowa strona i nowe pliki; profil i ostatnie parametry bez zmian.
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi, w tym `src/lib/sudoku/generate.test.ts`
-- [x] 2.2 `npm run lint` i `npx astro check` przechodzą
+- [x] 2.1 `npm test` przechodzi, w tym `src/lib/sudoku/generate.test.ts` — 3a98afc
+- [x] 2.2 `npm run lint` i `npx astro check` przechodzą — 3a98afc
 
 #### Manual
 
-- [x] 2.3 Jednorazowy lokalny pomiar: 20 wywołań `generateSudokuPuzzle` dla 9×9 przy 52 pustych, każde wyraźnie poniżej 5 s (wynik zapisany w notatce do fazy)
+- [x] 2.3 Jednorazowy lokalny pomiar: 20 wywołań `generateSudokuPuzzle` dla 9×9 przy 52 pustych, każde wyraźnie poniżej 5 s (wynik zapisany w notatce do fazy) — 3a98afc
 
 ### Phase 3: Strona `/sudoku`
 
