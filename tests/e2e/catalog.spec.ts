@@ -86,6 +86,23 @@ test("the Sekwencje card on the catalog opens the sequence generator and leads b
   await expect(page.getByRole("link", { name: "Sekwencje" })).toBeVisible();
 });
 
+test("each Generuj on the sequence page draws a different card", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/sekwencje");
+
+  const generuj = page.getByRole("button", { name: "Generuj" });
+  const sheet = page.getByRole("img", { name: "Sekwencje" });
+  await generuj.click();
+  await expect(sheet).toBeVisible();
+
+  // The page passes the card on screen to the generator, so the next card never repeats it.
+  for (let round = 0; round < 3; round += 1) {
+    const before = await sheet.innerHTML();
+    await generuj.click();
+    await expect.poll(() => sheet.innerHTML()).not.toBe(before);
+  }
+});
+
 test("each Generuj on the symmetry page draws a different card", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await page.goto("/symetria");
