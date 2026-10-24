@@ -264,4 +264,4 @@ Istniejące klucze `printo-kids:last-used`, `printo-kids:child-profiles` i `prin
 
 #### Manual
 
-- [x] 3.1 US-02, non-goal, US-03 i pytanie otwarte 3 brzmią jak kontrakt tej fazy, bullet US-02 zniknął z Parked, „At a glance” nie ma wiersza `parent-supplied-maze-image`, a kotwica M-2 o niezmienionym labiryncie została.
+- [x] 3.1 US-02, non-goal, US-03 i pytanie otwarte 3 brzmią jak kontrakt tej fazy, bullet US-02 zniknął z Parked, „At a glance” nie ma wiersza `parent-supplied-maze-image`, a kotwica M-2 o niezmienionym labiryncie została. — 3d54a3a
