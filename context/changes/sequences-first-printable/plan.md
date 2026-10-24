@@ -311,25 +311,25 @@ Brak. Nowa strona i nowe pliki; zapisane profile i ostatnie parametry się nie z
 
 #### Automated
 
-- [x] 1.1 Testy logiki sekwencji przechodzą: `node --experimental-strip-types --test src/lib/sequence/generate.test.ts src/lib/sequence/layout.test.ts`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.1 Testy logiki sekwencji przechodzą: `node --experimental-strip-types --test src/lib/sequence/generate.test.ts src/lib/sequence/layout.test.ts` — 368f948
+- [x] 1.2 Lint przechodzi: `npm run lint` — 368f948
+- [x] 1.3 Typy przechodzą: `npx astro check` — 368f948
 
 ### Phase 2: Strona `/sekwencje`
 
 #### Automated
 
-- [ ] 2.1 Lint przechodzi: `npm run lint`
-- [ ] 2.2 Typy przechodzą: `npx astro check`
-- [ ] 2.3 Build przechodzi: `npm run build`
-- [ ] 2.4 Testy produktu nadal przechodzą: `npm test`
+- [x] 2.1 Lint przechodzi: `npm run lint`
+- [x] 2.2 Typy przechodzą: `npx astro check`
+- [x] 2.3 Build przechodzi: `npm run build`
+- [x] 2.4 Testy produktu nadal przechodzą: `npm test`
 
 #### Manual
 
-- [ ] 2.5 Na `npm run dev` pod `/sekwencje` duży Generuj pokazuje kartę z poleceniem i 6 wierszami po 7 pól. Kolejne Generuj daje inną kartę.
-- [ ] 2.6 Kształty są czytelnymi obrysami, a puste pole ma przerywaną ramkę i mały „?” w rogu, który nie wchodzi w środek pola.
-- [ ] 2.7 Podgląd druku w Chrome na komputerze pokazuje jedną stronę A4 bez paska, nagłówka i profilu, z marginesem co najmniej 10 mm.
-- [ ] 2.8 Profil w rogu działa jak na `/symetria` (wybór, tworzenie, pytanie o dziecko przy 2 profilach).
+- [x] 2.5 Na `npm run dev` pod `/sekwencje` duży Generuj pokazuje kartę z poleceniem i 6 wierszami po 7 pól. Kolejne Generuj daje inną kartę.
+- [x] 2.6 Kształty są czytelnymi obrysami, a puste pole ma przerywaną ramkę i mały „?” w rogu, który nie wchodzi w środek pola.
+- [x] 2.7 Podgląd druku w Chrome na komputerze pokazuje jedną stronę A4 bez paska, nagłówka i profilu, z marginesem co najmniej 10 mm.
+- [x] 2.8 Profil w rogu działa jak na `/symetria` (wybór, tworzenie, pytanie o dziecko przy 2 profilach).
 
 ### Phase 3: Katalog, wspólne pliki i e2e
 
