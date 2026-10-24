@@ -235,7 +235,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Plansza 4×4 używa czterech prostych kształtów do narysowania z zestawu: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk. Kształty są czarnymi konturami.
+- Plansza 4×4 używa czterech prostych kształtów do narysowania z zestawu: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla. Kształty są czarnymi konturami.
 - W każdym wierszu jest dokładnie jedno puste pole; jego miejsce w wierszu jest losowe.
 - Rozwiązanie jest dokładnie jedno: plansza ma jedno poprawne uzupełnienie, które aplikacja potrafi wyliczyć i sprawdzić. Plansza z więcej niż jednym uzupełnieniem nie jest pokazana.
 - Każde Generuj daje nową planszę: inny układ albo inne kształty niż poprzednia karta.
@@ -253,14 +253,14 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Na pasku strony sudoku są dwa osobne wybory: „Rozmiar” i „Poziom”. Sudoku nie nazywa poziomów wiekiem (decyzja 2026-10-24).
 - 4×4 ma jeden poziom: w każdym wierszu brakuje jednego pola (US-12). Pasek „Poziom” nie daje przy nim wyboru.
-- 6×6 (prostokąty 2×3) ma trzy poziomy różniące się liczbą pustych pól. Symbole to sześć kształtów albo cyfry 1–6; wybiera je osobny przełącznik „Kształty / Cyfry”, widoczny tylko przy 6×6.
-- 9×9 (kwadraty 3×3) jest zwykłym sudoku z cyframi 1–9 i ma trzy poziomy różniące się liczbą pustych pól.
+- 6×6 (prostokąty 2×3) ma trzy poziomy różniące się liczbą pustych pól. Symbole to sześć kształtów albo cyfry 1–6; wybiera je osobny przełącznik „Kształty / Cyfry”, widoczny przy 6×6 i 9×9.
+- 9×9 (kwadraty 3×3) ma trzy poziomy różniące się liczbą pustych pól. Symbole to dziewięć kształtów albo cyfry 1–9 (ten sam przełącznik „Kształty / Cyfry”; cyfry dają zwykłe sudoku).
 - Liczby pustych pól są w Business Logic. Przy każdej z nich rozwiązanie jest dokładnie jedno.
 - Każdy rozmiar i poziom mieści się na jednej stronie A4 z marginesem 10 mm.
 
 ### US-14: Rodzic włącza kolory kształtów na karcie sudoku
 
-- **Given** rodzic jest na stronie „Sudoku”, a plansza ma kształty (4×4 albo 6×6 z kształtami)
+- **Given** rodzic jest na stronie „Sudoku”, a plansza ma kształty (4×4 albo 6×6 i 9×9 z kształtami)
 - **When** włączy kolory
 - **Then** każdy kształt ma stały kolor kredki, a dziecko dorysowuje brakujący kształt i koloruje go według wzoru
 
@@ -331,8 +331,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-020: Rodzic może wybrać poziom karty sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól). Priority: must-have
   > Socrates: Counter-argument considered: poziomy nazwane wiekiem bez mierzalnych reguł wprowadzają w błąd. Resolution: kept; reguły są w Business Logic, wartości startowe potwierdza wydruk.
 - FR-021: Rodzic może wygenerować kartę sudoku 4×4 z prostymi kształtami do narysowania i jednym rozwiązaniem, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
-  > Socrates: Counter-argument considered: dziecko w wieku przedszkolnym nie rysuje postaci w małych polach. Resolution: revised (2026-10-24); zamiast postaci z katalogu proste kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk), które dziecko umie narysować; legenda numerów odpada, a z nią pytanie o prawa do postaci w sudoku.
-- FR-022: Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 kształty albo cyfry. Priority: must-have
+  > Socrates: Counter-argument considered: dziecko w wieku przedszkolnym nie rysuje postaci w małych polach. Resolution: revised (2026-10-24); zamiast postaci z katalogu proste kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla), które dziecko umie narysować; legenda numerów odpada, a z nią pytanie o prawa do postaci w sudoku.
+- FR-022: Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry. Priority: must-have
   > Socrates: Counter-argument considered: im więcej pustych pól, tym łatwiej o wiele rozwiązań, a dwa paski odchodzą od poziomów nazwanych wiekiem jak w innych kartach. Resolution: revised (2026-10-24); generator zostawia tylko takie pola, przy których rozwiązanie jest dokładnie jedno; użytkowniczka wybrała dwa paski, bo 7-latek robi już 9×9 i wiek nie wyznacza rozmiaru.
 - FR-023: Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury. Priority: must-have
   > Socrates: Counter-argument considered: kolorowy druk łamie wspólną umowę czarnego druku. Resolution: kept; jak w symetrii (FR-018) domyślny druk zostaje czarny, a kolor jest wyborem rodzica.
@@ -418,7 +418,7 @@ Przebudowane 2026-10-24: zamiast planszy 4×4 z postaciami z katalogu trzy rozmi
 
 Aplikacja zawsze tworzy planszę z dokładnie jednym rozwiązaniem. Zasada: w każdym wierszu, w każdej kolumnie i w każdym bloku każdy symbol występuje raz. Generator układa pełne poprawne sudoku, potem usuwa pola tak, by pozostałe wypełnione pola nadal miały jedno rozwiązanie, aż do liczby pustych pól dla rozmiaru i poziomu. Plansza, która tego nie spełnia, nie jest pokazana. Karta nie pokazuje postaci z katalogu labiryntu.
 
-Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk — proste do narysowania przez dziecko. Plansza 4×4 losuje cztery z nich, 6×6 używa wszystkich sześciu.
+Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla — proste do narysowania przez dziecko. Plansza 4×4 losuje cztery z nich, 6×6 sześć, 9×9 używa wszystkich dziewięciu. Przy 6×6 i 9×9 rodzic wybiera kształty albo cyfry (przełącznik „Kształty / Cyfry”, 9×9 z cyframi to zwykłe sudoku).
 
 | Rozmiar | Bloki | Symbole                                  | Poziom | Puste pola                                     |
 | ------- | ----- | ---------------------------------------- | ------ | ---------------------------------------------- |
@@ -426,9 +426,9 @@ Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk — proste do
 | 6×6     | 2×3   | 6 kształtów albo cyfry 1–6 (przełącznik) | łatwy  | 12 z 36                                        |
 | 6×6     | 2×3   | jak wyżej                                | średni | 18 z 36                                        |
 | 6×6     | 2×3   | jak wyżej                                | trudny | 22 z 36                                        |
-| 9×9     | 3×3   | cyfry 1–9                                | łatwy  | 35 z 81                                        |
-| 9×9     | 3×3   | cyfry 1–9                                | średni | 45 z 81                                        |
-| 9×9     | 3×3   | cyfry 1–9                                | trudny | 52 z 81                                        |
+| 9×9     | 3×3   | 9 kształtów albo cyfry 1–9 (przełącznik) | łatwy  | 35 z 81                                        |
+| 9×9     | 3×3   | jak wyżej                                | średni | 45 z 81                                        |
+| 9×9     | 3×3   | jak wyżej                                | trudny | 52 z 81                                        |
 
 Plansza 4×4 z jednym pustym polem w każdym wierszu ma zawsze jedno rozwiązanie: brakujący kształt wynika z samego wiersza.
 
