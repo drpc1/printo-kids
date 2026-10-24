@@ -357,10 +357,10 @@ Brak. Nowa strona i nowe pliki; profil i ostatnie parametry bez zmian.
 
 #### Automated
 
-- [ ] 4.1 `npm run thumbnails` dwa razy daje ten sam `sudoku.svg`, a `labirynt.svg` i `symetria.svg` się nie zmieniają
-- [ ] 4.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
-- [ ] 4.3 `npm run smoke` przeciw podglądowi przechodzi
-- [ ] 4.4 Lokalne `npx playwright test` przechodzi, w tym nowe przypadki sudoku
+- [x] 4.1 `npm run thumbnails` dwa razy daje ten sam `sudoku.svg`, a `labirynt.svg` i `symetria.svg` się nie zmieniają
+- [x] 4.2 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
+- [x] 4.3 `npm run smoke` przeciw podglądowi przechodzi
+- [x] 4.4 Lokalne `npx playwright test` przechodzi, w tym nowe przypadki sudoku
 
 #### Manual
 
