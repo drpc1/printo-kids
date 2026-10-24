@@ -39,10 +39,21 @@ export function characterRow(id: string): (typeof CHARACTER_CHOICES)[number] {
 
 export type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
 
-export const ALLOWED_CHARACTER_IDS = CHARACTER_CHOICES.map((option) => option.id);
+/** A parent photo. It is allowed on a profile and in last-used, and it is not a catalog file. */
+export const OWN_IMAGE_ID = "wlasne" as const;
 
-/** The catalog id for a stored value; anything the catalog no longer has falls back to "none". */
-export function characterChoice(value: string): CharacterChoice {
+export const OWN_IMAGE_LABEL = "Własne zdjęcie";
+
+export type SheetCharacterId = CharacterChoice | typeof OWN_IMAGE_ID;
+
+export const ALLOWED_CHARACTER_IDS: readonly string[] = [...CHARACTER_CHOICES.map((option) => option.id), OWN_IMAGE_ID];
+
+/** A catalog id, or `wlasne`. Anything else, including a data URL, falls back to "none". */
+export function characterChoice(value: string): SheetCharacterId {
+  if (value === OWN_IMAGE_ID) {
+    return OWN_IMAGE_ID;
+  }
+
   const match = CHARACTER_CHOICES.find((option) => option.id === value);
   if (match === undefined) {
     return "none";
