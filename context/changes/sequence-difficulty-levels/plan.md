@@ -272,34 +272,34 @@ Brak danych do migracji: poziom żyje w stanie strony. Zmieniają się nazwy w t
 
 #### Automated
 
-- [x] 2.1 Testy układu dla czterech poziomów i kontrakt druku przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Typy przechodzą: `npx astro check`
-- [x] 2.4 Build przechodzi: `npm run build`
+- [x] 2.1 Testy układu dla czterech poziomów i kontrakt druku przechodzą: `npm test` — e887c5c
+- [x] 2.2 Lint przechodzi: `npm run lint` — e887c5c
+- [x] 2.3 Typy przechodzą: `npx astro check` — e887c5c
+- [x] 2.4 Build przechodzi: `npm run build` — e887c5c
 
 #### Manual
 
-- [x] 2.5 Na `npm run dev` pod `/sekwencje` przycisk „Poziom: 5 lat” otwiera listę czterech poziomów, a wybór poziomu przy widocznej karcie daje od razu nową kartę tego poziomu
-- [x] 2.6 Liczby są czytelnymi grubymi cyframi na środku pola, dwucyfrowe też, i nie wchodzą na ramkę ani na „?”
-- [x] 2.7 Podgląd druku w Chrome na komputerze: jedna strona A4 bez paska, z marginesem co najmniej 10 mm, dla każdego z czterech poziomów
-- [x] 2.8 Profil w rogu i pasek poziomu nie zasłaniają kart ani przycisków na telefonie
+- [x] 2.5 Na `npm run dev` pod `/sekwencje` przycisk „Poziom: 5 lat” otwiera listę czterech poziomów, a wybór poziomu przy widocznej karcie daje od razu nową kartę tego poziomu — e887c5c
+- [x] 2.6 Liczby są czytelnymi grubymi cyframi na środku pola, dwucyfrowe też, i nie wchodzą na ramkę ani na „?” — e887c5c
+- [x] 2.7 Podgląd druku w Chrome na komputerze: jedna strona A4 bez paska, z marginesem co najmniej 10 mm, dla każdego z czterech poziomów — e887c5c
+- [x] 2.8 Profil w rogu i pasek poziomu nie zasłaniają kart ani przycisków na telefonie — e887c5c
 
 ### Phase 3: Miniatura, e2e, dokumenty i druk
 
 #### Automated
 
-- [ ] 3.1 Testy produktu przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Typy przechodzą: `npx astro check`
-- [ ] 3.4 Build przechodzi: `npm run build`
-- [ ] 3.5 Miniatury są powtarzalne: po pierwszym `npm run thumbnails` pliki w `public/thumbnails` są w stage (`git add`), a po drugim `git diff --exit-code public/thumbnails` nie pokazuje zmian
-- [ ] 3.6 Smoke przechodzi na podglądzie: `npm run smoke`
-- [ ] 3.7 E2E katalogu i telefonu przechodzą: `E2E_PORT=4398 npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts`
+- [x] 3.1 Testy produktu przechodzą: `npm test`
+- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.3 Typy przechodzą: `npx astro check`
+- [x] 3.4 Build przechodzi: `npm run build`
+- [x] 3.5 Miniatury są powtarzalne: po pierwszym `npm run thumbnails` pliki w `public/thumbnails` są w stage (`git add`), a po drugim `git diff --exit-code public/thumbnails` nie pokazuje zmian
+- [x] 3.6 Smoke przechodzi na podglądzie: `npm run smoke`
+- [x] 3.7 E2E katalogu i telefonu przechodzą: `E2E_PORT=4398 npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts`
 
 #### Manual
 
-- [ ] 3.8 Miniatura „Sekwencje” w katalogu wygląda jak karta, czytelnie na telefonie (2 kolumny) i na komputerze
-- [ ] 3.9 Wydruk czterech poziomów: jedna strona A4 z marginesem co najmniej 10 mm w Chrome na komputerze; liczby i „?” czytelne; pole wystarcza dziecku
-- [ ] 3.10 Druk z telefonu jednego poziomu (Safari na iOS albo Chrome na Androidzie): jedna strona A4, a Generuj, Poziom i Drukuj nie nachodzą na siebie
-- [ ] 3.11 Wartości startowe poziomów ocenione na wydruku; uwagi zapisane w Open Questions 9 PRD
-- [ ] 3.12 Labirynt, symetria i sudoku działają jak przed zmianą
+- [x] 3.8 Miniatura „Sekwencje” w katalogu wygląda jak karta, czytelnie na telefonie (2 kolumny) i na komputerze
+- [x] 3.9 Wydruk czterech poziomów: jedna strona A4 z marginesem co najmniej 10 mm w Chrome na komputerze; liczby i „?” czytelne; pole wystarcza dziecku
+- [x] 3.10 Druk z telefonu jednego poziomu (Safari na iOS albo Chrome na Androidzie): jedna strona A4, a Generuj, Poziom i Drukuj nie nachodzą na siebie
+- [x] 3.11 Wartości startowe poziomów ocenione na wydruku; uwagi zapisane w Open Questions 9 PRD
+- [x] 3.12 Labirynt, symetria i sudoku działają jak przed zmianą
