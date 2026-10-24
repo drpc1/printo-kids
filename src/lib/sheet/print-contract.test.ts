@@ -11,6 +11,8 @@ const MAZE_PAGE = "src/pages/labirynt.astro";
 const WORKSHEET_GENERATOR = "src/components/WorksheetGenerator.tsx";
 const SYMMETRY_PAGE = "src/pages/symetria.astro";
 const SYMMETRY_GENERATOR = "src/components/SymmetryGenerator.tsx";
+const SEQUENCE_PAGE = "src/pages/sekwencje.astro";
+const SEQUENCE_GENERATOR = "src/components/SequenceGenerator.tsx";
 const GLOBAL_CSS = "src/styles/global.css";
 
 void describe("print contract", () => {
@@ -108,6 +110,32 @@ void describe("print contract", () => {
     assert.match(page, /<GeneratorShell\b/);
     // The island reads localStorage on its first render, so it must never render on the server.
     assert.match(page, /<SymmetryGenerator\s+client:only="react"\s*\/>/);
+  });
+
+  void test("the printed sequence SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(SEQUENCE_GENERATOR));
+
+    assert.ok(svgClass.includes("print:w-[210mm]"));
+    assert.ok(svgClass.includes("print:h-[297mm]"));
+    assert.ok(svgClass.includes("print:overflow-hidden"));
+    // Without these the printed sheet could keep the screen ring, stay inline, or grow past one page.
+    assert.ok(svgClass.includes("print:block"));
+    assert.ok(svgClass.includes("print:max-h-[297mm]"));
+    assert.ok(svgClass.includes("print:ring-0"));
+  });
+
+  void test("print hides the sequence controls", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(SEQUENCE_GENERATOR), "print:hidden"), [
+      "flex w-full flex-col gap-3 print:hidden",
+      "flex flex-col items-center gap-6 print:hidden",
+    ]);
+  });
+
+  void test("the sequence page lives under /sekwencje and uses the shared shell", () => {
+    const page = readRepoFile(SEQUENCE_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    // The island reads localStorage on its first render, so it must never render on the server.
+    assert.match(page, /<SequenceGenerator\s+client:only="react"\s*\/>/);
   });
 
   void test("the screen-only padding tweak stays inside @media screen", () => {

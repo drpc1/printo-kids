@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze card and the symmetry card from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, and sequence cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -12,6 +12,11 @@ import { generateSymmetryCard } from "../src/lib/symmetry/generate.ts";
 import { symmetryLevelById } from "../src/lib/symmetry/levels.ts";
 import { layoutSymmetrySheet } from "../src/lib/symmetry/layout.ts";
 import { SYMMETRY_SHEET } from "../src/lib/symmetry/sheet.ts";
+import { generateSequenceCard } from "../src/lib/sequence/generate.ts";
+import { layoutSequenceSheet } from "../src/lib/sequence/layout.ts";
+import { SEQUENCE_LEVEL_LAT5 } from "../src/lib/sequence/levels.ts";
+import { SEQUENCE_SHEET } from "../src/lib/sequence/sheet.ts";
+import { sequenceShapeOutline } from "../src/lib/sequence/shapes.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -151,3 +156,66 @@ symmetryLines.push(
 const symmetryOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/symetria.svg");
 writeFileSync(symmetryOutFile, symmetryLines.join("\n"));
 console.log(`Wrote ${symmetryOutFile} (${card.key}, ${card.cells.length} cells)`);
+
+// Sequence card: the same elements SequenceSheet draws (src/components/SequenceGenerator.tsx), in literal black,
+// with the shared drawing constants from src/lib/sequence/sheet.ts and the shape geometry from shapes.ts.
+const SEQUENCE_SEED = 20261025;
+const SEQUENCE = SEQUENCE_SHEET;
+
+const sequenceCard = generateSequenceCard(mulberry32(SEQUENCE_SEED), null, SEQUENCE_LEVEL_LAT5);
+if (sequenceCard === null) {
+  throw new Error(`Seed ${SEQUENCE_SEED} did not produce a valid sequence card`);
+}
+
+const sequenceSheet = layoutSequenceSheet({
+  pageWidth: SEQUENCE.pageWidth,
+  pageHeight: SEQUENCE.pageHeight,
+  inset: SEQUENCE.inset,
+  fieldsPerRow: sequenceCard.fieldsPerRow,
+  rowCount: sequenceCard.rows.length,
+  fieldGapRatio: SEQUENCE.fieldGapRatio,
+  instructionHeight: SEQUENCE.instructionSize,
+  instructionGap: SEQUENCE.instructionGap,
+});
+const fieldSize = sequenceSheet.fieldSize;
+const shapeSize = fieldSize * SEQUENCE.shapeScale;
+
+const sequenceLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SEQUENCE.pageWidth} ${SEQUENCE.pageHeight}" width="${SEQUENCE.pageWidth}" height="${SEQUENCE.pageHeight}">`,
+  `<rect width="${SEQUENCE.pageWidth}" height="${SEQUENCE.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${SEQUENCE.pageWidth - 0.5}" height="${SEQUENCE.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(sequenceSheet.instruction.x)}" y="${num(sequenceSheet.instruction.y)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SEQUENCE.instructionSize}" text-anchor="middle" dominant-baseline="middle">${SEQUENCE.instructionText}</text>`,
+];
+sequenceCard.rows.forEach((row, rowIndex) => {
+  sequenceSheet.rows[rowIndex].fields.forEach((field, fieldIndex) => {
+    const empty = row.gaps.includes(fieldIndex);
+    const dash = empty ? ` stroke-dasharray="${SEQUENCE.emptyFieldDash}"` : "";
+    const stroke = empty ? SEQUENCE.emptyFieldStroke : SEQUENCE.fieldStroke;
+    sequenceLines.push(
+      `<rect x="${num(field.x)}" y="${num(field.y)}" width="${num(fieldSize)}" height="${num(fieldSize)}" fill="none" stroke="#000" stroke-width="${stroke}"${dash}/>`,
+    );
+    if (empty) {
+      sequenceLines.push(
+        `<text x="${num(field.x + fieldSize - SEQUENCE.questionInset)}" y="${num(field.y + SEQUENCE.questionInset)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SEQUENCE.questionSize}" text-anchor="end" dominant-baseline="hanging">?</text>`,
+      );
+      return;
+    }
+    const outline = sequenceShapeOutline(
+      row.values[fieldIndex],
+      field.x + fieldSize / 2,
+      field.y + fieldSize / 2,
+      shapeSize,
+    );
+    const common = `fill="none" stroke="#000" stroke-width="${SEQUENCE.shapeStroke}"`;
+    sequenceLines.push(
+      outline.kind === "circle"
+        ? `<circle cx="${num(outline.cx)}" cy="${num(outline.cy)}" r="${num(outline.r)}" ${common}/>`
+        : `<polygon points="${outline.points}" ${common} stroke-linejoin="round"/>`,
+    );
+  });
+});
+sequenceLines.push("</svg>", "");
+
+const sequenceOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/sekwencje.svg");
+writeFileSync(sequenceOutFile, sequenceLines.join("\n"));
+console.log(`Wrote ${sequenceOutFile} (${sequenceCard.key.length} key chars)`);

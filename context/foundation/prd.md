@@ -386,10 +386,12 @@ Elementy to cztery kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Reg
 
 | Poziom | Długość ciągu | Reguły                                               | Puste pola w ciągu | Liczba ciągów |
 | ------ | ------------- | ---------------------------------------------------- | ------------------ | ------------- |
-| 4 lata | 6 pól         | wzór AB z dwoma kształtami                           | 1                  | 5             |
+| 4 lata | 5 pól         | wzór AB z dwoma kształtami                           | 1                  | 5             |
 | 5 lat  | 7 pól         | wzór AB, AAB, ABC z kształtami                       | 1–2                | 6             |
 | 6 lat  | 8 pól         | liczby rosnące o 1 lub o 2, wzory kształtów          | 2                  | 7             |
 | 7 lat  | 8 pól         | mieszane: kształt z liczbą, malejące i rosnące grupy | 2–3                | 7             |
+
+Pola wypełniają szerokość wiersza, więc krótszy ciąg daje większe pole na odpowiedź; dlatego najłatwiejszy poziom ma najkrótszy ciąg. Wszystkie pola mają cienką ramkę, puste pole ma ramkę przerywaną i mały znak zapytania w rogu. Kształty są obrysami. Polecenie: „Co pasuje w puste pole? Uzupełnij.” Na poziomach 4 i 5 lat jedno puste pole jest zawsze na końcu ciągu, drugie (jeśli jest) leży w drugiej połowie, a wzór pokazuje się w całości przed pierwszą luką.
 
 Wartości są startowe i zostają potwierdzone na wydruku. Wynikiem jest karta A4; ciągi zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
