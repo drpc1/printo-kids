@@ -65,6 +65,7 @@ void describe("character catalog", () => {
     const generator = readRepoFile("src/components/WorksheetGenerator.tsx");
 
     assert.equal(generator.includes("characterSheetSrc("), true);
+    assert.match(generator, /generateMaze\(level, Math\.random\)/);
 
     for (const row of CHARACTER_CHOICES) {
       if (row.src === null) {
@@ -86,13 +87,15 @@ void describe("characterChoice", () => {
     assert.equal(characterChoice("none"), "none");
     assert.equal(characterChoice("kangur"), "none");
     assert.equal(characterChoice(""), "none");
+    assert.equal(characterChoice("data:image/png;base64,aaaa"), "none");
   });
 
-  void test("the allowed ids are the catalog ids in catalog order", () => {
-    assert.deepEqual(
-      ALLOWED_CHARACTER_IDS,
-      CHARACTER_CHOICES.map((option) => option.id),
-    );
+  void test("the allowed ids are the catalog ids in catalog order, then wlasne", () => {
+    assert.deepEqual(ALLOWED_CHARACTER_IDS, [...CHARACTER_CHOICES.map((option) => option.id), "wlasne"]);
     assert.equal(ALLOWED_CHARACTER_IDS[0], "none");
+    const catalogIds: readonly string[] = CHARACTER_CHOICES.map((row) => row.id);
+    assert.equal(catalogIds.includes("wlasne"), false);
+    assert.equal(characterSheetSrc("wlasne"), null);
+    assert.equal(characterChoice("wlasne"), "wlasne");
   });
 });
