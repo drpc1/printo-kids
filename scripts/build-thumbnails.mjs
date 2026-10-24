@@ -8,7 +8,8 @@ import { generateMaze, mazeForSheet } from "../src/lib/maze/generate.ts";
 import { levelById } from "../src/lib/maze/levels.ts";
 import { layoutSheet } from "../src/lib/sheet/layout.ts";
 import { collectWalls } from "../src/lib/sheet/walls.ts";
-import { generateSymmetryCard, SYMMETRY_SETTING } from "../src/lib/symmetry/generate.ts";
+import { generateSymmetryCard } from "../src/lib/symmetry/generate.ts";
+import { symmetryLevelById } from "../src/lib/symmetry/levels.ts";
 import { layoutSymmetrySheet } from "../src/lib/symmetry/layout.ts";
 import { SYMMETRY_SHEET } from "../src/lib/symmetry/sheet.ts";
 
@@ -100,7 +101,7 @@ const {
   axisDash: AXIS_DASH,
 } = SYMMETRY_SHEET;
 
-const card = generateSymmetryCard(mulberry32(SYMMETRY_SEED), null);
+const card = generateSymmetryCard(mulberry32(SYMMETRY_SEED), null, symmetryLevelById("lat5"));
 if (card === null) {
   throw new Error(`Seed ${SYMMETRY_SEED} did not produce a valid symmetry card`);
 }
@@ -111,7 +112,7 @@ const symmetrySheet = layoutSymmetrySheet({
   inset: SYMMETRY_INSET,
   columns: card.columns,
   rows: card.rows,
-  cellSize: SYMMETRY_SETTING.cellSize,
+  cellSize: card.cellSize,
   instructionHeight: INSTRUCTION_SIZE,
   instructionGap: INSTRUCTION_GAP,
 });
