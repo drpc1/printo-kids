@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, and sequence cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku and sequence cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -12,6 +12,10 @@ import { generateSymmetryCard } from "../src/lib/symmetry/generate.ts";
 import { symmetryLevelById } from "../src/lib/symmetry/levels.ts";
 import { layoutSymmetrySheet } from "../src/lib/symmetry/layout.ts";
 import { SYMMETRY_SHEET } from "../src/lib/symmetry/sheet.ts";
+import { generateSudokuCard4 } from "../src/lib/sudoku/generate.ts";
+import { layoutSudokuSheet } from "../src/lib/sudoku/layout.ts";
+import { SUDOKU_SHEET } from "../src/lib/sudoku/sheet.ts";
+import { sudokuShapePath } from "../src/lib/sudoku/shapes.ts";
 import { generateSequenceCard } from "../src/lib/sequence/generate.ts";
 import { layoutSequenceSheet } from "../src/lib/sequence/layout.ts";
 import { SEQUENCE_LEVEL_LAT5 } from "../src/lib/sequence/levels.ts";
@@ -157,6 +161,64 @@ const symmetryOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../pub
 writeFileSync(symmetryOutFile, symmetryLines.join("\n"));
 console.log(`Wrote ${symmetryOutFile} (${card.key}, ${card.cells.length} cells)`);
 
+// Sudoku card: the same elements SudokuSheet draws (src/components/SudokuGenerator.tsx), in literal black, with the
+// shared drawing constants from src/lib/sudoku/sheet.ts.
+const SUDOKU_SEED = 20261025;
+const sudokuCard = generateSudokuCard4(mulberry32(SUDOKU_SEED), null);
+if (sudokuCard === null) {
+  throw new Error(`Seed ${SUDOKU_SEED} did not produce a valid sudoku card`);
+}
+
+const sudokuSheet = layoutSudokuSheet({
+  pageWidth: SUDOKU_SHEET.pageWidth,
+  pageHeight: SUDOKU_SHEET.pageHeight,
+  inset: SUDOKU_SHEET.inset,
+  size: sudokuCard.size,
+  blockRows: 2,
+  blockColumns: 2,
+  cellSize: SUDOKU_SHEET.cellSize4,
+  instructionLineCount: SUDOKU_SHEET.instructionLines.length,
+  instructionSize: SUDOKU_SHEET.instructionSize,
+  instructionLineGap: SUDOKU_SHEET.instructionLineGap,
+  instructionGap: SUDOKU_SHEET.instructionGap,
+});
+const sudokuGrid = sudokuSheet.grid;
+const sudokuShapeSize = SUDOKU_SHEET.cellSize4 * SUDOKU_SHEET.shapeScale;
+const sudokuLine = (line, width) =>
+  `<line x1="${num(line.x1)}" y1="${num(line.y1)}" x2="${num(line.x2)}" y2="${num(line.y2)}" stroke="#000" stroke-width="${width}"/>`;
+
+const sudokuLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SUDOKU_SHEET.pageWidth} ${SUDOKU_SHEET.pageHeight}" width="${SUDOKU_SHEET.pageWidth}" height="${SUDOKU_SHEET.pageHeight}">`,
+  `<rect width="${SUDOKU_SHEET.pageWidth}" height="${SUDOKU_SHEET.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${SUDOKU_SHEET.pageWidth - 0.5}" height="${SUDOKU_SHEET.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+];
+SUDOKU_SHEET.instructionLines.forEach((text, index) => {
+  sudokuLines.push(
+    `<text x="${num(sudokuSheet.instruction.x)}" y="${num(sudokuSheet.instruction.ys[index])}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SUDOKU_SHEET.instructionSize}" text-anchor="middle" dominant-baseline="middle">${text}</text>`,
+  );
+});
+sudokuLines.push(`<g fill="none" stroke="#000" stroke-width="${SUDOKU_SHEET.shapeStroke}" stroke-linejoin="round">`);
+sudokuCard.givens.forEach((row, r) => {
+  row.forEach((symbol, c) => {
+    if (symbol === null) {
+      return;
+    }
+    const center = sudokuSheet.cellCenter(r, c);
+    sudokuLines.push(`<path d="${sudokuShapePath(sudokuCard.shapes[symbol], center.x, center.y, sudokuShapeSize)}"/>`);
+  });
+});
+sudokuLines.push("</g>");
+for (const line of sudokuSheet.cellLines) sudokuLines.push(sudokuLine(line, SUDOKU_SHEET.cellStroke));
+for (const line of sudokuSheet.blockLines) sudokuLines.push(sudokuLine(line, SUDOKU_SHEET.blockStroke));
+sudokuLines.push(
+  `<rect x="${num(sudokuGrid.x)}" y="${num(sudokuGrid.y)}" width="${num(sudokuGrid.width)}" height="${num(sudokuGrid.height)}" fill="none" stroke="#000" stroke-width="${SUDOKU_SHEET.frameStroke}" stroke-linejoin="miter"/>`,
+  "</svg>",
+  "",
+);
+
+const sudokuOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/sudoku.svg");
+writeFileSync(sudokuOutFile, sudokuLines.join("\n"));
+console.log(`Wrote ${sudokuOutFile} (${sudokuCard.key})`);
 // Sequence card: the same elements SequenceSheet draws (src/components/SequenceGenerator.tsx), in literal black,
 // with the shared drawing constants from src/lib/sequence/sheet.ts and the shape geometry from shapes.ts.
 const SEQUENCE_SEED = 20261025;

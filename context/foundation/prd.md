@@ -47,8 +47,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, także jako ostatnie parametry. (Odłożone 2026-10-23 do czasu, gdy będzie więcej rodzajów kart; US-08, FR-017.)
 - Rodzic może wygenerować kartę sekwencji, na której dziecko uzupełnia brakujące elementy ciągu liczb i kształtów, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wybrać poziom karty sekwencji nazwany wiekiem (około 4–7 lat).
-- Rodzic może wygenerować kartę sudoku obrazkowego 4×4 z postaciami z katalogu, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
-- Rodzic może wybrać poziom sudoku obrazkowego nazwany wiekiem (około 5–7 lat).
+- Rodzic może wygenerować kartę sudoku 4×4, 6×6 albo 9×9 z prostymi kształtami do narysowania albo z cyframi, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
+- Rodzic może wybrać rozmiar sudoku i jego poziom (łatwy, średni, trudny), a przy kształtach włączyć kolory.
 
 ### Guardrails
 
@@ -227,32 +227,49 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
 - Poziom jest na pasku strony sekwencji.
 
-### US-12: Rodzic generuje kartę sudoku obrazkowego do druku
+### US-12: Rodzic generuje kartę sudoku do druku
 
-- **Given** rodzic otworzył z katalogu stronę „Sudoku obrazkowe”
+- **Given** rodzic otworzył z katalogu stronę „Sudoku”
 - **When** uruchomi generowanie
-- **Then** otrzymuje gotową do wydruku kartę A4 z planszą 4×4, na której część pól ma postać, a dziecko uzupełnia puste pola tak, by w każdym wierszu, w każdej kolumnie i w każdym kwadracie 2×2 każda z czterech postaci wystąpiła raz
+- **Then** otrzymuje gotową do wydruku kartę A4 z planszą sudoku 4×4 z prostymi kształtami; w każdym wierszu brakuje jednego kształtu, a dziecko dorysowuje go tak, by w każdym wierszu, w każdej kolumnie i w każdym kwadracie 2×2 każdy z czterech kształtów wystąpił raz
 
 #### Acceptance Criteria
 
-- Plansza 4×4 ma cztery postacie wybrane losowo z katalogu jedenastu postaci (FR-012). Obok planszy jest legenda: cztery postacie, każda z numerem od 1 do 4. Dziecko wpisuje w puste pole numer postaci albo ją dorysowuje.
-- Rozwiązanie jest dokładnie jedno: plansza z wypełnionymi polami ma jedno poprawne uzupełnienie, które aplikacja potrafi wyliczyć i sprawdzić. Plansza z więcej niż jednym uzupełnieniem nie jest pokazana.
-- Każde Generuj daje nową planszę: inny układ albo inne postacie niż poprzednia karta.
+- Plansza 4×4 używa czterech kształtów wylosowanych z pięciu najprostszych: koło, kwadrat, trójkąt, serce, krzyżyk (decyzja 2026-10-24). Kształty są grubymi czarnymi konturami z pustym środkiem. Nad planszą jest zdanie polecenia, bez paska kształtów i bez legendy.
+- W każdym wierszu jest dokładnie jedno puste pole; jego miejsce w wierszu jest losowe.
+- Rozwiązanie jest dokładnie jedno: plansza ma jedno poprawne uzupełnienie, które aplikacja potrafi wyliczyć i sprawdzić. Plansza z więcej niż jednym uzupełnieniem nie jest pokazana.
+- Każde Generuj daje nową planszę: inny układ albo inne kształty niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest bez odpowiedzi na kartce.
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
-- Strona sudoku nie pokazuje paska „Postać”: postacie wybiera generator, nie rodzic.
+- Strona sudoku nie pokazuje paska „Postać”. Sudoku nie używa postaci z katalogu.
 
-### US-13: Rodzic wybiera poziom sudoku obrazkowego
+### US-13: Rodzic wybiera rozmiar i poziom sudoku
 
-- **Given** rodzic jest na stronie „Sudoku obrazkowe”
-- **When** wybierze poziom nazwany wiekiem (około 5–7 lat)
-- **Then** plansza ma liczbę wypełnionych pól zgodną z tym poziomem
+- **Given** rodzic jest na stronie „Sudoku”
+- **When** wybierze rozmiar planszy (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny)
+- **Then** plansza ma ten rozmiar, symbole zgodne z rozmiarem i liczbę pustych pól zgodną z poziomem
 
 #### Acceptance Criteria
 
-- Poziom zmienia liczbę pól wypełnionych na starcie; im starsze dziecko, tym mniej podpowiedzi. Reguły są w Business Logic.
-- Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
-- Poziom jest na pasku strony sudoku.
+- Na pasku strony sudoku są dwa osobne wybory: „Rozmiar” i „Poziom”. Sudoku nie nazywa poziomów wiekiem (decyzja 2026-10-24).
+- 4×4 ma jeden poziom: w każdym wierszu brakuje jednego pola (US-12). Pasek „Poziom” nie daje przy nim wyboru.
+- 6×6 (prostokąty 2×3) ma trzy poziomy różniące się liczbą pustych pól. Symbole to sześć kształtów albo cyfry 1–6; wybiera je osobny przełącznik „Kształty / Cyfry”, widoczny przy 6×6 i 9×9.
+- 9×9 (kwadraty 3×3) ma trzy poziomy różniące się liczbą pustych pól. Symbole to dziewięć kształtów albo cyfry 1–9 (ten sam przełącznik „Kształty / Cyfry”; cyfry dają zwykłe sudoku).
+- Liczby pustych pól są w Business Logic. Przy każdej z nich rozwiązanie jest dokładnie jedno.
+- Każdy rozmiar i poziom mieści się na jednej stronie A4 z marginesem 10 mm.
+
+### US-14: Rodzic włącza kolory kształtów na karcie sudoku
+
+- **Given** rodzic jest na stronie „Sudoku”, a plansza ma kształty (4×4 albo 6×6 i 9×9 z kształtami)
+- **When** włączy kolory
+- **Then** każdy kształt ma stały kolor kredki, a dziecko dorysowuje brakujący kształt i koloruje go według wzoru
+
+#### Acceptance Criteria
+
+- Kolory to osobny przełącznik na pasku strony sudoku, jak w symetrii (US-09). Domyślnie są wyłączone: kształty są czarnymi konturami.
+- Każdy kształt ma jeden stały kolor na całej planszy (np. koło czerwone, trójkąt zielony). Bez liter i bez legendy kolorów. Na drukarce czarno-białej kolory schodzą do odcieni szarości.
+- Przełączenie kolorów zostawia tę samą planszę; nie generuje nowej.
+- Przy cyfrach przełącznik kolorów nie jest dostępny.
 
 ## Functional Requirements
 
@@ -307,16 +324,18 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 > FR-017 jest odłożone (2026-10-23): wraca, gdy będzie więcej rodzajów kart (patrz US-08). Do tego czasu nie jest w zakresie bieżącego kamienia.
 
-### Sekwencje i sudoku obrazkowe
+### Sekwencje i sudoku
 
 - FR-019: Rodzic może wygenerować kartę sekwencji z kilkoma ciągami liczb i kształtów, w których brakuje elementów, z jedną sprawdzalną odpowiedzią każdego ciągu, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: ciąg z lukami bywa niejednoznaczny, bo do pustego miejsca pasują dwie reguły. Resolution: kept; generator sprawdza jawną listę reguł i odrzuca ciąg, w którym dwie reguły dają różne odpowiedzi.
 - FR-020: Rodzic może wybrać poziom karty sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól). Priority: must-have
   > Socrates: Counter-argument considered: poziomy nazwane wiekiem bez mierzalnych reguł wprowadzają w błąd. Resolution: kept; reguły są w Business Logic, wartości startowe potwierdza wydruk.
-- FR-021: Rodzic może wygenerować kartę sudoku obrazkowego 4×4 z postaciami z katalogu i jednym rozwiązaniem, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
-  > Socrates: Counter-argument considered: dziecko w wieku przedszkolnym nie rysuje postaci w małych polach. Resolution: revised; legenda ma numery 1–4 i dziecko może wpisać numer zamiast rysować postać; prawa do postaci pozostają otwartym pytaniem (Open Questions 3).
-- FR-022: Rodzic może wybrać poziom sudoku obrazkowego nazwany wiekiem (liczba pól wypełnionych na starcie). Priority: must-have
-  > Socrates: Counter-argument considered: im mniej pól wypełnionych, tym łatwiej o wiele rozwiązań. Resolution: kept; generator zostawia tylko takie pola, przy których rozwiązanie jest dokładnie jedno.
+- FR-021: Rodzic może wygenerować kartę sudoku 4×4 z prostymi kształtami do narysowania i jednym rozwiązaniem, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: dziecko w wieku przedszkolnym nie rysuje postaci w małych polach. Resolution: revised (2026-10-24); zamiast postaci z katalogu proste kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla), które dziecko umie narysować; legenda numerów odpada, a z nią pytanie o prawa do postaci w sudoku.
+- FR-022: Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry. Priority: must-have
+  > Socrates: Counter-argument considered: im więcej pustych pól, tym łatwiej o wiele rozwiązań, a dwa paski odchodzą od poziomów nazwanych wiekiem jak w innych kartach. Resolution: revised (2026-10-24); generator zostawia tylko takie pola, przy których rozwiązanie jest dokładnie jedno; użytkowniczka wybrała dwa paski, bo 7-latek robi już 9×9 i wiek nie wyznacza rozmiaru.
+- FR-023: Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury. Priority: must-have
+  > Socrates: Counter-argument considered: kolorowy druk łamie wspólną umowę czarnego druku. Resolution: kept; jak w symetrii (FR-018) domyślny druk zostaje czarny, a kolor jest wyborem rodzica.
 
 ## Non-Functional Requirements
 
@@ -327,7 +346,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Na telefonie kontrolki generowania i drukowania nie nachodzą na siebie.
 - Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
 - Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), domyślny druk czarny, a przy włączonych kolorach prawdziwe kolory kratek bez liter i legendy, te same przeglądarki na komputerze i na telefonie, w tym Brave.
-- Karty sekwencji i sudoku obrazkowego spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi, te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Karty sekwencji i sudoku spełniają te same granice co labirynt: generowanie do 5 sekund (także sudoku 9×9 na najtrudniejszym poziomie), jedna strona A4, margines co najmniej 10 mm, domyślny druk czarny bez odpowiedzi (sudoku z włączonymi kolorami drukuje kształty w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
@@ -395,19 +414,29 @@ Pola wypełniają szerokość wiersza, więc krótszy ciąg daje większe pole n
 
 Wartości są startowe i zostają potwierdzone na wydruku. Wynikiem jest karta A4; ciągi zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
-### Karta sudoku obrazkowego
+### Karta sudoku
 
-Aplikacja zawsze tworzy planszę 4×4 z dokładnie jednym rozwiązaniem. Cztery postacie z katalogu jedenastu są losowane na każdą kartę. Zasada: w każdym wierszu, w każdej kolumnie i w każdym kwadracie 2×2 każda z czterech postaci występuje raz. Obok planszy jest legenda: cztery postacie z numerami od 1 do 4; dziecko wpisuje w puste pole numer albo dorysowuje postać.
+Przebudowane 2026-10-24: zamiast planszy 4×4 z postaciami z katalogu trzy rozmiary z prostymi kształtami albo cyframi, a rozmiar i poziom są dwoma osobnymi wyborami, nie wiekiem (7-latek robi już 9×9).
 
-Generator układa pełne poprawne sudoku, potem usuwa pola tak, by pozostałe wypełnione pola nadal miały jedno rozwiązanie, aż do liczby pól wypełnionych dla poziomu.
+Aplikacja zawsze tworzy planszę z dokładnie jednym rozwiązaniem. Zasada: w każdym wierszu, w każdej kolumnie i w każdym bloku każdy symbol występuje raz. Generator układa pełne poprawne sudoku, potem usuwa pola tak, by pozostałe wypełnione pola nadal miały jedno rozwiązanie, aż do liczby pustych pól dla rozmiaru i poziomu. Plansza, która tego nie spełnia, nie jest pokazana. Karta nie pokazuje postaci z katalogu labiryntu.
 
-| Poziom | Pola wypełnione na starcie (z 16) |
-| ------ | --------------------------------- |
-| 5 lat  | 10                                |
-| 6 lat  | 8                                 |
-| 7 lat  | 6                                 |
+Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla — proste do narysowania przez dziecko. Plansza 4×4 losuje cztery z pięciu najprostszych (koło, kwadrat, trójkąt, serce, krzyżyk), 6×6 sześć, 9×9 używa wszystkich dziewięciu. Przy 6×6 i 9×9 rodzic wybiera kształty albo cyfry (przełącznik „Kształty / Cyfry”, 9×9 z cyframi to zwykłe sudoku).
 
-Najmłodszy poziom to 5 lat: czterolatek rzadko panuje nad regułą „raz w wierszu, kolumnie i kwadracie”. Wartości są startowe i zostają potwierdzone na wydruku. Wynikiem jest karta A4: plansza zajmuje większą część strony i zachowuje margines co najmniej 10 mm. Sudoku 9×9 zostaje poza zakresem (patrz „Po MVP”).
+| Rozmiar | Bloki | Symbole                                  | Poziom | Puste pola                                     |
+| ------- | ----- | ---------------------------------------- | ------ | ---------------------------------------------- |
+| 4×4     | 2×2   | 4 kształty                               | jeden  | 4 z 16: jedno w każdym wierszu, miejsce losowe |
+| 6×6     | 2×3   | 6 kształtów albo cyfry 1–6 (przełącznik) | łatwy  | 12 z 36                                        |
+| 6×6     | 2×3   | jak wyżej                                | średni | 18 z 36                                        |
+| 6×6     | 2×3   | jak wyżej                                | trudny | 22 z 36                                        |
+| 9×9     | 3×3   | 9 kształtów albo cyfry 1–9 (przełącznik) | łatwy  | 35 z 81                                        |
+| 9×9     | 3×3   | jak wyżej                                | średni | 45 z 81                                        |
+| 9×9     | 3×3   | jak wyżej                                | trudny | 52 z 81                                        |
+
+Plansza 4×4 z jednym pustym polem w każdym wierszu ma zawsze jedno rozwiązanie: brakujący kształt wynika z samego wiersza.
+
+Kolory (US-14): przy kształtach rodzic może włączyć kolory. Każdy kształt ma wtedy jeden stały kolor kredki na całej planszy, bez liter i bez legendy. Przełącznik nie zmienia planszy. Domyślnie kształty są czarnymi konturami. Przy cyfrach kolorów nie ma.
+
+Wartości są startowe i zostają potwierdzone na wydruku; użytkowniczka nie jest pewna, czy 6×6 i 9×9 nie są za trudne (Open Questions 9). Wynikiem jest karta A4: plansza zajmuje większą część strony i zachowuje margines co najmniej 10 mm.
 
 ## Access Control
 
@@ -419,7 +448,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 ## Non-Goals
 
-- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku obrazkowe (US-10–US-13, FR-019–FR-022). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
+- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku (US-10–US-14, FR-019–FR-023). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
@@ -434,7 +463,7 @@ Wspólna umowa z labiryntem: generator algorytmiczny, jedna sprawdzalna odpowied
 
 Symetria przeszła z tej listy do zakresu (2026-10-22): US-05–US-09, FR-014–FR-018, Business Logic „Karta symetrii”. Strona główna staje się katalogiem z miniaturami, a każdy rodzaj karty dostaje własną stronę generatora; druk, margines, ostatnie parametry i profil dziecka zostają. Ta przebudowa mieści kolejne rodzaje, ale nie dostarcza całej listy poniżej.
 
-Sekwencje i sudoku obrazkowe 4×4 przeszły z tej listy do zakresu (2026-10-23): US-10–US-13, FR-019–FR-022, Business Logic „Karta sekwencji” i „Karta sudoku obrazkowego”.
+Sekwencje i sudoku przeszły z tej listy do zakresu (2026-10-23): US-10–US-14, FR-019–FR-023, Business Logic „Karta sekwencji” i „Karta sudoku”. Sudoku przebudowane 2026-10-24: rozmiary 4×4, 6×6 i 9×9 z kształtami albo cyframi, rozmiar i poziom zamiast wieku.
 
 Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero przy otwarciu jego kamienia.
 
@@ -442,7 +471,6 @@ Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero prz
 - **Który nie pasuje.** Jeden obrazek łamie jawną regułę. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
 - **Nonogram postaci.** Po rozwiązaniu widać uproszczoną postać. Czeka na małą bitmapę postaci.
 - **Karty kodowania.** Kratka, postać, meta i strzałki. Jedna najkrótsza droga.
-- **Sudoku 9×9.** Układ 9×9 zostaje przy nastolatku, jako poziom sudoku obrazkowego po jego kamieniu.
 - **Porównywanie kwot w złotych.** Dwie kupki monet albo jedna kupka i cena. Liczy się wartość monet, nie liczba sztuk. „Ułóż dokładnie tę kwotę” czeka na regułę, która zostawia jeden układ.
 
 Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem waluty.
@@ -456,6 +484,6 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 5. **Czy startowe wartości poziomów symetrii (kratka, siatka, obiekty, podpowiedź) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22, przebudowaną 2026-10-23 (obiekty zamiast gęstości plamy); potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie. Połowa siatki 8×12 ma 4 kratki szerokości: rozstrzygnięte 2026-10-23 po makiecie, poziom 4 lat ma własne, prostsze warianty obiektów, a poziom 7 lat bogatsze. Oś pozioma i odsunięcie od osi wycofane z poziomów. Czeka na wydruk w S-13 (faza 4).
 6. **Czy karta symetrii ma kiedyś używać postaci (np. połowa sylwetki)?** — Owner: user. Block: no. Dziś karta postaci nie pokazuje, a strona symetrii nie ma paska „Postać” (US-05). Zależy od obrysów postaci, jak „Połącz kropki”. Szablony obiektów karty symetrii (2026-10-23) to osobny katalog i nie czekają na tę decyzję.
 7. **Ile szablonów obiektów i jakich wariantów wystarczy, żeby kolejne karty się nie powtarzały?** — Owner: team. Block: no. Ustalone 2026-10-23: obiekty zamiast przypadkowych plam. Gotowa lista szablonów to skończona biblioteka, czyli problem z wizji produktu; warianty części mają go zmiękczyć. Otwarte: czy starszy poziom ma też dostawać ornamenty budowane z reguł (np. romby, pierścienie), które dają się generować bez końca.
-8. **Czy dziecko przedszkolne uzupełni sudoku obrazkowe numerem z legendy, czy narysuje postać?** — Owner: user. Block: no. Założenie z 2026-10-23: legenda ma numery 1–4 i dziecko wpisuje numer albo rysuje. Potwierdza je wydruk. Sudoku używa postaci z katalogu, więc dziedziczy pytanie 3 o prawa.
-9. **Czy startowe wartości poziomów sekwencji i sudoku (długość ciągu, reguły, liczba pól wypełnionych) pasują dziecku?** — Owner: user. Block: no. Tabele w Business Logic są propozycją z 2026-10-23; potwierdza je wydruk, nie planowanie.
+8. ~~**Czy dziecko przedszkolne uzupełni sudoku obrazkowe numerem z legendy, czy narysuje postać?**~~ — Zamknięte 2026-10-24: sudoku nie używa postaci ani legendy numerów; dziecko rysuje proste kształty albo wpisuje cyfry. Pytanie 3 o prawa do postaci sudoku już nie dotyczy.
+9. **Czy startowe wartości poziomów sekwencji i sudoku (długość ciągu, reguły, liczba pustych pól) pasują dziecku?** — Owner: user. Block: no. Tabele w Business Logic są propozycją z 2026-10-23 (sudoku przebudowane 2026-10-24); potwierdza je wydruk, nie planowanie. Użytkowniczka nie jest pewna, czy 6×6 (12/18/22 pustych) i 9×9 (35/45/52 pustych) nie są za trudne dla dzieci.
 10. **Kiedy wraca profil z wiekiem i poziomami osobno dla każdego rodzaju karty (US-08, FR-017)?** — Owner: user. Block: no. Odłożone 2026-10-23, gdy będą cztery rodzaje kart; wtedy wybieramy, które ustawienia mają sens na poziomie profilu.
