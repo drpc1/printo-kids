@@ -72,9 +72,12 @@ export default function SudokuGenerator() {
   }
 
   function handleSettingChange(change: Partial<SudokuSettings>): void {
+    if (waitingForChild) {
+      return;
+    }
     const next = { ...settings, ...change };
     setSettings(next);
-    if (card !== null && !waitingForChild) {
+    if (card !== null) {
       generateFor(next);
     }
   }

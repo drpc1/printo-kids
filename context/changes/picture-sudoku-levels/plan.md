@@ -317,9 +317,9 @@ Brak danych do migracji: sudoku niczego nie zapisuje w profilu ani w ostatnich p
 
 #### Automated
 
-- [x] 3.1 Testy przechodzą: `npm test`
-- [x] 3.2 Lint przechodzi: `npm run lint`
-- [x] 3.3 Typy i build przechodzą: `npx astro check` i `npm run build`
+- [x] 3.1 Testy przechodzą: `npm test` — 7ac483f
+- [x] 3.2 Lint przechodzi: `npm run lint` — 7ac483f
+- [x] 3.3 Typy i build przechodzą: `npx astro check` i `npm run build` — 7ac483f
 
 #### Manual
 
