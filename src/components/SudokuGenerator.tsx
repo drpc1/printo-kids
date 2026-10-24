@@ -4,8 +4,18 @@ import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
-import { generateSudokuCard4, type SudokuCard } from "@/lib/sudoku/generate";
+import { SudokuChoice } from "@/components/SudokuChoice";
+import { SudokuSymbolsChoice } from "@/components/SudokuSymbolsChoice";
+import { generateSudokuCard, sudokuBlock, type SudokuCard } from "@/lib/sudoku/generate";
 import { layoutSudokuSheet } from "@/lib/sudoku/layout";
+import {
+  DEFAULT_SUDOKU_SETTINGS,
+  SUDOKU_LEVELS,
+  SUDOKU_SIZES,
+  sudokuHasLevels,
+  sudokuHasSymbolChoice,
+  type SudokuSettings,
+} from "@/lib/sudoku/levels";
 import { SUDOKU_SHEET } from "@/lib/sudoku/sheet";
 import { sudokuShapePath } from "@/lib/sudoku/shapes";
 import { cn } from "@/lib/utils";
@@ -13,8 +23,10 @@ import { cn } from "@/lib/utils";
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The sudoku card page: Generuj, the card, Drukuj, and the shared profile corner. It has no character bar and no
- * settings, and never touches the maze's last-used parameters; it only keeps the bar values the profile corner shows.
+ * The sudoku card page: Generuj, the size, level and shapes-or-digits choices, the card, Drukuj, and the shared profile
+ * corner. It has no character bar. The settings live only in this component (the profile does not remember them) and
+ * the page never touches the maze's last-used parameters; it only keeps the bar values the profile corner shows.
+ * Changing a setting while a card is shown generates a new card for the new settings.
  */
 export default function SudokuGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
@@ -22,6 +34,9 @@ export default function SudokuGenerator() {
   });
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const [settings, setSettings] = useState<SudokuSettings>(DEFAULT_SUDOKU_SETTINGS);
+  const [sizeOpen, setSizeOpen] = useState(false);
+  const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SudokuCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
@@ -36,17 +51,32 @@ export default function SudokuGenerator() {
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
 
-  function handleGenerate(): void {
-    if (waitingForChild) {
-      return;
-    }
-    const next = generateSudokuCard4(Math.random, card?.key ?? null);
-    if (next === null) {
+  function generateFor(next: SudokuSettings): void {
+    const nextCard = generateSudokuCard(Math.random, card?.key ?? null, next);
+    if (nextCard === null) {
       setGenerateFailed(true);
       return;
     }
     setGenerateFailed(false);
-    setCard(next);
+    setCard(nextCard);
+  }
+
+  function handleGenerate(): void {
+    if (waitingForChild) {
+      return;
+    }
+    generateFor(settings);
+  }
+
+  function handleSettingChange(change: Partial<SudokuSettings>): void {
+    if (waitingForChild) {
+      return;
+    }
+    const next = { ...settings, ...change };
+    setSettings(next);
+    if (card !== null) {
+      generateFor(next);
+    }
   }
 
   function handlePrint(): void {
@@ -58,6 +88,42 @@ export default function SudokuGenerator() {
     setBarLevel(bar.level);
   }
 
+  const settingsControls = (
+    <>
+      <SudokuChoice
+        label="Rozmiar"
+        dialogTitle="Wybierz rozmiar"
+        options={SUDOKU_SIZES}
+        value={settings.size}
+        open={sizeOpen}
+        onOpenChange={setSizeOpen}
+        onSelect={(size) => {
+          handleSettingChange({ size });
+        }}
+      />
+      {sudokuHasLevels(settings.size) ? (
+        <SudokuChoice
+          label="Poziom"
+          dialogTitle="Wybierz poziom"
+          options={SUDOKU_LEVELS}
+          value={settings.level}
+          open={levelOpen}
+          onOpenChange={setLevelOpen}
+          onSelect={(level) => {
+            handleSettingChange({ level });
+          }}
+        />
+      ) : null}
+      {sudokuHasSymbolChoice(settings.size) ? (
+        <SudokuSymbolsChoice
+          symbols={settings.symbols}
+          onSelect={(symbols) => {
+            handleSettingChange({ symbols });
+          }}
+        />
+      ) : null}
+    </>
+  );
   const failedNote = generateFailed ? (
     <p role="alert" className={cn("text-destructive text-sm")}>
       {GENERATE_FAILED_TEXT}
@@ -80,7 +146,10 @@ export default function SudokuGenerator() {
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
-          {failedNote}
+          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {settingsControls}
+            {failedNote}
+          </div>
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -101,6 +170,7 @@ export default function SudokuGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
+          <div className={cn("flex flex-wrap items-center justify-center gap-3")}>{settingsControls}</div>
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
@@ -111,21 +181,24 @@ export default function SudokuGenerator() {
 }
 
 function SudokuSheet({ card }: { card: SudokuCard }) {
+  const block = sudokuBlock(card.size);
+  const cellSize = SUDOKU_SHEET.cellSize[card.size];
   const sheet = layoutSudokuSheet({
     pageWidth: SUDOKU_SHEET.pageWidth,
     pageHeight: SUDOKU_SHEET.pageHeight,
     inset: SUDOKU_SHEET.inset,
     size: card.size,
-    blockRows: 2,
-    blockColumns: 2,
-    cellSize: SUDOKU_SHEET.cellSize4,
+    blockRows: block.rows,
+    blockColumns: block.columns,
+    cellSize,
     instructionLineCount: SUDOKU_SHEET.instructionLines.length,
     instructionSize: SUDOKU_SHEET.instructionSize,
     instructionLineGap: SUDOKU_SHEET.instructionLineGap,
     instructionGap: SUDOKU_SHEET.instructionGap,
   });
   const grid = sheet.grid;
-  const shapeSize = SUDOKU_SHEET.cellSize4 * SUDOKU_SHEET.shapeScale;
+  const shapeSize = cellSize * SUDOKU_SHEET.shapeScale;
+  const digitSize = cellSize * SUDOKU_SHEET.digitScale;
 
   return (
     <svg
@@ -152,17 +225,41 @@ function SudokuSheet({ card }: { card: SudokuCard }) {
           {text}
         </text>
       ))}
-      <g fill="none" stroke="var(--foreground)" strokeWidth={SUDOKU_SHEET.shapeStroke} strokeLinejoin="round">
-        {card.givens.flatMap((row, r) =>
-          row.map((symbol, c) => {
-            if (symbol === null) {
-              return null;
-            }
-            const center = sheet.cellCenter(r, c);
-            return <path key={`${r},${c}`} d={sudokuShapePath(card.shapes[symbol], center.x, center.y, shapeSize)} />;
-          }),
-        )}
-      </g>
+      {card.symbols === "digits" ? (
+        <g
+          fill="var(--foreground)"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize={digitSize}
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
+          {card.givens.flatMap((row, r) =>
+            row.map((symbol, c) => {
+              if (symbol === null) {
+                return null;
+              }
+              const center = sheet.cellCenter(r, c);
+              return (
+                <text key={`${r},${c}`} x={center.x} y={center.y}>
+                  {symbol + 1}
+                </text>
+              );
+            }),
+          )}
+        </g>
+      ) : (
+        <g fill="none" stroke="var(--foreground)" strokeWidth={SUDOKU_SHEET.shapeStroke} strokeLinejoin="round">
+          {card.givens.flatMap((row, r) =>
+            row.map((symbol, c) => {
+              if (symbol === null) {
+                return null;
+              }
+              const center = sheet.cellCenter(r, c);
+              return <path key={`${r},${c}`} d={sudokuShapePath(card.shapes[symbol], center.x, center.y, shapeSize)} />;
+            }),
+          )}
+        </g>
+      )}
       <g stroke="var(--foreground)" strokeWidth={SUDOKU_SHEET.cellStroke}>
         {sheet.cellLines.map((line) => (
           <line key={`${line.x1},${line.y1}`} x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} />

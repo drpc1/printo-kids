@@ -6,20 +6,22 @@ export const SUDOKU_SHEET = {
   pageWidth: 210,
   pageHeight: 297,
   inset: 10,
-  /** Side of a 4×4 cell. Big enough for a child to draw a shape with a crayon. */
-  cellSize4: 40,
-  /** The instruction sentence split into lines: at this size the whole sentence is wider than the page. */
-  instructionLines: ["Dorysuj brakujący kształt.", "W każdym rzędzie, kolumnie i kwadracie", "każdy kształt jest raz."],
+  /** Side of a cell by board size: big enough for a child to draw a shape or write a digit with a crayon. */
+  cellSize: { 4: 40, 6: 28, 9: 20 } as Record<4 | 6 | 9, number>,
+  /** The instruction split into lines: at this size the whole sentence is wider than the page. */
+  instructionLines: ["Uzupełnij puste pola.", "Nic się nie powtarza w rzędzie, kolumnie i bloku."],
   instructionSize: 6.5,
   instructionLineGap: 3,
   instructionGap: 9,
   /** Thin lines between cells. */
   cellStroke: 0.3,
-  /** Thick lines between the 2×2 blocks, and the frame. */
+  /** Thick lines between blocks, and the frame. */
   blockStroke: 1.1,
   frameStroke: 1.1,
   /** Side of a shape relative to its cell. */
   shapeScale: 0.65,
   /** Outline thickness of a shape, in mm. */
   shapeStroke: 1.2,
+  /** Height of a digit relative to its cell. */
+  digitScale: 0.6,
 } as const;

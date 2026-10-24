@@ -1,31 +1,46 @@
-import { SUDOKU_SHAPES_4, type SudokuShapeId } from "./shapes.ts";
+import {
+  DEFAULT_SUDOKU_SETTINGS,
+  sudokuBlankCount,
+  sudokuHasSymbolChoice,
+  type SudokuLevelId,
+  type SudokuSettings,
+  type SudokuSize,
+  type SudokuSymbols,
+} from "./levels.ts";
+import { SUDOKU_SHAPES, SUDOKU_SHAPES_4, type SudokuShapeId } from "./shapes.ts";
 
-export type SudokuSize = 4 | 6 | 9;
+export type { SudokuSize };
 
 /** Symbol indexes `0..size-1`; `null` is an empty cell. */
 export type SudokuGrid = readonly (readonly (number | null)[])[];
 
 export interface SudokuCard {
-  size: 4;
-  /** `shapes[i]` is the shape of symbol `i`. */
+  size: SudokuSize;
+  /** Ignored by 4×4, which has one level. */
+  level: SudokuLevelId;
+  symbols: SudokuSymbols;
+  /** `shapes[i]` is the shape of symbol `i`; empty when the cells hold digits. */
   shapes: readonly SudokuShapeId[];
   givens: SudokuGrid;
   solution: readonly (readonly number[])[];
-  /** Names the shapes in symbol order and the givens, so one board with other shapes is another card. */
+  /** Names the size, the symbols, the shapes in symbol order and the givens, so one board with other shapes is another card. */
   key: string;
 }
 
 export type SudokuProblem =
   | "invalid-solution"
   | "givens-differ-from-solution"
+  | "blank-count"
   | "blank-count-per-row"
   | "shape-outside-pool"
+  | "shape-count"
+  | "shapes-with-digits"
   | "duplicate-shape"
   | "not-unique";
 
 /** Draws a new full board and carves it again at most this many times before giving up. */
 const MAX_PUZZLE_ATTEMPTS = 50;
-/** Draws a 4×4 card again at most this many times when its key repeats the previous card. */
+/** Draws a card again at most this many times when its key repeats the previous card. */
 const MAX_ATTEMPTS = 20;
 
 /** Rows and columns of cells in one block: 2×2, 2×3 (2 rows, 3 columns) or 3×3. */
@@ -222,24 +237,62 @@ export function generateSudokuPuzzle(
   return null;
 }
 
-function cardKey(shapes: readonly SudokuShapeId[], givens: SudokuGrid): string {
+function cardKey(
+  size: SudokuSize,
+  symbols: SudokuSymbols,
+  shapes: readonly SudokuShapeId[],
+  givens: SudokuGrid,
+): string {
   const rows = givens.map((row) => row.map((value) => (value === null ? "." : String(value))).join(""));
-  return `${shapes.join(",")}|${rows.join("/")}`;
+  return `${size}|${symbols}|${shapes.join(",")}|${rows.join("/")}`;
+}
+
+/** The shapes of one card: four of the five simplest, six of all nine, or all nine, in random symbol order. */
+function drawShapes(random: () => number, size: SudokuSize): SudokuShapeId[] {
+  if (size === 4) return shuffled(random, SUDOKU_SHAPES_4).slice(0, 4);
+  return shuffled(random, SUDOKU_SHAPES).slice(0, size);
+}
+
+/** A 4×4 board with one empty cell in every row at a random column. */
+function oneBlankPerRow(random: () => number, solution: readonly (readonly number[])[]): SudokuGrid {
+  return solution.map((row) => {
+    const blank = pick(random, row.length);
+    return row.map((value, column) => (column === blank ? null : value));
+  });
 }
 
 /**
- * A 4×4 card: four shapes from the pool of five, a full board, and one empty cell in every row at a random column.
- * Null after MAX_ATTEMPTS draws that all repeat `previousKey` or break a rule.
+ * A card for the settings: the board has the empty cells of its size and level and one solution (4×4: one empty cell
+ * in every row at a random column), and the cells hold shapes or digits. Digits are offered from 6×6 up; 4×4 always
+ * has shapes. Null after MAX_ATTEMPTS draws that all repeat `previousKey` or break a rule.
  */
-export function generateSudokuCard4(random: () => number, previousKey: string | null): SudokuCard | null {
+export function generateSudokuCard(
+  random: () => number,
+  previousKey: string | null,
+  settings: SudokuSettings = DEFAULT_SUDOKU_SETTINGS,
+): SudokuCard | null {
+  const { size, level } = settings;
+  const symbols = sudokuHasSymbolChoice(size) ? settings.symbols : "shapes";
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
-    const shapes = shuffled(random, SUDOKU_SHAPES_4).slice(0, 4);
-    const solution = fullSudoku(random, 4);
-    const givens = solution.map((row) => {
-      const blank = pick(random, 4);
-      return row.map((value, column) => (column === blank ? null : value));
-    });
-    const card: SudokuCard = { size: 4, shapes, givens, solution, key: cardKey(shapes, givens) };
+    const shapes = symbols === "shapes" ? drawShapes(random, size) : [];
+    let board: { givens: SudokuGrid; solution: number[][] } | null;
+    if (size === 4) {
+      const solution = fullSudoku(random, 4);
+      board = { givens: oneBlankPerRow(random, solution), solution };
+    } else {
+      board = generateSudokuPuzzle(random, size, sudokuBlankCount(size, level));
+    }
+    if (board === null) continue;
+    const { givens, solution } = board;
+    const card: SudokuCard = {
+      size,
+      level,
+      symbols,
+      shapes,
+      givens,
+      solution,
+      key: cardKey(size, symbols, shapes, givens),
+    };
     if (card.key !== previousKey && sudokuCardProblems(card).length === 0) return card;
   }
   return null;
@@ -265,27 +318,36 @@ function isValidFullBoard(solution: readonly (readonly number[])[], size: Sudoku
   return [...rows, ...columns, ...blocks].every((set) => set.size === size);
 }
 
-/** Every rule a shown 4×4 card must keep. An empty list means the card can be shown. */
+/** Every rule a shown card must keep. An empty list means the card can be shown. */
 export function sudokuCardProblems(card: SudokuCard): readonly SudokuProblem[] {
   const problems: SudokuProblem[] = [];
+  const { size } = card;
 
-  if (!isValidFullBoard(card.solution, 4)) problems.push("invalid-solution");
+  if (!isValidFullBoard(card.solution, size)) problems.push("invalid-solution");
 
   const differs = card.givens.some((row, r) =>
     row.some((value, c) => value !== null && value !== card.solution[r]?.[c]),
   );
-  if (differs || card.givens.length !== 4) problems.push("givens-differ-from-solution");
+  if (differs || card.givens.length !== size) problems.push("givens-differ-from-solution");
 
-  if (card.givens.some((row) => row.filter((value) => value === null).length !== 1)) {
+  const blanks = card.givens.flat().filter((value) => value === null).length;
+  if (blanks !== sudokuBlankCount(size, card.level)) problems.push("blank-count");
+  if (size === 4 && card.givens.some((row) => row.filter((value) => value === null).length !== 1)) {
     problems.push("blank-count-per-row");
   }
 
-  if (card.shapes.some((id) => !SUDOKU_SHAPES_4.includes(id))) problems.push("shape-outside-pool");
-  if (new Set(card.shapes).size !== card.shapes.length || card.shapes.length !== 4) problems.push("duplicate-shape");
+  if (card.symbols === "digits") {
+    if (card.shapes.length !== 0) problems.push("shapes-with-digits");
+  } else {
+    const pool = size === 4 ? SUDOKU_SHAPES_4 : SUDOKU_SHAPES;
+    if (card.shapes.some((id) => !pool.includes(id))) problems.push("shape-outside-pool");
+    if (card.shapes.length !== size) problems.push("shape-count");
+    if (new Set(card.shapes).size !== card.shapes.length) problems.push("duplicate-shape");
+  }
 
-  // The solver reads a 4×4 grid; a board of another shape has no unique solution to count.
-  const wellFormed = card.givens.length === 4 && card.givens.every((row) => row.length === 4);
-  if (!wellFormed || countSudokuSolutions(card.givens, 4, 2) !== 1) problems.push("not-unique");
+  // The solver reads a size by size grid; a board of another shape has no unique solution to count.
+  const wellFormed = card.givens.length === size && card.givens.every((row) => row.length === size);
+  if (!wellFormed || countSudokuSolutions(card.givens, size, 2) !== 1) problems.push("not-unique");
 
   return problems;
 }
