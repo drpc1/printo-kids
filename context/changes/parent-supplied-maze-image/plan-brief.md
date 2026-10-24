@@ -19,22 +19,22 @@ Bez profilu wybór Kota zdejmuje zdjęcie z kartki i zostawia miniaturę w wiers
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| Gdzie wskazuje się plik | Wiersz w oknie „Postać”: pasek, nowy profil, zapis ulubionej | Ta sama lista co katalog | Research |
-| Typy i próg | JPEG, PNG, WebP; powyżej 8 × 1024 × 1024 bajtów odpada przed dekodowaniem | Złe pliki nie podmieniają postaci | Research |
-| Rozmiar kopii | Dłuższy bok schodzi do 512 px; 200 px zostaje 200 px | „Zmniejszona” dotyczy tylko większego boku | Plan |
-| Obrót | Jak w galerii; oryginał nie zostaje | Rodzic widzi to samo ułożenie co w zdjęciach | Research |
-| Kwadrat na kartce | Cały obrazek w 30×30, data URL, nie `blob:` | Wydruk bierze ten sam SVG | Research |
-| Alfa | Zostaje; JPEG bez alfy zostaje nieprzezroczysty | Wycięta postać przepuszcza labirynt | Plan |
-| Po Kocie | Kartka pokazuje Kota, miniatura zostaje w wierszu okna | „Zdejmuje z kartki”, a kopia zostaje między wizytami | Plan |
-| Bez „Zapisz” | Odświeżenie wraca do ulubionej postaci, kopia zostaje w wierszu | Do profilu wchodzi dopiero „Zapisz” | Plan |
-| Dwa zapisy bajtów | Klucz urządzenia to wiersz; profil trzyma migawkę od „Zapisz” / „Utwórz” | Późniejszy plik nie podmienia Ali | Plan |
-| Id | `wlasne` w polu `character`; bajty obok | Odczyt listy id zostaje, data URL nie wchodzi w to pole | Plan |
-| Odmowa | Zdanie w otwartym oknie | Inaczej kliknięcie wygląda jak nic | Plan |
-| HEIC | Przyjmij, gdy ta przeglądarka otworzy; bez biblioteki | Rolka iPhone’a ma przejść; Chrome i surowy HEIC dostają komunikat | Plan |
-| Nastolatek | Kartka nie rysuje zdjęcia | Tak jak postać z katalogu; #54 osobno | Research |
-| Dokumenty | Poprawić zdania „poza MVP” i zdjąć Parked; nie dodawać wiersza M-2 | Kamień symetrii kończy się jak teraz | Plan |
+| Decision                | Choice                                                                    | Why (1 sentence)                                                  | Source   |
+| ----------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------- | -------- |
+| Gdzie wskazuje się plik | Wiersz w oknie „Postać”: pasek, nowy profil, zapis ulubionej              | Ta sama lista co katalog                                          | Research |
+| Typy i próg             | JPEG, PNG, WebP; powyżej 8 × 1024 × 1024 bajtów odpada przed dekodowaniem | Złe pliki nie podmieniają postaci                                 | Research |
+| Rozmiar kopii           | Dłuższy bok schodzi do 512 px; 200 px zostaje 200 px                      | „Zmniejszona” dotyczy tylko większego boku                        | Plan     |
+| Obrót                   | Jak w galerii; oryginał nie zostaje                                       | Rodzic widzi to samo ułożenie co w zdjęciach                      | Research |
+| Kwadrat na kartce       | Cały obrazek w 30×30, data URL, nie `blob:`                               | Wydruk bierze ten sam SVG                                         | Research |
+| Alfa                    | Zostaje; JPEG bez alfy zostaje nieprzezroczysty                           | Wycięta postać przepuszcza labirynt                               | Plan     |
+| Po Kocie                | Kartka pokazuje Kota, miniatura zostaje w wierszu okna                    | „Zdejmuje z kartki”, a kopia zostaje między wizytami              | Plan     |
+| Bez „Zapisz”            | Odświeżenie wraca do ulubionej postaci, kopia zostaje w wierszu           | Do profilu wchodzi dopiero „Zapisz”                               | Plan     |
+| Dwa zapisy bajtów       | Klucz urządzenia to wiersz; profil trzyma migawkę od „Zapisz” / „Utwórz”  | Późniejszy plik nie podmienia Ali                                 | Plan     |
+| Id                      | `wlasne` w polu `character`; bajty obok                                   | Odczyt listy id zostaje, data URL nie wchodzi w to pole           | Plan     |
+| Odmowa                  | Zdanie w otwartym oknie                                                   | Inaczej kliknięcie wygląda jak nic                                | Plan     |
+| HEIC                    | Przyjmij, gdy ta przeglądarka otworzy; bez biblioteki                     | Rolka iPhone’a ma przejść; Chrome i surowy HEIC dostają komunikat | Plan     |
+| Nastolatek              | Kartka nie rysuje zdjęcia                                                 | Tak jak postać z katalogu; #54 osobno                             | Research |
+| Dokumenty               | Poprawić zdania „poza MVP” i zdjąć Parked; nie dodawać wiersza M-2        | Kamień symetrii kończy się jak teraz                              | Plan     |
 
 ## Scope
 
@@ -48,11 +48,11 @@ Funkcja kopii zwraca data URL albo powód odmowy. Ekran zapisuje udaną kopię p
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Kopia pliku | Próg, typ, obrót, skala, alfa, testy | Obrót i alfa łatwo pomylić z samym prefiksem MIME |
-| 2. Wiersz i kartka | Wiersz, SVG, dwa zapisy, komunikaty, Playwright | `characterSrc === null` dziś rysuje „Start”; „Zapisz” przy tym samym id nic nie zapisuje |
-| 3. PRD i Parked | Zdania „poza MVP” schodzą, M-2 bez nowego wiersza | Łatwo ruszyć kotwicę kamienia symetrii |
+| Phase              | What it delivers                                  | Key risk                                                                                 |
+| ------------------ | ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| 1. Kopia pliku     | Próg, typ, obrót, skala, alfa, testy              | Obrót i alfa łatwo pomylić z samym prefiksem MIME                                        |
+| 2. Wiersz i kartka | Wiersz, SVG, dwa zapisy, komunikaty, Playwright   | `characterSrc === null` dziś rysuje „Start”; „Zapisz” przy tym samym id nic nie zapisuje |
+| 3. PRD i Parked    | Zdania „poza MVP” schodzą, M-2 bez nowego wiersza | Łatwo ruszyć kotwicę kamienia symetrii                                                   |
 
 **Prerequisites:** katalog postaci, profile i ostatnio użyte są już na stronie. Nowej zależności nie ma.
 **Estimated effort:** około 2–3 sesji na 3 fazy.
