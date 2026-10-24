@@ -146,14 +146,14 @@ function SudokuSheet({ card }: { card: SudokuCard }) {
     size: card.size,
     blockRows: 2,
     blockColumns: 2,
-    cellSize: SUDOKU_SHEET.cellSize4,
+    cellSize: SUDOKU_SHEET.cellSize[4],
     instructionLineCount: SUDOKU_SHEET.instructionLines.length,
     instructionSize: SUDOKU_SHEET.instructionSize,
     instructionLineGap: SUDOKU_SHEET.instructionLineGap,
     instructionGap: SUDOKU_SHEET.instructionGap,
   });
   const grid = sheet.grid;
-  const shapeSize = SUDOKU_SHEET.cellSize4 * SUDOKU_SHEET.shapeScale;
+  const shapeSize = SUDOKU_SHEET.cellSize[4] * SUDOKU_SHEET.shapeScale;
 
   return (
     <svg

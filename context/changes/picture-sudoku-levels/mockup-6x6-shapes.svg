@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297"><rect width="210" height="297" fill="#fff"/>
+<text x="105" y="55.25" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-size="6.5" fill="#000">Uzupełnij puste pola.</text>
+<text x="105" y="64.75" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-size="6.5" fill="#000">Nic się nie powtarza w rzędzie, kolumnie i bloku.</text>
+<path d="M175 81.9 C180.026 81.9 184.1 85.974 184.1 91 C184.1 96.026 180.026 100.1 175 100.1 C169.974 100.1 165.9 96.026 165.9 91 C165.9 85.974 169.974 81.9 175 81.9 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M67.095 109.9 C56.175 110.355 56.175 127.645 67.095 128.1 C60.725 124.46 60.725 113.54 67.095 109.9 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M91 127.645 C87.36 124.46 81.9 120.365 81.9 115.36 C81.9 112.175 84.175 110.355 86.45 110.355 C88.725 110.355 90.272 111.72 91 113.54 C91.728 111.72 93.275 110.355 95.55 110.355 C97.825 110.355 100.1 112.175 100.1 115.36 C100.1 120.365 94.64 124.46 91 127.645 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M147 110.355 L156.1 126.735 L137.9 126.735 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M175 137.9 C177.275 141.995 182.28 146.09 182.28 150.185 C182.28 153.825 179.095 156.1 175 156.1 C170.905 156.1 167.72 153.825 167.72 150.185 C167.72 146.09 172.725 141.995 175 137.9 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M35 166.355 L44.1 182.735 L25.9 182.735 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M91 165.9 C93.275 169.995 98.28 174.09 98.28 178.185 C98.28 181.825 95.095 184.1 91 184.1 C86.905 184.1 83.72 181.825 83.72 178.185 C83.72 174.09 88.725 169.995 91 165.9 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M119 165.9 C124.026 165.9 128.1 169.974 128.1 175 C128.1 180.026 124.026 184.1 119 184.1 C113.974 184.1 109.9 180.026 109.9 175 C109.9 169.974 113.974 165.9 119 165.9 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M147 165.9 L149.407 171.687 L155.655 172.188 L150.895 176.265 L152.349 182.362 L147 179.095 L141.651 182.362 L143.105 176.265 L138.345 172.188 L144.593 171.687 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M179.095 165.9 C168.175 166.355 168.175 183.645 179.095 184.1 C172.725 180.46 172.725 169.54 179.095 165.9 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M147 193.9 C149.275 197.995 154.28 202.09 154.28 206.185 C154.28 209.825 151.095 212.1 147 212.1 C142.905 212.1 139.72 209.825 139.72 206.185 C139.72 202.09 144.725 197.995 147 193.9 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M35 239.645 C31.36 236.46 25.9 232.365 25.9 227.36 C25.9 224.175 28.175 222.355 30.45 222.355 C32.725 222.355 34.272 223.72 35 225.54 C35.728 223.72 37.275 222.355 39.55 222.355 C41.825 222.355 44.1 224.175 44.1 227.36 C44.1 232.365 38.64 236.46 35 239.645 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M91 221.9 L93.407 227.687 L99.655 228.188 L94.895 232.265 L96.349 238.362 L91 235.095 L85.651 238.362 L87.105 232.265 L82.345 228.188 L88.593 227.687 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M175 222.355 L184.1 238.735 L165.9 238.735 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<line x1="49" y1="77" x2="49" y2="245" stroke="#000" stroke-width="0.3"/>
+<line x1="21" y1="105" x2="189" y2="105" stroke="#000" stroke-width="0.3"/>
+<line x1="77" y1="77" x2="77" y2="245" stroke="#000" stroke-width="0.3"/>
+<line x1="21" y1="161" x2="189" y2="161" stroke="#000" stroke-width="0.3"/>
+<line x1="133" y1="77" x2="133" y2="245" stroke="#000" stroke-width="0.3"/>
+<line x1="161" y1="77" x2="161" y2="245" stroke="#000" stroke-width="0.3"/>
+<line x1="21" y1="217" x2="189" y2="217" stroke="#000" stroke-width="0.3"/>
+<line x1="21" y1="133" x2="189" y2="133" stroke="#000" stroke-width="1.1"/>
+<line x1="105" y1="77" x2="105" y2="245" stroke="#000" stroke-width="1.1"/>
+<line x1="21" y1="189" x2="189" y2="189" stroke="#000" stroke-width="1.1"/>
+<rect x="21" y="77" width="168" height="168" fill="none" stroke="#000" stroke-width="1.1"/></svg>

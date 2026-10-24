@@ -44,7 +44,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie  | —             | US-10, FR-019 | done        |
 | S-18 | picture-sudoku-first-printable | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-12, FR-021 | in-progress |
 | S-17 | sequence-difficulty-levels     | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                  | S-16          | US-11, FR-020 | proposed    |
-| S-19 | picture-sudoku-levels          | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                     | S-18          | US-13, FR-022 | planning    |
+| S-19 | picture-sudoku-levels          | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                     | S-18          | US-13, FR-022 | in-progress |
 | S-20 | picture-sudoku-colors          | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                             | S-18          | US-14, FR-023 | proposed    |
 
 ## Streams
@@ -127,7 +127,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Unknowns:**
   - Czy liczby pustych pól nie są za trudne dla dzieci? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 9).
 - **Risk:** Przy 52 pustych z 81 jednoznaczne rozwiązanie jest trudniejsze do wylosowania; generator może potrzebować kilku prób, w granicy 5 s. Kratka 9×9 musi być dość duża, żeby dziecko wpisało cyfrę. Rozmiar i poziom żyją w stanie strony.
-- **Status:** planning
+- **Status:** in-progress
 
 ### S-20: Kolory kształtów w sudoku
 

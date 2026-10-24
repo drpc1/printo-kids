@@ -290,16 +290,16 @@ Brak danych do migracji: sudoku niczego nie zapisuje w profilu ani w ostatnich p
 
 #### Automated
 
-- [ ] 1.1 Testy przechodzą: `npm test`
-- [ ] 1.2 Lint przechodzi: `npm run lint`
-- [ ] 1.3 Skrypt zapisuje trzy makiety: `node --experimental-strip-types scripts/sudoku-mockup.mjs`
+- [x] 1.1 Testy przechodzą: `npm test`
+- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.3 Skrypt zapisuje trzy makiety: `node --experimental-strip-types scripts/sudoku-mockup.mjs`
 
 #### Manual
 
-- [ ] 1.4 Wydruk makiet w skali 100% na A4: pola 28 mm i 20 mm są wygodne dla dziecka, kształty w 20 mm czytelne, cyfry czytelne
-- [ ] 1.5 Liczby pustych pól 22 z 36 i 52 z 81 oceniasz jako nie za trudne (albo podajesz nowe liczby)
-- [ ] 1.6 Polecenie jest czytelne i mieści się na stronie
-- [ ] 1.7 Nic nie wychodzi poza margines 10 mm
+- [x] 1.4 Wydruk makiet w skali 100% na A4: pola 28 mm i 20 mm są wygodne dla dziecka, kształty w 20 mm czytelne, cyfry czytelne
+- [x] 1.5 Liczby pustych pól 22 z 36 i 52 z 81 oceniasz jako nie za trudne (albo podajesz nowe liczby)
+- [x] 1.6 Polecenie jest czytelne i mieści się na stronie
+- [x] 1.7 Nic nie wychodzi poza margines 10 mm
 
 ### Phase 2: Poziomy i generator kart dla wszystkich rozmiarów
 

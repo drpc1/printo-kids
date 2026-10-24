@@ -176,14 +176,14 @@ const sudokuSheet = layoutSudokuSheet({
   size: sudokuCard.size,
   blockRows: 2,
   blockColumns: 2,
-  cellSize: SUDOKU_SHEET.cellSize4,
+  cellSize: SUDOKU_SHEET.cellSize[4],
   instructionLineCount: SUDOKU_SHEET.instructionLines.length,
   instructionSize: SUDOKU_SHEET.instructionSize,
   instructionLineGap: SUDOKU_SHEET.instructionLineGap,
   instructionGap: SUDOKU_SHEET.instructionGap,
 });
 const sudokuGrid = sudokuSheet.grid;
-const sudokuShapeSize = SUDOKU_SHEET.cellSize4 * SUDOKU_SHEET.shapeScale;
+const sudokuShapeSize = SUDOKU_SHEET.cellSize[4] * SUDOKU_SHEET.shapeScale;
 const sudokuLine = (line, width) =>
   `<line x1="${num(line.x1)}" y1="${num(line.y1)}" x2="${num(line.x2)}" y2="${num(line.y2)}" stroke="#000" stroke-width="${width}"/>`;
 
