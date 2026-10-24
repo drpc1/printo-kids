@@ -1,10 +1,10 @@
 ---
 change_id: picture-sudoku-levels
 title: Sudoku — rozmiar planszy, poziom i przełącznik kształty/cyfry
-status: impl_reviewed
+status: archived
 created: 2026-10-24
 updated: 2026-10-24
-archived_at: null
+archived_at: 2026-10-24T21:16:11Z
 ---
 
 ## Notes
