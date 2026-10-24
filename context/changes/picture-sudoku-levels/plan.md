@@ -323,19 +323,19 @@ Brak danych do migracji: sudoku niczego nie zapisuje w profilu ani w ostatnich p
 
 #### Manual
 
-- [ ] 3.4 Na komputerze i telefonie: wybór każdego rozmiaru, poziomu i symboli daje kartę, która mieści się w ramce strony i nie wychodzi poza A4
-- [ ] 3.5 Przy 4×4 nie ma przycisków „Poziom” ani „Kształty / Cyfry”; przy 6×6 i 9×9 są
-- [ ] 3.6 Zmiana ustawienia przy widocznej karcie daje nową kartę, a Drukuj i Generuj nie nachodzą na siebie na telefonie
-- [ ] 3.7 Czas od kliknięcia Generuj do karty 9×9 trudnego wygląda na natychmiastowy
+- [x] 3.4 Na komputerze i telefonie: wybór każdego rozmiaru, poziomu i symboli daje kartę, która mieści się w ramce strony i nie wychodzi poza A4 — 7ac483f
+- [x] 3.5 Przy 4×4 nie ma przycisków „Poziom” ani „Kształty / Cyfry”; przy 6×6 i 9×9 są — 7ac483f
+- [x] 3.6 Zmiana ustawienia przy widocznej karcie daje nową kartę, a Drukuj i Generuj nie nachodzą na siebie na telefonie — 7ac483f
+- [x] 3.7 Czas od kliknięcia Generuj do karty 9×9 trudnego wygląda na natychmiastowy — 7ac483f
 
 ### Phase 4: Miniatura, smoke, e2e i druk w przeglądarkach
 
 #### Automated
 
-- [ ] 4.1 Wszystkie testy: `npm test`
-- [ ] 4.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build`
-- [ ] 4.3 e2e: `npx playwright test`
-- [ ] 4.4 Smoke: `npm run smoke` na działającym serwerze
+- [x] 4.1 Wszystkie testy: `npm test`
+- [x] 4.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build`
+- [x] 4.3 e2e: `npx playwright test`
+- [x] 4.4 Smoke: `npm run smoke` na działającym serwerze
 
 #### Manual
 
