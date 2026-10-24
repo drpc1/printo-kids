@@ -1,10 +1,10 @@
 ---
 change_id: parent-supplied-maze-image
 title: Własny plik rodzica jako postać labiryntu
-status: impl_reviewed
+status: archived
 created: 2026-10-23
 updated: 2026-10-24
-archived_at: null
+archived_at: 2026-10-24T21:00:55Z
 ---
 
 ## Notes
