@@ -3,11 +3,14 @@ import { clearActiveProfile, NO_PROFILE, readActiveProfile, writeActiveProfile }
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed } from "@/lib/last-used";
 import type { LevelId } from "@/lib/maze/levels";
-import { ALLOWED_CHARACTER_IDS, characterChoice, type CharacterChoice } from "@/lib/sheet/character";
+import { ALLOWED_CHARACTER_IDS, characterChoice, OWN_IMAGE_ID, type SheetCharacterId } from "@/lib/sheet/character";
+import { drawnVisitCharacter } from "@/lib/sheet/own-image-store";
 
 export interface ProfileBar {
-  character: CharacterChoice;
+  character: SheetCharacterId;
   level: LevelId;
+  /** Omit to keep the copy already on the sheet. Null clears it. */
+  ownImageHref?: string | null;
 }
 
 interface VisitStart extends ProfileBar {
@@ -19,7 +22,12 @@ interface VisitStart extends ProfileBar {
 export interface ProfileCornerHandlers {
   onCreated: (profile: ChildProfile) => void;
   onChoose: (profile: ChildProfile) => void;
-  onFavoriteSaved: (profiles: ChildProfile[], barCharacter: string, barLevel: LevelId) => void;
+  onFavoriteSaved: (
+    profiles: ChildProfile[],
+    barCharacter: string,
+    barLevel: LevelId,
+    ownImageHref?: string | null,
+  ) => void;
   onDeleted: (next: VisitAfterDelete) => void;
   onClearProfile: () => void;
 }
@@ -29,6 +37,7 @@ export interface ProfileCornerHandlers {
  * child?" question, and the ProfileCorner handlers, including writes of the active profile.
  * The page owns its bar; onApply hands it the bar values from a profile or from the last-used
  * parameters. The hook never writes the last-used parameters: the page does that on bar selection.
+ * A stored `wlasne` with nothing to draw is shown as "none" and is not written back.
  */
 export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) => void }): {
   profiles: ChildProfile[];
@@ -47,33 +56,59 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
   function handleCreated(profile: ChildProfile): void {
     setProfiles((current) => [...current, profile]);
     setActiveId(profile.id);
-    onApply({ character: characterChoice(profile.character), level: profile.level });
+    onApply(barForStored(profile.character, profile.level, profile.image ?? null));
     writeActiveProfile(localStorage, profile.id);
   }
 
   function handleChosen(profile: ChildProfile): void {
     setActiveId(profile.id);
-    onApply({ character: characterChoice(profile.character), level: profile.level });
+    onApply(barForStored(profile.character, profile.level, profile.image ?? null));
     writeActiveProfile(localStorage, profile.id);
   }
 
   function handleCleared(): void {
     const lastUsed = readLastUsed(localStorage, ALLOWED_CHARACTER_IDS);
+    const drawn = drawnVisitCharacter(localStorage, null, lastUsed.character);
     setActiveId(null);
-    onApply({ character: characterChoice(lastUsed.character), level: lastUsed.level });
+    onApply(barForStored(drawn.character, lastUsed.level, drawn.href));
     setAsk(false);
     writeActiveProfile(localStorage, NO_PROFILE);
   }
 
-  function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string, nextLevel: LevelId): void {
+  function handleFavoriteSaved(
+    nextProfiles: ChildProfile[],
+    nextBar: string,
+    nextLevel: LevelId,
+    ownImageHref?: string | null,
+  ): void {
     setProfiles(nextProfiles);
-    onApply({ character: characterChoice(nextBar), level: nextLevel });
+    const character = characterChoice(nextBar);
+    if (character !== OWN_IMAGE_ID) {
+      onApply({ character, level: nextLevel, ownImageHref: null });
+      return;
+    }
+    onApply({
+      character,
+      level: nextLevel,
+      ...(ownImageHref !== undefined ? { ownImageHref } : {}),
+    });
   }
 
   function handleDeleted(next: VisitAfterDelete): void {
     setProfiles(next.profiles);
     setActiveId(next.activeId);
-    onApply({ character: characterChoice(next.character), level: next.level });
+    if (next.activeId !== activeId) {
+      const nextActive =
+        next.activeId === null ? null : (next.profiles.find((profile) => profile.id === next.activeId) ?? null);
+      const drawn = drawnVisitCharacter(
+        localStorage,
+        nextActive === null ? null : { character: nextActive.character, image: nextActive.image },
+        next.character,
+      );
+      onApply(barForStored(drawn.character, next.level, drawn.href));
+    } else {
+      onApply(barForStored(next.character, next.level, next.character === OWN_IMAGE_ID ? undefined : null));
+    }
     setAsk(next.ask);
     if (next.activeId !== null) {
       writeActiveProfile(localStorage, next.activeId);
@@ -88,7 +123,7 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
     activeId,
     ask,
     waitingForChild,
-    visitStart: { character: visit.character, level: visit.level },
+    visitStart: { character: visit.character, level: visit.level, ownImageHref: visit.ownImageHref },
     corner: {
       onCreated: handleCreated,
       onChoose: handleChosen,
@@ -99,14 +134,28 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
   };
 }
 
+function barForStored(character: string, level: LevelId, href: string | null | undefined): ProfileBar {
+  const choice = characterChoice(character);
+  if (href === undefined) {
+    return { character: choice, level };
+  }
+  return { character: choice, level, ownImageHref: choice === OWN_IMAGE_ID ? href : null };
+}
+
 function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitStart {
   const profiles = readChildProfiles(storage, ALLOWED_CHARACTER_IDS);
   const opening = openingVisit(profiles, readLastUsed(storage, ALLOWED_CHARACTER_IDS), readActiveProfile(storage));
+  const active =
+    opening.activeId === null ? null : (profiles.find((profile) => profile.id === opening.activeId) ?? null);
+  const drawn = drawnVisitCharacter(
+    storage,
+    active === null ? null : { character: active.character, image: active.image },
+    opening.character,
+  );
   return {
     profiles,
     activeId: opening.activeId,
-    character: characterChoice(opening.character),
-    level: opening.level,
+    ...barForStored(drawn.character, opening.level, drawn.href),
     ask: opening.ask,
   };
 }

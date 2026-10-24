@@ -77,6 +77,19 @@ void describe("readLastUsed", () => {
   });
 });
 
+void describe("readLastUsed with the caller's list", () => {
+  void test("keeps wlasne when that id is allowed, and a data URL is not an id", () => {
+    const allowed = [...ALLOWED, "wlasne"];
+    const wlasne = memoryStorage('{"character":"wlasne","level":"lat6"}');
+    assert.deepEqual(readLastUsed(wlasne, allowed), { character: "wlasne", level: "lat6" });
+    assert.deepEqual(wlasne.writes, []);
+
+    const dataUrl = memoryStorage('{"character":"data:image/png;base64,aaaa","level":"lat6"}');
+    assert.deepEqual(readLastUsed(dataUrl, allowed), { character: "none", level: "lat6" });
+    assert.deepEqual(dataUrl.writes, []);
+  });
+});
+
 void describe("writeLastUsed", () => {
   void test("a throwing setItem returns normally", () => {
     const storage: LastUsedStorage = {
