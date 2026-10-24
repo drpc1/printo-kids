@@ -151,9 +151,11 @@ function SequenceSheet({ card }: { card: SequenceCard }) {
       {card.rows.map((row, rowIndex) =>
         sheet.rows[rowIndex].fields.map((field, fieldIndex) => {
           const empty = row.gaps.includes(fieldIndex);
-          const outline = empty
-            ? null
-            : sequenceShapeOutline(row.values[fieldIndex], field.x + fieldSize / 2, field.y + fieldSize / 2, shapeSize);
+          const item = row.values[fieldIndex];
+          const outline =
+            empty || typeof item === "number"
+              ? null
+              : sequenceShapeOutline(item, field.x + fieldSize / 2, field.y + fieldSize / 2, shapeSize);
           return (
             <g key={`${rowIndex},${fieldIndex}`}>
               <rect

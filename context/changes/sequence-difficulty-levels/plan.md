@@ -8,7 +8,7 @@ Rodzic wybiera na `/sekwencje` poziom nazwany wiekiem (4, 5, 6, 7 lat) i dostaje
 
 - `src/lib/sequence/levels.ts` ma typ z literałami (`id: "lat5"`, `fieldsPerRow: 7`, `rowCount: 6`, `twoGapRows: 3`) i jedną stałą `SEQUENCE_LEVEL_LAT5`. Używa jej `SequenceGenerator.tsx` i `scripts/build-thumbnails.mjs`.
 - `src/lib/sequence/generate.ts`: wiersz to wzór `AB`/`AAB`/`ABC` na czterech kształtach. `sequenceAnswers` próbuje okresów 1 do ½ długości i zwraca zbiór krotek odpowiedzi. `sequenceRowProblems(row, n)` wymusza lukę w ostatnim polu, drugą lukę w drugiej połowie i wzór widoczny przed pierwszą luką. `generateSequenceCard` losuje całą kartę do 20 razy i odrzuca ją jako całość.
-- `src/lib/sequence/layout.ts` liczy pole tylko z szerokości i rzuca, gdy wiersze się nie mieszczą (Addendum S-16). Wszystkie cztery poziomy mieszczą się z zapasem: 5 pól → pole 32,8 mm, 7 → 23,2 mm, 8 → 20,2 mm; 7 wierszy po 20,2 mm to około 170 mm z 262 mm dostępnych.
+- `src/lib/sequence/layout.ts` liczy pole tylko z szerokości i rzuca, gdy wiersze się nie mieszczą (Addendum S-16). Wszystkie cztery poziomy mieszczą się z zapasem: 5 pól → pole 32,8 mm, 7 → 23,2 mm, 8 → 20,2 mm; 7 wierszy po 20,2 mm to co najmniej 165,7 mm z 262 mm dostępnych (najszerszy przypadek to 4 lata: 5 wierszy po 32,8 mm, 190 mm).
 - `src/components/SequenceGenerator.tsx`: pasek ma tylko Generuj i Drukuj; `SequenceSheet` rysuje tylko kształty i „?”. Wzorzec poziomu: `SymmetryGenerator.tsx` (`levelControl` nad przyciskami, `handleLevelSelect` generuje nową kartę, gdy karta jest na ekranie i profil nie czeka na wybór dziecka) i `SymmetryLevelChoice.tsx`.
 - Testy: `generate.test.ts` ma wyrocznię próbującą wszystkich wypełnień luk (ryzyko 8 w `context/foundation/test-plan.md`). `layout.test.ts` i `shapes.test.ts` zostają. `src/lib/sheet/print-contract.test.ts` pilnuje klas druku wyspy.
 - Miniatura katalogu jest budowana z `SEQUENCE_LEVEL_LAT5` stałym ziarnem; e2e `catalog.spec.ts` (w tym „each Generuj draws a different card”) i `phone-layout.spec.ts` mają wpisy sekwencji.
@@ -87,6 +87,8 @@ Cztery poziomy z tabeli PRD, jawna lista reguł, walidator „jedna odpowiedź�
 
 **Contract**: Wyrocznia w teście nie importuje `rules.ts`: ma własny predykat „ciąg należy do reguły X” zapisany od nowa z definicji PRD (okresowość, różnice liczb, bloki A·AB·ABB, przemienność) i próbuje wszystkich wypełnień luk z 24 symboli. Poprawny ciąg to taki, dla którego dokładnie jedno wypełnienie należy do którejkolwiek reguły. Liczba ziaren: 300 na poziom, a dla poziomu z trzema lukami tyle, by test trwał do około 20 s (24³ = 13 824 wypełnień na ciąg; zacząć od 60). Test 5 lat dodatkowo sprawdza, że żaden wiersz nie jest dwuznaczny względem grup. Testy walidatora: ciąg dwuznaczny, ciąg bez odpowiedzi, luka przed pokazaniem reguły, luka w złym miejscu; osobne przypadki dla liczb (`2, _, 6, 8, _`), grup i mieszanych. Break-check po implementacji: osłabić walidator (np. akceptować `ambiguous`), zobaczyć czerwony test, cofnąć.
 
+**Wynik pomiaru (faza 1):** na 400 wylosowanych ciągach po 8 pól, wszystkie rozmieszczenia luk po polach pokazujących regułę, dają jedną odpowiedź: liczby +1/+2/−1 i mieszane 100% przy 2 i 3 lukach, ABC 100%, grupy 90% (2 luki) i 70% (3 luki), AB 87% i 50%, AAB 80% i 40%. Każda reguła ma więc poprawne rozmieszczenie dla 2 i 3 luk, `maxGaps` nie jest potrzebne, a poziom 7 lat (mixed, down1, groups) ma 3 ciągi z trzema lukami. Generowanie: 0 odrzuconych kart na 300 ziarnach każdego poziomu, około 0,2–0,4 ms na kartę. Surowe liczby: notatki sesji, `s17-gap-measure.txt`.
+
 ### Success Criteria:
 
 #### Automated Verification:
@@ -125,7 +127,7 @@ Wyspa rysuje liczby, pokazuje przycisk poziomu i generuje kartę wybranego pozio
 
 **Files**: `src/components/SequenceLevelChoice.tsx` (nowy), `src/components/SequenceGenerator.tsx`
 
-**Intent**: Przycisk „Poziom: 5 lat” z oknem z czterema wierszami (jak `SymmetryLevelChoice`), stan `levelId` na stronie (domyślnie `lat5`), `generateFor(id)` jak w symetrii: zmiana poziomu przy widocznej karcie i profilu nie czekającym na wybór dziecka generuje nową kartę; przy ekranie startowym tylko zmienia poziom. `SequenceSheet` rysuje element jako kształt albo liczbę i dalej pustą ramkę z „?” dla luk. Wszystkie klasy przez `cn()`, bez `'use client'`, kolory tylko tokenami.
+**Intent**: Przycisk „Poziom: 5 lat” z oknem z czterema wierszami (jak `SymmetryLevelChoice`), stan `levelId` na stronie (domyślnie `lat5`), `generateFor(id)` jak w symetrii: zmiana poziomu przy widocznej karcie i profilu nie czekającym na wybór dziecka generuje nową kartę; przy ekranie startowym tylko zmienia poziom. `SequenceSheet` rysuje element jako kształt albo liczbę i dalej pustą ramkę z „?” dla luk. Okno poziomu kopiuje z `SymmetryLevelChoice` wszystko, co istotne: import `DIALOG_ROW_CLASS` z `@/components/ProfileCorner`, sr-only `DialogTitle` „Wybierz poziom”, `print:hidden` na `DialogContent`, `aria-pressed` na wierszach i zamknięcie po wyborze. Komunikat „Nie udało się ułożyć karty.” już jest w wyspie (`failedNote`) i zostaje, bo `generateSequenceCard` może zwrócić `null`. Wszystkie klasy przez `cn()`, bez `'use client'`, kolory tylko tokenami.
 
 **Contract**: Przycisk poziomu stoi nad przyciskami Generuj/Drukuj na pasku z kartą i nad dużym Generuj na ekranie startowym (układ jak `SymmetryGenerator.tsx:117-151`), a klasy `print:hidden` zostają na kontenerze pasków. Etykieta przycisku: `Poziom: <label>`, z `aria-label` jak w symetrii.
 
@@ -167,7 +169,7 @@ Domknięcie plasterka: katalog i testy przeglądarkowe, zapis decyzji w PRD i pl
 
 #### 1. Miniatura
 
-**Files**: `scripts/build-thumbnails.mjs` (bez zmian, jeśli alias `SEQUENCE_LEVEL_LAT5` działa), `public/thumbnails/*sekwencje*.svg`
+**Files**: `scripts/build-thumbnails.mjs` (bez zmian, jeśli alias `SEQUENCE_LEVEL_LAT5` działa; skrypt nie jest sprawdzany typami, więc dodać strażnika, który rzuca, gdy pole 5 lat zawiera liczbę), `public/thumbnails/*sekwencje*.svg`
 
 **Intent**: Losowanie wierszami zmienia kolejność użycia ziarna, więc ta sama liczba ziarna może dać inną kartę. Przegenerować miniaturę, obejrzeć ją i upewnić się, że drugie uruchomienie nie zmienia plików. Miniatura zostaje kartą 5 lat, więc nie rysuje liczb.
 
@@ -177,7 +179,7 @@ Domknięcie plasterka: katalog i testy przeglądarkowe, zapis decyzji w PRD i pl
 
 **Files**: `tests/e2e/catalog.spec.ts`, `tests/e2e/phone-layout.spec.ts`
 
-**Intent**: Nowy test w `catalog.spec.ts`: wybór „4 lata” w oknie poziomu daje kartę z 5 wierszami po 5 pól (25 ramek pól), wybór „7 lat” — z 7 wierszami po 8 (56), a kolejne Generuj dalej daje inną kartę. W `phone-layout.spec.ts`: przycisk poziomu, Generuj, Drukuj i Profil nie nachodzą na siebie na telefonie.
+**Intent**: Nowy test w `catalog.spec.ts`: wybór „4 lata” w oknie poziomu daje kartę z 5 wierszami po 5 pól, wybór „7 lat” — z 7 wierszami po 8, a kolejne Generuj dalej daje inną kartę. Pola liczy się przez `<g>` w SVG o nazwie „Sekwencje” (25 i 56); `<rect>` dałby o jeden więcej przez tło strony. Test tylko w projekcie `chromium`, jak sąsiednie. W `phone-layout.spec.ts`: pętla po czterech poziomach wzorowana na teście symetrii (`phone-layout.spec.ts:176-195`): przycisk poziomu, Generuj, Drukuj i Profil nie nachodzą na siebie, a okno poziomu zamyka się przed sprawdzeniem Generuj (Radix ukrywa tło).
 
 **Contract**: Selektory przez role i nazwy dostępne (`getByRole("button", { name: /Poziom/ })`); uruchamiane z własnym portem: `E2E_PORT=4398 npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts`.
 
@@ -256,15 +258,15 @@ Brak danych do migracji: poziom żyje w stanie strony. Zmieniają się nazwy w t
 
 #### Automated
 
-- [ ] 1.1 Testy logiki sekwencji przechodzą dla czterech poziomów: `npm test`
-- [ ] 1.2 Lint przechodzi: `npm run lint`
-- [ ] 1.3 Typy przechodzą: `npx astro check`
-- [ ] 1.4 Break-check: po osłabieniu walidatora (`ambiguous` przestaje odrzucać) test wyroczni jest czerwony
+- [x] 1.1 Testy logiki sekwencji przechodzą dla czterech poziomów: `npm test`
+- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.4 Break-check: po osłabieniu walidatora (`ambiguous` przestaje odrzucać) test wyroczni jest czerwony
 
 #### Manual
 
-- [ ] 1.5 Pomiar reguła × liczba luk jest zapisany w opisie fazy i uzasadnia `maxGaps`
-- [ ] 1.6 Generowanie karty 7 lat trwa poniżej 5 s (typowo poniżej 100 ms) przy 100 kolejnych Generuj w skrypcie
+- [x] 1.5 Pomiar reguła × liczba luk jest zapisany w opisie fazy i uzasadnia `maxGaps`
+- [x] 1.6 Generowanie karty 7 lat trwa poniżej 5 s (typowo poniżej 100 ms) przy 100 kolejnych Generuj w skrypcie
 
 ### Phase 2: Strona: liczba w polu i pasek poziomu
 

@@ -7,233 +7,400 @@ import {
   sequenceRowProblems,
   type SequenceRow,
 } from "./generate.ts";
-import { SEQUENCE_LEVEL_LAT5 } from "./levels.ts";
-import { SEQUENCE_SHAPES, type SequenceShape } from "./shapes.ts";
+import { sequenceLevelById, SEQUENCE_LEVELS, type SequenceLevel } from "./levels.ts";
+import type { SequenceItem } from "./rules.ts";
+import { SEQUENCE_SHAPES } from "./shapes.ts";
 
-const LEVEL = SEQUENCE_LEVEL_LAT5;
-const N = LEVEL.fieldsPerRow;
-const SEEDS = 500;
+const LAT4 = sequenceLevelById("lat4");
+const LAT5 = sequenceLevelById("lat5");
+const LAT6 = sequenceLevelById("lat6");
+const LAT7 = sequenceLevelById("lat7");
+const SEEDS = 300;
+const ORACLE_SEEDS = 120;
 
-const [KOLO, KWADRAT, TROJKAT] = SEQUENCE_SHAPES;
+const [KOLO, KWADRAT, TROJKAT, GWIAZDKA] = SEQUENCE_SHAPES;
+
+/** What a field may hold on a card: four shapes or a number from 1 to 20. */
+const SYMBOLS: SequenceItem[] = [...SEQUENCE_SHAPES, ...Array.from({ length: 20 }, (_, index) => index + 1)];
 
 /**
- * Independent oracle: tries every way of filling the gaps with the four shapes and keeps those that leave the whole
- * row repeating with some period up to half its length. It does not use sequenceAnswers.
+ * Independent oracle, written from the PRD and not from rules.ts: does this whole row follow one of the rules of the
+ * list? Shapes repeating with a period up to half the row, the unit patterns AB, AAB and ABC, numbers rising by 1 or
+ * 2 or falling by 1, the growing groups A, AB, ABB, and a shape on every other field with counting numbers between.
  */
-function fillingsThatContinueThePattern(row: SequenceRow): SequenceShape[][] {
-  const found: SequenceShape[][] = [];
-  const shapeCount = SEQUENCE_SHAPES.length;
-  for (let code = 0; code < shapeCount ** row.gaps.length; code += 1) {
-    const filling = row.gaps.map((_, slot) => SEQUENCE_SHAPES[Math.floor(code / shapeCount ** slot) % shapeCount]);
-    const full = row.values.map((shape, index) =>
-      row.gaps.includes(index) ? filling[row.gaps.indexOf(index)] : shape,
+function followsAnyRule(full: readonly SequenceItem[]): boolean {
+  const n = full.length;
+  const shapes = full.filter((item) => typeof item === "string");
+  const numbers = full.filter((item) => typeof item === "number");
+
+  if (shapes.length === n) {
+    const periodic = Array.from({ length: Math.floor(n / 2) }, (_, offset) => offset + 1).some((period) =>
+      full.every((item, index) => index < period || item === full[index - period]),
     );
-    const periodic = Array.from({ length: Math.floor(N / 2) }, (_, offset) => offset + 1).some((period) =>
-      full.every((shape, index) => index < period || shape === full[index - period]),
+    if (periodic || ["AB", "AAB", "ABC"].some((unit) => repeatsUnit(full, unit)) || isGrowingGroups(full)) {
+      return true;
+    }
+  }
+  if (numbers.length === n) {
+    const step = numbers[1] - numbers[0];
+    return (
+      [1, 2, -1].includes(step) &&
+      numbers.every(
+        (value, index) => Number.isInteger(value) && value >= 1 && value <= 20 && value === numbers[0] + step * index,
+      )
     );
-    if (periodic) {
+  }
+  return [0, 1].some((shapeParity) => isMixed(full, shapeParity));
+}
+
+function repeatsUnit(full: readonly SequenceItem[], unit: string): boolean {
+  const shapeOfLetter = new Map<string, SequenceItem>();
+  for (const [index, item] of full.entries()) {
+    const letter = unit[index % unit.length];
+    const known = shapeOfLetter.get(letter);
+    if (known !== undefined && known !== item) {
+      return false;
+    }
+    shapeOfLetter.set(letter, item);
+  }
+  return new Set(shapeOfLetter.values()).size === shapeOfLetter.size;
+}
+
+function isGrowingGroups(full: readonly SequenceItem[]): boolean {
+  const [a, , b] = full;
+  if (a === b) {
+    return false;
+  }
+  const expected: SequenceItem[] = [];
+  for (let repeats = 0; expected.length < full.length; repeats += 1) {
+    expected.push(a);
+    for (let count = 0; count < repeats; count += 1) {
+      expected.push(b);
+    }
+  }
+  return full.every((item, index) => item === expected[index]);
+}
+
+function isMixed(full: readonly SequenceItem[], shapeParity: number): boolean {
+  const shapes = full.filter((_, index) => index % 2 === shapeParity);
+  const numbers = full.filter((_, index) => index % 2 !== shapeParity);
+  return (
+    shapes.every((item) => item === shapes[0] && typeof item === "string") &&
+    numbers.every(
+      (item, index) => typeof item === "number" && item >= 1 && item <= 20 && item === (numbers[0] as number) + index,
+    )
+  );
+}
+
+/** Every way of filling the gaps with the 24 symbols that leaves a row following some rule. */
+function fillingsThatFollowARule(row: SequenceRow): SequenceItem[][] {
+  const found: SequenceItem[][] = [];
+  const total = SYMBOLS.length ** row.gaps.length;
+  for (let code = 0; code < total; code += 1) {
+    const filling = row.gaps.map((_, slot) => SYMBOLS[Math.floor(code / SYMBOLS.length ** slot) % SYMBOLS.length]);
+    const full = row.values.map((item, index) => (row.gaps.includes(index) ? filling[row.gaps.indexOf(index)] : item));
+    if (followsAnyRule(full)) {
       found.push(filling);
     }
   }
   return found;
 }
 
+/** The first field a gap may take, by rule, as the PRD describes it (hand-written, not read from rules.ts). */
+const FIRST_GAP_BY_RULE = { AB: 2, AAB: 3, ABC: 3, up1: 2, up2: 2, down1: 2, groups: 3, mixed: 2 } as const;
+
 void describe("generateSequenceCard", () => {
-  void test("every card passes the validator and has the shape the level describes", () => {
-    for (let seed = 0; seed < SEEDS; seed += 1) {
-      const card = generateSequenceCard(mulberry32(seed), null, LEVEL);
-      assert.ok(card, `seed ${seed}`);
-      assert.deepEqual(sequenceCardProblems(card, LEVEL), [], `seed ${seed}`);
-      assert.equal(card.rows.length, 6, `seed ${seed}`);
-      assert.equal(card.rows.filter((row) => row.gaps.length === 2).length, 3, `seed ${seed}`);
-      for (const pattern of LEVEL.patterns) {
-        assert.ok(
-          card.rows.some((row) => row.pattern === pattern),
-          `seed ${seed} pattern ${pattern}`,
-        );
-      }
-      assert.equal(new Set(card.rows.map((row) => JSON.stringify(row))).size, 6, `seed ${seed}`);
-      for (const row of card.rows) {
-        assert.equal(row.values.length, N, `seed ${seed}`);
-        assert.equal(row.gaps[row.gaps.length - 1], 6, `seed ${seed}`);
-        if (row.gaps.length === 2) {
-          assert.ok(row.gaps[0] === 4 || row.gaps[0] === 5, `seed ${seed} gap ${row.gaps[0]}`);
+  void test("every card of every level passes the validator and has the shape the PRD table gives", () => {
+    const table = {
+      lat4: { n: 5, rows: 5, gaps: [1, 1, 1, 1, 1] },
+      lat5: { n: 7, rows: 6, gaps: [1, 1, 1, 2, 2, 2] },
+      lat6: { n: 8, rows: 7, gaps: [2, 2, 2, 2, 2, 2, 2] },
+      lat7: { n: 8, rows: 7, gaps: [2, 2, 2, 2, 3, 3, 3] },
+    };
+    for (const level of SEQUENCE_LEVELS) {
+      const expected = table[level.id];
+      for (let seed = 0; seed < SEEDS; seed += 1) {
+        const label = `${level.id} seed ${seed}`;
+        const card = generateSequenceCard(mulberry32(seed), null, level);
+        assert.ok(card, label);
+        assert.deepEqual(sequenceCardProblems(card, level), [], label);
+        assert.equal(card.levelId, level.id, label);
+        assert.equal(card.fieldsPerRow, expected.n, label);
+        assert.equal(card.rows.length, expected.rows, label);
+        assert.deepEqual(card.rows.map((row) => row.gaps.length).sort(), expected.gaps, label);
+        assert.equal(new Set(card.rows.map((row) => JSON.stringify(row))).size, expected.rows, label);
+        for (const row of card.rows) {
+          assert.equal(row.values.length, expected.n, label);
+          assert.ok(row.gaps[0] >= FIRST_GAP_BY_RULE[row.rule], `${label} ${row.rule} gap ${row.gaps[0]}`);
         }
       }
     }
   });
 
-  void test("every row has exactly one answer, found by trying all fillings of the gaps", () => {
-    for (let seed = 0; seed < SEEDS; seed += 1) {
-      const card = generateSequenceCard(mulberry32(seed), null, LEVEL);
-      assert.ok(card, `seed ${seed}`);
-      for (const row of card.rows) {
-        const fillings = fillingsThatContinueThePattern(row);
-        const label = `seed ${seed} ${row.pattern} ${row.values.join(",")} gaps ${row.gaps.join(",")}`;
-        assert.equal(fillings.length, 1, label);
-        assert.deepEqual(
-          fillings[0],
-          row.gaps.map((gap) => row.values[gap]),
-          label,
-        );
+  void test("every level draws the rules the PRD table names and no others", () => {
+    const rulesOf = (level: SequenceLevel): string[] => {
+      const seen = new Set<string>();
+      for (let seed = 0; seed < SEEDS; seed += 1) {
+        generateSequenceCard(mulberry32(seed), null, level)?.rows.forEach((row) => {
+          seen.add(row.rule);
+        });
+      }
+      return [...seen].sort();
+    };
+
+    assert.deepEqual(rulesOf(LAT4), ["AB"]);
+    assert.deepEqual(rulesOf(LAT5), ["AAB", "AB", "ABC"]);
+    assert.deepEqual(rulesOf(LAT6), ["AAB", "AB", "ABC", "up1", "up2"]);
+    assert.deepEqual(rulesOf(LAT7), ["down1", "groups", "mixed"]);
+  });
+
+  void test("every row of every level has exactly one answer, found by trying all fillings of the gaps", () => {
+    for (const level of SEQUENCE_LEVELS) {
+      for (let seed = 0; seed < ORACLE_SEEDS; seed += 1) {
+        const card = generateSequenceCard(mulberry32(seed), null, level);
+        assert.ok(card, `${level.id} seed ${seed}`);
+        for (const row of card.rows) {
+          const fillings = fillingsThatFollowARule(row);
+          const label = `${level.id} seed ${seed} ${row.rule} ${row.values.join(",")} gaps ${row.gaps.join(",")}`;
+          assert.equal(fillings.length, 1, label);
+          assert.deepEqual(
+            fillings[0],
+            row.gaps.map((gap) => row.values[gap]),
+            label,
+          );
+        }
       }
     }
   });
 
-  void test("the sample covers every pattern, every shape and both positions of the second gap", () => {
-    const patterns = new Set<string>();
-    const shapes = new Set<string>();
+  void test("levels 4 and 5 keep the last field and the second half for their gaps, every shape and number appears", () => {
     const secondGaps = new Set<number>();
+    const shapes = new Set<SequenceItem>();
     for (let seed = 0; seed < SEEDS; seed += 1) {
-      const card = generateSequenceCard(mulberry32(seed), null, LEVEL);
-      assert.ok(card);
-      for (const row of card.rows) {
-        patterns.add(row.pattern);
-        row.values.forEach((shape) => shapes.add(shape));
-        if (row.gaps.length === 2) {
-          secondGaps.add(row.gaps[0]);
+      for (const level of [LAT4, LAT5]) {
+        const card = generateSequenceCard(mulberry32(seed), null, level);
+        assert.ok(card);
+        for (const row of card.rows) {
+          assert.equal(row.gaps[row.gaps.length - 1], level.fieldsPerRow - 1, `${level.id} seed ${seed}`);
+          row.values.forEach((item) => shapes.add(item));
+          if (row.gaps.length === 2) {
+            secondGaps.add(row.gaps[0]);
+          }
         }
       }
     }
-    assert.deepEqual([...patterns].sort(), ["AAB", "AB", "ABC"]);
-    assert.deepEqual([...shapes].sort(), [...SEQUENCE_SHAPES].sort());
     assert.deepEqual([...secondGaps].sort(), [4, 5]);
+    assert.deepEqual([...shapes].sort(), [...SEQUENCE_SHAPES].sort());
+
+    const numbers = new Set<number>();
+    for (let seed = 0; seed < SEEDS; seed += 1) {
+      for (const level of [LAT6, LAT7]) {
+        for (const row of generateSequenceCard(mulberry32(seed), null, level)?.rows ?? []) {
+          for (const item of row.values) {
+            if (typeof item === "number") {
+              numbers.add(item);
+            }
+          }
+        }
+      }
+    }
+    assert.ok(Math.min(...numbers) === 1 && Math.max(...numbers) === 20, [...numbers].join(","));
   });
 
   void test("the next card never has the key of the previous one", () => {
-    const random = mulberry32(7);
-    let previous: string | null = null;
-    for (let step = 0; step < 100; step += 1) {
-      const card = generateSequenceCard(random, previous, LEVEL);
-      assert.ok(card, `step ${step}`);
-      assert.notEqual(card.key, previous, `step ${step}`);
-      previous = card.key;
+    for (const level of SEQUENCE_LEVELS) {
+      const random = mulberry32(7);
+      let previous: string | null = null;
+      for (let step = 0; step < 100; step += 1) {
+        const card = generateSequenceCard(random, previous, level);
+        assert.ok(card, `${level.id} step ${step}`);
+        assert.notEqual(card.key, previous, `${level.id} step ${step}`);
+        previous = card.key;
+      }
     }
   });
 
   void test("the same random source gives the same card", () => {
-    assert.equal(
-      generateSequenceCard(mulberry32(3), null, LEVEL)?.key,
-      generateSequenceCard(mulberry32(3), null, LEVEL)?.key,
-    );
+    for (const level of SEQUENCE_LEVELS) {
+      assert.equal(
+        generateSequenceCard(mulberry32(3), null, level)?.key,
+        generateSequenceCard(mulberry32(3), null, level)?.key,
+      );
+    }
+  });
+
+  void test("a hundred cards of the hardest level take far less than the 5 seconds a Generuj may take", () => {
+    const random = mulberry32(11);
+    const started = performance.now();
+    for (let step = 0; step < 100; step += 1) {
+      assert.ok(generateSequenceCard(random, null, LAT7));
+    }
+    assert.ok(performance.now() - started < 5000);
   });
 });
 
 void describe("sequenceAnswers", () => {
-  void test("a visible start that fits a period of 2 and of 3 gives two different answers", () => {
-    const result = sequenceAnswers([KOLO, KWADRAT, KOLO, null, null, null, null], 3);
+  void test("a rising-by-two row with two gaps has one answer", () => {
+    assert.deepEqual(sequenceAnswers([2, null, 6, 8, null, 12, 14, 16]).answers, [[4, 10]]);
+  });
 
-    assert.equal(result.undetermined, false);
+  void test("a start that fits a period of 2 and of 3 gives two different answers", () => {
+    const result = sequenceAnswers([KOLO, KWADRAT, KOLO, null, null, null, null]);
+
     assert.deepEqual(result.answers.map((answer) => answer.join(",")).sort(), [
       [KOLO, KWADRAT, KOLO, KOLO].join(","),
       [KWADRAT, KOLO, KWADRAT, KOLO].join(","),
     ]);
   });
 
-  void test("a gap without a visible field in its remainder class is undetermined", () => {
-    assert.equal(sequenceAnswers([KOLO, KWADRAT, null], 3).undetermined, true);
+  void test("a gap with no visible field in its remainder class has several answers", () => {
+    assert.ok(sequenceAnswers([KOLO, KWADRAT, null, null, null, null, null]).answers.length > 1);
   });
 
-  void test("visible fields that fit no period give no answer", () => {
-    assert.deepEqual(sequenceAnswers([KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, KOLO, null], 3), {
-      answers: [],
-      undetermined: false,
-    });
+  void test("visible fields that fit no rule give no answer", () => {
+    assert.deepEqual(sequenceAnswers([KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, KOLO, null]), { answers: [] });
+  });
+
+  void test("a number and a shape in one run give no answer", () => {
+    assert.deepEqual(sequenceAnswers([1, KOLO, 3, 4, 5, 6, null, 8]), { answers: [] });
   });
 });
 
 void describe("sequenceRowProblems", () => {
   const good: SequenceRow = {
-    pattern: "AAB",
+    rule: "AAB",
     values: [KOLO, KOLO, KWADRAT, KOLO, KOLO, KWADRAT, KOLO],
-    gaps: [4, 6],
+    gaps: [5, 6],
   };
 
   void test("a good row has no problems", () => {
-    assert.deepEqual(sequenceRowProblems(good, N), []);
+    assert.deepEqual(sequenceRowProblems(good, LAT5), []);
   });
 
   void test("a start that fits two periods is ambiguous", () => {
     const row: SequenceRow = {
-      pattern: "AB",
+      rule: "AB",
       values: [KOLO, KWADRAT, KOLO, KWADRAT, KOLO, KWADRAT, KOLO],
       gaps: [3, 4, 5, 6],
     };
 
-    const problems = sequenceRowProblems(row, N);
+    const problems = sequenceRowProblems(row, LAT5);
 
     assert.ok(problems.includes("ambiguous"), problems.join(","));
     assert.ok(problems.includes("gap-count"), problems.join(","));
   });
 
+  void test("a row whose gaps hide a whole class of a period of four is ambiguous", () => {
+    const row: SequenceRow = {
+      rule: "AB",
+      values: [KOLO, KWADRAT, KOLO, KWADRAT, KOLO, KWADRAT, KOLO, KWADRAT],
+      gaps: [2, 6],
+    };
+
+    assert.deepEqual(sequenceRowProblems(row, LAT6), ["ambiguous"]);
+  });
+
   void test("the validator reads the answer from the visible fields, not from the stored values", () => {
     const row: SequenceRow = { ...good, values: [KOLO, KOLO, KWADRAT, KOLO, KOLO, KWADRAT, TROJKAT] };
 
-    assert.ok(sequenceRowProblems(row, N).includes("answer-mismatch"));
+    assert.ok(sequenceRowProblems(row, LAT5).includes("answer-mismatch"));
   });
 
-  void test("a first gap before the pattern is shown in full is reported", () => {
+  void test("a first gap before the rule is shown is reported", () => {
     const row: SequenceRow = {
-      pattern: "ABC",
+      rule: "ABC",
       values: [KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, TROJKAT, KOLO],
       gaps: [2, 6],
     };
 
-    assert.ok(sequenceRowProblems(row, N).includes("gap-before-pattern-shown"));
+    assert.ok(sequenceRowProblems(row, LAT5).includes("gap-before-rule-shown"));
   });
 
-  void test("a second gap in the first half is reported", () => {
-    assert.ok(sequenceRowProblems({ ...good, gaps: [3, 6] }, N).includes("second-gap-outside-second-half"));
+  void test("a second gap in the first half is reported at 5 lat", () => {
+    assert.ok(sequenceRowProblems({ ...good, gaps: [3, 6] }, LAT5).includes("second-gap-outside-second-half"));
   });
 
-  void test("a row whose last field is not a gap is reported", () => {
-    assert.ok(sequenceRowProblems({ ...good, gaps: [4, 5] }, N).includes("last-not-gap"));
+  void test("a row whose last field is not a gap is reported at 5 lat but allowed at 6 lat", () => {
+    assert.ok(sequenceRowProblems({ ...good, gaps: [4, 5] }, LAT5).includes("last-not-gap"));
+
+    const numbers: SequenceRow = { rule: "up1", values: [3, 4, 5, 6, 7, 8, 9, 10], gaps: [3, 5] };
+    assert.deepEqual(sequenceRowProblems(numbers, LAT6), []);
   });
 
-  void test("an AB unit with two equal shapes is reported", () => {
-    const row: SequenceRow = { pattern: "AB", values: Array<SequenceShape>(N).fill(KOLO), gaps: [6] };
+  void test("a row that does not follow its rule is reported", () => {
+    const equalUnit: SequenceRow = { rule: "AB", values: Array<SequenceItem>(7).fill(KOLO), gaps: [6] };
+    const wrongStep: SequenceRow = { rule: "up1", values: [2, 4, 6, 8, 10, 12, 14, 16], gaps: [3, 5] };
 
-    assert.ok(sequenceRowProblems(row, N).includes("pattern-mismatch"));
+    assert.ok(sequenceRowProblems(equalUnit, LAT5).includes("rule-mismatch"));
+    assert.ok(sequenceRowProblems(wrongStep, LAT6).includes("rule-mismatch"));
   });
 
   void test("a row of the wrong length is reported", () => {
-    assert.ok(sequenceRowProblems({ ...good, values: good.values.slice(0, 6) }, N).includes("wrong-length"));
+    assert.ok(sequenceRowProblems({ ...good, values: good.values.slice(0, 6) }, LAT5).includes("wrong-length"));
   });
 
-  void test("an unknown shape is reported", () => {
-    const values = good.values.map((shape) => (shape === KOLO ? "serce" : shape)) as SequenceShape[];
+  void test("an unknown shape and a number outside 1 to 20 are reported", () => {
+    const values = good.values.map((item) => (item === KOLO ? "serce" : item)) as SequenceItem[];
+    const tooBig: SequenceRow = { rule: "up1", values: [15, 16, 17, 18, 19, 20, 21, 22], gaps: [3, 5] };
 
-    assert.ok(sequenceRowProblems({ ...good, values }, N).includes("unknown-shape"));
+    assert.ok(sequenceRowProblems({ ...good, values }, LAT5).includes("unknown-item"));
+    assert.ok(sequenceRowProblems(tooBig, LAT6).includes("unknown-item"));
+  });
+
+  void test("falling numbers, growing groups and mixed rows with their gaps have no problems", () => {
+    const down: SequenceRow = { rule: "down1", values: [14, 13, 12, 11, 10, 9, 8, 7], gaps: [3, 6] };
+    const groups: SequenceRow = {
+      rule: "groups",
+      values: [KOLO, KOLO, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT],
+      gaps: [4, 6],
+    };
+    const mixed: SequenceRow = {
+      rule: "mixed",
+      values: [GWIAZDKA, 1, GWIAZDKA, 2, GWIAZDKA, 3, GWIAZDKA, 4],
+      gaps: [3, 5],
+    };
+
+    assert.deepEqual(sequenceRowProblems(down, LAT6), []);
+    assert.deepEqual(sequenceRowProblems(groups, LAT7), []);
+    assert.deepEqual(sequenceRowProblems(mixed, LAT7), []);
+  });
+
+  void test("a gap row of the wrong size for the level is reported", () => {
+    const one: SequenceRow = { rule: "up1", values: [3, 4, 5, 6, 7, 8, 9, 10], gaps: [5] };
+    const four: SequenceRow = { rule: "up1", values: [3, 4, 5, 6, 7, 8, 9, 10], gaps: [2, 3, 4, 5] };
+
+    assert.ok(sequenceRowProblems(one, LAT6).includes("gap-count"));
+    assert.ok(sequenceRowProblems(four, LAT7).includes("gap-count"));
   });
 });
 
 void describe("sequenceCardProblems", () => {
-  const card = generateSequenceCard(mulberry32(1), null, LEVEL);
+  const card = generateSequenceCard(mulberry32(1), null, LAT5);
 
   void test("a card of five rows is reported", () => {
     assert.ok(card);
-    assert.ok(sequenceCardProblems({ ...card, rows: card.rows.slice(1) }, LEVEL).includes("row-count"));
+    assert.ok(sequenceCardProblems({ ...card, rows: card.rows.slice(1) }, LAT5).includes("row-count"));
   });
 
   void test("a duplicated row is reported", () => {
     assert.ok(card);
     const rows = [...card.rows.slice(0, 5), card.rows[0]];
 
-    assert.ok(sequenceCardProblems({ ...card, rows }, LEVEL).includes("duplicate-row"));
+    assert.ok(sequenceCardProblems({ ...card, rows }, LAT5).includes("duplicate-row"));
   });
 
-  void test("a card without one of the patterns is reported", () => {
+  void test("a card without one of the rules is reported", () => {
     assert.ok(card);
-    const rows = card.rows.map((row) => (row.pattern === "ABC" ? { ...row, pattern: "AB" as const } : row));
+    const rows = card.rows.map((row) => (row.rule === "ABC" ? { ...row, rule: "AB" as const } : row));
 
-    assert.ok(sequenceCardProblems({ ...card, rows }, LEVEL).includes("missing-pattern"));
+    assert.ok(sequenceCardProblems({ ...card, rows }, LAT5).includes("missing-rule"));
   });
 
-  void test("a card with the wrong number of two-gap rows is reported", () => {
+  void test("a card with the wrong number of rows that have an extra gap is reported", () => {
     assert.ok(card);
     const rows = card.rows.map((row) => ({ ...row, gaps: [6] }));
 
-    assert.ok(sequenceCardProblems({ ...card, rows }, LEVEL).includes("two-gap-row-count"));
+    assert.ok(sequenceCardProblems({ ...card, rows }, LAT5).includes("gap-row-count"));
   });
 });
 
