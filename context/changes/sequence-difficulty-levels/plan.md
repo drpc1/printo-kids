@@ -288,18 +288,18 @@ Brak danych do migracji: poziom żyje w stanie strony. Zmieniają się nazwy w t
 
 #### Automated
 
-- [x] 3.1 Testy produktu przechodzą: `npm test`
-- [x] 3.2 Lint przechodzi: `npm run lint`
-- [x] 3.3 Typy przechodzą: `npx astro check`
-- [x] 3.4 Build przechodzi: `npm run build`
-- [x] 3.5 Miniatury są powtarzalne: po pierwszym `npm run thumbnails` pliki w `public/thumbnails` są w stage (`git add`), a po drugim `git diff --exit-code public/thumbnails` nie pokazuje zmian
-- [x] 3.6 Smoke przechodzi na podglądzie: `npm run smoke`
-- [x] 3.7 E2E katalogu i telefonu przechodzą: `E2E_PORT=4398 npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts`
+- [x] 3.1 Testy produktu przechodzą: `npm test` — 99bba23
+- [x] 3.2 Lint przechodzi: `npm run lint` — 99bba23
+- [x] 3.3 Typy przechodzą: `npx astro check` — 99bba23
+- [x] 3.4 Build przechodzi: `npm run build` — 99bba23
+- [x] 3.5 Miniatury są powtarzalne: po pierwszym `npm run thumbnails` pliki w `public/thumbnails` są w stage (`git add`), a po drugim `git diff --exit-code public/thumbnails` nie pokazuje zmian — 99bba23
+- [x] 3.6 Smoke przechodzi na podglądzie: `npm run smoke` — 99bba23
+- [x] 3.7 E2E katalogu i telefonu przechodzą: `E2E_PORT=4398 npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts` — 99bba23
 
 #### Manual
 
-- [x] 3.8 Miniatura „Sekwencje” w katalogu wygląda jak karta, czytelnie na telefonie (2 kolumny) i na komputerze
-- [x] 3.9 Wydruk czterech poziomów: jedna strona A4 z marginesem co najmniej 10 mm w Chrome na komputerze; liczby i „?” czytelne; pole wystarcza dziecku
-- [x] 3.10 Druk z telefonu jednego poziomu (Safari na iOS albo Chrome na Androidzie): jedna strona A4, a Generuj, Poziom i Drukuj nie nachodzą na siebie
-- [x] 3.11 Wartości startowe poziomów ocenione na wydruku; uwagi zapisane w Open Questions 9 PRD
-- [x] 3.12 Labirynt, symetria i sudoku działają jak przed zmianą
+- [x] 3.8 Miniatura „Sekwencje” w katalogu wygląda jak karta, czytelnie na telefonie (2 kolumny) i na komputerze — 99bba23
+- [x] 3.9 Wydruk czterech poziomów: jedna strona A4 z marginesem co najmniej 10 mm w Chrome na komputerze; liczby i „?” czytelne; pole wystarcza dziecku — 99bba23
+- [x] 3.10 Druk z telefonu jednego poziomu (Safari na iOS albo Chrome na Androidzie): jedna strona A4, a Generuj, Poziom i Drukuj nie nachodzą na siebie — 99bba23
+- [x] 3.11 Wartości startowe poziomów ocenione na wydruku; uwagi zapisane w Open Questions 9 PRD — 99bba23
+- [x] 3.12 Labirynt, symetria i sudoku działają jak przed zmianą — 99bba23
