@@ -320,15 +320,15 @@ Brak. Nowa strona i nowe pliki; profil i ostatnie parametry bez zmian.
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi z dopisanymi `src/lib/sudoku/shapes.test.ts` i `src/lib/sudoku/layout.test.ts`
-- [x] 1.2 `npm run lint` i `npx astro check` przechodzą
-- [x] 1.3 `node --experimental-strip-types scripts/sudoku-mockup.mjs` pisze `mockup.svg` bez błędu
+- [x] 1.1 `npm test` przechodzi z dopisanymi `src/lib/sudoku/shapes.test.ts` i `src/lib/sudoku/layout.test.ts` — 3f9b67f
+- [x] 1.2 `npm run lint` i `npx astro check` przechodzą — 3f9b67f
+- [x] 1.3 `node --experimental-strip-types scripts/sudoku-mockup.mjs` pisze `mockup.svg` bez błędu — 3f9b67f
 
 #### Manual
 
-- [x] 1.4 Wydruk `mockup.svg` na A4: użytkowniczka akceptuje wygląd dziewięciu kształtów (czytelne, łatwe do odrysowania przez dziecko)
-- [x] 1.5 Na wydruku pola 40 mm dają dość miejsca na rysunek kredką, a grube linie kwadratów 2×2 są wyraźne
-- [x] 1.6 Zdanie polecenia jest czytelne i nie wychodzi poza margines
+- [x] 1.4 Wydruk `mockup.svg` na A4: użytkowniczka akceptuje wygląd dziewięciu kształtów (czytelne, łatwe do odrysowania przez dziecko) — 3f9b67f
+- [x] 1.5 Na wydruku pola 40 mm dają dość miejsca na rysunek kredką, a grube linie kwadratów 2×2 są wyraźne — 3f9b67f
+- [x] 1.6 Zdanie polecenia jest czytelne i nie wychodzi poza margines — 3f9b67f
 
 ### Phase 2: Generator i solver
 
