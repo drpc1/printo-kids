@@ -3,7 +3,7 @@ import { Printer, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
-import { generateSudokuCard4, type SudokuCard } from "@/lib/sudoku/generate";
+import { generateSudokuCard, type SudokuCard } from "@/lib/sudoku/generate";
 import { layoutSudokuSheet } from "@/lib/sudoku/layout";
 import { SUDOKU_SHEET } from "@/lib/sudoku/sheet";
 import { sudokuShapePath } from "@/lib/sudoku/shapes";
@@ -43,7 +43,7 @@ export default function SudokuGenerator() {
     if (waitingForChild) {
       return;
     }
-    const next = generateSudokuCard4(Math.random, card?.key ?? null);
+    const next = generateSudokuCard(Math.random, card?.key ?? null);
     if (next === null) {
       setGenerateFailed(true);
       return;

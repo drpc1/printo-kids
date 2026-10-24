@@ -290,28 +290,28 @@ Brak danych do migracji: sudoku niczego nie zapisuje w profilu ani w ostatnich p
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Skrypt zapisuje trzy makiety: `node --experimental-strip-types scripts/sudoku-mockup.mjs`
+- [x] 1.1 Testy przechodzą: `npm test` — 04d5b8f
+- [x] 1.2 Lint przechodzi: `npm run lint` — 04d5b8f
+- [x] 1.3 Skrypt zapisuje trzy makiety: `node --experimental-strip-types scripts/sudoku-mockup.mjs` — 04d5b8f
 
 #### Manual
 
-- [x] 1.4 Wydruk makiet w skali 100% na A4: pola 28 mm i 20 mm są wygodne dla dziecka, kształty w 20 mm czytelne, cyfry czytelne
-- [x] 1.5 Liczby pustych pól 22 z 36 i 52 z 81 oceniasz jako nie za trudne (albo podajesz nowe liczby)
-- [x] 1.6 Polecenie jest czytelne i mieści się na stronie
-- [x] 1.7 Nic nie wychodzi poza margines 10 mm
+- [x] 1.4 Wydruk makiet w skali 100% na A4: pola 28 mm i 20 mm są wygodne dla dziecka, kształty w 20 mm czytelne, cyfry czytelne — 04d5b8f
+- [x] 1.5 Liczby pustych pól 22 z 36 i 52 z 81 oceniasz jako nie za trudne (albo podajesz nowe liczby) — 04d5b8f
+- [x] 1.6 Polecenie jest czytelne i mieści się na stronie — 04d5b8f
+- [x] 1.7 Nic nie wychodzi poza margines 10 mm — 04d5b8f
 
 ### Phase 2: Poziomy i generator kart dla wszystkich rozmiarów
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Typy przechodzą: `npx astro check`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.3 Typy przechodzą: `npx astro check`
 
 #### Manual
 
-- [ ] 2.4 Pomiar czasu `generateSudokuPuzzle` dla 9×9 z 52 pustymi (skrypt jednorazowy) potwierdza rząd kilku milisekund
+- [x] 2.4 Pomiar czasu `generateSudokuPuzzle` dla 9×9 z 52 pustymi (skrypt jednorazowy) potwierdza rząd kilku milisekund
 
 ### Phase 3: Pasek ustawień i karta zależna od rozmiaru
 
