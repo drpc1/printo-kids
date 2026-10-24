@@ -364,7 +364,7 @@ Brak. Nowa strona i nowe pliki; profil i ostatnie parametry bez zmian.
 
 #### Manual
 
-- [ ] 4.5 Katalog na telefonie i komputerze pokazuje czytelną miniaturę „Sudoku” obok pozostałych
-- [ ] 4.6 Druk jednej strony A4 z `/sudoku` w Chrome, Edge, Firefox, Brave i Safari na komputerze
-- [ ] 4.7 Na telefonie przyciski nie nachodzą na siebie, podgląd zostaje, wydruk to jedna strona A4
+- [x] 4.5 Katalog na telefonie i komputerze pokazuje czytelną miniaturę „Sudoku” obok pozostałych — 025e157
+- [x] 4.6 Druk jednej strony A4 z `/sudoku` w Chrome, Edge, Firefox, Brave i Safari na komputerze — 025e157
+- [x] 4.7 Na telefonie przyciski nie nachodzą na siebie, podgląd zostaje, wydruk to jedna strona A4 — 025e157
 - [ ] 4.8 Wydruk testowy z dzieckiem: dziecko rozumie, że w każdym rzędzie brakuje jednego kształtu, i daje radę go narysować w polu 40 mm
