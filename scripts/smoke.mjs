@@ -1,4 +1,4 @@
-// Smoke test: the product pages (/ card catalog, /labirynt maze generator, /symetria symmetry generator, /sekwencje sequence generator) are served and the starter account routes are gone.
+// Smoke test: the product pages (/ card catalog, /labirynt maze generator, /symetria symmetry generator, /sekwencje sequence generator, /sudoku sudoku generator) are served and the starter account routes are gone.
 // Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
@@ -6,6 +6,7 @@ const CATALOG_SENTENCE = "Wybierz rodzaj karty i wydrukuj ją na kartce A4.";
 const HOME_SENTENCE = "Wygeneruj labirynt i wydrukuj go na kartce A4.";
 const SYMMETRY_SENTENCE = "Wygeneruj kartę symetrii i wydrukuj ją na kartce A4.";
 const SEQUENCE_SENTENCE = "Wygeneruj kartę sekwencji i wydrukuj ją na kartce A4.";
+const SUDOKU_SENTENCE = "Wygeneruj kartę sudoku i wydrukuj ją na kartce A4.";
 
 async function request(path) {
   const response = await fetch(BASE_URL + path, { redirect: "manual" });
@@ -37,6 +38,12 @@ const steps = [
     () => request("/sekwencje"),
     (actual) => actual.status === 200 && actual.body.includes(SEQUENCE_SENTENCE),
     `200 and ${SEQUENCE_SENTENCE}`,
+  ],
+  [
+    "sudoku renders the worksheet sentence",
+    () => request("/sudoku"),
+    (actual) => actual.status === 200 && actual.body.includes(SUDOKU_SENTENCE),
+    `200 and ${SUDOKU_SENTENCE}`,
   ],
   ["signin is not served", () => request("/auth/signin"), (actual) => actual.status === 404, "404"],
   ["signup is not served", () => request("/auth/signup"), (actual) => actual.status === 404, "404"],

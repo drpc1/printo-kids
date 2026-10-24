@@ -22,10 +22,10 @@ milestone_status: open
 
 **M-3: Sekwencje i sudoku obrazkowe** — Status: open
 
-- **Intent:** Pokazać, że katalog kart rośnie o dwa rodzaje naraz bez przebudowy: karta sekwencji (dziecko uzupełnia brakujące elementy ciągu liczb i kształtów) i karta sudoku obrazkowego 4×4 z postaciami z katalogu. Każda ma własną stronę, własne poziomy nazwane wiekiem, podgląd i druk jako jedna strona A4, także z telefonu. Dwa strumienie idą równolegle. Profil z wiekiem i poziomami per rodzaj karty (S-14) zostaje poza tym kamieniem.
+- **Intent:** Pokazać, że katalog kart rośnie o dwa rodzaje naraz bez przebudowy: karta sekwencji (dziecko uzupełnia brakujące elementy ciągu liczb i kształtów) i karta sudoku 4×4, 6×6 i 9×9 z prostymi kształtami albo cyframi (przebudowane 2026-10-24). Każda ma własną stronę, własne poziomy (sekwencje nazwane wiekiem; sudoku: osobne paski „Rozmiar” i „Poziom”), podgląd i druk jako jedna strona A4, także z telefonu. Dwa strumienie idą równolegle. Profil z wiekiem i poziomami per rodzaj karty (S-14) zostaje poza tym kamieniem.
 - **Source materials:** `context/foundation/prd.md` (v3)
 - **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcje „Po tym kamieniu” i „Parked” nie wliczają się.
-- **Scope anchors:** US-10–US-13, FR-019–FR-022, NFR „Karty sekwencji i sudoku obrazkowego spełniają te same granice co labirynt”, Business Logic „Karta sekwencji” i „Karta sudoku obrazkowego”. Labirynt i symetria zostają bez zmian.
+- **Scope anchors:** US-10–US-14, FR-019–FR-023, NFR „Karty sekwencji i sudoku spełniają te same granice co labirynt”, Business Logic „Karta sekwencji” i „Karta sudoku”. Labirynt i symetria zostają bez zmian.
 
 ## Vision recap
 
@@ -39,21 +39,22 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                      | Outcome (user can …)                                                                                                                                                                                                            | Prerequisites | PRD refs      | Status   |
-| ---- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
-| S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-10, FR-019 | done     |
-| S-18 | picture-sudoku-first-printable | Rodzic może wejść z katalogu na stronę sudoku obrazkowego, wygenerować planszę 4×4 z postaciami z katalogu i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie                     | —             | US-12, FR-021 | ready    |
-| S-17 | sequence-difficulty-levels     | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                 | S-16          | US-11, FR-020 | proposed |
-| S-19 | picture-sudoku-levels          | Rodzic może wybrać poziom sudoku obrazkowego nazwany wiekiem (liczba pól wypełnionych na starcie) na pasku strony sudoku                                                                                                        | S-18          | US-13, FR-022 | proposed |
+| ID   | Change ID                      | Outcome (user can …)                                                                                                                                                                                                             | Prerequisites | PRD refs      | Status      |
+| ---- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | ----------- |
+| S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie  | —             | US-10, FR-019 | done        |
+| S-18 | picture-sudoku-first-printable | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-12, FR-021 | in-progress |
+| S-17 | sequence-difficulty-levels     | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                  | S-16          | US-11, FR-020 | proposed    |
+| S-19 | picture-sudoku-levels          | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                     | S-18          | US-13, FR-022 | proposed    |
+| S-20 | picture-sudoku-colors          | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                             | S-18          | US-14, FR-023 | proposed    |
 
 ## Streams
 
 Navigation aid — groups items that share a Prerequisites chain. Canonical ordering still lives in the dependency graph below; this table is the proposed reading order across parallel tracks.
 
-| Stream | Theme     | Chain           | Note                                                                                    |
-| ------ | --------- | --------------- | --------------------------------------------------------------------------------------- |
-| A      | Sekwencje | `S-16` → `S-17` | Gwiazda przewodnia kamienia; poziomy dopiero po pierwszej drukowalnej karcie.           |
-| B      | Sudoku    | `S-18` → `S-19` | Równolegle do strumienia A; obie pierwsze karty dotykają katalogu (`src/lib/cards.ts`). |
+| Stream | Theme     | Chain                            | Note                                                                                    |
+| ------ | --------- | -------------------------------- | --------------------------------------------------------------------------------------- |
+| A      | Sekwencje | `S-16` → `S-17`                  | Gwiazda przewodnia kamienia; poziomy dopiero po pierwszej drukowalnej karcie.           |
+| B      | Sudoku    | `S-18` → `S-19`, `S-18` → `S-20` | Równolegle do strumienia A; obie pierwsze karty dotykają katalogu (`src/lib/cards.ts`). |
 
 ## Baseline
 
@@ -67,7 +68,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Deploy / infra:** present — CI (lint, test, check, build, smoke). `npm test` wylicza pliki testów jawnie, więc nowe pliki testów trzeba dopisać do skryptu.
 - **Observability:** partial — dzienniki platformy, bez śledzenia błędów aplikacji.
 
-Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), układ strony SVG z `src/lib/symmetry/layout.ts` i `sheet.ts` jako wzorzec, katalog postaci (`src/lib/sheet/character.ts`, dla sudoku), profil w rogu (bez zmian).
+Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), układ strony SVG z `src/lib/symmetry/layout.ts` i `sheet.ts` jako wzorzec, przełącznik kolorów z symetrii (dla kolorów sudoku), profil w rogu (bez zmian).
 
 ## Foundations
 
@@ -89,20 +90,18 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Risk:** Sprawdzenie, że do pustego pola pasuje dokładnie jedna reguła z jawnej listy, to jedyne nietrywialne miejsce. Odrzucenie ciągu zbyt często psuje szybkość generowania (limit 5 s) albo zmniejsza różnorodność kart. Pierwszy wpis w `src/lib/cards.ts` i miniatura w `public/thumbnails/` dzielą pliki ze S-18, więc strumienie nie powinny edytować ich jednocześnie bez uzgodnienia.
 - **Status:** done
 
-### S-18: Sudoku obrazkowe 4×4: strona, generowanie, podgląd i druk A4
+### S-18: Sudoku 4×4 z kształtami: strona, generowanie, podgląd i druk A4
 
-- **Outcome:** Rodzic może wejść z katalogu na stronę „Sudoku obrazkowe” (`/sudoku`), wygenerować planszę 4×4 z czterema postaciami z katalogu, częścią pól wypełnionych i jednym rozwiązaniem, z legendą numerów 1–4, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.
+- **Outcome:** Rodzic może wejść z katalogu na stronę „Sudoku” (`/sudoku`), wygenerować planszę 4×4 z czterema prostymi kształtami jako czarnymi konturami (w każdym wierszu brakuje jednego, miejsce losowe) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Generator i sprawdzenie jednego rozwiązania powstają od razu dla 4×4, 6×6 i 9×9 (bloki 2×2, 2×3, 3×3), ale strona pokazuje tylko 4×4.
 - **Change ID:** picture-sudoku-first-printable
 - **PRD refs:** US-12, FR-021
 - **Prerequisites:** —
 - **Parallel with:** S-16
 - **Blockers:** —
 - **Unknowns:**
-  - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „6 lat” (8 pól wypełnionych z 16); poziomy dochodzą w S-19. — Owner: team. Block: no.
-  - Prawa do postaci użytych w sudoku. — Owner: user. Block: no (PRD Open Questions 3, dotyczy publikacji katalogu postaci).
-  - Czy dziecko wpisze numer z legendy, czy narysuje postać (PRD Open Questions 8)? — Owner: user. Block: no. Potwierdza wydruk.
-- **Risk:** Generator musi dawać jedno rozwiązanie (usuwanie pól z kontrolą jednoznaczności), co przy 4×4 jest szybkie. Postacie z `public/characters/*.png` muszą dać się ułożyć w polu planszy i zmieścić w czarnym druku bez przesłaniania siatki. Dzieli z S-16 katalog kart i miniatury.
-- **Status:** ready
+  - Jak rysować kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla) w SVG, żeby czarny kontur był czytelny i łatwy do odrysowania? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+- **Risk:** Generator musi dawać jedno rozwiązanie. Przy 4×4 z jednym pustym polem w wierszu to wynika z reguły, ale 9×9 z 52 pustymi wymaga solvera liczącego rozwiązania w granicy 5 s, więc solver jest testowany już tutaj. Dzieli z S-16 katalog kart i miniatury.
+- **Status:** in-progress
 
 ### S-17: Poziomy sekwencji
 
@@ -117,37 +116,51 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Risk:** Każdy poziom musi mieścić się na jednej stronie A4 z marginesem 10 mm, a bogatsze reguły zwiększają szansę na odrzucone ciągi (więcej niż jedna pasująca reguła). Poziom żyje w stanie strony, jak poziom symetrii.
 - **Status:** proposed
 
-### S-19: Poziomy sudoku obrazkowego
+### S-19: Rozmiary i poziomy sudoku
 
-- **Outcome:** Rodzic może wybrać poziom sudoku obrazkowego nazwany wiekiem (5–7 lat: liczba pól wypełnionych na starcie) na pasku strony sudoku.
+- **Outcome:** Rodzic może wybrać na pasku strony sudoku rozmiar (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: 6×6 — 12/18/22 pustych z 36, 9×9 — 35/45/52 z 81; 4×4 ma jeden poziom), a przy 6×6 przełącznikiem „Kształty / Cyfry” wybrać symbole.
 - **Change ID:** picture-sudoku-levels
 - **PRD refs:** US-13, FR-022
 - **Prerequisites:** S-18
-- **Parallel with:** S-16, S-17
+- **Parallel with:** S-16, S-17, S-20
 - **Blockers:** —
 - **Unknowns:**
-  - Czy 10, 8 i 6 wypełnionych pól z 16 daje właściwy odstęp trudności? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 9).
-- **Risk:** Przy 6 wypełnionych polach jednoznaczne rozwiązanie jest trudniejsze do wylosowania; generator może potrzebować kilku prób, w granicy 5 s.
+  - Czy liczby pustych pól nie są za trudne dla dzieci? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 9).
+- **Risk:** Przy 52 pustych z 81 jednoznaczne rozwiązanie jest trudniejsze do wylosowania; generator może potrzebować kilku prób, w granicy 5 s. Kratka 9×9 musi być dość duża, żeby dziecko wpisało cyfrę. Rozmiar i poziom żyją w stanie strony.
+- **Status:** proposed
+
+### S-20: Kolory kształtów w sudoku
+
+- **Outcome:** Rodzic może włączyć kolory na karcie sudoku z kształtami; każdy kształt ma jeden stały kolor kredki na całej planszy, a przełącznik nie zmienia planszy. Domyślnie czarne kontury; przy cyfrach przełącznika nie ma.
+- **Change ID:** picture-sudoku-colors
+- **PRD refs:** US-14, FR-023
+- **Prerequisites:** S-18
+- **Parallel with:** S-16, S-17, S-19
+- **Blockers:** —
+- **Unknowns:**
+  - Jakie przypisanie kolorów do kształtów? Rekomendacja: kolory kredek z symetrii (czerwony, zielony, żółty, niebieski, pomarańczowy, szary, czarny) plus dwa nowe (fioletowy, brązowy), bo 9×9 z kształtami potrzebuje dziewięciu kolorów. — Owner: user. Block: no.
+- **Risk:** Ukrycie przełącznika przy cyfrach wymaga S-19; jeśli S-20 idzie pierwsze, przełącznik dotyczy tylko 4×4. Pasek strony sudoku dzieli pliki z S-19.
 - **Status:** proposed
 
 ## Backlog Handoff
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty.
 
-| Roadmap ID | Change ID                      | Suggested issue title                                        | Ready for `/10x-plan` | Notes                                                                                |
-| ---------- | ------------------------------ | ------------------------------------------------------------ | --------------------- | ------------------------------------------------------------------------------------ |
-| S-16       | sequences-first-printable      | Karta sekwencji: strona, generowanie, podgląd i druk A4      | yes                   | Run `/10x-new sequences-first-printable`, potem `/10x-plan`. Równolegle do S-18      |
-| S-18       | picture-sudoku-first-printable | Sudoku obrazkowe 4×4: strona, generowanie, podgląd i druk A4 | yes                   | Run `/10x-new picture-sudoku-first-printable`, potem `/10x-plan`. Równolegle do S-16 |
-| S-17       | sequence-difficulty-levels     | Poziomy sekwencji                                            | no                    | Czeka na S-16                                                                        |
-| S-19       | picture-sudoku-levels          | Poziomy sudoku obrazkowego                                   | no                    | Czeka na S-18                                                                        |
+| Roadmap ID | Change ID                      | Suggested issue title                                           | Ready for `/10x-plan` | Notes                                                                                |
+| ---------- | ------------------------------ | --------------------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------ |
+| S-16       | sequences-first-printable      | Karta sekwencji: strona, generowanie, podgląd i druk A4         | yes                   | Run `/10x-new sequences-first-printable`, potem `/10x-plan`. Równolegle do S-18      |
+| S-18       | picture-sudoku-first-printable | Sudoku 4×4 z kształtami: strona, generowanie, podgląd i druk A4 | yes                   | Run `/10x-new picture-sudoku-first-printable`, potem `/10x-plan`. Równolegle do S-16 |
+| S-17       | sequence-difficulty-levels     | Poziomy sekwencji                                               | no                    | Czeka na S-16                                                                        |
+| S-19       | picture-sudoku-levels          | Rozmiary i poziomy sudoku                                       | no                    | Czeka na S-18                                                                        |
+| S-20       | picture-sudoku-colors          | Kolory kształtów w sudoku                                       | no                    | Czeka na S-18                                                                        |
 
 ## Open Roadmap Questions
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
-2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (sudoku obrazkowe używa postaci; publikacja szerszego katalogu czeka).
+2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (od 2026-10-24 sudoku nie używa postaci; publikacja szerszego katalogu czeka).
 3. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Issue #54, PRD Open Questions 4. Nie należy do M-3.
 4. **Czy startowe wartości poziomów symetrii, sekwencji i sudoku pasują dziecku?** — Owner: user. Block: no. PRD Open Questions 5 i 9.
-5. **Czy sudoku obrazkowe uzupełnia się numerem z legendy, czy rysunkiem postaci?** — Owner: user. Block: no. PRD Open Questions 8.
+5. ~~**Czy sudoku obrazkowe uzupełnia się numerem z legendy, czy rysunkiem postaci?**~~ — Zamknięte 2026-10-24: kształty do narysowania albo cyfry, bez postaci (PRD Open Questions 8).
 6. **Kiedy wraca S-14 (profil z wiekiem i poziomami per rodzaj karty)?** — Owner: user. Block: no. PRD Open Questions 10.
 
 ## Parked
@@ -171,7 +184,6 @@ Bez numeru, ta sama umowa:
 - **Który nie pasuje** — jedna złamana reguła. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
 - **Nonogram postaci** — rozwiązanie odsłania postać. Czeka na bitmapę.
 - **Karty kodowania** — kratka, postać, meta, strzałki, jedna najkrótsza droga.
-- **Sudoku 9×9** — poziom nastolatka sudoku obrazkowego, po M-3.
 - **Porównywanie kwot w złotych** — wartość kupek monet, nie liczba sztuk. „Ułóż dokładnie tę kwotę” czeka na jeden układ.
 
 Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą listą.
