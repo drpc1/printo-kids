@@ -260,6 +260,15 @@ void describe("sudokuCardProblems", () => {
     assert.ok(problems.includes("not-unique"));
   });
 
+  void test("a board that is not 4×4 is reported as not unique without running the solver", () => {
+    const card = goodCard();
+    const short = card.givens.slice(0, 3);
+    const narrow = card.givens.map((row, r) => (r === 0 ? row.slice(0, 3) : [...row]));
+
+    assert.ok(sudokuCardProblems({ ...card, givens: short }).includes("not-unique"));
+    assert.ok(sudokuCardProblems({ ...card, givens: narrow }).includes("not-unique"));
+  });
+
   void test("no card uses the star, diamond, moon or drop", () => {
     const random = mulberry32(5);
     for (let round = 0; round < 100; round += 1) {
