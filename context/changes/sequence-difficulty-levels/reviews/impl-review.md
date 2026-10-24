@@ -37,7 +37,7 @@
 - **Location**: src/lib/sequence/generate.ts:287, 333-335
 - **Detail**: `key` karty zawiera położenie luk, a dedupe wierszy (`valuesKey`) je pomija. Na 5 lat (druga luka w polu 5 lub 6) i na 6–7 lat (luki dowolne) kolejna karta może mieć identyczne ciągi i inne luki, a nadal różnić się od poprzedniej kluczem. PRD (US-10): każde Generuj daje „inne reguły albo inne elementy”.
 - **Fix**: Zbudować `key` karty z `valuesKey` wierszy (reguła i wartości, bez luk) i dodać test, że dwie karty z tymi samymi ciągami i innymi lukami mają ten sam klucz.
-- **Decision**: PENDING
+- **Decision**: FIXED — klucz karty z samych sekwencji (bez luk); test pilnuje tylko rzadkiego przypadku (break-check na tym teście został zielony, bo identyczne ciągi na dwóch kolejnych kartach są praktycznie niemożliwe)
 
 ### F2 — Wyrocznia sprawdza tylko karty z generatora, a ujemna strona walidatora ma dwa przypadki
 
@@ -56,7 +56,7 @@
   - Tradeoff: Nie zamyka luki w teście.
   - Confidence: HIGH — to tylko dokumentacja.
   - Blind spot: Brak.
-- **Decision**: PENDING
+- **Decision**: FIXED via Fix A — test porównuje `ambiguous` z wyrocznią dla wszystkich zestawów 2 i 3 luk ośmiu stałych wierszy; break-check czerwony
 
 ### F3 — Zmiana poziomu przy czekającym wyborze dziecka zostawia kartę innego poziomu
 
@@ -66,7 +66,7 @@
 - **Location**: src/components/SequenceGenerator.tsx:44-66
 - **Detail**: Gdy `waitingForChild` jest prawdą (lub generowanie zawiedzie), zmiana poziomu zmienia przycisk, a karta na ekranie zostaje stara. Wydruk wtedy nie odpowiada etykiecie. `SymmetryGenerator.tsx:67-72` zachowuje się tak samo, więc to zgodność ze wzorcem, nie regresja.
 - **Fix**: Zostawić (jedna decyzja dla obu stron); ewentualnie osobna zmiana, która wyłącza przycisk poziomu, gdy profil czeka na wybór dziecka.
-- **Decision**: PENDING
+- **Decision**: SKIPPED — zgodne ze wzorcem symetrii
 
 ### F4 — Trzecia kopia okna poziomu
 
@@ -76,7 +76,7 @@
 - **Location**: src/components/SequenceLevelChoice.tsx
 - **Detail**: Plik jest kopią `SymmetryLevelChoice.tsx` z innymi typami. To świadoma decyzja planu (unikanie konfliktów z #81 i S-19), tak jak kopie `GenerateButton` w S-16.
 - **Fix**: Osobna zmiana po scaleniu S-17 i S-19: wspólny `LevelChoice<T>`.
-- **Decision**: PENDING
+- **Decision**: SKIPPED — zgodne ze wzorcem, osobna zmiana po S-19
 
 ### F5 — E2E nie odróżnia 6 lat od 7 lat, a nazwa jednego testu mylna
 
@@ -86,7 +86,7 @@
 - **Location**: tests/e2e/catalog.spec.ts (nowy test), src/lib/sequence/generate.test.ts:~349
 - **Detail**: 6 i 7 lat mają po 56 pól, więc e2e potwierdza tylko, że karta się zmieniła. Test „a card of five rows is reported” obcina jeden wiersz z karty sześciowierszowej.
 - **Fix**: Dla 6 lat sprawdzić w e2e obecność liczb w SVG (`locator("text")`), dla 7 lat dodatkowo kształt i liczbę; poprawić nazwę testu.
-- **Decision**: PENDING
+- **Decision**: FIXED — e2e liczy puste pola (5/9/14/17), nazwa testu poprawiona
 
 ### F6 — Open Questions 9 w PRD nie ma wpisu po druku
 
@@ -96,4 +96,4 @@
 - **Location**: context/foundation/prd.md (Open Questions 9)
 - **Detail**: Plan (3.11) kazał zapisać uwagi z wydruku w Open Questions 9. Użytkowniczka potwierdziła punkty bez uwag, więc nic nie dopisano, ale pytanie 9 wciąż mówi o niepotwierdzonych wartościach sekwencji.
 - **Fix**: Dopisać do pytania 9 zdanie, że wartości poziomów sekwencji potwierdził wydruk z 2026-10-24 (sudoku nadal otwarte).
-- **Decision**: PENDING
+- **Decision**: FIXED — zdanie o wydruku w Open Questions 9
