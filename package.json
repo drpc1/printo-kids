@@ -9,7 +9,7 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "node --experimental-strip-types --test src/lib/maze/generate.test.ts src/lib/sheet/layout.test.ts src/lib/sheet/walls.test.ts src/lib/sheet/print-contract.test.ts src/lib/last-used.test.ts src/lib/active-profile.test.ts src/lib/child-profiles.test.ts src/lib/sheet/character.test.ts src/lib/sheet/own-image.test.ts src/lib/sheet/own-image-store.test.ts src/lib/symmetry/colors.test.ts src/lib/symmetry/generate.test.ts src/lib/symmetry/layout.test.ts src/lib/symmetry/levels.test.ts src/lib/sequence/generate.test.ts src/lib/sequence/layout.test.ts src/lib/sequence/levels.test.ts src/lib/sequence/shapes.test.ts src/lib/sudoku/shapes.test.ts src/lib/sudoku/layout.test.ts src/lib/sudoku/generate.test.ts scripts/agent-hooks.test.mjs",
+    "test": "node --experimental-strip-types --test src/lib/maze/generate.test.ts src/lib/sheet/layout.test.ts src/lib/sheet/walls.test.ts src/lib/sheet/print-contract.test.ts src/lib/last-used.test.ts src/lib/active-profile.test.ts src/lib/child-profiles.test.ts src/lib/sheet/character.test.ts src/lib/sheet/own-image.test.ts src/lib/sheet/own-image-store.test.ts src/lib/symmetry/colors.test.ts src/lib/symmetry/generate.test.ts src/lib/symmetry/layout.test.ts src/lib/symmetry/levels.test.ts src/lib/sequence/generate.test.ts src/lib/sequence/layout.test.ts src/lib/sequence/levels.test.ts src/lib/sequence/shapes.test.ts src/lib/sudoku/shapes.test.ts src/lib/sudoku/layout.test.ts src/lib/sudoku/levels.test.ts src/lib/sudoku/generate.test.ts scripts/agent-hooks.test.mjs",
     "format": "prettier --write .",
     "smoke": "node scripts/smoke.mjs",
     "thumbnails": "node --experimental-strip-types scripts/build-thumbnails.mjs"
