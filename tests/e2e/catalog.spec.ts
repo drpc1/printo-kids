@@ -1,4 +1,4 @@
-// Provenance: card-catalog-home (phase 3); symmetry-first-printable (phase 4, US-05)
+// Provenance: card-catalog-home (phase 3); symmetry-first-printable (phase 4, US-05); picture-sudoku-first-printable (US-12)
 // Protects the card catalog on /: the Labirynt and Symetria thumbnails open their generators, Symetria
 // shows its card after Generuj and leads back with "Wszystkie karty", and the chosen child profile stays
 // chosen across the round trip catalog -> generator -> catalog -> generator on both pages.
@@ -146,5 +146,41 @@ test("the profile chosen on the symmetry page persists across the catalog round 
   await expect(page).toHaveURL(/\/symetria$/);
 
   await expect(page.getByRole("button", { name: "Ania", exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+});
+
+test("the Sudoku card on the catalog opens the sudoku generator and leads back", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.addInitScript((key) => {
+    if (localStorage.getItem(key) === null) {
+      localStorage.setItem(
+        key,
+        JSON.stringify({
+          profiles: [
+            { id: "profile-ania", name: "Ania", character: "none", level: "lat4" },
+            { id: "profile-zosia", name: "Zosia", character: "kot", level: "lat7" },
+          ],
+        }),
+      );
+    }
+  }, PROFILES_KEY);
+  await page.goto("/");
+
+  await page.getByRole("link", { name: "Sudoku" }).click();
+  await expect(page).toHaveURL(/\/sudoku$/);
+
+  // Two profiles and none chosen: the dialog opens by itself and asks who is playing.
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("button", { name: "Zosia", exact: true }).click();
+  await expect(dialog).toBeHidden();
+
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Sudoku" })).toBeVisible();
+
+  await page.getByRole("link", { name: "Wszystkie karty" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await page.getByRole("link", { name: "Sudoku" }).click();
+  await expect(page).toHaveURL(/\/sudoku$/);
+  await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
 });
