@@ -103,6 +103,31 @@ test("each Generuj on the sequence page draws a different card", async ({ page }
   }
 });
 
+test("choosing a level on the sequence page draws a new card with that level's rows and fields", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/sekwencje");
+
+  await page.getByRole("button", { name: "Generuj" }).click();
+  const sheet = page.getByRole("img", { name: "Sekwencje" });
+  await expect(sheet).toBeVisible();
+  await expect(sheet.locator("g")).toHaveCount(42);
+
+  // Fields per card: rows times fields per row (PRD table: 5×5, 6×7, 7×8, 7×8).
+  const expected = { "4 lata": 25, "5 lat": 42, "6 lat": 56, "7 lat": 56 };
+  for (const [label, fields] of Object.entries(expected)) {
+    const before = await sheet.innerHTML();
+    await page.getByRole("button", { name: /^Poziom:/ }).click();
+    await page.getByRole("button", { name: label, exact: true }).click();
+    await expect(page.getByRole("button", { name: `Poziom: ${label}` })).toBeVisible();
+    await expect(sheet.locator("g")).toHaveCount(fields);
+    if (label !== "5 lat") {
+      await expect.poll(() => sheet.innerHTML()).not.toBe(before);
+    }
+  }
+});
+
 test("each Generuj on the symmetry page draws a different card", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await page.goto("/symetria");
