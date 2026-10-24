@@ -93,6 +93,65 @@ void describe("copyOwnImage", { concurrency: false }, () => {
       reason: "type",
     });
   });
+
+  void test("refuses a WebP with no frame size without decoding it", async () => {
+    const decoded = countDecodes();
+    const webp = new Uint8Array(12);
+    webp.set(textBytes("RIFF"));
+    webp.set(textBytes("WEBP"), 8);
+
+    try {
+      assert.deepEqual(await copyOwnImage(new Blob([webp])), { reason: "decode" });
+      assert.equal(decoded.calls, 0);
+    } finally {
+      decoded.restore();
+    }
+  });
+
+  void test("scales a 1024 by 512 WebP to 512 by 256 through the decode resize", async () => {
+    const seen = captureResize();
+
+    try {
+      const result = await copyOwnImage(new Blob([vp8xWebp(1024, 512)]));
+
+      assertCopy(result);
+      assert.equal(result.width, 512);
+      assert.equal(result.height, 256);
+      assert.ok(seen.options);
+      assert.equal(seen.options.resizeWidth, 512);
+      assert.equal(seen.options.resizeHeight, 256);
+    } finally {
+      seen.restore();
+    }
+  });
+
+  void test("scales a quarter-turned 1024 by 512 HEIC through the oriented decode resize", async () => {
+    const seen = captureResize();
+
+    try {
+      const result = await copyOwnImage(new Blob([heicIspe(1024, 512, 1)]));
+
+      assertCopy(result);
+      assert.equal(result.width, 256);
+      assert.equal(result.height, 512);
+      assert.ok(seen.options);
+      assert.equal(seen.options.resizeWidth, 256);
+      assert.equal(seen.options.resizeHeight, 512);
+    } finally {
+      seen.restore();
+    }
+  });
+
+  void test("refuses HEIC with no spatial extent without decoding it", async () => {
+    const decoded = countDecodes();
+
+    try {
+      assert.deepEqual(await copyOwnImage(new Blob([ftyp("heic")])), { reason: "decode" });
+      assert.equal(decoded.calls, 0);
+    } finally {
+      decoded.restore();
+    }
+  });
 });
 
 function assertCopy(result: OwnImageResult): asserts result is OwnImageCopy {
@@ -156,6 +215,135 @@ function exifOrientationSegment(orientation: number): Uint8Array<ArrayBuffer> {
   segment.set(exifHeader, 4);
   segment.set(tiff, 4 + exifHeader.length);
   return segment;
+}
+
+function callCreateImageBitmap(
+  create: typeof createImageBitmap,
+  image: ImageBitmapSource,
+  sxOrOptions?: number | ImageBitmapOptions,
+  sy?: number,
+  sw?: number,
+  sh?: number,
+  bitmapOptions?: ImageBitmapOptions,
+): Promise<ImageBitmap> {
+  if (typeof sxOrOptions === "number") {
+    return create(image, sxOrOptions, sy ?? 0, sw ?? 0, sh ?? 0, bitmapOptions);
+  }
+  return create(image, sxOrOptions);
+}
+
+function countDecodes(): { calls: number; restore: () => void } {
+  const previous = globalThis.createImageBitmap;
+  const decoded = {
+    calls: 0,
+    restore() {
+      globalThis.createImageBitmap = previous;
+    },
+  };
+  globalThis.createImageBitmap = (
+    image: ImageBitmapSource,
+    sxOrOptions?: number | ImageBitmapOptions,
+    sy?: number,
+    sw?: number,
+    sh?: number,
+    bitmapOptions?: ImageBitmapOptions,
+  ) => {
+    decoded.calls += 1;
+    return callCreateImageBitmap(previous, image, sxOrOptions, sy, sw, sh, bitmapOptions);
+  };
+  return decoded;
+}
+
+function captureResize(): { options: ImageBitmapOptions | undefined; restore: () => void } {
+  const previous = globalThis.createImageBitmap;
+  const seen: { options: ImageBitmapOptions | undefined; restore: () => void } = {
+    options: undefined,
+    restore() {
+      globalThis.createImageBitmap = previous;
+    },
+  };
+  globalThis.createImageBitmap = (
+    image: ImageBitmapSource,
+    sxOrOptions?: number | ImageBitmapOptions,
+    sy?: number,
+    sw?: number,
+    sh?: number,
+    bitmapOptions?: ImageBitmapOptions,
+  ) => {
+    seen.options = typeof sxOrOptions === "number" ? bitmapOptions : sxOrOptions;
+    return callCreateImageBitmap(previous, image, sxOrOptions, sy, sw, sh, bitmapOptions);
+  };
+  return seen;
+}
+
+function vp8xWebp(width: number, height: number): Uint8Array<ArrayBuffer> {
+  const payload = new Uint8Array(10);
+  const canvasWidth = width - 1;
+  const canvasHeight = height - 1;
+  payload[4] = canvasWidth & 0xff;
+  payload[5] = (canvasWidth >> 8) & 0xff;
+  payload[6] = (canvasWidth >> 16) & 0xff;
+  payload[7] = canvasHeight & 0xff;
+  payload[8] = (canvasHeight >> 8) & 0xff;
+  payload[9] = (canvasHeight >> 16) & 0xff;
+
+  const chunk = new Uint8Array(18);
+  writeAscii(chunk, 0, "VP8X");
+  new DataView(chunk.buffer).setUint32(4, payload.length, true);
+  chunk.set(payload, 8);
+
+  const file = new Uint8Array(12 + chunk.length);
+  writeAscii(file, 0, "RIFF");
+  new DataView(file.buffer).setUint32(4, 4 + chunk.length, true);
+  writeAscii(file, 8, "WEBP");
+  file.set(chunk, 12);
+  return file;
+}
+
+function heicIspe(width: number, height: number, angle?: number): Uint8Array<ArrayBuffer> {
+  const ispePayload = new Uint8Array(12);
+  const ispeView = new DataView(ispePayload.buffer);
+  ispeView.setUint32(4, width);
+  ispeView.setUint32(8, height);
+  const parts: Uint8Array<ArrayBuffer>[] = [ftyp("heic"), isoBox("ispe", ispePayload)];
+  if (angle !== undefined) {
+    const irotPayload = new Uint8Array(5);
+    irotPayload[4] = angle;
+    parts.push(isoBox("irot", irotPayload));
+  }
+
+  const total = parts.reduce((sum, part) => sum + part.length, 0);
+  const file = new Uint8Array(total);
+  let offset = 0;
+  for (const part of parts) {
+    file.set(part, offset);
+    offset += part.length;
+  }
+  return file;
+}
+
+function isoBox(type: string, payload: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> {
+  const box = new Uint8Array(8 + payload.length);
+  new DataView(box.buffer).setUint32(0, box.length);
+  writeAscii(box, 4, type);
+  box.set(payload, 8);
+  return box;
+}
+
+function isWebpSignature(bytes: Uint8Array): boolean {
+  return bytes.length >= 12 && readAscii(bytes, 0, 4) === "RIFF" && readAscii(bytes, 8, 4) === "WEBP";
+}
+
+function isHeicSignature(bytes: Uint8Array): boolean {
+  return bytes.length >= 12 && readAscii(bytes, 4, 4) === "ftyp";
+}
+
+function readAscii(bytes: Uint8Array, offset: number, length: number): string {
+  let text = "";
+  for (let index = 0; index < length; index += 1) {
+    text += String.fromCharCode(bytes[offset + index]);
+  }
+  return text;
 }
 
 function ftyp(major: string, compatible: readonly string[] = []): Uint8Array<ArrayBuffer> {
@@ -243,6 +431,14 @@ async function decodeFixture(image: ImageBitmapSource, options: ImageBitmapOptio
     const frame = readJpeg(bytes);
     const oriented = orientedSize(frame.width, frame.height, applyOrientation ? frame.orientation : 1);
     return rasterBitmap(oriented.width, oriented.height, opaqueRgba(oriented.width, oriented.height));
+  }
+  if (isWebpSignature(bytes) || isHeicSignature(bytes)) {
+    const width = options?.resizeWidth;
+    const height = options?.resizeHeight;
+    if (width === undefined || height === undefined || width < 1 || height < 1) {
+      throw new Error("fixture decoder was asked to decode WebP or HEIC at native size");
+    }
+    return rasterBitmap(width, height, opaqueRgba(width, height));
   }
   throw new Error("unsupported image");
 }
@@ -586,14 +782,6 @@ function decodePng(bytes: Uint8Array): Raster {
     pixels.set(raw.subarray(row + 1, row + 1 + stride), y * stride);
   }
   return { width, height, pixels };
-}
-
-function readAscii(bytes: Uint8Array, offset: number, length: number): string {
-  let text = "";
-  for (let index = 0; index < length; index += 1) {
-    text += String.fromCharCode(bytes[offset + index]);
-  }
-  return text;
 }
 
 function copyBytes(bytes: Uint8Array): Uint8Array<ArrayBuffer> {

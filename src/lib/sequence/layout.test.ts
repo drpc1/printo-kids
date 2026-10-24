@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { layoutSequenceSheet, type SequenceSheetInput } from "./layout.ts";
-import { SEQUENCE_LEVEL_LAT5 } from "./levels.ts";
+import { SEQUENCE_LEVEL_LAT5, SEQUENCE_LEVELS } from "./levels.ts";
 import { SEQUENCE_SHEET } from "./sheet.ts";
 
 const FIVE_YEARS: SequenceSheetInput = {
@@ -59,5 +59,27 @@ void describe("layoutSequenceSheet", () => {
 
   void test("a setting that does not fit throws", () => {
     assert.throws(() => layoutSequenceSheet({ ...FIVE_YEARS, rowCount: 20 }), /do not fit/);
+  });
+
+  void test("every level fits the page inside the 10 mm margin, with room for a two-digit number in a field", () => {
+    for (const level of SEQUENCE_LEVELS) {
+      const sheet = layoutSequenceSheet({
+        ...FIVE_YEARS,
+        fieldsPerRow: level.fieldsPerRow,
+        rowCount: level.rowCount,
+      });
+
+      assert.equal(sheet.rows.length, level.rowCount, level.id);
+      for (const row of sheet.rows) {
+        assert.equal(row.fields.length, level.fieldsPerRow, level.id);
+        for (const field of row.fields) {
+          assert.ok(field.x >= 10 - EPSILON && field.x + sheet.fieldSize <= 200 + EPSILON, `${level.id} x ${field.x}`);
+          assert.ok(field.y >= 10 - EPSILON && field.y + sheet.fieldSize <= 287 + EPSILON, `${level.id} y ${field.y}`);
+        }
+      }
+      // A digit of a bold sans-serif face is at most about 0.65 em wide; two of them stay inside the field.
+      const twoDigits = 2 * 0.65 * SEQUENCE_SHEET.numberFontScale * sheet.fieldSize;
+      assert.ok(twoDigits < sheet.fieldSize * 0.8, `${level.id} ${twoDigits}`);
+    }
   });
 });

@@ -103,6 +103,38 @@ test("each Generuj on the sequence page draws a different card", async ({ page }
   }
 });
 
+test("choosing a level on the sequence page draws a new card with that level's rows and fields", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/sekwencje");
+
+  await page.getByRole("button", { name: "Generuj" }).click();
+  const sheet = page.getByRole("img", { name: "Sekwencje" });
+  await expect(sheet).toBeVisible();
+  await expect(sheet.locator("g")).toHaveCount(42);
+
+  // Fields per card: rows times fields per row (PRD table: 5×5, 6×7, 7×8, 7×8), and the empty ones the child fills in
+  // (one per row; 5 lat: three rows with two; 6 lat: two per row; 7 lat: three rows with three, four with two).
+  const expected = {
+    "4 lata": { fields: 25, empty: 5 },
+    "5 lat": { fields: 42, empty: 9 },
+    "6 lat": { fields: 56, empty: 14 },
+    "7 lat": { fields: 56, empty: 17 },
+  };
+  for (const [label, { fields, empty }] of Object.entries(expected)) {
+    const before = await sheet.innerHTML();
+    await page.getByRole("button", { name: /^Poziom:/ }).click();
+    await page.getByRole("button", { name: label, exact: true }).click();
+    await expect(page.getByRole("button", { name: `Poziom: ${label}` })).toBeVisible();
+    await expect(sheet.locator("g")).toHaveCount(fields);
+    await expect(sheet.locator("rect[stroke-dasharray]")).toHaveCount(empty);
+    if (label !== "5 lat") {
+      await expect.poll(() => sheet.innerHTML()).not.toBe(before);
+    }
+  }
+});
+
 test("each Generuj on the symmetry page draws a different card", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await page.goto("/symetria");
