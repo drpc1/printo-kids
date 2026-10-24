@@ -70,4 +70,4 @@ Automated re-run on HEAD: `npm test` 241/241, `npm run lint` clean (astro check,
 - **Location**: src/lib/sudoku/generate.ts (sudokuCardProblems)
 - **Detail**: `not-unique` calls `countSudokuSolutions` even when the givens are not 4×4; the Board then builds masks from a wrong-sized grid and gives a meaningless count instead of a clear problem. Generated cards are always 4×4, so it cannot happen on the page.
 - **Fix**: Skip the solver when the givens are not 4 rows of 4.
-- **Decision**: PENDING
+- **Decision**: FIXED

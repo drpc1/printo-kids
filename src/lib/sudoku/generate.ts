@@ -283,7 +283,9 @@ export function sudokuCardProblems(card: SudokuCard): readonly SudokuProblem[] {
   if (card.shapes.some((id) => !SUDOKU_SHAPES_4.includes(id))) problems.push("shape-outside-pool");
   if (new Set(card.shapes).size !== card.shapes.length || card.shapes.length !== 4) problems.push("duplicate-shape");
 
-  if (countSudokuSolutions(card.givens, 4, 2) !== 1) problems.push("not-unique");
+  // The solver reads a 4×4 grid; a board of another shape has no unique solution to count.
+  const wellFormed = card.givens.length === 4 && card.givens.every((row) => row.length === 4);
+  if (!wellFormed || countSudokuSolutions(card.givens, 4, 2) !== 1) problems.push("not-unique");
 
   return problems;
 }
