@@ -44,7 +44,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-16 | sequences-first-printable      | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie  | —             | US-10, FR-019 | ready    |
 | S-18 | picture-sudoku-first-printable | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-12, FR-021 | ready    |
 | S-17 | sequence-difficulty-levels     | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                  | S-16          | US-11, FR-020 | proposed |
-| S-19 | picture-sudoku-levels          | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 kształty albo cyfry                                                                                           | S-18          | US-13, FR-022 | proposed |
+| S-19 | picture-sudoku-levels          | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                     | S-18          | US-13, FR-022 | proposed |
 | S-20 | picture-sudoku-colors          | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                             | S-18          | US-14, FR-023 | proposed |
 
 ## Streams
@@ -99,7 +99,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Parallel with:** S-16
 - **Blockers:** —
 - **Unknowns:**
-  - Jak rysować kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk) w SVG, żeby czarny kontur był czytelny i łatwy do odrysowania? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+  - Jak rysować kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla) w SVG, żeby czarny kontur był czytelny i łatwy do odrysowania? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
 - **Risk:** Generator musi dawać jedno rozwiązanie. Przy 4×4 z jednym pustym polem w wierszu to wynika z reguły, ale 9×9 z 52 pustymi wymaga solvera liczącego rozwiązania w granicy 5 s, więc solver jest testowany już tutaj. Dzieli z S-16 katalog kart i miniatury.
 - **Status:** ready
 
@@ -138,7 +138,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Parallel with:** S-16, S-17, S-19
 - **Blockers:** —
 - **Unknowns:**
-  - Jakie przypisanie kolorów do kształtów? Rekomendacja: kolory kredek z symetrii (czerwony, zielony, żółty, niebieski, pomarańczowy, szary). — Owner: user. Block: no.
+  - Jakie przypisanie kolorów do kształtów? Rekomendacja: kolory kredek z symetrii (czerwony, zielony, żółty, niebieski, pomarańczowy, szary, czarny) plus dwa nowe (fioletowy, brązowy), bo 9×9 z kształtami potrzebuje dziewięciu kolorów. — Owner: user. Block: no.
 - **Risk:** Ukrycie przełącznika przy cyfrach wymaga S-19; jeśli S-20 idzie pierwsze, przełącznik dotyczy tylko 4×4. Pasek strony sudoku dzieli pliki z S-19.
 - **Status:** proposed
 
