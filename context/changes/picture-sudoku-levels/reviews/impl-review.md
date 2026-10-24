@@ -34,7 +34,7 @@ Automated na HEAD: `npm test` 324/324, `npm run lint` czysto, `astro check` 0 b�
 - **Location**: scripts/build-thumbnails.mjs (wywołanie `layoutSudokuSheet` karty sudoku)
 - **Detail**: Plan (faza 4 pkt 1) mówił, żeby skrypt miniatury brał blok z `sudokuBlock`, bez literałów (finding F3 z przeglądu S-18). Skrypt przepięto na `generateSudokuCard` i `SUDOKU_SHEET.cellSize[4]`, ale `blockRows: 2` i `blockColumns: 2` zostały. Miniatura jest zawsze 4×4, więc wynik jest poprawny; ryzyko to rozjazd, gdyby miniatura miała kiedyś pokazywać inny rozmiar.
 - **Fix**: Użyć `sudokuBlock(sudokuCard.size)` w skrypcie miniatury (import z `src/lib/sudoku/generate.ts`).
-- **Decision**: PENDING
+- **Decision**: FIXED (sudokuBlock i cellSize[size] w skrypcie miniatury)
 
 ### F2 — Nieudane generowanie po zmianie ustawienia zostawia pasek i kartę niezgodne
 
@@ -44,4 +44,4 @@ Automated na HEAD: `npm test` 324/324, `npm run lint` czysto, `astro check` 0 b�
 - **Location**: src/components/SudokuGenerator.tsx (generateFor, handleSettingChange)
 - **Detail**: Gdyby `generateSudokuCard` zwrócił null po zmianie ustawienia, `settings` już są nowe, a na ekranie zostaje stara karta z komunikatem o błędzie. W praktyce nie zachodzi: pomiar 9×9 trudny to średnio 2 ms bez porażek, a test pilnuje wszystkich 13 ustawień.
 - **Fix**: Brak działania; wystarczy komunikat „Nie udało się ułożyć karty.”.
-- **Decision**: PENDING
+- **Decision**: SKIPPED (bez działania)
