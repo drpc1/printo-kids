@@ -305,21 +305,21 @@ Brak danych do migracji: sudoku niczego nie zapisuje w profilu ani w ostatnich p
 
 #### Automated
 
-- [x] 2.1 Testy przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Typy przechodzą: `npx astro check`
+- [x] 2.1 Testy przechodzą: `npm test` — edd5a65
+- [x] 2.2 Lint przechodzi: `npm run lint` — edd5a65
+- [x] 2.3 Typy przechodzą: `npx astro check` — edd5a65
 
 #### Manual
 
-- [x] 2.4 Pomiar czasu `generateSudokuPuzzle` dla 9×9 z 52 pustymi (skrypt jednorazowy) potwierdza rząd kilku milisekund
+- [x] 2.4 Pomiar czasu `generateSudokuPuzzle` dla 9×9 z 52 pustymi (skrypt jednorazowy) potwierdza rząd kilku milisekund — edd5a65
 
 ### Phase 3: Pasek ustawień i karta zależna od rozmiaru
 
 #### Automated
 
-- [ ] 3.1 Testy przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Typy i build przechodzą: `npx astro check` i `npm run build`
+- [x] 3.1 Testy przechodzą: `npm test`
+- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.3 Typy i build przechodzą: `npx astro check` i `npm run build`
 
 #### Manual
 
