@@ -1,4 +1,9 @@
-import { symmetryTemplatesFor, type SymmetryTemplate } from "../symmetry/templates.ts";
+import {
+  DEFAULT_OBJECT_CATEGORY_ID,
+  symmetryTemplatesFor,
+  type ObjectCategoryChoiceId,
+  type SymmetryTemplate,
+} from "../symmetry/templates.ts";
 import type { DictationLevel, DictationLevelId } from "./levels.ts";
 import {
   dictationSilhouette,
@@ -44,7 +49,8 @@ interface DictationCatalog {
 
 const DIRECTION_LETTER: Readonly<Record<DictationDirection, string>> = { right: "r", left: "l", up: "u", down: "d" };
 
-const catalogs = new Map<DictationLevelId, DictationCatalog>();
+/** One catalog per level and category, built on first use. */
+const catalogs = new Map<string, DictationCatalog>();
 
 /**
  * A card of the level whose outline differs from the one behind `previousKey`, drawn uniformly among the distinct
@@ -54,8 +60,9 @@ export function generateDictationCard(
   random: () => number,
   previousKey: string | null,
   level: DictationLevel,
+  category: ObjectCategoryChoiceId = DEFAULT_OBJECT_CATEGORY_ID,
 ): DictationCard | null {
-  const candidates = catalogFor(level).cards.filter((card) => card.key !== previousKey);
+  const candidates = catalogFor(level, category).cards.filter((card) => card.key !== previousKey);
   if (candidates.length === 0) {
     return null;
   }
@@ -66,28 +73,32 @@ export function generateDictationCard(
  * How many (template, variant) combinations the level has, how many of them give a drawable outline within the
  * command limit, and how many distinct outlines those are. For tests and notes; do not pin the numbers, the template catalog grows.
  */
-export function dictationVariantCount(level: DictationLevel): {
+export function dictationVariantCount(
+  level: DictationLevel,
+  category: ObjectCategoryChoiceId = DEFAULT_OBJECT_CATEGORY_ID,
+): {
   total: number;
   passing: number;
   distinctOutlines: number;
 } {
-  const catalog = catalogFor(level);
+  const catalog = catalogFor(level, category);
   return { total: catalog.total, passing: catalog.passing, distinctOutlines: catalog.cards.length };
 }
 
 /**
- * Every combination once per level, keeping only cards without `dictationCardProblems` within the command limit,
+ * Every combination once per level and category, keeping only cards without `dictationCardProblems` within the command limit,
  * deduped by outline. A template that cannot be traced is skipped, so one broken template never breaks Generuj.
  */
-function catalogFor(level: DictationLevel): DictationCatalog {
-  const cached = catalogs.get(level.id);
+function catalogFor(level: DictationLevel, category: ObjectCategoryChoiceId): DictationCatalog {
+  const cacheKey = `${level.id}:${category}`;
+  const cached = catalogs.get(cacheKey);
   if (cached !== undefined) {
     return cached;
   }
   const byKey = new Map<string, DictationCard>();
   let total = 0;
   let passing = 0;
-  for (const template of symmetryTemplatesFor(level.templateLevel)) {
+  for (const template of symmetryTemplatesFor(level.templateLevel, category)) {
     for (const variants of variantCombinations(template.parts.map((part) => part.variants.length))) {
       total += 1;
       const card = dictationCardFor(template, variants, level);
@@ -101,7 +112,7 @@ function catalogFor(level: DictationLevel): DictationCatalog {
     }
   }
   const catalog = { total, passing, cards: [...byKey.values()] };
-  catalogs.set(level.id, catalog);
+  catalogs.set(cacheKey, catalog);
   return catalog;
 }
 

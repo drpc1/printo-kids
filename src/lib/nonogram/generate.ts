@@ -1,4 +1,9 @@
-import { symmetryTemplatesFor, type SymmetryTemplate } from "../symmetry/templates.ts";
+import {
+  DEFAULT_OBJECT_CATEGORY_ID,
+  symmetryTemplatesFor,
+  type ObjectCategoryChoiceId,
+  type SymmetryTemplate,
+} from "../symmetry/templates.ts";
 import { nonogramClues, nonogramImage, type NonogramClues } from "./clues.ts";
 import type { NonogramSize, NonogramSizeId } from "./sizes.ts";
 import { solveNonogram } from "./solve.ts";
@@ -32,8 +37,12 @@ export function generateNonogramCard(
   random: () => number,
   previousKey: string | null,
   size: NonogramSize,
+  category: ObjectCategoryChoiceId = DEFAULT_OBJECT_CATEGORY_ID,
 ): NonogramCard | null {
-  const templates = symmetryTemplatesFor(size.templateLevel);
+  const templates = symmetryTemplatesFor(size.templateLevel, category);
+  if (templates.length === 0) {
+    return null;
+  }
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     const template = templates[pick(random, templates.length)];
     const variants = template.parts.map((part) => pick(random, part.variants.length));
@@ -85,9 +94,12 @@ export function nonogramCardProblems(card: NonogramCard): readonly NonogramProbl
   return [...problems];
 }
 
-/** Every template of the size with every combination of part variants. */
-export function nonogramVariants(size: NonogramSize): NonogramVariant[] {
-  return symmetryTemplatesFor(size.templateLevel).flatMap((template) => {
+/** Every template of the size (in the category) with every combination of part variants. */
+export function nonogramVariants(
+  size: NonogramSize,
+  category: ObjectCategoryChoiceId = DEFAULT_OBJECT_CATEGORY_ID,
+): NonogramVariant[] {
+  return symmetryTemplatesFor(size.templateLevel, category).flatMap((template) => {
     let sets: number[][] = [[]];
     for (const part of template.parts) {
       sets = sets.flatMap((set) => part.variants.map((_, index) => [...set, index]));

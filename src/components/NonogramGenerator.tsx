@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
+import { CategoryChoice } from "@/components/CategoryChoice";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
@@ -9,6 +10,7 @@ import { generateNonogramCard, type NonogramCard } from "@/lib/nonogram/generate
 import { blockLines, layoutNonogramSheet, longestClues } from "@/lib/nonogram/layout";
 import { NONOGRAM_SHEET } from "@/lib/nonogram/sheet";
 import { DEFAULT_NONOGRAM_SIZE_ID, nonogramSizeById } from "@/lib/nonogram/sizes";
+import { DEFAULT_OBJECT_CATEGORY_ID, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
@@ -25,6 +27,8 @@ export default function NonogramGenerator() {
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const [showSolution, setShowSolution] = useState(false);
+  const [categoryId, setCategoryId] = useState<ObjectCategoryChoiceId>(DEFAULT_OBJECT_CATEGORY_ID);
+  const [categoryOpen, setCategoryOpen] = useState(false);
   const [card, setCard] = useState<NonogramCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
@@ -43,7 +47,12 @@ export default function NonogramGenerator() {
     if (waitingForChild) {
       return;
     }
-    const next = generateNonogramCard(Math.random, card?.key ?? null, nonogramSizeById(DEFAULT_NONOGRAM_SIZE_ID));
+    const next = generateNonogramCard(
+      Math.random,
+      card?.key ?? null,
+      nonogramSizeById(DEFAULT_NONOGRAM_SIZE_ID),
+      categoryId,
+    );
     if (next === null) {
       setGenerateFailed(true);
       return;
@@ -63,6 +72,15 @@ export default function NonogramGenerator() {
     setBarLevel(bar.level);
   }
 
+  const categoryControl = (
+    <CategoryChoice
+      categoryId={categoryId}
+      open={categoryOpen}
+      onOpenChange={setCategoryOpen}
+      onSelect={setCategoryId}
+      disabled={waitingForChild}
+    />
+  );
   const solutionControl = (
     <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
       <Switch checked={showSolution} onCheckedChange={setShowSolution} />
@@ -92,6 +110,7 @@ export default function NonogramGenerator() {
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {categoryControl}
             {solutionControl}
             {failedNote}
           </div>
@@ -115,6 +134,7 @@ export default function NonogramGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
+          {categoryControl}
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
