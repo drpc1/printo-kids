@@ -37,6 +37,7 @@ void describe("nonogramImage", () => {
   const tower: SymmetryTemplate = {
     id: "wieza",
     holeColor: "blue",
+    categories: ["budowle"],
     width: 2,
     height: 3,
     base: [

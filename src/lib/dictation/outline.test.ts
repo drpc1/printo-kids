@@ -102,6 +102,7 @@ void describe("dictationSilhouette", () => {
     width: 3,
     height: 3,
     holeColor: "blue",
+    categories: ["jedzenie"],
     base: [
       ...[0, 1, 2].flatMap((col) => [
         { col, row: 0, color: "red" as const },
