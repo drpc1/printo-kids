@@ -1,10 +1,10 @@
 ---
 change_id: picture-sudoku-colors
 title: Kolory kształtów na karcie sudoku (S-20)
-status: planned
+status: archived
 created: 2026-10-25
 updated: 2026-10-25
-archived_at: null
+archived_at: 2026-10-25T07:43:33Z
 ---
 
 ## Notes
