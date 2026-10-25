@@ -13,7 +13,7 @@ S-22 dał klasyczny nonogram 12×15 z solverem; `sizes.ts` ma już trzy rozmiary
 
 ## Desired End State
 
-Pasek ma „Poziom”, kategorię i „Pokaż rozwiązanie”. Zmiana poziomu generuje nową kartę. Łatwy: 8×12, kratka 14 mm, znaczki 10 mm. Każdy poziom na jednej stronie A4 z marginesem 10 mm i grubszą linią co 5 kratek, na telefonie bez nachodzenia przycisków.
+Pasek ma „Poziom”, kategorię i „Pokaż rozwiązanie”. Zmiana poziomu generuje nową kartę. Łatwy: 8×12, kratka 14 mm, znaczki 9,5 mm. Każdy poziom na jednej stronie A4 z marginesem 10 mm i grubszą linią co 5 kratek, na telefonie bez nachodzenia przycisków.
 
 ## Key Decisions Made
 
@@ -22,7 +22,7 @@ Pasek ma „Poziom”, kategorię i „Pokaż rozwiązanie”. Zmiana poziomu ge
 | Nazwy poziomów      | łatwy, średni, trudny (nie wiek, nie rozmiar)   | Użytkowniczka nie zna nonogramów dla dzieci i woli neutralne nazwy | Plan     |
 | Mały klasyczny 8×12 | Odpada, zajmuje go łatwy                        | Klasyczny nonogram za trudny dla przedszkolaków                    | Plan     |
 | Tony łatwego        | Czarny obrys, szare wnętrze, białe dziury       | Każdy obiekt ma trzy tony, bez zmian w szablonach                  | Plan     |
-| Znaczki             | Rząd w całości, sumują się do 8; do 6 w rzędzie | Mieści się w 190 mm i nie wymaga solvera                           | Plan     |
+| Znaczki             | Rząd w całości, sumują się do 8; do 7 w rzędzie | Mieści się w 190 mm i nie wymaga solvera                           | Plan     |
 | Linia               | Grubsza co 5 kratek, każdy poziom               | Łatwiej liczyć kratki                                              | Plan     |
 | Miniatura           | Zostaje średni                                  | Bez zmian w katalogu                                               | Plan     |
 | Solver              | Tylko średni i trudny                           | Łatwy ma jedno rozwiązanie z samej konstrukcji                     | Research |
@@ -41,7 +41,7 @@ Poziom rozszerza dzisiejszy rozmiar o `kind` (`znaczki` albo `liczby`). Generato
 
 | Phase           | What it delivers                             | Key risk                          |
 | --------------- | -------------------------------------------- | --------------------------------- |
-| 1. Logika       | Poziomy, prosta karta, testy trzech poziomów | Warianty z więcej niż 6 znaczkami |
+| 1. Logika       | Poziomy, prosta karta, testy trzech poziomów | Warianty z więcej niż 7 znaczkami |
 | 2. Strona       | „Poziom”, karta ze znaczkami, kontrakt druku | Test czyta źródło komponentu      |
 | 3. Dokumentacja | PRD i roadmapa z poziomami                   | —                                 |
 
@@ -50,7 +50,7 @@ Poziom rozszerza dzisiejszy rozmiar o `kind` (`znaczki` albo `liczby`). Generato
 
 ## Open Risks & Assumptions
 
-- Czytelność wydruku: znaczki 10 mm (łatwy), kratka 7 mm (trudny) potwierdza wydruk.
+- Czytelność wydruku: znaczki 9,5 mm (łatwy), kratka 7 mm (trudny) potwierdza wydruk.
 - W trudnym `kot` i `tulipan` nie mają przechodzącego wariantu; generator ich tam nie pokazuje.
 
 ## Success Criteria (Summary)

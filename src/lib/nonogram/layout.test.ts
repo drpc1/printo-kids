@@ -3,7 +3,7 @@ import { describe, test } from "node:test";
 import { composeNonogramCard, nonogramVariants } from "./generate.ts";
 import { blockLines, layoutNonogramSheet, longestClues, type NonogramSheetInput } from "./layout.ts";
 import { NONOGRAM_SHEET } from "./sheet.ts";
-import { NONOGRAM_SIZES, nonogramSizeById, type NonogramSize } from "./sizes.ts";
+import { CLASSIC_NONOGRAM_SIZES, nonogramSizeById, type NonogramSize } from "./sizes.ts";
 
 const INSET = NONOGRAM_SHEET.inset;
 const SLOT_FACTOR = NONOGRAM_SHEET.clueSlot;
@@ -38,7 +38,7 @@ function inputFor(size: NonogramSize, longest = longestOverVariants(size)): Nono
 }
 
 void describe("layoutNonogramSheet", () => {
-  for (const size of NONOGRAM_SIZES) {
+  for (const size of CLASSIC_NONOGRAM_SIZES) {
     void test(`the ${size.id} block with the longest clues stays inside the 10 mm margin`, (t) => {
       const input = inputFor(size);
       const sheet = layoutNonogramSheet(input);
@@ -86,7 +86,7 @@ void describe("layoutNonogramSheet", () => {
   });
 
   void test("the grid is the columns and rows times the cell size", () => {
-    const size = nonogramSizeById("maly");
+    const size = nonogramSizeById("latwy");
     const sheet = layoutNonogramSheet(inputFor(size));
 
     assert.equal(sheet.grid.width, 8 * 14);

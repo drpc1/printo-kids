@@ -53,7 +53,8 @@ export default function NonogramGenerator() {
       nonogramSizeById(DEFAULT_NONOGRAM_SIZE_ID),
       categoryId,
     );
-    if (next === null) {
+    // The chip card of the easy level gets its own sheet in the next phase; the page still draws the medium level only.
+    if (next === null || next.kind === "znaczki") {
       setGenerateFailed(true);
       return;
     }

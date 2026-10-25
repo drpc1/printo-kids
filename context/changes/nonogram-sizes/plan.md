@@ -19,7 +19,7 @@ Pasek strony nonogramu ma „Poziom: średni” (domyślnie), kategorię i „Po
 ### Key Discoveries:
 
 - Prosty wariant nie potrzebuje solvera: rząd opisany w całości znaczkami ma jedno rozwiązanie (sumy znaczków = 8).
-- Najszerszy rząd znaczków ogranicza szerokość: `maxRuns × (znaczek + odstęp)` plus kratka 8×14 mm musi mieścić się w 190 mm, czyli rząd może mieć najwyżej 6 znaczków; wariant z większą liczbą odpada.
+- Najszerszy rząd znaczków ogranicza szerokość: `maxRuns × (znaczek + odstęp)` plus kratka 8×14 mm musi mieścić się w 190 mm, czyli rząd może mieć najwyżej 7 znaczków przy znaczku 9,5 mm i odstępie 1,2 mm (sonda: rzędy mają 5 albo 7 znaczków, więc wszystkie 116 wariantów przechodzi); wariant z większą liczbą odpada.
 - `print-contract.test.ts` czyta źródło `NonogramGenerator.tsx` i wylicza klasy `print:hidden`; zmiana struktury komponentu wymaga aktualizacji testu.
 - Tony łatwego wynikają z reguły obrysu (kratka obiektu z pustym sąsiadem = czarna, wnętrze = szare, dziury białe), nie z kolorów kredek szablonu (decyzja użytkowniczki).
 
@@ -56,7 +56,7 @@ Zmiana identyfikatorów (`latwy`, `sredni`, `trudny`), prosta karta i jej reguł
 
 **Intent**: Z szablonu i wariantów zbudować obraz trzech tonów regułą obrysu, rozbić każdy rząd na znaczki (ton + liczba kratek) i sprawdzić reguły karty.
 
-**Contract**: `SimpleNonogramCard { kind: "znaczki"; sizeId; columns; rows; cellSize; tones: Tone[][]; runs: {tone, count}[][]; key }` z `Tone = "white" | "gray" | "black"`. `simpleNonogramProblems(card)` zwraca `"no-filled-cell"`, `"too-many-runs"` (rząd z więcej niż 6 znaczkami), `"runs-mismatch"` (znaczki nie dają tonów). Obraz obiektu bierze `nonogramImage` (ten sam co klasyczny), więc dziury zostają białe.
+**Contract**: `SimpleNonogramCard { kind: "znaczki"; sizeId; columns; rows; cellSize; tones: Tone[][]; runs: {tone, count}[][]; key }` z `Tone = "white" | "gray" | "black"`. `simpleNonogramProblems(card)` zwraca `"no-filled-cell"`, `"too-many-runs"` (rząd z więcej niż 7 znaczkami), `"runs-mismatch"` (znaczki nie dają tonów). Obraz obiektu bierze `nonogramImage` (ten sam co klasyczny), więc dziury zostają białe.
 
 #### 3. Generator
 
@@ -102,7 +102,7 @@ Pasek „Poziom”, rysowanie karty ze znaczkami, rozwiązanie tylko na ekranie,
 
 **Files**: `src/lib/nonogram/layout.ts`, `src/lib/nonogram/sheet.ts`, `src/lib/nonogram/layout.test.ts`
 
-**Intent**: Dodać układ kartki łatwej: zdanie polecenia, pasek znaczków z lewej strony rzędu, kratka; blok wyśrodkowany w marginesie 10 mm, rzuca przy przekroczeniu jak klasyczny układ. Stałe znaczków (bok 10 mm, odstęp 1,5 mm, cyfra 6,5 mm, polecenie „Pokoloruj każdy rząd według znaczków.”) w `sheet.ts`, żeby miniatura i skrypt makiety czytały to samo.
+**Intent**: Dodać układ kartki łatwej: zdanie polecenia, pasek znaczków z lewej strony rzędu, kratka; blok wyśrodkowany w marginesie 10 mm, rzuca przy przekroczeniu jak klasyczny układ. Stałe znaczków (bok 9,5 mm, odstęp 1,2 mm, cyfra 6 mm, polecenie „Pokoloruj każdy rząd według znaczków.”) w `sheet.ts`, żeby miniatura i skrypt makiety czytały to samo.
 
 **Contract**: `layoutSimpleNonogramSheet(input)` zwraca `page`, `instruction`, `grid`, pozycję znaczka (wiersz, indeks, liczba znaczków); test: każdy wariant łatwego mieści się w marginesie.
 
@@ -144,7 +144,7 @@ Pasek „Poziom”, rysowanie karty ze znaczkami, rozwiązanie tylko na ekranie,
 - Podgląd wydruku każdego poziomu (łatwy 8×12, średni 12×15, trudny 18×24): jedna strona A4, margines 10 mm, grubsza linia co 5 kratek
 - Zmiana poziomu przy pokazanej karcie daje nową kartę na tym poziomie, a „Pokaż rozwiązanie” jest wyłączone
 - Na telefonie (375 px) Generuj i Drukuj nie nachodzą na siebie, każdy poziom mieści się na A4
-- Cyfry i znaczki czytelne na wydruku (łatwy: znaczki 10 mm; trudny: kratka 7 mm, dwucyfrowe liczby w nagłówkach kolumn)
+- Cyfry i znaczki czytelne na wydruku (łatwy: znaczki 9,5 mm; trudny: kratka 7 mm, dwucyfrowe liczby w nagłówkach kolumn)
 
 **Implementation Note**: Po fazie wstrzymaj się na potwierdzenie.
 
@@ -219,9 +219,9 @@ Najdłuższe Generuj 7,8 ms (trudny); łatwy bez solvera. Limit 5 s zachowany z 
 
 #### Automated
 
-- [ ] 1.1 Testy logiki przechodzą: `npm test`
-- [ ] 1.2 Typy: `npx astro check`
-- [ ] 1.3 Lint: `npm run lint`
+- [x] 1.1 Testy logiki przechodzą: `npm test`
+- [x] 1.2 Typy: `npx astro check`
+- [x] 1.3 Lint: `npm run lint`
 
 #### Manual
 
