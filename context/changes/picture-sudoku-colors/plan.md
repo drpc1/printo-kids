@@ -289,18 +289,18 @@ Brak: nic nie jest zapisywane (stan strony). Zapisane profile i ostatnie paramet
 
 #### Manual
 
-- [ ] 3.4 Na komputerze i telefonie: przełącznik „Kolory” jest przed pierwszą kartą i po niej, domyślnie wyłączony
-- [ ] 3.5 Włączenie kolorów przy widocznej karcie koloruje te same pola w tych samych miejscach; wyłączenie wraca do czarnych konturów
-- [ ] 3.6 Przy cyfrach przełącznika nie ma; po powrocie do kształtów stan przełącznika jest taki, jak był
-- [ ] 3.7 Pasek z przełącznikiem zawija się na telefonie bez sięgania poza ekran; Generuj i Drukuj się nie nachodzą
+- [x] 3.4 Na komputerze i telefonie: przełącznik „Kolory” jest przed pierwszą kartą i po niej, domyślnie wyłączony
+- [x] 3.5 Włączenie kolorów przy widocznej karcie koloruje te same pola w tych samych miejscach; wyłączenie wraca do czarnych konturów
+- [x] 3.6 Przy cyfrach przełącznika nie ma; po powrocie do kształtów stan przełącznika jest taki, jak był
+- [x] 3.7 Pasek z przełącznikiem zawija się na telefonie bez sięgania poza ekran; Generuj i Drukuj się nie nachodzą
 
 ### Phase 4: e2e, druk w przeglądarkach i domknięcie
 
 #### Automated
 
-- [ ] 4.1 Wszystkie testy: `npm test`
-- [ ] 4.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build`
-- [ ] 4.3 e2e: `npx playwright test`
+- [x] 4.1 Wszystkie testy: `npm test`
+- [x] 4.2 Lint, typy, build: `npm run lint`, `npx astro check`, `npm run build`
+- [x] 4.3 e2e: `npx playwright test`
 
 #### Manual
 
