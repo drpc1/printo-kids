@@ -6,6 +6,8 @@ import { ProfileCorner } from "@/components/ProfileCorner";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { SudokuChoice } from "@/components/SudokuChoice";
 import { SudokuSymbolsChoice } from "@/components/SudokuSymbolsChoice";
+import { Switch } from "@/components/ui/switch";
+import { sudokuShapeInk } from "@/lib/sudoku/colors";
 import { generateSudokuCard, sudokuBlock, type SudokuCard } from "@/lib/sudoku/generate";
 import { layoutSudokuSheet } from "@/lib/sudoku/layout";
 import {
@@ -26,7 +28,7 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
  * The sudoku card page: Generuj, the size, level and shapes-or-digits choices, the card, Drukuj, and the shared profile
  * corner. It has no character bar. The settings live only in this component (the profile does not remember them) and
  * the page never touches the maze's last-used parameters; it only keeps the bar values the profile corner shows.
- * Changing a setting while a card is shown generates a new card for the new settings.
+ * Changing a setting while a card is shown generates a new card for the new settings; the Kolory switch (shapes only) redraws the same card in crayon colors and never generates a new one.
  */
 export default function SudokuGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
@@ -35,6 +37,7 @@ export default function SudokuGenerator() {
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const [settings, setSettings] = useState<SudokuSettings>(DEFAULT_SUDOKU_SETTINGS);
+  const [colors, setColors] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SudokuCard | null>(null);
@@ -122,6 +125,12 @@ export default function SudokuGenerator() {
           }}
         />
       ) : null}
+      {settings.symbols === "shapes" ? (
+        <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
+          <Switch checked={colors} onCheckedChange={setColors} />
+          Kolory
+        </label>
+      ) : null}
     </>
   );
   const failedNote = generateFailed ? (
@@ -175,12 +184,12 @@ export default function SudokuGenerator() {
           {failedNote}
         </div>
       )}
-      {card !== null ? <SudokuSheet card={card} /> : null}
+      {card !== null ? <SudokuSheet card={card} colors={colors} /> : null}
     </div>
   );
 }
 
-function SudokuSheet({ card }: { card: SudokuCard }) {
+function SudokuSheet({ card, colors }: { card: SudokuCard; colors: boolean }) {
   const block = sudokuBlock(card.size);
   const cellSize = SUDOKU_SHEET.cellSize[card.size];
   const sheet = layoutSudokuSheet({
@@ -248,14 +257,23 @@ function SudokuSheet({ card }: { card: SudokuCard }) {
           )}
         </g>
       ) : (
-        <g fill="none" stroke="var(--foreground)" strokeWidth={SUDOKU_SHEET.shapeStroke} strokeLinejoin="round">
+        <g strokeWidth={SUDOKU_SHEET.shapeStroke} strokeLinejoin="round">
           {card.givens.flatMap((row, r) =>
             row.map((symbol, c) => {
               if (symbol === null) {
                 return null;
               }
               const center = sheet.cellCenter(r, c);
-              return <path key={`${r},${c}`} d={sudokuShapePath(card.shapes[symbol], center.x, center.y, shapeSize)} />;
+              const shape = card.shapes[symbol];
+              const ink = sudokuShapeInk(shape, colors);
+              return (
+                <path
+                  key={`${r},${c}`}
+                  d={sudokuShapePath(shape, center.x, center.y, shapeSize)}
+                  fill={colors ? ink : "none"}
+                  stroke={ink}
+                />
+              );
             }),
           )}
         </g>

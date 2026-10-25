@@ -245,6 +245,43 @@ test("every sudoku size with digits fits the screen and keeps Rozmiar, Poziom, C
   await expect(sheet.locator("text")).not.toHaveCount(0);
 });
 
+test("every sudoku size with shapes and colors on fits the screen and keeps Rozmiar, Poziom, Kolory, Generuj, Drukuj and Profil apart", async ({
+  page,
+}) => {
+  await page.goto("/sudoku");
+  await page.getByRole("switch", { name: "Kolory" }).click();
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Sudoku" })).toBeVisible();
+
+  for (const size of ["6×6", "9×9"]) {
+    await page.getByRole("button", { name: /^Rozmiar:/ }).click();
+    await page.getByRole("button", { name: size, exact: true }).click();
+    await expect(page.getByRole("button", { name: `Rozmiar: ${size}` })).toBeVisible();
+    await expect(page.getByRole("switch", { name: "Kolory" })).toBeChecked();
+    await expect(page.getByRole("img", { name: "Sudoku" })).toBeVisible();
+    await settle(page);
+    await expectNoSidewaysScroll(page);
+
+    const width = viewportWidth(page);
+    const boxes = {
+      rozmiar: await viewportBox(page.getByRole("button", { name: /^Rozmiar:/ })),
+      poziom: await viewportBox(page.getByRole("button", { name: /^Poziom:/ })),
+      kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
+      generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+      drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+      profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+    };
+    const names = Object.keys(boxes) as (keyof typeof boxes)[];
+    for (const [index, first] of names.entries()) {
+      for (const second of names.slice(index + 1)) {
+        expect(overlaps(boxes[first], boxes[second]), `${size}: ${first} overlaps ${second}`).toBe(false);
+      }
+      expect(boxes[first].x, `${size}: ${first}`).toBeGreaterThanOrEqual(0);
+      expect(boxes[first].x + boxes[first].width, `${size}: ${first}`).toBeLessThanOrEqual(width);
+    }
+  }
+});
+
 test("every symmetry level fits the screen and keeps Poziom, Kolory, Generuj, Drukuj and Profil apart", async ({
   page,
 }) => {

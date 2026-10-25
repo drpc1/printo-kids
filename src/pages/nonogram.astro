@@ -1,0 +1,11 @@
+---
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import NonogramGenerator from "@/components/NonogramGenerator";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="PrintoKids" lang="pl">
+  <GeneratorShell description="Wygeneruj nonogram i wydrukuj go na kartce A4.">
+    <NonogramGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>
