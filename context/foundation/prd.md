@@ -1,6 +1,6 @@
 ---
 project: PrintoKids
-version: 3
+version: 4
 status: draft
 created: 2026-09-18
 context_type: greenfield
@@ -49,6 +49,12 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać poziom karty sekwencji nazwany wiekiem (około 4–7 lat).
 - Rodzic może wygenerować kartę sudoku 4×4, 6×6 albo 9×9 z prostymi kształtami do narysowania albo z cyframi, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wybrać rozmiar sudoku i jego poziom (łatwy, średni, trudny), a przy kształtach włączyć kolory.
+- Rodzic może wygenerować nonogram, w którym po zamalowaniu kratek według liczb pojawia się obiekt z katalogu szablonów (np. rakieta, robot, truskawka), zobaczyć jego podgląd i wydrukować go jako jedną stronę A4, także z telefonu.
+- Rodzic może wybrać rozmiar nonogramu (mały, średni, duży).
+- Rodzic może wygenerować kartę dyktanda graficznego, na której dziecko rysuje po liniach kratki według strzałek i odkrywa obrys obiektu z katalogu szablonów, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
+- Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (około 5–7 lat).
+- Rodzic dostaje na karcie symetrii, nonogramie i dyktandzie więcej różnych obiektów niż rakieta, robot i truskawka, pogrupowanych w kategorie.
+- Rodzic może wybrać na karcie symetrii, nonogramie i dyktandzie jedną kategorię obiektów (np. Zwierzęta) albo „Wszystkie”.
 
 ### Guardrails
 
@@ -271,6 +277,92 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Przełączenie kolorów zostawia tę samą planszę; nie generuje nowej.
 - Przy cyfrach przełącznik kolorów nie jest dostępny.
 
+### US-15: Rodzic generuje nonogram do druku
+
+- **Given** rodzic otworzył z katalogu stronę „Nonogram”
+- **When** uruchomi generowanie
+- **Then** otrzymuje gotową do wydruku kartę A4 z pustą kratką i liczbami nad kolumnami i przy wierszach; dziecko zamalowuje kratki według liczb, a po rozwiązaniu widzi obiekt z katalogu szablonów
+
+#### Acceptance Criteria
+
+- Obrazek to cała sylwetka obiektu z katalogu szablonów symetrii (połowa szablonu i jej odbicie), zamalowane kratki czarne, puste białe. Detale będące dziurami w sylwetce (okno, oczy, pestki) zostają pustymi kratkami.
+- Nad każdą kolumną i z lewej strony każdego wiersza są liczby: długości kolejnych ciągów zamalowanych kratek. Nad kratką jest jedno zdanie polecenia. Karta nie zdradza nazwy obiektu.
+- Rozwiązanie jest dokładnie jedno: liczby wyznaczają jeden obrazek, który aplikacja potrafi wyliczyć i sprawdzić. Nonogram z więcej niż jednym rozwiązaniem nie jest pokazany.
+- Każde Generuj daje nowy nonogram: inny obiekt albo inny wariant niż poprzednia karta.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez rozwiązania na kartce.
+- Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+- Strona nonogramu nie pokazuje paska „Postać”.
+
+### US-16: Rodzic wybiera rozmiar nonogramu
+
+- **Given** rodzic jest na stronie „Nonogram”
+- **When** wybierze rozmiar (mały, średni, duży)
+- **Then** kratka i obiekt mają rozmiar zgodny z wyborem
+
+#### Acceptance Criteria
+
+- Na pasku strony jest wybór „Rozmiar”. Nonogram nie nazywa rozmiarów wiekiem, jak sudoku (US-13).
+- Rozmiar wyznacza siatkę i katalog wariantów obiektów; reguły są w Business Logic.
+- Każdy rozmiar mieści się na jednej stronie A4 z marginesem 10 mm, a kratka i liczby są dość duże, żeby dziecko zamalowało pole i przeczytało liczbę.
+
+### US-17: Rodzic generuje kartę dyktanda graficznego do druku
+
+- **Given** rodzic otworzył z katalogu stronę „Dyktando graficzne”
+- **When** uruchomi generowanie
+- **Then** otrzymuje gotową do wydruku kartę A4 z pustą kratką, zaznaczonym punktem startu i listą poleceń w postaci strzałek z liczbą kratek; dziecko rysuje po liniach kratki i odkrywa obrys obiektu
+
+#### Acceptance Criteria
+
+- Polecenie to liczba kratek i strzałka (→, ←, ↑, ↓), np. „3 →”. Polecenia stoją nad kratką w kolejności czytania, jedno zdanie polecenia nad nimi.
+- Droga z poleceń to zewnętrzny obrys sylwetki obiektu z katalogu szablonów symetrii. Zaczyna się i kończy w punkcie startu, nie przecina się i nie dotyka samej siebie. Dziury w sylwetce (okno, oczy) nie są rysowane.
+- Odpowiedź jest jedna: rysunek wynika wprost z poleceń. Aplikacja potrafi go wyliczyć i sprawdzić, że wraca do startu i mieści się w kratce.
+- Każde Generuj daje nową kartę: inny obiekt albo inny wariant niż poprzednia karta.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez rysunku odpowiedzi.
+- Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+- Strona dyktanda nie pokazuje paska „Postać”.
+
+### US-18: Rodzic wybiera poziom dyktanda graficznego
+
+- **Given** rodzic jest na stronie „Dyktando graficzne”
+- **When** wybierze poziom nazwany wiekiem (około 5–7 lat)
+- **Then** karta ma kratkę, obiekt i liczbę poleceń zgodne z tym poziomem
+
+#### Acceptance Criteria
+
+- Poziom zmienia rozmiar kratki i katalog obiektów (5 lat prostsze, 7 lat bogatsze), a przez to liczbę poleceń. Reguły są w Business Logic.
+- Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm razem z listą poleceń.
+- Poziom jest na pasku strony dyktanda.
+
+### US-19: Rodzic dostaje więcej obiektów na kartach z szablonów
+
+- **Given** rodzic generuje kolejne karty symetrii, nonogramy albo dyktanda
+- **When** klika Generuj wiele razy
+- **Then** widzi więcej różnych obiektów niż rakieta, robot i truskawka
+
+#### Acceptance Criteria
+
+- Katalog szablonów ma pięć kategorii: Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle. Każda ma co najmniej cztery obiekty; startowa lista jest w Business Logic („Katalog szablonów obiektów”).
+- Każdy obiekt jest symetryczny lewo–prawo, pionowy i rozpoznawalny po samej sylwetce. Ma wersję na każdy rozmiar szablonu (połowa 4×12, 6×15 i 9×24) i części losowane przez generator, jak dziś rakieta, robot i truskawka.
+- Każdy obiekt ma co najmniej jedną kategorię; może mieć kilka.
+- Nowe obiekty spełniają reguły karty symetrii (dotykają osi, mają kolor szablonu) i są dostępne w nonogramie i dyktandzie, gdy te karty istnieją.
+- Kategorie nie są jeszcze widoczne na pasku (US-20); do tego czasu generator losuje ze wszystkich obiektów.
+- Labirynt, sekwencje i sudoku zostają bez zmian.
+
+### US-20: Rodzic wybiera kategorię obiektów
+
+- **Given** rodzic jest na stronie symetrii, nonogramu albo dyktanda graficznego
+- **When** wybierze kategorię obiektów
+- **Then** kolejne Generuj losuje obiekt tylko z tej kategorii
+
+#### Acceptance Criteria
+
+- Na pasku strony jest wybór „Kategoria”: Wszystkie, Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle. Domyślnie „Wszystkie”.
+- Można wybrać dokładnie jedną kategorię. „Wszystkie” to też kategoria, a nie zaznaczenie kilku; kilku kategorii naraz nie da się zaznaczyć.
+- Wybrana kategoria obowiązuje przy następnym Generuj, jak każde ustawienie generatora, i nie zmienia działania poziomu, rozmiaru ani kolorów.
+- Każde Generuj w kategorii daje inny obiekt albo inny wariant niż poprzednia karta, na każdym poziomie i rozmiarze.
+- Kategoria żyje w stanie strony, jak poziom. Wybór na jednej stronie nie zmienia drugiej.
+- Pasek z kategorią zostaje używalny na telefonie: Generuj i Drukuj nie nachodzą na siebie (US-04).
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -337,6 +429,21 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-023: Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury. Priority: must-have
   > Socrates: Counter-argument considered: kolorowy druk łamie wspólną umowę czarnego druku. Resolution: kept; jak w symetrii (FR-018) domyślny druk zostaje czarny, a kolor jest wyborem rodzica.
 
+### Nonogram, dyktando graficzne i obiekty z szablonów
+
+- FR-024: Rodzic może wygenerować nonogram, którego rozwiązaniem jest sylwetka obiektu z katalogu szablonów, z jednym sprawdzalnym rozwiązaniem, zobaczyć jego podgląd i wydrukować go jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: sylwetka narysowana do symetrii nie musi dawać nonogramu z jednym rozwiązaniem, a „Nonogram postaci” czekał na bitmapy postaci. Resolution: revised (2026-10-25); obrazkiem jest obiekt z szablonów symetrii zamiast postaci, a generator sprawdza solverem jedno rozwiązanie i nie pokazuje wariantu, który go nie ma.
+- FR-025: Rodzic może wybrać rozmiar nonogramu (mały, średni, duży). Priority: must-have
+  > Socrates: Counter-argument considered: poziomy nazwane wiekiem jak w innych kartach. Resolution: kept as size (2026-10-25); trudność nonogramu zależy głównie od rozmiaru siatki, jak w sudoku (FR-022).
+- FR-026: Rodzic może wygenerować kartę dyktanda graficznego z poleceniami (liczba kratek i strzałka), które prowadzą po liniach kratki wzdłuż obrysu obiektu z katalogu szablonów, z jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: obrys sylwetki może dotykać sam siebie w narożniku kratki i wtedy polecenia są dwuznaczne dla dziecka. Resolution: kept; generator odrzuca warianty, których obrys się przecina albo dotyka sam siebie.
+- FR-027: Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (rozmiar kratki, katalog obiektów, liczba poleceń). Priority: must-have
+  > Socrates: Counter-argument considered: poziomy nazwane wiekiem bez mierzalnych reguł wprowadzają w błąd. Resolution: kept; reguły są w Business Logic, wartości startowe potwierdza wydruk.
+- FR-028: Rodzic dostaje więcej obiektów z katalogu szablonów, pogrupowanych w pięć kategorii po co najmniej cztery obiekty, na karcie symetrii, nonogramie i dyktandzie. Priority: must-have
+  > Socrates: Counter-argument considered: każda gotowa lista szablonów to znowu skończona biblioteka (Open Questions 7). Resolution: kept; więcej obiektów z losowanymi częściami odsuwa powtórki, a trzy karty dzielą jeden katalog, więc każdy nowy obiekt działa trzy razy. Revised (2026-10-25): lista z przykładów (jabłko, motyl, korona) zamieniona na obiekty pionowe, bo wszystkie siatki są wyższe niż szersze, a szeroki obiekt zajmuje tylko pas kartki.
+- FR-029: Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”. Priority: must-have
+  > Socrates: Counter-argument considered: wąska kategoria szybciej się powtarza, a zaznaczanie kilku kategorii daje więcej swobody. Resolution: kept as single choice (2026-10-25, decyzja użytkownika); „Wszystkie” to osobna kategoria, a każda kategoria ma co najmniej cztery obiekty w każdym rozmiarze, więc kolejne karty się nie powtarzają.
+
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
@@ -347,6 +454,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
 - Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), domyślny druk czarny, a przy włączonych kolorach prawdziwe kolory kratek bez liter i legendy, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karty sekwencji i sudoku spełniają te same granice co labirynt: generowanie do 5 sekund (także sudoku 9×9 na najtrudniejszym poziomie), jedna strona A4, margines co najmniej 10 mm, domyślny druk czarny bez odpowiedzi (sudoku z włączonymi kolorami drukuje kształty w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Nonogram i dyktando graficzne spełniają te same granice co labirynt: generowanie do 5 sekund (także duży nonogram ze sprawdzeniem jednego rozwiązania), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
@@ -448,6 +556,52 @@ Kolory (US-14): przy kształtach rodzic może włączyć kolory. Każdy kształt
 
 Wartości są startowe i zostają potwierdzone na wydruku; użytkowniczka nie jest pewna, czy 6×6 i 9×9 nie są za trudne (Open Questions 9). Wynikiem jest karta A4: plansza zajmuje większą część strony i zachowuje margines co najmniej 10 mm.
 
+### Katalog szablonów obiektów
+
+Dodane 2026-10-25. Karta symetrii, nonogram i dyktando graficzne biorą obiekty z jednego katalogu szablonów zapisanych w kodzie (patrz „Karta symetrii”). Szablon to połowa obiektu symetrycznego lewo–prawo z częściami losowanymi przez generator i kolorem kredki każdej kratki; cała sylwetka to połowa i jej odbicie. Każdy obiekt ma trzy rozmiary: połowa 4×12 (cała 8×12), 6×15 (cała 12×15) i 9×24 (cała 18×24).
+
+Dziś katalog ma trzy obiekty: rakieta, robot, truskawka. Obiekt pasuje do katalogu, gdy jest symetryczny lewo–prawo, pionowy (wszystkie siatki są wyższe niż szersze), rozpoznawalny po samej czarnej sylwetce także w połowie 4×12, szeroki przy osi, ma dziury na detale i warianty, mieści się w siedmiu kolorach kredek i nie ma części stykających się tylko rogiem kratki (psują obrys dyktanda).
+
+Obiekty są pogrupowane w pięć kategorii (US-19). Obiekt ma co najmniej jedną kategorię i może mieć kilka. Startowa lista (✓ — już jest):
+
+| Kategoria        | Obiekty                                             |
+| ---------------- | --------------------------------------------------- |
+| Zwierzęta        | sowa, biedronka, pingwin, kot (pyszczek)            |
+| Jedzenie         | truskawka ✓, lody w rożku, babeczka, gruszka        |
+| Przyroda         | choinka, tulipan w doniczce, muchomor, kaktus       |
+| Kosmos i maszyny | rakieta ✓, robot ✓, balon na ogrzane powietrze, UFO |
+| Domy i budowle   | domek, wieża zamku, latarnia morska, namiot         |
+
+Lista jest startowa; obiekt, który nie daje się narysować czytelnie w połowie 4×12, zastępuje inny obiekt tej samej kategorii. Sezonowa kategoria (święta, pory roku) i „Morze” czekają na więcej obiektów. Szerokie obiekty (motyl, korona) odpadły z listy startowej.
+
+Rodzic wybiera jedną kategorię albo „Wszystkie” (US-20); „Wszystkie” to osobna kategoria, kilku naraz nie da się zaznaczyć. Generator losuje obiekt tylko z wybranej kategorii. Nowy obiekt spełnia reguły karty symetrii w każdym rozmiarze. Nonogram i dyktando mogą pomijać warianty, które łamią ich reguły (nonogram bez jednego rozwiązania, obrys dotykający sam siebie); każda kategoria musi zostawić każdej karcie w każdym rozmiarze co najmniej kilka obiektów albo wariantów, żeby kolejne Generuj się nie powtarzało.
+
+### Karta nonogramu
+
+Dodane 2026-10-25. Aplikacja zawsze tworzy nonogram z dokładnie jednym rozwiązaniem. Rozwiązaniem jest cała sylwetka obiektu z katalogu szablonów: zamalowane kratki czarne, puste białe, dziury w sylwetce zostają puste. Kolory szablonu nonogram pomija. Rodzic wybiera rozmiar (nie wiek, jak w sudoku). Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia, kratką i liczbami: z lewej strony każdego wiersza i nad każdą kolumną długości kolejnych ciągów zamalowanych kratek, w kolejności. Pusty wiersz albo kolumna ma liczbę 0. Polecenie: „Zamaluj kratki według liczb. Co się ukryło?”. Karta nie pokazuje nazwy obiektu.
+
+| Rozmiar | Siatka (cała) | Obiekty                       | Kratka (około) |
+| ------- | ------------- | ----------------------------- | -------------- |
+| mały    | 8×12          | warianty z połowy 4×12        | 14 mm          |
+| średni  | 12×15         | warianty z połowy 6×15        | 10 mm          |
+| duży    | 18×24         | bogate warianty z połowy 9×24 | 7 mm           |
+
+Reguła, którą generator sprawdza: z liczb wiersza i kolumn wynika dokładnie jeden obrazek i jest nim sylwetka obiektu. Wariant, który dopuszcza drugi obrazek, nie jest pokazany; generator losuje inny. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11).
+
+### Karta dyktanda graficznego
+
+Dodane 2026-10-25. Aplikacja zawsze tworzy kartę z jedną odpowiedzią: rysunkiem, który wynika z poleceń. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia, listą poleceń i pustą kratką z zaznaczonym punktem startu. Polecenie to liczba kratek i strzałka (→, ←, ↑, ↓); dziecko rysuje odcinek po linii kratki. Bez skosów. Polecenie: „Rysuj po liniach kratki według strzałek. Zacznij od kropki.”.
+
+Droga to zewnętrzny obrys całej sylwetki obiektu z katalogu szablonów, obiegany w jednym kierunku od punktu startu z powrotem do niego. Kolejne odcinki w tym samym kierunku łączą się w jedno polecenie. Dziury w sylwetce (okno, oczy, pestki) nie są rysowane. Kratka jest większa od obiektu o co najmniej jedną kratkę z każdej strony, a punkt startu leży na obrysie, w lewym górnym rogu sylwetki.
+
+| Poziom | Kratka (około) | Obiekty                        |
+| ------ | -------------- | ------------------------------ |
+| 5 lat  | 14 mm          | proste, z połowy 4×12 (8×12)   |
+| 6 lat  | 11 mm          | szablony z połowy 6×15 (12×15) |
+| 7 lat  | 8 mm           | bogate, z połowy 9×24 (18×24)  |
+
+Liczba poleceń wynika z obiektu; im bogatszy obiekt, tym więcej poleceń. Reguły, które generator sprawdza: droga wraca do punktu startu, nie przecina się i nie dotyka sama siebie (także w narożniku kratki), mieści się w kratce, a rysunek z poleceń to dokładnie obrys sylwetki. Wariant, który łamie którąś z tych reguł, nie jest pokazany. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11). Wynikiem jest karta A4; kratka i polecenia zajmują większą część strony i zachowują margines co najmniej 10 mm.
+
 ## Access Control
 
 Jeden lokalny użytkownik-rodzic; bez logowania i bez podziału na role. Ustawienia pozostają na urządzeniu.
@@ -458,7 +612,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 ## Non-Goals
 
-- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku (US-10–US-14, FR-019–FR-023). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
+- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku (US-10–US-14, FR-019–FR-023). Do tego samego kamienia dochodzą 2026-10-25, także na prośbę użytkownika, nonogram i dyktando graficzne (US-15–US-18, FR-024–FR-027) oraz nowe obiekty w katalogu szablonów z wyborem kategorii (US-19–US-20, FR-028–FR-029). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
@@ -475,11 +629,13 @@ Symetria przeszła z tej listy do zakresu (2026-10-22): US-05–US-09, FR-014–
 
 Sekwencje i sudoku przeszły z tej listy do zakresu (2026-10-23): US-10–US-14, FR-019–FR-023, Business Logic „Karta sekwencji” i „Karta sudoku”. Sudoku przebudowane 2026-10-24: rozmiary 4×4, 6×6 i 9×9 z kształtami albo cyframi, rozmiar i poziom zamiast wieku.
 
+Nonogram przeszedł z tej listy do zakresu (2026-10-25) w wersji z obiektami z katalogu szablonów zamiast postaci: US-15–US-16, FR-024–FR-025, Business Logic „Karta nonogramu”. Dyktando graficzne nie było na tej liście; weszło do zakresu tego samego dnia: US-17–US-18, FR-026–FR-027, Business Logic „Karta dyktanda graficznego”.
+
 Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero przy otwarciu jego kamienia.
 
 - **Połącz kropki.** Sylwetka wybranej postaci. Czeka na obrys każdej postaci.
 - **Który nie pasuje.** Jeden obrazek łamie jawną regułę. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
-- **Nonogram postaci.** Po rozwiązaniu widać uproszczoną postać. Czeka na małą bitmapę postaci.
+- **Nonogram postaci.** Po rozwiązaniu widać uproszczoną postać. Czeka na małą bitmapę postaci. Nonogram z obiektami z szablonów jest już w zakresie (FR-024).
 - **Karty kodowania.** Kratka, postać, meta i strzałki. Jedna najkrótsza droga.
 - **Porównywanie kwot w złotych.** Dwie kupki monet albo jedna kupka i cena. Liczy się wartość monet, nie liczba sztuk. „Ułóż dokładnie tę kwotę” czeka na regułę, która zostawia jeden układ.
 
@@ -497,3 +653,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 8. ~~**Czy dziecko przedszkolne uzupełni sudoku obrazkowe numerem z legendy, czy narysuje postać?**~~ — Zamknięte 2026-10-24: sudoku nie używa postaci ani legendy numerów; dziecko rysuje proste kształty albo wpisuje cyfry. Pytanie 3 o prawa do postaci sudoku już nie dotyczy.
 9. **Czy startowe wartości poziomów sekwencji i sudoku (długość ciągu, reguły, liczba pustych pól) pasują dziecku?** — Owner: user. Block: no. Tabele w Business Logic są propozycją z 2026-10-23 (sudoku przebudowane 2026-10-24); potwierdza je wydruk, nie planowanie. Użytkowniczka nie jest pewna, czy 6×6 (12/18/22 pustych) i 9×9 (35/45/52 pustych) nie są za trudne dla dzieci. Wartości poziomów sekwencji potwierdził wydruk z 2026-10-24 (S-17); sudoku zostaje otwarte do wydruku S-19.
 10. **Kiedy wraca profil z wiekiem i poziomami osobno dla każdego rodzaju karty (US-08, FR-017)?** — Owner: user. Block: no. Odłożone 2026-10-23, gdy będą cztery rodzaje kart; wtedy wybieramy, które ustawienia mają sens na poziomie profilu.
+11. **Czy startowe wartości nonogramu i dyktanda graficznego (siatka, kratka, obiekty) pasują dziecku, i czy każda kategoria w każdym rozmiarze zostawia dość obiektów z jednym rozwiązaniem nonogramu i obrysem bez dotknięć?** — Owner: user (wartości), team (liczba obiektów). Block: no. Tabele w Business Logic są propozycją z 2026-10-25; potwierdza je wydruk. Liczbę obiektów, które przechodzą reguły nonogramu i dyktanda, pokaże pierwsza implementacja.
