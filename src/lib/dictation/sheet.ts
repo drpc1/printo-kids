@@ -2,7 +2,8 @@ import type { DictationCommand, DictationDirection } from "./outline.ts";
 
 /**
  * How the graphic dictation card is drawn, in page units (mm on an A4 sheet). The page component and the catalog
- * thumbnail script both read these, so the thumbnail cannot drift from the printed card.
+ * thumbnail script both read these, so the thumbnail cannot drift from the printed card. The command list sizes that
+ * differ per level are in levels.ts.
  */
 export const DICTATION_SHEET = {
   pageWidth: 210,
@@ -11,13 +12,8 @@ export const DICTATION_SHEET = {
   instructionSize: 7,
   instructionGap: 6,
   instructionText: "Rysuj po liniach kratki według strzałek. Zacznij od kropki.",
-  /** Command boxes per row; they share the inner page width equally. */
-  commandsPerRow: 11,
-  commandRowHeight: 12,
   /** Space between the last command row and the grid. */
   listGap: 6,
-  /** Font size of the bold "n →" in a command box. */
-  commandFontSize: 6,
   /** Font size of the small grey number in the top-left corner of a command box. */
   commandNumberSize: 2.6,
   commandBoxStroke: 0.3,
@@ -32,9 +28,6 @@ export const DICTATION_SHEET = {
   /** The dot on the grid where the child puts the pencil down. */
   startDotRadius: 2,
 } as const;
-
-/** The most commands the 6 lat sheet fits: 5 rows of 11 command boxes (7 + 6 + 60 + 6 + 187 = 266 of 277 mm). */
-export const DICTATION_MAX_COMMANDS = 55;
 
 export const DICTATION_ARROWS: Readonly<Record<DictationDirection, string>> = {
   right: "→",
