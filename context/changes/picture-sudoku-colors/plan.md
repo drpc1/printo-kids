@@ -275,9 +275,9 @@ Brak: nic nie jest zapisywane (stan strony). Zapisane profile i ostatnie paramet
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Typy przechodzą: `npx astro check`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.3 Typy przechodzą: `npx astro check`
 
 ### Phase 3: Przełącznik „Kolory” i rysowanie arkusza
 
