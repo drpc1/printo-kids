@@ -165,6 +165,12 @@ void describe("print contract", () => {
     ]);
   });
 
+  void test("the sudoku choice dialog is hidden in print", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile("src/components/SudokuChoice.tsx"), "print:hidden"), [
+      "max-h-[calc(100dvh-2rem)] print:hidden",
+    ]);
+  });
+
   void test("the sudoku page lives under /sudoku, uses the shared shell, and has no @page of its own", () => {
     const page = readRepoFile(SUDOKU_PAGE);
     assert.match(page, /<GeneratorShell\b/);
