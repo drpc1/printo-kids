@@ -1,10 +1,10 @@
 ---
 change_id: nonogram-first-printable
 title: Nonogram — strona, generowanie, podgląd i druk A4 (S-22)
-status: impl_reviewed
+status: archived
 created: 2026-10-25
 updated: 2026-10-25
-archived_at: null
+archived_at: 2026-10-25T18:36:00Z
 ---
 
 ## Notes
