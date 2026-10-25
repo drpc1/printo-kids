@@ -18,4 +18,6 @@ export const NONOGRAM_SHEET = {
   clueGap: 2,
   /** Width and height of the slot of one clue number, as a multiple of the digit size. */
   clueSlot: 1.1,
+  /** Weight of the clue numbers: bold, so the child reads them easily. */
+  clueFontWeight: 600,
 } as const;

@@ -204,6 +204,12 @@ void describe("print contract", () => {
       "flex flex-col items-center gap-6 print:hidden",
       "print:hidden",
     ]);
+    // The third one must sit on the solution group itself, so a switch left on never prints the answer.
+    assert.ok(
+      readRepoFile(NONOGRAM_GENERATOR).includes(
+        '<g className={cn("print:hidden")} fill="var(--foreground)" data-solution>',
+      ),
+    );
   });
 
   void test("the nonogram page lives under /nonogram, uses the shared shell, and has no @page of its own", () => {

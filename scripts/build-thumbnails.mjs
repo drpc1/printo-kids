@@ -24,7 +24,7 @@ import { sequenceShapeOutline } from "../src/lib/sequence/shapes.ts";
 import { generateNonogramCard } from "../src/lib/nonogram/generate.ts";
 import { blockLines, layoutNonogramSheet, longestClues } from "../src/lib/nonogram/layout.ts";
 import { NONOGRAM_SHEET } from "../src/lib/nonogram/sheet.ts";
-import { nonogramSizeById } from "../src/lib/nonogram/sizes.ts";
+import { DEFAULT_NONOGRAM_SIZE_ID, nonogramSizeById } from "../src/lib/nonogram/sizes.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -288,9 +288,8 @@ console.log(`Wrote ${sequenceOutFile} (${sequenceCard.key.length} key chars)`);
 // Nonogram card: the same elements NonogramSheet draws (src/components/NonogramGenerator.tsx), in literal black, empty
 // (no solution), with the shared drawing constants from src/lib/nonogram/sheet.ts.
 const NONOGRAM_SEED = 20261026;
-const NONOGRAM_SIZE = nonogramSizeById("sredni");
+const NONOGRAM_SIZE = nonogramSizeById(DEFAULT_NONOGRAM_SIZE_ID);
 const NONOGRAM = NONOGRAM_SHEET;
-const NONOGRAM_CLUE_FONT_WEIGHT = 600;
 
 const nonogramCard = generateNonogramCard(mulberry32(NONOGRAM_SEED), null, NONOGRAM_SIZE);
 if (nonogramCard === null) {
@@ -340,7 +339,7 @@ for (let index = 0; index <= nonogramCard.rows; index += 1) {
 nonogramLines.push(
   "</g>",
   `<rect x="${num(nonogramGrid.x)}" y="${num(nonogramGrid.y)}" width="${num(nonogramGrid.width)}" height="${num(nonogramGrid.height)}" fill="none" stroke="#000" stroke-width="${NONOGRAM.frameStroke}" stroke-linejoin="miter"/>`,
-  `<g fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${NONOGRAM_SIZE.digitSize}" font-weight="${NONOGRAM_CLUE_FONT_WEIGHT}" text-anchor="middle" dominant-baseline="central">`,
+  `<g fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${NONOGRAM_SIZE.digitSize}" font-weight="${NONOGRAM.clueFontWeight}" text-anchor="middle" dominant-baseline="central">`,
 );
 nonogramCard.clues.rows.forEach((clue, rowIndex) => {
   clue.forEach((value, position) => {
