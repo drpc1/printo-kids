@@ -19,6 +19,7 @@ const DICTATION_PAGE = "src/pages/dyktando.astro";
 const DICTATION_GENERATOR = "src/components/DictationGenerator.tsx";
 const NONOGRAM_PAGE = "src/pages/nonogram.astro";
 const NONOGRAM_GENERATOR = "src/components/NonogramGenerator.tsx";
+const NONOGRAM_SIMPLE_SHEET = "src/components/NonogramSimpleSheet.tsx";
 const GLOBAL_CSS = "src/styles/global.css";
 
 void describe("print contract", () => {
@@ -237,6 +238,26 @@ void describe("print contract", () => {
         '<g className={cn("print:hidden")} fill="var(--foreground)" data-solution>',
       ),
     );
+  });
+
+  void test("the printed chip nonogram SVG is 210mm wide and 297mm tall, keeps its colors, and hides its solution", () => {
+    const source = readRepoFile(NONOGRAM_SIMPLE_SHEET);
+    const svgClass = svgClassName(source);
+
+    for (const token of [
+      "print:w-[210mm]",
+      "print:h-[297mm]",
+      "print:overflow-hidden",
+      "print:block",
+      "print:max-h-[297mm]",
+      "print:ring-0",
+    ]) {
+      assert.ok(svgClass.includes(token), token);
+    }
+    assert.match(source, /printColorAdjust:\s*"exact"/);
+    assert.match(source, /WebkitPrintColorAdjust:\s*"exact"/);
+    assert.deepEqual(classNamesContaining(source, "print:hidden"), ["print:hidden"]);
+    assert.ok(source.includes('<g className={cn("print:hidden")} data-solution>'));
   });
 
   void test("the nonogram page lives under /nonogram, uses the shared shell, and has no @page of its own", () => {

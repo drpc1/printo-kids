@@ -1,8 +1,16 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { composeNonogramCard, nonogramVariants } from "./generate.ts";
-import { blockLines, layoutNonogramSheet, longestClues, type NonogramSheetInput } from "./layout.ts";
-import { NONOGRAM_SHEET } from "./sheet.ts";
+import { composeSimpleNonogramCard } from "./simple.ts";
+import {
+  blockLines,
+  layoutNonogramSheet,
+  layoutSimpleNonogramSheet,
+  longestClues,
+  type NonogramSheetInput,
+  type SimpleNonogramSheetInput,
+} from "./layout.ts";
+import { NONOGRAM_SHEET, NONOGRAM_SIMPLE_SHEET } from "./sheet.ts";
 import { CLASSIC_NONOGRAM_SIZES, nonogramSizeById, type NonogramSize } from "./sizes.ts";
 
 const INSET = NONOGRAM_SHEET.inset;
@@ -140,5 +148,57 @@ void describe("longestClues", () => {
       maxRowClues: 3,
       maxColumnClues: 2,
     });
+  });
+});
+
+function simpleInputFor(maxRuns: number): SimpleNonogramSheetInput {
+  const easy = nonogramSizeById("latwy");
+  return {
+    pageWidth: NONOGRAM_SHEET.pageWidth,
+    pageHeight: NONOGRAM_SHEET.pageHeight,
+    inset: INSET,
+    columns: easy.columns,
+    rows: easy.rows,
+    cellSize: easy.cellSize,
+    maxRuns,
+    instructionSize: NONOGRAM_SHEET.instructionSize,
+    instructionGap: NONOGRAM_SHEET.instructionGap * 2,
+    chipSize: NONOGRAM_SIMPLE_SHEET.chipSize,
+    chipGap: NONOGRAM_SIMPLE_SHEET.chipGap,
+    bandGap: NONOGRAM_SIMPLE_SHEET.bandGap,
+  };
+}
+
+void describe("layoutSimpleNonogramSheet", () => {
+  void test("every variant of the easy level stays inside the 10 mm margin, with the longest row of chips", () => {
+    const easy = nonogramSizeById("latwy");
+    let longest = 0;
+    for (const { template, variants } of nonogramVariants(easy)) {
+      const card = composeSimpleNonogramCard(template, variants, easy);
+      longest = Math.max(longest, ...card.runs.map((row) => row.length));
+    }
+    const sheet = layoutSimpleNonogramSheet(simpleInputFor(longest));
+    const left = sheet.chipX(0, longest);
+    const right = sheet.grid.x + sheet.grid.width;
+    const instructionTop = sheet.instruction.y - NONOGRAM_SHEET.instructionSize / 2;
+
+    assert.ok(left >= INSET, `left ${left}`);
+    assert.ok(right <= NONOGRAM_SHEET.pageWidth - INSET, `right ${right}`);
+    assert.ok(instructionTop >= INSET, `instruction top ${instructionTop}`);
+    assert.ok(sheet.grid.y + sheet.grid.height <= NONOGRAM_SHEET.pageHeight - INSET);
+  });
+
+  void test("chips sit right-aligned against the grid, centered in their row, and never overlap", () => {
+    const sheet = layoutSimpleNonogramSheet(simpleInputFor(5));
+    const chip = NONOGRAM_SIMPLE_SHEET.chipSize;
+
+    assert.ok(Math.abs(sheet.chipX(4, 5) + chip - (sheet.grid.x - NONOGRAM_SIMPLE_SHEET.bandGap)) <= 1e-9);
+    assert.ok(sheet.chipX(1, 5) - (sheet.chipX(0, 5) + chip) >= NONOGRAM_SIMPLE_SHEET.chipGap - 1e-9);
+    assert.ok(Math.abs(sheet.chipY(0) - (sheet.grid.y + (14 - chip) / 2)) <= 1e-9);
+    assert.ok(Math.abs(sheet.chipX(0, 1) - (sheet.grid.x - NONOGRAM_SIMPLE_SHEET.bandGap - chip)) <= 1e-9);
+  });
+
+  void test("a row with more chips than fit beside the grid throws", () => {
+    assert.throws(() => layoutSimpleNonogramSheet(simpleInputFor(9)));
   });
 });
