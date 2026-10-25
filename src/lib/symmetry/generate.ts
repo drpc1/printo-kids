@@ -1,5 +1,12 @@
 import { symmetryLevelById, type SymmetryLevel } from "./levels.ts";
-import { SYMMETRY_COLORS, symmetryTemplatesFor, type SymmetryCell, type SymmetryTemplate } from "./templates.ts";
+import {
+  DEFAULT_OBJECT_CATEGORY_ID,
+  SYMMETRY_COLORS,
+  symmetryTemplatesFor,
+  type ObjectCategoryChoiceId,
+  type SymmetryCell,
+  type SymmetryTemplate,
+} from "./templates.ts";
 
 export type SymmetryAxis = "vertical";
 
@@ -37,14 +44,18 @@ export type SymmetryProblem =
 const MAX_ATTEMPTS = 20;
 
 /**
- * A valid card of the level whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. The key includes the row offset, so the same picture one row lower counts as a new card.
+ * A valid card of the level, from the objects of the category, whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. The key includes the row offset, so the same picture one row lower counts as a new card.
  */
 export function generateSymmetryCard(
   random: () => number,
   previousKey: string | null,
   level: SymmetryLevel,
+  category: ObjectCategoryChoiceId = DEFAULT_OBJECT_CATEGORY_ID,
 ): SymmetryCard | null {
-  const templates = symmetryTemplatesFor(level.id);
+  const templates = symmetryTemplatesFor(level.id, category);
+  if (templates.length === 0) {
+    return null;
+  }
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     const template = templates[pick(random, templates.length)];
     const variants = template.parts.map((part) => pick(random, part.variants.length));
