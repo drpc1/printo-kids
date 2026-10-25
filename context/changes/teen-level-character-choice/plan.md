@@ -217,7 +217,7 @@ Zapisane pary „postać + nastolatek” w ostatnio użytych parametrach i w pro
 
 #### Automated
 
-- [ ] 2.1 The sentence „Poziom nastolatka postaci nie pokazuje” is absent from `context/foundation/prd.md`, and roadmap open question 3 records the decision
+- [x] 2.1 The sentence „Poziom nastolatka postaci nie pokazuje” is absent from `context/foundation/prd.md`, and roadmap open question 3 records the decision
 
 #### Manual
 
