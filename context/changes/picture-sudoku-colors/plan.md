@@ -304,6 +304,6 @@ Brak: nic nie jest zapisywane (stan strony). Zapisane profile i ostatnie paramet
 
 #### Manual
 
-- [ ] 4.4 Wydruk karty z kolorami (4×4 i 9×9) z Chrome, Edge, Brave, Firefox i Safari: kolory drukują się, jedna strona A4, margines 10 mm
-- [ ] 4.5 Wydruk z telefonu: kolory drukują się, karta mieści się na A4
-- [ ] 4.6 Wydruk z wyłączonymi kolorami wygląda jak przed zmianą
+- [x] 4.4 Wydruk karty z kolorami (4×4 i 9×9) z Chrome, Edge, Brave, Firefox i Safari: kolory drukują się, jedna strona A4, margines 10 mm
+- [x] 4.5 Wydruk z telefonu: kolory drukują się, karta mieści się na A4
+- [x] 4.6 Wydruk z wyłączonymi kolorami wygląda jak przed zmianą
