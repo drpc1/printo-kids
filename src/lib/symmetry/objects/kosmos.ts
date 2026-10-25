@@ -278,8 +278,261 @@ const ROBOT_7: SymmetryTemplate = {
   ],
 };
 
+// Drawn from the approved mockup (context/changes/template-object-catalog/mockup-drawings.json): the first variant
+// of every part gives the mockup picture.
+
+const BALLOON_4: SymmetryTemplate = {
+  id: "balon",
+  width: 4,
+  height: 11,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    "..rr", // 0
+    "....", // 1 stripes (part)
+    "....", // 2
+    "....", // 3
+    "....", // 4
+    "....", // 5
+    "..ry", // 6
+    "..k.", // 7
+    "..k.", // 8
+    "....", // 9 basket (part)
+    "....", // 10
+  ]),
+  parts: [
+    {
+      id: "stripes",
+      variants: [
+        drawing([".ryy", "rryy", "rryy", "rryy", ".ryy"], 1, 0),
+        drawing([".byy", "bbyy", "bbyy", "bbyy", ".byy"], 1, 0),
+      ],
+    },
+    {
+      id: "basket",
+      variants: [drawing(["nn", "nn"], 9, 2), drawing(["nn", ".n"], 9, 2)],
+    },
+  ],
+};
+
+const BALLOON_6: SymmetryTemplate = {
+  id: "balon",
+  width: 6,
+  height: 14,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    "......", // 0 top (part)
+    "..rryy", // 1
+    ".rrryy", // 2
+    "rrrryy", // 3
+    "rrrryy", // 4
+    "rrrryy", // 5
+    ".rrryy", // 6
+    "..rryy", // 7
+    "...ryy", // 8
+    "....ry", // 9
+    "....k.", // 10
+    "....k.", // 11
+    "......", // 12 basket (part)
+    "......", // 13
+  ]),
+  parts: [
+    {
+      id: "top",
+      variants: [drawing(["ryy"], 0, 3), drawing(["..."], 0, 3)],
+    },
+    {
+      id: "basket",
+      variants: [drawing(["nnn", "nnn"], 12, 3), drawing(["nnn", ".nn"], 12, 3)],
+    },
+  ],
+};
+
+const BALLOON_9: SymmetryTemplate = {
+  id: "balon",
+  width: 9,
+  height: 23,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    ".........", // 0 top (part)
+    "...rrryyy", // 1
+    "..rrrryyy", // 2
+    ".........", // 3 stripes (part)
+    ".........", // 4
+    ".........", // 5
+    ".........", // 6
+    ".........", // 7
+    ".........", // 8
+    ".........", // 9
+    ".........", // 10
+    "..rrrryyy", // 11
+    "...rrryyy", // 12
+    "....rryyy", // 13
+    ".....ryyy", // 14
+    "......ryy", // 15
+    "......k..", // 16
+    "......k..", // 17
+    "......k..", // 18
+    ".........", // 19 basket (part)
+    ".........", // 20
+    ".........", // 21
+    ".........", // 22
+  ]),
+  parts: [
+    {
+      id: "top",
+      variants: [drawing(["ryyy"], 0, 5), drawing(["...."], 0, 5)],
+    },
+    {
+      id: "stripes",
+      variants: [
+        drawing(
+          [".brrrryyy", ".brrrryyy", "bbrrrryyy", "bbrrrryyy", "bbrrrryyy", "bbrrrryyy", ".brrrryyy", ".brrrryyy"],
+          3,
+          0,
+        ),
+        drawing(
+          [".gyyyyrrr", ".gyyyyrrr", "ggyyyyrrr", "ggyyyyrrr", "ggyyyyrrr", "ggyyyyrrr", ".gyyyyrrr", ".gyyyyrrr"],
+          3,
+          0,
+        ),
+      ],
+    },
+    {
+      id: "basket",
+      variants: [drawing(["nnnn", "nnnn", "nnnn", ".nnn"], 19, 5), drawing([".nnn", "nnnn", "nnnn", ".nnn"], 19, 5)],
+    },
+  ],
+};
+
+const UFO_4: SymmetryTemplate = {
+  id: "ufo",
+  width: 4,
+  height: 12,
+  holeColor: "yellow",
+  categories: ["kosmos"],
+  base: drawing([
+    "....", // 0 antenna (part)
+    "....", // 1
+    "..bb", // 2
+    ".bb.", // 3
+    "ssss", // 4
+    "....", // 5 lights (part)
+    ".sss", // 6
+    "....", // 7 beam (part)
+    "....", // 8
+    "....", // 9
+    "....", // 10
+    "....", // 11
+  ]),
+  parts: [
+    {
+      id: "antenna",
+      variants: [drawing(["r", "s"], 0, 3), drawing([".", "r"], 0, 3)],
+    },
+    {
+      id: "lights",
+      variants: [drawing(["sysy"], 5, 0), drawing(["ysys"], 5, 0)],
+    },
+    {
+      id: "beam",
+      variants: [
+        drawing(["..yy", ".yyy", ".yyy", "yyyy", "yyyy"], 7, 0),
+        drawing(["..yy", "..yy", ".yyy", ".yyy", "yyyy"], 7, 0),
+      ],
+    },
+  ],
+};
+
+const UFO_6: SymmetryTemplate = {
+  id: "ufo",
+  width: 6,
+  height: 15,
+  holeColor: "yellow",
+  categories: ["kosmos"],
+  base: drawing([
+    "......", // 0 antenna (part)
+    "......", // 1
+    "...bbb", // 2
+    "..bb.b", // 3
+    "..bbbb", // 4
+    ".sssss", // 5
+    "sysysy", // 6
+    ".sssss", // 7
+    "......", // 8 beam (part)
+    "......", // 9
+    "......", // 10
+    "......", // 11
+    "......", // 12
+    "......", // 13
+    "......", // 14
+  ]),
+  parts: [
+    {
+      id: "antenna",
+      variants: [drawing(["r", "s"], 0, 5), drawing([".", "r"], 0, 5)],
+    },
+    {
+      id: "beam",
+      variants: [
+        drawing(["...yyy", "...yyy", "..yyyy", "..yyyy", ".yyyyy", ".yyyyy", "yyyyyy"], 8, 0),
+        drawing(["....yy", "....yy", "...yyy", "...yyy", "..yyyy", "..yyyy", ".yyyyy"], 8, 0),
+      ],
+    },
+  ],
+};
+
+const UFO_9: SymmetryTemplate = {
+  id: "ufo",
+  width: 9,
+  height: 23,
+  holeColor: "yellow",
+  categories: ["kosmos"],
+  base: drawing([
+    ".........", // 0 antenna (part)
+    ".........", // 1
+    ".........", // 2
+    "......bbb", // 3
+    ".........", // 4 window (part)
+    ".....bbbb", // 5
+    "...ssssss", // 6
+    ".ssssssss", // 7
+    ".........", // 8 lights (part)
+    ".ssssssss", // 9
+    "...ssssss", // 10
+    ".....yyyy", // 11
+    ".....yyyy", // 12
+    "....yyyyy", // 13
+    "....yyyyy", // 14
+    "...yyyyyy", // 15
+    "...yyyyyy", // 16
+    "..yyyyyyy", // 17
+    "..yyyyyyy", // 18
+    ".yyyyyyyy", // 19
+    ".yyyyyyyy", // 20
+    "yyyyyyyyy", // 21
+    "yyyyyyyyy", // 22
+  ]),
+  parts: [
+    {
+      id: "antenna",
+      variants: [drawing(["r", "s", "s"], 0, 8), drawing([".", "r", "s"], 0, 8)],
+    },
+    {
+      id: "window",
+      variants: [drawing(["bb.b"], 4, 5), drawing(["bbb."], 4, 5)],
+    },
+    {
+      id: "lights",
+      variants: [drawing(["sysysysys"], 8, 0), drawing(["ysysysysy"], 8, 0)],
+    },
+  ],
+};
+
 export const KOSMOS: SymmetryObjectSizes = {
-  half4: [ROCKET_4, ROBOT_4],
-  half6: [ROCKET, ROBOT],
-  half9: [ROCKET_7, ROBOT_7],
+  half4: [ROCKET_4, ROBOT_4, BALLOON_4, UFO_4],
+  half6: [ROCKET, ROBOT, BALLOON_6, UFO_6],
+  half9: [ROCKET_7, ROBOT_7, BALLOON_9, UFO_9],
 };
