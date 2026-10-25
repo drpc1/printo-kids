@@ -45,10 +45,10 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-18 | picture-sudoku-first-printable    | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie   | —                | US-12, FR-021 | done        |
 | S-17 | sequence-difficulty-levels        | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                    | S-16             | US-11, FR-020 | done        |
 | S-19 | picture-sudoku-levels             | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                       | S-18             | US-13, FR-022 | done        |
-| S-20 | picture-sudoku-colors             | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                               | S-18             | US-14, FR-023 | ready       |
+| S-20 | picture-sudoku-colors             | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                               | S-18             | US-14, FR-023 | done        |
 | S-21 | template-object-catalog           | Rodzic dostaje na karcie symetrii (a potem na nonogramie i dyktandzie) więcej obiektów z pięciu kategorii po co najmniej cztery, każdy w trzech rozmiarach szablonu i z losowanymi częściami                                       | —                | US-19, FR-028 | in-progress |
-| S-22 | nonogram-first-printable          | Rodzic może wejść z katalogu na stronę nonogramu, wygenerować nonogram średni (12×15), którego jedynym rozwiązaniem jest sylwetka obiektu z szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4, także na telefonie   | —                | US-15, FR-024 | ready       |
-| S-23 | graphic-dictation-first-printable | Rodzic może wejść z katalogu na stronę dyktanda graficznego, wygenerować kartę ze strzałkami prowadzącymi po obrysie obiektu z szablonów (poziom 6 lat), zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —                | US-17, FR-026 | ready       |
+| S-22 | nonogram-first-printable          | Rodzic może wejść z katalogu na stronę nonogramu, wygenerować nonogram średni (12×15), którego jedynym rozwiązaniem jest sylwetka obiektu z szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4, także na telefonie   | —                | US-15, FR-024 | in-progress |
+| S-23 | graphic-dictation-first-printable | Rodzic może wejść z katalogu na stronę dyktanda graficznego, wygenerować kartę ze strzałkami prowadzącymi po obrysie obiektu z szablonów (poziom 6 lat), zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —                | US-17, FR-026 | done        |
 | S-24 | nonogram-sizes                    | Rodzic może wybrać rozmiar nonogramu (mały 8×12, średni 12×15, duży 18×24) na pasku strony nonogramu                                                                                                                               | S-22             | US-16, FR-025 | proposed    |
 | S-25 | graphic-dictation-levels          | Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5–7 lat: kratka i obiekty) na pasku strony dyktanda                                                                                                                | S-23             | US-18, FR-027 | proposed    |
 | S-26 | object-category-choice            | Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”                                                                                                                               | S-21, S-22, S-23 | US-20, FR-029 | proposed    |
@@ -149,7 +149,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Unknowns:**
   - Jakie przypisanie kolorów do kształtów? Rekomendacja: kolory kredek z symetrii (czerwony, zielony, żółty, niebieski, pomarańczowy, szary, czarny) plus dwa nowe (fioletowy, brązowy), bo 9×9 z kształtami potrzebuje dziewięciu kolorów. — Owner: user. Block: no.
 - **Risk:** Ukrycie przełącznika przy cyfrach wymaga S-19; jeśli S-20 idzie pierwsze, przełącznik dotyczy tylko 4×4. Pasek strony sudoku dzieli pliki z S-19.
-- **Status:** ready
+- **Status:** done
 
 ### S-21: Katalog obiektów z kategoriami
 
@@ -177,7 +177,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
   - Ile z dzisiejszych wariantów 12×15 ma nonogram z jednym rozwiązaniem? Jeśli za mało, S-21 albo poprawki szablonów muszą dojść przed wydaniem. — Owner: team. Block: no. Pokaże pierwszy solver.
   - Jak wyglądają liczby i kratka na czarnym druku (grubość linii co 5 kratek, rozmiar cyfr)? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
 - **Risk:** Solver sprawdzający jedno rozwiązanie jest jedynym nietrywialnym miejscem i musi zmieścić się w 5 s także dla 18×24 w S-24, więc powinien być testowany od razu na wszystkich trzech rozmiarach. Dzieli z S-23 katalog kart i miniatury.
-- **Status:** ready
+- **Status:** in-progress
 
 ### S-23: Dyktando graficzne: strona, generowanie, podgląd i druk A4
 
@@ -191,7 +191,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
   - Ile wariantów ma obrys, który nie dotyka sam siebie w narożniku kratki? — Owner: team. Block: no. Pokaże pierwsza implementacja.
   - Jak ułożyć listę poleceń na kartce (wiersze, rozmiar strzałek), żeby zmieściła się nad kratką? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
 - **Risk:** Lista poleceń dla bogatszych obiektów może być długa i zabrać miejsce kratce; poziom 7 lat w S-25 tego nie ułatwi. Dzieli z S-22 katalog kart i miniatury.
-- **Status:** ready
+- **Status:** done
 
 ### S-24: Rozmiary nonogramu
 
@@ -311,3 +311,5 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-18: Rodzic może wejść z katalogu na stronę „Sudoku” (`/sudoku`), wygenerować planszę 4×4 z czterema prostymi kształtami jako czarnymi konturami (w każdym wierszu brakuje jednego, miejsce losowe) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Generator i sprawdzenie jednego rozwiązania powstają od razu dla 4×4, 6×6 i 9×9 (bloki 2×2, 2×3, 3×3), ale strona pokazuje tylko 4×4.** — Archived 2026-10-24 → `context/archive/2026-10-23-picture-sudoku-first-printable/`. Lesson: —.
 - **S-17: Rodzic może wybrać poziom sekwencji nazwany wiekiem (4–7 lat: długość ciągu, rodzaj reguł, liczba pustych pól i ciągów) na pasku strony sekwencji.** — Archived 2026-10-24 → `context/archive/2026-10-24-sequence-difficulty-levels/`. Lesson: —.
 - **S-19: Rodzic może wybrać na pasku strony sudoku rozmiar (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: 6×6 — 12/18/22 pustych z 36, 9×9 — 35/45/52 z 81; 4×4 ma jeden poziom), a przy 6×6 przełącznikiem „Kształty / Cyfry” wybrać symbole.** — Archived 2026-10-24 → `context/archive/2026-10-24-picture-sudoku-levels/`. Lesson: —.
+- **S-20: Rodzic może włączyć kolory na karcie sudoku z kształtami; każdy kształt ma jeden stały kolor kredki na całej planszy, a przełącznik nie zmienia planszy. Domyślnie czarne kontury; przy cyfrach przełącznika nie ma.** — Archived 2026-10-25 → `context/archive/2026-10-25-picture-sudoku-colors/`. Lesson: —.
+- **S-23: Rodzic może wejść z katalogu na stronę „Dyktando graficzne”, wygenerować kartę z poleceniami (liczba kratek i strzałka) prowadzącymi od kropki startu po zewnętrznym obrysie obiektu z katalogu szablonów (poziom 6 lat, obiekty 12×15), zobaczyć podgląd i wydrukować ją jako jedną stronę A4 bez rysunku odpowiedzi, także na telefonie.** — Archived 2026-10-25 → `context/archive/2026-10-25-graphic-dictation-first-printable/`. Lesson: —.

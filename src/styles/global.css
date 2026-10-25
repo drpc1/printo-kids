@@ -56,7 +56,7 @@
   --shadow-2xl: 0px 4px 12px 0px hsl(30 18.4211% 14.902% / 0.2);
   --tracking-normal: 0.015em;
   --spacing: 0.25rem;
-  /* Crayon colors of the symmetry card. Only in :root: paper stays white, so they do not flip in .dark. */
+  /* Crayon colors of the symmetry and sudoku cards. Only in :root: paper stays white, so they do not flip in .dark. */
   --symmetry-red: oklch(0.58 0.21 27);
   --symmetry-green: oklch(0.62 0.17 145);
   --symmetry-yellow: oklch(0.8 0.16 85);
@@ -64,7 +64,8 @@
   --symmetry-orange: oklch(0.7 0.18 50);
   --symmetry-gray: oklch(0.62 0 0);
   --symmetry-black: oklch(0.2 0 0);
-  --symmetry-brown: oklch(0.5 0.1 55);
+  --symmetry-purple: oklch(0.48 0.17 305);
+  --symmetry-brown: oklch(0.42 0.07 55);
 }
 
 .dark {
