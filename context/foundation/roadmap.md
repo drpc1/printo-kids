@@ -39,19 +39,19 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                         | Outcome (user can …)                                                                                                                                                                                                               | Prerequisites    | PRD refs      | Status      |
-| ---- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------- | ----------- |
-| S-16 | sequences-first-printable         | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie    | —                | US-10, FR-019 | done        |
-| S-18 | picture-sudoku-first-printable    | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie   | —                | US-12, FR-021 | done        |
-| S-17 | sequence-difficulty-levels        | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                    | S-16             | US-11, FR-020 | done        |
-| S-19 | picture-sudoku-levels             | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                       | S-18             | US-13, FR-022 | done        |
-| S-20 | picture-sudoku-colors             | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                               | S-18             | US-14, FR-023 | done        |
-| S-21 | template-object-catalog           | Rodzic dostaje na karcie symetrii (a potem na nonogramie i dyktandzie) więcej obiektów z pięciu kategorii po co najmniej cztery, każdy w trzech rozmiarach szablonu i z losowanymi częściami                                       | —                | US-19, FR-028 | in-progress |
-| S-22 | nonogram-first-printable          | Rodzic może wejść z katalogu na stronę nonogramu, wygenerować nonogram średni (12×15), którego jedynym rozwiązaniem jest sylwetka obiektu z szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4, także na telefonie   | —                | US-15, FR-024 | done        |
-| S-23 | graphic-dictation-first-printable | Rodzic może wejść z katalogu na stronę dyktanda graficznego, wygenerować kartę ze strzałkami prowadzącymi po obrysie obiektu z szablonów (poziom 6 lat), zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —                | US-17, FR-026 | done        |
-| S-24 | nonogram-sizes                    | Rodzic może wybrać rozmiar nonogramu (mały 8×12, średni 12×15, duży 18×24) na pasku strony nonogramu                                                                                                                               | S-22             | US-16, FR-025 | proposed    |
-| S-25 | graphic-dictation-levels          | Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5–7 lat: kratka i obiekty) na pasku strony dyktanda                                                                                                                | S-23             | US-18, FR-027 | in-progress |
-| S-26 | object-category-choice            | Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”                                                                                                                               | S-21, S-22, S-23 | US-20, FR-029 | proposed    |
+| ID   | Change ID                         | Outcome (user can …)                                                                                                                                                                                                               | Prerequisites    | PRD refs      | Status   |
+| ---- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------- | -------- |
+| S-16 | sequences-first-printable         | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie    | —                | US-10, FR-019 | done     |
+| S-18 | picture-sudoku-first-printable    | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie   | —                | US-12, FR-021 | done     |
+| S-17 | sequence-difficulty-levels        | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                    | S-16             | US-11, FR-020 | done     |
+| S-19 | picture-sudoku-levels             | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                       | S-18             | US-13, FR-022 | done     |
+| S-20 | picture-sudoku-colors             | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                               | S-18             | US-14, FR-023 | done     |
+| S-21 | template-object-catalog           | Rodzic dostaje na karcie symetrii (a potem na nonogramie i dyktandzie) więcej obiektów z pięciu kategorii po co najmniej cztery, każdy w trzech rozmiarach szablonu i z losowanymi częściami                                       | —                | US-19, FR-028 | done     |
+| S-22 | nonogram-first-printable          | Rodzic może wejść z katalogu na stronę nonogramu, wygenerować nonogram średni (12×15), którego jedynym rozwiązaniem jest sylwetka obiektu z szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4, także na telefonie   | —                | US-15, FR-024 | done     |
+| S-23 | graphic-dictation-first-printable | Rodzic może wejść z katalogu na stronę dyktanda graficznego, wygenerować kartę ze strzałkami prowadzącymi po obrysie obiektu z szablonów (poziom 6 lat), zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —                | US-17, FR-026 | done     |
+| S-24 | nonogram-sizes                    | Rodzic może wybrać rozmiar nonogramu (mały 8×12, średni 12×15, duży 18×24) na pasku strony nonogramu                                                                                                                               | S-22             | US-16, FR-025 | proposed |
+| S-25 | graphic-dictation-levels          | Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5–7 lat: kratka i obiekty) na pasku strony dyktanda                                                                                                                | S-23             | US-18, FR-027 | done     |
+| S-26 | object-category-choice            | Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”                                                                                                                               | S-21, S-22, S-23 | US-20, FR-029 | done     |
 
 ## Streams
 
@@ -163,7 +163,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
   - Jak wyglądają nowe obiekty w każdym rozmiarze i które części losować? Rozstrzyga makieta przed planem, jak przy pierwszych szablonach. — Owner: user. Block: no.
   - Czy siedem kolorów kredek wystarczy (brak brązowego dla pnia, sowy, gruszki)? Jeśli S-20 doda kolory dla sudoku, katalog może z nich skorzystać. — Owner: user. Block: no. Rozstrzygnięte 2026-10-25 po makiecie: brązowy dochodzi do palety symetrii, a szablon może zostawić dziury białe.
 - **Risk:** Około 17 nowych obiektów w trzech rozmiarach to najwięcej treści w kamieniu; plan może podzielić slice po kategoriach. Najmniejsza połowa (4×12) ma tylko 4 kratki szerokości, więc część obiektów może wymagać zamiany na inny z tej samej kategorii. Każdy szablon musi przejść reguły symetrii (dotyka osi, co najmniej 3 kratki przy osi na podpowiedź poziomu 4 lat).
-- **Status:** in-progress
+- **Status:** done
 
 ### S-22: Nonogram: strona, generowanie, podgląd i druk A4
 
@@ -217,7 +217,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Unknowns:**
   - Czy startowe wartości pasują dziecku? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 11).
 - **Risk:** Poziom 7 lat ma najdłuższą listę poleceń i najmniejszą kratkę; oba muszą zmieścić się na jednej stronie A4. Poziom żyje w stanie strony.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-26: Wybór kategorii obiektów
 
@@ -228,9 +228,9 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Parallel with:** S-20, S-24, S-25
 - **Blockers:** —
 - **Unknowns:**
-  - Czy kategoria zostawia dość obiektów w każdym rozmiarze po odrzuceniach nonogramu i dyktanda, żeby kolejne karty się nie powtarzały? — Owner: team. Block: no. PRD Open Questions 11.
+  - Czy kategoria zostawia dość obiektów w każdym rozmiarze po odrzuceniach nonogramu i dyktanda, żeby kolejne karty się nie powtarzały? — Owner: team. Block: no. PRD Open Questions 11. Rozstrzygnięte 2026-10-25: najmniej 3 obiekty i 8 obrysów w każdej kombinacji, więc bez komunikatu i bez wyłączania kategorii.
 - **Risk:** Dotyka paska trzech stron naraz; pasek symetrii ma już poziom i kolory, a nonogram rozmiar, więc kategoria musi zmieścić się na telefonie. Czeka na S-22 i S-23, żeby nie dorabiać kategorii do każdej strony osobno. Kategoria żyje w stanie strony.
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -254,7 +254,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
 2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (od 2026-10-24 sudoku nie używa postaci; publikacja szerszego katalogu czeka).
-3. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Issue #54, PRD Open Questions 4. Nie należy do M-3.
+3. ~~**Czy poziom nastolatka ma pokazywać postać?**~~ — Zamknięte 2026-10-25: na nastolatku wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”; młodsze poziomy zostają ze znakiem na środku wejścia (`teen-level-character-choice`, issue #54).
 4. **Czy startowe wartości poziomów symetrii, sekwencji i sudoku pasują dziecku?** — Owner: user. Block: no. PRD Open Questions 5 i 9.
 5. ~~**Czy sudoku obrazkowe uzupełnia się numerem z legendy, czy rysunkiem postaci?**~~ — Zamknięte 2026-10-24: kształty do narysowania albo cyfry, bez postaci (PRD Open Questions 8).
 6. **Kiedy wraca S-14 (profil z wiekiem i poziomami per rodzaj karty)?** — Owner: user. Block: no. PRD Open Questions 10.
@@ -314,3 +314,6 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-20: Rodzic może włączyć kolory na karcie sudoku z kształtami; każdy kształt ma jeden stały kolor kredki na całej planszy, a przełącznik nie zmienia planszy. Domyślnie czarne kontury; przy cyfrach przełącznika nie ma.** — Archived 2026-10-25 → `context/archive/2026-10-25-picture-sudoku-colors/`. Lesson: —.
 - **S-23: Rodzic może wejść z katalogu na stronę „Dyktando graficzne”, wygenerować kartę z poleceniami (liczba kratek i strzałka) prowadzącymi od kropki startu po zewnętrznym obrysie obiektu z katalogu szablonów (poziom 6 lat, obiekty 12×15), zobaczyć podgląd i wydrukować ją jako jedną stronę A4 bez rysunku odpowiedzi, także na telefonie.** — Archived 2026-10-25 → `context/archive/2026-10-25-graphic-dictation-first-printable/`. Lesson: —.
 - **S-22: Rodzic może wejść z katalogu na stronę „Nonogram”, wygenerować nonogram średni (12×15) z liczbami przy wierszach i nad kolumnami, którego jedynym rozwiązaniem jest cała sylwetka obiektu z katalogu szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4 bez rozwiązania, także na telefonie.** — Archived 2026-10-25 → `context/archive/2026-10-25-nonogram-first-printable/`. Lesson: —.
+- **S-21: Rodzic klikający Generuj na karcie symetrii widzi więcej obiektów niż rakieta, robot i truskawka. Katalog ma pięć kategorii (Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle) po co najmniej cztery obiekty, każdy w trzech rozmiarach szablonu (połowa 4×12, 6×15, 9×24), z losowanymi częściami, kolorem kredki każdej kratki i etykietą kategorii. Wyboru kategorii na pasku jeszcze nie ma (S-26); generator losuje ze wszystkich. Nonogram i dyktando biorą obiekty z tego samego katalogu.** — Archived 2026-10-25 → `context/archive/2026-10-25-template-object-catalog/`. Lesson: —.
+- **S-25: Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5 lat: kratka około 14 mm i obiekty 8×12; 6 lat: 11 mm i 12×15; 7 lat: 8 mm i 18×24) na pasku strony dyktanda.** — Archived 2026-10-25 → `context/archive/2026-10-25-graphic-dictation-levels/`. Lesson: —.
+- **S-26: Rodzic może wybrać na pasku strony symetrii, nonogramu i dyktanda graficznego „Kategoria”: Wszystkie, Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny albo Domy i budowle. Można wybrać dokładnie jedną, domyślnie „Wszystkie”; kolejne Generuj losuje obiekt tylko z niej.** — Archived 2026-10-25 → `context/archive/2026-10-25-object-category-choice/`. Lesson: —.
