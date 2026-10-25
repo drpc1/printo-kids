@@ -254,7 +254,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
 2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (od 2026-10-24 sudoku nie używa postaci; publikacja szerszego katalogu czeka).
-3. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Issue #54, PRD Open Questions 4. Nie należy do M-3.
+3. ~~**Czy poziom nastolatka ma pokazywać postać?**~~ — Zamknięte 2026-10-25: na nastolatku wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”; młodsze poziomy zostają ze znakiem na środku wejścia (`teen-level-character-choice`, issue #54).
 4. **Czy startowe wartości poziomów symetrii, sekwencji i sudoku pasują dziecku?** — Owner: user. Block: no. PRD Open Questions 5 i 9.
 5. ~~**Czy sudoku obrazkowe uzupełnia się numerem z legendy, czy rysunkiem postaci?**~~ — Zamknięte 2026-10-24: kształty do narysowania albo cyfry, bez postaci (PRD Open Questions 8).
 6. **Kiedy wraca S-14 (profil z wiekiem i poziomami per rodzaj karty)?** — Owner: user. Block: no. PRD Open Questions 10.
