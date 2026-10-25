@@ -204,8 +204,8 @@ Zapisane pary „postać + nastolatek” w ostatnio użytych parametrach i w pro
 
 #### Automated
 
-- [ ] 1.1 `npm test` passes, with nastolatek drawing a 30×30 mark whose left edge equals the maze left edge and whose top band matches the band below Meta
-- [ ] 1.2 `npm run lint` passes
+- [x] 1.1 `npm test` passes, with nastolatek drawing a 30×30 mark whose left edge equals the maze left edge and whose top band matches the band below Meta
+- [x] 1.2 `npm run lint` passes
 
 #### Manual
 

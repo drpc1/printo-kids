@@ -78,7 +78,7 @@ void describe("LEVELS", () => {
           entrance: { row: 0, col: 0 },
           exit: { row: 32, col: 26 },
           algorithm: "backtracker",
-          showCharacter: false,
+          showCharacter: true,
         },
       ],
     );
