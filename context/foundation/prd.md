@@ -267,7 +267,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Kolory to osobny przełącznik na pasku strony sudoku, jak w symetrii (US-09). Domyślnie są wyłączone: kształty są czarnymi konturami.
-- Każdy kształt ma jeden stały kolor na całej planszy (np. koło czerwone, trójkąt zielony). Bez liter i bez legendy kolorów. Na drukarce czarno-białej kolory schodzą do odcieni szarości.
+- Każdy kształt ma jeden stały kolor na całej planszy (np. serce czerwone, koło niebieskie, trójkąt zielony). Bez liter i bez legendy kolorów. Na drukarce czarno-białej kolory schodzą do odcieni szarości.
 - Przełączenie kolorów zostawia tę samą planszę; nie generuje nowej.
 - Przy cyfrach przełącznik kolorów nie jest dostępny.
 
@@ -444,7 +444,7 @@ Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księ�
 
 Plansza 4×4 z jednym pustym polem w każdym wierszu ma zawsze jedno rozwiązanie: brakujący kształt wynika z samego wiersza.
 
-Kolory (US-14): przy kształtach rodzic może włączyć kolory. Każdy kształt ma wtedy jeden stały kolor kredki na całej planszy, bez liter i bez legendy. Przełącznik nie zmienia planszy. Domyślnie kształty są czarnymi konturami. Przy cyfrach kolorów nie ma.
+Kolory (US-14): przy kształtach rodzic może włączyć kolory. Każdy kształt ma wtedy jeden stały kolor kredki na całej planszy, bez liter i bez legendy. Przypisanie (zatwierdzone na wydruku 2026-10-25, kształty wypełnione kolorem): serce czerwone, koło niebieskie, trójkąt zielony, kwadrat pomarańczowy, krzyżyk fioletowy, gwiazdka żółta, romb brązowy, księżyc szary, kropla czarna. Przełącznik nie zmienia planszy. Domyślnie kształty są czarnymi konturami. Przy cyfrach kolorów nie ma.
 
 Wartości są startowe i zostają potwierdzone na wydruku; użytkowniczka nie jest pewna, czy 6×6 i 9×9 nie są za trudne (Open Questions 9). Wynikiem jest karta A4: plansza zajmuje większą część strony i zachowuje margines co najmniej 10 mm.
 
