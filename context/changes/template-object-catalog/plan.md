@@ -294,9 +294,9 @@ Generator losuje szablon w O(1) i sprawdza jedną kartę naraz; 22 szablony zami
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.1 Testy przechodzą: `npm test` — b447ad6
+- [x] 1.2 Lint przechodzi: `npm run lint` — b447ad6
+- [x] 1.3 Typy przechodzą: `npx astro check` — b447ad6
 
 #### Manual
 
@@ -306,8 +306,8 @@ Generator losuje szablon w O(1) i sprawdza jedną kartę naraz; 22 szablony zami
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
 
 #### Manual
 
