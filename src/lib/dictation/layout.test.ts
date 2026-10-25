@@ -1,27 +1,32 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { layoutDictationSheet, type DictationSheetInput, type DictationSheetLayout } from "./layout.ts";
-import { DICTATION_LEVEL_LAT6 } from "./levels.ts";
-import { DICTATION_ARROWS, DICTATION_MAX_COMMANDS, DICTATION_SHEET, formatDictationCommand } from "./sheet.ts";
+import { DICTATION_LEVELS, DICTATION_LEVEL_LAT6, type DictationLevel } from "./levels.ts";
+import { DICTATION_ARROWS, DICTATION_SHEET, formatDictationCommand } from "./sheet.ts";
 
-const { pageWidth, pageHeight, inset, commandsPerRow } = DICTATION_SHEET;
+const { pageWidth, pageHeight, inset } = DICTATION_SHEET;
 const LEVEL = DICTATION_LEVEL_LAT6;
+const { commandsPerRow, maxCommands } = LEVEL;
 const BOX_WIDTH = (pageWidth - inset * 2) / commandsPerRow;
 
-const INPUT: DictationSheetInput = {
-  pageWidth,
-  pageHeight,
-  inset,
-  columns: LEVEL.columns,
-  rows: LEVEL.rows,
-  cellSize: LEVEL.cellSize,
-  commandCount: DICTATION_MAX_COMMANDS,
-  commandsPerRow,
-  commandRowHeight: DICTATION_SHEET.commandRowHeight,
-  instructionSize: DICTATION_SHEET.instructionSize,
-  instructionGap: DICTATION_SHEET.instructionGap,
-  listGap: DICTATION_SHEET.listGap,
-};
+function inputFor(level: DictationLevel, commandCount: number = level.maxCommands): DictationSheetInput {
+  return {
+    pageWidth,
+    pageHeight,
+    inset,
+    columns: level.columns,
+    rows: level.rows,
+    cellSize: level.cellSize,
+    commandCount,
+    commandsPerRow: level.commandsPerRow,
+    commandRowHeight: level.commandRowHeight,
+    instructionSize: DICTATION_SHEET.instructionSize,
+    instructionGap: DICTATION_SHEET.instructionGap,
+    listGap: DICTATION_SHEET.listGap,
+  };
+}
+
+const INPUT = inputFor(LEVEL);
 
 void describe("layoutDictationSheet", () => {
   void test("the 6 lat grid is 154 by 187 on a 210 by 297 page", () => {
@@ -55,10 +60,10 @@ void describe("layoutDictationSheet", () => {
   void test("command boxes are in reading order without overlap", () => {
     const sheet = layoutDictationSheet(INPUT);
 
-    assert.equal(sheet.commands.length, DICTATION_MAX_COMMANDS);
+    assert.equal(sheet.commands.length, maxCommands);
     sheet.commands.forEach((box, index) => {
       assert.ok(Math.abs(box.x - (inset + (index % commandsPerRow) * BOX_WIDTH)) <= 1e-9);
-      assert.equal(box.y, sheet.commands[0].y + Math.floor(index / commandsPerRow) * DICTATION_SHEET.commandRowHeight);
+      assert.equal(box.y, sheet.commands[0].y + Math.floor(index / commandsPerRow) * LEVEL.commandRowHeight);
       if (index === 0) return;
       const previous = sheet.commands[index - 1];
       const sameRow = box.y === previous.y;
@@ -84,17 +89,19 @@ void describe("layoutDictationSheet", () => {
   });
 
   void test("too many commands throws", () => {
-    assert.throws(() => layoutDictationSheet({ ...INPUT, commandCount: DICTATION_MAX_COMMANDS + 1 }));
+    assert.throws(() => layoutDictationSheet({ ...INPUT, commandCount: maxCommands + 1 }));
   });
 
   void test("a grid too wide for the margin throws", () => {
     assert.throws(() => layoutDictationSheet({ ...INPUT, columns: 18 }));
   });
 
-  void test("DICTATION_MAX_COMMANDS is whole rows and the true maximum for 6 lat", () => {
-    assert.equal(DICTATION_MAX_COMMANDS % commandsPerRow, 0);
-    assert.doesNotThrow(() => layoutDictationSheet(INPUT));
-    assert.throws(() => layoutDictationSheet({ ...INPUT, commandCount: DICTATION_MAX_COMMANDS + commandsPerRow }));
+  void test("every level's maxCommands is whole rows and the true maximum of its sheet", () => {
+    for (const level of DICTATION_LEVELS) {
+      assert.equal(level.maxCommands % level.commandsPerRow, 0, level.id);
+      assertInsideMargin(layoutDictationSheet(inputFor(level)));
+      assert.throws(() => layoutDictationSheet(inputFor(level, level.maxCommands + level.commandsPerRow)), Error);
+    }
   });
 });
 
