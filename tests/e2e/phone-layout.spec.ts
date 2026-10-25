@@ -204,6 +204,47 @@ test("the sudoku page fits the screen and Generuj, Drukuj and Profil do not cove
   expect(boxes.drukuj.height).toBeGreaterThanOrEqual(44);
 });
 
+test("every sudoku size with digits fits the screen and keeps Rozmiar, Poziom, Cyfry, Generuj, Drukuj and Profil apart", async ({
+  page,
+}) => {
+  await page.goto("/sudoku");
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Sudoku" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Poziom:/ })).toHaveCount(0);
+
+  for (const size of ["6×6", "9×9"]) {
+    await page.getByRole("button", { name: /^Rozmiar:/ }).click();
+    await page.getByRole("button", { name: size, exact: true }).click();
+    await expect(page.getByRole("button", { name: `Rozmiar: ${size}` })).toBeVisible();
+    await page.getByRole("button", { name: "Cyfry", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Cyfry", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("img", { name: "Sudoku" })).toBeVisible();
+    await settle(page);
+    await expectNoSidewaysScroll(page);
+
+    const width = viewportWidth(page);
+    const boxes = {
+      rozmiar: await viewportBox(page.getByRole("button", { name: /^Rozmiar:/ })),
+      poziom: await viewportBox(page.getByRole("button", { name: /^Poziom:/ })),
+      cyfry: await viewportBox(page.getByRole("button", { name: "Cyfry", exact: true })),
+      generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+      drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+      profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+    };
+    const names = Object.keys(boxes) as (keyof typeof boxes)[];
+    for (const [index, first] of names.entries()) {
+      for (const second of names.slice(index + 1)) {
+        expect(overlaps(boxes[first], boxes[second]), `${size}: ${first} overlaps ${second}`).toBe(false);
+      }
+      expect(boxes[first].x, `${size}: ${first}`).toBeGreaterThanOrEqual(0);
+      expect(boxes[first].x + boxes[first].width, `${size}: ${first}`).toBeLessThanOrEqual(width);
+    }
+  }
+
+  const sheet = page.getByRole("img", { name: "Sudoku" });
+  await expect(sheet.locator("text")).not.toHaveCount(0);
+});
+
 test("every symmetry level fits the screen and keeps Poziom, Kolory, Generuj, Drukuj and Profil apart", async ({
   page,
 }) => {
