@@ -1,7 +1,7 @@
 ---
 change_id: template-object-catalog
 title: Katalog obiektów symetrii w pięciu kategoriach (S-21)
-status: implementing
+status: implemented
 created: 2026-10-25
 updated: 2026-10-25
 archived_at: null

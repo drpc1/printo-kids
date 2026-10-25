@@ -300,7 +300,7 @@ Generator losuje szablon w O(1) i sprawdza jedną kartę naraz; 22 szablony zami
 
 #### Manual
 
-- [x] 1.4 Na `/symetria` rakieta, robot i truskawka wyglądają jak przed zmianą na każdym poziomie, z kolorami i bez
+- [x] 1.4 Na `/symetria` rakieta, robot i truskawka wyglądają jak przed zmianą na każdym poziomie, z kolorami i bez — 4fef6ce
 
 ### Phase 2: Zwierzęta
 
@@ -311,7 +311,7 @@ Generator losuje szablon w O(1) i sprawdza jedną kartę naraz; 22 szablony zami
 
 #### Manual
 
-- [x] 2.3 Na `/symetria` zwierzęta pojawiają się po kilku Generuj na każdym poziomie i są rozpoznawalne jako czarna sylwetka i w kolorach
+- [x] 2.3 Na `/symetria` zwierzęta pojawiają się po kilku Generuj na każdym poziomie i są rozpoznawalne jako czarna sylwetka i w kolorach — 4fef6ce
 
 ### Phase 3: Jedzenie
 
@@ -322,7 +322,7 @@ Generator losuje szablon w O(1) i sprawdza jedną kartę naraz; 22 szablony zami
 
 #### Manual
 
-- [x] 3.3 Na `/symetria` nowe jedzenie pojawia się po kilku Generuj na każdym poziomie i jest rozpoznawalne jako czarna sylwetka i w kolorach
+- [x] 3.3 Na `/symetria` nowe jedzenie pojawia się po kilku Generuj na każdym poziomie i jest rozpoznawalne jako czarna sylwetka i w kolorach — 4fef6ce
 
 ### Phase 4: Przyroda
 
@@ -333,18 +333,18 @@ Generator losuje szablon w O(1) i sprawdza jedną kartę naraz; 22 szablony zami
 
 #### Manual
 
-- [x] 4.3 Na `/symetria` obiekty przyrody pojawiają się po kilku Generuj na każdym poziomie i są rozpoznawalne jako czarna sylwetka i w kolorach
+- [x] 4.3 Na `/symetria` obiekty przyrody pojawiają się po kilku Generuj na każdym poziomie i są rozpoznawalne jako czarna sylwetka i w kolorach — 4fef6ce
 
 ### Phase 5: Kosmos i maszyny, Domy i budowle, domknięcie
 
 #### Automated
 
-- [x] 5.1 Testy przechodzą: `npm test`
-- [x] 5.2 Lint przechodzi: `npm run lint`
-- [x] 5.3 Typy przechodzą: `npx astro check`
-- [x] 5.4 Build przechodzi: `npm run build`
+- [x] 5.1 Testy przechodzą: `npm test` — 4fef6ce
+- [x] 5.2 Lint przechodzi: `npm run lint` — 4fef6ce
+- [x] 5.3 Typy przechodzą: `npx astro check` — 4fef6ce
+- [x] 5.4 Build przechodzi: `npm run build` — 4fef6ce
 
 #### Manual
 
-- [x] 5.5 Na `/symetria` po kilkunastu Generuj na każdym poziomie widać obiekty ze wszystkich pięciu kategorii, czytelne jako czarna sylwetka i w kolorach
+- [x] 5.5 Na `/symetria` po kilkunastu Generuj na każdym poziomie widać obiekty ze wszystkich pięciu kategorii, czytelne jako czarna sylwetka i w kolorach — 4fef6ce
 - [x] 5.6 Wydruk (podgląd druku) karty 4 lat i 7 lat z kolorami mieści się na jednej stronie A4; brązowy i białe dziury wyglądają poprawnie
