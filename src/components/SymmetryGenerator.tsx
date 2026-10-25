@@ -3,12 +3,17 @@ import { Printer } from "lucide-react";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
-import { SymmetryLevelChoice } from "@/components/SymmetryLevelChoice";
+import { LevelChoice } from "@/components/LevelChoice";
 import { Switch } from "@/components/ui/switch";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { symmetryDrawnCells } from "@/lib/symmetry/colors";
 import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
-import { DEFAULT_SYMMETRY_LEVEL_ID, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
+import {
+  DEFAULT_SYMMETRY_LEVEL_ID,
+  SYMMETRY_LEVELS,
+  symmetryLevelById,
+  type SymmetryLevelId,
+} from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
 import { cn } from "@/lib/utils";
@@ -78,11 +83,13 @@ export default function SymmetryGenerator() {
   }
 
   const levelControl = (
-    <SymmetryLevelChoice
+    <LevelChoice
       level={symmetryLevelById(levelId)}
+      levels={SYMMETRY_LEVELS}
       open={levelOpen}
       onOpenChange={setLevelOpen}
       onSelect={handleLevelSelect}
+      disabled={waitingForChild}
     />
   );
   const colorsControl = (
