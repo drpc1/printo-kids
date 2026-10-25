@@ -25,7 +25,7 @@ milestone_status: open
 - **Intent:** Pokazać, że katalog kart rośnie o kilka rodzajów naraz bez przebudowy: karta sekwencji (dziecko uzupełnia brakujące elementy ciągu liczb i kształtów) i karta sudoku 4×4, 6×6 i 9×9 z prostymi kształtami albo cyframi (przebudowane 2026-10-24). Rozszerzone 2026-10-25 na prośbę użytkownika o nonogram i dyktando graficzne, których obrazkiem jest obiekt z katalogu szablonów symetrii, oraz o nowe obiekty w tym katalogu. Każda karta ma własną stronę, własne poziomy albo rozmiary, podgląd i druk jako jedna strona A4, także z telefonu. Strumienie idą równolegle. Profil z wiekiem i poziomami per rodzaj karty (S-14) zostaje poza tym kamieniem.
 - **Source materials:** `context/foundation/prd.md` (v4)
 - **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcje „Po tym kamieniu” i „Parked” nie wliczają się.
-- **Scope anchors:** US-10–US-19, FR-019–FR-028, NFR „Karty sekwencji i sudoku…” i „Nonogram i dyktando graficzne…”, Business Logic „Karta sekwencji”, „Karta sudoku”, „Katalog szablonów obiektów”, „Karta nonogramu” i „Karta dyktanda graficznego”. Labirynt zostaje bez zmian; symetria dostaje tylko nowe obiekty.
+- **Scope anchors:** US-10–US-20, FR-019–FR-029, NFR „Karty sekwencji i sudoku…” i „Nonogram i dyktando graficzne…”, Business Logic „Karta sekwencji”, „Karta sudoku”, „Katalog szablonów obiektów”, „Karta nonogramu” i „Karta dyktanda graficznego”. Labirynt zostaje bez zmian; symetria dostaje tylko nowe obiekty i wybór kategorii.
 
 ## Vision recap
 
@@ -39,30 +39,31 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                         | Outcome (user can …)                                                                                                                                                                                                               | Prerequisites | PRD refs      | Status   |
-| ---- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------- | -------- |
-| S-16 | sequences-first-printable         | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie    | —             | US-10, FR-019 | done     |
-| S-18 | picture-sudoku-first-printable    | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie   | —             | US-12, FR-021 | done     |
-| S-17 | sequence-difficulty-levels        | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                    | S-16          | US-11, FR-020 | done     |
-| S-19 | picture-sudoku-levels             | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                       | S-18          | US-13, FR-022 | done     |
-| S-20 | picture-sudoku-colors             | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                               | S-18          | US-14, FR-023 | ready    |
-| S-21 | template-object-catalog           | Rodzic dostaje na karcie symetrii (a potem na nonogramie i dyktandzie) więcej obiektów: jabłko, motyl, koronę, choinkę i domek, każdy w trzech rozmiarach szablonu i z losowanymi częściami                                        | —             | US-19, FR-028 | ready    |
-| S-22 | nonogram-first-printable          | Rodzic może wejść z katalogu na stronę nonogramu, wygenerować nonogram średni (12×15), którego jedynym rozwiązaniem jest sylwetka obiektu z szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4, także na telefonie   | —             | US-15, FR-024 | ready    |
-| S-23 | graphic-dictation-first-printable | Rodzic może wejść z katalogu na stronę dyktanda graficznego, wygenerować kartę ze strzałkami prowadzącymi po obrysie obiektu z szablonów (poziom 6 lat), zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —             | US-17, FR-026 | ready    |
-| S-24 | nonogram-sizes                    | Rodzic może wybrać rozmiar nonogramu (mały 8×12, średni 12×15, duży 18×24) na pasku strony nonogramu                                                                                                                               | S-22          | US-16, FR-025 | proposed |
-| S-25 | graphic-dictation-levels          | Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5–7 lat: kratka i obiekty) na pasku strony dyktanda                                                                                                                | S-23          | US-18, FR-027 | proposed |
+| ID   | Change ID                         | Outcome (user can …)                                                                                                                                                                                                               | Prerequisites    | PRD refs      | Status   |
+| ---- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------- | -------- |
+| S-16 | sequences-first-printable         | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie    | —                | US-10, FR-019 | done     |
+| S-18 | picture-sudoku-first-printable    | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie   | —                | US-12, FR-021 | done     |
+| S-17 | sequence-difficulty-levels        | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                    | S-16             | US-11, FR-020 | done     |
+| S-19 | picture-sudoku-levels             | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                       | S-18             | US-13, FR-022 | done     |
+| S-20 | picture-sudoku-colors             | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                               | S-18             | US-14, FR-023 | ready    |
+| S-21 | template-object-catalog           | Rodzic dostaje na karcie symetrii (a potem na nonogramie i dyktandzie) więcej obiektów z pięciu kategorii po co najmniej cztery, każdy w trzech rozmiarach szablonu i z losowanymi częściami                                       | —                | US-19, FR-028 | ready    |
+| S-22 | nonogram-first-printable          | Rodzic może wejść z katalogu na stronę nonogramu, wygenerować nonogram średni (12×15), którego jedynym rozwiązaniem jest sylwetka obiektu z szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4, także na telefonie   | —                | US-15, FR-024 | ready    |
+| S-23 | graphic-dictation-first-printable | Rodzic może wejść z katalogu na stronę dyktanda graficznego, wygenerować kartę ze strzałkami prowadzącymi po obrysie obiektu z szablonów (poziom 6 lat), zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —                | US-17, FR-026 | ready    |
+| S-24 | nonogram-sizes                    | Rodzic może wybrać rozmiar nonogramu (mały 8×12, średni 12×15, duży 18×24) na pasku strony nonogramu                                                                                                                               | S-22             | US-16, FR-025 | proposed |
+| S-25 | graphic-dictation-levels          | Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5–7 lat: kratka i obiekty) na pasku strony dyktanda                                                                                                                | S-23             | US-18, FR-027 | proposed |
+| S-26 | object-category-choice            | Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”                                                                                                                               | S-21, S-22, S-23 | US-20, FR-029 | proposed |
 
 ## Streams
 
 Navigation aid — groups items that share a Prerequisites chain. Canonical ordering still lives in the dependency graph below; this table is the proposed reading order across parallel tracks.
 
-| Stream | Theme     | Chain                            | Note                                                                                    |
-| ------ | --------- | -------------------------------- | --------------------------------------------------------------------------------------- |
-| A      | Sekwencje | `S-16` → `S-17`                  | Gwiazda przewodnia kamienia; poziomy dopiero po pierwszej drukowalnej karcie.           |
-| B      | Sudoku    | `S-18` → `S-19`, `S-18` → `S-20` | Równolegle do strumienia A; obie pierwsze karty dotykają katalogu (`src/lib/cards.ts`). |
-| C      | Obiekty   | `S-21`                           | Nowe szablony; nonogram i dyktando dostają je automatycznie, gdy już istnieją.          |
-| D      | Nonogram  | `S-22` → `S-24`                  | Równolegle do C i E; rozmiary dopiero po pierwszej drukowalnej karcie.                  |
-| E      | Dyktando  | `S-23` → `S-25`                  | Równolegle do C i D; poziomy dopiero po pierwszej drukowalnej karcie.                   |
+| Stream | Theme     | Chain                            | Note                                                                                                 |
+| ------ | --------- | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| A      | Sekwencje | `S-16` → `S-17`                  | Gwiazda przewodnia kamienia; poziomy dopiero po pierwszej drukowalnej karcie.                        |
+| B      | Sudoku    | `S-18` → `S-19`, `S-18` → `S-20` | Równolegle do strumienia A; obie pierwsze karty dotykają katalogu (`src/lib/cards.ts`).              |
+| C      | Obiekty   | `S-21` → `S-26`                  | Nowe szablony z kategoriami; wybór kategorii łączy się ze strumieniami D i E (czeka na S-22 i S-23). |
+| D      | Nonogram  | `S-22` → `S-24`                  | Równolegle do C i E; rozmiary dopiero po pierwszej drukowalnej karcie.                               |
+| E      | Dyktando  | `S-23` → `S-25`                  | Równolegle do C i D; poziomy dopiero po pierwszej drukowalnej karcie.                                |
 
 ## Baseline
 
@@ -143,16 +144,16 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Change ID:** picture-sudoku-colors
 - **PRD refs:** US-14, FR-023
 - **Prerequisites:** S-18
-- **Parallel with:** S-16, S-17, S-19, S-21, S-22, S-23, S-24, S-25
+- **Parallel with:** S-16, S-17, S-19, S-21, S-22, S-23, S-24, S-25, S-26
 - **Blockers:** —
 - **Unknowns:**
   - Jakie przypisanie kolorów do kształtów? Rekomendacja: kolory kredek z symetrii (czerwony, zielony, żółty, niebieski, pomarańczowy, szary, czarny) plus dwa nowe (fioletowy, brązowy), bo 9×9 z kształtami potrzebuje dziewięciu kolorów. — Owner: user. Block: no.
 - **Risk:** Ukrycie przełącznika przy cyfrach wymaga S-19; jeśli S-20 idzie pierwsze, przełącznik dotyczy tylko 4×4. Pasek strony sudoku dzieli pliki z S-19.
 - **Status:** ready
 
-### S-21: Nowe obiekty w katalogu szablonów
+### S-21: Katalog obiektów z kategoriami
 
-- **Outcome:** Rodzic klikający Generuj na karcie symetrii widzi więcej obiektów niż rakieta, robot i truskawka: dochodzą jabłko, motyl, korona, choinka i domek, każdy w trzech rozmiarach szablonu (połowa 4×12, 6×15, 9×24), z losowanymi częściami i kolorem kredki każdej kratki. Nonogram i dyktando biorą je z tego samego katalogu.
+- **Outcome:** Rodzic klikający Generuj na karcie symetrii widzi więcej obiektów niż rakieta, robot i truskawka. Katalog ma pięć kategorii (Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle) po co najmniej cztery obiekty, każdy w trzech rozmiarach szablonu (połowa 4×12, 6×15, 9×24), z losowanymi częściami, kolorem kredki każdej kratki i etykietą kategorii. Wyboru kategorii na pasku jeszcze nie ma (S-26); generator losuje ze wszystkich. Nonogram i dyktando biorą obiekty z tego samego katalogu.
 - **Change ID:** template-object-catalog
 - **PRD refs:** US-19, FR-028
 - **Prerequisites:** —
@@ -160,7 +161,8 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Blockers:** —
 - **Unknowns:**
   - Jak wyglądają nowe obiekty w każdym rozmiarze i które części losować? Rozstrzyga makieta przed planem, jak przy pierwszych szablonach. — Owner: user. Block: no.
-- **Risk:** Najmniejsza połowa (4×12) ma tylko 4 kratki szerokości, więc motyl i korona mogą być nierozpoznawalne. Każdy szablon musi przejść reguły symetrii (dotyka osi, co najmniej 3 kratki przy osi na podpowiedź poziomu 4 lat). Dotyka tego samego pliku szablonów co S-22 i S-23 tylko do odczytu, więc idzie równolegle.
+  - Czy siedem kolorów kredek wystarczy (brak brązowego dla pnia, sowy, gruszki)? Jeśli S-20 doda kolory dla sudoku, katalog może z nich skorzystać. — Owner: user. Block: no.
+- **Risk:** Około 17 nowych obiektów w trzech rozmiarach to najwięcej treści w kamieniu; plan może podzielić slice po kategoriach. Najmniejsza połowa (4×12) ma tylko 4 kratki szerokości, więc część obiektów może wymagać zamiany na inny z tej samej kategorii. Każdy szablon musi przejść reguły symetrii (dotyka osi, co najmniej 3 kratki przy osi na podpowiedź poziomu 4 lat).
 - **Status:** ready
 
 ### S-22: Nonogram: strona, generowanie, podgląd i druk A4
@@ -197,7 +199,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Change ID:** nonogram-sizes
 - **PRD refs:** US-16, FR-025
 - **Prerequisites:** S-22
-- **Parallel with:** S-20, S-21, S-23, S-25
+- **Parallel with:** S-20, S-21, S-23, S-25, S-26
 - **Blockers:** —
 - **Unknowns:**
   - Czy kratka około 7 mm w dużym nonogramie jest dość duża dla dziecka? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 11).
@@ -210,29 +212,43 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Change ID:** graphic-dictation-levels
 - **PRD refs:** US-18, FR-027
 - **Prerequisites:** S-23
-- **Parallel with:** S-20, S-21, S-22, S-24
+- **Parallel with:** S-20, S-21, S-22, S-24, S-26
 - **Blockers:** —
 - **Unknowns:**
   - Czy startowe wartości pasują dziecku? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 11).
 - **Risk:** Poziom 7 lat ma najdłuższą listę poleceń i najmniejszą kratkę; oba muszą zmieścić się na jednej stronie A4. Poziom żyje w stanie strony.
 - **Status:** proposed
 
+### S-26: Wybór kategorii obiektów
+
+- **Outcome:** Rodzic może wybrać na pasku strony symetrii, nonogramu i dyktanda graficznego „Kategoria”: Wszystkie, Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny albo Domy i budowle. Można wybrać dokładnie jedną, domyślnie „Wszystkie”; kolejne Generuj losuje obiekt tylko z niej.
+- **Change ID:** object-category-choice
+- **PRD refs:** US-20, FR-029
+- **Prerequisites:** S-21, S-22, S-23
+- **Parallel with:** S-20, S-24, S-25
+- **Blockers:** —
+- **Unknowns:**
+  - Czy kategoria zostawia dość obiektów w każdym rozmiarze po odrzuceniach nonogramu i dyktanda, żeby kolejne karty się nie powtarzały? — Owner: team. Block: no. PRD Open Questions 11.
+- **Risk:** Dotyka paska trzech stron naraz; pasek symetrii ma już poziom i kolory, a nonogram rozmiar, więc kategoria musi zmieścić się na telefonie. Czeka na S-22 i S-23, żeby nie dorabiać kategorii do każdej strony osobno. Kategoria żyje w stanie strony.
+- **Status:** proposed
+
 ## Backlog Handoff
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty.
 
-| Roadmap ID | Change ID                         | Suggested issue title                                           | Ready for `/10x-plan` | Notes                                                                                   |
-| ---------- | --------------------------------- | --------------------------------------------------------------- | --------------------- | --------------------------------------------------------------------------------------- |
-| S-16       | sequences-first-printable         | Karta sekwencji: strona, generowanie, podgląd i druk A4         | yes                   | Run `/10x-new sequences-first-printable`, potem `/10x-plan`. Równolegle do S-18         |
-| S-18       | picture-sudoku-first-printable    | Sudoku 4×4 z kształtami: strona, generowanie, podgląd i druk A4 | yes                   | Run `/10x-new picture-sudoku-first-printable`, potem `/10x-plan`. Równolegle do S-16    |
-| S-17       | sequence-difficulty-levels        | Poziomy sekwencji                                               | no                    | Czeka na S-16                                                                           |
-| S-19       | picture-sudoku-levels             | Rozmiary i poziomy sudoku                                       | no                    | Czeka na S-18                                                                           |
-| S-20       | picture-sudoku-colors             | Kolory kształtów w sudoku                                       | yes                   | Run `/10x-new picture-sudoku-colors`, potem `/10x-plan`                                 |
-| S-21       | template-object-catalog           | Nowe obiekty w katalogu szablonów                               | yes                   | Run `/10x-new template-object-catalog`, potem `/10x-plan`. Równolegle do wszystkich     |
-| S-22       | nonogram-first-printable          | Nonogram: strona, generowanie, podgląd i druk A4                | yes                   | Run `/10x-new nonogram-first-printable`, potem `/10x-plan`. Równolegle do S-23          |
-| S-23       | graphic-dictation-first-printable | Dyktando graficzne: strona, generowanie, podgląd i druk A4      | yes                   | Run `/10x-new graphic-dictation-first-printable`, potem `/10x-plan`. Równolegle do S-22 |
-| S-24       | nonogram-sizes                    | Rozmiary nonogramu                                              | no                    | Czeka na S-22                                                                           |
-| S-25       | graphic-dictation-levels          | Poziomy dyktanda graficznego                                    | no                    | Czeka na S-23                                                                           |
+| Roadmap ID | Change ID                         | Suggested issue title                                           | Ready for `/10x-plan` | Notes                                                                                    |
+| ---------- | --------------------------------- | --------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------- |
+| S-16       | sequences-first-printable         | Karta sekwencji: strona, generowanie, podgląd i druk A4         | yes                   | Run `/10x-new sequences-first-printable`, potem `/10x-plan`. Równolegle do S-18          |
+| S-18       | picture-sudoku-first-printable    | Sudoku 4×4 z kształtami: strona, generowanie, podgląd i druk A4 | yes                   | Run `/10x-new picture-sudoku-first-printable`, potem `/10x-plan`. Równolegle do S-16     |
+| S-17       | sequence-difficulty-levels        | Poziomy sekwencji                                               | no                    | Czeka na S-16                                                                            |
+| S-19       | picture-sudoku-levels             | Rozmiary i poziomy sudoku                                       | no                    | Czeka na S-18                                                                            |
+| S-20       | picture-sudoku-colors             | Kolory kształtów w sudoku                                       | yes                   | Run `/10x-new picture-sudoku-colors`, potem `/10x-plan`                                  |
+| S-21       | template-object-catalog           | Katalog obiektów z kategoriami                                  | yes                   | Run `/10x-new template-object-catalog`, potem `/10x-plan`. Równolegle do S-20, S-22–S-25 |
+| S-22       | nonogram-first-printable          | Nonogram: strona, generowanie, podgląd i druk A4                | yes                   | Run `/10x-new nonogram-first-printable`, potem `/10x-plan`. Równolegle do S-23           |
+| S-23       | graphic-dictation-first-printable | Dyktando graficzne: strona, generowanie, podgląd i druk A4      | yes                   | Run `/10x-new graphic-dictation-first-printable`, potem `/10x-plan`. Równolegle do S-22  |
+| S-24       | nonogram-sizes                    | Rozmiary nonogramu                                              | no                    | Czeka na S-22                                                                            |
+| S-25       | graphic-dictation-levels          | Poziomy dyktanda graficznego                                    | no                    | Czeka na S-23                                                                            |
+| S-26       | object-category-choice            | Wybór kategorii obiektów                                        | no                    | Czeka na S-21, S-22 i S-23                                                               |
 
 ## Open Roadmap Questions
 
