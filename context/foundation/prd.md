@@ -199,7 +199,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Kolory to osobny przełącznik na pasku strony symetrii, niezależny od poziomu i wieku. Domyślnie są wyłączone: obiekt jest czarną sylwetką.
-- Kolor to prawdziwy kolor kratki, bez liter i bez legendy (decyzja 2026-10-23 po makiecie). Detale będące pustymi kratkami wewnątrz sylwetki (okno rakiety, oczy robota, pestki truskawki) też dostają kolor. Na drukarce czarno-białej kolory schodzą do odcieni szarości.
+- Kolor to prawdziwy kolor kratki, bez liter i bez legendy (decyzja 2026-10-23 po makiecie). Detale będące pustymi kratkami wewnątrz sylwetki (okno rakiety, oczy robota, pestki truskawki) też dostają kolor, chyba że szablon zostawia je białe (brzuch pingwina, kropki muchomora, paski babeczki; decyzja 2026-10-25 po makiecie katalogu). Na drukarce czarno-białej kolory schodzą do odcieni szarości.
 - Odpowiedź nadal jest jedna: odbicie obiektu razem z kolorem każdej kratki.
 - Przełączenie kolorów zostawia tę samą kartę; nie generuje nowej.
 - Wyłączenie kolorów daje ten sam rodzaj obiektu jako czarną sylwetkę.
@@ -500,7 +500,7 @@ Obiekty pochodzą z katalogu szablonów zapisanych w kodzie. Szablon ma części
 
 Obiekt zawsze dotyka osi, a dziecko go przedłuża. Odsunięcie obiektu od osi odpadło (2026-10-23): odsunięta połowa przestaje być jednym obiektem. Trudność rośnie przez mniejszą kratkę, większą siatkę, bogatsze obiekty i brak podpowiedzi. Wartości są startowe i zostają potwierdzone na wydruku.
 
-Kolory (US-09): przy włączonych kolorach każda kratka obiektu ma prawdziwy kolor kredki (czerwony, zielony, żółty, niebieski, pomarańczowy, szary albo czarny), bez liter i bez legendy. Detale będące dziurami w sylwetce (okno, oczy, usta, pestki) wykrywa generator i maluje kolorem szablonu. Odpowiedź to odbicie wraz z kolorem każdej kratki. Przełącznik nie zmienia karty. Przy wyłączonych kolorach obiekt jest czarną sylwetką.
+Kolory (US-09): przy włączonych kolorach każda kratka obiektu ma prawdziwy kolor kredki (czerwony, zielony, żółty, niebieski, pomarańczowy, szary, czarny albo brązowy; brązowy doszedł 2026-10-25 z katalogiem obiektów), bez liter i bez legendy. Detale będące dziurami w sylwetce (okno, oczy, usta, pestki) wykrywa generator i maluje kolorem szablonu albo zostawia białe, gdy szablon tak ustala (brzuch pingwina, kropki muchomora). Odpowiedź to odbicie wraz z kolorem każdej kratki. Przełącznik nie zmienia karty. Przy wyłączonych kolorach obiekt jest czarną sylwetką.
 
 Reguły, które generator sprawdza: wzór ma co najmniej jedną zamalowaną kratkę i co najmniej jedną pustą w swojej połowie; żadna zamalowana kratka nie leży na osi; druga połowa zawiera wyłącznie kratki podpowiedzi, które są częścią odbicia, i nie całe odbicie; odpowiedź jest dokładnie odbiciem, przy kolorach razem z literą każdej kratki; obiekt dotyka osi, a liczba podpowiedzi zgadza się z poziomem. Karta, która łamie którąś z tych reguł, nie jest pokazana.
 
@@ -561,19 +561,19 @@ Wartości są startowe i zostają potwierdzone na wydruku; użytkowniczka nie je
 
 Dodane 2026-10-25. Karta symetrii, nonogram i dyktando graficzne biorą obiekty z jednego katalogu szablonów zapisanych w kodzie (patrz „Karta symetrii”). Szablon to połowa obiektu symetrycznego lewo–prawo z częściami losowanymi przez generator i kolorem kredki każdej kratki; cała sylwetka to połowa i jej odbicie. Każdy obiekt ma trzy rozmiary: połowa 4×12 (cała 8×12), 6×15 (cała 12×15) i 9×24 (cała 18×24).
 
-Dziś katalog ma trzy obiekty: rakieta, robot, truskawka. Obiekt pasuje do katalogu, gdy jest symetryczny lewo–prawo, pionowy (wszystkie siatki są wyższe niż szersze), rozpoznawalny po samej czarnej sylwetce także w połowie 4×12, szeroki przy osi, ma dziury na detale i warianty, mieści się w siedmiu kolorach kredek i nie ma części stykających się tylko rogiem kratki (psują obrys dyktanda).
+Od 2026-10-25 (S-21) katalog ma 22 obiekty z tabeli poniżej; wcześniej miał trzy: rakieta, robot, truskawka. Obiekt pasuje do katalogu, gdy jest symetryczny lewo–prawo, pionowy (wszystkie siatki są wyższe niż szersze), rozpoznawalny po samej czarnej sylwetce także w połowie 4×12, szeroki przy osi, ma dziury na detale i warianty, mieści się w ośmiu kolorach kredek (z brązowym) i nie ma części stykających się tylko rogiem kratki (psują obrys dyktanda).
 
-Obiekty są pogrupowane w pięć kategorii (US-19). Obiekt ma co najmniej jedną kategorię i może mieć kilka. Startowa lista (✓ — już jest):
+Obiekty są pogrupowane w pięć kategorii (US-19). Obiekt ma co najmniej jedną kategorię i może mieć kilka. Lista (✓ — już jest):
 
-| Kategoria        | Obiekty                                             |
-| ---------------- | --------------------------------------------------- |
-| Zwierzęta        | sowa, biedronka, pingwin, kot (pyszczek)            |
-| Jedzenie         | truskawka ✓, lody w rożku, babeczka, gruszka        |
-| Przyroda         | choinka, tulipan w doniczce, muchomor, kaktus       |
-| Kosmos i maszyny | rakieta ✓, robot ✓, balon na ogrzane powietrze, UFO |
-| Domy i budowle   | domek, wieża zamku, latarnia morska, namiot         |
+| Kategoria        | Obiekty                                                   |
+| ---------------- | --------------------------------------------------------- |
+| Zwierzęta        | sowa ✓, biedronka ✓, pingwin ✓, kot ✓, królik ✓           |
+| Jedzenie         | truskawka ✓, babeczka ✓, gruszka ✓, marchewka ✓, ananas ✓ |
+| Przyroda         | choinka ✓, tulipan w doniczce ✓, muchomor ✓, kaktus ✓     |
+| Kosmos i maszyny | rakieta ✓, robot ✓, balon na ogrzane powietrze ✓, UFO ✓   |
+| Domy i budowle   | domek ✓, wieża zamku ✓, latarnia morska ✓, wieżowiec ✓    |
 
-Lista jest startowa; obiekt, który nie daje się narysować czytelnie w połowie 4×12, zastępuje inny obiekt tej samej kategorii. Sezonowa kategoria (święta, pory roku) i „Morze” czekają na więcej obiektów. Szerokie obiekty (motyl, korona) odpadły z listy startowej.
+Lista jest startowa; obiekt, który nie daje się narysować czytelnie w połowie 4×12, zastępuje inny obiekt tej samej kategorii. Sezonowa kategoria (święta, pory roku) i „Morze” czekają na więcej obiektów. Szerokie obiekty (motyl, korona) odpadły z listy startowej. Po makiecie z 2026-10-25 lody w rożku zastąpiły marchewka i ananas, a namiot wieżowiec: oba były nieczytelne w połowie 4×12. Królik doszedł jako piąte zwierzę, zapas dla nonogramu i dyktanda.
 
 Rodzic wybiera jedną kategorię albo „Wszystkie” (US-20); „Wszystkie” to osobna kategoria, kilku naraz nie da się zaznaczyć. Generator losuje obiekt tylko z wybranej kategorii. Nowy obiekt spełnia reguły karty symetrii w każdym rozmiarze. Nonogram i dyktando mogą pomijać warianty, które łamią ich reguły (nonogram bez jednego rozwiązania, obrys dotykający sam siebie); każda kategoria musi zostawić każdej karcie w każdym rozmiarze co najmniej kilka obiektów albo wariantów, żeby kolejne Generuj się nie powtarzało.
 

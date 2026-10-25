@@ -88,7 +88,9 @@ void describe("details", () => {
           const card = composeSymmetryCard(template, variants, 0, level);
           const filled = new Set(card.cells.map((cell) => `${cell.col},${cell.row}`));
 
-          assert.ok(card.details.length > 0 || template.id === "rakieta", card.key);
+          if (template.holeColor === null) {
+            assert.deepEqual(card.details, [], card.key);
+          }
           for (const detail of card.details) {
             assert.equal(detail.color, template.holeColor, card.key);
             assert.ok(!filled.has(`${detail.col},${detail.row}`), card.key);
@@ -120,8 +122,35 @@ void describe("details", () => {
     ]);
   });
 
-  void test("orange is in the palette", () => {
+  void test("a template that keeps its holes white has no details, so the answer with details is the plain answer", () => {
+    const ring: SymmetryTemplate = {
+      id: "obwarzanek",
+      holeColor: null,
+      categories: ["jedzenie"],
+      width: 6,
+      height: 3,
+      base: [
+        { col: 4, row: 0, color: "brown" },
+        { col: 5, row: 0, color: "brown" },
+        { col: 4, row: 1, color: "brown" },
+        { col: 4, row: 2, color: "brown" },
+        { col: 5, row: 2, color: "brown" },
+      ],
+      parts: [],
+    };
+    const card = composeSymmetryCard(ring, [], 0, LAT5);
+
+    assert.deepEqual(composeSymmetryCard({ ...ring, holeColor: "yellow" }, [], 0, LAT5).details, [
+      { col: 5, row: 1, color: "yellow" },
+    ]);
+    assert.deepEqual(card.details, []);
+    assert.deepEqual(mirrorAnswerWithDetails(card), mirrorAnswer(card));
+    assert.deepEqual(symmetryCardProblems(card), []);
+  });
+
+  void test("orange and brown are in the palette", () => {
     assert.ok((SYMMETRY_COLORS as readonly string[]).includes("orange"));
+    assert.ok((SYMMETRY_COLORS as readonly string[]).includes("brown"));
   });
 });
 
@@ -225,14 +254,17 @@ void describe("symmetryCardProblems", () => {
 });
 
 void describe("symmetryTemplatesFor", () => {
-  void test("5 lat and 6 lat share the rocket, the robot, and the strawberry, each 6 wide and at most 16 rows high", () => {
+  void test("every level starts with the rocket, the robot, and the strawberry; 5 lat and 6 lat share 6 wide templates", () => {
     for (const level of LEVELS_WITH_TEMPLATES) {
       assert.deepEqual(
-        symmetryTemplatesFor(level.id).map((template) => template.id),
+        symmetryTemplatesFor(level.id)
+          .slice(0, 3)
+          .map((template) => template.id),
         ["rakieta", "robot", "truskawka"],
         level.id,
       );
     }
+    assert.equal(symmetryTemplatesFor("lat5"), symmetryTemplatesFor("lat6"));
     for (const template of symmetryTemplatesFor("lat5")) {
       assert.equal(template.width, 6, template.id);
       assert.ok(template.height <= LAT5.rows, template.id);
@@ -256,7 +288,7 @@ void describe("symmetryTemplatesFor", () => {
     }
   });
 
-  void test("4 lat has three simple templates 4 wide and at most 12 tall, each with room for three hints", () => {
+  void test("4 lat has simple templates 4 wide and at most 12 tall, each with room for three hints", () => {
     for (const template of symmetryTemplatesFor("lat4")) {
       assert.equal(template.width, 4, template.id);
       assert.ok(template.height <= LAT4.rows, template.id);
@@ -265,17 +297,10 @@ void describe("symmetryTemplatesFor", () => {
         assert.equal(card.hints.length, 3, `${template.id} ${variants.join("-")}`);
       }
     }
-    assert.equal(symmetryTemplatesFor("lat4").length, 3);
   });
 
-  void test("7 lat has three richer templates up to 9 wide and 24 tall with at least three parts", () => {
-    const rich = symmetryTemplatesFor("lat7");
-
-    assert.deepEqual(
-      rich.map((template) => template.id),
-      ["rakieta", "robot", "truskawka"],
-    );
-    for (const template of rich) {
+  void test("7 lat has richer templates up to 9 wide and 24 tall with at least three parts", () => {
+    for (const template of symmetryTemplatesFor("lat7")) {
       assert.ok(template.width <= 9 && template.height <= 24, template.id);
       assert.ok(template.parts.length >= 3, template.id);
     }
@@ -315,6 +340,7 @@ void describe("symmetryRowOffsets", () => {
     const template = (height: number, width = 6): SymmetryTemplate => ({
       id: "wieza",
       holeColor: "blue",
+      categories: ["budowle"],
       width,
       height,
       base: [{ col: 5, row: 0, color: "black" }],
@@ -426,6 +452,7 @@ void describe("hints", () => {
     const template: SymmetryTemplate = {
       id: "slup",
       holeColor: "blue",
+      categories: ["budowle"],
       width: 4,
       height: 12,
       base: Array.from({ length: 10 }, (_, row) => ({ col: 3, row, color: "red" as const })),
