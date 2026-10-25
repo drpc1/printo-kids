@@ -64,6 +64,7 @@
   --symmetry-orange: oklch(0.7 0.18 50);
   --symmetry-gray: oklch(0.62 0 0);
   --symmetry-black: oklch(0.2 0 0);
+  --symmetry-brown: oklch(0.5 0.1 55);
 }
 
 .dark {
