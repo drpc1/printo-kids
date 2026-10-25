@@ -179,25 +179,25 @@ Podmiana idzie w ten sam adres `/favicon.png`. Stary znak Astro znika z repozyto
 
 #### Automated
 
-- [x] 1.1 `npm test` sprawdza, że `public/favicon.png` jest PNG 32×32
-- [x] 1.2 `npm test` przechodzi
-- [x] 1.3 `npm run lint` przechodzi
+- [x] 1.1 `npm test` sprawdza, że `public/favicon.png` jest PNG 32×32 — 2865841
+- [x] 1.2 `npm test` przechodzi — 2865841
+- [x] 1.3 `npm run lint` przechodzi — 2865841
 
 #### Manual
 
-- [x] 1.4 Po twardym odświeżeniu zakładka pokazuje kartkę z krótkim labiryntem na papierze, bez znaku Astro
-- [x] 1.5 Znak da się odczytać w rozmiarze zakładki, a napis „PrintoKids” i druk karty są bez zmian
+- [x] 1.4 Po twardym odświeżeniu zakładka pokazuje kartkę z krótkim labiryntem na papierze, bez znaku Astro — 2865841
+- [x] 1.5 Znak da się odczytać w rozmiarze zakładki, a napis „PrintoKids” i druk karty są bez zmian — 2865841
 
 ### Phase 2: Apple-touch i manifest
 
 #### Automated
 
-- [ ] 2.1 `npm test` sprawdza PNG 180, 192 i 512, `display` równy `browser` oraz oba nowe `href` w układzie
-- [ ] 2.2 `npm test` przechodzi
-- [ ] 2.3 `npm run lint` przechodzi
-- [ ] 2.4 `npx astro check` przechodzi
+- [x] 2.1 `npm test` sprawdza PNG 180, 192 i 512, `display` równy `browser` oraz oba nowe `href` w układzie
+- [x] 2.2 `npm test` przechodzi
+- [x] 2.3 `npm run lint` przechodzi
+- [x] 2.4 `npx astro check` przechodzi
 
 #### Manual
 
-- [ ] 2.5 Na `/` i na `/labirynt` w źródle strony widać link apple-touch i link manifestu
-- [ ] 2.6 Ikony z manifestu to ta sama kartka z krótkim labiryntem co w zakładce
+- [x] 2.5 Na `/` i na `/labirynt` w źródle strony widać link apple-touch i link manifestu
+- [x] 2.6 Ikony z manifestu to ta sama kartka z krótkim labiryntem co w zakładce
