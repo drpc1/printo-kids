@@ -160,27 +160,27 @@ Katalog dyktanda budowany leniwie raz na poziom × kategorię; to podzbiór doty
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy: `npx astro check`
+- [x] 1.1 Testy przechodzą: `npm test` — 81023e3
+- [x] 1.2 Lint przechodzi: `npm run lint` — 81023e3
+- [x] 1.3 Typy: `npx astro check` — 81023e3
 
 ### Phase 2: Kontrolka „Kategoria” na trzech stronach
 
 #### Automated
 
-- [x] 2.1 Lint, typy, build i testy przechodzą: `npm run lint`, `npx astro check`, `npm run build`, `npm test`
+- [x] 2.1 Lint, typy, build i testy przechodzą: `npm run lint`, `npx astro check`, `npm run build`, `npm test` — 283d6df
 
 #### Manual
 
-- [ ] 2.2 Na każdej z trzech stron wybór kategorii działa, Generuj losuje tylko z niej, „Wszystkie” jest domyślne, a wybór na jednej stronie nie zmienia drugiej
-- [ ] 2.3 Przy 375 px pasek się zawija, Generuj i Drukuj nie nachodzą na siebie, a karta zostaje bez zmian na A4
+- [x] 2.2 Na każdej z trzech stron wybór kategorii działa, Generuj losuje tylko z niej, „Wszystkie” jest domyślne, a wybór na jednej stronie nie zmienia drugiej — 283d6df
+- [x] 2.3 Przy 375 px pasek się zawija, Generuj i Drukuj nie nachodzą na siebie, a karta zostaje bez zmian na A4 — 283d6df
 
 ### Phase 3: Dokumenty
 
 #### Automated
 
-- [x] 3.1 Formatowanie zmienionych plików md: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
+- [x] 3.1 Formatowanie zmienionych plików md: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md` — 58c21fe
 
 #### Manual
 
-- [ ] 3.2 Opis PR zawiera liczby per kategoria
+- [x] 3.2 Opis PR zawiera liczby per kategoria — 58c21fe

@@ -1,10 +1,10 @@
 ---
 change_id: object-category-choice
 title: Wybór kategorii obiektów na paskach symetrii, nonogramu i dyktanda
-status: impl_reviewed
+status: archived
 created: 2026-10-25
 updated: 2026-10-25
-archived_at: null
+archived_at: 2026-10-25T22:23:09Z
 ---
 
 ## Notes
