@@ -179,7 +179,7 @@ Katalog dyktanda budowany leniwie raz na poziom × kategorię; to podzbiór doty
 
 #### Automated
 
-- [ ] 3.1 Formatowanie zmienionych plików md: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
+- [x] 3.1 Formatowanie zmienionych plików md: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
 
 #### Manual
 
