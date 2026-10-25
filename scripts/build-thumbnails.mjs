@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku and sequence cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence and dictation cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -21,6 +21,10 @@ import { layoutSequenceSheet } from "../src/lib/sequence/layout.ts";
 import { SEQUENCE_LEVEL_LAT5 } from "../src/lib/sequence/levels.ts";
 import { SEQUENCE_SHEET } from "../src/lib/sequence/sheet.ts";
 import { sequenceShapeOutline } from "../src/lib/sequence/shapes.ts";
+import { generateDictationCard } from "../src/lib/dictation/generate.ts";
+import { layoutDictationSheet } from "../src/lib/dictation/layout.ts";
+import { DICTATION_LEVEL_LAT6 } from "../src/lib/dictation/levels.ts";
+import { DICTATION_SHEET, formatDictationCommand } from "../src/lib/dictation/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -280,3 +284,71 @@ sequenceLines.push("</svg>", "");
 const sequenceOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/sekwencje.svg");
 writeFileSync(sequenceOutFile, sequenceLines.join("\n"));
 console.log(`Wrote ${sequenceOutFile} (${sequenceCard.key.length} key chars)`);
+
+// Graphic dictation card: the same elements DictationSheet draws (src/components/DictationGenerator.tsx), in literal
+// black, with the shared drawing constants from src/lib/dictation/sheet.ts. The outline is the answer and is not drawn.
+const DICTATION_SEED = 20261026;
+const DICTATION = DICTATION_SHEET;
+
+const dictationCard = generateDictationCard(mulberry32(DICTATION_SEED), null, DICTATION_LEVEL_LAT6);
+if (dictationCard === null) {
+  throw new Error(`Seed ${DICTATION_SEED} did not produce a valid dictation card`);
+}
+
+const dictationSheet = layoutDictationSheet({
+  pageWidth: DICTATION.pageWidth,
+  pageHeight: DICTATION.pageHeight,
+  inset: DICTATION.inset,
+  columns: dictationCard.columns,
+  rows: dictationCard.rows,
+  cellSize: dictationCard.cellSize,
+  commandCount: dictationCard.commands.length,
+  commandsPerRow: DICTATION.commandsPerRow,
+  commandRowHeight: DICTATION.commandRowHeight,
+  instructionSize: DICTATION.instructionSize,
+  instructionGap: DICTATION.instructionGap,
+  listGap: DICTATION.listGap,
+});
+const dictationGrid = dictationSheet.grid;
+const dictationCell = dictationCard.cellSize;
+const dictationFont = 'font-family="ui-sans-serif, system-ui, sans-serif"';
+
+const dictationLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${DICTATION.pageWidth} ${DICTATION.pageHeight}" width="${DICTATION.pageWidth}" height="${DICTATION.pageHeight}">`,
+  `<rect width="${DICTATION.pageWidth}" height="${DICTATION.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${DICTATION.pageWidth - 0.5}" height="${DICTATION.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(dictationSheet.instruction.x)}" y="${num(dictationSheet.instruction.y)}" fill="#000" ${dictationFont} font-size="${DICTATION.instructionSize}" text-anchor="middle" dominant-baseline="middle">${DICTATION.instructionText}</text>`,
+];
+dictationCard.commands.forEach((command, index) => {
+  const box = dictationSheet.commands[index];
+  const inset = DICTATION.commandBoxInset;
+  dictationLines.push(
+    `<rect x="${num(box.x + inset)}" y="${num(box.y + inset)}" width="${num(box.width - inset * 2)}" height="${num(box.height - inset * 2)}" rx="${DICTATION.commandBoxRadius}" fill="none" stroke="#000" stroke-width="${DICTATION.commandBoxStroke}"/>`,
+    `<text x="${num(box.x + DICTATION.commandNumberOffsetX)}" y="${num(box.y + DICTATION.commandNumberOffsetY)}" fill="#71717a" ${dictationFont} font-size="${DICTATION.commandNumberSize}">${index + 1}</text>`,
+    `<text x="${num(box.x + box.width / 2)}" y="${num(box.y + box.height / 2 + DICTATION.commandNumberSize / 2)}" fill="#000" ${dictationFont} font-size="${DICTATION.commandFontSize}" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${formatDictationCommand(command)}</text>`,
+  );
+});
+dictationLines.push(`<g fill="none" stroke="#000" stroke-width="${DICTATION.gridStroke}">`);
+for (let index = 1; index < dictationCard.columns; index += 1) {
+  const x = num(dictationGrid.x + index * dictationCell);
+  dictationLines.push(
+    `<line x1="${x}" y1="${num(dictationGrid.y)}" x2="${x}" y2="${num(dictationGrid.y + dictationGrid.height)}"/>`,
+  );
+}
+for (let index = 1; index < dictationCard.rows; index += 1) {
+  const y = num(dictationGrid.y + index * dictationCell);
+  dictationLines.push(
+    `<line x1="${num(dictationGrid.x)}" y1="${y}" x2="${num(dictationGrid.x + dictationGrid.width)}" y2="${y}"/>`,
+  );
+}
+dictationLines.push(
+  "</g>",
+  `<rect x="${num(dictationGrid.x)}" y="${num(dictationGrid.y)}" width="${num(dictationGrid.width)}" height="${num(dictationGrid.height)}" fill="none" stroke="#000" stroke-width="${DICTATION.frameStroke}" stroke-linejoin="miter"/>`,
+  `<circle cx="${num(dictationGrid.x + dictationCard.start.col * dictationCell)}" cy="${num(dictationGrid.y + dictationCard.start.row * dictationCell)}" r="${DICTATION.startDotRadius}" fill="#000"/>`,
+  "</svg>",
+  "",
+);
+
+const dictationOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/dyktando.svg");
+writeFileSync(dictationOutFile, dictationLines.join("\n"));
+console.log(`Wrote ${dictationOutFile} (${dictationCard.key}, ${dictationCard.commands.length} commands)`);
