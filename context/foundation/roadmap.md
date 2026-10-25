@@ -177,7 +177,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
   - Ile z dzisiejszych wariantów 12×15 ma nonogram z jednym rozwiązaniem? Jeśli za mało, S-21 albo poprawki szablonów muszą dojść przed wydaniem. — Owner: team. Block: no. Pokaże pierwszy solver.
   - Jak wyglądają liczby i kratka na czarnym druku (grubość linii co 5 kratek, rozmiar cyfr)? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
 - **Risk:** Solver sprawdzający jedno rozwiązanie jest jedynym nietrywialnym miejscem i musi zmieścić się w 5 s także dla 18×24 w S-24, więc powinien być testowany od razu na wszystkich trzech rozmiarach. Dzieli z S-23 katalog kart i miniatury.
-- **Status:** ready
+- **Status:** in-progress
 
 ### S-23: Dyktando graficzne: strona, generowanie, podgląd i druk A4
 
