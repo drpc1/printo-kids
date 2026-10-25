@@ -1,5 +1,5 @@
 import { symmetryTemplatesFor, type SymmetryTemplate } from "../symmetry/templates.ts";
-import type { DictationLevel } from "./levels.ts";
+import type { DictationLevel, DictationLevelId } from "./levels.ts";
 import {
   dictationSilhouette,
   outlineProblems,
@@ -10,10 +10,9 @@ import {
   type DictationDirection,
   type DictationSilhouette,
 } from "./outline.ts";
-import { DICTATION_MAX_COMMANDS } from "./sheet.ts";
 
 export interface DictationCard {
-  levelId: DictationLevel["id"];
+  levelId: DictationLevelId;
   columns: number;
   rows: number;
   /** Side of one grid cell in mm on the A4 sheet. */
@@ -45,7 +44,7 @@ interface DictationCatalog {
 
 const DIRECTION_LETTER: Readonly<Record<DictationDirection, string>> = { right: "r", left: "l", up: "u", down: "d" };
 
-const catalogs = new Map<DictationLevel["id"], DictationCatalog>();
+const catalogs = new Map<DictationLevelId, DictationCatalog>();
 
 /**
  * A card of the level whose outline differs from the one behind `previousKey`, drawn uniformly among the distinct
@@ -92,7 +91,7 @@ function catalogFor(level: DictationLevel): DictationCatalog {
     for (const variants of variantCombinations(template.parts.map((part) => part.variants.length))) {
       total += 1;
       const card = dictationCardFor(template, variants, level);
-      if (card === null || card.commands.length > DICTATION_MAX_COMMANDS || dictationCardProblems(card).length > 0) {
+      if (card === null || card.commands.length > level.maxCommands || dictationCardProblems(card).length > 0) {
         continue;
       }
       passing += 1;

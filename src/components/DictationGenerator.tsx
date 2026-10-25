@@ -2,19 +2,25 @@ import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
+import { LevelChoice } from "@/components/LevelChoice";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { generateDictationCard, type DictationCard } from "@/lib/dictation/generate";
 import { layoutDictationSheet } from "@/lib/dictation/layout";
-import { DICTATION_LEVEL_LAT6 } from "@/lib/dictation/levels";
+import {
+  DEFAULT_DICTATION_LEVEL_ID,
+  DICTATION_LEVELS,
+  dictationLevelById,
+  type DictationLevelId,
+} from "@/lib/dictation/levels";
 import { DICTATION_SHEET, formatDictationCommand } from "@/lib/dictation/sheet";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The graphic dictation page: Generuj, the card, Drukuj, and the shared profile corner. It has no level, colors, or
- * character controls. The page never touches the maze's last-used parameters; it only keeps the bar values the profile
+ * The graphic dictation page: Generuj, the level button, the card, Drukuj, and the shared profile corner. It has no
+ * colors or character controls. The dictation level lives only in this component, and the page never touches the maze's last-used parameters; it only keeps the bar values the profile
  * corner shows.
  */
 export default function DictationGenerator() {
@@ -23,6 +29,8 @@ export default function DictationGenerator() {
   });
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const [levelId, setLevelId] = useState<DictationLevelId>(DEFAULT_DICTATION_LEVEL_ID);
+  const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<DictationCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
@@ -37,17 +45,28 @@ export default function DictationGenerator() {
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
 
-  function handleGenerate(): void {
-    if (waitingForChild) {
-      return;
-    }
-    const next = generateDictationCard(Math.random, card?.key ?? null, DICTATION_LEVEL_LAT6);
+  function generateFor(id: DictationLevelId): void {
+    const next = generateDictationCard(Math.random, card?.key ?? null, dictationLevelById(id));
     if (next === null) {
       setGenerateFailed(true);
       return;
     }
     setGenerateFailed(false);
     setCard(next);
+  }
+
+  function handleGenerate(): void {
+    if (waitingForChild) {
+      return;
+    }
+    generateFor(levelId);
+  }
+
+  function handleLevelSelect(id: DictationLevelId): void {
+    setLevelId(id);
+    if (card !== null && !waitingForChild) {
+      generateFor(id);
+    }
   }
 
   function handlePrint(): void {
@@ -59,6 +78,16 @@ export default function DictationGenerator() {
     setBarLevel(bar.level);
   }
 
+  const levelControl = (
+    <LevelChoice
+      level={dictationLevelById(levelId)}
+      levels={DICTATION_LEVELS}
+      open={levelOpen}
+      onOpenChange={setLevelOpen}
+      onSelect={handleLevelSelect}
+      disabled={waitingForChild}
+    />
+  );
   const failedNote = generateFailed ? (
     <p role="alert" className={cn("text-destructive text-sm")}>
       {GENERATE_FAILED_TEXT}
@@ -81,7 +110,10 @@ export default function DictationGenerator() {
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
-          {failedNote}
+          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {levelControl}
+            {failedNote}
+          </div>
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -102,6 +134,7 @@ export default function DictationGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
+          {levelControl}
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
@@ -113,6 +146,7 @@ export default function DictationGenerator() {
 
 /** The printed card. It draws the commands, the grid, and the start dot, and never the outline: that is the answer. */
 function DictationSheet({ card }: { card: DictationCard }) {
+  const level = dictationLevelById(card.levelId);
   const sheet = layoutDictationSheet({
     pageWidth: DICTATION_SHEET.pageWidth,
     pageHeight: DICTATION_SHEET.pageHeight,
@@ -121,8 +155,8 @@ function DictationSheet({ card }: { card: DictationCard }) {
     rows: card.rows,
     cellSize: card.cellSize,
     commandCount: card.commands.length,
-    commandsPerRow: DICTATION_SHEET.commandsPerRow,
-    commandRowHeight: DICTATION_SHEET.commandRowHeight,
+    commandsPerRow: level.commandsPerRow,
+    commandRowHeight: level.commandRowHeight,
     instructionSize: DICTATION_SHEET.instructionSize,
     instructionGap: DICTATION_SHEET.instructionGap,
     listGap: DICTATION_SHEET.listGap,
@@ -182,7 +216,7 @@ function DictationSheet({ card }: { card: DictationCard }) {
               y={box.y + box.height / 2 + DICTATION_SHEET.commandNumberSize / 2}
               fill="var(--foreground)"
               fontFamily="ui-sans-serif, system-ui, sans-serif"
-              fontSize={DICTATION_SHEET.commandFontSize}
+              fontSize={level.commandFontSize}
               fontWeight="bold"
               textAnchor="middle"
               dominantBaseline="middle"

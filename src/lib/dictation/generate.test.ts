@@ -9,9 +9,8 @@ import {
   variantCombinations,
   type DictationCard,
 } from "./generate.ts";
-import { DICTATION_LEVEL_LAT6 } from "./levels.ts";
+import { DICTATION_LEVELS, DICTATION_LEVEL_LAT6 } from "./levels.ts";
 import { dictationSilhouette, outlineProblems, walkCommands } from "./outline.ts";
-import { DICTATION_MAX_COMMANDS } from "./sheet.ts";
 
 const LEVEL = DICTATION_LEVEL_LAT6;
 
@@ -73,7 +72,7 @@ void describe("generateDictationCard", () => {
       const card = cardAt(random, previousKey);
 
       assert.deepEqual(dictationCardProblems(card), []);
-      assert.ok(card.commands.length <= DICTATION_MAX_COMMANDS);
+      assert.ok(card.commands.length <= LEVEL.maxCommands);
       assert.equal(card.columns, 14);
       assert.equal(card.rows, 17);
       const cols = card.outline.map((cell) => cell.col);
@@ -111,6 +110,36 @@ void describe("generateDictationCard", () => {
 
   void test("the same random gives the same card", () => {
     assert.deepEqual(cardAt(seeded(5)), cardAt(seeded(5)));
+  });
+});
+
+void describe("every dictation level", () => {
+  void test("gives distinct valid cards that fit the level grid and its command limit", () => {
+    for (const level of DICTATION_LEVELS) {
+      const count = dictationVariantCount(level);
+      assert.ok(count.distinctOutlines >= 2, level.id);
+
+      const random = seeded(13);
+      let previousKey: string | null = null;
+      for (let index = 0; index < 60; index += 1) {
+        const card = generateDictationCard(random, previousKey, level);
+        assert.ok(card, level.id);
+        assert.equal(card.levelId, level.id);
+        assert.equal(card.columns, level.columns);
+        assert.equal(card.cellSize, level.cellSize);
+        assert.deepEqual(dictationCardProblems(card), [], level.id);
+        assert.ok(card.commands.length <= level.maxCommands, level.id);
+        assert.notEqual(card.key, previousKey);
+        previousKey = card.key;
+      }
+    }
+  });
+
+  void test("the grids grow and the cells shrink with the age", () => {
+    const [lat5, lat6, lat7] = DICTATION_LEVELS;
+
+    assert.ok(lat5.cellSize > lat6.cellSize && lat6.cellSize > lat7.cellSize);
+    assert.ok(lat5.columns < lat6.columns && lat6.columns < lat7.columns);
   });
 });
 
