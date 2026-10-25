@@ -219,9 +219,9 @@ Najdłuższe Generuj 7,8 ms (trudny); łatwy bez solvera. Limit 5 s zachowany z 
 
 #### Automated
 
-- [x] 1.1 Testy logiki przechodzą: `npm test`
-- [x] 1.2 Typy: `npx astro check`
-- [x] 1.3 Lint: `npm run lint`
+- [x] 1.1 Testy logiki przechodzą: `npm test` — d327b13
+- [x] 1.2 Typy: `npx astro check` — d327b13
+- [x] 1.3 Lint: `npm run lint` — d327b13
 
 #### Manual
 
@@ -231,17 +231,17 @@ Najdłuższe Generuj 7,8 ms (trudny); łatwy bez solvera. Limit 5 s zachowany z 
 
 #### Automated
 
-- [ ] 2.1 `npm run lint`
-- [ ] 2.2 `npm test`
-- [ ] 2.3 `npx astro check`
-- [ ] 2.4 `npm run build`
+- [x] 2.1 `npm run lint`
+- [x] 2.2 `npm test`
+- [x] 2.3 `npx astro check`
+- [x] 2.4 `npm run build`
 
 #### Manual
 
-- [ ] 2.5 Podgląd wydruku każdego poziomu: jedna strona A4, margines 10 mm, grubsza linia co 5 kratek
-- [ ] 2.6 Zmiana poziomu przy pokazanej karcie daje nową kartę, „Pokaż rozwiązanie” wyłączone
-- [ ] 2.7 Na telefonie (375 px) Generuj i Drukuj nie nachodzą na siebie, każdy poziom mieści się na A4
-- [ ] 2.8 Cyfry i znaczki czytelne na wydruku
+- [x] 2.5 Podgląd wydruku każdego poziomu: jedna strona A4, margines 10 mm, grubsza linia co 5 kratek
+- [x] 2.6 Zmiana poziomu przy pokazanej karcie daje nową kartę, „Pokaż rozwiązanie” wyłączone
+- [x] 2.7 Na telefonie (375 px) Generuj i Drukuj nie nachodzą na siebie, każdy poziom mieści się na A4
+- [x] 2.8 Cyfry i znaczki czytelne na wydruku
 
 ### Phase 3: PRD i roadmapa
 
