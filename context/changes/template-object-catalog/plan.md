@@ -317,8 +317,8 @@ Generator losuje szablon w O(1) i sprawdza jedną kartę naraz; 22 szablony zami
 
 #### Automated
 
-- [x] 3.1 Testy przechodzą: `npm test`
-- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.1 Testy przechodzą: `npm test` — fd17663
+- [x] 3.2 Lint przechodzi: `npm run lint` — fd17663
 
 #### Manual
 
@@ -328,8 +328,8 @@ Generator losuje szablon w O(1) i sprawdza jedną kartę naraz; 22 szablony zami
 
 #### Automated
 
-- [ ] 4.1 Testy przechodzą: `npm test`
-- [ ] 4.2 Lint przechodzi: `npm run lint`
+- [x] 4.1 Testy przechodzą: `npm test`
+- [x] 4.2 Lint przechodzi: `npm run lint`
 
 #### Manual
 
