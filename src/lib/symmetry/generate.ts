@@ -99,7 +99,7 @@ export function composeSymmetryCard(
     axis: "vertical",
     cells,
     hints: pickHints(cells, level),
-    details: findHoles(cells, level).map((cell) => ({ ...cell, color: template.holeColor })),
+    details: holeDetails(template, cells, level),
     key: `${level.id}:${template.id}:${variants.join("-")}:${rowOffset}`,
   };
 }
@@ -113,6 +113,19 @@ function pickHints(cells: readonly SymmetryCell[], level: SymmetryLevel): readon
   const onAxis = cells.filter((cell) => cell.col === half - 1).sort((a, b) => a.row - b.row);
   const chosen = onAxis.length <= level.hintCount ? onAxis : spread(onAxis, level.hintCount);
   return chosen.map((cell) => ({ col: level.columns - 1 - cell.col, row: cell.row, color: cell.color }));
+}
+
+/** The holes in the template's hole color, or none when the template keeps its holes white. */
+function holeDetails(
+  template: SymmetryTemplate,
+  cells: readonly SymmetryCell[],
+  level: SymmetryLevel,
+): readonly SymmetryCell[] {
+  const { holeColor } = template;
+  if (holeColor === null) {
+    return [];
+  }
+  return findHoles(cells, level).map((cell) => ({ ...cell, color: holeColor }));
 }
 
 /**
