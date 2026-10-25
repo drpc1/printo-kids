@@ -10,4 +10,5 @@ export const CARD_KINDS: readonly CardKind[] = [
   { id: "symetria", title: "Symetria", href: "/symetria", thumbnail: "/thumbnails/symetria.svg" },
   { id: "sudoku", title: "Sudoku", href: "/sudoku", thumbnail: "/thumbnails/sudoku.svg" },
   { id: "sekwencje", title: "Sekwencje", href: "/sekwencje", thumbnail: "/thumbnails/sekwencje.svg" },
+  { id: "dyktando", title: "Dyktando graficzne", href: "/dyktando", thumbnail: "/thumbnails/dyktando.svg" },
 ];
