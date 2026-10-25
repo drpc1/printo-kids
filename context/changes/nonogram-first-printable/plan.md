@@ -296,4 +296,4 @@ Brak: nowa strona, bez danych na urządzeniu.
 
 #### Automated
 
-- [x] 4.1 Prettier nie zmienia plików Markdown: `npx prettier --check context/foundation/prd.md context/changes/nonogram-first-printable`
+- [x] 4.1 Prettier nie zmienia plików Markdown: `npx prettier --check context/foundation/prd.md context/changes/nonogram-first-printable` — 03ba441
