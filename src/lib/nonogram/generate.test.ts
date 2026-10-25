@@ -9,12 +9,13 @@ import {
   nonogramVariants,
   type NonogramCard,
 } from "./generate.ts";
-import { NONOGRAM_SIZES, nonogramSizeById } from "./sizes.ts";
+import { composeSimpleNonogramCard, simpleNonogramProblems } from "./simple.ts";
+import { CLASSIC_NONOGRAM_SIZES, NONOGRAM_SIZES, nonogramSizeById } from "./sizes.ts";
 import { solveNonogram } from "./solve.ts";
 
-const SMALL = nonogramSizeById("maly");
+const SMALL = nonogramSizeById("latwy");
 const MEDIUM = nonogramSizeById("sredni");
-const LARGE = nonogramSizeById("duzy");
+const LARGE = nonogramSizeById("trudny");
 
 void describe("nonogramCardProblems", () => {
   void test("accepts a plus sign that the clues fix", () => {
@@ -84,8 +85,8 @@ void describe("nonogramCardProblems", () => {
   });
 });
 
-void describe("every variant of every size", () => {
-  for (const size of NONOGRAM_SIZES) {
+void describe("every variant of every classic level", () => {
+  for (const size of CLASSIC_NONOGRAM_SIZES) {
     void test(`${size.id} ${size.columns}x${size.rows}: a variant passes, or fails only because propagation gets stuck`, (t) => {
       const started = performance.now();
       let passing = 0;
@@ -114,6 +115,25 @@ void describe("every variant of every size", () => {
     });
   }
 
+  void test("the hard level has a variant that passes for every template except the known dead objects", () => {
+    const dead = symmetryTemplatesFor(LARGE.templateLevel)
+      .filter(
+        (template) =>
+          !nonogramVariants(LARGE).some(
+            (entry) =>
+              entry.template.id === template.id &&
+              nonogramCardProblems(composeNonogramCard(entry.template, entry.variants, LARGE)).length === 0,
+          ),
+      )
+      .map((template) => template.id);
+
+    // These objects have no variant the line solver can rebuild at 18 by 24; the generator never draws them there.
+    assert.deepEqual(
+      dead.filter((id) => !["kot", "tulipan"].includes(id)),
+      [],
+    );
+  });
+
   void test("every template of the medium size has a variant that passes, so no object is dead on the nonogram", () => {
     for (const template of symmetryTemplatesFor(MEDIUM.templateLevel)) {
       const passing = nonogramVariants(MEDIUM)
@@ -124,6 +144,39 @@ void describe("every variant of every size", () => {
 
       assert.ok(passing.length >= 1, template.id);
     }
+  });
+});
+
+void describe("every variant of the easy level", () => {
+  void test("a variant passes the chip rules, or fails only because a row needs more chips than fit", (t) => {
+    const started = performance.now();
+    let passing = 0;
+    const variants = nonogramVariants(SMALL);
+
+    for (const { template, variants: chosen } of variants) {
+      const card = composeSimpleNonogramCard(template, chosen, SMALL);
+      const problems = simpleNonogramProblems(card);
+
+      assert.ok(
+        problems.length === 0 || (problems.length === 1 && problems[0] === "too-many-runs"),
+        `${card.key} ${problems.join()}`,
+      );
+      for (const row of card.runs) {
+        assert.equal(
+          row.reduce((sum, run) => sum + run.count, 0),
+          SMALL.columns,
+          card.key,
+        );
+      }
+      if (problems.length === 0) {
+        passing += 1;
+      }
+    }
+
+    const elapsed = performance.now() - started;
+    t.diagnostic(`latwy: ${passing} of ${variants.length} variants pass, ${elapsed.toFixed(0)} ms`);
+    assert.ok(passing >= 1);
+    assert.ok(elapsed < 5000);
   });
 });
 
@@ -173,7 +226,11 @@ void describe("generateNonogramCard", () => {
 
         assert.ok(card);
         assert.notEqual(card.key, previous);
-        assert.deepEqual(nonogramCardProblems(card), [], card.key);
+        assert.deepEqual(
+          card.kind === "znaczki" ? simpleNonogramProblems(card) : nonogramCardProblems(card),
+          [],
+          card.key,
+        );
         previous = card.key;
       }
     });
@@ -190,6 +247,7 @@ void describe("generateNonogramCard", () => {
 
 function cardOf(solution: boolean[][]): NonogramCard {
   return {
+    kind: "liczby",
     sizeId: "sredni",
     columns: solution[0].length,
     rows: solution.length,
