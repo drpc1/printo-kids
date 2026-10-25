@@ -382,8 +382,8 @@ const dictationSheet = layoutDictationSheet({
   rows: dictationCard.rows,
   cellSize: dictationCard.cellSize,
   commandCount: dictationCard.commands.length,
-  commandsPerRow: DICTATION.commandsPerRow,
-  commandRowHeight: DICTATION.commandRowHeight,
+  commandsPerRow: DICTATION_LEVEL_LAT6.commandsPerRow,
+  commandRowHeight: DICTATION_LEVEL_LAT6.commandRowHeight,
   instructionSize: DICTATION.instructionSize,
   instructionGap: DICTATION.instructionGap,
   listGap: DICTATION.listGap,
@@ -404,7 +404,7 @@ dictationCard.commands.forEach((command, index) => {
   dictationLines.push(
     `<rect x="${num(box.x + inset)}" y="${num(box.y + inset)}" width="${num(box.width - inset * 2)}" height="${num(box.height - inset * 2)}" rx="${DICTATION.commandBoxRadius}" fill="none" stroke="#000" stroke-width="${DICTATION.commandBoxStroke}"/>`,
     `<text x="${num(box.x + DICTATION.commandNumberOffsetX)}" y="${num(box.y + DICTATION.commandNumberOffsetY)}" fill="#71717a" ${dictationFont} font-size="${DICTATION.commandNumberSize}">${index + 1}</text>`,
-    `<text x="${num(box.x + box.width / 2)}" y="${num(box.y + box.height / 2 + DICTATION.commandNumberSize / 2)}" fill="#000" ${dictationFont} font-size="${DICTATION.commandFontSize}" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${formatDictationCommand(command)}</text>`,
+    `<text x="${num(box.x + box.width / 2)}" y="${num(box.y + box.height / 2 + DICTATION.commandNumberSize / 2)}" fill="#000" ${dictationFont} font-size="${DICTATION_LEVEL_LAT6.commandFontSize}" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${formatDictationCommand(command)}</text>`,
   );
 });
 dictationLines.push(`<g fill="none" stroke="#000" stroke-width="${DICTATION.gridStroke}">`);
