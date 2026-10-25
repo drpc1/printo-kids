@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence and dictation cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram and dictation cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -21,6 +21,10 @@ import { layoutSequenceSheet } from "../src/lib/sequence/layout.ts";
 import { SEQUENCE_LEVEL_LAT5 } from "../src/lib/sequence/levels.ts";
 import { SEQUENCE_SHEET } from "../src/lib/sequence/sheet.ts";
 import { sequenceShapeOutline } from "../src/lib/sequence/shapes.ts";
+import { generateNonogramCard } from "../src/lib/nonogram/generate.ts";
+import { blockLines, layoutNonogramSheet, longestClues } from "../src/lib/nonogram/layout.ts";
+import { NONOGRAM_SHEET } from "../src/lib/nonogram/sheet.ts";
+import { DEFAULT_NONOGRAM_SIZE_ID, nonogramSizeById } from "../src/lib/nonogram/sizes.ts";
 import { generateDictationCard } from "../src/lib/dictation/generate.ts";
 import { layoutDictationSheet } from "../src/lib/dictation/layout.ts";
 import { DICTATION_LEVEL_LAT6 } from "../src/lib/dictation/levels.ts";
@@ -285,6 +289,81 @@ const sequenceOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../pub
 writeFileSync(sequenceOutFile, sequenceLines.join("\n"));
 console.log(`Wrote ${sequenceOutFile} (${sequenceCard.key.length} key chars)`);
 
+// Nonogram card: the same elements NonogramSheet draws (src/components/NonogramGenerator.tsx), in literal black, empty
+// (no solution), with the shared drawing constants from src/lib/nonogram/sheet.ts.
+const NONOGRAM_SEED = 20261026;
+const NONOGRAM_SIZE = nonogramSizeById(DEFAULT_NONOGRAM_SIZE_ID);
+const NONOGRAM = NONOGRAM_SHEET;
+
+const nonogramCard = generateNonogramCard(mulberry32(NONOGRAM_SEED), null, NONOGRAM_SIZE);
+if (nonogramCard === null) {
+  throw new Error(`Seed ${NONOGRAM_SEED} did not produce a valid nonogram card`);
+}
+
+const nonogramSheet = layoutNonogramSheet({
+  pageWidth: NONOGRAM.pageWidth,
+  pageHeight: NONOGRAM.pageHeight,
+  inset: NONOGRAM.inset,
+  columns: nonogramCard.columns,
+  rows: nonogramCard.rows,
+  cellSize: nonogramCard.cellSize,
+  digitSize: NONOGRAM_SIZE.digitSize,
+  ...longestClues(nonogramCard.clues),
+  instructionSize: NONOGRAM.instructionSize,
+  instructionGap: NONOGRAM.instructionGap,
+  clueGap: NONOGRAM.clueGap,
+  clueSlot: NONOGRAM.clueSlot,
+});
+const nonogramGrid = nonogramSheet.grid;
+const nonogramCell = nonogramCard.cellSize;
+const thickColumns = new Set(blockLines(nonogramCard.columns, NONOGRAM.blockEvery));
+const thickRows = new Set(blockLines(nonogramCard.rows, NONOGRAM.blockEvery));
+
+const nonogramLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${NONOGRAM.pageWidth} ${NONOGRAM.pageHeight}" width="${NONOGRAM.pageWidth}" height="${NONOGRAM.pageHeight}">`,
+  `<rect width="${NONOGRAM.pageWidth}" height="${NONOGRAM.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${NONOGRAM.pageWidth - 0.5}" height="${NONOGRAM.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(nonogramSheet.instruction.x)}" y="${num(nonogramSheet.instruction.y)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${NONOGRAM.instructionSize}" text-anchor="middle" dominant-baseline="middle">${NONOGRAM.instructionText}</text>`,
+  `<g fill="none" stroke="#000">`,
+];
+for (let index = 0; index <= nonogramCard.columns; index += 1) {
+  const x = num(nonogramGrid.x + index * nonogramCell);
+  const width = thickColumns.has(index) ? NONOGRAM.blockStroke : NONOGRAM.gridStroke;
+  nonogramLines.push(
+    `<line x1="${x}" y1="${num(nonogramGrid.y)}" x2="${x}" y2="${num(nonogramGrid.y + nonogramGrid.height)}" stroke-width="${width}"/>`,
+  );
+}
+for (let index = 0; index <= nonogramCard.rows; index += 1) {
+  const y = num(nonogramGrid.y + index * nonogramCell);
+  const width = thickRows.has(index) ? NONOGRAM.blockStroke : NONOGRAM.gridStroke;
+  nonogramLines.push(
+    `<line x1="${num(nonogramGrid.x)}" y1="${y}" x2="${num(nonogramGrid.x + nonogramGrid.width)}" y2="${y}" stroke-width="${width}"/>`,
+  );
+}
+nonogramLines.push(
+  "</g>",
+  `<rect x="${num(nonogramGrid.x)}" y="${num(nonogramGrid.y)}" width="${num(nonogramGrid.width)}" height="${num(nonogramGrid.height)}" fill="none" stroke="#000" stroke-width="${NONOGRAM.frameStroke}" stroke-linejoin="miter"/>`,
+  `<g fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${NONOGRAM_SIZE.digitSize}" font-weight="${NONOGRAM.clueFontWeight}" text-anchor="middle" dominant-baseline="central">`,
+);
+nonogramCard.clues.rows.forEach((clue, rowIndex) => {
+  clue.forEach((value, position) => {
+    nonogramLines.push(
+      `<text x="${num(nonogramSheet.rowClueX(clue.length - 1 - position))}" y="${num(nonogramGrid.y + (rowIndex + 0.5) * nonogramCell)}">${value}</text>`,
+    );
+  });
+});
+nonogramCard.clues.columns.forEach((clue, columnIndex) => {
+  clue.forEach((value, position) => {
+    nonogramLines.push(
+      `<text x="${num(nonogramGrid.x + (columnIndex + 0.5) * nonogramCell)}" y="${num(nonogramSheet.columnClueY(clue.length - 1 - position))}">${value}</text>`,
+    );
+  });
+});
+nonogramLines.push("</g>", "</svg>", "");
+
+const nonogramOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/nonogram.svg");
+writeFileSync(nonogramOutFile, nonogramLines.join("\n"));
+console.log(`Wrote ${nonogramOutFile} (${nonogramCard.key})`);
 // Graphic dictation card: the same elements DictationSheet draws (src/components/DictationGenerator.tsx), in literal
 // black, with the shared drawing constants from src/lib/dictation/sheet.ts. The outline is the answer and is not drawn.
 const DICTATION_SEED = 20261026;

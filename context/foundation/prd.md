@@ -287,9 +287,10 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Obrazek to cała sylwetka obiektu z katalogu szablonów symetrii (połowa szablonu i jej odbicie), zamalowane kratki czarne, puste białe. Detale będące dziurami w sylwetce (okno, oczy, pestki) zostają pustymi kratkami.
 - Nad każdą kolumną i z lewej strony każdego wiersza są liczby: długości kolejnych ciągów zamalowanych kratek. Nad kratką jest jedno zdanie polecenia. Karta nie zdradza nazwy obiektu.
-- Rozwiązanie jest dokładnie jedno: liczby wyznaczają jeden obrazek, który aplikacja potrafi wyliczyć i sprawdzić. Nonogram z więcej niż jednym rozwiązaniem nie jest pokazany.
+- Rozwiązanie jest dokładnie jedno: liczby wyznaczają jeden obrazek, który aplikacja potrafi wyliczyć i sprawdzić. Nonogram z więcej niż jednym rozwiązaniem nie jest pokazany. Dziecko dochodzi do obrazka bez zgadywania: wystarczają same liczby wiersz po wierszu i kolumna po kolumnie (decyzja 2026-10-25).
 - Każde Generuj daje nowy nonogram: inny obiekt albo inny wariant niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez rozwiązania na kartce.
+- Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć sylwetkę na ekranie i sprawdzić dziecko. Domyślnie wyłączone; przełączenie zostawia tę samą kartę, a wydruk nigdy nie pokazuje rozwiązania (decyzja 2026-10-25).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
 - Strona nonogramu nie pokazuje paska „Postać”.
 
@@ -583,10 +584,12 @@ Dodane 2026-10-25. Aplikacja zawsze tworzy nonogram z dokładnie jednym rozwiąz
 | Rozmiar | Siatka (cała) | Obiekty                       | Kratka (około) |
 | ------- | ------------- | ----------------------------- | -------------- |
 | mały    | 8×12          | warianty z połowy 4×12        | 14 mm          |
-| średni  | 12×15         | warianty z połowy 6×15        | 10 mm          |
+| średni  | 12×15         | warianty z połowy 6×15        | 12 mm          |
 | duży    | 18×24         | bogate warianty z połowy 9×24 | 7 mm           |
 
-Reguła, którą generator sprawdza: z liczb wiersza i kolumn wynika dokładnie jeden obrazek i jest nim sylwetka obiektu. Wariant, który dopuszcza drugi obrazek, nie jest pokazany; generator losuje inny. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11).
+Kratka średniego rozmiaru ma 12 mm (makieta 2026-10-25: lepiej wypełnia kartkę niż 10 mm), liczby są pogrubione, ok. 6 mm, a co 5 kratek od lewej i od góry biegnie grubsza linia.
+
+Reguła, którą generator sprawdza: z liczb wiersza i kolumn wynika dokładnie jeden obrazek i jest nim sylwetka obiektu, a dochodzi się do niego bez zgadywania (samym wnioskowaniem w wierszach i kolumnach). Wariant, który dopuszcza drugi obrazek, nie jest pokazany; generator losuje inny. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11).
 
 ### Karta dyktanda graficznego
 
@@ -653,4 +656,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 8. ~~**Czy dziecko przedszkolne uzupełni sudoku obrazkowe numerem z legendy, czy narysuje postać?**~~ — Zamknięte 2026-10-24: sudoku nie używa postaci ani legendy numerów; dziecko rysuje proste kształty albo wpisuje cyfry. Pytanie 3 o prawa do postaci sudoku już nie dotyczy.
 9. **Czy startowe wartości poziomów sekwencji i sudoku (długość ciągu, reguły, liczba pustych pól) pasują dziecku?** — Owner: user. Block: no. Tabele w Business Logic są propozycją z 2026-10-23 (sudoku przebudowane 2026-10-24); potwierdza je wydruk, nie planowanie. Użytkowniczka nie jest pewna, czy 6×6 (12/18/22 pustych) i 9×9 (35/45/52 pustych) nie są za trudne dla dzieci. Wartości poziomów sekwencji potwierdził wydruk z 2026-10-24 (S-17); sudoku zostaje otwarte do wydruku S-19.
 10. **Kiedy wraca profil z wiekiem i poziomami osobno dla każdego rodzaju karty (US-08, FR-017)?** — Owner: user. Block: no. Odłożone 2026-10-23, gdy będą cztery rodzaje kart; wtedy wybieramy, które ustawienia mają sens na poziomie profilu.
-11. **Czy startowe wartości nonogramu i dyktanda graficznego (siatka, kratka, obiekty) pasują dziecku, i czy każda kategoria w każdym rozmiarze zostawia dość obiektów z jednym rozwiązaniem nonogramu i obrysem bez dotknięć?** — Owner: user (wartości), team (liczba obiektów). Block: no. Tabele w Business Logic są propozycją z 2026-10-25; potwierdza je wydruk. Liczbę obiektów, które przechodzą reguły nonogramu i dyktanda, pokaże pierwsza implementacja.
+11. **Czy startowe wartości nonogramu i dyktanda graficznego (siatka, kratka, obiekty) pasują dziecku, i czy każda kategoria w każdym rozmiarze zostawia dość obiektów z jednym rozwiązaniem nonogramu i obrysem bez dotknięć?** — Owner: user (wartości), team (liczba obiektów). Block: no. Tabele w Business Logic są propozycją z 2026-10-25; potwierdza je wydruk. Liczbę obiektów, które przechodzą reguły dyktanda, pokaże pierwsza implementacja dyktanda. Nonogram (S-22, 2026-10-25): wszystkie dzisiejsze warianty mają jedno rozwiązanie bez zgadywania — 20 z 20 w 8×12, 20 z 20 w 12×15 i 40 z 40 w 18×24; test pilnuje, by każdy obiekt średniego rozmiaru miał co najmniej jeden taki wariant.
