@@ -214,8 +214,8 @@ At most a few dozen tiny grids per Generuj; far below the 5 s budget.
 
 #### Automated
 
-- [x] 1.1 Dictation unit tests pass: `npm test`
-- [x] 1.2 Lint passes: `npm run lint`
+- [x] 1.1 Dictation unit tests pass: `npm test` — 14f7170
+- [x] 1.2 Lint passes: `npm run lint` — 14f7170
 
 #### Manual
 
@@ -225,8 +225,8 @@ At most a few dozen tiny grids per Generuj; far below the 5 s budget.
 
 #### Automated
 
-- [ ] 2.1 Layout tests pass: `npm test`
-- [ ] 2.2 Lint passes: `npm run lint`
+- [x] 2.1 Layout tests pass: `npm test`
+- [x] 2.2 Lint passes: `npm run lint`
 
 ### Phase 3: Page and catalog
 
