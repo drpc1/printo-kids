@@ -264,16 +264,16 @@ Brak: nowa strona, bez danych na urządzeniu.
 
 #### Automated
 
-- [x] 1.1 Testy nonogramu przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.1 Testy nonogramu przechodzą: `npm test` — 8ff9ac2
+- [x] 1.2 Lint przechodzi: `npm run lint` — 8ff9ac2
+- [x] 1.3 Typy przechodzą: `npx astro check` — 8ff9ac2
 
 ### Phase 2: Układ kartki
 
 #### Automated
 
-- [ ] 2.1 Testy układu przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.1 Testy układu przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
 
 ### Phase 3: Strona i katalog
 
