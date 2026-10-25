@@ -161,7 +161,7 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Blockers:** —
 - **Unknowns:**
   - Jak wyglądają nowe obiekty w każdym rozmiarze i które części losować? Rozstrzyga makieta przed planem, jak przy pierwszych szablonach. — Owner: user. Block: no.
-  - Czy siedem kolorów kredek wystarczy (brak brązowego dla pnia, sowy, gruszki)? Jeśli S-20 doda kolory dla sudoku, katalog może z nich skorzystać. — Owner: user. Block: no.
+  - Czy siedem kolorów kredek wystarczy (brak brązowego dla pnia, sowy, gruszki)? Jeśli S-20 doda kolory dla sudoku, katalog może z nich skorzystać. — Owner: user. Block: no. Rozstrzygnięte 2026-10-25 po makiecie: brązowy dochodzi do palety symetrii, a szablon może zostawić dziury białe.
 - **Risk:** Około 17 nowych obiektów w trzech rozmiarach to najwięcej treści w kamieniu; plan może podzielić slice po kategoriach. Najmniejsza połowa (4×12) ma tylko 4 kratki szerokości, więc część obiektów może wymagać zamiany na inny z tej samej kategorii. Każdy szablon musi przejść reguły symetrii (dotyka osi, co najmniej 3 kratki przy osi na podpowiedź poziomu 4 lat).
 - **Status:** in-progress
 
