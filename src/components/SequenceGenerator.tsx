@@ -3,11 +3,16 @@ import { Printer } from "lucide-react";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
-import { SequenceLevelChoice } from "@/components/SequenceLevelChoice";
+import { LevelChoice } from "@/components/LevelChoice";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { generateSequenceCard, type SequenceCard } from "@/lib/sequence/generate";
 import { layoutSequenceSheet } from "@/lib/sequence/layout";
-import { DEFAULT_SEQUENCE_LEVEL_ID, sequenceLevelById, type SequenceLevelId } from "@/lib/sequence/levels";
+import {
+  DEFAULT_SEQUENCE_LEVEL_ID,
+  SEQUENCE_LEVELS,
+  sequenceLevelById,
+  type SequenceLevelId,
+} from "@/lib/sequence/levels";
 import { SEQUENCE_SHEET } from "@/lib/sequence/sheet";
 import { sequenceShapeOutline } from "@/lib/sequence/shapes";
 import { cn } from "@/lib/utils";
@@ -75,11 +80,13 @@ export default function SequenceGenerator() {
   }
 
   const levelControl = (
-    <SequenceLevelChoice
+    <LevelChoice
       level={sequenceLevelById(levelId)}
+      levels={SEQUENCE_LEVELS}
       open={levelOpen}
       onOpenChange={setLevelOpen}
       onSelect={handleLevelSelect}
+      disabled={waitingForChild}
     />
   );
   const failedNote = generateFailed ? (
