@@ -1,7 +1,7 @@
 ---
 change_id: teen-level-character-choice
 title: Teen level character choice has no visible effect
-status: implementing
+status: impl_reviewed
 created: 2026-10-25
 updated: 2026-10-25
 archived_at: null
