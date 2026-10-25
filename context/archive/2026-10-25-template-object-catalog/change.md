@@ -1,10 +1,10 @@
 ---
 change_id: template-object-catalog
 title: Katalog obiektów symetrii w pięciu kategoriach (S-21)
-status: impl_reviewed
+status: archived
 created: 2026-10-25
 updated: 2026-10-25
-archived_at: null
+archived_at: 2026-10-25T19:33:31Z
 ---
 
 ## Notes
