@@ -3,112 +3,112 @@
 <rect x="0.25" y="0.25" width="209.5" height="296.5" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>
 <text x="105" y="25" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle" dominant-baseline="middle">Rysuj po liniach kratki według strzałek. Zacznij od kropki.</text>
 <rect x="10.6" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="11.2" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">1</text>
+<text x="11.2" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">1</text>
 <text x="18.636" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 →</text>
 <rect x="27.873" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="28.473" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">2</text>
+<text x="28.473" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">2</text>
 <text x="35.909" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 ↓</text>
 <rect x="45.145" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="45.745" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">3</text>
+<text x="45.745" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">3</text>
 <text x="53.182" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 →</text>
 <rect x="62.418" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="63.018" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">4</text>
+<text x="63.018" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">4</text>
 <text x="70.455" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 ↑</text>
 <rect x="79.691" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="80.291" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">5</text>
+<text x="80.291" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">5</text>
 <text x="87.727" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 →</text>
 <rect x="96.964" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="97.564" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">6</text>
+<text x="97.564" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">6</text>
 <text x="105" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 ↓</text>
 <rect x="114.236" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="114.836" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">7</text>
+<text x="114.836" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">7</text>
 <text x="122.273" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 →</text>
 <rect x="131.509" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="132.109" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">8</text>
+<text x="132.109" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">8</text>
 <text x="139.545" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">5 ↓</text>
 <rect x="148.782" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="149.382" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">9</text>
+<text x="149.382" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">9</text>
 <text x="156.818" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 ←</text>
 <rect x="166.055" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="166.655" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">10</text>
+<text x="166.655" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">10</text>
 <text x="174.091" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 ↓</text>
 <rect x="183.327" y="35.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="183.927" y="37.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">11</text>
+<text x="183.927" y="37.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">11</text>
 <text x="191.364" y="41.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">3 →</text>
 <rect x="10.6" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="11.2" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">12</text>
+<text x="11.2" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">12</text>
 <text x="18.636" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">3 ↑</text>
 <rect x="27.873" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="28.473" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">13</text>
+<text x="28.473" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">13</text>
 <text x="35.909" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 →</text>
 <rect x="45.145" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="45.745" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">14</text>
+<text x="45.745" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">14</text>
 <text x="53.182" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">4 ↓</text>
 <rect x="62.418" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="63.018" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">15</text>
+<text x="63.018" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">15</text>
 <text x="70.455" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 ←</text>
 <rect x="79.691" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="80.291" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">16</text>
+<text x="80.291" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">16</text>
 <text x="87.727" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">5 ↓</text>
 <rect x="96.964" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="97.564" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">17</text>
+<text x="97.564" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">17</text>
 <text x="105" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 →</text>
 <rect x="114.236" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="114.836" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">18</text>
+<text x="114.836" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">18</text>
 <text x="122.273" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 ↓</text>
 <rect x="131.509" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="132.109" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">19</text>
+<text x="132.109" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">19</text>
 <text x="139.545" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">3 ←</text>
 <rect x="148.782" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="149.382" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">20</text>
+<text x="149.382" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">20</text>
 <text x="156.818" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">3 ↑</text>
 <rect x="166.055" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="166.655" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">21</text>
+<text x="166.655" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">21</text>
 <text x="174.091" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">4 ←</text>
 <rect x="183.327" y="47.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="183.927" y="49.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">22</text>
+<text x="183.927" y="49.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">22</text>
 <text x="191.364" y="53.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">3 ↓</text>
 <rect x="10.6" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="11.2" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">23</text>
+<text x="11.2" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">23</text>
 <text x="18.636" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">3 ←</text>
 <rect x="27.873" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="28.473" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">24</text>
+<text x="28.473" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">24</text>
 <text x="35.909" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 ↑</text>
 <rect x="45.145" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="45.745" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">25</text>
+<text x="45.745" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">25</text>
 <text x="53.182" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 →</text>
 <rect x="62.418" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="63.018" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">26</text>
+<text x="63.018" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">26</text>
 <text x="70.455" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">5 ↑</text>
 <rect x="79.691" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="80.291" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">27</text>
+<text x="80.291" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">27</text>
 <text x="87.727" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 ←</text>
 <rect x="96.964" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="97.564" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">28</text>
+<text x="97.564" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">28</text>
 <text x="105" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">4 ↑</text>
 <rect x="114.236" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="114.836" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">29</text>
+<text x="114.836" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">29</text>
 <text x="122.273" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 →</text>
 <rect x="131.509" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="132.109" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">30</text>
+<text x="132.109" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">30</text>
 <text x="139.545" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">3 ↓</text>
 <rect x="148.782" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="149.382" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">31</text>
+<text x="149.382" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">31</text>
 <text x="156.818" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">3 →</text>
 <rect x="166.055" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="166.655" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">32</text>
+<text x="166.655" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">32</text>
 <text x="174.091" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">1 ↑</text>
 <rect x="183.327" y="59.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="183.927" y="61.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">33</text>
+<text x="183.927" y="61.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">33</text>
 <text x="191.364" y="65.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 ←</text>
 <rect x="10.6" y="71.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="11.2" y="73.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">34</text>
+<text x="11.2" y="73.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">34</text>
 <text x="18.636" y="77.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">5 ↑</text>
 <rect x="27.873" y="71.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="28.473" y="73.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">35</text>
+<text x="28.473" y="73.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">35</text>
 <text x="35.909" y="77.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 →</text>
 <rect x="45.145" y="71.1" width="16.073" height="10.8" rx="1.2" fill="none" stroke="#000" stroke-width="0.3"/>
-<text x="45.745" y="73.7" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">36</text>
+<text x="45.745" y="73.7" fill="#71717a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="2.6">36</text>
 <text x="53.182" y="77.8" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" dominant-baseline="middle">2 ↑</text>
 <g fill="none" stroke="#000" stroke-width="0.3">
 <line x1="39" y1="88.5" x2="39" y2="275.5"/>

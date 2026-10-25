@@ -324,7 +324,7 @@ dictationCard.commands.forEach((command, index) => {
   const inset = DICTATION.commandBoxInset;
   dictationLines.push(
     `<rect x="${num(box.x + inset)}" y="${num(box.y + inset)}" width="${num(box.width - inset * 2)}" height="${num(box.height - inset * 2)}" rx="${DICTATION.commandBoxRadius}" fill="none" stroke="#000" stroke-width="${DICTATION.commandBoxStroke}"/>`,
-    `<text x="${num(box.x + DICTATION.commandNumberOffsetX)}" y="${num(box.y + DICTATION.commandNumberOffsetY)}" fill="#000" ${dictationFont} font-size="${DICTATION.commandNumberSize}">${index + 1}</text>`,
+    `<text x="${num(box.x + DICTATION.commandNumberOffsetX)}" y="${num(box.y + DICTATION.commandNumberOffsetY)}" fill="#71717a" ${dictationFont} font-size="${DICTATION.commandNumberSize}">${index + 1}</text>`,
     `<text x="${num(box.x + box.width / 2)}" y="${num(box.y + box.height / 2 + DICTATION.commandNumberSize / 2)}" fill="#000" ${dictationFont} font-size="${DICTATION.commandFontSize}" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${formatDictationCommand(command)}</text>`,
   );
 });

@@ -1,9 +1,16 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { symmetryTemplatesFor } from "../symmetry/templates.ts";
-import { dictationCardProblems, dictationVariantCount, generateDictationCard, type DictationCard } from "./generate.ts";
+import {
+  dictationCardFor,
+  dictationCardProblems,
+  dictationVariantCount,
+  generateDictationCard,
+  variantCombinations,
+  type DictationCard,
+} from "./generate.ts";
 import { DICTATION_LEVEL_LAT6 } from "./levels.ts";
-import { dictationSilhouette, outlineProblems, traceOutline, walkCommands } from "./outline.ts";
+import { dictationSilhouette, outlineProblems, walkCommands } from "./outline.ts";
 import { DICTATION_MAX_COMMANDS } from "./sheet.ts";
 
 const LEVEL = DICTATION_LEVEL_LAT6;
@@ -47,30 +54,13 @@ void describe("dictationVariantCount", () => {
 void describe("generateDictationCard", () => {
   void test("every passing variant of today's templates gives a card without problems", () => {
     for (const template of symmetryTemplatesFor(LEVEL.templateLevel)) {
-      const counts = template.parts.map((part) => part.variants.length);
-      const combinations = counts.reduce<number[][]>(
-        (tuples, count) => tuples.flatMap((tuple) => Array.from({ length: count }, (_, index) => [...tuple, index])),
-        [[]],
-      );
-      for (const variants of combinations) {
-        const silhouette = dictationSilhouette(template, variants);
-        if (outlineProblems(silhouette).length > 0) {
+      for (const variants of variantCombinations(template.parts.map((part) => part.variants.length))) {
+        if (outlineProblems(dictationSilhouette(template, variants)).length > 0) {
           continue;
         }
-        const { start, commands } = traceOutline(silhouette);
-        const offsetCol = Math.floor((LEVEL.columns - silhouette.width) / 2);
-        const offsetRow = Math.floor((LEVEL.rows - silhouette.height) / 2);
-        const card: DictationCard = {
-          levelId: LEVEL.id,
-          columns: LEVEL.columns,
-          rows: LEVEL.rows,
-          cellSize: LEVEL.cellSize,
-          start: { col: start.x + offsetCol, row: start.y + offsetRow },
-          commands,
-          outline: silhouette.cells.map((cell) => ({ col: cell.col + offsetCol, row: cell.row + offsetRow })),
-          key: "test",
-        };
+        const card = dictationCardFor(template, variants, LEVEL);
 
+        assert.ok(card, `${template.id} ${variants.join("-")}`);
         assert.deepEqual(dictationCardProblems(card), [], `${template.id} ${variants.join("-")}`);
       }
     }

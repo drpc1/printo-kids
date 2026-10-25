@@ -219,7 +219,7 @@ At most a few dozen tiny grids per Generuj; far below the 5 s budget.
 
 #### Manual
 
-- [x] 1.3 The counts printed by `dictationVariantCount` match research.md (20 / 16 / 9) for today's templates
+- [x] 1.3 The counts printed by `dictationVariantCount` match research.md (20 / 16 / 9) for today's templates — a9f09ae
 
 ### Phase 2: Sheet layout
 
@@ -232,12 +232,12 @@ At most a few dozen tiny grids per Generuj; far below the 5 s budget.
 
 #### Automated
 
-- [x] 3.1 All checks pass: `npm run lint`, `npm test`, `npx astro check`, `npm run build`
-- [x] 3.2 Thumbnail regenerates byte-identical: `npm run thumbnails` leaves `git status` clean after the committed run
+- [x] 3.1 All checks pass: `npm run lint`, `npm test`, `npx astro check`, `npm run build` — a9f09ae
+- [x] 3.2 Thumbnail regenerates byte-identical: `npm run thumbnails` leaves `git status` clean after the committed run — a9f09ae
 
 #### Manual
 
-- [x] 3.3 The catalog shows the "Dyktando graficzne" thumbnail and opens `/dyktando`
-- [x] 3.4 Generuj shows a card; following the commands from the dot on the screen draws the object's outline and returns to the dot
+- [x] 3.3 The catalog shows the "Dyktando graficzne" thumbnail and opens `/dyktando` — a9f09ae
+- [x] 3.4 Generuj shows a card; following the commands from the dot on the screen draws the object's outline and returns to the dot — a9f09ae
 - [ ] 3.5 Print preview shows one A4 page, margin ≥10 mm, no outline drawn
-- [x] 3.6 At phone width (375 px) Generuj and Drukuj do not overlap and the card fits the width
+- [x] 3.6 At phone width (375 px) Generuj and Drukuj do not overlap and the card fits the width — a9f09ae
