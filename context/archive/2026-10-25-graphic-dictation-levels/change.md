@@ -1,9 +1,10 @@
 ---
 change_id: graphic-dictation-levels
 title: Graphic dictation levels
-status: impl_reviewed
+status: archived
 created: 2026-10-25
 updated: 2026-10-25
+archived_at: 2026-10-25T19:47:22Z
 ---
 
 ## Notes
