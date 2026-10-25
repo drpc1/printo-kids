@@ -84,7 +84,9 @@ export function layoutSheet(input: SheetLayoutInput): SheetLayout {
       meta,
       start: null,
       mark: {
-        x: labelX - markSize / 2,
+        // A corner entrance can center the mark left of the maze (column 0 of a 27-column grid
+        // lands at -40/27 mm). Keep the left edge on the maze so that value cannot return.
+        x: Math.max(labelX - markSize / 2, maze.x),
         y: originY - markSize,
         width: markSize,
         height: markSize,
