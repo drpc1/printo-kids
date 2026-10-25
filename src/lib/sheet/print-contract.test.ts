@@ -15,6 +15,8 @@ const SEQUENCE_PAGE = "src/pages/sekwencje.astro";
 const SEQUENCE_GENERATOR = "src/components/SequenceGenerator.tsx";
 const SUDOKU_PAGE = "src/pages/sudoku.astro";
 const SUDOKU_GENERATOR = "src/components/SudokuGenerator.tsx";
+const NONOGRAM_PAGE = "src/pages/nonogram.astro";
+const NONOGRAM_GENERATOR = "src/components/NonogramGenerator.tsx";
 const GLOBAL_CSS = "src/styles/global.css";
 
 void describe("print contract", () => {
@@ -175,6 +177,39 @@ void describe("print contract", () => {
     const page = readRepoFile(SUDOKU_PAGE);
     assert.match(page, /<GeneratorShell\b/);
     assert.match(page, /<SudokuGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
+  void test("the printed nonogram SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(NONOGRAM_GENERATOR));
+
+    assert.ok(svgClass.includes("print:w-[210mm]"));
+    assert.ok(svgClass.includes("print:h-[297mm]"));
+    assert.ok(svgClass.includes("print:overflow-hidden"));
+    assert.ok(svgClass.includes("print:block"));
+    assert.ok(svgClass.includes("print:max-h-[297mm]"));
+    assert.ok(svgClass.includes("print:ring-0"));
+  });
+
+  void test("the nonogram SVG asks the printer to keep its colors", () => {
+    const source = readRepoFile(NONOGRAM_GENERATOR);
+
+    assert.match(source, /printColorAdjust:\s*"exact"/);
+    assert.match(source, /WebkitPrintColorAdjust:\s*"exact"/);
+  });
+
+  void test("print hides the nonogram controls and the solution group", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(NONOGRAM_GENERATOR), "print:hidden"), [
+      "flex w-full flex-col gap-3 print:hidden",
+      "flex flex-col items-center gap-6 print:hidden",
+      "print:hidden",
+    ]);
+  });
+
+  void test("the nonogram page lives under /nonogram, uses the shared shell, and has no @page of its own", () => {
+    const page = readRepoFile(NONOGRAM_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<NonogramGenerator\s+client:only="react"\s*\/>/);
     assert.equal(page.includes("@page"), false);
   });
 
