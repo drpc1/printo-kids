@@ -1,8 +1,8 @@
 /**
  * The shapes a sudoku card is drawn with. Each path is built straight in page units (mm) for a given center and
  * size, never through a scale transform, so a stroke of 1.2 mm stays 1.2 mm on a 40 mm cell and on an 18 mm one.
- * Only absolute M, L, C and Z commands are used. The paths are outlines with no fill, so a later color slice can
- * fill the inside.
+ * Only absolute M, L, C and Z commands are used. The paths are closed outlines: the page draws them as outlines, or
+ * filled with the shape's crayon (src/lib/sudoku/colors.ts) when colors are on.
  */
 export type SudokuShapeId = "circle" | "square" | "triangle" | "heart" | "cross" | "star" | "diamond" | "moon" | "drop";
 
