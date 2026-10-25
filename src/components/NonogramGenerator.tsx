@@ -12,7 +12,6 @@ import { DEFAULT_NONOGRAM_SIZE_ID, nonogramSizeById } from "@/lib/nonogram/sizes
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
-const CLUE_FONT_WEIGHT = 600;
 
 /**
  * The nonogram page: Generuj, the card, Drukuj, the solution switch, and the shared profile corner. It has no level,
@@ -50,6 +49,8 @@ export default function NonogramGenerator() {
       return;
     }
     setGenerateFailed(false);
+    // A new card starts the way the child sees it; the parent turns the solution on again to check it.
+    setShowSolution(false);
     setCard(next);
   }
 
@@ -169,7 +170,7 @@ function NonogramSheet({ card, showSolution }: { card: NonogramCard; showSolutio
         {NONOGRAM_SHEET.instructionText}
       </text>
       {showSolution ? (
-        <g className={cn("print:hidden")} fill="var(--foreground)">
+        <g className={cn("print:hidden")} fill="var(--foreground)" data-solution>
           {card.solution.flatMap((row, rowIndex) =>
             row.map((filled, columnIndex) =>
               filled ? (
@@ -221,7 +222,7 @@ function NonogramSheet({ card, showSolution }: { card: NonogramCard; showSolutio
         fill="var(--foreground)"
         fontFamily="ui-sans-serif, system-ui, sans-serif"
         fontSize={size.digitSize}
-        fontWeight={CLUE_FONT_WEIGHT}
+        fontWeight={NONOGRAM_SHEET.clueFontWeight}
         textAnchor="middle"
         dominantBaseline="central"
       >

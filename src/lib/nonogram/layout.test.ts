@@ -39,7 +39,7 @@ function inputFor(size: NonogramSize, longest = longestOverVariants(size)): Nono
 
 void describe("layoutNonogramSheet", () => {
   for (const size of NONOGRAM_SIZES) {
-    void test(`the ${size.id} block with the longest clues stays inside the 10 mm margin`, () => {
+    void test(`the ${size.id} block with the longest clues stays inside the 10 mm margin`, (t) => {
       const input = inputFor(size);
       const sheet = layoutNonogramSheet(input);
       const slot = size.digitSize * SLOT_FACTOR;
@@ -55,8 +55,7 @@ void describe("layoutNonogramSheet", () => {
       assert.ok(top >= instructionTop + NONOGRAM_SHEET.instructionSize, "column clues below the instruction");
       assert.ok(bottom <= NONOGRAM_SHEET.pageHeight - INSET, `bottom ${bottom}`);
 
-      // eslint-disable-next-line no-console
-      console.log(`${size.id}: block ${(right - left).toFixed(1)} x ${(bottom - instructionTop).toFixed(1)} mm`);
+      t.diagnostic(`${size.id}: block ${(right - left).toFixed(1)} x ${(bottom - instructionTop).toFixed(1)} mm`);
     });
   }
 
