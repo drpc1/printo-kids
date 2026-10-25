@@ -13,7 +13,7 @@ const FOUR: SudokuSheetInput = {
   size: 4,
   blockRows: 2,
   blockColumns: 2,
-  cellSize: SUDOKU_SHEET.cellSize4,
+  cellSize: SUDOKU_SHEET.cellSize[4],
   instructionLineCount: SUDOKU_SHEET.instructionLines.length,
   instructionSize: SUDOKU_SHEET.instructionSize,
   instructionLineGap: SUDOKU_SHEET.instructionLineGap,
@@ -37,10 +37,10 @@ void describe("layoutSudokuSheet", () => {
     const size = SUDOKU_SHEET.instructionSize;
 
     assert.equal(sheet.instruction.x, 105);
-    assert.equal(sheet.instruction.ys.length, 3);
+    assert.equal(sheet.instruction.ys.length, 2);
     assert.ok(sheet.instruction.ys[0] - size / 2 >= 10);
-    assert.ok(sheet.instruction.ys[2] + size / 2 <= sheet.grid.y);
-    assert.ok(sheet.instruction.ys[0] < sheet.instruction.ys[1] && sheet.instruction.ys[1] < sheet.instruction.ys[2]);
+    assert.ok(sheet.instruction.ys[1] + size / 2 <= sheet.grid.y);
+    assert.ok(sheet.instruction.ys[0] < sheet.instruction.ys[1]);
   });
 
   void test("the instruction and the grid are centered down the page", () => {
@@ -70,6 +70,34 @@ void describe("layoutSudokuSheet", () => {
     assert.equal(sheet.cellLines.length, 5 + 5 - 3);
   });
 
+  void test("each board size from the sheet constants fits the 10 mm margin with its block lines", () => {
+    const cases = [
+      { size: 4, blockRows: 2, blockColumns: 2, thick: [1, 1] },
+      { size: 6, blockRows: 2, blockColumns: 3, thick: [2, 1] },
+      { size: 9, blockRows: 3, blockColumns: 3, thick: [2, 2] },
+    ] as const;
+    for (const { size, blockRows, blockColumns, thick } of cases) {
+      const sheet = layoutSudokuSheet({
+        ...FOUR,
+        size,
+        blockRows,
+        blockColumns,
+        cellSize: SUDOKU_SHEET.cellSize[size],
+      });
+      const { x, y, width, height } = sheet.grid;
+
+      assert.equal(width, size * SUDOKU_SHEET.cellSize[size]);
+      assert.ok(x >= 10 && x + width <= 200, `${size}×${size} width`);
+      assert.ok(y >= 10 && y + height <= 287, `${size}×${size} height`);
+      assert.equal(
+        sheet.blockLines.filter((line) => line.y1 === line.y2).length,
+        thick[0],
+        `${size}×${size} horizontal`,
+      );
+      assert.equal(sheet.blockLines.filter((line) => line.x1 === line.x2).length, thick[1], `${size}×${size} vertical`);
+    }
+  });
+
   void test("cell centers are the middle of each cell", () => {
     const sheet = layoutSudokuSheet(FOUR);
 
@@ -92,7 +120,7 @@ void describe("layoutSudokuSheet", () => {
   void test("the instruction lines read as the full sentence", () => {
     assert.equal(
       SUDOKU_SHEET.instructionLines.join(" "),
-      "Dorysuj brakujący kształt. W każdym rzędzie, kolumnie i kwadracie każdy kształt jest raz.",
+      "Uzupełnij puste pola. Nic się nie powtarza w rzędzie, kolumnie i bloku.",
     );
   });
 });
