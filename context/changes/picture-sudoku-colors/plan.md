@@ -283,9 +283,9 @@ Brak: nic nie jest zapisywane (stan strony). Zapisane profile i ostatnie paramet
 
 #### Automated
 
-- [ ] 3.1 Testy przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Typy i build przechodzą: `npx astro check` i `npm run build`
+- [x] 3.1 Testy przechodzą: `npm test`
+- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.3 Typy i build przechodzą: `npx astro check` i `npm run build`
 
 #### Manual
 
