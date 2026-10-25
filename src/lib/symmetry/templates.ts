@@ -1,5 +1,6 @@
 import { JEDZENIE } from "./objects/jedzenie.ts";
 import { KOSMOS } from "./objects/kosmos.ts";
+import { ZWIERZETA } from "./objects/zwierzeta.ts";
 import type { SymmetryLevelId } from "./levels.ts";
 import type { SymmetryObjectSizes, SymmetryTemplate } from "./template-format.ts";
 
@@ -22,7 +23,7 @@ function byOrder(templates: readonly SymmetryTemplate[]): readonly SymmetryTempl
   ];
 }
 
-const CATALOG: readonly SymmetryObjectSizes[] = [JEDZENIE, KOSMOS];
+const CATALOG: readonly SymmetryObjectSizes[] = [ZWIERZETA, JEDZENIE, KOSMOS];
 
 /** Drawn as the left half of a 12-column grid: 6 columns, and column 5 touches the axis. Used by 5 and 6 lat. */
 const TEMPLATES_6_BY_15 = byOrder(CATALOG.flatMap((sizes) => sizes.half6));
