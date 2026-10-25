@@ -8,6 +8,7 @@ import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVi
 import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
 import {
+  characterContentLeft,
   characterRow,
   characterSheetSrc,
   OWN_IMAGE_ID,
@@ -322,6 +323,9 @@ function MazeSheet({
   const walls = collectWalls(maze, sheet.maze.x, sheet.maze.y, cellSize);
   const mark = sheet.mark;
   const start = sheet.start;
+  // The 30 mm box is already on the maze edge. Catalog files keep empty pixels on the left,
+  // so a pinned mark shifts by that margin and the drawing starts on the wall.
+  const contentLeft = mark !== null && mark.x === sheet.maze.x ? characterContentLeft(characterId) : 0;
 
   return (
     <svg
@@ -336,7 +340,7 @@ function MazeSheet({
       {mark !== null && characterSrc !== null ? (
         <image
           href={characterSrc}
-          x={mark.x}
+          x={mark.x - contentLeft * mark.width}
           y={mark.y}
           width={mark.width}
           height={mark.height}
