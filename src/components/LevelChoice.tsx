@@ -5,9 +5,10 @@ import { DIALOG_ROW_CLASS } from "@/components/ProfileCorner";
 import { cn } from "@/lib/utils";
 
 /**
- * The "Poziom: …" button of a card page and the dialog that lists its age levels (`CategoryChoice` reuses it as "Kategoria: …"). Shared by the pages whose levels
- * are `{ id, label }` entries (symmetry, sequences). `disabled` keeps the level, the button and the card on screen in
- * step while the profile corner still waits for the parent to choose a child.
+ * The "Poziom: …" button of a card page and the dialog that lists its age levels. `CategoryChoice` reuses it as
+ * "Kategoria: …". Shared by the pages whose levels are `{ id, label }` entries (symmetry, sequences). `disabled`
+ * keeps the level, the button and the card on screen in step while the profile corner still waits for the parent to
+ * choose a child.
  */
 export function LevelChoice<Id extends string>({
   level,
