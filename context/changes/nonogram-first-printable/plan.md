@@ -272,25 +272,25 @@ Brak: nowa strona, bez danych na urządzeniu.
 
 #### Automated
 
-- [x] 2.1 Testy układu przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.1 Testy układu przechodzą: `npm test` — a017c37
+- [x] 2.2 Lint przechodzi: `npm run lint` — a017c37
 
 ### Phase 3: Strona i katalog
 
 #### Automated
 
-- [ ] 3.1 Wszystkie testy przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Typy przechodzą: `npx astro check`
-- [ ] 3.4 Build przechodzi: `npm run build`
-- [ ] 3.5 Miniatury budują się bez zmian w pozostałych plikach: `npm run thumbnails`
+- [x] 3.1 Wszystkie testy przechodzą: `npm test`
+- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.3 Typy przechodzą: `npx astro check`
+- [x] 3.4 Build przechodzi: `npm run build`
+- [x] 3.5 Miniatury budują się bez zmian w pozostałych plikach: `npm run thumbnails`
 
 #### Manual
 
-- [ ] 3.6 Kafelek „Nonogram” w katalogu otwiera `/nonogram`, a link „Wszystkie karty” wraca
-- [ ] 3.7 Generuj pokazuje kartę 12×15 z liczbami, kolejne Generuj zmienia kartę, „Pokaż rozwiązanie” zamalowuje sylwetkę bez zmiany karty
-- [ ] 3.8 Podgląd wydruku (desktop Chrome) to jedna strona A4 bez rozwiązania, także z włączonym przełącznikiem
-- [ ] 3.9 Na telefonie (widok 375 px) Generuj i Drukuj nie nachodzą na siebie, karta mieści się w szerokości
+- [x] 3.6 Kafelek „Nonogram” w katalogu otwiera `/nonogram`, a link „Wszystkie karty” wraca
+- [x] 3.7 Generuj pokazuje kartę 12×15 z liczbami, kolejne Generuj zmienia kartę, „Pokaż rozwiązanie” zamalowuje sylwetkę bez zmiany karty
+- [x] 3.8 Podgląd wydruku (desktop Chrome) to jedna strona A4 bez rozwiązania, także z włączonym przełącznikiem
+- [x] 3.9 Na telefonie (widok 375 px) Generuj i Drukuj nie nachodzą na siebie, karta mieści się w szerokości
 
 ### Phase 4: Dokumentacja
 
