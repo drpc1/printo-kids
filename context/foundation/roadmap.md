@@ -51,7 +51,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-23 | graphic-dictation-first-printable | Rodzic może wejść z katalogu na stronę dyktanda graficznego, wygenerować kartę ze strzałkami prowadzącymi po obrysie obiektu z szablonów (poziom 6 lat), zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —                | US-17, FR-026 | done        |
 | S-24 | nonogram-sizes                    | Rodzic może wybrać rozmiar nonogramu (mały 8×12, średni 12×15, duży 18×24) na pasku strony nonogramu                                                                                                                               | S-22             | US-16, FR-025 | proposed    |
 | S-25 | graphic-dictation-levels          | Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5–7 lat: kratka i obiekty) na pasku strony dyktanda                                                                                                                | S-23             | US-18, FR-027 | in-progress |
-| S-26 | object-category-choice            | Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”                                                                                                                               | S-21, S-22, S-23 | US-20, FR-029 | proposed    |
+| S-26 | object-category-choice            | Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”                                                                                                                               | S-21, S-22, S-23 | US-20, FR-029 | in-progress |
 
 ## Streams
 
@@ -228,9 +228,9 @@ Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec stron
 - **Parallel with:** S-20, S-24, S-25
 - **Blockers:** —
 - **Unknowns:**
-  - Czy kategoria zostawia dość obiektów w każdym rozmiarze po odrzuceniach nonogramu i dyktanda, żeby kolejne karty się nie powtarzały? — Owner: team. Block: no. PRD Open Questions 11.
+  - Czy kategoria zostawia dość obiektów w każdym rozmiarze po odrzuceniach nonogramu i dyktanda, żeby kolejne karty się nie powtarzały? — Owner: team. Block: no. PRD Open Questions 11. Rozstrzygnięte 2026-10-25: najmniej 3 obiekty i 8 obrysów w każdej kombinacji, więc bez komunikatu i bez wyłączania kategorii.
 - **Risk:** Dotyka paska trzech stron naraz; pasek symetrii ma już poziom i kolory, a nonogram rozmiar, więc kategoria musi zmieścić się na telefonie. Czeka na S-22 i S-23, żeby nie dorabiać kategorii do każdej strony osobno. Kategoria żyje w stanie strony.
-- **Status:** proposed
+- **Status:** in-progress
 
 ## Backlog Handoff
 
