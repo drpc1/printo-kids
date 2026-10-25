@@ -1,7 +1,7 @@
 ---
 change_id: graphic-dictation-levels
 title: Graphic dictation levels
-status: in-progress
+status: impl_reviewed
 created: 2026-10-25
 updated: 2026-10-25
 ---
