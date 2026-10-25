@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
+import { CategoryChoice } from "@/components/CategoryChoice";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { LevelChoice } from "@/components/LevelChoice";
@@ -14,6 +15,7 @@ import {
   type DictationLevelId,
 } from "@/lib/dictation/levels";
 import { DICTATION_SHEET, formatDictationCommand } from "@/lib/dictation/sheet";
+import { DEFAULT_OBJECT_CATEGORY_ID, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
@@ -31,6 +33,8 @@ export default function DictationGenerator() {
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const [levelId, setLevelId] = useState<DictationLevelId>(DEFAULT_DICTATION_LEVEL_ID);
   const [levelOpen, setLevelOpen] = useState(false);
+  const [categoryId, setCategoryId] = useState<ObjectCategoryChoiceId>(DEFAULT_OBJECT_CATEGORY_ID);
+  const [categoryOpen, setCategoryOpen] = useState(false);
   const [card, setCard] = useState<DictationCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
@@ -46,7 +50,7 @@ export default function DictationGenerator() {
   }, [sheetShown]);
 
   function generateFor(id: DictationLevelId): void {
-    const next = generateDictationCard(Math.random, card?.key ?? null, dictationLevelById(id));
+    const next = generateDictationCard(Math.random, card?.key ?? null, dictationLevelById(id), categoryId);
     if (next === null) {
       setGenerateFailed(true);
       return;
@@ -88,6 +92,15 @@ export default function DictationGenerator() {
       disabled={waitingForChild}
     />
   );
+  const categoryControl = (
+    <CategoryChoice
+      categoryId={categoryId}
+      open={categoryOpen}
+      onOpenChange={setCategoryOpen}
+      onSelect={setCategoryId}
+      disabled={waitingForChild}
+    />
+  );
   const failedNote = generateFailed ? (
     <p role="alert" className={cn("text-destructive text-sm")}>
       {GENERATE_FAILED_TEXT}
@@ -112,6 +125,7 @@ export default function DictationGenerator() {
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
             {levelControl}
+            {categoryControl}
             {failedNote}
           </div>
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
@@ -134,7 +148,10 @@ export default function DictationGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          {levelControl}
+          <div className={cn("flex flex-wrap items-center justify-center gap-3")}>
+            {levelControl}
+            {categoryControl}
+          </div>
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>

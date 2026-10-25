@@ -168,7 +168,7 @@ Katalog dyktanda budowany leniwie raz na poziom × kategorię; to podzbiór doty
 
 #### Automated
 
-- [ ] 2.1 Lint, typy, build i testy przechodzą: `npm run lint`, `npx astro check`, `npm run build`, `npm test`
+- [x] 2.1 Lint, typy, build i testy przechodzą: `npm run lint`, `npx astro check`, `npm run build`, `npm test`
 
 #### Manual
 
