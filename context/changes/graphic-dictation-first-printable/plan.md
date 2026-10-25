@@ -239,5 +239,5 @@ At most a few dozen tiny grids per Generuj; far below the 5 s budget.
 
 - [x] 3.3 The catalog shows the "Dyktando graficzne" thumbnail and opens `/dyktando` — a9f09ae
 - [x] 3.4 Generuj shows a card; following the commands from the dot on the screen draws the object's outline and returns to the dot — a9f09ae
-- [ ] 3.5 Print preview shows one A4 page, margin ≥10 mm, no outline drawn
+- [x] 3.5 Print preview shows one A4 page, margin ≥10 mm, no outline drawn — checked in headless Chromium print (1 A4 page)
 - [x] 3.6 At phone width (375 px) Generuj and Drukuj do not overlap and the card fits the width — a9f09ae
