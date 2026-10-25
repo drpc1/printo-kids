@@ -73,7 +73,7 @@ void describe("layoutSheet", () => {
     }
   });
 
-  void test("a middle entrance keeps the mark on that column and on the page", () => {
+  void test("a character mark stays centered unless that would start left of the maze", () => {
     for (const level of LEVELS) {
       if (!level.showCharacter) {
         continue;
@@ -81,32 +81,53 @@ void describe("layoutSheet", () => {
 
       const sheet = layoutForLevel(level, true);
       const mark = sheet.mark;
+      const center = columnCenter(sheet, level.columns, level.entrance.col);
 
-      assert.ok(mark);
+      assert.ok(mark, level.id);
       assert.equal(sheet.start, null);
       assert.equal(mark.width, MARK_SIZE);
       assert.equal(mark.height, MARK_SIZE);
-      assert.equal(mark.x + mark.width / 2, columnCenter(sheet, level.columns, level.entrance.col));
-      assert.ok(mark.y >= 0);
+      if (center - MARK_SIZE / 2 >= sheet.maze.x) {
+        assert.equal(mark.x + mark.width / 2, center, level.id);
+      } else {
+        assert.equal(mark.x, sheet.maze.x, level.id);
+      }
+      assert.ok(mark.y >= 0, level.id);
     }
   });
 
-  void test("nastolatek shows Start on column 0 and has no mark", () => {
+  void test("nastolatek pins a selected character to the maze left edge", () => {
     const level = levelById("nastolatek");
-    const sheet = layoutForLevel(level, level.showCharacter);
-    const start = sheet.start;
-    const gridBottom = sheet.maze.y + sheet.maze.height;
+    const sheet = layoutForLevel(level, true);
+    const mark = sheet.mark;
+    const bandBelowMeta = PAGE_HEIGHT - (sheet.meta.y + LABEL_HEIGHT / 2);
 
-    assert.equal(level.entrance.col, 0);
-    assert.equal(level.exit.col, 26);
-    assert.equal(level.showCharacter, false);
+    assert.equal(level.showCharacter, true);
+    assert.ok(mark);
+    assert.equal(sheet.start, null);
+    assert.equal(mark.width, MARK_SIZE);
+    assert.equal(mark.height, MARK_SIZE);
+    assert.equal(mark.x, sheet.maze.x);
+    assert.equal(mark.y + mark.height, sheet.maze.y);
+    assert.equal(sheet.meta.text, "Meta");
+    assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, 26));
+    assert.ok(Math.abs(mark.y - bandBelowMeta) <= 0.01, `${mark.y} vs ${bandBelowMeta}`);
+  });
+
+  void test("nastolatek without a character shows Start on column 0 at the same height", () => {
+    const level = levelById("nastolatek");
+    const withMark = layoutForLevel(level, true);
+    const sheet = layoutForLevel(level, false);
+    const start = sheet.start;
+
     assert.equal(sheet.mark, null);
     assert.ok(start);
     assert.equal(start.text, "Start");
     assert.equal(start.x, columnCenter(sheet, level.columns, 0));
     assert.equal(sheet.meta.text, "Meta");
     assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, 26));
-    assert.ok(sheet.meta.y > gridBottom);
+    assert.equal(sheet.maze.y, withMark.maze.y);
+    assert.equal(sheet.meta.y, withMark.meta.y);
   });
 
   void test("on a character level the white band above the mark equals the band below Meta", () => {
@@ -161,30 +182,6 @@ void describe("layoutSheet", () => {
         }
       }
     }
-  });
-
-  void test("a picked character on a level without one still shows Start and no mark", () => {
-    const level = levelById("nastolatek");
-    const sheet = layoutForLevel(level, true);
-
-    assert.equal(sheet.mark, null);
-    assert.equal(sheet.start?.text, "Start");
-  });
-
-  void test("nastolatek keeps the centered block", () => {
-    const level = levelById("nastolatek");
-    const sheet = layoutForLevel(level, false);
-    const centered = layoutForLevel(level, false, false);
-    const innerHeight = PAGE_HEIGHT - INSET * 2;
-    const labelBand = (innerHeight - sheet.maze.height) / 2;
-
-    assert.equal(level.showCharacter, false);
-    assert.equal(sheet.maze.y, centered.maze.y);
-    assert.equal(sheet.meta.y, centered.meta.y);
-    assert.equal(sheet.start?.y, centered.start?.y);
-    assertNear(sheet.maze.y, INSET + labelBand);
-    assertNear(sheet.start?.y, INSET + labelBand / 2);
-    assertNear(sheet.meta.y, INSET + labelBand + sheet.maze.height + labelBand / 2);
   });
 
   void test("younger levels keep Meta on the shared entrance and exit column", () => {

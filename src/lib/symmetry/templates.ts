@@ -4,7 +4,10 @@ import { KOSMOS } from "./objects/kosmos.ts";
 import { PRZYRODA } from "./objects/przyroda.ts";
 import { ZWIERZETA } from "./objects/zwierzeta.ts";
 import type { SymmetryLevelId } from "./levels.ts";
-import type { SymmetryObjectSizes, SymmetryTemplate } from "./template-format.ts";
+import { OBJECT_CATEGORIES } from "./template-format.ts";
+import type { ObjectCategoryId, SymmetryObjectSizes, SymmetryTemplate } from "./template-format.ts";
+
+export type ObjectCategoryChoiceId = "wszystkie" | ObjectCategoryId;
 
 export {
   OBJECT_CATEGORIES,
@@ -37,6 +40,22 @@ const TEMPLATES_BY_LEVEL: Readonly<Record<SymmetryLevelId, readonly SymmetryTemp
   lat7: byOrder(CATALOG.flatMap((sizes) => sizes.half9)),
 };
 
-export function symmetryTemplatesFor(levelId: SymmetryLevelId): readonly SymmetryTemplate[] {
-  return TEMPLATES_BY_LEVEL[levelId];
+/** The choices of the "Kategoria" bar: all objects first, then one entry per category, in the order of the PRD. */
+export const OBJECT_CATEGORY_CHOICES: readonly { id: ObjectCategoryChoiceId; label: string }[] = [
+  { id: "wszystkie", label: "Wszystkie" },
+  ...OBJECT_CATEGORIES,
+];
+
+export const DEFAULT_OBJECT_CATEGORY_ID: ObjectCategoryChoiceId = "wszystkie";
+
+/** The templates of the level, only those in `category` (all of them for "wszystkie"). Empty for a category without objects. */
+export function symmetryTemplatesFor(
+  levelId: SymmetryLevelId,
+  category: ObjectCategoryChoiceId = DEFAULT_OBJECT_CATEGORY_ID,
+): readonly SymmetryTemplate[] {
+  const all = TEMPLATES_BY_LEVEL[levelId];
+  if (category === "wszystkie") {
+    return all;
+  }
+  return all.filter((template) => template.categories.includes(category));
 }
