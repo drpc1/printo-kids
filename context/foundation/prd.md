@@ -69,14 +69,14 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic może wybrać postać i poziom trudności labiryntu
 - **When** wybierze te parametry i uruchomi generowanie
-- **Then** otrzymuje gotowy do wydruku labirynt A4 o wybranym poziomie trudności; wybrana postać stoi przy starcie, poza poziomem nastolatka
+- **Then** otrzymuje gotowy do wydruku labirynt A4 o wybranym poziomie trudności; na nastolatku wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”; młodsze poziomy zostają ze znakiem na środku wejścia
 
 #### Acceptance Criteria
 
 - Labirynt zajmuje większą część strony A4.
 - Labirynt nie przekracza wąskich marginesów strony.
 - Istnieje dokładnie jedna prawidłowa ścieżka prowadząca od startu do mety.
-- Na poziomach od 3 lat do 7–8 lat przy starcie znajduje się wybrana postać. Poziom nastolatka postaci nie pokazuje.
+- Na poziomach od 3 lat do 7–8 lat przy starcie znajduje się wybrana postać, na środku wejścia. Na nastolatku wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”.
 - Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, a napis „Meta” na środku dolnej. Poziom nastolatka ma start i metę w narożnikach.
 
 ### US-02: Rodzic wskazuje własny obrazek, który zostaje w przeglądarce i staje przy starcie
@@ -105,7 +105,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Przy niższej rozdzielczości pełna lista jest widoczna, a nie ucięta.
 - Ostatnio użyta postać i ulubiona postać profilu mogą być dowolną postacią z katalogu.
 - Ulubiona postać profilu może być własnym obrazkiem rodzica po „Zapisz”, a postać z katalogu nadal może być ulubioną.
-- Pasek nadal pokazuje wybraną postać. Poziom nastolatka postaci nie pokazuje.
+- Pasek nadal pokazuje wybraną postać. Na nastolatku wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”; młodsze poziomy zostają ze znakiem na środku wejścia.
 
 ### US-04: Rodzic korzysta ze strony na telefonie
 
@@ -477,7 +477,7 @@ Rodzic wybiera jeden z sześciu poziomów nazwanych wiekiem oraz jedną z jedena
 
 Droga do mety nie jest progiem. To typowa długość dla siatki i sposobu losowania; pojedyncza karta może być krótsza albo dłuższa.
 
-Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, napis „Meta” na środku dolnej, a przy starcie stoi wybrana postać. Poziom nastolatka ma start i metę w narożnikach i nie pokazuje postaci. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
+Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, napis „Meta” na środku dolnej, a znak postaci zostaje na środku wejścia. Na nastolatku start i meta są w narożnikach; wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
 
 Krótki poziom przy tej samej alejce losuje się sposobem, który daje krótszą drogę i więcej krótkich odnóg, żeby krótka droga nie była zagadką ukrytą wśród pułapek. Dłuższy poziom losuje długą, krętą drogę z mniejszą liczbą rozgałęzień.
 
@@ -649,7 +649,7 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — TBD by user. Block: no (pain and missing capability are captured; the second vision paragraph is incomplete until this lands).
 2. ~~**Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej?**~~ — Zamknięte 2026-10-16 jako nieaktualne: poziom wyznacza sposób losowania, nie próg głębokości odnogi (`random-maze-generator`).
 3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka.
-4. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Dziś pasek „Postać” zostaje aktywny przy nastolatku, a karta postaci nie rysuje, co myli rodzica. Albo wybór postaci blokuje się przy nastolatku, albo nastolatek też dostaje postać, bo młodsze dzieci mogą chcieć ten poziom. Nowa zmiana, issue drpc1/printo-kids#54 (2026-10-22).
+4. ~~**Czy poziom nastolatka ma pokazywać postać?**~~ — Zamknięte 2026-10-25: na nastolatku wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”; młodsze poziomy zostają ze znakiem na środku wejścia (`teen-level-character-choice`).
 5. **Czy startowe wartości poziomów symetrii (kratka, siatka, obiekty, podpowiedź) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22, przebudowaną 2026-10-23 (obiekty zamiast gęstości plamy); potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie. Połowa siatki 8×12 ma 4 kratki szerokości: rozstrzygnięte 2026-10-23 po makiecie, poziom 4 lat ma własne, prostsze warianty obiektów, a poziom 7 lat bogatsze. Oś pozioma i odsunięcie od osi wycofane z poziomów. Czeka na wydruk w S-13 (faza 4).
 6. **Czy karta symetrii ma kiedyś używać postaci (np. połowa sylwetki)?** — Owner: user. Block: no. Dziś karta postaci nie pokazuje, a strona symetrii nie ma paska „Postać” (US-05). Zależy od obrysów postaci, jak „Połącz kropki”. Szablony obiektów karty symetrii (2026-10-23) to osobny katalog i nie czekają na tę decyzję.
 7. **Ile szablonów obiektów i jakich wariantów wystarczy, żeby kolejne karty się nie powtarzały?** — Owner: team. Block: no. Ustalone 2026-10-23: obiekty zamiast przypadkowych plam. Gotowa lista szablonów to skończona biblioteka, czyli problem z wizji produktu; warianty części mają go zmiękczyć. Otwarte: czy starszy poziom ma też dostawać ornamenty budowane z reguł (np. romby, pierścienie), które dają się generować bez końca.
