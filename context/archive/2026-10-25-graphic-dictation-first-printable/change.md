@@ -1,10 +1,10 @@
 ---
 change_id: graphic-dictation-first-printable
 title: Graphic dictation first printable
-status: implemented
+status: archived
 created: 2026-10-25
 updated: 2026-10-25
-archived_at: null
+archived_at: 2026-10-25T18:17:22Z
 ---
 
 ## Notes
