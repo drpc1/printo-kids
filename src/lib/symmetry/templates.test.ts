@@ -44,6 +44,16 @@ void describe("template catalog", () => {
     }
   });
 
+  void test("every category has at least four objects in every size", () => {
+    for (const { levelId } of SIZES) {
+      for (const category of OBJECT_CATEGORIES) {
+        const objects = symmetryTemplatesFor(levelId).filter((template) => template.categories.includes(category.id));
+
+        assert.ok(objects.length >= 4, `${levelId} ${category.label}: ${objects.length}`);
+      }
+    }
+  });
+
   void test("4 lat templates are 4 wide, 5 and 6 lat ones 6 wide, 7 lat ones at most 9 wide", () => {
     for (const { levelId, width } of SIZES) {
       for (const template of symmetryTemplatesFor(levelId)) {
