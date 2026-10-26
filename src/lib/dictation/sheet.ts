@@ -25,6 +25,8 @@ export const DICTATION_SHEET = {
   commandBoxRadius: 1.2,
   gridStroke: 0.3,
   frameStroke: 0.65,
+  /** Screen-only outline. Thicker than the frame so it stays visible on the grid lines. */
+  solutionStroke: 1.2,
   /** The dot on the grid where the child puts the pencil down. */
   startDotRadius: 2,
 } as const;
