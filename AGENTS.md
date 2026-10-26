@@ -31,7 +31,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 
 ## Tests and CI
 
-`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the HTTP check of the product page, not that suite. Push and pull request to `main` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (the build does not need Supabase secrets), and a separate job `smoke` runs that HTTP check. Both jobs fail the run when red. Commit-message convention is unset.
+`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the HTTP check of the product page, not that suite. Push and pull request to `main` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (the build does not need Supabase secrets), a separate job `smoke` runs that HTTP check, and a job `e2e` runs Playwright on the Chromium projects (`chromium`, `phone-360`, `pixel-7`, `tablet-768`; WebKit `iphone-13` stays in the on-demand `e2e-phone.yml`). All three jobs fail the run when red. Commit-message convention is unset.
 
 ## UI
 
