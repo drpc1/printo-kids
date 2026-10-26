@@ -15,6 +15,7 @@ export function LevelRow({
   description?: string;
   typicalAge?: string;
 }) {
+  // The typical age only stands under a description; rows without one (Kategoria, Rozmiar) show the name alone.
   if (description === undefined) {
     return <>{label}</>;
   }

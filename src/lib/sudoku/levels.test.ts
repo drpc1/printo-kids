@@ -47,7 +47,9 @@ void describe("sudoku settings", () => {
       SUDOKU_LEVELS.map(({ barLabel }) => barLabel),
       ["łatwy", "średni", "trudny"],
     );
-    for (const { label, barLabel } of SUDOKU_LEVELS) assert.doesNotMatch(label + barLabel, /lat|nastolat/);
+    for (const level of SUDOKU_LEVELS) {
+      assert.doesNotMatch(level.label + level.barLabel, /lat|nastolat/, level.id);
+    }
   });
 
   void test("level descriptions count the blanks with Polish plural forms", () => {

@@ -1,7 +1,7 @@
 ---
 change_id: level-labels-without-age
 title: Poziomy bez wieku — Poziom 1…N i łatwy / średni / trudny z opisem
-status: implemented
+status: impl_reviewed
 created: 2026-10-26
 updated: 2026-10-26
 archived_at: null
