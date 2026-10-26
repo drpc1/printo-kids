@@ -4,7 +4,7 @@ import {
   carveSudoku,
   countSudokuSolutions,
   fullSudoku,
-  generateSudokuCard4,
+  generateSudokuCard,
   generateSudokuPuzzle,
   sudokuBlock,
   sudokuCardProblems,
@@ -12,7 +12,14 @@ import {
   type SudokuGrid,
   type SudokuSize,
 } from "./generate.ts";
-import { SUDOKU_SHAPES_4, type SudokuShapeId } from "./shapes.ts";
+import {
+  DEFAULT_SUDOKU_SETTINGS,
+  SUDOKU_LEVELS,
+  SUDOKU_SIZES,
+  sudokuBlankCount,
+  type SudokuSettings,
+} from "./levels.ts";
+import { SUDOKU_SHAPES, SUDOKU_SHAPES_4, type SudokuShapeId } from "./shapes.ts";
 
 const SIZES: readonly SudokuSize[] = [4, 6, 9];
 
@@ -54,7 +61,7 @@ function blankCount(grid: SudokuGrid): number {
 }
 
 function goodCard(seed = 1): SudokuCard {
-  const card = generateSudokuCard4(mulberry32(seed), null);
+  const card = generateSudokuCard(mulberry32(seed), null);
   assert.ok(card);
   return card;
 }
@@ -149,7 +156,7 @@ void describe("generateSudokuPuzzle", () => {
   });
 });
 
-void describe("generateSudokuCard4", () => {
+void describe("generateSudokuCard", () => {
   void test("cards from several seeds have no problems and one empty cell per row", () => {
     for (let seed = 1; seed <= 20; seed += 1) {
       const card = goodCard(seed);
@@ -168,7 +175,7 @@ void describe("generateSudokuCard4", () => {
     let previous: string | null = null;
 
     for (let round = 0; round < 50; round += 1) {
-      const card = generateSudokuCard4(random, previous);
+      const card = generateSudokuCard(random, previous);
 
       assert.ok(card);
       assert.notEqual(card.key, previous);
@@ -180,7 +187,7 @@ void describe("generateSudokuCard4", () => {
     const card = goodCard();
     const rows = card.givens.map((row) => row.map((value) => (value === null ? "." : String(value))).join(""));
 
-    assert.equal(card.key, `${card.shapes.join(",")}|${rows.join("/")}`);
+    assert.equal(card.key, `4|shapes|${card.shapes.join(",")}|${rows.join("/")}`);
   });
 
   void test("200 cards show every one of the five shapes and every blank column in every row", () => {
@@ -190,7 +197,7 @@ void describe("generateSudokuCard4", () => {
     let previous: string | null = null;
 
     for (let round = 0; round < 200; round += 1) {
-      const card = generateSudokuCard4(random, previous);
+      const card = generateSudokuCard(random, previous);
       assert.ok(card);
       previous = card.key;
       card.shapes.forEach((id) => shapes.add(id));
@@ -247,6 +254,27 @@ void describe("sudokuCardProblems", () => {
     assert.ok(sudokuCardProblems({ ...card, shapes }).includes("duplicate-shape"));
   });
 
+  void test("a card with the wrong number of blanks for its size and level is reported", () => {
+    const card = goodCard();
+    const givens = card.givens.map((row, r) => (r === 0 ? row.map(() => null) : [...row]));
+
+    assert.ok(sudokuCardProblems({ ...card, givens }).includes("blank-count"));
+  });
+
+  void test("the wrong number of shapes for the size is reported", () => {
+    const card = goodCard();
+
+    assert.ok(sudokuCardProblems({ ...card, shapes: card.shapes.slice(0, 3) }).includes("shape-count"));
+  });
+
+  void test("shapes on a digits card are reported", () => {
+    const card = generateSudokuCard(mulberry32(3), null, { size: 6, level: "latwy", symbols: "digits" });
+    assert.ok(card);
+
+    assert.deepEqual(sudokuCardProblems(card), []);
+    assert.ok(sudokuCardProblems({ ...card, shapes: ["circle"] }).includes("shapes-with-digits"));
+  });
+
   void test("a board with two solutions is reported as not unique", () => {
     const card = goodCard();
     const givens = emptyGrid(4).map((row) => [...row]);
@@ -272,9 +300,111 @@ void describe("sudokuCardProblems", () => {
   void test("no card uses the star, diamond, moon or drop", () => {
     const random = mulberry32(5);
     for (let round = 0; round < 100; round += 1) {
-      const card = generateSudokuCard4(random, null);
+      const card = generateSudokuCard(random, null);
       assert.ok(card);
       for (const id of card.shapes) assert.ok(!["star", "diamond", "moon", "drop"].includes(id), id);
+    }
+  });
+});
+
+const SETTINGS: readonly SudokuSettings[] = SUDOKU_SIZES.flatMap(({ id: size }) =>
+  (size === 4 ? SUDOKU_LEVELS.slice(0, 1) : SUDOKU_LEVELS).flatMap(({ id: level }) =>
+    (size === 4 ? (["shapes"] as const) : (["shapes", "digits"] as const)).map((symbols) => ({ size, level, symbols })),
+  ),
+);
+
+void describe("generateSudokuCard for every size, level and symbols", () => {
+  void test("there are 13 settings: 4×4 once, 6×6 and 9×9 three levels with shapes and digits", () => {
+    assert.equal(SETTINGS.length, 1 + 6 + 6);
+  });
+
+  void test("each setting gives a card with no problems, its blank count and one solution", () => {
+    for (const settings of SETTINGS) {
+      for (const seed of [1, 2, 3]) {
+        const card = generateSudokuCard(mulberry32(seed), null, settings);
+        const label = `${JSON.stringify(settings)} seed ${seed}`;
+
+        assert.ok(card, label);
+        assert.deepEqual(sudokuCardProblems(card), [], label);
+        assert.equal(card.size, settings.size);
+        assert.equal(card.symbols, settings.symbols);
+        assert.equal(blankCount(card.givens), sudokuBlankCount(settings.size, settings.level), label);
+        assert.equal(countSudokuSolutions(card.givens, settings.size), 1, label);
+        assert.equal(card.shapes.length, settings.symbols === "digits" ? 0 : settings.size, label);
+      }
+    }
+  });
+
+  void test("4×4 ignores digits and the level and always draws shapes", () => {
+    const card = generateSudokuCard(mulberry32(2), null, { size: 4, level: "trudny", symbols: "digits" });
+
+    assert.ok(card);
+    assert.equal(card.symbols, "shapes");
+    assert.equal(blankCount(card.givens), 4);
+  });
+
+  void test("a 6×6 card draws six of the nine shapes, and across cards all nine appear", () => {
+    const random = mulberry32(31);
+    const seen = new Set<SudokuShapeId>();
+    let previous: string | null = null;
+
+    for (let round = 0; round < 60; round += 1) {
+      const card = generateSudokuCard(random, previous, { size: 6, level: "latwy", symbols: "shapes" });
+      assert.ok(card);
+      previous = card.key;
+      assert.equal(new Set(card.shapes).size, 6);
+      card.shapes.forEach((id) => seen.add(id));
+    }
+
+    assert.deepEqual([...seen].sort(), [...SUDOKU_SHAPES].sort());
+  });
+
+  void test("a 9×9 card uses all nine shapes", () => {
+    const card = generateSudokuCard(mulberry32(8), null, { size: 9, level: "latwy", symbols: "shapes" });
+
+    assert.ok(card);
+    assert.deepEqual([...card.shapes].sort(), [...SUDOKU_SHAPES].sort());
+  });
+
+  void test("two cards in a row never share a key, for every setting", () => {
+    for (const settings of SETTINGS) {
+      const random = mulberry32(5);
+      let previous: string | null = null;
+      for (let round = 0; round < 5; round += 1) {
+        const card = generateSudokuCard(random, previous, settings);
+
+        assert.ok(card, JSON.stringify(settings));
+        assert.notEqual(card.key, previous);
+        previous = card.key;
+      }
+    }
+  });
+
+  void test("the same board as shapes and as digits has different keys", () => {
+    const shapes = generateSudokuCard(mulberry32(4), null, { size: 6, level: "sredni", symbols: "shapes" });
+    const digits = generateSudokuCard(mulberry32(4), null, { size: 6, level: "sredni", symbols: "digits" });
+
+    assert.ok(shapes && digits);
+    assert.notEqual(shapes.key, digits.key);
+  });
+
+  void test("the default settings give a 4×4 card", () => {
+    const card = generateSudokuCard(mulberry32(1), null);
+
+    assert.ok(card);
+    assert.equal(card.size, DEFAULT_SUDOKU_SETTINGS.size);
+  });
+
+  void test("a 9×9 card at the hardest level comes out well inside the 5 second budget", () => {
+    const random = mulberry32(77);
+    const hardest: SudokuSettings = { size: 9, level: "trudny", symbols: "shapes" };
+
+    for (let round = 0; round < 20; round += 1) {
+      const started = performance.now();
+      const card = generateSudokuCard(random, null, hardest);
+
+      assert.ok(card);
+      assert.ok(performance.now() - started < 1000, "one card took over a second");
     }
   });
 });
