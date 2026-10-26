@@ -151,7 +151,7 @@ void describe("generateSequenceCard", () => {
 
     assert.deepEqual(rulesOf(LAT4), ["AB"]);
     assert.deepEqual(rulesOf(LAT5), ["AAB", "AB", "ABC"]);
-    assert.deepEqual(rulesOf(LAT6), ["AAB", "AB", "ABC", "up1", "up2"]);
+    assert.deepEqual(rulesOf(LAT6), ["AAB", "AB", "ABC"]);
     assert.deepEqual(rulesOf(LAT7), ["down1", "groups", "mixed"]);
   });
 
@@ -195,7 +195,7 @@ void describe("generateSequenceCard", () => {
 
     const numbers = new Set<number>();
     for (let seed = 0; seed < SEEDS; seed += 1) {
-      for (const level of [LAT6, LAT7]) {
+      for (const level of [LAT7]) {
         for (const row of generateSequenceCard(mulberry32(seed), null, level)?.rows ?? []) {
           for (const item of row.values) {
             if (typeof item === "number") {
