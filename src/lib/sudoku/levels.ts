@@ -18,10 +18,10 @@ export const SUDOKU_SIZES: readonly { id: SudokuSize; label: string }[] = [
   { id: 9, label: "9×9" },
 ];
 
-export const SUDOKU_LEVELS: readonly { id: SudokuLevelId; label: string }[] = [
-  { id: "latwy", label: "łatwy" },
-  { id: "sredni", label: "średni" },
-  { id: "trudny", label: "trudny" },
+export const SUDOKU_LEVELS: readonly { id: SudokuLevelId; label: string; barLabel: string }[] = [
+  { id: "latwy", label: "łatwy", barLabel: "łatwy" },
+  { id: "sredni", label: "średni", barLabel: "średni" },
+  { id: "trudny", label: "trudny", barLabel: "trudny" },
 ];
 
 export const DEFAULT_SUDOKU_SETTINGS: SudokuSettings = { size: 4, level: "latwy", symbols: "shapes" };
@@ -38,6 +38,13 @@ const BLANKS: Record<6 | 9, Record<SudokuLevelId, number>> = {
 /** How many cells are empty. 4×4 has one level, so its level is ignored. */
 export function sudokuBlankCount(size: SudokuSize, level: SudokuLevelId): number {
   return size === 4 ? BLANKS_4 : BLANKS[size][level];
+}
+
+/** Level row text for a size: how many cells are empty, e.g. "12 pustych pól z 36". */
+export function sudokuLevelDescription(size: 6 | 9, level: SudokuLevelId): string {
+  const blanks = sudokuBlankCount(size, level);
+  const few = [2, 3, 4].includes(blanks % 10) && ![12, 13, 14].includes(blanks % 100);
+  return `${blanks} ${few ? "puste pola" : "pustych pól"} z ${size * size}`;
 }
 
 /** The level bar is shown only for sizes that have more than one level. */
