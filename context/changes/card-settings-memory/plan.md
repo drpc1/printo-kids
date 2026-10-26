@@ -316,27 +316,27 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą, w tym: stary profil i stare `last-used` bez `cards` wczytują się z domyślnymi, zły identyfikator w jednym polu nie psuje reszty, `withFavorite` i `writeLastUsed` zachowują `cards`, `withProfileLevel` zmienia tylko `level`, normalizacja sudoku: `npm test`
-- [x] 1.2 Lint: `npm run lint`
-- [x] 1.3 Typy: `npx astro check`
+- [x] 1.1 Testy przechodzą, w tym: stary profil i stare `last-used` bez `cards` wczytują się z domyślnymi, zły identyfikator w jednym polu nie psuje reszty, `withFavorite` i `writeLastUsed` zachowują `cards`, `withProfileLevel` zmienia tylko `level`, normalizacja sudoku: `npm test` — 5f6f352
+- [x] 1.2 Lint: `npm run lint` — 5f6f352
+- [x] 1.3 Typy: `npx astro check` — 5f6f352
 
 #### Manual
 
-- [x] 1.4 Dopasowanie nazw pól i wartości domyślnych do tabeli w PRD (Business Logic „Profil i zapamiętane ustawienia”) potwierdzone przy przeglądzie.
+- [x] 1.4 Dopasowanie nazw pól i wartości domyślnych do tabeli w PRD (Business Logic „Profil i zapamiętane ustawienia”) potwierdzone przy przeglądzie. — 5f6f352
 
 ### Phase 2: Hook, komunikat, labirynt i symetria
 
 #### Automated
 
-- [ ] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
-- [ ] 2.2 Istniejące e2e labiryntu i profilu (`profile-level`, `level-bar`, `dialog-close`) przechodzą: `npx playwright test --project=chromium`
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
+- [x] 2.2 Istniejące e2e labiryntu i profilu (`profile-level`, `level-bar`, `dialog-close`) przechodzą: `npx playwright test --project=chromium`
 
 #### Manual
 
-- [ ] 2.3 `/symetria` z profilem: zmiana poziomu, kolorów i kategorii, odświeżenie → ta sama wartość; komunikat „Zapamiętane dla {imię}” pojawia się i znika, nie zasłania Generuj/Drukuj na telefonie.
-- [ ] 2.4 Bez profilu: to samo po odświeżeniu; „Bez profilu” po profilu pokazuje ustawienia urządzenia.
-- [ ] 2.5 Zmiana profilu przy pokazanej karcie generuje nową kartę zgodną z paskiem.
-- [ ] 2.6 Labirynt: zmiana poziomu z aktywnym profilem zostaje po odświeżeniu.
+- [x] 2.3 `/symetria` z profilem: zmiana poziomu, kolorów i kategorii, odświeżenie → ta sama wartość; komunikat „Zapamiętane dla {imię}” pojawia się i znika, nie zasłania Generuj/Drukuj na telefonie.
+- [x] 2.4 Bez profilu: to samo po odświeżeniu; „Bez profilu” po profilu pokazuje ustawienia urządzenia.
+- [x] 2.5 Zmiana profilu przy pokazanej karcie generuje nową kartę zgodną z paskiem.
+- [x] 2.6 Labirynt: zmiana poziomu z aktywnym profilem zostaje po odświeżeniu.
 
 ### Phase 3: Pozostałe cztery karty
 

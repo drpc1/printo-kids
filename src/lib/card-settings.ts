@@ -55,6 +55,9 @@ export type CardSettingsId = keyof CardSettingsMap;
 
 export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = ["symetria", "sekwencje", "sudoku", "nonogram", "dyktando"];
 
+/** The settings of one card. */
+export type CardSettingsOf<K extends CardSettingsId> = NonNullable<CardSettingsMap[K]>;
+
 type Defaults = { [K in CardSettingsId]-?: NonNullable<CardSettingsMap[K]> };
 
 const DEFAULTS: Defaults = {
@@ -65,20 +68,20 @@ const DEFAULTS: Defaults = {
   dyktando: { level: DEFAULT_DICTATION_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
 };
 
-export function defaultCardSettings<K extends CardSettingsId>(cardId: K): Defaults[K] {
+export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
   return { ...DEFAULTS[cardId] };
 }
 
 /** The settings of one card: the stored ones when there are some, otherwise the defaults. */
-export function cardSettingsOf<K extends CardSettingsId>(map: CardSettingsMap, cardId: K): Defaults[K] {
-  return (map[cardId] ?? defaultCardSettings(cardId)) as Defaults[K];
+export function cardSettingsOf<K extends CardSettingsId>(map: CardSettingsMap, cardId: K): CardSettingsOf<K> {
+  return map[cardId] ?? defaultCardSettings(cardId);
 }
 
 /** A new map with `patch` applied to one card. The result is normalized, so an impossible combination never persists. */
 export function withCardSettings<K extends CardSettingsId>(
   map: CardSettingsMap,
   cardId: K,
-  patch: Partial<Defaults[K]>,
+  patch: Partial<CardSettingsOf<K>>,
 ): CardSettingsMap {
   const next = normalizeCard(cardId, { ...cardSettingsOf(map, cardId), ...patch });
   return { ...map, [cardId]: next };
@@ -104,14 +107,14 @@ export function parseCardSettings(raw: unknown): CardSettingsMap {
   return map;
 }
 
-function parseCard<K extends CardSettingsId>(cardId: K, stored: Record<string, unknown>): Defaults[K] {
+function parseCard<K extends CardSettingsId>(cardId: K, stored: Record<string, unknown>): CardSettingsOf<K> {
   const defaults = defaultCardSettings(cardId);
   const parsed: Record<string, unknown> = {};
   for (const [field, fallback] of Object.entries(defaults)) {
     parsed[field] = fieldValue(cardId, field, stored[field], fallback);
   }
 
-  return normalizeCard(cardId, parsed as unknown as Defaults[K]);
+  return normalizeCard(cardId, parsed as unknown as CardSettingsOf<K>);
 }
 
 function fieldValue(cardId: CardSettingsId, field: string, value: unknown, fallback: unknown): unknown {
@@ -147,12 +150,12 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
   }
 }
 
-function normalizeCard<K extends CardSettingsId>(cardId: K, settings: Defaults[K]): Defaults[K] {
+function normalizeCard<K extends CardSettingsId>(cardId: K, settings: CardSettingsOf<K>): CardSettingsOf<K> {
   if (cardId !== "sudoku") {
     return settings;
   }
 
-  return normalizeSudoku(settings as Defaults["sudoku"]) as Defaults[K];
+  return normalizeSudoku(settings as unknown as SudokuCardSettings) as unknown as CardSettingsOf<K>;
 }
 
 /** 4×4 offers only shapes and has one level; digits carry no colors. */
