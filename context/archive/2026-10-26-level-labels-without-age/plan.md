@@ -232,28 +232,28 @@ Brak migracji: zapisane dane trzymają identyfikatory, a te się nie zmieniają.
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — 55c6f5c
-- [x] 1.2 Lint przechodzi: `npm run lint` — 55c6f5c
-- [x] 1.3 Typy przechodzą: `npx astro check` — 55c6f5c
-- [x] 1.4 W tablicach poziomów sześciu kart żadna `label` ani `barLabel` nie zawiera „lat” ani „nastolat”: sprawdza test z punktu 3 — 55c6f5c
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — b2daba7
+- [x] 1.2 Lint przechodzi: `npm run lint` — b2daba7
+- [x] 1.3 Typy przechodzą: `npx astro check` — b2daba7
+- [x] 1.4 W tablicach poziomów sześciu kart żadna `label` ani `barLabel` nie zawiera „lat” ani „nastolat”: sprawdza test z punktu 3 — b2daba7
 
 #### Manual
 
-- [x] 1.5 PRD: OQ12, US-22, FR-001 i „Poziomy” mówią to samo co tabela „Brzmienie” — 55c6f5c
+- [x] 1.5 PRD: OQ12, US-22, FR-001 i „Poziomy” mówią to samo co tabela „Brzmienie” — b2daba7
 
 ### Phase 2: Wiersz w trzech liniach i pasek
 
 #### Automated
 
-- [x] 2.1 Testy jednostkowe przechodzą: `npm test` — 59c5203
-- [x] 2.2 Lint przechodzi: `npm run lint` — 59c5203
-- [x] 2.3 Typy przechodzą: `npx astro check` — 59c5203
-- [x] 2.4 Build przechodzi: `npm run build` — 59c5203
-- [x] 2.5 E2E przechodzą: `npx playwright test` — 59c5203
+- [x] 2.1 Testy jednostkowe przechodzą: `npm test` — 43c5bca
+- [x] 2.2 Lint przechodzi: `npm run lint` — 43c5bca
+- [x] 2.3 Typy przechodzą: `npx astro check` — 43c5bca
+- [x] 2.4 Build przechodzi: `npm run build` — 43c5bca
+- [x] 2.5 E2E przechodzą: `npx playwright test` — 43c5bca
 
 #### Manual
 
-- [x] 2.6 Na komputerze i na telefonie (375×812) listy poziomów sześciu kart wyglądają jak zatwierdzony wariant C: nazwa, opis, wiek; sudoku i nonogram bez wieku — 59c5203
-- [x] 2.7 Okno profilu (tworzenie i edycja) pokazuje „Poziom: 3” i te same wiersze — 59c5203
-- [x] 2.8 Profil i ostatnie parametry zapisane przed zmianą (np. poziom `nastolatek`) otwierają się na „Poziom: 6” — 59c5203
-- [x] 2.9 Druk karty bez zmian (opis i wiek nie trafiają na kartkę) — 59c5203
+- [x] 2.6 Na komputerze i na telefonie (375×812) listy poziomów sześciu kart wyglądają jak zatwierdzony wariant C: nazwa, opis, wiek; sudoku i nonogram bez wieku — 43c5bca
+- [x] 2.7 Okno profilu (tworzenie i edycja) pokazuje „Poziom: 3” i te same wiersze — 43c5bca
+- [x] 2.8 Profil i ostatnie parametry zapisane przed zmianą (np. poziom `nastolatek`) otwierają się na „Poziom: 6” — 43c5bca
+- [x] 2.9 Druk karty bez zmian (opis i wiek nie trafiają na kartkę) — 43c5bca
