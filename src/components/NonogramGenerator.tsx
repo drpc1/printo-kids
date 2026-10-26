@@ -89,6 +89,7 @@ export default function NonogramGenerator() {
       open={sizeOpen}
       onOpenChange={setSizeOpen}
       onSelect={handleSizeSelect}
+      disabled={waitingForChild}
     />
   );
   const categoryControl = (
