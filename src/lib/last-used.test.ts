@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { readLastUsed, writeLastUsed, type LastUsed, type LastUsedStorage } from "./last-used.ts";
+import { readLastUsed, writeLastUsed, writeLastUsedCards, type LastUsed, type LastUsedStorage } from "./last-used.ts";
 
 const KEY = "printo-kids:last-used";
 const ALLOWED = ["none", "samochodzik", "rakieta", "dinozaur"];
@@ -72,7 +72,7 @@ void describe("readLastUsed", () => {
       },
     };
 
-    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "none", level: "lat5" });
+    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "none", level: "lat5", cards: {} });
     assert.equal(writes, 0);
   });
 });
@@ -81,11 +81,11 @@ void describe("readLastUsed with the caller's list", () => {
   void test("keeps wlasne when that id is allowed, and a data URL is not an id", () => {
     const allowed = [...ALLOWED, "wlasne"];
     const wlasne = memoryStorage('{"character":"wlasne","level":"lat6"}');
-    assert.deepEqual(readLastUsed(wlasne, allowed), { character: "wlasne", level: "lat6" });
+    assert.deepEqual(readLastUsed(wlasne, allowed), { character: "wlasne", level: "lat6", cards: {} });
     assert.deepEqual(wlasne.writes, []);
 
     const dataUrl = memoryStorage('{"character":"data:image/png;base64,aaaa","level":"lat6"}');
-    assert.deepEqual(readLastUsed(dataUrl, allowed), { character: "none", level: "lat6" });
+    assert.deepEqual(readLastUsed(dataUrl, allowed), { character: "none", level: "lat6", cards: {} });
     assert.deepEqual(dataUrl.writes, []);
   });
 });
@@ -110,10 +110,10 @@ void describe("writeLastUsed", () => {
     const storage = memoryStorage(null);
 
     writeLastUsed(storage, { character: "none", level: "lat5" });
-    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "none", level: "lat5" });
+    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "none", level: "lat5", cards: {} });
 
     writeLastUsed(storage, { character: "rakieta", level: "lat6" });
-    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "rakieta", level: "lat6" });
+    assert.deepEqual(readLastUsed(storage, ALLOWED), { character: "rakieta", level: "lat6", cards: {} });
     assert.deepEqual(storage.writes, [
       { key: KEY, value: '{"character":"none","level":"lat5"}' },
       { key: KEY, value: '{"character":"rakieta","level":"lat6"}' },
@@ -121,10 +121,60 @@ void describe("writeLastUsed", () => {
   });
 });
 
-function assertStoredRead(stored: string | null, expected: LastUsed): void {
+void describe("card settings in last-used", () => {
+  void test("an old record without cards reads empty cards", () => {
+    assertStoredRead('{"character":"rakieta","level":"lat6"}', { character: "rakieta", level: "lat6", cards: {} });
+  });
+
+  void test("stored cards read back and a bad field falls back inside its card", () => {
+    assertStoredRead(
+      '{"character":"none","level":"lat5","cards":{"nonogram":{"level":"trudny","category":"zwierzeta"},"sekwencje":{"level":"lat99"}}}',
+      {
+        character: "none",
+        level: "lat5",
+        cards: { nonogram: { level: "trudny", category: "zwierzeta" }, sekwencje: { level: "lat5" } },
+      },
+    );
+  });
+
+  void test("writing the maze part keeps the stored cards", () => {
+    const storage = memoryStorage('{"character":"none","level":"lat5","cards":{"sekwencje":{"level":"lat7"}}}');
+    writeLastUsed(storage, { character: "rakieta", level: "lat6" });
+    assert.deepEqual(readLastUsed(storage, ALLOWED), {
+      character: "rakieta",
+      level: "lat6",
+      cards: { sekwencje: { level: "lat7" } },
+    });
+  });
+
+  void test("writing the cards keeps the stored character and level", () => {
+    const storage = memoryStorage('{"character":"rakieta","level":"lat6"}');
+    assert.equal(writeLastUsedCards(storage, { dyktando: { level: "lat5", category: "wszystkie" } }), true);
+    assert.deepEqual(readLastUsed(storage, ALLOWED), {
+      character: "rakieta",
+      level: "lat6",
+      cards: { dyktando: { level: "lat5", category: "wszystkie" } },
+    });
+  });
+
+  void test("a blocked store makes writeLastUsedCards return false", () => {
+    const storage: LastUsedStorage = {
+      getItem: () => null,
+      setItem(): void {
+        throw new Error("blocked");
+      },
+    };
+    assert.equal(writeLastUsedCards(storage, {}), false);
+  });
+});
+
+function assertStoredRead(
+  stored: string | null,
+  expected: Omit<LastUsed, "cards"> & { cards?: LastUsed["cards"] },
+): void {
   const storage = memoryStorage(stored);
 
-  assert.deepEqual(readLastUsed(storage, ALLOWED), expected);
+  assert.deepEqual(readLastUsed(storage, ALLOWED), { ...expected, cards: expected.cards ?? {} });
   assert.deepEqual(storage.writes, []);
 }
 
