@@ -4,265 +4,183 @@ version: 1
 status: draft
 created: 2026-09-27
 updated: 2026-10-26
-prd_version: 4
+prd_version: 5
 main_goal: low-complexity
 top_blocker: capacity
-milestone_id: sequences-and-sudoku-cards
-milestone_seq: 3
+milestone_id: profile-levels-and-character
+milestone_seq: 4
 milestone_status: open
 ---
 
 # Roadmap: PrintoKids
 
-> Derived from `context/foundation/prd.md` (v4) + auto-researched codebase baseline.
+> Derived from `context/foundation/prd.md` (v5) + auto-researched codebase baseline.
 > Edit-in-place; archive when superseded.
 > Slices below are listed in dependency order. The "At a glance" table is the index.
 
 ## Milestone
 
-**M-3: Sekwencje, sudoku, nonogram i dyktando graficzne** — Status: open
+**M-4: Poziomy bez wieku, profil pamiętający karty i postać na każdej karcie** — Status: open
 
-- **Intent:** Pokazać, że katalog kart rośnie o kilka rodzajów naraz bez przebudowy: karta sekwencji (dziecko uzupełnia brakujące elementy ciągu liczb i kształtów) i karta sudoku 4×4, 6×6 i 9×9 z prostymi kształtami albo cyframi (przebudowane 2026-10-24). Rozszerzone 2026-10-25 na prośbę użytkownika o nonogram i dyktando graficzne, których obrazkiem jest obiekt z katalogu szablonów symetrii, oraz o nowe obiekty w tym katalogu. Każda karta ma własną stronę, własne poziomy albo rozmiary, podgląd i druk jako jedna strona A4, także z telefonu. Strumienie idą równolegle. Profil z wiekiem i poziomami per rodzaj karty (S-14) zostaje poza tym kamieniem.
-- **Source materials:** `context/foundation/prd.md` (v4)
+- **Intent:** Sześć rodzajów kart działa, ale poziomy są nazwane wiekiem, a profil pamięta tylko postać i poziom labiryntu. M-4 pokazuje, że rodzic wybiera poziom bez oceniania dziecka wiekiem, profil sam pamięta pasek każdej karty, ulubiona postać pojawia się przy poleceniu na każdej karcie, a zasady tłumaczą krótkie podpowiedzi w miejscu wyboru. Nowych rodzajów kart nie ma.
+- **Source materials:** `context/foundation/prd.md` (v5)
 - **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcje „Po tym kamieniu” i „Parked” nie wliczają się.
-- **Scope anchors:** US-10–US-20, FR-019–FR-029, NFR „Karty sekwencji i sudoku…” i „Nonogram i dyktando graficzne…”, Business Logic „Karta sekwencji”, „Karta sudoku”, „Katalog szablonów obiektów”, „Karta nonogramu” i „Karta dyktanda graficznego”. Labirynt zostaje bez zmian; symetria dostaje tylko nowe obiekty i wybór kategorii.
+- **Scope anchors:** FR-001, FR-006, FR-007, FR-009, FR-016, FR-017, FR-020, FR-027, FR-030, FR-031; US-03, US-05, US-07, US-08, US-11, US-18, US-21, US-22; Business Logic „Poziomy”, „Profil i zapamiętane ustawienia”, „Postać na kartach”. Zadania kart (generatory, reguły jednej odpowiedzi, druk) zostają bez zmian.
 
 ## Vision recap
 
-Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności, a dziecko wciąż chce kolejną kartę. Szukanie i ściąganie z wielu stron nie daje nowej karty na tym samym poziomie. Brakuje sposobu, żeby wygenerować nową kartę, gdy skończy się dopasowana gotowa biblioteka. M-3 dokłada cztery kolejne rodzaje kart na tych samych zasadach: algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4.
+Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności, a dziecko wciąż chce kolejną kartę. Brakuje sposobu, żeby wygenerować nową kartę na właściwym poziomie, gdy skończy się dopasowana gotowa biblioteka. Po trzech kamieniach jest sześć rodzajów kart; M-4 skraca drogę do właściwej karty dla konkretnego dziecka: poziom bez nazwy wieku, ustawienia zapamiętane w profilu, ta sama ulubiona postać na każdej karcie.
 
 ## North star
 
-**S-16: Rodzic może wygenerować kartę sekwencji, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie** — najmniejszy kompletny przepływ, który dowodzi, że trzeci rodzaj karty przechodzi cały łańcuch (katalog, generowanie z jawną regułą jednej odpowiedzi, podgląd, druk) na własnej stronie. Ryzykiem jest sprawdzenie, że do pustego pola pasuje dokładnie jedna reguła; sudoku powtarza ten wzorzec z innym sprawdzeniem (jedno rozwiązanie).
+**S-27: Rodzic wybiera poziom każdej karty bez nazw wieku, z krótkim opisem tego, co poziom zmienia** — najmniejszy kawałek, który od razu zmienia każdą kartę z poziomami nazwanymi wiekiem i nie dotyka zapisanych danych. Pokazuje, czy numerowane poziomy i łatwy / średni / trudny z opisem są dla rodzica czytelne, zanim profil zacznie je zapamiętywać.
 
-> North star — tu: najmniejszy kompletny przepływ, którego udane dowiezienie pokazuje, że kamień ma sens. Stoi możliwie wcześnie, bo reszta ma sens tylko jeśli ten przepływ działa.
+> Gwiazda przewodnia (north star) — tu: pierwszy kompletny kawałek, którego dowiezienie pokazuje, że kamień ma sens. Stoi możliwie wcześnie, bo reszta (pamięć profilu, podsumowania, podpowiedzi) pokazuje te same etykiety.
 
 ## At a glance
 
-| ID   | Change ID                         | Outcome (user can …)                                                                                                                                                                                                               | Prerequisites    | PRD refs      | Status |
-| ---- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------- | ------ |
-| S-16 | sequences-first-printable         | Rodzic może wejść z katalogu na stronę sekwencji, wygenerować kartę z kilkoma ciągami liczb i kształtów z brakującymi elementami i jedną odpowiedzią, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie    | —                | US-10, FR-019 | done   |
-| S-18 | picture-sudoku-first-printable    | Rodzic może wejść z katalogu na stronę sudoku, wygenerować planszę 4×4 z czarnymi kształtami (w każdym wierszu brakuje jednego) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie   | —                | US-12, FR-021 | done   |
-| S-17 | sequence-difficulty-levels        | Rodzic może wybrać poziom sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól) na pasku strony sekwencji                                                                                                    | S-16             | US-11, FR-020 | done   |
-| S-19 | picture-sudoku-levels             | Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry                                                                                       | S-18             | US-13, FR-022 | done   |
-| S-20 | picture-sudoku-colors             | Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury                                                                                                               | S-18             | US-14, FR-023 | done   |
-| S-21 | template-object-catalog           | Rodzic dostaje na karcie symetrii (a potem na nonogramie i dyktandzie) więcej obiektów z pięciu kategorii po co najmniej cztery, każdy w trzech rozmiarach szablonu i z losowanymi częściami                                       | —                | US-19, FR-028 | done   |
-| S-22 | nonogram-first-printable          | Rodzic może wejść z katalogu na stronę nonogramu, wygenerować nonogram średni (12×15), którego jedynym rozwiązaniem jest sylwetka obiektu z szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4, także na telefonie   | —                | US-15, FR-024 | done   |
-| S-23 | graphic-dictation-first-printable | Rodzic może wejść z katalogu na stronę dyktanda graficznego, wygenerować kartę ze strzałkami prowadzącymi po obrysie obiektu z szablonów (poziom 6 lat), zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie | —                | US-17, FR-026 | done   |
-| S-24 | nonogram-sizes                    | Rodzic może wybrać poziom nonogramu (łatwy: prosty wariant ze znaczkami 8×12, średni 12×15, trudny 18×24) na pasku strony nonogramu                                                                                                | S-22             | US-16, FR-025 | done   |
-| S-25 | graphic-dictation-levels          | Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5–7 lat: kratka i obiekty) na pasku strony dyktanda                                                                                                                | S-23             | US-18, FR-027 | done   |
-| S-26 | object-category-choice            | Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”                                                                                                                               | S-21, S-22, S-23 | US-20, FR-029 | done   |
+| ID   | Change ID                    | Outcome (user can …)                                                                                                                                                               | Prerequisites    | PRD refs                                            | Status   |
+| ---- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------------- | -------- |
+| S-27 | level-labels-without-age     | Rodzic wybiera Poziom 1…N w labiryncie, symetrii i sekwencjach oraz łatwy / średni / trudny w dyktandzie, a każdy poziom na liście ma pół zdania o tym, co zmienia                 | —                | FR-001, FR-016, FR-020, FR-027, US-07, US-11, US-18 | ready    |
+| S-28 | card-settings-memory         | Rodzic wraca na stronę dowolnej karty i ma na pasku ustawienia, które ostatnio wybrał dla tej karty: w aktywnym profilu (zapis od razu, „Zapamiętane dla {imię}”) albo bez profilu | —                | US-08, FR-017, FR-006                               | ready    |
+| S-29 | profile-window-summary       | Rodzic tworzy profil z samym imieniem i postacią, widzi w oknie profilu podsumowanie ustawień kart tylko do odczytu, a w katalogu plakietki z poziomem przy miniaturach            | S-28             | FR-007, FR-017, US-05, US-08                        | proposed |
+| S-30 | character-speaks-instruction | Rodzic wybiera postać na pasku każdej karty, a na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie postać w kolorze stoi przy poleceniu i mówi je w dymku                    | —                | US-21, FR-030, US-03                                | ready    |
+| S-31 | favorite-character-explicit  | Rodzic przy aktywnym profilu zmienia postać tylko na tę wizytę albo jednym wyborem „Ustaw jako ulubioną”; bez profilu ostatnia postać jest wspólna dla wszystkich kart             | S-28, S-30       | FR-009, US-03, US-08, US-22                         | proposed |
+| S-32 | how-it-works-page            | Rodzic otwiera ze stopki krótką stronę „Jak to działa” z zasadą poziomów, profilu i postaci                                                                                        | S-27, S-29, S-31 | US-22, FR-031                                       | proposed |
 
 ## Streams
 
 Navigation aid — groups items that share a Prerequisites chain. Canonical ordering still lives in the dependency graph below; this table is the proposed reading order across parallel tracks.
 
-| Stream | Theme     | Chain                            | Note                                                                                                 |
-| ------ | --------- | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| A      | Sekwencje | `S-16` → `S-17`                  | Gwiazda przewodnia kamienia; poziomy dopiero po pierwszej drukowalnej karcie.                        |
-| B      | Sudoku    | `S-18` → `S-19`, `S-18` → `S-20` | Równolegle do strumienia A; obie pierwsze karty dotykają katalogu (`src/lib/cards.ts`).              |
-| C      | Obiekty   | `S-21` → `S-26`                  | Nowe szablony z kategoriami; wybór kategorii łączy się ze strumieniami D i E (czeka na S-22 i S-23). |
-| D      | Nonogram  | `S-22` → `S-24`                  | Równolegle do C i E; rozmiary dopiero po pierwszej drukowalnej karcie.                               |
-| E      | Dyktando  | `S-23` → `S-25`                  | Równolegle do C i D; poziomy dopiero po pierwszej drukowalnej karcie.                                |
+| Stream | Theme   | Chain                    | Note                                                                                              |
+| ------ | ------- | ------------------------ | ------------------------------------------------------------------------------------------------- |
+| A      | Poziomy | `S-27`                   | Gwiazda przewodnia; najmniejsza zmiana, bez zapisanych danych.                                    |
+| B      | Profil  | `S-28` → `S-29` → `S-32` | Pamięć ustawień, potem jej pokazanie; strona „Jak to działa” łączy strumienie A, B i C na końcu.  |
+| C      | Postać  | `S-30` → `S-31`          | Postać przy poleceniu niezależnie od profilu; jawna ulubiona dołącza do strumienia B przy `S-28`. |
 
 ## Baseline
 
-What's already in place in the codebase as of `2026-10-23` (z kodu i z `tech-stack.md`, M-2 zamknięty).
+What's already in place in the codebase as of `2026-10-26` (z kodu na main po M-3 i z `tech-stack.md`).
 Foundations below assume these are present and do NOT re-scaffold them.
 
-- **Frontend:** present — katalog kart na `/` (`src/components/CardCatalog.astro`, `src/lib/cards.ts` z rodzajami `labirynt` i `symetria`), wspólna powłoka strony generatora (`GeneratorShell.astro`), strony `/labirynt` i `/symetria`, kit `src/components/ui`. Wzorzec strony karty: `SymmetryGenerator.tsx` (Generuj, przycisk poziomu, karta SVG, Drukuj, róg profilu).
-- **Backend / API:** absent by design — strona renderowana po stronie serwera, bez endpointu generowania; generowanie działa w przeglądarce.
-- **Data:** present — tylko na urządzeniu: ostatnio użyte parametry (`src/lib/last-used.ts`) i profile dzieci (`src/lib/child-profiles.ts`), oba tylko dla postaci i poziomu labiryntu. Poziom symetrii i kolory żyją w stanie strony. Nowe karty trzymają poziom w stanie strony tak samo.
-- **Auth:** absent by design — konta usunięte w F-02; PRD: jeden lokalny rodzic.
-- **Deploy / infra:** present — CI (lint, test, check, build, smoke). `npm test` wylicza pliki testów jawnie, więc nowe pliki testów trzeba dopisać do skryptu.
+- **Frontend:** present — katalog sześciu kart na `/` (`src/lib/cards.ts`), wspólna powłoka `GeneratorShell.astro`, strony labiryntu, symetrii, sekwencji, sudoku, nonogramu i dyktanda (`*Generator.tsx`), róg profilu `ProfileCorner.tsx` na każdej stronie. Etykiety poziomów nazwane wiekiem siedzą w `src/lib/{maze,symmetry,sequence,dictation}/levels.ts`; sudoku i nonogram mają już łatwy / średni / trudny.
+- **Backend / API:** absent by design — generowanie działa w przeglądarce, bez endpointu.
+- **Data:** partial — tylko na urządzeniu: `src/lib/last-used.ts` i `src/lib/child-profiles.ts` pamiętają postać i poziom labiryntu. Ustawienia pozostałych kart (poziom, kolory, kategoria, rozmiar, „Kształty / Cyfry”) żyją w stanie strony. Odczyt jest tolerancyjny (zły wpis → wartość domyślna), więc nowe pola dochodzą bez migracji.
+- **Auth:** absent by design — PRD: jeden lokalny rodzic.
+- **Deploy / infra:** present — CI (lint, test, check, build, smoke) i Playwright e2e. `npm test` wylicza pliki testów jawnie, więc nowe pliki testów trzeba dopisać do skryptu.
 - **Observability:** partial — dzienniki platformy, bez śledzenia błędów aplikacji.
-
-Do ponownego użycia bez zmian: druk A4 (`@page`, 210×297, margines 10 mm), układ strony SVG z `src/lib/symmetry/layout.ts` i `sheet.ts` jako wzorzec, przełącznik kolorów z symetrii (dla kolorów sudoku), profil w rogu (bez zmian).
 
 ## Foundations
 
-Brak. Katalog kart (F-03) już mieści co najmniej 10 rodzajów, a wzorzec strony karty istnieje (S-12). Każda z pierwszych kart dokłada do niego własny wpis, stronę i miniaturę.
+Brak. Zapis na urządzeniu już istnieje (Baseline: Data), a każda karta ma pasek i róg profilu. Kształt zapisu ustawień per karta powstaje w pierwszym kawałku, który go używa (S-28).
 
 ## Slices
 
-### S-16: Karta sekwencji: strona, generowanie, podgląd i druk A4
+### S-27: Poziomy bez wieku
 
-- **Outcome:** Rodzic może wejść z katalogu na stronę „Sekwencje” (`/sekwencje`), wygenerować kartę z kilkoma ciągami liczb i kształtów, w których brakuje elementów, i jedną odpowiedzią każdego ciągu, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie.
-- **Change ID:** sequences-first-printable
-- **PRD refs:** US-10, FR-019
+- **Outcome:** Rodzic wybiera Poziom 1–6 w labiryncie, Poziom 1–4 w symetrii i sekwencjach oraz łatwy / średni / trudny w dyktandzie; każdy wiersz listy poziomów (także w sudoku i nonogramie) ma pół zdania o tym, co zmienia poziom. Zapisane identyfikatory poziomów zostają, więc profile i ostatnie parametry wczytują się bez zmian.
+- **Change ID:** level-labels-without-age
+- **PRD refs:** FR-001, FR-016, FR-020, FR-027, US-07, US-11, US-18
 - **Prerequisites:** —
-- **Parallel with:** S-18
+- **Parallel with:** S-28, S-29, S-30, S-31
 - **Blockers:** —
 - **Unknowns:**
-  - Które ustawienie dostaje pierwsza wersja? Rekomendacja: jedno stałe, wiersz „5 lat” z tabeli PRD (ciągi 7-polowe, wzór AB/AAB/ABC z kształtami, 1–2 puste pola, 6 ciągów); poziomy dochodzą w S-17. — Owner: team. Block: no.
-  - Jak wygląda puste pole do wpisania i jak wygląda liczba w polu na czarnym druku? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
-- **Risk:** Sprawdzenie, że do pustego pola pasuje dokładnie jedna reguła z jawnej listy, to jedyne nietrywialne miejsce. Odrzucenie ciągu zbyt często psuje szybkość generowania (limit 5 s) albo zmniejsza różnorodność kart. Pierwszy wpis w `src/lib/cards.ts` i miniatura w `public/thumbnails/` dzielą pliki ze S-18, więc strumienie nie powinny edytować ich jednocześnie bez uzgodnienia.
-- **Status:** done
+  - Jak brzmią opisy poziomów (pół zdania na poziom, sześć kart)? Rozstrzyga makieta listy przed planem. — Owner: user. Block: no.
+  - Czy lista ma pokazywać obok opisu typowy wiek? PRD Open Questions 12; dziś: nie. — Owner: user. Block: no.
+- **Risk:** Etykieta poziomu pojawia się też w profilu (wybór poziomu labiryntu przy tworzeniu i edycji), w testach e2e i w miniaturach; zmiana tylko na pasku zostawiłaby stare nazwy w oknie profilu. Dzieli komponenty wyboru poziomu z S-28.
+- **Status:** ready
 
-### S-18: Sudoku 4×4 z kształtami: strona, generowanie, podgląd i druk A4
+### S-28: Profil i ostatnie parametry pamiętają ustawienia każdej karty
 
-- **Outcome:** Rodzic może wejść z katalogu na stronę „Sudoku” (`/sudoku`), wygenerować planszę 4×4 z czterema prostymi kształtami jako czarnymi konturami (w każdym wierszu brakuje jednego, miejsce losowe) i jednym rozwiązaniem, zobaczyć podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Generator i sprawdzenie jednego rozwiązania powstają od razu dla 4×4, 6×6 i 9×9 (bloki 2×2, 2×3, 3×3), ale strona pokazuje tylko 4×4.
-- **Change ID:** picture-sudoku-first-printable
-- **PRD refs:** US-12, FR-021
+- **Outcome:** Rodzic wraca na stronę dowolnej z sześciu kart i ma na pasku ustawienia, które ostatnio wybrał dla tej karty (tabela w PRD Business Logic „Profil i zapamiętane ustawienia”): przy aktywnym profilu każda zmiana zapisuje się w profilu od razu i potwierdza ją krótki komunikat „Zapamiętane dla {imię}”; bez profilu urządzenie pamięta je osobno dla każdej karty. Karta, której profil jeszcze nie używał, startuje z ustawieniami domyślnymi. Stare profile i ostatnie parametry nadal się wczytują, a dawny poziom zostaje poziomem labiryntu.
+- **Change ID:** card-settings-memory
+- **PRD refs:** US-08, FR-017, FR-006
 - **Prerequisites:** —
-- **Parallel with:** S-16
+- **Parallel with:** S-27, S-30
 - **Blockers:** —
 - **Unknowns:**
-  - Jak rysować kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla) w SVG, żeby czarny kontur był czytelny i łatwy do odrysowania? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
-- **Risk:** Generator musi dawać jedno rozwiązanie. Przy 4×4 z jednym pustym polem w wierszu to wynika z reguły, ale 9×9 z 52 pustymi wymaga solvera liczącego rozwiązania w granicy 5 s, więc solver jest testowany już tutaj. Dzieli z S-16 katalog kart i miniatury.
-- **Status:** done
+  - Co z folderem `context/changes/profile-age-and-levels` (badanie dawnego kształtu z wiekiem)? Rekomendacja: zarchiwizować jako zastąpiony przez ten kawałek, a jego opis dzisiejszego zapisu wykorzystać w badaniu. — Owner: team. Block: no.
+  - Czy zmiana na pasku przy pokazanej karcie ma się zapisać od razu, czy dopiero przy Generuj? PRD: od razu. — Owner: team. Block: no.
+- **Risk:** Największy kawałek kamienia: nowy kształt zapisu dotyka sześciu stron i dziś działającego zapisu labiryntu. Ryzykiem jest zepsucie wczytania starych profili i wyścig wczytywania profilu z pierwszym Generuj (na nonogramie był już błąd przycisku Poziom podczas wczytywania profilu). Edytuje te same strony co S-27 i S-30, więc kolejność scalania trzeba uzgodnić.
+- **Status:** ready
 
-### S-17: Poziomy sekwencji
+### S-29: Okno profilu z podsumowaniem i plakietki w katalogu
 
-- **Outcome:** Rodzic może wybrać poziom sekwencji nazwany wiekiem (4–7 lat: długość ciągu, rodzaj reguł, liczba pustych pól i ciągów) na pasku strony sekwencji.
-- **Change ID:** sequence-difficulty-levels
-- **PRD refs:** US-11, FR-020
-- **Prerequisites:** S-16
-- **Parallel with:** S-18, S-19
+- **Outcome:** Rodzic tworzy profil, podając tylko imię i postać; okno profilu nie ma już kontrolek poziomu, pokazuje jedno zdanie o zasadzie i podsumowanie ustawień kart tylko do odczytu („Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta”), z których każda pozycja prowadzi do strony karty. W katalogu przy wybranym profilu każda miniatura ma plakietkę z zapamiętanym poziomem.
+- **Change ID:** profile-window-summary
+- **PRD refs:** FR-007, FR-017, US-05, US-08
+- **Prerequisites:** S-28
+- **Parallel with:** S-27, S-30
 - **Blockers:** —
 - **Unknowns:**
-  - Czy startowe wartości z tabeli PRD pasują dziecku? — Owner: user. Block: no. Potwierdza je wydruk (PRD Open Questions 9).
-- **Risk:** Każdy poziom musi mieścić się na jednej stronie A4 z marginesem 10 mm, a bogatsze reguły zwiększają szansę na odrzucone ciągi (więcej niż jedna pasująca reguła). Poziom żyje w stanie strony, jak poziom symetrii.
-- **Status:** done
+  - Jak wygląda plakietka na miniaturze na telefonie (2 kolumny) i dla sudoku („6×6 · średni”)? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+- **Risk:** Usunięcie wyboru poziomu z okna profilu zmienia znany rodzicowi przepływ tworzenia profilu; dawne profile z poziomem muszą pokazać go w podsumowaniu jako poziom labiryntu. Katalog jest stroną renderowaną po stronie serwera, a profil żyje w przeglądarce, więc plakietki dochodzą po wczytaniu.
+- **Status:** proposed
 
-### S-19: Rozmiary i poziomy sudoku
+### S-30: Postać mówi polecenie na każdej karcie
 
-- **Outcome:** Rodzic może wybrać na pasku strony sudoku rozmiar (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: 6×6 — 12/18/22 pustych z 36, 9×9 — 35/45/52 z 81; 4×4 ma jeden poziom), a przy 6×6 przełącznikiem „Kształty / Cyfry” wybrać symbole.
-- **Change ID:** picture-sudoku-levels
-- **PRD refs:** US-13, FR-022
-- **Prerequisites:** S-18
-- **Parallel with:** S-16, S-17, S-20
-- **Blockers:** —
-- **Unknowns:**
-  - Czy liczby pustych pól nie są za trudne dla dzieci? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 9).
-- **Risk:** Przy 52 pustych z 81 jednoznaczne rozwiązanie jest trudniejsze do wylosowania; generator może potrzebować kilku prób, w granicy 5 s. Kratka 9×9 musi być dość duża, żeby dziecko wpisało cyfrę. Rozmiar i poziom żyją w stanie strony.
-- **Status:** done
-
-### S-20: Kolory kształtów w sudoku
-
-- **Outcome:** Rodzic może włączyć kolory na karcie sudoku z kształtami; każdy kształt ma jeden stały kolor kredki na całej planszy, a przełącznik nie zmienia planszy. Domyślnie czarne kontury; przy cyfrach przełącznika nie ma.
-- **Change ID:** picture-sudoku-colors
-- **PRD refs:** US-14, FR-023
-- **Prerequisites:** S-18
-- **Parallel with:** S-16, S-17, S-19, S-21, S-22, S-23, S-24, S-25, S-26
-- **Blockers:** —
-- **Unknowns:**
-  - Jakie przypisanie kolorów do kształtów? Rekomendacja: kolory kredek z symetrii (czerwony, zielony, żółty, niebieski, pomarańczowy, szary, czarny) plus dwa nowe (fioletowy, brązowy), bo 9×9 z kształtami potrzebuje dziewięciu kolorów. — Owner: user. Block: no.
-- **Risk:** Ukrycie przełącznika przy cyfrach wymaga S-19; jeśli S-20 idzie pierwsze, przełącznik dotyczy tylko 4×4. Pasek strony sudoku dzieli pliki z S-19.
-- **Status:** done
-
-### S-21: Katalog obiektów z kategoriami
-
-- **Outcome:** Rodzic klikający Generuj na karcie symetrii widzi więcej obiektów niż rakieta, robot i truskawka. Katalog ma pięć kategorii (Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle) po co najmniej cztery obiekty, każdy w trzech rozmiarach szablonu (połowa 4×12, 6×15, 9×24), z losowanymi częściami, kolorem kredki każdej kratki i etykietą kategorii. Wyboru kategorii na pasku jeszcze nie ma (S-26); generator losuje ze wszystkich. Nonogram i dyktando biorą obiekty z tego samego katalogu.
-- **Change ID:** template-object-catalog
-- **PRD refs:** US-19, FR-028
+- **Outcome:** Rodzic widzi pasek „Postać” na stronie każdej karty. Na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie wybrana postać (z katalogu albo własny obrazek) stoi w kolorze przy zdaniu polecenia, a polecenie jest w jej dymku; przy „Bez postaci” zostaje samo polecenie. Zadanie, odpowiedź, druk na jednej stronie A4 i margines 10 mm zostają bez zmian.
+- **Change ID:** character-speaks-instruction
+- **PRD refs:** US-21, FR-030, US-03
 - **Prerequisites:** —
-- **Parallel with:** S-20, S-22, S-23, S-24, S-25
+- **Parallel with:** S-27, S-28, S-29
 - **Blockers:** —
 - **Unknowns:**
-  - Jak wyglądają nowe obiekty w każdym rozmiarze i które części losować? Rozstrzyga makieta przed planem, jak przy pierwszych szablonach. — Owner: user. Block: no.
-  - Czy siedem kolorów kredek wystarczy (brak brązowego dla pnia, sowy, gruszki)? Jeśli S-20 doda kolory dla sudoku, katalog może z nich skorzystać. — Owner: user. Block: no. Rozstrzygnięte 2026-10-25 po makiecie: brązowy dochodzi do palety symetrii, a szablon może zostawić dziury białe.
-- **Risk:** Około 17 nowych obiektów w trzech rozmiarach to najwięcej treści w kamieniu; plan może podzielić slice po kategoriach. Najmniejsza połowa (4×12) ma tylko 4 kratki szerokości, więc część obiektów może wymagać zamiany na inny z tej samej kategorii. Każdy szablon musi przejść reguły symetrii (dotyka osi, co najmniej 3 kratki przy osi na podpowiedź poziomu 4 lat).
-- **Status:** done
+  - Jak wygląda dymek i gdzie stoi postać względem polecenia na każdej z pięciu kart, także na telefonie? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+  - Prawa do postaci (PRD Open Questions 3) blokują publikację szerszego katalogu, nie planowanie. — Owner: user. Block: no.
+- **Risk:** Postać zabiera wysokość nad zadaniem; najciaśniejsze są trudny nonogram (kratka 7 mm) i trudne dyktando z długą listą poleceń, które dziś wypełniają stronę. Pasek „Postać” na pięciu nowych stronach dzieli pliki z S-27 i S-28.
+- **Status:** ready
 
-### S-22: Nonogram: strona, generowanie, podgląd i druk A4
+### S-31: Ulubiona postać zmienia się tylko jawnie
 
-- **Outcome:** Rodzic może wejść z katalogu na stronę „Nonogram”, wygenerować nonogram średni (12×15) z liczbami przy wierszach i nad kolumnami, którego jedynym rozwiązaniem jest cała sylwetka obiektu z katalogu szablonów, zobaczyć podgląd i wydrukować go jako jedną stronę A4 bez rozwiązania, także na telefonie.
-- **Change ID:** nonogram-first-printable
-- **PRD refs:** US-15, FR-024
-- **Prerequisites:** —
-- **Parallel with:** S-20, S-21, S-23, S-25
+- **Outcome:** Rodzic przy aktywnym profilu wybiera inną postać na pasku tylko na bieżącą wizytę na stronie; pod listą widzi „Tylko na tę kartę” i może jednym wyborem „Ustaw jako ulubioną {imię}” zapisać ją w profilu. Przy następnym wejściu wraca ulubiona. Bez profilu ostatnio użyta postać jest wspólna dla wszystkich kart.
+- **Change ID:** favorite-character-explicit
+- **PRD refs:** FR-009, US-03, US-08, US-22
+- **Prerequisites:** S-28, S-30
+- **Parallel with:** S-27, S-29
 - **Blockers:** —
-- **Unknowns:**
-  - Ile z dzisiejszych wariantów 12×15 ma nonogram z jednym rozwiązaniem? Jeśli za mało, S-21 albo poprawki szablonów muszą dojść przed wydaniem. — Owner: team. Block: no. Pokaże pierwszy solver.
-  - Jak wyglądają liczby i kratka na czarnym druku (grubość linii co 5 kratek, rozmiar cyfr)? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
-- **Risk:** Solver sprawdzający jedno rozwiązanie jest jedynym nietrywialnym miejscem i musi zmieścić się w 5 s także dla 18×24 w S-24, więc powinien być testowany od razu na wszystkich trzech rozmiarach. Dzieli z S-23 katalog kart i miniatury.
-- **Status:** done
+- **Unknowns:** —
+- **Risk:** Zmienia znaczenie dzisiejszego zapisu ulubionych w profilu (postać i poziom razem) na zapis samej postaci; dawny przycisk zapisu ulubionych musi zniknąć bez utraty możliwości zapisania własnego obrazka jako ulubionej.
+- **Status:** proposed
 
-### S-23: Dyktando graficzne: strona, generowanie, podgląd i druk A4
+### S-32: Strona „Jak to działa”
 
-- **Outcome:** Rodzic może wejść z katalogu na stronę „Dyktando graficzne”, wygenerować kartę z poleceniami (liczba kratek i strzałka) prowadzącymi od kropki startu po zewnętrznym obrysie obiektu z katalogu szablonów (poziom 6 lat, obiekty 12×15), zobaczyć podgląd i wydrukować ją jako jedną stronę A4 bez rysunku odpowiedzi, także na telefonie.
-- **Change ID:** graphic-dictation-first-printable
-- **PRD refs:** US-17, FR-026
-- **Prerequisites:** —
-- **Parallel with:** S-20, S-21, S-22, S-24
+- **Outcome:** Rodzic otwiera ze stopki krótką stronę „Jak to działa”, która tłumaczy całą zasadę: poziomy bez wieku, profil pamiętający pasek każdej karty, ulubiona postać zmieniana jawnie i postać przy poleceniu. Bez samouczka i bez okna pomocy.
+- **Change ID:** how-it-works-page
+- **PRD refs:** US-22, FR-031
+- **Prerequisites:** S-27, S-29, S-31
+- **Parallel with:** —
 - **Blockers:** —
-- **Unknowns:**
-  - Ile wariantów ma obrys, który nie dotyka sam siebie w narożniku kratki? — Owner: team. Block: no. Pokaże pierwsza implementacja.
-  - Jak ułożyć listę poleceń na kartce (wiersze, rozmiar strzałek), żeby zmieściła się nad kratką? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
-- **Risk:** Lista poleceń dla bogatszych obiektów może być długa i zabrać miejsce kratce; poziom 7 lat w S-25 tego nie ułatwi. Dzieli z S-22 katalog kart i miniatury.
-- **Status:** done
-
-### S-24: Poziomy nonogramu
-
-- **Outcome:** Rodzic może wybrać na pasku strony nonogramu poziom: łatwy (prosty wariant dla przedszkolaków: 8×12, każdy rząd opisany znaczkami biały/szary/czarny z liczbą kratek), średni (klasyczny 12×15) albo trudny (klasyczny 18×24); każdy mieści się na jednej stronie A4 z marginesem 10 mm. Zmiana z „rozmiarów” na „poziomy” (2026-10-25): po makiecie użytkowniczka uznała klasyczny nonogram za zbyt trudny dla przedszkolaków.
-- **Change ID:** nonogram-sizes
-- **PRD refs:** US-16, FR-025
-- **Prerequisites:** S-22
-- **Parallel with:** S-20, S-21, S-23, S-25, S-26
-- **Blockers:** —
-- **Unknowns:**
-  - Czy kratka około 7 mm w trudnym nonogramie i znaczki 9,5 mm w łatwym są dość duże dla dziecka? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 11).
-- **Risk:** Trudny poziom ma najwięcej liczb przy wierszach i kolumnach i najdłuższe sprawdzenie jednego rozwiązania (w nim `kot` i `tulipan` nie mają przechodzącego wariantu). Poziom żyje w stanie strony.
-- **Status:** done
-
-### S-25: Poziomy dyktanda graficznego
-
-- **Outcome:** Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (5 lat: kratka około 14 mm i obiekty 8×12; 6 lat: 11 mm i 12×15; 7 lat: 8 mm i 18×24) na pasku strony dyktanda.
-- **Change ID:** graphic-dictation-levels
-- **PRD refs:** US-18, FR-027
-- **Prerequisites:** S-23
-- **Parallel with:** S-20, S-21, S-22, S-24, S-26
-- **Blockers:** —
-- **Unknowns:**
-  - Czy startowe wartości pasują dziecku? — Owner: user. Block: no. Potwierdza wydruk (PRD Open Questions 11).
-- **Risk:** Poziom 7 lat ma najdłuższą listę poleceń i najmniejszą kratkę; oba muszą zmieścić się na jednej stronie A4. Poziom żyje w stanie strony.
-- **Status:** done
-
-### S-26: Wybór kategorii obiektów
-
-- **Outcome:** Rodzic może wybrać na pasku strony symetrii, nonogramu i dyktanda graficznego „Kategoria”: Wszystkie, Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny albo Domy i budowle. Można wybrać dokładnie jedną, domyślnie „Wszystkie”; kolejne Generuj losuje obiekt tylko z niej.
-- **Change ID:** object-category-choice
-- **PRD refs:** US-20, FR-029
-- **Prerequisites:** S-21, S-22, S-23
-- **Parallel with:** S-20, S-24, S-25
-- **Blockers:** —
-- **Unknowns:**
-  - Czy kategoria zostawia dość obiektów w każdym rozmiarze po odrzuceniach nonogramu i dyktanda, żeby kolejne karty się nie powtarzały? — Owner: team. Block: no. PRD Open Questions 11. Rozstrzygnięte 2026-10-25: najmniej 3 obiekty i 8 obrysów w każdej kombinacji, więc bez komunikatu i bez wyłączania kategorii.
-- **Risk:** Dotyka paska trzech stron naraz; pasek symetrii ma już poziom i kolory, a nonogram rozmiar, więc kategoria musi zmieścić się na telefonie. Czeka na S-22 i S-23, żeby nie dorabiać kategorii do każdej strony osobno. Kategoria żyje w stanie strony.
-- **Status:** done
+- **Unknowns:** —
+- **Risk:** Strona opisuje zachowanie z trzech wcześniejszych kawałków; pisana wcześniej rozjedzie się z tym, co rodzic widzi. Pozostałe podpowiedzi z US-22 wchodzą razem ze swoimi kawałkami (opis poziomu w S-27, „Zapamiętane dla” w S-28, zdanie w oknie profilu w S-29, „Tylko na tę kartę” w S-31).
+- **Status:** proposed
 
 ## Backlog Handoff
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty.
 
-| Roadmap ID | Change ID                         | Suggested issue title                                           | Ready for `/10x-plan` | Notes                                                                                    |
-| ---------- | --------------------------------- | --------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------- |
-| S-16       | sequences-first-printable         | Karta sekwencji: strona, generowanie, podgląd i druk A4         | yes                   | Run `/10x-new sequences-first-printable`, potem `/10x-plan`. Równolegle do S-18          |
-| S-18       | picture-sudoku-first-printable    | Sudoku 4×4 z kształtami: strona, generowanie, podgląd i druk A4 | yes                   | Run `/10x-new picture-sudoku-first-printable`, potem `/10x-plan`. Równolegle do S-16     |
-| S-17       | sequence-difficulty-levels        | Poziomy sekwencji                                               | no                    | Czeka na S-16                                                                            |
-| S-19       | picture-sudoku-levels             | Rozmiary i poziomy sudoku                                       | no                    | Czeka na S-18                                                                            |
-| S-20       | picture-sudoku-colors             | Kolory kształtów w sudoku                                       | yes                   | Run `/10x-new picture-sudoku-colors`, potem `/10x-plan`                                  |
-| S-21       | template-object-catalog           | Katalog obiektów z kategoriami                                  | yes                   | Run `/10x-new template-object-catalog`, potem `/10x-plan`. Równolegle do S-20, S-22–S-25 |
-| S-22       | nonogram-first-printable          | Nonogram: strona, generowanie, podgląd i druk A4                | yes                   | Run `/10x-new nonogram-first-printable`, potem `/10x-plan`. Równolegle do S-23           |
-| S-23       | graphic-dictation-first-printable | Dyktando graficzne: strona, generowanie, podgląd i druk A4      | yes                   | Run `/10x-new graphic-dictation-first-printable`, potem `/10x-plan`. Równolegle do S-22  |
-| S-24       | nonogram-sizes                    | Rozmiary nonogramu                                              | no                    | Czeka na S-22                                                                            |
-| S-25       | graphic-dictation-levels          | Poziomy dyktanda graficznego                                    | no                    | Czeka na S-23                                                                            |
-| S-26       | object-category-choice            | Wybór kategorii obiektów                                        | no                    | Czeka na S-21, S-22 i S-23                                                               |
+| Roadmap ID | Change ID                    | Suggested issue title                                         | Ready for `/10x-plan` | Notes                                                                                      |
+| ---------- | ---------------------------- | ------------------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------ |
+| S-27       | level-labels-without-age     | Poziomy bez wieku, z opisem na liście                         | yes                   | Run `/10x-new level-labels-without-age`, potem `/10x-plan`. Gwiazda przewodnia             |
+| S-28       | card-settings-memory         | Profil i ostatnie parametry pamiętają ustawienia każdej karty | yes                   | Run `/10x-new card-settings-memory`, potem `/10x-plan`. Zastępuje `profile-age-and-levels` |
+| S-29       | profile-window-summary       | Okno profilu z podsumowaniem i plakietki w katalogu           | no                    | Czeka na S-28                                                                              |
+| S-30       | character-speaks-instruction | Postać mówi polecenie na każdej karcie                        | yes                   | Run `/10x-new character-speaks-instruction`, potem `/10x-plan`. Najpierw makieta dymka     |
+| S-31       | favorite-character-explicit  | Ulubiona postać zmienia się tylko jawnie                      | no                    | Czeka na S-28 i S-30                                                                       |
+| S-32       | how-it-works-page            | Strona „Jak to działa”                                        | no                    | Czeka na S-27, S-29 i S-31                                                                 |
 
 ## Open Roadmap Questions
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
-2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no (od 2026-10-24 sudoku nie używa postaci; publikacja szerszego katalogu czeka).
-3. ~~**Czy poziom nastolatka ma pokazywać postać?**~~ — Zamknięte 2026-10-25: na nastolatku wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”; młodsze poziomy zostają ze znakiem na środku wejścia (`teen-level-character-choice`, issue #54).
-4. **Czy startowe wartości poziomów symetrii, sekwencji i sudoku pasują dziecku?** — Owner: user. Block: no. PRD Open Questions 5 i 9.
-5. ~~**Czy sudoku obrazkowe uzupełnia się numerem z legendy, czy rysunkiem postaci?**~~ — Zamknięte 2026-10-24: kształty do narysowania albo cyfry, bez postaci (PRD Open Questions 8).
-6. **Kiedy wraca S-14 (profil z wiekiem i poziomami per rodzaj karty)?** — Owner: user. Block: no. PRD Open Questions 10.
+2. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: no dla planowania; publikacja postaci na wszystkich kartach (S-30) zwiększa skalę tego pytania (PRD Open Questions 3).
+3. **Czy startowe wartości poziomów symetrii, sekwencji, sudoku, nonogramu i dyktanda pasują dziecku?** — Owner: user. Block: no. PRD Open Questions 5, 9 i 11.
+4. **Czy lista poziomów ma pokazywać obok opisu typowy wiek?** — Owner: user. Block: no. PRD Open Questions 12; dotyczy S-27.
 
 ## Parked
 
-- **S-14: Wiek w profilu i poziomy osobno dla każdego rodzaju karty** — Why parked: odłożone 2026-10-23 do czasu, gdy będzie więcej rodzajów kart i wiadomo, które ustawienia mają sens w profilu. Change ID: `profile-age-and-levels` (jest `change.md` i `research.md`, bez planu). PRD refs: US-08, FR-017; wraca jako slice następnego kamienia. Wcześniej wykluczony z M-2, który zamknięto bez niego.
-- **Inne typy kart pracy poza symetrią, sekwencjami, sudoku, nonogramem i dyktandem graficznym** — Why parked: PRD §Non-Goals: kolejne rodzaje wchodzą jako osobne kamienie. Lista jest w „Po tym kamieniu”.
+- **„Zacznij od nowa” w oknie profilu (FR-032)** — Why parked: nice-to-have; to samo da się zrobić paskiem każdej karty. Naturalne miejsce: po S-29.
+- **Postać jako treść zadania (obrysy postaci na kratce)** — Why parked: PRD Po MVP; nonogram i dyktando zostają przy obiektach z szablonów, postać jest w M-4 tylko ozdobą przy poleceniu.
+- **Inne typy kart pracy poza sześcioma istniejącymi** — Why parked: PRD §Non-Goals: kolejne rodzaje wchodzą jako osobne kamienie. Lista jest w „Po tym kamieniu”.
+- **Samouczek przy pierwszym wejściu i okno pomocy** — Why parked: PRD §Non-Goals; pomoc to podpowiedzi w miejscu wyboru i strona „Jak to działa”.
 - **Generowanie albo ocena kart modelem językowym** — Why parked: PRD §Non-Goals; rezultat ma wynikać z jawnych reguł algorytmicznych.
 - **Konta rodziców i synchronizacja między urządzeniami** — Why parked: PRD §Non-Goals; ustawienia i profile zostają na urządzeniu.
 - **Zapis i archiwum wygenerowanych kart** — Why parked: PRD §Non-Goals; cykl życia karty kończy się po wydruku.
@@ -270,15 +188,16 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 
 ## Po tym kamieniu
 
-Nie wlicza się do „Done when” M-3. Kamień nie jest otwarty. Numer S-10 (`symmetry-worksheet`) zostaje nieużyty.
+Nie wlicza się do „Done when” M-4. Kamień nie jest otwarty. Numery S-10 (`symmetry-worksheet`) i S-14 (`profile-age-and-levels`, zastąpiony przez S-28 i S-29) zostają nieużyte.
 
-Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź, wiek, jedna strona A4, czarny druk, bez modelu językowego.
+Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź, poziomy bez nazw wieku, jedna strona A4, czarny druk z kolorową postacią przy poleceniu, bez modelu językowego.
 
 Bez numeru, ta sama umowa:
 
-- **Połącz kropki** — sylwetka postaci. Czeka na obrys.
+- **Obrysy postaci na kratce** — wspólny warunek trzech pozycji niżej. Makieta z 2026-10-26: 11 postaci da się narysować na kratce ok. 15×15, a obrys każdej to jedna zamknięta linia.
+- **Połącz kropki** — sylwetka postaci. Czeka na obrysy.
+- **Nonogram i dyktando postaci** — rozwiązanie odsłania postać zamiast obiektu z szablonów. Czeka na obrysy.
 - **Który nie pasuje** — jedna złamana reguła. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
-- **Nonogram postaci** — rozwiązanie odsłania postać. Czeka na bitmapę. Nonogram z obiektami z szablonów jest w M-3 (S-22, S-24).
 - **Karty kodowania** — kratka, postać, meta, strzałki, jedna najkrótsza droga.
 - **Porównywanie kwot w złotych** — wartość kupek monet, nie liczba sztuk. „Ułóż dokładnie tę kwotę” czeka na jeden układ.
 
@@ -286,6 +205,7 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 
 ## Milestone History
 
+- **M-3: Sekwencje, sudoku, nonogram i dyktando graficzne** (`sequences-and-sudoku-cards`) — closed 2026-10-26. Rodzic generuje i drukuje cztery nowe rodzaje kart (sekwencje, sudoku 4×4/6×6/9×9 z kolorami, nonogram i dyktando graficzne) z własnymi poziomami albo rozmiarami, a symetria, nonogram i dyktando biorą obiekty z katalogu 22 szablonów w pięciu kategoriach z wyborem kategorii. S-14 (wiek w profilu) nie wrócił w M-3; zastąpiły go S-28 i S-29 w M-4.
 - **M-2: Karta symetrii na A4** (`symmetry-card-a4`) — closed 2026-10-23. Rodzic wybiera rodzaj karty w katalogu, generuje kartę symetrii na poziomie nazwanym wiekiem, włącza kolory i drukuje ją jako jedną stronę A4 także z telefonu. S-14 (wiek i poziomy w profilu) wyjęty z kamienia i odłożony na prośbę użytkownika do czasu, gdy będzie więcej rodzajów kart.
 - **M-1: Pierwsza drukowalna karta A4** (`first-printable-a4-maze`) — closed 2026-10-22. Rodzic generuje labirynt na wybranym poziomie, wybiera postać, korzysta z profili dzieci i drukuje kartę jako jedną stronę A4 także z telefonu.
 
