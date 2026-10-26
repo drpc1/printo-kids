@@ -356,9 +356,9 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Automated
 
-- [x] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
-- [x] 4.2 Nowy spec przechodzi: `npx playwright test tests/e2e/card-settings.spec.ts --project=chromium --project=phone-360`
-- [x] 4.3 Całe e2e Chromium przechodzi: `npx playwright test --project=chromium`
+- [x] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą. — 4697852
+- [x] 4.2 Nowy spec przechodzi: `npx playwright test tests/e2e/card-settings.spec.ts --project=chromium --project=phone-360` — 4697852
+- [x] 4.3 Całe e2e Chromium przechodzi: `npx playwright test --project=chromium` — 4697852
 
 #### Manual
 
