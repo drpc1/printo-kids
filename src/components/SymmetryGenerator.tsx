@@ -5,42 +5,39 @@ import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { LevelChoice } from "@/components/LevelChoice";
+import { RememberedNote } from "@/components/RememberedNote";
 import { Switch } from "@/components/ui/switch";
+import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
+import type { SymmetrySettings } from "@/lib/card-settings";
 import { symmetryDrawnCells } from "@/lib/symmetry/colors";
 import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
-import {
-  DEFAULT_SYMMETRY_LEVEL_ID,
-  SYMMETRY_LEVELS,
-  symmetryLevelById,
-  type SymmetryLevelId,
-} from "@/lib/symmetry/levels";
+import { SYMMETRY_LEVELS, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
-import { DEFAULT_OBJECT_CATEGORY_ID, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The symmetry card page: Generuj, the level button, the colors switch, the card, Drukuj, and the shared profile
- * corner. It has no character bar. The symmetry level and the colors switch live only in this component (the profile
- * remembers them in a later change), and the page never touches the maze's last-used parameters; it only keeps the
- * bar values the profile corner shows. Switching colors redraws the same card; it never generates a new one.
+ * The symmetry card page: Generuj, the level and category buttons, the colors switch, the card, Drukuj, and the
+ * shared profile corner. It has no character bar. The level, category and colors come from `useCardSettings`: the
+ * active profile's (or the device's), and every change is remembered at once. The page never touches the maze's
+ * last-used parameters; it only keeps the bar values the profile corner shows. Switching colors redraws the same
+ * card; it never generates a new one. A profile switch with a card shown draws a new card when the level or the
+ * category changed.
  */
 export default function SymmetryGenerator() {
-  const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
-    onApply: applyProfileBar,
-  });
+  const visit = useChildProfileVisit({ onApply: applyProfileBar });
+  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
-  const [levelId, setLevelId] = useState<SymmetryLevelId>(DEFAULT_SYMMETRY_LEVEL_ID);
   const [levelOpen, setLevelOpen] = useState(false);
-  const [categoryId, setCategoryId] = useState<ObjectCategoryChoiceId>(DEFAULT_OBJECT_CATEGORY_ID);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [colors, setColors] = useState(false);
   const [card, setCard] = useState<SymmetryCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
+  const memory = useCardSettings("symetria", visit, handleProfileSwitch);
+  const { level: levelId, category: categoryId, colors } = memory.settings;
   const sheetShown = card !== null;
 
   useEffect(() => {
@@ -53,8 +50,13 @@ export default function SymmetryGenerator() {
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
 
-  function generateFor(id: SymmetryLevelId): void {
-    const next = generateSymmetryCard(Math.random, card?.key ?? null, symmetryLevelById(id), categoryId);
+  function generateFor(settings: SymmetrySettings): void {
+    const next = generateSymmetryCard(
+      Math.random,
+      card?.key ?? null,
+      symmetryLevelById(settings.level),
+      settings.category,
+    );
     if (next === null) {
       setGenerateFailed(true);
       return;
@@ -67,13 +69,19 @@ export default function SymmetryGenerator() {
     if (waitingForChild) {
       return;
     }
-    generateFor(levelId);
+    generateFor(memory.settings);
   }
 
   function handleLevelSelect(id: SymmetryLevelId): void {
-    setLevelId(id);
+    const next = memory.remember({ level: id });
     if (card !== null && !waitingForChild) {
-      generateFor(id);
+      generateFor(next);
+    }
+  }
+
+  function handleProfileSwitch(next: SymmetrySettings, previous: SymmetrySettings): void {
+    if (card !== null && (next.level !== previous.level || next.category !== previous.category)) {
+      generateFor(next);
     }
   }
 
@@ -101,13 +109,20 @@ export default function SymmetryGenerator() {
       categoryId={categoryId}
       open={categoryOpen}
       onOpenChange={setCategoryOpen}
-      onSelect={setCategoryId}
+      onSelect={(category) => {
+        memory.remember({ category });
+      }}
       disabled={waitingForChild}
     />
   );
   const colorsControl = (
     <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
-      <Switch checked={colors} onCheckedChange={setColors} />
+      <Switch
+        checked={colors}
+        onCheckedChange={(next) => {
+          memory.remember({ colors: next });
+        }}
+      />
       Kolory
     </label>
   );
@@ -125,11 +140,12 @@ export default function SymmetryGenerator() {
         barCharacter={barCharacter}
         barLevel={barLevel}
         ask={ask}
-        onCreated={corner.onCreated}
-        onChoose={corner.onChoose}
-        onFavoriteSaved={corner.onFavoriteSaved}
-        onDeleted={corner.onDeleted}
-        onClearProfile={corner.onClearProfile}
+        onCreated={memory.corner.onCreated}
+        onChoose={memory.corner.onChoose}
+        onFavoriteSaved={memory.corner.onFavoriteSaved}
+        onDeleted={memory.corner.onDeleted}
+        onClearProfile={memory.corner.onClearProfile}
+        newProfileCards={memory.newProfileCards}
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
@@ -139,6 +155,7 @@ export default function SymmetryGenerator() {
             {colorsControl}
             {failedNote}
           </div>
+          <RememberedNote note={memory.note} profileActive={activeId !== null} />
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -164,6 +181,7 @@ export default function SymmetryGenerator() {
             {categoryControl}
             {colorsControl}
           </div>
+          <RememberedNote note={memory.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>

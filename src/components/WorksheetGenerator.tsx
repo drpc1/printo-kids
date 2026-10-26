@@ -4,6 +4,8 @@ import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceRows, LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
+import { RememberedNote } from "@/components/RememberedNote";
+import { useMazeLevelMemory } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
@@ -28,9 +30,9 @@ const SHEET_LABEL_SIZE = 7;
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
 
 export default function WorksheetGenerator() {
-  const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
-    onApply: applyProfileBar,
-  });
+  const visit = useChildProfileVisit({ onApply: applyProfileBar });
+  const { profiles, activeId, ask, waitingForChild, visitStart, corner } = visit;
+  const mazeLevelMemory = useMazeLevelMemory(visit);
   const [character, setCharacter] = useState(visitStart.character);
   const [ownImageHref, setOwnImageHref] = useState(visitStart.ownImageHref ?? null);
   const [level, setLevel] = useState(visitStart.level);
@@ -103,7 +105,7 @@ export default function WorksheetGenerator() {
 
   function handleLevelSelect(id: LevelId): void {
     applyLevel(id);
-    if (activeId === null) {
+    if (!mazeLevelMemory.remember(id)) {
       recordBarCharacter(localStorage, null, character, id);
     }
   }
@@ -161,6 +163,7 @@ export default function WorksheetGenerator() {
             {levelControl}
             {failedNote}
           </div>
+          <RememberedNote note={mazeLevelMemory.note} profileActive={activeId !== null} />
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -194,6 +197,7 @@ export default function WorksheetGenerator() {
             />
             {levelControl}
           </div>
+          <RememberedNote note={mazeLevelMemory.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>

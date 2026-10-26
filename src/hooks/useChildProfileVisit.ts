@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { clearActiveProfile, NO_PROFILE, readActiveProfile, writeActiveProfile } from "@/lib/active-profile";
+import type { CardSettingsMap } from "@/lib/card-settings";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed } from "@/lib/last-used";
 import type { LevelId } from "@/lib/maze/levels";
@@ -14,6 +15,8 @@ export interface ProfileBar {
 }
 
 interface VisitStart extends ProfileBar {
+  /** Card settings of the opening visit: the active profile's, or the device's without a profile. */
+  cards: CardSettingsMap;
   profiles: ChildProfile[];
   activeId: string | null;
   ask: boolean;
@@ -45,6 +48,10 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
   ask: boolean;
   waitingForChild: boolean;
   visitStart: ProfileBar;
+  /** The card settings the visit opened with (see `useCardSettings`). */
+  visitCards: CardSettingsMap;
+  /** Replaces the profile list after a write that did not go through the corner (card settings, maze level). */
+  replaceProfiles: (next: ChildProfile[]) => void;
   corner: ProfileCornerHandlers;
 } {
   const [visit] = useState(() => readVisitStart(localStorage));
@@ -124,6 +131,8 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
     ask,
     waitingForChild,
     visitStart: { character: visit.character, level: visit.level, ownImageHref: visit.ownImageHref },
+    visitCards: visit.cards,
+    replaceProfiles: setProfiles,
     corner: {
       onCreated: handleCreated,
       onChoose: handleChosen,
@@ -144,7 +153,8 @@ function barForStored(character: string, level: LevelId, href: string | null | u
 
 function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitStart {
   const profiles = readChildProfiles(storage, ALLOWED_CHARACTER_IDS);
-  const opening = openingVisit(profiles, readLastUsed(storage, ALLOWED_CHARACTER_IDS), readActiveProfile(storage));
+  const lastUsed = readLastUsed(storage, ALLOWED_CHARACTER_IDS);
+  const opening = openingVisit(profiles, lastUsed, readActiveProfile(storage));
   const active =
     opening.activeId === null ? null : (profiles.find((profile) => profile.id === opening.activeId) ?? null);
   const drawn = drawnVisitCharacter(
@@ -156,6 +166,7 @@ function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitSta
     profiles,
     activeId: opening.activeId,
     ...barForStored(drawn.character, opening.level, drawn.href),
+    cards: active === null ? lastUsed.cards : (active.cards ?? {}),
     ask: opening.ask,
   };
 }
