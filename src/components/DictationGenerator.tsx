@@ -5,6 +5,7 @@ import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton
 import { Button } from "@/components/ui/button";
 import { LevelChoice } from "@/components/LevelChoice";
 import { ProfileCorner } from "@/components/ProfileCorner";
+import { Switch } from "@/components/ui/switch";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { generateDictationCard, type DictationCard } from "@/lib/dictation/generate";
 import { layoutDictationSheet } from "@/lib/dictation/layout";
@@ -14,6 +15,7 @@ import {
   dictationLevelById,
   type DictationLevelId,
 } from "@/lib/dictation/levels";
+import { walkCommands } from "@/lib/dictation/outline";
 import { DICTATION_SHEET, formatDictationCommand } from "@/lib/dictation/sheet";
 import { DEFAULT_OBJECT_CATEGORY_ID, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
 import { cn } from "@/lib/utils";
@@ -35,6 +37,7 @@ export default function DictationGenerator() {
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryId, setCategoryId] = useState<ObjectCategoryChoiceId>(DEFAULT_OBJECT_CATEGORY_ID);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [showSolution, setShowSolution] = useState(false);
   const [card, setCard] = useState<DictationCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
@@ -56,6 +59,7 @@ export default function DictationGenerator() {
       return;
     }
     setGenerateFailed(false);
+    setShowSolution(false);
     setCard(next);
   }
 
@@ -101,6 +105,12 @@ export default function DictationGenerator() {
       disabled={waitingForChild}
     />
   );
+  const solutionControl = (
+    <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
+      <Switch checked={showSolution} onCheckedChange={setShowSolution} />
+      Pokaż rozwiązanie
+    </label>
+  );
   const failedNote = generateFailed ? (
     <p role="alert" className={cn("text-destructive text-sm")}>
       {GENERATE_FAILED_TEXT}
@@ -126,6 +136,7 @@ export default function DictationGenerator() {
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
             {levelControl}
             {categoryControl}
+            {solutionControl}
             {failedNote}
           </div>
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
@@ -156,13 +167,13 @@ export default function DictationGenerator() {
           {failedNote}
         </div>
       )}
-      {card !== null ? <DictationSheet card={card} /> : null}
+      {card !== null ? <DictationSheet card={card} showSolution={showSolution} /> : null}
     </div>
   );
 }
 
-/** The printed card. It draws the commands, the grid, and the start dot, and never the outline: that is the answer. */
-function DictationSheet({ card }: { card: DictationCard }) {
+/** The printed card. It draws the commands, the grid, and the start dot. The outline stroke is only on screen. */
+function DictationSheet({ card, showSolution }: { card: DictationCard; showSolution: boolean }) {
   const level = dictationLevelById(card.levelId);
   const sheet = layoutDictationSheet({
     pageWidth: DICTATION_SHEET.pageWidth,
@@ -182,6 +193,9 @@ function DictationSheet({ card }: { card: DictationCard }) {
   const columnLines = Array.from({ length: card.columns - 1 }, (_, index) => grid.x + (index + 1) * card.cellSize);
   const rowLines = Array.from({ length: card.rows - 1 }, (_, index) => grid.y + (index + 1) * card.cellSize);
   const inset = DICTATION_SHEET.commandBoxInset;
+  const solutionPoints = walkCommands({ x: card.start.col, y: card.start.row }, card.commands)
+    .map((vertex) => `${grid.x + vertex.x * card.cellSize},${grid.y + vertex.y * card.cellSize}`)
+    .join(" ");
 
   return (
     <svg
@@ -261,6 +275,19 @@ function DictationSheet({ card }: { card: DictationCard }) {
         strokeWidth={DICTATION_SHEET.frameStroke}
         strokeLinejoin="miter"
       />
+      {showSolution ? (
+        <g
+          className={cn("print:hidden")}
+          fill="none"
+          stroke="var(--foreground)"
+          strokeWidth={DICTATION_SHEET.solutionStroke}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          data-solution
+        >
+          <polyline points={solutionPoints} />
+        </g>
+      ) : null}
       <circle
         cx={grid.x + card.start.col * card.cellSize}
         cy={grid.y + card.start.row * card.cellSize}

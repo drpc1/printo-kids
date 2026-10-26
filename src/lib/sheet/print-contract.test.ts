@@ -195,10 +195,14 @@ void describe("print contract", () => {
   });
 
   void test("print hides the dictation controls", () => {
-    assert.deepEqual(classNamesContaining(readRepoFile(DICTATION_GENERATOR), "print:hidden"), [
+    const generator = readRepoFile(DICTATION_GENERATOR);
+    assert.deepEqual(classNamesContaining(generator, "print:hidden"), [
       "flex w-full flex-col gap-3 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
+      "print:hidden",
     ]);
+    // The stroke sits on the solution group. Prettier wraps the <g> tag, so the two fragments stay separate.
+    assert.ok(generator.includes('className={cn("print:hidden")}') && generator.includes("data-solution"));
   });
 
   void test("the dictation page lives under /dyktando, uses the shared shell, and has no @page of its own", () => {
