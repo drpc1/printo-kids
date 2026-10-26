@@ -7,36 +7,39 @@ import { ProfileCorner } from "@/components/ProfileCorner";
 import { NonogramSimpleSheet } from "@/components/NonogramSimpleSheet";
 import { SudokuChoice } from "@/components/SudokuChoice";
 import { Switch } from "@/components/ui/switch";
+import { RememberedNote } from "@/components/RememberedNote";
+import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
+import type { NonogramSettings } from "@/lib/card-settings";
 import { generateNonogramCard, type NonogramCard } from "@/lib/nonogram/generate";
 import { blockLines, layoutNonogramSheet, longestClues } from "@/lib/nonogram/layout";
 import { NONOGRAM_SHEET } from "@/lib/nonogram/sheet";
-import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, nonogramSizeById, type NonogramSizeId } from "@/lib/nonogram/sizes";
+import { NONOGRAM_SIZES, nonogramSizeById, type NonogramSizeId } from "@/lib/nonogram/sizes";
 import type { SimpleNonogramCard } from "@/lib/nonogram/simple";
-import { DEFAULT_OBJECT_CATEGORY_ID, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
  * The nonogram page: Generuj, the card, Drukuj, the level and category choices, the solution switch, and the shared
- * profile corner. It has no colors and no character bar; the level lives in the page state. Changing the level with a
- * card shown draws a new card at that level. Switching the solution on redraws the same card; it never generates a
+ * profile corner. It has no colors and no character bar; the level and the category come from `useCardSettings` (the
+ * active profile's, or the device's) and every change is remembered at once, the solution switch is not. Changing the
+ * level with a card shown draws a new card at that level, and so does a profile switch that changed the level or the
+ * category. Switching the solution on redraws the same card; it never generates a
  * new one, and the page never shows the name of the hidden object.
  */
 export default function NonogramGenerator() {
-  const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
-    onApply: applyProfileBar,
-  });
+  const visit = useChildProfileVisit({ onApply: applyProfileBar });
+  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const [showSolution, setShowSolution] = useState(false);
-  const [categoryId, setCategoryId] = useState<ObjectCategoryChoiceId>(DEFAULT_OBJECT_CATEGORY_ID);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [sizeId, setSizeId] = useState<NonogramSizeId>(DEFAULT_NONOGRAM_SIZE_ID);
   const [sizeOpen, setSizeOpen] = useState(false);
   const [card, setCard] = useState<NonogramCard | SimpleNonogramCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
+  const memory = useCardSettings("nonogram", visit, handleProfileSwitch);
+  const { level: sizeId, category: categoryId } = memory.settings;
   const sheetShown = card !== null;
 
   useEffect(() => {
@@ -49,11 +52,13 @@ export default function NonogramGenerator() {
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
 
-  function handleGenerate(level: NonogramSizeId = sizeId): void {
-    if (waitingForChild) {
-      return;
-    }
-    const next = generateNonogramCard(Math.random, card?.key ?? null, nonogramSizeById(level), categoryId);
+  function generateFor(settings: NonogramSettings): void {
+    const next = generateNonogramCard(
+      Math.random,
+      card?.key ?? null,
+      nonogramSizeById(settings.level),
+      settings.category,
+    );
     if (next === null) {
       setGenerateFailed(true);
       return;
@@ -64,10 +69,23 @@ export default function NonogramGenerator() {
     setCard(next);
   }
 
+  function handleGenerate(): void {
+    if (waitingForChild) {
+      return;
+    }
+    generateFor(memory.settings);
+  }
+
   function handleSizeSelect(id: NonogramSizeId): void {
-    setSizeId(id);
+    const next = memory.remember({ level: id });
     if (sheetShown) {
-      handleGenerate(id);
+      generateFor(next);
+    }
+  }
+
+  function handleProfileSwitch(next: NonogramSettings, previous: NonogramSettings): void {
+    if (card !== null && (next.level !== previous.level || next.category !== previous.category)) {
+      generateFor(next);
     }
   }
 
@@ -97,7 +115,9 @@ export default function NonogramGenerator() {
       categoryId={categoryId}
       open={categoryOpen}
       onOpenChange={setCategoryOpen}
-      onSelect={setCategoryId}
+      onSelect={(category) => {
+        memory.remember({ category });
+      }}
       disabled={waitingForChild}
     />
   );
@@ -121,11 +141,12 @@ export default function NonogramGenerator() {
         barCharacter={barCharacter}
         barLevel={barLevel}
         ask={ask}
-        onCreated={corner.onCreated}
-        onChoose={corner.onChoose}
-        onFavoriteSaved={corner.onFavoriteSaved}
-        onDeleted={corner.onDeleted}
-        onClearProfile={corner.onClearProfile}
+        onCreated={memory.corner.onCreated}
+        onChoose={memory.corner.onChoose}
+        onFavoriteSaved={memory.corner.onFavoriteSaved}
+        onDeleted={memory.corner.onDeleted}
+        onClearProfile={memory.corner.onClearProfile}
+        newProfileCards={memory.newProfileCards}
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
@@ -135,6 +156,7 @@ export default function NonogramGenerator() {
             {solutionControl}
             {failedNote}
           </div>
+          <RememberedNote note={memory.note} profileActive={activeId !== null} />
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={() => {
@@ -159,6 +181,7 @@ export default function NonogramGenerator() {
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
           {sizeControl}
           {categoryControl}
+          <RememberedNote note={memory.note} profileActive={activeId !== null} />
           <GenerateButton
             onClick={() => {
               handleGenerate();

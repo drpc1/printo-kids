@@ -82,9 +82,9 @@ void describe("sudoku settings are normalized to a state the page can show", () 
     });
   });
 
-  void test("digits carry no colors", () => {
+  void test("digits keep the stored colors, so shapes bring them back as they were", () => {
     assert.deepEqual(parseCardSettings({ sudoku: { size: 6, level: "sredni", symbols: "digits", colors: true } }), {
-      sudoku: { size: 6, level: "sredni", symbols: "digits", colors: false },
+      sudoku: { size: 6, level: "sredni", symbols: "digits", colors: true },
     });
   });
 
@@ -132,7 +132,7 @@ void describe("withCardSettings and cardSettingsOf", () => {
       size: 9,
       level: "trudny",
       symbols: "digits",
-      colors: false,
+      colors: true,
     });
   });
 

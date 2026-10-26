@@ -61,7 +61,7 @@ Czyste moduły bez Reacta: model, odczyt, zapis i zgodność wstecz. Po tej fazi
 
 **Intent**: Jedno miejsce, które zna ustawienia każdej z pięciu kart poza labiryntem, ich domyślne wartości i sposób bezpiecznego odczytu z dowolnego JSON-a.
 
-**Contract**: `CardSettingsMap` (`symetria`, `sekwencje`, `sudoku`, `nonogram`, `dyktando`, każda opcjonalna); `defaultCardSettings(cardId)`; `parseCardSettings(raw: unknown): CardSettingsMap` (każde pole osobno: zły identyfikator → domyślny dla tego pola; sudoku: rozmiar 4 wymusza jeden poziom, symbole „cyfry” wyłączają kolory); `withCardSettings(map, cardId, patch)` zwraca nową mapę. Identyfikatory poziomów, rozmiarów i kategorii pochodzą z istniejących modułów `levels`/`sizes`/`templates`, bez kopiowania list.
+**Contract**: `CardSettingsMap` (`symetria`, `sekwencje`, `sudoku`, `nonogram`, `dyktando`, każda opcjonalna); `defaultCardSettings(cardId)`; `parseCardSettings(raw: unknown): CardSettingsMap` (każde pole osobno: zły identyfikator → domyślny dla tego pola; sudoku: rozmiar 4 wymusza jeden poziom, symbole „cyfry” wyłączają kolory); `withCardSettings(map, cardId, patch)` zwraca nową mapę. Identyfikatory poziomów, rozmiarów i kategorii pochodzą z istniejących modułów `levels`/`sizes`/`templates`, bez kopiowania list. **Uwaga z implementacji:** cyfry NIE zerują kolorów (istniejący test e2e `sudoku-colors` wymaga, by po powrocie do kształtów przełącznik był jak był); kolory są tylko ukryte przy cyfrach.
 
 #### 2. Profil z `cards`
 
@@ -191,7 +191,7 @@ Ten sam wzorzec na sekwencjach, sudoku, nonogramie i dyktandzie.
 
 **Intent**: Rozmiar, poziom, „Kształty / Cyfry” i kolory startują z zapamiętanych i zapisują się razem.
 
-**Contract**: `settings`/`colors` inicjowane z zapamiętanych; `handleSettingChange` i przełącznik kolorów wołają `remember`. Zapamiętana kombinacja zawsze przechodzi normalizację z Fazy 1 (rozmiar 4 → jeden poziom, cyfry → bez kolorów), więc pasek nigdy nie pokazuje stanu, którego strona nie umie ustawić.
+**Contract**: `settings`/`colors` inicjowane z zapamiętanych; `handleSettingChange` i przełącznik kolorów wołają `remember`. Zapamiętana kombinacja zawsze przechodzi normalizację z Fazy 1 (rozmiar 4 → jeden poziom, cyfry → bez kolorów), więc pasek nigdy nie pokazuje stanu, którego strona nie umie ustawić. **Uwaga z implementacji:** normalizacja nie zeruje kolorów przy cyfrach (patrz Faza 1); strona je tylko ukrywa.
 
 #### 3. Nonogram
 
@@ -328,22 +328,22 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Automated
 
-- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
-- [x] 2.2 Istniejące e2e labiryntu i profilu (`profile-level`, `level-bar`, `dialog-close`) przechodzą: `npx playwright test --project=chromium`
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą. — 958ecee
+- [x] 2.2 Istniejące e2e labiryntu i profilu (`profile-level`, `level-bar`, `dialog-close`) przechodzą: `npx playwright test --project=chromium` — 958ecee
 
 #### Manual
 
-- [x] 2.3 `/symetria` z profilem: zmiana poziomu, kolorów i kategorii, odświeżenie → ta sama wartość; komunikat „Zapamiętane dla {imię}” pojawia się i znika, nie zasłania Generuj/Drukuj na telefonie.
-- [x] 2.4 Bez profilu: to samo po odświeżeniu; „Bez profilu” po profilu pokazuje ustawienia urządzenia.
-- [x] 2.5 Zmiana profilu przy pokazanej karcie generuje nową kartę zgodną z paskiem.
-- [x] 2.6 Labirynt: zmiana poziomu z aktywnym profilem zostaje po odświeżeniu.
+- [x] 2.3 `/symetria` z profilem: zmiana poziomu, kolorów i kategorii, odświeżenie → ta sama wartość; komunikat „Zapamiętane dla {imię}” pojawia się i znika, nie zasłania Generuj/Drukuj na telefonie. — 958ecee
+- [x] 2.4 Bez profilu: to samo po odświeżeniu; „Bez profilu” po profilu pokazuje ustawienia urządzenia. — 958ecee
+- [x] 2.5 Zmiana profilu przy pokazanej karcie generuje nową kartę zgodną z paskiem. — 958ecee
+- [x] 2.6 Labirynt: zmiana poziomu z aktywnym profilem zostaje po odświeżeniu. — 958ecee
 
 ### Phase 3: Pozostałe cztery karty
 
 #### Automated
 
-- [ ] 3.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
-- [ ] 3.2 Istniejące e2e (`sudoku-levels`, `sudoku-colors`, `symmetry-colors`, `phone-layout`) przechodzą: `npx playwright test --project=chromium`
+- [x] 3.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
+- [x] 3.2 Istniejące e2e (`sudoku-levels`, `sudoku-colors`, `symmetry-colors`, `phone-layout`) przechodzą: `npx playwright test --project=chromium`
 
 #### Manual
 
@@ -356,9 +356,9 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Automated
 
-- [ ] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
-- [ ] 4.2 Nowy spec przechodzi: `npx playwright test tests/e2e/card-settings.spec.ts --project=chromium --project=phone-360`
-- [ ] 4.3 Całe e2e Chromium przechodzi: `npx playwright test --project=chromium`
+- [x] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
+- [x] 4.2 Nowy spec przechodzi: `npx playwright test tests/e2e/card-settings.spec.ts --project=chromium --project=phone-360`
+- [x] 4.3 Całe e2e Chromium przechodzi: `npx playwright test --project=chromium`
 
 #### Manual
 
