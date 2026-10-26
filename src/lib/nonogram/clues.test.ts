@@ -5,7 +5,7 @@ import { lineClue, nonogramClues, nonogramImage } from "./clues.ts";
 import { NONOGRAM_SIZES, nonogramSizeById } from "./sizes.ts";
 
 const MEDIUM = nonogramSizeById("sredni");
-const LARGE = nonogramSizeById("duzy");
+const LARGE = nonogramSizeById("trudny");
 
 void describe("lineClue", () => {
   void test("an empty line has the clue [0]", () => {

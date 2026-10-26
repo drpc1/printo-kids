@@ -6,9 +6,11 @@ import {
 } from "../symmetry/templates.ts";
 import { nonogramClues, nonogramImage, type NonogramClues } from "./clues.ts";
 import type { NonogramSize, NonogramSizeId } from "./sizes.ts";
+import { composeSimpleNonogramCard, simpleNonogramProblems, type SimpleNonogramCard } from "./simple.ts";
 import { solveNonogram } from "./solve.ts";
 
 export interface NonogramCard {
+  kind: "liczby";
   sizeId: NonogramSizeId;
   columns: number;
   rows: number;
@@ -32,13 +34,13 @@ export interface NonogramVariant {
 /** Draws again at most this many times before giving up, so a single possible card cannot loop forever. */
 const MAX_ATTEMPTS = 20;
 
-/** A valid card of the size whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. */
+/** A valid card of the level whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. */
 export function generateNonogramCard(
   random: () => number,
   previousKey: string | null,
   size: NonogramSize,
   category: ObjectCategoryChoiceId = DEFAULT_OBJECT_CATEGORY_ID,
-): NonogramCard | null {
+): NonogramCard | SimpleNonogramCard | null {
   const templates = symmetryTemplatesFor(size.templateLevel, category);
   if (templates.length === 0) {
     return null;
@@ -46,6 +48,13 @@ export function generateNonogramCard(
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     const template = templates[pick(random, templates.length)];
     const variants = template.parts.map((part) => pick(random, part.variants.length));
+    if (size.kind === "znaczki") {
+      const simple = composeSimpleNonogramCard(template, variants, size);
+      if (simple.key !== previousKey && simpleNonogramProblems(simple).length === 0) {
+        return simple;
+      }
+      continue;
+    }
     const card = composeNonogramCard(template, variants, size);
     if (card.key !== previousKey && nonogramCardProblems(card).length === 0) {
       return card;
@@ -62,6 +71,7 @@ export function composeNonogramCard(
 ): NonogramCard {
   const solution = nonogramImage(template, variants, size);
   return {
+    kind: "liczby",
     sizeId: size.id,
     columns: size.columns,
     rows: size.rows,

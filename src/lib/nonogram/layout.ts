@@ -93,3 +93,67 @@ export function layoutNonogramSheet(input: NonogramSheetInput): NonogramSheetLay
     columnClueY: (index) => gridY - input.clueGap - slot * (index + 0.5),
   };
 }
+
+export interface SimpleNonogramSheetInput {
+  pageWidth: number;
+  pageHeight: number;
+  inset: number;
+  columns: number;
+  rows: number;
+  cellSize: number;
+  /** Most chips in one row. */
+  maxRuns: number;
+  /** Font size of the instruction sentence. Its box spans instruction.y ± instructionSize / 2. */
+  instructionSize: number;
+  /** Space between the instruction box and the grid. */
+  instructionGap: number;
+  /** Side of one chip. */
+  chipSize: number;
+  /** Space between two chips of a row. */
+  chipGap: number;
+  /** Space between the last chip and the grid. */
+  bandGap: number;
+}
+
+export interface SimpleNonogramSheetLayout {
+  page: { width: number; height: number };
+  instruction: { x: number; y: number };
+  grid: { x: number; y: number; width: number; height: number };
+  /** Left edge of chip `index` (0 is the leftmost) of a row with `count` chips; the chips are right-aligned against the grid. */
+  chipX(index: number, count: number): number;
+  /** Top edge of the chips of a row: they are centered in the row. */
+  chipY(row: number): number;
+}
+
+/**
+ * Places the instruction, the chip band, and the grid of the chip card on the page. The block of chip band and grid is
+ * centered across the page, and the instruction with the grid is centered down the page inside the inset. Throws when
+ * the setting does not fit, instead of returning a layout that crosses the margin.
+ */
+export function layoutSimpleNonogramSheet(input: SimpleNonogramSheetInput): SimpleNonogramSheetLayout {
+  const { pageWidth, pageHeight, inset, columns, rows, cellSize, maxRuns, chipSize, chipGap } = input;
+  const width = columns * cellSize;
+  const height = rows * cellSize;
+  const bandWidth = maxRuns * chipSize + Math.max(0, maxRuns - 1) * chipGap + input.bandGap;
+  const blockWidth = bandWidth + width;
+  const blockHeight = input.instructionSize + input.instructionGap + height;
+
+  if (blockWidth > pageWidth - inset * 2 || blockHeight > pageHeight - inset * 2 || chipSize > cellSize) {
+    throw new Error(
+      `A ${columns} by ${rows} grid of ${cellSize} with rows of ${maxRuns} chips does not fit inside the ${inset} page margin`,
+    );
+  }
+
+  const left = inset + (pageWidth - inset * 2 - blockWidth) / 2;
+  const top = inset + (pageHeight - inset * 2 - blockHeight) / 2;
+  const gridX = left + bandWidth;
+  const gridY = top + input.instructionSize + input.instructionGap;
+
+  return {
+    page: { width: pageWidth, height: pageHeight },
+    instruction: { x: pageWidth / 2, y: top + input.instructionSize / 2 },
+    grid: { x: gridX, y: gridY, width, height },
+    chipX: (index, count) => gridX - input.bandGap - (count - index) * chipSize - (count - index - 1) * chipGap,
+    chipY: (row) => gridY + row * cellSize + (cellSize - chipSize) / 2,
+  };
+}

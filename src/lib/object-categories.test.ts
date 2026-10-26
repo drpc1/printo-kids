@@ -6,9 +6,9 @@ import {
   nonogramCardProblems,
   composeNonogramCard,
   generateNonogramCard,
-  type NonogramCard,
   nonogramVariants,
 } from "./nonogram/generate.ts";
+import { composeSimpleNonogramCard, simpleNonogramProblems } from "./nonogram/simple.ts";
 import { NONOGRAM_SIZES } from "./nonogram/sizes.ts";
 import { generateSymmetryCard, type SymmetryCard } from "./symmetry/generate.ts";
 import { SYMMETRY_LEVELS } from "./symmetry/levels.ts";
@@ -106,14 +106,16 @@ void describe("nonogram category", () => {
     for (const size of NONOGRAM_SIZES) {
       void test(`${category} at ${size.id} draws only its objects, with at least two valid cards`, () => {
         const allowed = idsOf(size.templateLevel, category);
-        const valid = nonogramVariants(size, category).filter(
-          ({ template, variants }) => nonogramCardProblems(composeNonogramCard(template, variants, size)).length === 0,
+        const valid = nonogramVariants(size, category).filter(({ template, variants }) =>
+          size.kind === "znaczki"
+            ? simpleNonogramProblems(composeSimpleNonogramCard(template, variants, size)).length === 0
+            : nonogramCardProblems(composeNonogramCard(template, variants, size)).length === 0,
         );
         assert.ok(valid.length >= 2, `${category} at ${size.id} has ${valid.length} valid card(s)`);
         const random = seeded(11);
         let previous: string | null = null;
         for (let draw = 0; draw < DRAWS; draw += 1) {
-          const card: NonogramCard = drawn(generateNonogramCard(random, previous, size, category));
+          const card: { key: string } = drawn(generateNonogramCard(random, previous, size, category));
           assert.ok(allowed.has(templateOf(card.key)), card.key);
           assert.notEqual(card.key, previous);
           previous = card.key;
