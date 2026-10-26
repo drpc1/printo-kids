@@ -11,7 +11,11 @@ export type NonogramKind = "znaczki" | "liczby";
 
 export interface NonogramSize {
   id: NonogramSizeId;
+  /** Name in the level list. */
   label: string;
+  /** Text after "Poziom:" on the bar. */
+  barLabel: string;
+  description: string;
   kind: NonogramKind;
   columns: number;
   rows: number;
@@ -29,6 +33,8 @@ export const NONOGRAM_SIZES: readonly NonogramSize[] = [
   {
     id: "latwy",
     label: "łatwy",
+    barLabel: "łatwy",
+    description: "znaczki przy wierszach, duża kratka",
     kind: "znaczki",
     columns: 8,
     rows: 12,
@@ -39,6 +45,8 @@ export const NONOGRAM_SIZES: readonly NonogramSize[] = [
   {
     id: "sredni",
     label: "średni",
+    barLabel: "średni",
+    description: "liczby przy wierszach i kolumnach",
     kind: "liczby",
     columns: 12,
     rows: 15,
@@ -49,6 +57,8 @@ export const NONOGRAM_SIZES: readonly NonogramSize[] = [
   {
     id: "trudny",
     label: "trudny",
+    barLabel: "trudny",
+    description: "liczby, gęsta kratka, bogatszy obrazek",
     kind: "liczby",
     columns: 18,
     rows: 24,

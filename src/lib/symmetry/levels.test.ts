@@ -5,21 +5,14 @@ import { DEFAULT_SYMMETRY_LEVEL_ID, SYMMETRY_LEVELS, symmetryLevelById } from ".
 import { SYMMETRY_SHEET } from "./sheet.ts";
 
 void describe("SYMMETRY_LEVELS", () => {
-  void test("are the four age levels of the PRD table (hand-written oracle)", () => {
+  void test("are the four levels of the PRD table (hand-written oracle)", () => {
     assert.deepEqual(
-      SYMMETRY_LEVELS.map(({ id, label, columns, rows, cellSize, hintCount }) => [
-        id,
-        label,
-        columns,
-        rows,
-        cellSize,
-        hintCount,
-      ]),
+      SYMMETRY_LEVELS.map(({ id, columns, rows, cellSize, hintCount }) => [id, columns, rows, cellSize, hintCount]),
       [
-        ["lat4", "4 lata", 8, 12, 20, 3],
-        ["lat5", "5 lat", 12, 16, 15, 0],
-        ["lat6", "6 lat", 14, 20, 12, 0],
-        ["lat7", "7 lat", 18, 24, 10, 0],
+        ["lat4", 8, 12, 20, 3],
+        ["lat5", 12, 16, 15, 0],
+        ["lat6", 14, 20, 12, 0],
+        ["lat7", 18, 24, 10, 0],
       ],
     );
   });
@@ -51,6 +44,21 @@ void describe("SYMMETRY_LEVELS", () => {
       assert.ok(sheet.grid.x >= SYMMETRY_SHEET.inset, level.id);
       assert.ok(sheet.grid.x + sheet.grid.width <= SYMMETRY_SHEET.pageWidth - SYMMETRY_SHEET.inset, level.id);
       assert.ok(sheet.axis.y2 <= SYMMETRY_SHEET.pageHeight - SYMMETRY_SHEET.inset, level.id);
+    }
+  });
+
+  void test("names, bar labels, descriptions and typical ages are the approved wording", () => {
+    assert.deepEqual(
+      SYMMETRY_LEVELS.map(({ label, barLabel, description, typicalAge }) => [label, barLabel, description, typicalAge]),
+      [
+        ["Poziom 1", "1", "duża kratka, podpowiedź przy osi", "zwykle ok. 4 lata"],
+        ["Poziom 2", "2", "średnia kratka, bez podpowiedzi", "zwykle ok. 5 lat"],
+        ["Poziom 3", "3", "mniejsza kratka, bez podpowiedzi", "zwykle ok. 6 lat"],
+        ["Poziom 4", "4", "mała kratka, bogatsze obiekty", "zwykle ok. 7 lat"],
+      ],
+    );
+    for (const level of SYMMETRY_LEVELS) {
+      assert.doesNotMatch(level.label + level.barLabel, /lat|nastolat/, level.id);
     }
   });
 
