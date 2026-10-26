@@ -64,7 +64,7 @@ Playwright e2e (projekty Chromium) wchodzą do bramki CI przy push i PR do `main
 
 #### Manual
 
-- [ ] 1.3 Decyzja o doborze projektów i wymaganym checku
+- [x] 1.3 Decyzja o doborze projektów i wymaganym checku
 
 ### Phase 2: Dokumenty
 
@@ -74,4 +74,4 @@ Playwright e2e (projekty Chromium) wchodzą do bramki CI przy push i PR do `main
 
 #### Manual
 
-- [ ] 2.2 Treść dokumentów zgodna z ci.yml
+- [x] 2.2 Treść dokumentów zgodna z ci.yml
