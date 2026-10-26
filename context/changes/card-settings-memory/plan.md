@@ -342,8 +342,8 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Automated
 
-- [x] 3.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
-- [x] 3.2 Istniejące e2e (`sudoku-levels`, `sudoku-colors`, `symmetry-colors`, `phone-layout`) przechodzą: `npx playwright test --project=chromium`
+- [x] 3.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą. — a4c2aaa
+- [x] 3.2 Istniejące e2e (`sudoku-levels`, `sudoku-colors`, `symmetry-colors`, `phone-layout`) przechodzą: `npx playwright test --project=chromium` — a4c2aaa
 
 #### Manual
 
