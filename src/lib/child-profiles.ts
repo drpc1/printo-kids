@@ -1,4 +1,5 @@
 import { NO_PROFILE } from "./active-profile.ts";
+import { parseCardSettings, type CardSettingsMap } from "./card-settings.ts";
 import { DEFAULT_LEVEL_ID, isLevelId, type LevelId } from "./maze/levels.ts";
 import { OWN_IMAGE_ID } from "./sheet/character.ts";
 import { isOwnImageDataUrl } from "./sheet/own-image-store.ts";
@@ -17,6 +18,8 @@ export interface ChildProfile {
   character: string;
   level: LevelId;
   image?: string;
+  /** Bar settings of the cards other than the maze. Absent until the profile used one. */
+  cards?: CardSettingsMap;
 }
 
 export function readChildProfiles(storage: ChildProfileStorage, allowed: readonly string[]): ChildProfile[] {
@@ -99,11 +102,38 @@ export function withFavorite(
     if (profile.id !== id) {
       return profile;
     }
+    const cards = cardsOf(profile);
     if (character === OWN_IMAGE_ID && isOwnImageDataUrl(imageHref)) {
-      return { id: profile.id, name: profile.name, character, level, image: imageHref };
+      return { id: profile.id, name: profile.name, character, level, image: imageHref, ...cards };
     }
-    return { id: profile.id, name: profile.name, character, level };
+    return { id: profile.id, name: profile.name, character, level, ...cards };
   });
+}
+
+/** The profile with only its maze level changed. The character, the own image and the card settings stay. */
+export function withProfileLevel(profiles: readonly ChildProfile[], id: string, level: LevelId): ChildProfile[] | null {
+  if (!isLevelId(level) || !profiles.some((profile) => profile.id === id)) {
+    return null;
+  }
+
+  return profiles.map((profile) => (profile.id === id ? { ...profile, level } : profile));
+}
+
+/** The profile with the settings of the cards replaced. Everything else stays. */
+export function withProfileCards(
+  profiles: readonly ChildProfile[],
+  id: string,
+  cards: CardSettingsMap,
+): ChildProfile[] | null {
+  if (!profiles.some((profile) => profile.id === id)) {
+    return null;
+  }
+
+  return profiles.map((profile) => (profile.id === id ? { ...profile, cards } : profile));
+}
+
+function cardsOf(profile: ChildProfile): { cards?: CardSettingsMap } {
+  return profile.cards === undefined ? {} : { cards: profile.cards };
 }
 
 /** Href passed to withFavorite. A catalog id clears the snapshot. An untouched `wlasne` keeps the saved one. */
@@ -129,17 +159,19 @@ export function profileToCreate(
   character: string,
   level: LevelId,
   imageHref: string | null,
+  cards?: CardSettingsMap,
 ): ChildProfile | null {
+  const withCards = cards === undefined ? {} : { cards };
   if (character === OWN_IMAGE_ID) {
     if (!isOwnImageDataUrl(imageHref)) {
       return null;
     }
-    return { id, name, character, level, image: imageHref };
+    return { id, name, character, level, image: imageHref, ...withCards };
   }
   if (character.startsWith("data:")) {
     return null;
   }
-  return { id, name, character, level };
+  return { id, name, character, level, ...withCards };
 }
 
 export function barAfterFavoriteSave<T extends string>(bar: T, previousFavorite: T, nextFavorite: T): T {
@@ -270,14 +302,15 @@ function acceptEntry(entry: unknown, allowed: readonly string[], kept: readonly 
   const level = isLevelId(entry.level) ? entry.level : DEFAULT_LEVEL_ID;
   const image = isOwnImageDataUrl(entry.image) ? entry.image : undefined;
   const keptName = name.trim();
+  const cards = entry.cards === undefined ? {} : { cards: parseCardSettings(entry.cards) };
 
   if (character === OWN_IMAGE_ID && image === undefined) {
-    return { id, name: keptName, character: "none", level };
+    return { id, name: keptName, character: "none", level, ...cards };
   }
   if (image === undefined) {
-    return { id, name: keptName, character, level };
+    return { id, name: keptName, character, level, ...cards };
   }
-  return { id, name: keptName, character, level, image };
+  return { id, name: keptName, character, level, image, ...cards };
 }
 
 function codePointLength(value: string): number {

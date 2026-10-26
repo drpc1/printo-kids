@@ -1,9 +1,9 @@
 ---
 change_id: card-settings-memory
 title: Profil i ostatnie parametry pamiętają ustawienia każdej karty
-status: plan_reviewed
+status: implementing
 created: 2026-10-26
-updated: 2026-10-26
+updated: 2026-10-27
 archived_at: null
 ---
 

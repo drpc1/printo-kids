@@ -316,13 +316,13 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Automated
 
-- [ ] 1.1 Testy przechodzą, w tym: stary profil i stare `last-used` bez `cards` wczytują się z domyślnymi, zły identyfikator w jednym polu nie psuje reszty, `withFavorite` i `writeLastUsed` zachowują `cards`, `withProfileLevel` zmienia tylko `level`, normalizacja sudoku: `npm test`
-- [ ] 1.2 Lint: `npm run lint`
-- [ ] 1.3 Typy: `npx astro check`
+- [x] 1.1 Testy przechodzą, w tym: stary profil i stare `last-used` bez `cards` wczytują się z domyślnymi, zły identyfikator w jednym polu nie psuje reszty, `withFavorite` i `writeLastUsed` zachowują `cards`, `withProfileLevel` zmienia tylko `level`, normalizacja sudoku: `npm test`
+- [x] 1.2 Lint: `npm run lint`
+- [x] 1.3 Typy: `npx astro check`
 
 #### Manual
 
-- [ ] 1.4 Dopasowanie nazw pól i wartości domyślnych do tabeli w PRD (Business Logic „Profil i zapamiętane ustawienia”) potwierdzone przy przeglądzie.
+- [x] 1.4 Dopasowanie nazw pól i wartości domyślnych do tabeli w PRD (Business Logic „Profil i zapamiętane ustawienia”) potwierdzone przy przeglądzie.
 
 ### Phase 2: Hook, komunikat, labirynt i symetria
 
