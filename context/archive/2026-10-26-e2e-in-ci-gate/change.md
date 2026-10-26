@@ -1,10 +1,10 @@
 ---
 change_id: e2e-in-ci-gate
 title: Playwright e2e (Chromium) w bramce CI
-status: plan_reviewed
+status: archived
 created: 2026-10-26
 updated: 2026-10-26
-archived_at: null
+archived_at: 2026-10-26T21:49:33Z
 ---
 
 ## Notes
