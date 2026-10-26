@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
+import { CategoryChoice } from "@/components/CategoryChoice";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
-import { SymmetryLevelChoice } from "@/components/SymmetryLevelChoice";
+import { LevelChoice } from "@/components/LevelChoice";
 import { Switch } from "@/components/ui/switch";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { symmetryDrawnCells } from "@/lib/symmetry/colors";
 import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
-import { DEFAULT_SYMMETRY_LEVEL_ID, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
+import {
+  DEFAULT_SYMMETRY_LEVEL_ID,
+  SYMMETRY_LEVELS,
+  symmetryLevelById,
+  type SymmetryLevelId,
+} from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
+import { DEFAULT_OBJECT_CATEGORY_ID, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
@@ -29,6 +36,8 @@ export default function SymmetryGenerator() {
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const [levelId, setLevelId] = useState<SymmetryLevelId>(DEFAULT_SYMMETRY_LEVEL_ID);
   const [levelOpen, setLevelOpen] = useState(false);
+  const [categoryId, setCategoryId] = useState<ObjectCategoryChoiceId>(DEFAULT_OBJECT_CATEGORY_ID);
+  const [categoryOpen, setCategoryOpen] = useState(false);
   const [colors, setColors] = useState(false);
   const [card, setCard] = useState<SymmetryCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
@@ -45,7 +54,7 @@ export default function SymmetryGenerator() {
   }, [sheetShown]);
 
   function generateFor(id: SymmetryLevelId): void {
-    const next = generateSymmetryCard(Math.random, card?.key ?? null, symmetryLevelById(id));
+    const next = generateSymmetryCard(Math.random, card?.key ?? null, symmetryLevelById(id), categoryId);
     if (next === null) {
       setGenerateFailed(true);
       return;
@@ -78,11 +87,22 @@ export default function SymmetryGenerator() {
   }
 
   const levelControl = (
-    <SymmetryLevelChoice
+    <LevelChoice
       level={symmetryLevelById(levelId)}
+      levels={SYMMETRY_LEVELS}
       open={levelOpen}
       onOpenChange={setLevelOpen}
       onSelect={handleLevelSelect}
+      disabled={waitingForChild}
+    />
+  );
+  const categoryControl = (
+    <CategoryChoice
+      categoryId={categoryId}
+      open={categoryOpen}
+      onOpenChange={setCategoryOpen}
+      onSelect={setCategoryId}
+      disabled={waitingForChild}
     />
   );
   const colorsControl = (
@@ -115,6 +135,7 @@ export default function SymmetryGenerator() {
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
             {levelControl}
+            {categoryControl}
             {colorsControl}
             {failedNote}
           </div>
@@ -140,6 +161,7 @@ export default function SymmetryGenerator() {
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
           <div className={cn("flex flex-wrap items-center justify-center gap-3")}>
             {levelControl}
+            {categoryControl}
             {colorsControl}
           </div>
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />

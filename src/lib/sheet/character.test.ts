@@ -7,6 +7,7 @@ import {
   ALLOWED_CHARACTER_IDS,
   CHARACTER_CHOICES,
   characterChoice,
+  characterContentLeft,
   characterRow,
   characterSheetSrc,
 } from "./character.ts";
@@ -38,6 +39,13 @@ void describe("character catalog", () => {
 
   void test("returns the smok sheet file", () => {
     assert.equal(characterSheetSrc("smok"), "/characters/smok.png");
+  });
+
+  void test("catalog drawings start after the empty left margin of the square file", () => {
+    assert.equal(characterContentLeft("kot"), 208 / 1024);
+    assert.equal(characterContentLeft("syrenka"), 366 / 1024);
+    assert.equal(characterContentLeft("none"), 0);
+    assert.equal(characterContentLeft("wlasne"), 0);
   });
 
   void test("an id outside the catalog is Bez postaci", () => {

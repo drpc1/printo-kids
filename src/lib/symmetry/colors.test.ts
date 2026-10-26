@@ -49,6 +49,25 @@ void describe("symmetryDrawnCells", () => {
     }
   });
 
+  void test("a brown cell draws with the brown crayon token", () => {
+    const card = composeSymmetryCard(
+      {
+        id: "pien",
+        holeColor: null,
+        categories: ["przyroda"],
+        width: 6,
+        height: 1,
+        base: [{ col: 5, row: 0, color: "brown" }],
+        parts: [],
+      },
+      [],
+      0,
+      LAT5,
+    );
+
+    assert.equal(symmetryDrawnCells(card, true)[0]?.fill, "var(--symmetry-brown)");
+  });
+
   void test("every drawn cell uses a theme token, never a hex", () => {
     const card = composeSymmetryCard(symmetryTemplatesFor("lat7")[1], [0, 0, 0, 0], 0, symmetryLevelById("lat7"));
 

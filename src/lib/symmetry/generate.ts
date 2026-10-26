@@ -1,5 +1,12 @@
 import { symmetryLevelById, type SymmetryLevel } from "./levels.ts";
-import { SYMMETRY_COLORS, symmetryTemplatesFor, type SymmetryCell, type SymmetryTemplate } from "./templates.ts";
+import {
+  DEFAULT_OBJECT_CATEGORY_ID,
+  SYMMETRY_COLORS,
+  symmetryTemplatesFor,
+  type ObjectCategoryChoiceId,
+  type SymmetryCell,
+  type SymmetryTemplate,
+} from "./templates.ts";
 
 export type SymmetryAxis = "vertical";
 
@@ -37,14 +44,18 @@ export type SymmetryProblem =
 const MAX_ATTEMPTS = 20;
 
 /**
- * A valid card of the level whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. The key includes the row offset, so the same picture one row lower counts as a new card.
+ * A valid card of the level, from the objects of the category, whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. The key includes the row offset, so the same picture one row lower counts as a new card.
  */
 export function generateSymmetryCard(
   random: () => number,
   previousKey: string | null,
   level: SymmetryLevel,
+  category: ObjectCategoryChoiceId = DEFAULT_OBJECT_CATEGORY_ID,
 ): SymmetryCard | null {
-  const templates = symmetryTemplatesFor(level.id);
+  const templates = symmetryTemplatesFor(level.id, category);
+  if (templates.length === 0) {
+    return null;
+  }
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     const template = templates[pick(random, templates.length)];
     const variants = template.parts.map((part) => pick(random, part.variants.length));
@@ -99,7 +110,7 @@ export function composeSymmetryCard(
     axis: "vertical",
     cells,
     hints: pickHints(cells, level),
-    details: findHoles(cells, level).map((cell) => ({ ...cell, color: template.holeColor })),
+    details: holeDetails(template, cells, level),
     key: `${level.id}:${template.id}:${variants.join("-")}:${rowOffset}`,
   };
 }
@@ -113,6 +124,19 @@ function pickHints(cells: readonly SymmetryCell[], level: SymmetryLevel): readon
   const onAxis = cells.filter((cell) => cell.col === half - 1).sort((a, b) => a.row - b.row);
   const chosen = onAxis.length <= level.hintCount ? onAxis : spread(onAxis, level.hintCount);
   return chosen.map((cell) => ({ col: level.columns - 1 - cell.col, row: cell.row, color: cell.color }));
+}
+
+/** The holes in the template's hole color, or none when the template keeps its holes white. */
+function holeDetails(
+  template: SymmetryTemplate,
+  cells: readonly SymmetryCell[],
+  level: SymmetryLevel,
+): readonly SymmetryCell[] {
+  const { holeColor } = template;
+  if (holeColor === null) {
+    return [];
+  }
+  return findHoles(cells, level).map((cell) => ({ ...cell, color: holeColor }));
 }
 
 /**
