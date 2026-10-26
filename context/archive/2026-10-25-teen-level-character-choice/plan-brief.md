@@ -16,13 +16,13 @@ Rodzic wybiera postać albo własny obrazek, generuje nastolatka i widzi znak 30
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) |
-| --- | --- | --- |
-| Skutek wyboru | Nastolatek rysuje postać; pasek zostaje aktywny | Wybór bez rysunku myli rodzica, a młodsze dziecko może chcieć ten poziom |
-| Poziom znaku | Lewa krawędź 30×30 równa lewej krawędzi labiryntu | Wyśrodkowanie na kolumnie 0 wystaje poza kartkę; margines ścian zostaje 10 mm |
-| Pion karty | Istniejące przesunięcie równych pasów | Ten sam margines co na poziomach, które już pokazują postać |
-| Napis „Start” | Znika, gdy postać jest wybrana | Ta sama reguła co na poziomach od 3 lat do 7–8 lat; środek kolumny 0 leży pod znakiem |
-| Pamięć postaci | Bez zmian zapisu | Ostatnio użyta postać i ulubiona profilu już nie giną przy nastolatku |
+| Decision       | Choice                                            | Why (1 sentence)                                                                      |
+| -------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Skutek wyboru  | Nastolatek rysuje postać; pasek zostaje aktywny   | Wybór bez rysunku myli rodzica, a młodsze dziecko może chcieć ten poziom              |
+| Poziom znaku   | Lewa krawędź 30×30 równa lewej krawędzi labiryntu | Wyśrodkowanie na kolumnie 0 wystaje poza kartkę; margines ścian zostaje 10 mm         |
+| Pion karty     | Istniejące przesunięcie równych pasów             | Ten sam margines co na poziomach, które już pokazują postać                           |
+| Napis „Start”  | Znika, gdy postać jest wybrana                    | Ta sama reguła co na poziomach od 3 lat do 7–8 lat; środek kolumny 0 leży pod znakiem |
+| Pamięć postaci | Bez zmian zapisu                                  | Ostatnio użyta postać i ulubiona profilu już nie giną przy nastolatku                 |
 
 ## Scope
 
@@ -47,10 +47,10 @@ Generator już przekazuje flagę poziomu do układu. Włączenie flagi uruchamia
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
+| Phase                             | What it delivers                                                    | Key risk                                                                                                     |
+| --------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | 1. Teen sheet draws the character | Znak na nastolatku, lewa krawędź przy labiryncie, równe pasy, testy | Pętla testu, która wymaga środka znaku na kolumnie wejścia, złapie nastolatka i ktoś przywróci wyśrodkowanie |
-| 2. Product text matches the sheet | PRD i pytanie roadmapy opisują rysowany znak | Zostanie zdanie „Poziom nastolatka postaci nie pokazuje” w US-01, US-03 albo w logice labiryntu |
+| 2. Product text matches the sheet | PRD i pytanie roadmapy opisują rysowany znak                        | Zostanie zdanie „Poziom nastolatka postaci nie pokazuje” w US-01, US-03 albo w logice labiryntu              |
 
 **Prerequisites:** Brak. Generator, układ i zapis postaci są w drzewie.
 **Estimated effort:** Jedna sesja, dwie fazy. Faza 1 jest kodem i testami, faza 2 jest tekstem produktu.

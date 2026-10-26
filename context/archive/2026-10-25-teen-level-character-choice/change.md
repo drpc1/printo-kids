@@ -12,12 +12,15 @@ archived_at: 2026-10-25T22:10:03Z
 GitHub issue #54: https://github.com/drpc1/printo-kids/issues/54
 
 ## Co zrobić
+
 Wybierz poziom „nastolatek”, a potem na pasku „Postać” wybierz dowolną postać i wygeneruj kartę.
 
 ## Co jest teraz
+
 Pasek „Postać” zostaje aktywny i pokazuje wybraną postać, ale karta nastolatka postaci nie rysuje (`showCharacter: false` w `src/lib/maze/levels.ts`; start i meta są w narożnikach). Rodzic wybiera coś, co nie ma skutku, i nie wie, co się stało.
 
 ## Co ma być później
+
 Wybór postaci zawsze ma widoczny skutek albo jest jasno niedostępny. Dwie drogi do decyzji w nowej zmianie:
 
 1. **Najpierw poziom, potem postać.** Przy nastolatku pasek „Postać” jest zablokowany z wyjaśnieniem, że ten poziom jej nie pokazuje.
@@ -26,4 +29,5 @@ Wybór postaci zawsze ma widoczny skutek albo jest jasno niedostępny. Dwie drog
 Ostatnio użyta postać i ulubiona postać profilu nie mogą zginąć przy przełączaniu na nastolatka i z powrotem.
 
 ## Skąd
+
 Uwaga z ręcznego wydruku S-11 (`printed-maze-equal-margins`, #35), 2026-10-22.
