@@ -16,6 +16,7 @@ import {
   SUDOKU_SIZES,
   sudokuHasLevels,
   sudokuHasSymbolChoice,
+  sudokuLevelDescription,
   type SudokuSettings,
 } from "@/lib/sudoku/levels";
 import { SUDOKU_SHEET } from "@/lib/sudoku/sheet";
@@ -91,6 +92,11 @@ export default function SudokuGenerator() {
     setBarLevel(bar.level);
   }
 
+  // The level rows say how many cells are empty for the current size.
+  const levelOptions = SUDOKU_LEVELS.map((option) => ({
+    ...option,
+    description: settings.size === 4 ? undefined : sudokuLevelDescription(settings.size, option.id),
+  }));
   const settingsControls = (
     <>
       <SudokuChoice
@@ -108,7 +114,7 @@ export default function SudokuGenerator() {
         <SudokuChoice
           label="Poziom"
           dialogTitle="Wybierz poziom"
-          options={SUDOKU_LEVELS}
+          options={levelOptions}
           value={settings.level}
           open={levelOpen}
           onOpenChange={setLevelOpen}

@@ -115,21 +115,21 @@ test("choosing a level on the sequence page draws a new card with that level's r
   await expect(sheet.locator("g")).toHaveCount(42);
 
   // Fields per card: rows times fields per row (PRD table: 5×5, 6×7, 7×8, 7×8), and the empty ones the child fills in
-  // (one per row; 5 lat: three rows with two; 6 lat: two per row; 7 lat: three rows with three, four with two).
+  // (one per row; Poziom 2: three rows with two; Poziom 3: two per row; Poziom 4: three rows with three, four with two).
   const expected = {
-    "4 lata": { fields: 25, empty: 5 },
-    "5 lat": { fields: 42, empty: 9 },
-    "6 lat": { fields: 56, empty: 14 },
-    "7 lat": { fields: 56, empty: 17 },
+    "1": { fields: 25, empty: 5 },
+    "2": { fields: 42, empty: 9 },
+    "3": { fields: 56, empty: 14 },
+    "4": { fields: 56, empty: 17 },
   };
   for (const [label, { fields, empty }] of Object.entries(expected)) {
     const before = await sheet.innerHTML();
     await page.getByRole("button", { name: /^Poziom:/ }).click();
-    await page.getByRole("button", { name: label, exact: true }).click();
+    await page.getByRole("button", { name: new RegExp(`^Poziom ${label}\\b`) }).click();
     await expect(page.getByRole("button", { name: `Poziom: ${label}` })).toBeVisible();
     await expect(sheet.locator("g")).toHaveCount(fields);
     await expect(sheet.locator("rect[stroke-dasharray]")).toHaveCount(empty);
-    if (label !== "5 lat") {
+    if (label !== "2") {
       await expect.poll(() => sheet.innerHTML()).not.toBe(before);
     }
   }
@@ -161,10 +161,10 @@ test("choosing a level on the symmetry page draws a new card of that level", asy
   await expect(sheet).toBeVisible();
   const before = await sheet.innerHTML();
 
-  await page.getByRole("button", { name: "Poziom: 5 lat" }).click();
-  await page.getByRole("button", { name: "4 lata" }).click();
+  await page.getByRole("button", { name: "Poziom: 2" }).click();
+  await page.getByRole("button", { name: /^Poziom 1\b/ }).click();
 
-  await expect(page.getByRole("button", { name: "Poziom: 4 lata" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Poziom: 1" })).toBeVisible();
   await expect.poll(() => sheet.innerHTML()).not.toBe(before);
 });
 
