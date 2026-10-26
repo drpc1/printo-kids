@@ -151,9 +151,9 @@ test("every sequence level fits the screen and keeps Poziom, Generuj, Drukuj and
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect(page.getByRole("img", { name: "Sekwencje" })).toBeVisible();
 
-  for (const label of ["4 lata", "5 lat", "6 lat", "7 lat"]) {
+  for (const label of ["1", "2", "3", "4"]) {
     await page.getByRole("button", { name: /^Poziom:/ }).click();
-    await page.getByRole("button", { name: label, exact: true }).click();
+    await page.getByRole("button", { name: new RegExp(`^Poziom ${label}\\b`) }).click();
     await expect(page.getByRole("button", { name: `Poziom: ${label}` })).toBeVisible();
     await expect(page.getByRole("img", { name: "Sekwencje" })).toBeVisible();
     await settle(page);
@@ -289,9 +289,9 @@ test("every symmetry level fits the screen and keeps Poziom, Kolory, Generuj, Dr
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect(page.getByRole("img", { name: "Symetria" })).toBeVisible();
 
-  for (const label of ["4 lata", "5 lat", "6 lat", "7 lat"]) {
+  for (const label of ["1", "2", "3", "4"]) {
     await page.getByRole("button", { name: /^Poziom:/ }).click();
-    await page.getByRole("button", { name: label, exact: true }).click();
+    await page.getByRole("button", { name: new RegExp(`^Poziom ${label}\\b`) }).click();
     await expect(page.getByRole("button", { name: `Poziom: ${label}` })).toBeVisible();
     await expect(page.getByRole("img", { name: "Symetria" })).toBeVisible();
     await settle(page);
@@ -471,4 +471,24 @@ test("a long profile list shows a scrollbar the eye can find", async ({ page }, 
       return Math.abs(end.y + end.height - (trackBox.y + trackBox.height));
     })
     .toBeLessThanOrEqual(1);
+});
+
+test("the maze level list fits the screen with all six rows and no scrolling", async ({ page }) => {
+  await page.goto("/labirynt");
+  await page.getByRole("button", { name: /^Poziom:/ }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.getByRole("button", { name: /^Poziom 6\b/ })).toBeVisible();
+  await settle(page);
+
+  // The dialog itself clips; its body is the element that scrolls.
+  const overflow = await dialog
+    .locator('[data-slot="dialog-body"]')
+    .evaluate((element) => element.scrollHeight - element.clientHeight);
+  expect(overflow).toBeLessThanOrEqual(0);
+  const height = page.viewportSize()?.height ?? 0;
+  for (const level of [1, 2, 3, 4, 5, 6]) {
+    const box = await viewportBox(dialog.getByRole("button", { name: new RegExp(`^Poziom ${level}\\b`) }));
+    expect(box.y).toBeGreaterThanOrEqual(0);
+    expect(box.y + box.height).toBeLessThanOrEqual(height);
+  }
 });

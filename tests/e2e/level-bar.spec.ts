@@ -58,8 +58,9 @@ async function settle(page: Page): Promise<void> {
 // Short names left room for Generuj in the first row and pushed Drukuj alone to the second;
 // the longest names pushed both down. Every case must keep the two together under the selectors.
 const BAR_CASES = [
-  { name: "default names", character: "none", level: "lat5", levelLabel: "5 lat" },
-  { name: "longest names", character: "samochodzik", level: "nastolatek", levelLabel: "nastolatek" },
+  { name: "default names", character: "none", level: "lat5", levelLabel: "3" },
+  // The bar width is now set by the character name; the level label is a single digit.
+  { name: "longest character name", character: "samochodzik", level: "nastolatek", levelLabel: "6" },
 ] as const;
 
 for (const barCase of BAR_CASES) {
@@ -105,16 +106,29 @@ test("changing the level on a sheet redraws the maze for that level", async ({ p
   await page.getByRole("button", { name: "Generuj" }).click();
   const maze = page.getByRole("img", { name: "Labirynt" });
   await expect(maze).toBeVisible();
-  await expect(page.getByRole("button", { name: "Poziom: 5 lat" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Poziom: 3" })).toBeVisible();
   expect(await gridColumns(page)).toBe(13);
   const before = await wallSignature(page);
 
   await page.getByRole("button", { name: /^Poziom:/ }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "3 lata", exact: true }).click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: /^Poziom 1\b/ })
+    .click();
 
-  await expect(page.getByRole("button", { name: "Poziom: 3 lata" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Poziom: 1" })).toBeVisible();
   await expect(maze).toBeVisible();
   await expect(page.getByRole("button", { name: "Drukuj" })).toBeEnabled();
   expect(await gridColumns(page)).toBe(9);
   expect(await wallSignature(page)).not.toBe(before);
+});
+
+test("a maze level row shows its name, what changes and the typical age", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/labirynt");
+
+  await page.getByRole("button", { name: /^Poziom:/ }).click();
+  const row = page.getByRole("dialog").getByRole("button", { name: /^Poziom 3\b/ });
+  await expect(row).toContainText("węższe alejki, krótka droga");
+  await expect(row).toContainText("zwykle ok. 5 lat");
 });

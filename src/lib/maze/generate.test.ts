@@ -6,12 +6,18 @@ import { DEFAULT_LEVEL_ID, LEVELS, levelById, type LevelId, type MazePoint } fro
 const defaultLevel = levelById(DEFAULT_LEVEL_ID);
 
 void describe("LEVELS", () => {
-  void test("lists six age levels with the sheet grid, openings, and algorithm", () => {
+  void test("lists six levels with the sheet grid, openings, and algorithm", () => {
     assert.equal(DEFAULT_LEVEL_ID, "lat5");
+    for (const level of LEVELS) {
+      assert.doesNotMatch(level.label + level.barLabel, /lat|nastolat/, level.id);
+    }
     assert.deepEqual(
       LEVELS.map((level) => ({
         id: level.id,
         label: level.label,
+        barLabel: level.barLabel,
+        description: level.description,
+        typicalAge: level.typicalAge,
         columns: level.columns,
         rows: level.rows,
         entrance: level.entrance,
@@ -22,7 +28,10 @@ void describe("LEVELS", () => {
       [
         {
           id: "lat3",
-          label: "3 lata",
+          label: "Poziom 1",
+          barLabel: "1",
+          description: "szerokie alejki, krótka droga",
+          typicalAge: "zwykle ok. 3 lata",
           columns: 9,
           rows: 11,
           entrance: { row: 0, col: 4 },
@@ -32,7 +41,10 @@ void describe("LEVELS", () => {
         },
         {
           id: "lat4",
-          label: "4 lata",
+          label: "Poziom 2",
+          barLabel: "2",
+          description: "szerokie alejki, długa kręta droga",
+          typicalAge: "zwykle ok. 4 lata",
           columns: 9,
           rows: 11,
           entrance: { row: 0, col: 4 },
@@ -42,7 +54,10 @@ void describe("LEVELS", () => {
         },
         {
           id: "lat5",
-          label: "5 lat",
+          label: "Poziom 3",
+          barLabel: "3",
+          description: "węższe alejki, krótka droga",
+          typicalAge: "zwykle ok. 5 lat",
           columns: 13,
           rows: 16,
           entrance: { row: 0, col: 6 },
@@ -52,7 +67,10 @@ void describe("LEVELS", () => {
         },
         {
           id: "lat6",
-          label: "6 lat",
+          label: "Poziom 4",
+          barLabel: "4",
+          description: "węższe alejki, długa kręta droga",
+          typicalAge: "zwykle ok. 6 lat",
           columns: 13,
           rows: 16,
           entrance: { row: 0, col: 6 },
@@ -62,7 +80,10 @@ void describe("LEVELS", () => {
         },
         {
           id: "lat7",
-          label: "7–8 lat",
+          label: "Poziom 5",
+          barLabel: "5",
+          description: "wąskie alejki, bardzo długa droga",
+          typicalAge: "zwykle 7–8 lat",
           columns: 17,
           rows: 21,
           entrance: { row: 0, col: 8 },
@@ -72,7 +93,10 @@ void describe("LEVELS", () => {
         },
         {
           id: "nastolatek",
-          label: "nastolatek",
+          label: "Poziom 6",
+          barLabel: "6",
+          description: "najwęższe alejki, start i meta w rogach",
+          typicalAge: "zwykle nastolatki",
           columns: 27,
           rows: 33,
           entrance: { row: 0, col: 0 },
