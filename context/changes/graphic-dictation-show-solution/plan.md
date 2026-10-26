@@ -200,21 +200,21 @@ Stan żyje w komponencie strony. Nic w profilu ani w ostatnich parametrach nie w
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, w tym zaktualizowany test dyktanda w `src/lib/sheet/print-contract.test.ts`
-- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` przechodzi, w tym zaktualizowany test dyktanda w `src/lib/sheet/print-contract.test.ts` — fb085e2
+- [x] 1.2 `npm run lint` przechodzi — fb085e2
 
 #### Manual
 
-- [x] 1.3 Po Generuj przełącznik jest wyłączony, a karta ma polecenia, pustą kratkę i kropkę
-- [x] 1.4 Włączenie dorysowuje zamkniętą kreskę po liniach kratki; polecenia zostają, a nowa karta się nie losuje
-- [x] 1.5 Podgląd druku przy włączonym przełączniku nie pokazuje kreski
-- [x] 1.6 Kolejne Generuj wyłącza przełącznik
-- [x] 1.7 Zmiana poziomu przy widocznej karcie wyłącza przełącznik na nowej karcie
-- [x] 1.8 Sama zmiana kategorii zostawia przełącznik i bieżącą kartę aż do Generuj
+- [x] 1.3 Po Generuj przełącznik jest wyłączony, a karta ma polecenia, pustą kratkę i kropkę — fb085e2
+- [x] 1.4 Włączenie dorysowuje zamkniętą kreskę po liniach kratki; polecenia zostają, a nowa karta się nie losuje — fb085e2
+- [x] 1.5 Podgląd druku przy włączonym przełączniku nie pokazuje kreski — fb085e2
+- [x] 1.6 Kolejne Generuj wyłącza przełącznik — fb085e2
+- [x] 1.7 Zmiana poziomu przy widocznej karcie wyłącza przełącznik na nowej karcie — fb085e2
+- [x] 1.8 Sama zmiana kategorii zostawia przełącznik i bieżącą kartę aż do Generuj — fb085e2
 
 ### Phase 2: Zdanie w PRD
 
 #### Manual
 
-- [ ] 2.1 US-17 i akapit „Karta dyktanda graficznego” zawierają zdanie o przełączniku, o gaśnięciu przy Generuj i zmianie poziomu, o zostawieniu stanu przy samej kategorii i przy nieudanym Generuj, oraz o wydruku bez obrysu
-- [ ] 2.2 US-17 nadal mówi, że druk jest czarny i bez rysunku odpowiedzi, a NFR dyktanda zostaje przy czarnym druku bez odpowiedzi
+- [x] 2.1 US-17 i akapit „Karta dyktanda graficznego” zawierają zdanie o przełączniku, o gaśnięciu przy Generuj i zmianie poziomu, o zostawieniu stanu przy samej kategorii i przy nieudanym Generuj, oraz o wydruku bez obrysu
+- [x] 2.2 US-17 nadal mówi, że druk jest czarny i bez rysunku odpowiedzi, a NFR dyktanda zostaje przy czarnym druku bez odpowiedzi
