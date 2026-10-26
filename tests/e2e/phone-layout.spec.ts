@@ -480,7 +480,10 @@ test("the maze level list fits the screen with all six rows and no scrolling", a
   await expect(dialog.getByRole("button", { name: /^Poziom 6\b/ })).toBeVisible();
   await settle(page);
 
-  const overflow = await dialog.evaluate((element) => element.scrollHeight - element.clientHeight);
+  // The dialog itself clips; its body is the element that scrolls.
+  const overflow = await dialog
+    .locator('[data-slot="dialog-body"]')
+    .evaluate((element) => element.scrollHeight - element.clientHeight);
   expect(overflow).toBeLessThanOrEqual(0);
   const height = page.viewportSize()?.height ?? 0;
   for (const level of [1, 2, 3, 4, 5, 6]) {

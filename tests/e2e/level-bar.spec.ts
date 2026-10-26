@@ -60,7 +60,7 @@ async function settle(page: Page): Promise<void> {
 const BAR_CASES = [
   { name: "default names", character: "none", level: "lat5", levelLabel: "3" },
   // The bar width is now set by the character name; the level label is a single digit.
-  { name: "longest names", character: "samochodzik", level: "nastolatek", levelLabel: "6" },
+  { name: "longest character name", character: "samochodzik", level: "nastolatek", levelLabel: "6" },
 ] as const;
 
 for (const barCase of BAR_CASES) {

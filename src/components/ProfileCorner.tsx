@@ -1,5 +1,6 @@
 import { useRef, useState, type SubmitEvent } from "react";
 import { ChevronDown, Pencil, Trash2 } from "lucide-react";
+import { LevelRow, levelRowClass } from "@/components/LevelRow";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -16,7 +17,6 @@ import {
   type ChildProfile,
   type VisitAfterDelete,
 } from "@/lib/child-profiles";
-import { LevelRow, levelRowClass } from "@/components/LevelRow";
 import { readActiveProfile } from "@/lib/active-profile";
 import { readLastUsed } from "@/lib/last-used";
 import { LEVELS, levelById, type LevelId } from "@/lib/maze/levels";
