@@ -7,6 +7,7 @@ import {
   sudokuBlankCount,
   sudokuHasLevels,
   sudokuHasSymbolChoice,
+  sudokuLevelDescription,
 } from "./levels.ts";
 
 void describe("sudokuBlankCount", () => {
@@ -38,6 +39,27 @@ void describe("sudoku settings", () => {
     assert.deepEqual(
       SUDOKU_LEVELS.map(({ label }) => label),
       ["łatwy", "średni", "trudny"],
+    );
+  });
+
+  void test("level bar labels carry no age", () => {
+    assert.deepEqual(
+      SUDOKU_LEVELS.map(({ barLabel }) => barLabel),
+      ["łatwy", "średni", "trudny"],
+    );
+    for (const level of SUDOKU_LEVELS) {
+      assert.doesNotMatch(level.label + level.barLabel, /lat|nastolat/, level.id);
+    }
+  });
+
+  void test("level descriptions count the blanks with Polish plural forms", () => {
+    assert.deepEqual(
+      SUDOKU_LEVELS.map(({ id }) => sudokuLevelDescription(6, id)),
+      ["12 pustych pól z 36", "18 pustych pól z 36", "22 puste pola z 36"],
+    );
+    assert.deepEqual(
+      SUDOKU_LEVELS.map(({ id }) => sudokuLevelDescription(9, id)),
+      ["35 pustych pól z 81", "45 pustych pól z 81", "52 puste pola z 81"],
     );
   });
 

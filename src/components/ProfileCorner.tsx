@@ -1,5 +1,6 @@
 import { useRef, useState, type SubmitEvent } from "react";
 import { ChevronDown, Pencil, Trash2 } from "lucide-react";
+import { LevelRow, levelRowClass } from "@/components/LevelRow";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -666,7 +667,7 @@ function ProfileCharacterControl({
 }
 
 function ProfileLevelControl({ level, onOpen }: { level: LevelId; onOpen: () => void }) {
-  const label = levelById(level).label;
+  const label = levelById(level).barLabel;
   return (
     <Button
       type="button"
@@ -691,12 +692,17 @@ export function LevelChoiceRows({ selected, onSelect }: { selected: LevelId; onS
           type="button"
           variant="ghost"
           aria-pressed={selected === option.id}
-          className={cn(DIALOG_ROW_CLASS, "w-full", selected === option.id && "bg-muted")}
+          className={cn(
+            DIALOG_ROW_CLASS,
+            "w-full",
+            levelRowClass(option.description),
+            selected === option.id && "bg-muted",
+          )}
           onClick={() => {
             onSelect(option.id);
           }}
         >
-          {option.label}
+          <LevelRow label={option.label} description={option.description} typicalAge={option.typicalAge} />
         </Button>
       ))}
     </div>

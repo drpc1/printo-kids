@@ -4,7 +4,12 @@ export type DictationLevelId = "lat5" | "lat6" | "lat7";
 
 export interface DictationLevel {
   id: DictationLevelId;
+  /** Name in the level list. */
   label: string;
+  /** Text after "Poziom:" on the bar. */
+  barLabel: string;
+  description: string;
+  typicalAge: string;
   /** Whole grid the child draws on, in cells. The object keeps at least one empty cell on every side. */
   columns: number;
   rows: number;
@@ -25,7 +30,10 @@ export const DEFAULT_DICTATION_LEVEL_ID: DictationLevelId = "lat6";
 
 export const DICTATION_LEVEL_LAT5: DictationLevel = {
   id: "lat5",
-  label: "5 lat",
+  label: "łatwy",
+  barLabel: "łatwy",
+  description: "duża kratka, prosty obiekt",
+  typicalAge: "zwykle ok. 5 lat",
   columns: 10,
   rows: 14,
   cellSize: 14,
@@ -38,7 +46,10 @@ export const DICTATION_LEVEL_LAT5: DictationLevel = {
 
 export const DICTATION_LEVEL_LAT6: DictationLevel = {
   id: "lat6",
-  label: "6 lat",
+  label: "średni",
+  barLabel: "średni",
+  description: "mniejsza kratka, więcej poleceń",
+  typicalAge: "zwykle ok. 6 lat",
   columns: 14,
   rows: 17,
   cellSize: 11,
@@ -52,7 +63,10 @@ export const DICTATION_LEVEL_LAT6: DictationLevel = {
 /** The 7 lat grid (20 by 26 cells of 8 mm) leaves 50 mm for the list, so its boxes are denser: 6 rows of 14. */
 export const DICTATION_LEVEL_LAT7: DictationLevel = {
   id: "lat7",
-  label: "7 lat",
+  label: "trudny",
+  barLabel: "trudny",
+  description: "mała kratka, bogaty obiekt, najwięcej poleceń",
+  typicalAge: "zwykle ok. 7 lat",
   columns: 20,
   rows: 26,
   cellSize: 8,

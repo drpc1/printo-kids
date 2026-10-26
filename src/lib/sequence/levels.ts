@@ -6,7 +6,12 @@ export type SequenceLevelId = "lat4" | "lat5" | "lat6" | "lat7";
 
 export interface SequenceLevel {
   id: SequenceLevelId;
+  /** Name in the level list. */
   label: string;
+  /** Text after "Poziom:" on the bar. */
+  barLabel: string;
+  description: string;
+  typicalAge: string;
   /** Fields in one row; the fields fill the width of the page. */
   fieldsPerRow: number;
   rowCount: number;
@@ -26,7 +31,10 @@ export interface SequenceLevel {
 export const SEQUENCE_LEVELS: readonly SequenceLevel[] = [
   {
     id: "lat4",
-    label: "4 lata",
+    label: "Poziom 1",
+    barLabel: "1",
+    description: "dwa kształty na zmianę, 1 puste pole",
+    typicalAge: "zwykle ok. 4 lata",
     fieldsPerRow: 5,
     rowCount: 5,
     rules: [{ rule: "AB", minRows: 5 }],
@@ -36,7 +44,10 @@ export const SEQUENCE_LEVELS: readonly SequenceLevel[] = [
   },
   {
     id: "lat5",
-    label: "5 lat",
+    label: "Poziom 2",
+    barLabel: "2",
+    description: "wzory z kształtów, 1–2 puste pola",
+    typicalAge: "zwykle ok. 5 lat",
     fieldsPerRow: 7,
     rowCount: 6,
     rules: [
@@ -50,7 +61,10 @@ export const SEQUENCE_LEVELS: readonly SequenceLevel[] = [
   },
   {
     id: "lat6",
-    label: "6 lat",
+    label: "Poziom 3",
+    barLabel: "3",
+    description: "liczby i wzory, 2 puste pola",
+    typicalAge: "zwykle ok. 6 lat",
     fieldsPerRow: 8,
     rowCount: 7,
     rules: [
@@ -66,7 +80,10 @@ export const SEQUENCE_LEVELS: readonly SequenceLevel[] = [
   },
   {
     id: "lat7",
-    label: "7 lat",
+    label: "Poziom 4",
+    barLabel: "4",
+    description: "kształt z liczbą, liczby w dół, grupy; 2–3 puste pola",
+    typicalAge: "zwykle ok. 7 lat",
     fieldsPerRow: 8,
     rowCount: 7,
     rules: [

@@ -22,24 +22,24 @@ test("the profile dialog saves the picked level and the bar follows it", async (
   await page.getByRole("button", { name: "Profil" }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByLabel("Imię").fill("Zosia");
-  await dialog.getByRole("button", { name: "Poziom: 5 lat" }).click();
-  await dialog.getByRole("button", { name: "7–8 lat" }).click();
-  await expect(dialog.getByRole("button", { name: "Poziom: 7–8 lat" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Poziom: 3" }).click();
+  await dialog.getByRole("button", { name: /^Poziom 5\b/ }).click();
+  await expect(dialog.getByRole("button", { name: "Poziom: 5" })).toBeVisible();
   await dialog.getByRole("button", { name: "Utwórz" }).click();
 
-  await expect(page.getByRole("button", { name: "Poziom: 7–8 lat" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Poziom: 5" })).toBeVisible();
   expect(await storedLevels(page)).toEqual(["lat7"]);
 
   await page.getByRole("button", { name: "Zosia" }).click();
   await dialog.getByRole("button", { name: "Edytuj Zosia" }).click();
   const save = dialog.getByRole("button", { name: "Zapisz" });
   await expect(save).toBeDisabled();
-  await dialog.getByRole("button", { name: "Poziom: 7–8 lat" }).click();
-  await dialog.getByRole("button", { name: "4 lata" }).click();
+  await dialog.getByRole("button", { name: "Poziom: 5" }).click();
+  await dialog.getByRole("button", { name: /^Poziom 2\b/ }).click();
   await expect(save).toBeEnabled();
   await save.click();
   await page.keyboard.press("Escape");
 
-  await expect(page.getByRole("button", { name: "Poziom: 4 lata" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Poziom: 2" })).toBeVisible();
   expect(await storedLevels(page)).toEqual(["lat4"]);
 });

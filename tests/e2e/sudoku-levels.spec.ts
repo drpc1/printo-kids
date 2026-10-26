@@ -7,7 +7,8 @@ const INSTRUCTION_LINES = 2;
 
 async function choose(page: Page, bar: "Rozmiar" | "Poziom", option: string): Promise<void> {
   await page.getByRole("button", { name: new RegExp(`^${bar}:`) }).click();
-  await page.getByRole("button", { name: option, exact: true }).click();
+  // Rows may carry a description, so match from the start of the name.
+  await page.getByRole("button", { name: new RegExp(`^${option}(?=\\s|$)`) }).click();
   await expect(page.getByRole("button", { name: `${bar}: ${option}` })).toBeVisible();
 }
 
@@ -58,4 +59,12 @@ test("changing a setting with a card on screen draws a new card for the new sett
   await expect(sheet.locator("path")).toHaveCount(81 - 35);
   await choose(page, "Poziom", "średni");
   await expect(sheet.locator("path")).toHaveCount(81 - 45);
+});
+
+test("a 6×6 level row says how many cells are empty", async ({ page }) => {
+  await page.goto("/sudoku");
+  await choose(page, "Rozmiar", "6×6");
+
+  await page.getByRole("button", { name: /^Poziom:/ }).click();
+  await expect(page.getByRole("dialog").getByRole("button", { name: /^łatwy\b/ })).toContainText("12 pustych pól z 36");
 });

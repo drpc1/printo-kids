@@ -272,11 +272,11 @@ function LevelChoiceControl({
         <Button
           type="button"
           variant="ghost"
-          aria-label={`Poziom: ${level.label}`}
+          aria-label={`Poziom: ${level.barLabel}`}
           className={cn("text-muted-foreground hover:text-foreground h-auto gap-1.5 px-2 py-1 text-base font-normal")}
         >
           <span>Poziom:</span>
-          {level.label}
+          {level.barLabel}
           <ChevronDown className={cn("size-4")} aria-hidden />
         </Button>
       </DialogTrigger>
