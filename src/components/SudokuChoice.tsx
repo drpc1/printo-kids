@@ -1,6 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { LevelRow, levelRowClass } from "@/components/LevelRow";
 import { DIALOG_ROW_CLASS } from "@/components/ProfileCorner";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +21,7 @@ export function SudokuChoice<Id extends string | number>({
 }: {
   label: string;
   dialogTitle: string;
-  options: readonly { id: Id; label: string }[];
+  options: readonly { id: Id; label: string; barLabel?: string; description?: string; typicalAge?: string }[];
   value: Id;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -36,11 +37,11 @@ export function SudokuChoice<Id extends string | number>({
           type="button"
           variant="ghost"
           disabled={disabled}
-          aria-label={`${label}: ${selected.label}`}
+          aria-label={`${label}: ${selected.barLabel ?? selected.label}`}
           className={cn("text-muted-foreground hover:text-foreground h-auto gap-1.5 px-2 py-1 text-base font-normal")}
         >
           <span>{label}:</span>
-          {selected.label}
+          {selected.barLabel ?? selected.label}
           <ChevronDown className={cn("size-4")} aria-hidden />
         </Button>
       </DialogTrigger>
@@ -53,13 +54,18 @@ export function SudokuChoice<Id extends string | number>({
               type="button"
               variant="ghost"
               aria-pressed={value === option.id}
-              className={cn(DIALOG_ROW_CLASS, "w-full", value === option.id && "bg-muted")}
+              className={cn(
+                DIALOG_ROW_CLASS,
+                "w-full",
+                levelRowClass(option.description),
+                value === option.id && "bg-muted",
+              )}
               onClick={() => {
                 onSelect(option.id);
                 onOpenChange(false);
               }}
             >
-              {option.label}
+              <LevelRow label={option.label} description={option.description} typicalAge={option.typicalAge} />
             </Button>
           ))}
         </div>
