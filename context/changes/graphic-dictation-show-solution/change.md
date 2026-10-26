@@ -1,7 +1,7 @@
 ---
 change_id: graphic-dictation-show-solution
 title: Show solution on the graphic dictation sheet
-status: implemented
+status: impl_reviewed
 created: 2026-10-25
 updated: 2026-10-26
 archived_at: null
@@ -18,7 +18,7 @@ Na stronie dyktanda graficznego dodać przełącznik „Pokaż rozwiązanie”, 
 Nonogram (`NonogramGenerator.tsx`) ma przełącznik, który dorysowuje gotowy obrazek na karcie. Nowa karta wyłącza go z powrotem, żeby dziecko widziało pustą planszę. Dyktando pokazuje tylko strzałki i pustą kratkę; rozwiązania nie da się włączyć na stronie.
 
 ## Co ma być później
-Rodzic włącza „Pokaż rozwiązanie” i na podglądzie oraz na wydruku widać obrys, który dziecko ma narysować. Nowe Generuj zaczyna od wyłączonego rozwiązania. Samo dyktando (strzałki, kratka, poziomy) zostaje bez zmian.
+Rodzic włącza „Pokaż rozwiązanie” i na podglądzie widać obrys, który dziecko ma narysować. Wydruk zostaje pustą kratką. Nowe Generuj zaczyna od wyłączonego rozwiązania. Samo dyktando (strzałki, kratka, poziomy) zostaje bez zmian.
 
 ## Skąd
 Uwaga z używania kart, 2026-10-25.
