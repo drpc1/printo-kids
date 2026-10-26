@@ -225,30 +225,30 @@ Najdłuższe Generuj 7,8 ms (trudny); łatwy bez solvera. Limit 5 s zachowany z 
 
 #### Manual
 
-- [ ] 1.4 Liczby wariantów każdego poziomu zanotowane do PR i PRD
+- [x] 1.4 Liczby wariantów każdego poziomu zanotowane do PR i PRD
 
 ### Phase 2: Strona: wybór poziomu i karta łatwa
 
 #### Automated
 
-- [x] 2.1 `npm run lint`
-- [x] 2.2 `npm test`
-- [x] 2.3 `npx astro check`
-- [x] 2.4 `npm run build`
+- [x] 2.1 `npm run lint` — c75fe4a
+- [x] 2.2 `npm test` — c75fe4a
+- [x] 2.3 `npx astro check` — c75fe4a
+- [x] 2.4 `npm run build` — c75fe4a
 
 #### Manual
 
-- [x] 2.5 Podgląd wydruku każdego poziomu: jedna strona A4, margines 10 mm, grubsza linia co 5 kratek
+- [x] 2.5 Podgląd wydruku każdego poziomu: jedna strona A4, margines 10 mm, grubsza linia co 5 kratek — c75fe4a
 - [x] 2.6 Zmiana poziomu przy pokazanej karcie daje nową kartę, „Pokaż rozwiązanie” wyłączone
 - [x] 2.7 Na telefonie (375 px) Generuj i Drukuj nie nachodzą na siebie, każdy poziom mieści się na A4
-- [x] 2.8 Cyfry i znaczki czytelne na wydruku
+- [x] 2.8 Cyfry i znaczki czytelne na wydruku — c75fe4a
 
 ### Phase 3: PRD i roadmapa
 
 #### Automated
 
-- [ ] 3.1 `npm run lint` (Prettier na plikach md)
+- [x] 3.1 `npm run lint` (Prettier na plikach md)
 
 #### Manual
 
-- [ ] 3.2 PRD i roadmapa opisują poziomy łatwy, średni, trudny
+- [x] 3.2 PRD i roadmapa opisują poziomy łatwy, średni, trudny
