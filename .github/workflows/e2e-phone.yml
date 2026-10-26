@@ -1,7 +1,8 @@
 name: E2E phone layout
 
 # On demand only (S-09 phone-worksheet). Runs every Playwright project, including the iPhone
-# (WebKit) project that cannot launch on the Windows dev machine. Not part of the push/PR gate.
+# (WebKit) project that cannot launch on the Windows dev machine. The Chromium projects also run
+# in the push/PR gate (job `e2e` in ci.yml); WebKit stays here.
 on:
   workflow_dispatch:
 
