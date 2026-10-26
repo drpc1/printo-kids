@@ -16,6 +16,7 @@ export function SudokuChoice<Id extends string | number>({
   open,
   onOpenChange,
   onSelect,
+  disabled = false,
 }: {
   label: string;
   dialogTitle: string;
@@ -24,6 +25,7 @@ export function SudokuChoice<Id extends string | number>({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSelect: (id: Id) => void;
+  disabled?: boolean;
 }) {
   const selected = options.find((option) => option.id === value) ?? options[0];
 
@@ -33,6 +35,7 @@ export function SudokuChoice<Id extends string | number>({
         <Button
           type="button"
           variant="ghost"
+          disabled={disabled}
           aria-label={`${label}: ${selected.label}`}
           className={cn("text-muted-foreground hover:text-foreground h-auto gap-1.5 px-2 py-1 text-base font-normal")}
         >
