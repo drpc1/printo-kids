@@ -173,8 +173,8 @@ Nie ma zapisanych kart ani migracji. Profil nie wybiera reguł sekwencji. Identy
 
 #### Automated
 
-- [x] 2.1 W `context/foundation/prd.md` wiersz Poziomu 3 i punkt doprecyzowania wymagają dwóch ciągów AB, AAB i ABC oraz jednego dowolnego i nie wymagają +1 ani +2 na tym poziomie
+- [x] 2.1 W `context/foundation/prd.md` wiersz Poziomu 3 i punkt doprecyzowania wymagają dwóch ciągów AB, AAB i ABC oraz jednego dowolnego i nie wymagają +1 ani +2 na tym poziomie — 56ede97
 
 #### Manual
 
-- [x] 2.2 Zdanie o całej liście reguł nadal wymienia liczby +1 i +2, zdanie o Poziomie 4 w tym samym punkcie jest bez zmian, a pytanie otwarte 9 odnotowuje cofnięcie mieszanki +1/+2 tylko dla Poziomu 3
+- [x] 2.2 Zdanie o całej liście reguł nadal wymienia liczby +1 i +2, zdanie o Poziomie 4 w tym samym punkcie jest bez zmian, a pytanie otwarte 9 odnotowuje cofnięcie mieszanki +1/+2 tylko dla Poziomu 3 — 56ede97
