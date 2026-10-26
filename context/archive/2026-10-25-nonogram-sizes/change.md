@@ -1,10 +1,10 @@
 ---
 change_id: nonogram-sizes
 title: Poziomy nonogramu: łatwy (prosty), średni, trudny
-status: impl_reviewed
+status: archived
 created: 2026-10-25
 updated: 2026-10-26
-archived_at: null
+archived_at: 2026-10-26T07:43:34Z
 ---
 
 ## Notes
