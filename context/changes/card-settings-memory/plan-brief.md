@@ -16,16 +16,16 @@ Sześć kart startuje z zapamiętanymi ustawieniami; karta, której profil nie u
 
 ## Key Decisions Made
 
-| Decision                   | Choice                                                                            | Why (1 sentence)                                                                | Source |
-| -------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------ |
-| Kształt zapisu             | Opcjonalne pole `cards` w profilu i w `last-used`, jeden moduł `card-settings.ts` | Jeden kształt i kod dla profilu i urządzenia, stare wpisy bez `cards` działają. | Plan   |
-| Poziom labiryntu           | Zostaje w polu `level`                                                            | Okno profilu (do S-29) dalej go czyta, więc jedno źródło prawdy.                | Plan   |
-| Wpięcie w strony           | Nowy hook `useCardSettings`, `ProfileBar` nietknięty                              | Małe, addytywne zmiany; S-30 robi się dopiero po scaleniu tego PR.              | Plan   |
-| Komunikat                  | Tekst `role="status"` w wierszu paska, ok. 2 s, tylko po udanym zapisie           | W miejscu wyboru, nie zasłania przycisków na telefonie.                         | Plan   |
-| Nowy profil                | Dziedziczy pasek bieżącej karty, pozostałe karty domyślne                         | Nic nie zmienia się na ekranie po utworzeniu.                                   | Plan   |
-| Zmiana profilu przy karcie | Pasek i nowa karta (kolory tylko przerysowują)                                    | Tak działa labirynt; karta zgadza się z paskiem.                                | Plan   |
-| Testy                      | Jednostkowe + jeden sparametryzowany e2e na sześć kart                            | Łapie zepsucie wczytania i wyścig na każdej karcie.                             | Plan   |
-| Stare badanie              | `profile-age-and-levels` archiwizowane jako zastąpione (osobny commit)            | Koniec ze sprzecznymi źródłami (wiek vs bez wieku).                             | Plan   |
+| Decision                   | Choice                                                                                          | Why (1 sentence)                                                                | Source |
+| -------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------ |
+| Kształt zapisu             | Opcjonalne pole `cards` w profilu i w `last-used`, jeden moduł `card-settings.ts`               | Jeden kształt i kod dla profilu i urządzenia, stare wpisy bez `cards` działają. | Plan   |
+| Poziom labiryntu           | Zostaje w polu `level`                                                                          | Okno profilu (do S-29) dalej go czyta, więc jedno źródło prawdy.                | Plan   |
+| Wpięcie w strony           | Nowy hook `useCardSettings`, `ProfileBar` nietknięty                                            | Małe, addytywne zmiany; S-30 robi się dopiero po scaleniu tego PR.              | Plan   |
+| Komunikat                  | Tekst `role="status"` w wierszu paska, ok. 2 s, tylko po udanym zapisie                         | W miejscu wyboru, nie zasłania przycisków na telefonie.                         | Plan   |
+| Nowy profil                | Dziedziczy pasek bieżącej karty (jeden zapis, prop w ProfileCorner), pozostałe karty domyślne   | Nic nie zmienia się na ekranie po utworzeniu.                                   | Plan   |
+| Zmiana profilu przy karcie | Pasek i nowa karta, gdy zmieniło się pole wpływające na generowanie (kolory tylko przerysowują) | Tak działa labirynt; karta zgadza się z paskiem.                                | Plan   |
+| Testy                      | Jednostkowe + jeden sparametryzowany e2e na sześć kart                                          | Łapie zepsucie wczytania i wyścig na każdej karcie.                             | Plan   |
+| Stare badanie              | `profile-age-and-levels` archiwizowane jako zastąpione (osobny commit)                          | Koniec ze sprzecznymi źródłami (wiek vs bez wieku).                             | Plan   |
 
 ## Scope
 

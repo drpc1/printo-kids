@@ -40,12 +40,12 @@ Rodzic wraca na stronę dowolnej z sześciu kart i na pasku ma ustawienia, któr
 
 ## Implementation Approach
 
-Jeden moduł `src/lib/card-settings.ts` zna sześć kart: typy ustawień, wartości domyślne, tolerancyjne parsery (nieznane pole → domyślne; niepoprawne kombinacje sudoku normalizowane) i funkcje odczytu/zapisu jednej karty w mapie `cards`. Profil i klucz `last-used` dostają to samo opcjonalne pole `cards: {symetria?: …, sudoku?: …}`; labirynt używa `level`. Strony korzystają z nowego hooka `useCardSettings` położonego na `useChildProfileVisit`: zwraca ustawienia startowe, funkcję `remember(patch)` (profil albo urządzenie), wiersz komunikatu i opakowane handlery profilu. Istniejące `ProfileBar`, `barLevel`/`barCharacter` zostają nietknięte, więc S-30 wchodzi po tym PR bez konfliktu o sygnatury. Symetria jest pierwsza i potwierdza wzorzec, zanim ruszą cztery pozostałe karty.
+Jeden moduł `src/lib/card-settings.ts` zna sześć kart: typy ustawień, wartości domyślne, tolerancyjne parsery (nieznane pole → domyślne; niepoprawne kombinacje sudoku normalizowane) i funkcje odczytu/zapisu jednej karty w mapie `cards`. Profil i klucz `last-used` dostają to samo opcjonalne pole `cards: {symetria?: …, sudoku?: …}`; labirynt używa `level`. Strony korzystają z nowego hooka `useCardSettings` położonego na `useChildProfileVisit`: zwraca ustawienia startowe, funkcję `remember(patch)` (profil albo urządzenie), wiersz komunikatu i opakowane handlery profilu. Istniejące `ProfileBar`, `barLevel`/`barCharacter` zostają nietknięte, więc S-30 wchodzi po tym PR bez konfliktu o sygnatury. Reguła wspólna dla wszystkich kart: po zmianie profilu przy pokazanej karcie generuje się nowa karta, gdy zmieniło się którekolwiek pole wpływające na generowanie (poziom, rozmiar, symbole sudoku, kategoria); kolory i „Pokaż rozwiązanie” tylko przerysowują tę samą kartę. Symetria jest pierwsza i potwierdza wzorzec, zanim ruszą cztery pozostałe karty.
 
 ## Critical Implementation Details
 
 - **State sequencing:** przy zmianie profilu ustawienia karty trzeba zastosować w tej samej aktualizacji, w której zmienia się `activeId`, a generowanie nowej karty (gdy karta pokazana) ma wyjść z nowych wartości, nie ze stanu sprzed zmiany. Dotyczy `onChoose`, `onCreated` (dziedziczenie paska), `onClearProfile` i `onDeleted`.
-- **Zachowanie `cards`:** każda funkcja przebudowująca profil albo `last-used` (`withFavorite`, `hrefForFavoriteSave` ścieżka z obrazkiem własnym, `profileToCreate`, `writeLastUsed`, `acceptEntry`) musi przenosić `cards`; dla tego jest test regresji.
+- **Zachowanie `cards`:** każda funkcja przebudowująca profil albo `last-used` (`withFavorite` (także gałąź z obrazkiem własnym), `profileToCreate`, `writeLastUsed`, `acceptEntry`) musi przenosić `cards`; dla tego jest test regresji.
 
 ## Faza 1: Rdzeń zapisu ustawień kart
 
@@ -69,7 +69,7 @@ Czyste moduły bez Reacta: model, odczyt, zapis i zgodność wstecz. Po tej fazi
 
 **Intent**: Profil niesie opcjonalne `cards`; odczyt je parsuje, a funkcje przebudowujące profil go nie gubią.
 
-**Contract**: `ChildProfile.cards?: CardSettingsMap`; `acceptEntry` parsuje `cards` (brak → pole nieobecne); `withFavorite` i `profileToCreate` zachowują/przyjmują `cards`; nowa `withProfileCards(profiles, id, cards): ChildProfile[] | null`.
+**Contract**: `ChildProfile.cards?: CardSettingsMap`; `acceptEntry` parsuje `cards` (brak → pole nieobecne); `withFavorite` i `profileToCreate` zachowują/przyjmują `cards`; nowe `withProfileCards(profiles, id, cards): ChildProfile[] | null` i `withProfileLevel(profiles, id, level): ChildProfile[] | null` (zmienia tylko `level`, nie dotyka postaci, obrazka ani `cards`); `profileToCreate` przyjmuje opcjonalne `cards`, żeby profil powstawał jednym zapisem.
 
 #### 3. Ostatnie parametry z `cards`
 
@@ -77,7 +77,7 @@ Czyste moduły bez Reacta: model, odczyt, zapis i zgodność wstecz. Po tej fazi
 
 **Intent**: Urządzenie pamięta ustawienia każdej karty obok postaci i poziomu labiryntu, a zapis jednej części nie kasuje reszty.
 
-**Contract**: `LastUsed.cards: CardSettingsMap`; `readLastUsed` parsuje `cards` (stary wpis → `{}`); `writeLastUsed` zapisuje także `cards` i czyta bieżącą zawartość klucza tak, by zapis postaci i poziomu nie nadpisywał `cards` (i odwrotnie); nowa `writeLastUsedCards(storage, cards)`.
+**Contract**: `LastUsed.cards: CardSettingsMap`; `readLastUsed` parsuje `cards` (stary wpis → `{}`); `writeLastUsed` zachowuje dotychczasowy argument `{character, level}` (caller `recordBarCharacter` w `src/lib/sheet/own-image-store.ts:97` nie zmienia się) i dopina `cards` z przechowywanego JSON-a, więc zapis postaci i poziomu nie kasuje `cards`; `cards` zapisuje tylko nowa `writeLastUsedCards(storage, cards)`, która z kolei zachowuje `character` i `level`.
 
 #### 4. Lista testów
 
@@ -91,7 +91,7 @@ Czyste moduły bez Reacta: model, odczyt, zapis i zgodność wstecz. Po tej fazi
 
 #### Automated Verification:
 
-- Testy przechodzą, w tym: stary profil i stare `last-used` bez `cards` wczytują się z domyślnymi, zły identyfikator w jednym polu nie psuje reszty, `withFavorite` i `writeLastUsed` zachowują `cards`, normalizacja sudoku: `npm test`
+- Testy przechodzą, w tym: stary profil i stare `last-used` bez `cards` wczytują się z domyślnymi, zły identyfikator w jednym polu nie psuje reszty, `withFavorite` i `writeLastUsed` zachowują `cards`, `withProfileLevel` zmienia tylko `level`, normalizacja sudoku: `npm test`
 - Lint: `npm run lint`
 - Typy: `npx astro check`
 
@@ -117,7 +117,15 @@ Hook `useCardSettings` i wiersz komunikatu, podpięte do labiryntu (poziom zapis
 
 **Intent**: Jedno miejsce, które mówi stronie, jakie ma ustawienia na starcie i po zmianie profilu, i zapisuje zmiany pod właściwym adresem (profil albo urządzenie).
 
-**Contract**: `useCardSettings(cardId, visit)` zwraca `{ settings, remember(patch), note, corner }`. Start: ustawienia aktywnego profilu dla karty, a bez profilu `last-used.cards`; brak wpisu → `defaultCardSettings`. `remember` przy aktywnym profilu zapisuje do profilu (`withProfileCards` + `writeChildProfiles`, ustawia `note` tylko przy `true`), bez profilu do `last-used`. `corner` opakowuje `onChoose`/`onClearProfile`/`onDeleted`, żeby wołające je strony dostały nowe ustawienia; `onCreated` zapisuje do nowego profilu bieżące ustawienia tej karty (dziedziczenie paska). `useChildProfileVisit` wystawia to, czego brakuje (aktualizacja listy profili po zapisie `cards`), bez zmiany `ProfileBar` ani istniejących sygnatur.
+**Contract**: `useCardSettings(cardId, visit)` zwraca `{ settings, remember(patch), note, corner }`. Start: ustawienia aktywnego profilu dla karty, a bez profilu `last-used.cards`; brak wpisu → `defaultCardSettings`. `remember` przy aktywnym profilu czyta profile z `localStorage` tuż przed zapisem (nie ze stanu Reacta, żeby zapis z jednej karty przeglądarki nie nadpisał zmian z drugiej), zmienia jedną kartę (`withProfileCards`), zapisuje `writeChildProfiles` i ustawia `note` tylko przy `true`; bez profilu zapisuje do `last-used`. `corner` opakowuje `onChoose`/`onClearProfile`/`onDeleted`, żeby wołające je strony dostały nowe ustawienia; dziedziczenie paska przy tworzeniu profilu: strona przekazuje `ProfileCorner` nowy opcjonalny prop (ustawienia bieżącej karty), który trafia do `profileToCreate`, więc profil powstaje jednym zapisem (`ProfileCorner.tsx:388-400`), bez drugiego zapisu w hooku. `useChildProfileVisit` wystawia to, czego brakuje (aktualizacja listy profili po zapisie `cards`), bez zmiany `ProfileBar` ani istniejących sygnatur.
+
+#### 1a. ProfileCorner: prop z ustawieniami nowego profilu
+
+**File**: `src/components/ProfileCorner.tsx`
+
+**Intent**: Nowy profil z karty niesie ustawienia bieżącej karty od razu w jednym zapisie.
+
+**Contract**: opcjonalny prop (np. `newProfileCards?: CardSettingsMap`) przekazywany do `profileToCreate` przy tworzeniu profilu; bez zmian dla wywołań bez propa (labirynt). Reszta okna profilu bez zmian (S-29).
 
 #### 2. Wiersz „Zapamiętane dla {imię}”
 
@@ -133,7 +141,7 @@ Hook `useCardSettings` i wiersz komunikatu, podpięte do labiryntu (poziom zapis
 
 **Intent**: Zmiana poziomu na pasku labiryntu zapisuje się od razu także przy aktywnym profilu (dziś tylko bez profilu).
 
-**Contract**: `handleLevelSelect` przy `activeId !== null` zapisuje `profile.level` (przez `withFavorite`-podobną ścieżkę zachowującą postać i `cards`) i pokazuje komunikat; bez profilu bez zmian. Okno profilu i jego test e2e (`profile-level.spec.ts`) zostają.
+**Contract**: `handleLevelSelect` przy `activeId !== null` zapisuje `profile.level` przez `withProfileLevel` (z hooka, odczyt świeży jak wyżej) i pokazuje komunikat; bez profilu bez zmian. Okno profilu i jego test e2e (`profile-level.spec.ts`) zostają.
 
 #### 4. Symetria
 
@@ -141,7 +149,7 @@ Hook `useCardSettings` i wiersz komunikatu, podpięte do labiryntu (poziom zapis
 
 **Intent**: Poziom, kolory i kategoria startują z zapamiętanych wartości i zapisują się przy każdej zmianie.
 
-**Contract**: stany `levelId`, `categoryId`, `colors` inicjowane z `settings`; `handleLevelSelect`, `onSelect` kategorii i przełącznik kolorów wołają `remember`; po zmianie profilu przy pokazanej karcie pasek się przestawia i generuje się nowa karta, gdy zmienił się poziom lub kategoria (kolory tylko przerysowują). `waitingForChild` nadal blokuje zmiany i generowanie.
+**Contract**: stany `levelId`, `categoryId`, `colors` inicjowane z `settings`; `handleLevelSelect`, `onSelect` kategorii i przełącznik kolorów wołają `remember`; po zmianie profilu przy pokazanej karcie stosuje się reguła wspólna z Implementation Approach. `waitingForChild` nadal blokuje zmiany i generowanie.
 
 ### Success Criteria:
 
@@ -233,7 +241,7 @@ Automatyczna ochrona pętli zapisu na sześciu kartach i uprzątnięcie dawnego 
 
 **Intent**: Jeden sparametryzowany spec, który dla każdej z sześciu kart sprawdza: zmiana paska → przeładowanie → ten sam pasek, z profilem, bez profilu i ze starym profilem (zasianym przez `localStorage` w dawnym kształcie).
 
-**Contract**: wzorzec jak istniejące specy (`profile-level.spec.ts`: seed w `localStorage`, `page.getByRole`); dodatkowo przypadek profilu, którego karta nie była używana (domyślne, nie wartości urządzenia), i przełączenia dwóch profili z pokazaną kartą.
+**Contract**: wzorzec jak istniejące specy (`profile-level.spec.ts`: seed w `localStorage`, `page.getByRole`); na projekcie mobilnym (`phone-360`) dodatkowa asercja, że po zmianie ustawienia komunikat „Zapamiętane dla” nie nakłada się (bounding box) na Generuj i Drukuj; dodatkowo przypadek profilu, którego karta nie była używana (domyślne, nie wartości urządzenia), i przełączenia dwóch profili z pokazaną kartą.
 
 #### 2. Archiwizacja starego badania
 
@@ -256,7 +264,7 @@ Automatyczna ochrona pętli zapisu na sześciu kartach i uprzątnięcie dawnego 
 #### Automated Verification:
 
 - `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
-- Nowy spec przechodzi: `npx playwright test tests/e2e/card-settings.spec.ts --project=chromium`
+- Nowy spec przechodzi: `npx playwright test tests/e2e/card-settings.spec.ts --project=chromium --project=phone-360`
 - Całe e2e Chromium przechodzi: `npx playwright test --project=chromium`
 
 #### Manual Verification:
@@ -271,7 +279,7 @@ Automatyczna ochrona pętli zapisu na sześciu kartach i uprzątnięcie dawnego 
 ### Unit Tests:
 
 - `card-settings.test.ts`: domyślne, tolerancyjny odczyt (śmieci, brak pól, zły identyfikator jednego pola), normalizacja sudoku, `withCardSettings`.
-- `child-profiles.test.ts`: stary profil bez `cards`; `withFavorite`/`profileToCreate` zachowują `cards`; `withProfileCards`.
+- `child-profiles.test.ts`: stary profil bez `cards`; `withFavorite`/`profileToCreate` zachowują/przyjmują `cards`; `withProfileCards`; `withProfileLevel` zmienia tylko `level`.
 - `last-used.test.ts`: stary wpis; zapis postaci nie kasuje `cards` i odwrotnie.
 
 ### Integration Tests:
@@ -308,7 +316,7 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Automated
 
-- [ ] 1.1 Testy przechodzą, w tym: stary profil i stare `last-used` bez `cards` wczytują się z domyślnymi, zły identyfikator w jednym polu nie psuje reszty, `withFavorite` i `writeLastUsed` zachowują `cards`, normalizacja sudoku: `npm test`
+- [ ] 1.1 Testy przechodzą, w tym: stary profil i stare `last-used` bez `cards` wczytują się z domyślnymi, zły identyfikator w jednym polu nie psuje reszty, `withFavorite` i `writeLastUsed` zachowują `cards`, `withProfileLevel` zmienia tylko `level`, normalizacja sudoku: `npm test`
 - [ ] 1.2 Lint: `npm run lint`
 - [ ] 1.3 Typy: `npx astro check`
 
@@ -349,7 +357,7 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 #### Automated
 
 - [ ] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą.
-- [ ] 4.2 Nowy spec przechodzi: `npx playwright test tests/e2e/card-settings.spec.ts --project=chromium`
+- [ ] 4.2 Nowy spec przechodzi: `npx playwright test tests/e2e/card-settings.spec.ts --project=chromium --project=phone-360`
 - [ ] 4.3 Całe e2e Chromium przechodzi: `npx playwright test --project=chromium`
 
 #### Manual
