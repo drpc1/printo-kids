@@ -225,7 +225,7 @@ Najdłuższe Generuj 7,8 ms (trudny); łatwy bez solvera. Limit 5 s zachowany z 
 
 #### Manual
 
-- [x] 1.4 Liczby wariantów każdego poziomu zanotowane do PR i PRD
+- [x] 1.4 Liczby wariantów każdego poziomu zanotowane do PR i PRD — e2a4017
 
 ### Phase 2: Strona: wybór poziomu i karta łatwa
 
@@ -247,8 +247,8 @@ Najdłuższe Generuj 7,8 ms (trudny); łatwy bez solvera. Limit 5 s zachowany z 
 
 #### Automated
 
-- [x] 3.1 `npm run lint` (Prettier na plikach md)
+- [x] 3.1 `npm run lint` (Prettier na plikach md) — e2a4017
 
 #### Manual
 
-- [x] 3.2 PRD i roadmapa opisują poziomy łatwy, średni, trudny
+- [x] 3.2 PRD i roadmapa opisują poziomy łatwy, średni, trudny — e2a4017
