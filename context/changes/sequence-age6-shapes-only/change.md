@@ -1,7 +1,7 @@
 ---
 change_id: sequence-age6-shapes-only
 title: Sequence age6 shapes only
-status: implemented
+status: impl_reviewed
 created: 2026-10-26
 updated: 2026-10-26
 archived_at: null
