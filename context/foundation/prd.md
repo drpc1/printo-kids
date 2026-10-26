@@ -50,7 +50,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wygenerować kartę sudoku 4×4, 6×6 albo 9×9 z prostymi kształtami do narysowania albo z cyframi, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wybrać rozmiar sudoku i jego poziom (łatwy, średni, trudny), a przy kształtach włączyć kolory.
 - Rodzic może wygenerować nonogram, w którym po zamalowaniu kratek według liczb pojawia się obiekt z katalogu szablonów (np. rakieta, robot, truskawka), zobaczyć jego podgląd i wydrukować go jako jedną stronę A4, także z telefonu.
-- Rodzic może wybrać rozmiar nonogramu (mały, średni, duży).
+- Rodzic może wybrać poziom nonogramu (łatwy, średni, trudny); łatwy to prosty wariant dla przedszkolaków, w którym każdy rząd jest opisany znaczkami.
 - Rodzic może wygenerować kartę dyktanda graficznego, na której dziecko rysuje po liniach kratki według strzałek i odkrywa obrys obiektu z katalogu szablonów, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (około 5–7 lat).
 - Rodzic dostaje na karcie symetrii, nonogramie i dyktandzie więcej różnych obiektów niż rakieta, robot i truskawka, pogrupowanych w kategorie.
@@ -286,25 +286,28 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Obrazek to cała sylwetka obiektu z katalogu szablonów symetrii (połowa szablonu i jej odbicie), zamalowane kratki czarne, puste białe. Detale będące dziurami w sylwetce (okno, oczy, pestki) zostają pustymi kratkami.
-- Nad każdą kolumną i z lewej strony każdego wiersza są liczby: długości kolejnych ciągów zamalowanych kratek. Nad kratką jest jedno zdanie polecenia. Karta nie zdradza nazwy obiektu.
-- Rozwiązanie jest dokładnie jedno: liczby wyznaczają jeden obrazek, który aplikacja potrafi wyliczyć i sprawdzić. Nonogram z więcej niż jednym rozwiązaniem nie jest pokazany. Dziecko dochodzi do obrazka bez zgadywania: wystarczają same liczby wiersz po wierszu i kolumna po kolumnie (decyzja 2026-10-25).
+- Na poziomach średnim i trudnym nad każdą kolumną i z lewej strony każdego wiersza są liczby: długości kolejnych ciągów zamalowanych kratek. Nad kratką jest jedno zdanie polecenia. Karta nie zdradza nazwy obiektu.
+- Na poziomach średnim i trudnym rozwiązanie jest dokładnie jedno: liczby wyznaczają jeden obrazek, który aplikacja potrafi wyliczyć i sprawdzić. Nonogram z więcej niż jednym rozwiązaniem nie jest pokazany. Dziecko dochodzi do obrazka bez zgadywania: wystarczają same liczby wiersz po wierszu i kolumna po kolumnie (decyzja 2026-10-25).
 - Każde Generuj daje nowy nonogram: inny obiekt albo inny wariant niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez rozwiązania na kartce.
 - Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć sylwetkę na ekranie i sprawdzić dziecko. Domyślnie wyłączone; przełączenie zostawia tę samą kartę, a wydruk nigdy nie pokazuje rozwiązania (decyzja 2026-10-25).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+- Poziom łatwy (decyzja 2026-10-25, po makiecie: klasyczny nonogram jest za trudny dla przedszkolaków) nie ma liczb przy kolumnach. Z lewej strony każdego wiersza stoją znaczki po kolei: biały, szary albo czarny kwadracik z liczbą kratek, białe włącznie, np. „2 białe, 3 szare, 1 czarne, 2 białe”. Dziecko koloruje wiersz od lewej: białe kratki zostawia puste, szare koloruje na szaro, czarne na czarno. Rozwiązanie jest jedno, bo wiersz jest opisany w całości.
 - Strona nonogramu nie pokazuje paska „Postać”.
 
-### US-16: Rodzic wybiera rozmiar nonogramu
+### US-16: Rodzic wybiera poziom nonogramu
 
 - **Given** rodzic jest na stronie „Nonogram”
-- **When** wybierze rozmiar (mały, średni, duży)
-- **Then** kratka i obiekt mają rozmiar zgodny z wyborem
+- **When** wybierze poziom (łatwy, średni, trudny)
+- **Then** karta ma siatkę, rodzaj opisu i obiekt zgodne z poziomem
 
 #### Acceptance Criteria
 
-- Na pasku strony jest wybór „Rozmiar”. Nonogram nie nazywa rozmiarów wiekiem, jak sudoku (US-13).
-- Rozmiar wyznacza siatkę i katalog wariantów obiektów; reguły są w Business Logic.
-- Każdy rozmiar mieści się na jednej stronie A4 z marginesem 10 mm, a kratka i liczby są dość duże, żeby dziecko zamalowało pole i przeczytało liczbę.
+- Na pasku strony jest wybór „Poziom”: łatwy, średni, trudny. Nonogram nie nazywa poziomów wiekiem (decyzja 2026-10-25, jak sudoku w US-13); domyślnie jest średni.
+- Łatwy to prosty wariant dla przedszkolaków (siatka 8×12, znaczki przy wierszach); średni (12×15) i trudny (18×24) to klasyczny nonogram z liczbami. Klasyczny 8×12 odpadł.
+- Zmiana poziomu przy pokazanej karcie generuje nową kartę na wybranym poziomie, a „Pokaż rozwiązanie” zostaje wyłączone.
+- Każdy poziom ma grubszą linię co 5 kratek, mieści się na jednej stronie A4 z marginesem 10 mm, a kratka, liczby i znaczki są dość duże, żeby dziecko zamalowało pole i przeczytało liczbę.
+- Poziom żyje w stanie strony; nie jest zapisywany w profilu ani w ostatnich parametrach.
 
 ### US-17: Rodzic generuje kartę dyktanda graficznego do druku
 
@@ -434,8 +437,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - FR-024: Rodzic może wygenerować nonogram, którego rozwiązaniem jest sylwetka obiektu z katalogu szablonów, z jednym sprawdzalnym rozwiązaniem, zobaczyć jego podgląd i wydrukować go jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: sylwetka narysowana do symetrii nie musi dawać nonogramu z jednym rozwiązaniem, a „Nonogram postaci” czekał na bitmapy postaci. Resolution: revised (2026-10-25); obrazkiem jest obiekt z szablonów symetrii zamiast postaci, a generator sprawdza solverem jedno rozwiązanie i nie pokazuje wariantu, który go nie ma.
-- FR-025: Rodzic może wybrać rozmiar nonogramu (mały, średni, duży). Priority: must-have
-  > Socrates: Counter-argument considered: poziomy nazwane wiekiem jak w innych kartach. Resolution: kept as size (2026-10-25); trudność nonogramu zależy głównie od rozmiaru siatki, jak w sudoku (FR-022).
+- FR-025: Rodzic może wybrać poziom nonogramu (łatwy, średni, trudny): łatwy to prosty wariant ze znaczkami przy wierszach, średni i trudny to klasyczny nonogram 12×15 i 18×24. Priority: must-have
+  > Socrates: Counter-argument considered: poziomy nazwane wiekiem jak w innych kartach. Resolution: revised (2026-10-25); poziomy nazwane łatwy, średni, trudny, nie wiekiem, jak sudoku (FR-022). Po makiecie użytkowniczka uznała klasyczny nonogram za zbyt trudny dla przedszkolaków, więc łatwy to prosty wariant ze znaczkami (biały, szary, czarny z liczbą kratek), a klasyczny jest dla starszych dzieci.
 - FR-026: Rodzic może wygenerować kartę dyktanda graficznego z poleceniami (liczba kratek i strzałka), które prowadzą po liniach kratki wzdłuż obrysu obiektu z katalogu szablonów, z jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: obrys sylwetki może dotykać sam siebie w narożniku kratki i wtedy polecenia są dwuznaczne dla dziecka. Resolution: kept; generator odrzuca warianty, których obrys się przecina albo dotyka sam siebie.
 - FR-027: Rodzic może wybrać poziom dyktanda graficznego nazwany wiekiem (rozmiar kratki, katalog obiektów, liczba poleceń). Priority: must-have
@@ -455,7 +458,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
 - Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), domyślny druk czarny, a przy włączonych kolorach prawdziwe kolory kratek bez liter i legendy, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karty sekwencji i sudoku spełniają te same granice co labirynt: generowanie do 5 sekund (także sudoku 9×9 na najtrudniejszym poziomie), jedna strona A4, margines co najmniej 10 mm, domyślny druk czarny bez odpowiedzi (sudoku z włączonymi kolorami drukuje kształty w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
-- Nonogram i dyktando graficzne spełniają te same granice co labirynt: generowanie do 5 sekund (także duży nonogram ze sprawdzeniem jednego rozwiązania), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi, te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Nonogram i dyktando graficzne spełniają te same granice co labirynt: generowanie do 5 sekund (także trudny nonogram ze sprawdzeniem jednego rozwiązania), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
@@ -579,15 +582,17 @@ Rodzic wybiera jedną kategorię albo „Wszystkie” (US-20); „Wszystkie” t
 
 ### Karta nonogramu
 
-Dodane 2026-10-25. Aplikacja zawsze tworzy nonogram z dokładnie jednym rozwiązaniem. Rozwiązaniem jest cała sylwetka obiektu z katalogu szablonów: zamalowane kratki czarne, puste białe, dziury w sylwetce zostają puste. Kolory szablonu nonogram pomija. Rodzic wybiera rozmiar (nie wiek, jak w sudoku). Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia, kratką i liczbami: z lewej strony każdego wiersza i nad każdą kolumną długości kolejnych ciągów zamalowanych kratek, w kolejności. Pusty wiersz albo kolumna ma liczbę 0. Polecenie: „Zamaluj kratki według liczb. Co się ukryło?”. Karta nie pokazuje nazwy obiektu.
+Dodane 2026-10-25. Aplikacja zawsze tworzy nonogram z dokładnie jednym rozwiązaniem. Rozwiązaniem jest cała sylwetka obiektu z katalogu szablonów: zamalowane kratki czarne, puste białe, dziury w sylwetce zostają puste. Kolory szablonu nonogram pomija. Rodzic wybiera poziom: łatwy, średni albo trudny (nie wiek, jak w sudoku). Poziomy średni i trudny to klasyczny nonogram opisany wyżej; poziom łatwy to prosty wariant, opisany niżej. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia, kratką i liczbami: z lewej strony każdego wiersza i nad każdą kolumną długości kolejnych ciągów zamalowanych kratek, w kolejności. Pusty wiersz albo kolumna ma liczbę 0. Polecenie: „Zamaluj kratki według liczb. Co się ukryło?”. Karta nie pokazuje nazwy obiektu.
 
-| Rozmiar | Siatka (cała) | Obiekty                       | Kratka (około) |
-| ------- | ------------- | ----------------------------- | -------------- |
-| mały    | 8×12          | warianty z połowy 4×12        | 14 mm          |
-| średni  | 12×15         | warianty z połowy 6×15        | 12 mm          |
-| duży    | 18×24         | bogate warianty z połowy 9×24 | 7 mm           |
+| Poziom | Karta                  | Siatka (cała) | Obiekty                       | Kratka (około) |
+| ------ | ---------------------- | ------------- | ----------------------------- | -------------- |
+| łatwy  | znaczki przy wierszach | 8×12          | proste warianty z połowy 4×12 | 14 mm          |
+| średni | klasyczna, liczby      | 12×15         | warianty z połowy 6×15        | 12 mm          |
+| trudny | klasyczna, liczby      | 18×24         | bogate warianty z połowy 9×24 | 7 mm           |
 
-Kratka średniego rozmiaru ma 12 mm (makieta 2026-10-25: lepiej wypełnia kartkę niż 10 mm), liczby są pogrubione, ok. 6 mm, a co 5 kratek od lewej i od góry biegnie grubsza linia.
+Poziom łatwy (decyzja 2026-10-25 po makiecie): nie ma liczb przy kolumnach, a każdy wiersz jest opisany w całości znaczkami po kolei, białymi włącznie; liczby kratek w wierszu dają razem 8. Znaczek ma bok około 9,5 mm, a wiersz mieści najwyżej 7 znaczków. Trzy tony powstają z sylwetki obiektu regułą obrysu, bez kolorów szablonu: kratka obiektu z pustym sąsiadem albo na brzegu siatki jest czarna, kratka z czterema zamalowanymi sąsiadami szara, pozostałe (także dziury w sylwetce) białe. Rozwiązanie jest jedno z samej konstrukcji i nie wymaga sprawdzenia solverem. Grubsza linia biegnie co 5 kratek na każdym poziomie.
+
+Kratka średniego poziomu ma 12 mm (makieta 2026-10-25: lepiej wypełnia kartkę niż 10 mm), liczby są pogrubione, ok. 6 mm, a co 5 kratek od lewej i od góry biegnie grubsza linia.
 
 Reguła, którą generator sprawdza: z liczb wiersza i kolumn wynika dokładnie jeden obrazek i jest nim sylwetka obiektu, a dochodzi się do niego bez zgadywania (samym wnioskowaniem w wierszach i kolumnach). Wariant, który dopuszcza drugi obrazek, nie jest pokazany; generator losuje inny. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11).
 
@@ -656,4 +661,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 8. ~~**Czy dziecko przedszkolne uzupełni sudoku obrazkowe numerem z legendy, czy narysuje postać?**~~ — Zamknięte 2026-10-24: sudoku nie używa postaci ani legendy numerów; dziecko rysuje proste kształty albo wpisuje cyfry. Pytanie 3 o prawa do postaci sudoku już nie dotyczy.
 9. **Czy startowe wartości poziomów sekwencji i sudoku (długość ciągu, reguły, liczba pustych pól) pasują dziecku?** — Owner: user. Block: no. Tabele w Business Logic są propozycją z 2026-10-23 (sudoku przebudowane 2026-10-24); potwierdza je wydruk, nie planowanie. Użytkowniczka nie jest pewna, czy 6×6 (12/18/22 pustych) i 9×9 (35/45/52 pustych) nie są za trudne dla dzieci. Wartości poziomów sekwencji potwierdził wydruk z 2026-10-24 (S-17); sudoku zostaje otwarte do wydruku S-19.
 10. **Kiedy wraca profil z wiekiem i poziomami osobno dla każdego rodzaju karty (US-08, FR-017)?** — Owner: user. Block: no. Odłożone 2026-10-23, gdy będą cztery rodzaje kart; wtedy wybieramy, które ustawienia mają sens na poziomie profilu.
-11. **Czy startowe wartości nonogramu i dyktanda graficznego (siatka, kratka, obiekty) pasują dziecku, i czy każda kategoria w każdym rozmiarze zostawia dość obiektów z jednym rozwiązaniem nonogramu i obrysem bez dotknięć?** — Owner: user (wartości), team (liczba obiektów). Block: no. Tabele w Business Logic są propozycją z 2026-10-25; potwierdza je wydruk. Liczbę obiektów, które przechodzą reguły dyktanda, pokazała implementacja (2026-10-25, z trzema dzisiejszymi obiektami): 5 lat 18 z 20 wariantów i 9 różnych obrysów (20–28 poleceń), 6 lat 18 z 20 i 9 (24–44), 7 lat 32 z 40 i 14 (36–76). Nonogram (S-22, 2026-10-25): wszystkie dzisiejsze warianty mają jedno rozwiązanie bez zgadywania — 20 z 20 w 8×12, 20 z 20 w 12×15 i 40 z 40 w 18×24; test pilnuje, by każdy obiekt średniego rozmiaru miał co najmniej jeden taki wariant. Liczby po wyborze kategorii (S-26, 2026-10-25, stan katalogu z tego dnia): w każdej z pięciu kategorii zostają co najmniej 3 obiekty i co najmniej 8 różnych obrysów dyktanda na każdym poziomie, a nonogram ma co najmniej 16 wariantów z jednym rozwiązaniem na każdym rozmiarze. Najcieńsze miejsca to Przyroda w dużym nonogramie (3 obiekty, 24 warianty) i Domy i budowle w dyktandzie 6 lat (8 obrysów z 16 wariantów). Żadna kombinacja nie zostaje z jednym obrysem ani z zerem, więc kategoria nie wymaga komunikatu ani wyłączenia; test pilnuje co najmniej dwóch kart w każdej kombinacji, bez pinowania liczb.
+11. **Czy startowe wartości nonogramu i dyktanda graficznego (siatka, kratka, obiekty) pasują dziecku, i czy każda kategoria w każdym rozmiarze zostawia dość obiektów z jednym rozwiązaniem nonogramu i obrysem bez dotknięć?** — Owner: user (wartości), team (liczba obiektów). Block: no. Tabele w Business Logic są propozycją z 2026-10-25; potwierdza je wydruk. Liczbę obiektów, które przechodzą reguły dyktanda, pokazała implementacja (2026-10-25, z trzema dzisiejszymi obiektami): 5 lat 18 z 20 wariantów i 9 różnych obrysów (20–28 poleceń), 6 lat 18 z 20 i 9 (24–44), 7 lat 32 z 40 i 14 (36–76). Nonogram (S-22, 2026-10-25, przed rozszerzeniem katalogu): wszystkie dzisiejsze warianty miały jedno rozwiązanie bez zgadywania — 20 z 20 w 8×12, 20 z 20 w 12×15 i 40 z 40 w 18×24. Nonogram po poziomach (S-24, 2026-10-25, po rozszerzeniu katalogu do 22 obiektów): poziom łatwy 116 z 116 wariantów spełnia reguły znaczków; średni 119 z 124 i trudny 184 z 216 wariantów ma jedno rozwiązanie bez zgadywania, a w trudnym `kot` i `tulipan` nie mają żadnego takiego wariantu, więc generator ich tam nie pokazuje; Generuj trwa do 8 ms, sprawdzenie wszystkich wariantów trudnego do 3 s. Test pilnuje, by każdy obiekt średniego poziomu miał co najmniej jeden taki wariant. Czy znaczki 9,5 mm (łatwy) i kratka 7 mm (trudny) są dość duże dla dziecka, potwierdza wydruk. Liczby po wyborze kategorii (S-26, 2026-10-25, stan katalogu z tego dnia): w każdej z pięciu kategorii zostają co najmniej 3 obiekty i co najmniej 8 różnych obrysów dyktanda na każdym poziomie, a nonogram ma co najmniej 16 wariantów z jednym rozwiązaniem na każdym rozmiarze. Najcieńsze miejsca to Przyroda w dużym nonogramie (3 obiekty, 24 warianty) i Domy i budowle w dyktandzie 6 lat (8 obrysów z 16 wariantów). Żadna kombinacja nie zostaje z jednym obrysem ani z zerem, więc kategoria nie wymaga komunikatu ani wyłączenia; test pilnuje co najmniej dwóch kart w każdej kombinacji, bez pinowania liczb.

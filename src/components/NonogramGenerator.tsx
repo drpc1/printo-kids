@@ -4,21 +4,25 @@ import { CategoryChoice } from "@/components/CategoryChoice";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
+import { NonogramSimpleSheet } from "@/components/NonogramSimpleSheet";
+import { SudokuChoice } from "@/components/SudokuChoice";
 import { Switch } from "@/components/ui/switch";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { generateNonogramCard, type NonogramCard } from "@/lib/nonogram/generate";
 import { blockLines, layoutNonogramSheet, longestClues } from "@/lib/nonogram/layout";
 import { NONOGRAM_SHEET } from "@/lib/nonogram/sheet";
-import { DEFAULT_NONOGRAM_SIZE_ID, nonogramSizeById } from "@/lib/nonogram/sizes";
+import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, nonogramSizeById, type NonogramSizeId } from "@/lib/nonogram/sizes";
+import type { SimpleNonogramCard } from "@/lib/nonogram/simple";
 import { DEFAULT_OBJECT_CATEGORY_ID, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The nonogram page: Generuj, the card, Drukuj, the solution switch, and the shared profile corner. It has no level,
- * no colors, and no character bar; the size is fixed. Switching the solution on redraws the same card; it never
- * generates a new one, and the page never shows the name of the hidden object.
+ * The nonogram page: Generuj, the card, Drukuj, the level and category choices, the solution switch, and the shared
+ * profile corner. It has no colors and no character bar; the level lives in the page state. Changing the level with a
+ * card shown draws a new card at that level. Switching the solution on redraws the same card; it never generates a
+ * new one, and the page never shows the name of the hidden object.
  */
 export default function NonogramGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
@@ -29,7 +33,9 @@ export default function NonogramGenerator() {
   const [showSolution, setShowSolution] = useState(false);
   const [categoryId, setCategoryId] = useState<ObjectCategoryChoiceId>(DEFAULT_OBJECT_CATEGORY_ID);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [card, setCard] = useState<NonogramCard | null>(null);
+  const [sizeId, setSizeId] = useState<NonogramSizeId>(DEFAULT_NONOGRAM_SIZE_ID);
+  const [sizeOpen, setSizeOpen] = useState(false);
+  const [card, setCard] = useState<NonogramCard | SimpleNonogramCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const sheetShown = card !== null;
 
@@ -43,16 +49,11 @@ export default function NonogramGenerator() {
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
 
-  function handleGenerate(): void {
+  function handleGenerate(level: NonogramSizeId = sizeId): void {
     if (waitingForChild) {
       return;
     }
-    const next = generateNonogramCard(
-      Math.random,
-      card?.key ?? null,
-      nonogramSizeById(DEFAULT_NONOGRAM_SIZE_ID),
-      categoryId,
-    );
+    const next = generateNonogramCard(Math.random, card?.key ?? null, nonogramSizeById(level), categoryId);
     if (next === null) {
       setGenerateFailed(true);
       return;
@@ -61,6 +62,13 @@ export default function NonogramGenerator() {
     // A new card starts the way the child sees it; the parent turns the solution on again to check it.
     setShowSolution(false);
     setCard(next);
+  }
+
+  function handleSizeSelect(id: NonogramSizeId): void {
+    setSizeId(id);
+    if (sheetShown) {
+      handleGenerate(id);
+    }
   }
 
   function handlePrint(): void {
@@ -72,6 +80,18 @@ export default function NonogramGenerator() {
     setBarLevel(bar.level);
   }
 
+  const sizeControl = (
+    <SudokuChoice
+      label="Poziom"
+      dialogTitle="Poziom nonogramu"
+      options={NONOGRAM_SIZES}
+      value={sizeId}
+      open={sizeOpen}
+      onOpenChange={setSizeOpen}
+      onSelect={handleSizeSelect}
+      disabled={waitingForChild}
+    />
+  );
   const categoryControl = (
     <CategoryChoice
       categoryId={categoryId}
@@ -110,13 +130,16 @@ export default function NonogramGenerator() {
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {sizeControl}
             {categoryControl}
             {solutionControl}
             {failedNote}
           </div>
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
-              onClick={handleGenerate}
+              onClick={() => {
+                handleGenerate();
+              }}
               tone="quiet"
               disabled={waitingForChild}
               className="flex-1 sm:flex-none"
@@ -134,12 +157,20 @@ export default function NonogramGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
+          {sizeControl}
           {categoryControl}
-          <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
+          <GenerateButton
+            onClick={() => {
+              handleGenerate();
+            }}
+            tone="hero"
+            disabled={waitingForChild}
+          />
           {failedNote}
         </div>
       )}
-      {card !== null ? <NonogramSheet card={card} showSolution={showSolution} /> : null}
+      {card?.kind === "liczby" ? <NonogramSheet card={card} showSolution={showSolution} /> : null}
+      {card?.kind === "znaczki" ? <NonogramSimpleSheet card={card} showSolution={showSolution} /> : null}
     </div>
   );
 }
