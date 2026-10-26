@@ -1,6 +1,6 @@
 ---
 project: PrintoKids
-version: 3
+version: 4
 status: draft
 created: 2026-09-18
 context_type: greenfield
@@ -37,16 +37,19 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 ### Secondary
 
-- Rodzic może wybrać ulubioną postać dziecka do labiryntu.
+- Rodzic może wybrać ulubioną postać dziecka, która pojawia się na każdej karcie.
 - Rodzic może wybrać dowolną postać z katalogu jedenastu dostarczonych postaci.
 - Rodzic może na telefonie wygenerować kartę i wydrukować ją jako jedną stronę A4.
 - Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej i wejść na stronę generatora tego rodzaju.
 - Rodzic może wygenerować kartę symetrii, na której dziecko dorysowuje drugą połowę obiektu (np. rakiety, robota, truskawki) na kratce, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wybrać poziom karty symetrii (rozmiar kratki, katalog obiektów, podpowiedź).
 - Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; kratki wzoru drukują się w prawdziwych kolorach kredek, bez liter i bez legendy; domyślnie obiekt jest czarną sylwetką.
-- Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, także jako ostatnie parametry. (Odłożone 2026-10-23 do czasu, gdy będzie więcej rodzajów kart; US-08, FR-017.)
+- Rodzic wybiera poziom każdej karty jako numerowany poziom (Poziom 1, 2, 3…) z krótkim opisem tego, co się zmienia, a nie jako wiek dziecka.
+- Profil dziecka sam pamięta ustawienia każdego rodzaju karty (poziom, kolory i inne ustawienia z paska) i pokazuje je w katalogu; ulubioną postać rodzic zmienia jawnie.
+- Na każdej karcie wybrana postać w kolorze stoi przy poleceniu i „mówi” je dziecku.
+- Rodzic rozumie, co pamięta profil i co zmienia poziom, z krótkich podpowiedzi w miejscu, w którym coś wybiera, bez samouczka.
 - Rodzic może wygenerować kartę sekwencji, na której dziecko uzupełnia brakujące elementy ciągu liczb i kształtów, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
-- Rodzic może wybrać poziom karty sekwencji nazwany wiekiem (około 4–7 lat).
+- Rodzic może wybrać poziom karty sekwencji (Poziom 1–4).
 - Rodzic może wygenerować kartę sudoku 4×4, 6×6 albo 9×9 z prostymi kształtami do narysowania albo z cyframi, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wybrać rozmiar sudoku i jego poziom (łatwy, średni, trudny), a przy kształtach włączyć kolory.
 
@@ -63,15 +66,15 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic może wybrać postać i poziom trudności labiryntu
 - **When** wybierze te parametry i uruchomi generowanie
-- **Then** otrzymuje gotowy do wydruku labirynt A4 o wybranym poziomie trudności; wybrana postać stoi przy starcie, poza poziomem nastolatka
+- **Then** otrzymuje gotowy do wydruku labirynt A4 o wybranym poziomie trudności; wybrana postać stoi przy starcie, poza Poziomem 6
 
 #### Acceptance Criteria
 
 - Labirynt zajmuje większą część strony A4.
 - Labirynt nie przekracza wąskich marginesów strony.
 - Istnieje dokładnie jedna prawidłowa ścieżka prowadząca od startu do mety.
-- Na poziomach od 3 lat do 7–8 lat przy starcie znajduje się wybrana postać. Poziom nastolatka postaci nie pokazuje.
-- Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, a napis „Meta” na środku dolnej. Poziom nastolatka ma start i metę w narożnikach.
+- Na Poziomach 1–5 przy starcie znajduje się wybrana postać. Poziom 6 postaci nie pokazuje.
+- Na Poziomach 1–5 start jest na środku górnej krawędzi, a napis „Meta” na środku dolnej. Poziom 6 ma start i metę w narożnikach.
 
 ### US-02: Rodzic wskazuje własny obrazek, który zostaje w przeglądarce i staje przy starcie
 
@@ -94,12 +97,13 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Katalog to jedenaście postaci: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka. Wiersz „Bez postaci” zostaje.
-- Ta sama lista jest przy pasku „Postać” na kartce, przy tworzeniu profilu i przy zapisie ulubionej postaci.
+- Ta sama lista jest przy pasku „Postać” na stronie każdej karty, przy tworzeniu profilu i przy zapisie ulubionej postaci.
 - Wygląd dodawania profilu i zapisu ulubionej postaci może się zmienić, żeby zmieścić pełną listę.
 - Przy niższej rozdzielczości pełna lista jest widoczna, a nie ucięta.
 - Ostatnio użyta postać i ulubiona postać profilu mogą być dowolną postacią z katalogu.
 - Ulubiona postać profilu może być własnym obrazkiem rodzica po „Zapisz”, a postać z katalogu nadal może być ulubioną.
-- Pasek nadal pokazuje wybraną postać. Poziom nastolatka postaci nie pokazuje.
+- Pasek nadal pokazuje wybraną postać. Poziom 6 labiryntu postaci nie pokazuje.
+- Przy aktywnym profilu zmiana postaci na pasku dotyczy tylko bieżącej wizyty na stronie karty i nie zmienia ulubionej; rodzic może ją zapisać jako ulubioną jednym wyborem pod listą (US-08).
 
 ### US-04: Rodzic korzysta ze strony na telefonie
 
@@ -131,8 +135,9 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma.
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
 - Wybrany profil dziecka zostaje po przejściu między katalogiem a stronami generatorów.
+- Przy wybranym profilu miniatura każdej karty pokazuje zapamiętany poziom tego profilu (np. „poz. 4”) (US-08).
 - Druk nadal nie wymaga profilu dziecka.
-- Pasek „Postać” jest pokazany tylko przy labiryncie. Karta symetrii postaci nie pokazuje.
+- Pasek „Postać” jest na stronie każdego rodzaju karty. Na labiryncie postać stoi przy starcie, na pozostałych kartach przy poleceniu (US-15).
 - Strony generatorów można zmieniać niezależnie od siebie: zmiana jednej nie zmienia drugiej.
 
 ### US-06: Rodzic generuje kartę symetrii do druku
@@ -145,7 +150,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Kratka jest oddzielona osią symetrii; wzór leży po jednej stronie osi, druga strona jest pusta.
 - Odpowiedź jest jedna: odbicie wzoru względem osi. Aplikacja potrafi ją wyliczyć i sprawdzić.
-- Wzór to połowa rozpoznawalnego obiektu z katalogu szablonów (np. rakieta, robot, truskawka, jabłko, motyl), a nie przypadkowa plama. Nad kratką jest jedno zdanie polecenia.
+- Wzór to połowa rozpoznawalnego obiektu z katalogu szablonów (np. rakieta, robot, truskawka, jabłko, motyl), a nie przypadkowa plama. Nad kratką jest jedno zdanie polecenia; przy nim stoi wybrana postać (US-15).
 - Wzór nie jest pusty i nie jest już symetryczny w całości.
 - Każde Generuj daje nowy wzór: inny obiekt albo inny wariant tego samego obiektu niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm (ściany i ramka kratki) i drukuje się jako jedna strona.
@@ -155,33 +160,35 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 ### US-07: Rodzic wybiera poziom karty symetrii
 
 - **Given** rodzic jest na stronie „Symetria”
-- **When** wybierze poziom nazwany wiekiem (około 4–7 lat)
+- **When** wybierze poziom (Poziom 1–4)
 - **Then** karta ma kratkę, obiekty i podpowiedź zgodne z tym poziomem
 
 #### Acceptance Criteria
 
-- Poziom zmienia rozmiar kratki, katalog obiektów (4 lata prostsze, 7 lat bogatsze) i podpowiedź (kilka kratek odpowiedzi już zamalowanych, bledszych niż wzór także bez kolorów). Reguły są w Business Logic.
+- Poziom zmienia rozmiar kratki, katalog obiektów (Poziom 1 prostsze, Poziom 4 bogatsze) i podpowiedź (kilka kratek odpowiedzi już zamalowanych, bledszych niż wzór także bez kolorów). Reguły są w Business Logic.
 - Poziom nie włącza kolorów; to osobne ustawienie rodzica (US-09).
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
-- Poziom jest na pasku strony symetrii. Wybór poziomu w profilu dla symetrii dochodzi z US-08.
+- Poziom jest na pasku strony symetrii. Profil i ostatnie parametry pamiętają go same (US-08).
 
-### US-08: Rodzic zapamiętuje wiek i poziomy w profilu — odłożone
+### US-08: Profil dziecka pamięta ustawienia każdej karty
 
-> Odłożone 2026-10-23: zapisane i zbadane (`context/changes/profile-age-and-levels/research.md`), ale wraca dopiero, gdy będzie więcej rodzajów kart i wiadomo, które ustawienia mają sens na poziomie profilu. Do tego czasu poziom i kolory symetrii oraz poziomy nowych kart żyją w stanie strony; profil pamięta tylko postać i poziom labiryntu.
+> Wraca do zakresu 2026-10-26 w nowym kształcie: zamiast wieku, który ustawia poziomy, profil sam pamięta ustawienia każdego rodzaju karty. Wcześniejsze badanie (`context/changes/profile-age-and-levels/research.md`) opisuje dzisiejszy zapis; jego rekomendacje dotyczące wieku już nie obowiązują.
 
-- **Given** rodzic ma profil dziecka albo wygenerował już kartę
-- **When** wróci na stronę, wybierze profil albo wejdzie na stronę innego rodzaju karty
-- **Then** ustawienia są takie, jak ostatnio albo jak w profilu, i dają się zmienić przed generowaniem
+- **Given** rodzic ma profil dziecka albo wygenerował już kartę bez profilu
+- **When** wróci na stronę karty, wybierze profil albo wejdzie na stronę innego rodzaju karty
+- **Then** pasek ma ustawienia, które ten profil (albo urządzenie bez profilu) ostatnio wybrał dla tej karty, a ulubiona postać jest taka, jak zapisana w profilu
 
 #### Acceptance Criteria
 
-- Profil dziecka ma wspólne ustawienia: wiek i ulubioną postać. Obowiązują wszystkie rodzaje kart.
-- Każdy rodzaj karty ma własny poziom. Wiek ustawia go na starcie na najbliższy poziom tego rodzaju (symetria zaczyna się od 4 lat, więc wiek 3 lat daje jej poziom 4 lat).
-- Rodzic może wybrać poziom danego rodzaju niezależnie od wieku dziecka, na przykład labirynt trudniejszy niż wiek, i zapisać go w profilu.
-- Rodzaje kart mogą mieć własne dodatkowe ustawienia (np. kolory karty symetrii, US-09). Dochodzą osobno i nie zmieniają wspólnych pól.
-- Ostatnio użyte parametry są pamiętane osobno dla każdego rodzaju karty i są widocznymi, edytowalnymi wartościami domyślnymi (jak FR-006).
-- Profil zmienia się tylko po wyraźnym zapisie (FR-009).
-- Zapisane wcześniej profile i ostatnie parametry nadal się wczytują; poziom labiryntu z dawnego profilu zostaje poziomem labiryntu.
+- Profil dziecka to imię i ulubiona postać. Tworzenie profilu pyta tylko o imię i postać, bez poziomów.
+- Każdy rodzaj karty ma w profilu własne ustawienia: wszystko, co jest na pasku tej karty poza postacią (labirynt: poziom; symetria: poziom i kolory; sekwencje: poziom; sudoku: rozmiar, poziom, Kształty / Cyfry i kolory). Nowe rodzaje kart dokładają swoje ustawienia w ten sam sposób.
+- Ustawienia karty zmienia się wyłącznie na pasku tej karty. Przy aktywnym profilu każda zmiana zapisuje się w profilu od razu, bez przycisku „Zapisz”, i dotyczy tylko tej karty.
+- Karta, której profil jeszcze nie używał, startuje z domyślnymi ustawieniami tej karty.
+- Ulubiona postać zmienia się tylko jawnie: w oknie profilu albo wyborem „Ustaw jako ulubioną” pod listą postaci na pasku. Inna postać wybrana na pasku działa tylko do końca wizyty na tej stronie.
+- Bez profilu ostatnio użyte ustawienia są pamiętane osobno dla każdego rodzaju karty, a ostatnio użyta postać jest wspólna dla wszystkich kart. Są widocznymi, edytowalnymi wartościami domyślnymi (FR-006).
+- Okno profilu pokazuje imię, ulubioną postać, usuwanie profilu i podsumowanie ustawień kart tylko do odczytu („Labirynt: poziom 4 · Symetria: poziom 2, kolory”); pozycja podsumowania prowadzi do strony tej karty. Okno nie ma kontrolek poziomów.
+- Katalog przy wybranym profilu pokazuje na miniaturach zapamiętany poziom (US-05).
+- Zapisane wcześniej profile i ostatnie parametry nadal się wczytują: dawny poziom profilu i ostatnich parametrów zostaje poziomem labiryntu, dawna postać zostaje ulubioną postacią profilu i ostatnio użytą postacią.
 - Dane zostają na urządzeniu.
 
 ### US-09: Rodzic włącza kolory na karcie symetrii
@@ -192,12 +199,12 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Kolory to osobny przełącznik na pasku strony symetrii, niezależny od poziomu i wieku. Domyślnie są wyłączone: obiekt jest czarną sylwetką.
+- Kolory to osobny przełącznik na pasku strony symetrii, niezależny od poziomu. Domyślnie są wyłączone: obiekt jest czarną sylwetką.
 - Kolor to prawdziwy kolor kratki, bez liter i bez legendy (decyzja 2026-10-23 po makiecie). Detale będące pustymi kratkami wewnątrz sylwetki (okno rakiety, oczy robota, pestki truskawki) też dostają kolor. Na drukarce czarno-białej kolory schodzą do odcieni szarości.
 - Odpowiedź nadal jest jedna: odbicie obiektu razem z kolorem każdej kratki.
 - Przełączenie kolorów zostawia tę samą kartę; nie generuje nowej.
 - Wyłączenie kolorów daje ten sam rodzaj obiektu jako czarną sylwetkę.
-- Zapis kolorów w profilu i w ostatnich parametrach dochodzi z US-08 jako dodatkowe ustawienie karty symetrii.
+- Profil i ostatnie parametry pamiętają kolory tak jak poziom (US-08).
 
 ### US-10: Rodzic generuje kartę sekwencji do druku
 
@@ -211,21 +218,21 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Elementy to proste kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Ciąg może mieszać jedno i drugie, zgodnie z poziomem (US-11).
 - Każdy ciąg ma dokładnie jedną odpowiedź: do pustego pola pasuje wyłącznie jedna reguła z jawnej listy reguł, a pole ma wtedy jedną wartość. Aplikacja potrafi ją wyliczyć i sprawdzić. Karta, w której do pustego pola pasują dwie reguły dające różne odpowiedzi, nie jest pokazana.
 - Każde Generuj daje nową kartę: inne reguły albo inne elementy niż poprzednia karta.
-- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez odpowiedzi na kartce.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez odpowiedzi na kartce; postać przy poleceniu drukuje się w kolorze (US-15).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
-- Strona sekwencji nie pokazuje paska „Postać”.
+- Strona sekwencji ma pasek „Postać”; wybrana postać stoi przy poleceniu, a elementy ciągów nie używają postaci (US-15).
 
 ### US-11: Rodzic wybiera poziom karty sekwencji
 
 - **Given** rodzic jest na stronie „Sekwencje”
-- **When** wybierze poziom nazwany wiekiem (około 4–7 lat)
+- **When** wybierze poziom (Poziom 1–4)
 - **Then** karta ma długość ciągów, rodzaj reguł i liczbę brakujących elementów zgodne z tym poziomem
 
 #### Acceptance Criteria
 
 - Poziom zmienia długość ciągu, rodzaj reguł (kształty, liczby, mieszane), liczbę ciągów i liczbę pustych pól. Reguły są w Business Logic.
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
-- Poziom jest na pasku strony sekwencji.
+- Poziom jest na pasku strony sekwencji. Profil i ostatnie parametry pamiętają go same (US-08).
 
 ### US-12: Rodzic generuje kartę sudoku do druku
 
@@ -241,7 +248,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każde Generuj daje nową planszę: inny układ albo inne kształty niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest bez odpowiedzi na kartce.
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
-- Strona sudoku nie pokazuje paska „Postać”. Sudoku nie używa postaci z katalogu.
+- Strona sudoku ma pasek „Postać”; wybrana postać stoi przy poleceniu (US-15). Pola planszy nie używają postaci z katalogu.
 
 ### US-13: Rodzic wybiera rozmiar i poziom sudoku
 
@@ -251,12 +258,13 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Na pasku strony sudoku są dwa osobne wybory: „Rozmiar” i „Poziom”. Sudoku nie nazywa poziomów wiekiem (decyzja 2026-10-24).
+- Na pasku strony sudoku są dwa osobne wybory: „Rozmiar” i „Poziom”. Sudoku nie nazywa poziomów wiekiem ani numerem (decyzja 2026-10-24): rozmiar i łatwy / średni / trudny to dwa wymiary.
 - 4×4 ma jeden poziom: w każdym wierszu brakuje jednego pola (US-12). Pasek „Poziom” nie daje przy nim wyboru.
 - 6×6 (prostokąty 2×3) ma trzy poziomy różniące się liczbą pustych pól. Symbole to sześć kształtów albo cyfry 1–6; wybiera je osobny przełącznik „Kształty / Cyfry”, widoczny przy 6×6 i 9×9.
 - 9×9 (kwadraty 3×3) ma trzy poziomy różniące się liczbą pustych pól. Symbole to dziewięć kształtów albo cyfry 1–9 (ten sam przełącznik „Kształty / Cyfry”; cyfry dają zwykłe sudoku).
 - Liczby pustych pól są w Business Logic. Przy każdej z nich rozwiązanie jest dokładnie jedno.
 - Każdy rozmiar i poziom mieści się na jednej stronie A4 z marginesem 10 mm.
+- Profil i ostatnie parametry pamiętają rozmiar, poziom, „Kształty / Cyfry” i kolory (US-08).
 
 ### US-14: Rodzic włącza kolory kształtów na karcie sudoku
 
@@ -271,12 +279,42 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Przełączenie kolorów zostawia tę samą planszę; nie generuje nowej.
 - Przy cyfrach przełącznik kolorów nie jest dostępny.
 
+### US-15: Postać mówi polecenie na każdej karcie
+
+- **Given** rodzic wybrał postać (z profilu, z ostatnich parametrów albo na pasku)
+- **When** generuje kartę innego rodzaju niż labirynt
+- **Then** wybrana postać stoi przy zdaniu polecenia, a polecenie jest w jej dymku, jakby postać mówiła je dziecku
+
+#### Acceptance Criteria
+
+- Postać to ten sam kolorowy obrazek co na labiryncie, z tego samego katalogu, także własny obrazek rodzica (US-02).
+- Postać drukuje się zawsze w kolorze, niezależnie od przełącznika kolorów karty (decyzja 2026-10-26). Na drukarce czarno-białej schodzi do odcieni szarości.
+- Przy „Bez postaci” karta ma samo zdanie polecenia, bez dymka.
+- Postać jest ozdobą: nie zmienia zadania, odpowiedzi ani trudności. Pola zadania (kratka symetrii, ciągi, plansza sudoku) nie używają postaci.
+- Postać i dymek mieszczą się w obszarze karty nad zadaniem; zadanie nadal zajmuje większą część strony, a karta jest jedną stroną A4 z marginesem 10 mm.
+- Na labiryncie postać zostaje przy starcie jak w US-01; labirynt nie dostaje dymka.
+
+### US-16: Rodzic rozumie ustawienia z podpowiedzi w miejscu wyboru
+
+- **Given** rodzic zmienia poziom, ustawienie karty albo postać, albo otwiera okno profilu
+- **When** wykonuje wybór
+- **Then** w tym samym miejscu widzi krótką podpowiedź, co się stało i co zostanie zapamiętane
+
+#### Acceptance Criteria
+
+- Po zmianie ustawienia na pasku przy aktywnym profilu pojawia się krótki komunikat „Zapamiętane dla {imię}”, który znika sam i nie zasłania karty ani przycisków.
+- Pod listą postaci przy aktywnym profilu, gdy wybrana postać różni się od ulubionej, jest tekst „Tylko na tę kartę” i wybór „Ustaw jako ulubioną {imię}”.
+- Każdy wiersz listy poziomów ma pół zdania o tym, co się zmienia (np. „Poziom 3 · mniejsza kratka, bez podpowiedzi”).
+- Okno profilu ma jedno zdanie: poziomy każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
+- W stopce jest link do krótkiej strony „Jak to działa” z całą zasadą profilu, poziomów i postaci.
+- Nie ma samouczka przy pierwszym wejściu ani okna pomocy, które trzeba zamknąć, żeby korzystać ze strony.
+
 ## Functional Requirements
 
 ### Generator i druk
 
-- FR-001: Rodzic może wybrać jeden z dostarczonych poziomów trudności. Priority: must-have
-  > Socrates: Counter-argument considered: nazwy poziomów mogą wprowadzać w błąd bez mierzalnych reguł. Resolution: kept; poziomy są nazwane wiekiem, a reguły szerokości alejki i długości drogi są w Business Logic.
+- FR-001: Rodzic może wybrać jeden z numerowanych poziomów trudności danego rodzaju karty (Poziom 1…N); każdy poziom ma krótki opis tego, co zmienia. Priority: must-have
+  > Socrates: Counter-argument considered: nazwy poziomów mogą wprowadzać w błąd bez mierzalnych reguł. Resolution: revised (2026-10-26); poziomy nazwane wiekiem oceniały dziecko i nie pasowały do kart, w których umiejętności rosną w innym tempie, więc poziomy są numerowane osobno dla każdej karty, a reguły (szerokość alejki, długość drogi, kratka, ciągi) są w Business Logic. Poziom 3 labiryntu i Poziom 3 symetrii nie oznaczają tej samej trudności.
 - FR-002: Rodzic może wybrać postać z dostarczonego zestawu. Priority: must-have
   > Socrates: Counter-argument considered: przygotowanie i prawa do postaci mogą opóźnić podstawowy przepływ. Resolution: kept; źródło postaci i prawa pozostają otwartym pytaniem.
 - FR-003: Rodzic może wygenerować strukturalnie poprawny labirynt zgodny z wybranymi parametrami. Priority: must-have
@@ -285,17 +323,17 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
   > Socrates: Counter-argument considered: osobny podgląd może dublować standardowe okno drukowania. Resolution: revised; karta ma być widoczna przed drukiem, ale nie wymaga osobnego dodatkowego ekranu.
 - FR-005: Rodzic może wydrukować kartę jako jedną stronę A4. Priority: must-have
   > Socrates: Counter-argument considered: przeglądarki i drukarki różnie stosują marginesy oraz skalowanie. Resolution: kept; obsługiwane środowiska i mierzalne granice wydruku wymagają doprecyzowania.
-- FR-006: Rodzic bez profilu dziecka otrzymuje jako widoczne, edytowalne wartości domyślne ostatnio użyte parametry. Priority: must-have
-  > Socrates: Counter-argument considered: wspólne urządzenie może podstawić ustawienia innego dziecka. Resolution: revised; wartości są zawsze widoczne i można je zmienić przed generowaniem.
+- FR-006: Rodzic bez profilu dziecka otrzymuje jako widoczne, edytowalne wartości domyślne ostatnio użyte parametry: ustawienia osobno dla każdego rodzaju karty i jedną ostatnio użytą postać dla wszystkich kart. Priority: must-have
+  > Socrates: Counter-argument considered: wspólne urządzenie może podstawić ustawienia innego dziecka. Resolution: revised; wartości są zawsze widoczne i można je zmienić przed generowaniem, a osobne dzieci mają osobne profile.
 
 ### Profile dzieci
 
-- FR-007: Rodzic może utworzyć opcjonalny lokalny profil dziecka z domyślną trudnością i postacią. Priority: must-have
-  > Socrates: Counter-argument considered: profile nie są potrzebne do podstawowej wartości i zwiększają zakres MVP. Resolution: kept; korzystanie z profilu pozostaje opcjonalne, ale możliwość zarządzania profilami należy do MVP.
+- FR-007: Rodzic może utworzyć opcjonalny lokalny profil dziecka z imieniem i ulubioną postacią. Priority: must-have
+  > Socrates: Counter-argument considered: profile nie są potrzebne do podstawowej wartości i zwiększają zakres MVP. Resolution: kept; korzystanie z profilu pozostaje opcjonalne, ale możliwość zarządzania profilami należy do MVP. Od 2026-10-26 tworzenie nie pyta o poziom; ustawienia kart profil zbiera sam (FR-017).
 - FR-008: Rodzic może wyświetlić i wybrać zapisany profil dziecka, gdy istnieje rzeczywisty wybór profilu. Priority: must-have
   > Socrates: Counter-argument considered: selektor jest zbędny dla rodzica jednego dziecka. Resolution: revised; wybór profilu nie jest pokazywany, gdy nie ma rzeczywistego wyboru.
-- FR-009: Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka. Priority: must-have
-  > Socrates: Counter-argument considered: jednorazowa zmiana parametrów karty nie powinna przypadkiem zmieniać profilu. Resolution: revised; profil zmienia się wyłącznie po wyraźnym zapisie.
+- FR-009: Rodzic może jawnie zmienić ulubioną postać profilu w oknie profilu albo wyborem „Ustaw jako ulubioną” przy pasku; ustawienia kart profil zapamiętuje sam (FR-017). Priority: must-have
+  > Socrates: Counter-argument considered: jednorazowa zmiana parametrów karty nie powinna przypadkiem zmieniać profilu, np. gdy rodzeństwo drukuje na profilu Oli. Resolution: revised (2026-10-26); jawny zapis zostaje tylko dla ulubionej postaci, bo jest wspólna dla wszystkich kart. Ustawienia karty zapisują się same, bo są zawsze widoczne na pasku i plakietkach katalogu, a każdą zmianę cofa jeden wybór; ręczny zapis dla każdej z wielu kart byłby uciążliwy.
 - FR-010: Rodzic może usunąć profil dziecka po potwierdzeniu operacji. Priority: must-have
   > Socrates: Counter-argument considered: przypadkowe usunięcie lokalnego profilu może być nieodwracalne. Resolution: revised; usunięcie wymaga potwierdzenia.
 
@@ -315,27 +353,34 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
   > Socrates: Counter-argument considered: katalog to dodatkowe kliknięcie dla rodzica, który chce tylko labirynt. Resolution: kept; miniatura pokazuje, jak wygląda karta, więc rodzic nie zgaduje po nazwie, a strona generatora zostaje taka jak dziś. Skrót „ostatnio użyte” jest możliwym dodatkiem poza tym kamieniem.
 - FR-015: Rodzic może wygenerować kartę symetrii z połową obiektu z katalogu szablonów i jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dorysowanie odbicia na kratce może być za łatwe do zrobienia samemu bez aplikacji. Resolution: kept; wartość to nowa karta na właściwym poziomie na żądanie, ten sam problem co przy labiryncie.
-- FR-016: Rodzic może wybrać poziom karty symetrii nazwany wiekiem (rozmiar kratki, katalog obiektów, podpowiedź). Priority: must-have
-  > Socrates: Counter-argument considered: bez mierzalnych reguł nazwy poziomów mogą wprowadzać w błąd, a sam rozmiar kratki zmienia głównie motorykę, nie trudność odbicia. Resolution: revised (2026-10-23); poziom łączy kratkę z położeniem obiektu, osią i podpowiedzią, a reguły są w Business Logic.
-- FR-017: Rodzic może zapamiętać w profilu dziecka wspólny wiek i ulubioną postać oraz osobny poziom każdego rodzaju karty, a ostatnie parametry są pamiętane osobno dla każdego rodzaju. Priority: must-have
-  > Socrates: Counter-argument considered: nowe pola w zapisanych profilach mogą zepsuć istniejące dane. Resolution: revised; stare profile i ostatnie parametry nadal się wczytują, a dawny poziom labiryntu zostaje poziomem labiryntu. Wiek ustawia poziomy tylko na starcie; rodzic może je zmienić niezależnie.
+- FR-016: Rodzic może wybrać poziom karty symetrii (Poziom 1–4: rozmiar kratki, katalog obiektów, podpowiedź). Priority: must-have
+  > Socrates: Counter-argument considered: bez mierzalnych reguł nazwy poziomów mogą wprowadzać w błąd, a sam rozmiar kratki zmienia głównie motorykę, nie trudność odbicia. Resolution: revised (2026-10-23); poziom łączy kratkę z położeniem obiektu, osią i podpowiedzią, a reguły są w Business Logic. Numery zamiast wieku od 2026-10-26 (FR-001).
+- FR-017: Profil dziecka sam pamięta ustawienia każdego rodzaju karty (wszystko z paska poza postacią), zapisuje każdą zmianę na pasku od razu i pokazuje zapamiętany poziom na miniaturach katalogu oraz w podsumowaniu okna profilu; ustawienia karty zmienia się tylko na pasku tej karty. Priority: must-have
+  > Socrates: Counter-argument considered: nowe pola w zapisanych profilach mogą zepsuć istniejące dane, a edycja ustawień w dwóch miejscach (okno profilu i pasek) myli. Resolution: revised (2026-10-26); stare profile i ostatnie parametry nadal się wczytują, a dawny poziom zostaje poziomem labiryntu. Okno profilu pokazuje ustawienia tylko do odczytu, więc jest jedno miejsce zmiany, z podglądem karty. Wiek w profilu odpadł: nie wyznacza poziomu żadnej karty.
 - FR-018: Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; kratki wzoru mają prawdziwe kolory, bez liter i bez legendy, domyślnie czarna sylwetka. Priority: must-have
   > Socrates: Counter-argument considered: kolorowy druk wymaga kolorowej drukarki i łamie wspólną umowę czarnego druku. Resolution: revised (2026-10-23); po makiecie użytkownik wybrał prawdziwe kolory zamiast liter i legendy, a domyślny druk zostaje czarną sylwetką; kolor wymaga kolorowej drukarki, na czarno-białej schodzi do szarości.
-
-> FR-017 jest odłożone (2026-10-23): wraca, gdy będzie więcej rodzajów kart (patrz US-08). Do tego czasu nie jest w zakresie bieżącego kamienia.
 
 ### Sekwencje i sudoku
 
 - FR-019: Rodzic może wygenerować kartę sekwencji z kilkoma ciągami liczb i kształtów, w których brakuje elementów, z jedną sprawdzalną odpowiedzią każdego ciągu, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: ciąg z lukami bywa niejednoznaczny, bo do pustego miejsca pasują dwie reguły. Resolution: kept; generator sprawdza jawną listę reguł i odrzuca ciąg, w którym dwie reguły dają różne odpowiedzi.
-- FR-020: Rodzic może wybrać poziom karty sekwencji nazwany wiekiem (długość ciągu, rodzaj reguł, liczba pustych pól). Priority: must-have
-  > Socrates: Counter-argument considered: poziomy nazwane wiekiem bez mierzalnych reguł wprowadzają w błąd. Resolution: kept; reguły są w Business Logic, wartości startowe potwierdza wydruk.
+- FR-020: Rodzic może wybrać poziom karty sekwencji (Poziom 1–4: długość ciągu, rodzaj reguł, liczba pustych pól). Priority: must-have
+  > Socrates: Counter-argument considered: poziomy bez mierzalnych reguł wprowadzają w błąd. Resolution: kept; reguły są w Business Logic, wartości startowe potwierdza wydruk. Numery zamiast wieku od 2026-10-26 (FR-001).
 - FR-021: Rodzic może wygenerować kartę sudoku 4×4 z prostymi kształtami do narysowania i jednym rozwiązaniem, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dziecko w wieku przedszkolnym nie rysuje postaci w małych polach. Resolution: revised (2026-10-24); zamiast postaci z katalogu proste kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla), które dziecko umie narysować; legenda numerów odpada, a z nią pytanie o prawa do postaci w sudoku.
 - FR-022: Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry. Priority: must-have
-  > Socrates: Counter-argument considered: im więcej pustych pól, tym łatwiej o wiele rozwiązań, a dwa paski odchodzą od poziomów nazwanych wiekiem jak w innych kartach. Resolution: revised (2026-10-24); generator zostawia tylko takie pola, przy których rozwiązanie jest dokładnie jedno; użytkowniczka wybrała dwa paski, bo 7-latek robi już 9×9 i wiek nie wyznacza rozmiaru.
+  > Socrates: Counter-argument considered: im więcej pustych pól, tym łatwiej o wiele rozwiązań, a dwa paski odchodzą od numerowanych poziomów w innych kartach. Resolution: revised (2026-10-24); generator zostawia tylko takie pola, przy których rozwiązanie jest dokładnie jedno; użytkowniczka wybrała dwa paski, bo 7-latek robi już 9×9 i wiek nie wyznacza rozmiaru.
 - FR-023: Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury. Priority: must-have
   > Socrates: Counter-argument considered: kolorowy druk łamie wspólną umowę czarnego druku. Resolution: kept; jak w symetrii (FR-018) domyślny druk zostaje czarny, a kolor jest wyborem rodzica.
+
+### Postać na kartach i podpowiedzi
+
+- FR-024: Na każdej karcie poza labiryntem wybrana postać stoi przy zdaniu polecenia i „mówi” je w dymku; drukuje się zawsze w kolorze. Priority: must-have
+  > Socrates: Counter-argument considered: kolorowa postać łamie umowę czarnego druku, a pasek „Postać” wraca na strony, które go celowo nie miały. Resolution: kept (2026-10-26); postać jest ozdobą, nie częścią zadania, więc nie zmienia odpowiedzi; drukuje się w kolorze jak na labiryncie i na czarno-białej drukarce schodzi do szarości. Ulubiona postać z profilu dostaje sens na każdej karcie, a „Bez postaci” zostaje.
+- FR-025: Rodzic widzi krótkie podpowiedzi w miejscu wyboru (komunikat o zapamiętaniu, „Tylko na tę kartę”, opis poziomu, zdanie w oknie profilu) i może otworzyć stronę „Jak to działa”. Priority: must-have
+  > Socrates: Counter-argument considered: podpowiedzi to łatka na zbyt złożony model ustawień. Resolution: kept; zasada jest prosta (karta pamięta pasek, postać zmienia się jawnie), a podpowiedź pokazuje ją dokładnie wtedy, gdy rodzic coś zmienia. Jeśli wydruk próbny pokaże, że podpowiedzi nie wystarczają, poprawiamy model, a nie dokładamy samouczek.
+- FR-026: Rodzic może w oknie profilu przywrócić domyślne ustawienia wszystkich kart („Zacznij od nowa”); imię i ulubiona postać zostają. Priority: nice-to-have
+  > Socrates: Counter-argument considered: to kolejny przycisk w oknie, które ma zostać małe. Resolution: kept as nice-to-have; przydaje się, gdy profil przechodzi na młodsze rodzeństwo, ale to samo da się zrobić paskiem każdej karty.
 
 ## Non-Functional Requirements
 
@@ -347,7 +392,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Na telefonie labirynt mieści się na jednej stronie A4 w szerokości i w długości, z marginesem co najmniej 10 mm. Margines dotyczy ścian i ramki labiryntu; znak postaci przy starcie może wejść w ten pas.
 - Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), domyślny druk czarny, a przy włączonych kolorach prawdziwe kolory kratek bez liter i legendy, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karty sekwencji i sudoku spełniają te same granice co labirynt: generowanie do 5 sekund (także sudoku 9×9 na najtrudniejszym poziomie), jedna strona A4, margines co najmniej 10 mm, domyślny druk czarny bez odpowiedzi (sudoku z włączonymi kolorami drukuje kształty w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
-- Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
+- Postać przy poleceniu (US-15) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
+- Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
 
@@ -355,20 +401,22 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom wyznaczają szerokość alejki i sposób losowania labiryntu.
 
-Rodzic wybiera jeden z sześciu poziomów nazwanych wiekiem oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Dwa poziomy mogą dzielić szerokość alejki i różnić się sposobem losowania. Każde Generuj daje nowy labirynt.
+Rodzic wybiera jeden z sześciu numerowanych poziomów (Poziom 1–6) oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Dwa poziomy mogą dzielić szerokość alejki i różnić się sposobem losowania. Każde Generuj daje nowy labirynt.
 
-| Poziom     | Alejka      | Siatka | Losowanie                         | Droga do mety (typowo) |
-| ---------- | ----------- | ------ | --------------------------------- | ---------------------- |
-| 3 lata     | około 21 mm | 9×11   | krótka droga, dużo krótkich odnóg | około 21 komórek       |
-| 4 lata     | około 21 mm | 9×11   | długa, kręta droga                | około 41 komórek       |
-| 5 lat      | około 15 mm | 13×16  | krótka droga, dużo krótkich odnóg | około 32 komórek       |
-| 6 lat      | około 15 mm | 13×16  | długa, kręta droga                | około 80 komórek       |
-| 7–8 lat    | około 11 mm | 17×21  | długa, kręta droga                | około 130 komórek      |
-| nastolatek | około 7 mm  | 27×33  | długa, kręta droga                | około 300 komórek      |
+| Poziom   | Dawna nazwa | Alejka      | Siatka | Losowanie                         | Droga do mety (typowo) |
+| -------- | ----------- | ----------- | ------ | --------------------------------- | ---------------------- |
+| Poziom 1 | 3 lata      | około 21 mm | 9×11   | krótka droga, dużo krótkich odnóg | około 21 komórek       |
+| Poziom 2 | 4 lata      | około 21 mm | 9×11   | długa, kręta droga                | około 41 komórek       |
+| Poziom 3 | 5 lat       | około 15 mm | 13×16  | krótka droga, dużo krótkich odnóg | około 32 komórek       |
+| Poziom 4 | 6 lat       | około 15 mm | 13×16  | długa, kręta droga                | około 80 komórek       |
+| Poziom 5 | 7–8 lat     | około 11 mm | 17×21  | długa, kręta droga                | około 130 komórek      |
+| Poziom 6 | nastolatek  | około 7 mm  | 27×33  | długa, kręta droga                | około 300 komórek      |
+
+Kolumna „Dawna nazwa” łączy numer z dotychczasowym poziomem i z zapisanymi danymi; nie jest etykietą na pasku (Open Questions 11).
 
 Droga do mety nie jest progiem. To typowa długość dla siatki i sposobu losowania; pojedyncza karta może być krótsza albo dłuższa.
 
-Na poziomach od 3 lat do 7–8 lat start jest na środku górnej krawędzi, napis „Meta” na środku dolnej, a przy starcie stoi wybrana postać. Poziom nastolatka ma start i metę w narożnikach i nie pokazuje postaci. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
+Na Poziomach 1–5 start jest na środku górnej krawędzi, napis „Meta” na środku dolnej, a przy starcie stoi wybrana postać. Poziom 6 ma start i metę w narożnikach i nie pokazuje postaci. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
 
 Krótki poziom przy tej samej alejce losuje się sposobem, który daje krótszą drogę i więcej krótkich odnóg, żeby krótka droga nie była zagadką ukrytą wśród pułapek. Dłuższy poziom losuje długą, krętą drogę z mniejszą liczbą rozgałęzień.
 
@@ -378,16 +426,16 @@ Wynikiem jest karta A4. Labirynt zajmuje większą część strony, zachowuje ma
 
 Aplikacja zawsze tworzy kartę z dokładnie jedną odpowiedzią: odbiciem wzoru względem osi. Poziom wyznaczają rozmiar kratki, katalog obiektów i podpowiedź; oś jest zawsze pionowa (pozioma odpadła 2026-10-23: obiekty z katalogu są symetryczne lewo–prawo, obrócone leżałyby na boku). Kolory są osobnym ustawieniem rodzica, niezależnym od poziomu.
 
-Rodzic wybiera jeden z czterech poziomów nazwanych wiekiem. Kartka to pionowy prostokąt A4 z kratką podzieloną osią na dwie równe połowy i jednym zdaniem polecenia nad kratką. Wzór jest połową symetrycznego obiektu (np. rakieta, robot, truskawka, jabłko, motyl, korona) zamalowaną na kratkach po jednej stronie osi; druga strona jest pusta poza kratkami podpowiedzi. Dziecko zamalowuje kratki po drugiej stronie tak, by obiekt odbijał się w osi. Karta nie pokazuje postaci z katalogu labiryntu.
+Rodzic wybiera jeden z czterech numerowanych poziomów (Poziom 1–4). Kartka to pionowy prostokąt A4 z kratką podzieloną osią na dwie równe połowy i jednym zdaniem polecenia nad kratką. Wzór jest połową symetrycznego obiektu (np. rakieta, robot, truskawka, jabłko, motyl, korona) zamalowaną na kratkach po jednej stronie osi; druga strona jest pusta poza kratkami podpowiedzi. Dziecko zamalowuje kratki po drugiej stronie tak, by obiekt odbijał się w osi. Wzór nie używa postaci z katalogu; postać stoi tylko przy poleceniu (US-15).
 
-Obiekty pochodzą z katalogu szablonów zapisanych w kodzie. Szablon ma części, które generator losuje (np. liczba okien i kształt skrzydeł rakiety, pestki truskawki, oczy i ramiona robota), więc ten sam obiekt daje różne karty. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Szablon musi zmieścić się w połowie siatki danego poziomu. Poziom 4 lat ma własne, prostsze warianty obiektów rysowane na połowie 4×12; poziomy 5 i 6 lat używają szablonów 6×15; poziom 7 lat ma bogatsze warianty (więcej części i szczegółów) rysowane na połowie 9×24.
+Obiekty pochodzą z katalogu szablonów zapisanych w kodzie. Szablon ma części, które generator losuje (np. liczba okien i kształt skrzydeł rakiety, pestki truskawki, oczy i ramiona robota), więc ten sam obiekt daje różne karty. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Szablon musi zmieścić się w połowie siatki danego poziomu. Poziom 1 ma własne, prostsze warianty obiektów rysowane na połowie 4×12; Poziomy 2 i 3 używają szablonów 6×15; Poziom 4 ma bogatsze warianty (więcej części i szczegółów) rysowane na połowie 9×24.
 
-| Poziom | Kratka      | Siatka (cała) | Obiekty             | Podpowiedź                       |
-| ------ | ----------- | ------------- | ------------------- | -------------------------------- |
-| 4 lata | około 20 mm | 8×12          | proste, połowa 4×12 | 3 kratki odbicia przy osi, blade |
-| 5 lat  | około 15 mm | 12×16         | szablony 6×15       | brak                             |
-| 6 lat  | około 12 mm | 14×20         | szablony 6×15       | brak                             |
-| 7 lat  | około 10 mm | 18×24         | bogate, połowa 9×24 | brak                             |
+| Poziom   | Dawna nazwa | Kratka      | Siatka (cała) | Obiekty             | Podpowiedź                       |
+| -------- | ----------- | ----------- | ------------- | ------------------- | -------------------------------- |
+| Poziom 1 | 4 lata      | około 20 mm | 8×12          | proste, połowa 4×12 | 3 kratki odbicia przy osi, blade |
+| Poziom 2 | 5 lat       | około 15 mm | 12×16         | szablony 6×15       | brak                             |
+| Poziom 3 | 6 lat       | około 12 mm | 14×20         | szablony 6×15       | brak                             |
+| Poziom 4 | 7 lat       | około 10 mm | 18×24         | bogate, połowa 9×24 | brak                             |
 
 Obiekt zawsze dotyka osi, a dziecko go przedłuża. Odsunięcie obiektu od osi odpadło (2026-10-23): odsunięta połowa przestaje być jednym obiektem. Trudność rośnie przez mniejszą kratkę, większą siatkę, bogatsze obiekty i brak podpowiedzi. Wartości są startowe i zostają potwierdzone na wydruku.
 
@@ -399,28 +447,28 @@ Wynikiem jest karta A4. Kratka zajmuje większą część strony, zachowuje marg
 
 ### Karta sekwencji
 
-Aplikacja zawsze tworzy kartę, w której każdy ciąg ma dokładnie jedną odpowiedź. Poziom wyznaczają długość ciągu, rodzaj reguł i liczba pustych pól. Rodzic wybiera jeden z czterech poziomów nazwanych wiekiem. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia na górze i ciągami jeden pod drugim; każdy ciąg to rząd pól, część pól jest wypełniona, część pusta.
+Aplikacja zawsze tworzy kartę, w której każdy ciąg ma dokładnie jedną odpowiedź. Poziom wyznaczają długość ciągu, rodzaj reguł i liczba pustych pól. Rodzic wybiera jeden z czterech numerowanych poziomów (Poziom 1–4). Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia na górze i ciągami jeden pod drugim; każdy ciąg to rząd pól, część pól jest wypełniona, część pusta.
 
 Elementy to cztery kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Reguły pochodzą z jawnej listy: powtarzanie wzoru (AB, ABC, AAB), liczby rosnące o 1 lub o 2, liczby malejące o 1, rosnące grupy (A, AB, ABB) i mieszanie: kształt na przemian z liczbą rosnącą. Ciąg dla pustego pola jest poprawny, gdy z całej listy reguł pasuje do niego dokładnie jedna odpowiedź. Karta, której którykolwiek ciąg nie spełnia tego, nie jest pokazana.
 
-| Poziom | Długość ciągu | Reguły                                               | Puste pola w ciągu | Liczba ciągów |
-| ------ | ------------- | ---------------------------------------------------- | ------------------ | ------------- |
-| 4 lata | 5 pól         | wzór AB z dwoma kształtami                           | 1                  | 5             |
-| 5 lat  | 7 pól         | wzór AB, AAB, ABC z kształtami                       | 1–2                | 6             |
-| 6 lat  | 8 pól         | liczby rosnące o 1 lub o 2, wzory kształtów          | 2                  | 7             |
-| 7 lat  | 8 pól         | mieszane: kształt z liczbą, malejące i rosnące grupy | 2–3                | 7             |
+| Poziom   | Dawna nazwa | Długość ciągu | Reguły                                               | Puste pola w ciągu | Liczba ciągów |
+| -------- | ----------- | ------------- | ---------------------------------------------------- | ------------------ | ------------- |
+| Poziom 1 | 4 lata      | 5 pól         | wzór AB z dwoma kształtami                           | 1                  | 5             |
+| Poziom 2 | 5 lat       | 7 pól         | wzór AB, AAB, ABC z kształtami                       | 1–2                | 6             |
+| Poziom 3 | 6 lat       | 8 pól         | liczby rosnące o 1 lub o 2, wzory kształtów          | 2                  | 7             |
+| Poziom 4 | 7 lat       | 8 pól         | mieszane: kształt z liczbą, malejące i rosnące grupy | 2–3                | 7             |
 
-Pola wypełniają szerokość wiersza, więc krótszy ciąg daje większe pole na odpowiedź; dlatego najłatwiejszy poziom ma najkrótszy ciąg. Wszystkie pola mają cienką ramkę, puste pole ma ramkę przerywaną i mały znak zapytania w rogu. Kształty są obrysami. Polecenie: „Co pasuje w puste pole? Uzupełnij.” Na poziomach 4 i 5 lat jedno puste pole jest zawsze na końcu ciągu, drugie (jeśli jest) leży w drugiej połowie, a wzór pokazuje się w całości przed pierwszą luką.
+Pola wypełniają szerokość wiersza, więc krótszy ciąg daje większe pole na odpowiedź; dlatego najłatwiejszy poziom ma najkrótszy ciąg. Wszystkie pola mają cienką ramkę, puste pole ma ramkę przerywaną i mały znak zapytania w rogu. Kształty są obrysami. Polecenie: „Co pasuje w puste pole? Uzupełnij.” Na Poziomach 1 i 2 jedno puste pole jest zawsze na końcu ciągu, drugie (jeśli jest) leży w drugiej połowie, a wzór pokazuje się w całości przed pierwszą luką.
 
 Doprecyzowanie z planu poziomów (2026-10-24):
 
 - Rosnące grupy to bloki A, AB, ABB, ABBB… sklejone i ucięte do długości ciągu (przy 8 polach: A A B A B B A B).
 - Mieszane to jeden stały kształt na przemian z liczbą rosnącą o 1 (kształt na polach parzystych albo nieparzystych).
 - Liczby na karcie mają od 1 do 20, więc w polu są najwyżej dwie cyfry. Liczba to gruba cyfra na środku pola, bez ramki.
-- Na poziomach 4 i 5 lat luki wyglądają jak w tabeli (ostatnie pole, druga luka w drugiej połowie). Na poziomach 6 i 7 lat luki leżą w dowolnych polach po tych, które pokazują regułę (liczby: dwa pierwsze pola, wzory ABC i AAB oraz grupy: trzy pierwsze). Poziom 7 lat ma trzy ciągi z trzema lukami, pozostałe cztery z dwiema.
-- Poziom 6 lat losuje po jednym ciągu każdej z pięciu reguł (liczby +1, liczby +2, AB, AAB, ABC) i dwa dowolne z nich; poziom 7 lat po dwa ciągi kształt z liczbą, malejące o 1 i rosnące grupy oraz jeden dowolny.
+- Na Poziomach 1 i 2 luki wyglądają jak w tabeli (ostatnie pole, druga luka w drugiej połowie). Na Poziomach 3 i 4 luki leżą w dowolnych polach po tych, które pokazują regułę (liczby: dwa pierwsze pola, wzory ABC i AAB oraz grupy: trzy pierwsze). Poziom 4 ma trzy ciągi z trzema lukami, pozostałe cztery z dwiema.
+- Poziom 3 losuje po jednym ciągu każdej z pięciu reguł (liczby +1, liczby +2, AB, AAB, ABC) i dwa dowolne z nich; Poziom 4 po dwa ciągi kształt z liczbą, malejące o 1 i rosnące grupy oraz jeden dowolny.
 - Jedna karta nie pokazuje dwa razy tej samej sekwencji, nawet z lukami w innych polach.
-- Dwuznaczność liczy się względem całej listy reguł, także na poziomach 4 i 5 lat; wiersz, do którego pasuje inna reguła z inną odpowiedzią (np. AAB z dwiema lukami pasujące też do rosnących grup), nie jest pokazany.
+- Dwuznaczność liczy się względem całej listy reguł, także na Poziomach 1 i 2; wiersz, do którego pasuje inna reguła z inną odpowiedzią (np. AAB z dwiema lukami pasujące też do rosnących grup), nie jest pokazany.
 
 Wartości są startowe i zostają potwierdzone na wydruku. Wynikiem jest karta A4; ciągi zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
@@ -428,7 +476,7 @@ Wartości są startowe i zostają potwierdzone na wydruku. Wynikiem jest karta A
 
 Przebudowane 2026-10-24: zamiast planszy 4×4 z postaciami z katalogu trzy rozmiary z prostymi kształtami albo cyframi, a rozmiar i poziom są dwoma osobnymi wyborami, nie wiekiem (7-latek robi już 9×9).
 
-Aplikacja zawsze tworzy planszę z dokładnie jednym rozwiązaniem. Zasada: w każdym wierszu, w każdej kolumnie i w każdym bloku każdy symbol występuje raz. Generator układa pełne poprawne sudoku, potem usuwa pola tak, by pozostałe wypełnione pola nadal miały jedno rozwiązanie, aż do liczby pustych pól dla rozmiaru i poziomu. Plansza, która tego nie spełnia, nie jest pokazana. Karta nie pokazuje postaci z katalogu labiryntu.
+Aplikacja zawsze tworzy planszę z dokładnie jednym rozwiązaniem. Zasada: w każdym wierszu, w każdej kolumnie i w każdym bloku każdy symbol występuje raz. Generator układa pełne poprawne sudoku, potem usuwa pola tak, by pozostałe wypełnione pola nadal miały jedno rozwiązanie, aż do liczby pustych pól dla rozmiaru i poziomu. Plansza, która tego nie spełnia, nie jest pokazana. Plansza nie używa postaci z katalogu; postać stoi tylko przy poleceniu (US-15).
 
 Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla — proste do narysowania przez dziecko. Plansza 4×4 losuje cztery z pięciu najprostszych (koło, kwadrat, trójkąt, serce, krzyżyk), 6×6 sześć, 9×9 używa wszystkich dziewięciu. Przy 6×6 i 9×9 rodzic wybiera kształty albo cyfry (przełącznik „Kształty / Cyfry”, 9×9 z cyframi to zwykłe sudoku).
 
@@ -448,11 +496,44 @@ Kolory (US-14): przy kształtach rodzic może włączyć kolory. Każdy kształt
 
 Wartości są startowe i zostają potwierdzone na wydruku; użytkowniczka nie jest pewna, czy 6×6 i 9×9 nie są za trudne (Open Questions 9). Wynikiem jest karta A4: plansza zajmuje większą część strony i zachowuje margines co najmniej 10 mm.
 
+### Poziomy
+
+Ustalone 2026-10-26: poziomy nie są nazwane wiekiem. Każdy rodzaj karty ma własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4. Numery nie są porównywalne między kartami. Sudoku ma zamiast tego dwa wymiary: rozmiar oraz łatwy / średni / trudny.
+
+Każdy wiersz listy poziomów ma pół zdania o tym, co zmienia poziom (np. „Poziom 1 · duża kratka, podpowiedź przy osi”). Zapisane identyfikatory poziomów (`lat3`…`nastolatek`, `lat4`…`lat7`) mogą zostać w danych; zmienia się etykieta, więc zapisane profile i ostatnie parametry wczytują się bez migracji.
+
+### Profil i zapamiętane ustawienia
+
+Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju karty. Ustawienia karty to wszystko, co jest na pasku tej karty poza postacią:
+
+| Karta     | Zapamiętane ustawienia                      |
+| --------- | ------------------------------------------- |
+| Labirynt  | poziom                                      |
+| Symetria  | poziom, kolory                              |
+| Sekwencje | poziom                                      |
+| Sudoku    | rozmiar, poziom, „Kształty / Cyfry”, kolory |
+
+Zasady:
+
+- Ustawienia karty zmienia się tylko na pasku tej karty. Przy aktywnym profilu każda zmiana zapisuje się w profilu od razu, a komunikat „Zapamiętane dla {imię}” to potwierdza. Okno profilu pokazuje je tylko do odczytu.
+- Karta, której profil jeszcze nie używał, startuje z ustawieniami domyślnymi tej karty (tymi samymi co przy pierwszej wizycie bez profilu).
+- Ulubiona postać zmienia się tylko jawnie: w oknie profilu albo wyborem „Ustaw jako ulubioną” pod listą postaci. Inna postać wybrana na pasku przy aktywnym profilu obowiązuje do końca wizyty na tej stronie; przy następnym wejściu wraca ulubiona.
+- Bez profilu urządzenie pamięta ostatnie ustawienia osobno dla każdej karty i jedną ostatnio użytą postać dla wszystkich kart.
+- Profil nie przechowuje wieku. Wiek nie ustawia żadnego poziomu.
+- Przy wybranym profilu miniatury katalogu pokazują zapamiętany poziom (sudoku: rozmiar i poziom, np. „6×6 · średni”).
+- Zgodność wstecz: dawne pole poziomu w profilu i w ostatnich parametrach zostaje poziomem labiryntu; dawna postać profilu zostaje ulubioną, a dawna postać ostatnich parametrów ostatnio użytą postacią.
+
+### Postać na kartach
+
+Na labiryncie postać stoi przy starcie (Poziomy 1–5). Na pozostałych kartach stoi przy zdaniu polecenia nad zadaniem, a polecenie jest w jej dymku. Postać to ten sam kolorowy obrazek z katalogu albo własny obrazek rodzica i drukuje się zawsze w kolorze. Przy „Bez postaci” zostaje samo polecenie. Postać nie wpływa na zadanie, odpowiedź ani poziom.
+
+Postać jako treść zadania (np. połowa sylwetki w symetrii, obrazek odkrywany w nonogramie albo dyktandzie) wymaga obrysów postaci na kratce i zostaje poza zakresem (Po MVP).
+
 ## Access Control
 
 Jeden lokalny użytkownik-rodzic; bez logowania i bez podziału na role. Ustawienia pozostają na urządzeniu.
 
-Rodzic może korzystać z generatora bez tworzenia profilu dziecka. Opcjonalne nazwane profile dzieci przechowują wspólny wiek i ulubioną postać oraz poziom każdego rodzaju karty osobno (od kamienia symetrii), aby skrócić kolejne generowanie. Dzieci nie mają kont ani dostępu do aplikacji.
+Rodzic może korzystać z generatora bez tworzenia profilu dziecka. Opcjonalne nazwane profile dzieci przechowują ulubioną postać i ustawienia każdego rodzaju karty osobno, aby skrócić kolejne generowanie. Dzieci nie mają kont ani dostępu do aplikacji.
 
 Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
@@ -463,13 +544,15 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
 - MVP nie dostarcza biblioteki gotowych kart — FR-011 pozostaje możliwym rozszerzeniem poza MVP.
-- MVP nie ma poziomu dla osoby dorosłej. Najstarszy poziom to nastolatek.
+- MVP nie ma poziomu dla osoby dorosłej. Najstarszy poziom labiryntu to Poziom 6 (dawny nastolatek).
+- MVP nie ma samouczka przy pierwszym wejściu ani okna pomocy; wyjaśnienia to podpowiedzi w miejscu wyboru i strona „Jak to działa” (US-16).
+- Profil nie przechowuje wieku dziecka i nie wyznacza poziomów z wieku.
 
 ## Po MVP
 
 Zapisane 2026-10-10, żeby nie zginęło. Poza bieżącym kamieniem. Żaden z tych typów nie wchodzi do zakresu, dopóki jego kamień nie jest otwarty.
 
-Wspólna umowa z labiryntem: generator algorytmiczny, jedna sprawdzalna odpowiedź, trudność nazwana wiekiem, jedna strona A4, czarny druk. Bez modelu językowego.
+Wspólna umowa z labiryntem: generator algorytmiczny, jedna sprawdzalna odpowiedź, numerowane poziomy (od 2026-10-26 zamiast wieku), jedna strona A4, czarny druk z kolorową postacią przy poleceniu. Bez modelu językowego.
 
 Symetria przeszła z tej listy do zakresu (2026-10-22): US-05–US-09, FR-014–FR-018, Business Logic „Karta symetrii”. Strona główna staje się katalogiem z miniaturami, a każdy rodzaj karty dostaje własną stronę generatora; druk, margines, ostatnie parametry i profil dziecka zostają. Ta przebudowa mieści kolejne rodzaje, ale nie dostarcza całej listy poniżej.
 
@@ -477,9 +560,11 @@ Sekwencje i sudoku przeszły z tej listy do zakresu (2026-10-23): US-10–US-14,
 
 Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero przy otwarciu jego kamienia.
 
-- **Połącz kropki.** Sylwetka wybranej postaci. Czeka na obrys każdej postaci.
+- **Obrysy postaci na kratce.** Wspólny warunek kilku kart poniżej: każda postać z katalogu narysowana na kratce (bitmapa i jedna zamknięta linia obrysu), zapisana w kodzie jak szablony symetrii. Makieta z 2026-10-26: wszystkie 11 postaci da się narysować na kratce ok. 15×15 z detalami jako pustymi kratkami (oczy, okna, pas strażaka), a obrys każdej to jedna zamknięta linia. Na niskie poziomy potrzebne są osobne, prostsze obrysy. Własny obrazek rodzica nie ma obrysu; karta bierze wtedy postać z katalogu albo prosty obiekt.
+- **Dyktando graficzne.** Kratka, kropka startu i ciąg poleceń („3→”, „1↑”); dziecko rysuje linię i odkrywa postać. Jedna odpowiedź: polecenia wyznaczają jedną zamkniętą linię. Czeka na obrysy postaci. Z makiety: pełna postać to 32–64 polecenia, więc pasuje do wyższych poziomów; Poziom 1 potrzebuje ok. 10–15 poleceń i strzałek narysowanych zamiast liczb. Postać w dymku może zdradzać obrazek albo być zakryta na wyższym poziomie.
+- **Połącz kropki.** Sylwetka wybranej postaci. Czeka na obrysy postaci.
 - **Który nie pasuje.** Jeden obrazek łamie jawną regułę. Kartka odpada, gdy druga reguła wskazuje inny obrazek.
-- **Nonogram postaci.** Po rozwiązaniu widać uproszczoną postać. Czeka na małą bitmapę postaci.
+- **Nonogram postaci.** Po rozwiązaniu widać uproszczoną postać. Czeka na bitmapy postaci. Z makiety: 15×15 pasuje starszym dzieciom; młodsze potrzebują 8×8 albo 10×10. Pies i kot oraz dinozaur i smok wymagają wyraźniejszych różnic (uszy, wąsy, skrzydło).
 - **Karty kodowania.** Kratka, postać, meta i strzałki. Jedna najkrótsza droga.
 - **Porównywanie kwot w złotych.** Dwie kupki monet albo jedna kupka i cena. Liczy się wartość monet, nie liczba sztuk. „Ułóż dokładnie tę kwotę” czeka na regułę, która zostawia jeden układ.
 
@@ -489,11 +574,12 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — TBD by user. Block: no (pain and missing capability are captured; the second vision paragraph is incomplete until this lands).
 2. ~~**Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej?**~~ — Zamknięte 2026-10-16 jako nieaktualne: poziom wyznacza sposób losowania, nie próg głębokości odnogi (`random-maze-generator`).
-3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka.
-4. **Czy poziom nastolatka ma pokazywać postać?** — Owner: user. Block: no. Dziś pasek „Postać” zostaje aktywny przy nastolatku, a karta postaci nie rysuje, co myli rodzica. Albo wybór postaci blokuje się przy nastolatku, albo nastolatek też dostaje postać, bo młodsze dzieci mogą chcieć ten poziom. Nowa zmiana, issue drpc1/printo-kids#54 (2026-10-22).
-5. **Czy startowe wartości poziomów symetrii (kratka, siatka, obiekty, podpowiedź) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22, przebudowaną 2026-10-23 (obiekty zamiast gęstości plamy); potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie. Połowa siatki 8×12 ma 4 kratki szerokości: rozstrzygnięte 2026-10-23 po makiecie, poziom 4 lat ma własne, prostsze warianty obiektów, a poziom 7 lat bogatsze. Oś pozioma i odsunięcie od osi wycofane z poziomów. Czeka na wydruk w S-13 (faza 4).
-6. **Czy karta symetrii ma kiedyś używać postaci (np. połowa sylwetki)?** — Owner: user. Block: no. Dziś karta postaci nie pokazuje, a strona symetrii nie ma paska „Postać” (US-05). Zależy od obrysów postaci, jak „Połącz kropki”. Szablony obiektów karty symetrii (2026-10-23) to osobny katalog i nie czekają na tę decyzję.
+3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka. Od 2026-10-26 postać jest na każdej karcie (FR-024), a obrysy na kratce (Po MVP) to praca pochodna od tych samych postaci.
+4. **Czy Poziom 6 labiryntu (dawny nastolatek) ma pokazywać postać?** — Owner: user. Block: no. Dziś pasek „Postać” zostaje aktywny na tym poziomie, a karta postaci nie rysuje, co myli rodzica. Albo wybór postaci blokuje się na Poziomie 6, albo ten poziom też dostaje postać, bo młodsze dzieci mogą chcieć ten poziom. Nowa zmiana, issue drpc1/printo-kids#54 (2026-10-22).
+5. **Czy startowe wartości poziomów symetrii (kratka, siatka, obiekty, podpowiedź) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22, przebudowaną 2026-10-23 (obiekty zamiast gęstości plamy); potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie. Połowa siatki 8×12 ma 4 kratki szerokości: rozstrzygnięte 2026-10-23 po makiecie, Poziom 1 (dawne 4 lata) ma własne, prostsze warianty obiektów, a Poziom 4 (dawne 7 lat) bogatsze. Oś pozioma i odsunięcie od osi wycofane z poziomów. Czeka na wydruk w S-13 (faza 4).
+6. **Czy karta symetrii ma kiedyś używać postaci jako wzoru (np. połowa sylwetki)?** — Owner: user. Block: no. Częściowo rozstrzygnięte 2026-10-26: postać stoi przy poleceniu na każdej karcie (US-15). Postać jako wzór na kratce zależy od obrysów postaci (Po MVP), jak dyktando, nonogram i „Połącz kropki”. Szablony obiektów karty symetrii (2026-10-23) to osobny katalog i nie czekają na tę decyzję.
 7. **Ile szablonów obiektów i jakich wariantów wystarczy, żeby kolejne karty się nie powtarzały?** — Owner: team. Block: no. Ustalone 2026-10-23: obiekty zamiast przypadkowych plam. Gotowa lista szablonów to skończona biblioteka, czyli problem z wizji produktu; warianty części mają go zmiękczyć. Otwarte: czy starszy poziom ma też dostawać ornamenty budowane z reguł (np. romby, pierścienie), które dają się generować bez końca.
 8. ~~**Czy dziecko przedszkolne uzupełni sudoku obrazkowe numerem z legendy, czy narysuje postać?**~~ — Zamknięte 2026-10-24: sudoku nie używa postaci ani legendy numerów; dziecko rysuje proste kształty albo wpisuje cyfry. Pytanie 3 o prawa do postaci sudoku już nie dotyczy.
 9. **Czy startowe wartości poziomów sekwencji i sudoku (długość ciągu, reguły, liczba pustych pól) pasują dziecku?** — Owner: user. Block: no. Tabele w Business Logic są propozycją z 2026-10-23 (sudoku przebudowane 2026-10-24); potwierdza je wydruk, nie planowanie. Użytkowniczka nie jest pewna, czy 6×6 (12/18/22 pustych) i 9×9 (35/45/52 pustych) nie są za trudne dla dzieci. Wartości poziomów sekwencji potwierdził wydruk z 2026-10-24 (S-17); sudoku zostaje otwarte do wydruku S-19.
-10. **Kiedy wraca profil z wiekiem i poziomami osobno dla każdego rodzaju karty (US-08, FR-017)?** — Owner: user. Block: no. Odłożone 2026-10-23, gdy będą cztery rodzaje kart; wtedy wybieramy, które ustawienia mają sens na poziomie profilu.
+10. ~~**Kiedy wraca profil z wiekiem i poziomami osobno dla każdego rodzaju karty (US-08, FR-017)?**~~ — Zamknięte 2026-10-26: profil wraca bez wieku. Pamięta sam ustawienia każdej karty z paska, pokazuje je w katalogu i w oknie profilu tylko do odczytu, a ulubiona postać zmienia się jawnie (US-08, FR-009, FR-017).
+11. **Czy lista poziomów ma obok opisu pokazywać typowy wiek (np. „Poziom 3 · zwykle ok. 5 lat”)?** — Owner: user. Block: no. Typowy wiek pomaga przy pierwszym wyborze, ale wraca do oceniania dziecka wiekiem. Dziś PRD przewiduje tylko opis tego, co zmienia poziom (US-16); kolumna „Dawna nazwa” w Business Logic nie jest etykietą.
