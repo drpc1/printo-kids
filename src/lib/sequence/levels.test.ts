@@ -39,8 +39,25 @@ void describe("SEQUENCE_LEVELS", () => {
 
   void test("each level names the rules of the PRD table", () => {
     assert.deepEqual(
-      SEQUENCE_LEVELS.map((level) => level.rules.map(({ rule }) => rule)),
-      [["AB"], ["AB", "AAB", "ABC"], ["up1", "up2", "AB", "AAB", "ABC"], ["mixed", "down1", "groups"]],
+      SEQUENCE_LEVELS.map((level) => level.rules.map(({ rule, minRows }) => [rule, minRows])),
+      [
+        [["AB", 5]],
+        [
+          ["AB", 1],
+          ["AAB", 1],
+          ["ABC", 1],
+        ],
+        [
+          ["AB", 2],
+          ["AAB", 2],
+          ["ABC", 2],
+        ],
+        [
+          ["mixed", 2],
+          ["down1", 2],
+          ["groups", 2],
+        ],
+      ],
     );
   });
 
