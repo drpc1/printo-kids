@@ -216,5 +216,5 @@ Stan żyje w komponencie strony. Nic w profilu ani w ostatnich parametrach nie w
 
 #### Manual
 
-- [x] 2.1 US-17 i akapit „Karta dyktanda graficznego” zawierają zdanie o przełączniku, o gaśnięciu przy Generuj i zmianie poziomu, o zostawieniu stanu przy samej kategorii i przy nieudanym Generuj, oraz o wydruku bez obrysu
-- [x] 2.2 US-17 nadal mówi, że druk jest czarny i bez rysunku odpowiedzi, a NFR dyktanda zostaje przy czarnym druku bez odpowiedzi
+- [x] 2.1 US-17 i akapit „Karta dyktanda graficznego” zawierają zdanie o przełączniku, o gaśnięciu przy Generuj i zmianie poziomu, o zostawieniu stanu przy samej kategorii i przy nieudanym Generuj, oraz o wydruku bez obrysu — 45902bd
+- [x] 2.2 US-17 nadal mówi, że druk jest czarny i bez rysunku odpowiedzi, a NFR dyktanda zostaje przy czarnym druku bez odpowiedzi — 45902bd

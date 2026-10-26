@@ -1,9 +1,9 @@
 ---
 change_id: graphic-dictation-show-solution
 title: Show solution on the graphic dictation sheet
-status: implementing
+status: implemented
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-26
 archived_at: null
 ---
 
