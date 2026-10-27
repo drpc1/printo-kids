@@ -1,10 +1,10 @@
 ---
 change_id: favorite-character-explicit
 title: Ulubiona postać zmienia się tylko jawnie
-status: impl_reviewed
+status: archived
 created: 2026-10-27
 updated: 2026-10-27
-archived_at: null
+archived_at: 2026-10-27T20:52:04Z
 ---
 
 ## Notes
