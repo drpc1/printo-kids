@@ -143,6 +143,15 @@ test("an own image picked in the favorite list is the favorite after a reload", 
   });
   await expect(dialog.getByRole("button", { name: "Postać: Własne zdjęcie" })).toBeVisible();
 
+  const stored = await page.evaluate((key) => {
+    const raw = JSON.parse(localStorage.getItem(key) ?? "null") as {
+      profiles: { character: string; image?: string }[];
+    } | null;
+    return raw?.profiles[0];
+  }, PROFILES_KEY);
+  expect(stored?.character).toBe("wlasne");
+  expect(stored?.image?.startsWith("data:image/")).toBe(true);
+
   await page.reload();
   await expect(page.getByRole("button", { name: "Postać: Własne zdjęcie" })).toBeVisible();
 });
