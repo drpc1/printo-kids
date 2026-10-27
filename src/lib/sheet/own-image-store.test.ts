@@ -79,7 +79,7 @@ void describe("recordBarCharacter", () => {
     recordBarCharacter(storage, null, "kot", "lat6");
 
     assert.equal(readOwnImage(storage), JPEG);
-    assert.deepEqual(readLastUsed(storage, ["none", "kot", "wlasne"]), { character: "kot", level: "lat6" });
+    assert.deepEqual(readLastUsed(storage, ["none", "kot", "wlasne"]), { character: "kot", level: "lat6", cards: {} });
     assert.equal(
       storage.writes.some((write) => write.key === OWN_IMAGE_KEY),
       false,
@@ -94,7 +94,11 @@ void describe("recordBarCharacter", () => {
     recordBarCharacter(storage, "ala", "kot", "lat6");
 
     assert.equal(readOwnImage(storage), JPEG);
-    assert.deepEqual(readLastUsed(storage, ["none", "kot", "wlasne"]), { character: "wlasne", level: "lat5" });
+    assert.deepEqual(readLastUsed(storage, ["none", "kot", "wlasne"]), {
+      character: "wlasne",
+      level: "lat5",
+      cards: {},
+    });
     assert.deepEqual(storage.writes, []);
   });
 });

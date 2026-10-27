@@ -17,6 +17,7 @@ import {
   type ChildProfile,
   type VisitAfterDelete,
 } from "@/lib/child-profiles";
+import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
 import { readLastUsed } from "@/lib/last-used";
 import { LEVELS, levelById, type LevelId } from "@/lib/maze/levels";
@@ -65,6 +66,7 @@ export function ProfileCorner({
   onFavoriteSaved,
   onDeleted,
   onClearProfile,
+  newProfileCards,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
@@ -81,6 +83,8 @@ export function ProfileCorner({
   ) => void;
   onDeleted: (next: VisitAfterDelete) => void;
   onClearProfile: () => void;
+  /** Card settings the new profile starts with: the bar of the card page it is created on. */
+  newProfileCards?: CardSettingsMap;
 }) {
   const activeProfile = profiles.find((profile) => profile.id === activeId) ?? null;
   const cornerLabel = activeProfile === null ? "Profil" : activeProfile.name;
@@ -391,6 +395,7 @@ export function ProfileCorner({
       draftCharacter,
       draftLevel,
       draftCharacter === OWN_IMAGE_ID ? readOwnImage(localStorage) : null,
+      newProfileCards,
     );
     if (profile === null) {
       setFormError(SAVE_ERROR_TEXT);

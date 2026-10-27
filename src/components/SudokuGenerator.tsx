@@ -3,7 +3,10 @@ import { Printer } from "lucide-react";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
+import { RememberedNote } from "@/components/RememberedNote";
+import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
+import type { SudokuCardSettings } from "@/lib/card-settings";
 import { SudokuChoice } from "@/components/SudokuChoice";
 import { SudokuSymbolsChoice } from "@/components/SudokuSymbolsChoice";
 import { Switch } from "@/components/ui/switch";
@@ -11,7 +14,6 @@ import { sudokuShapeInk } from "@/lib/sudoku/colors";
 import { generateSudokuCard, sudokuBlock, type SudokuCard } from "@/lib/sudoku/generate";
 import { layoutSudokuSheet } from "@/lib/sudoku/layout";
 import {
-  DEFAULT_SUDOKU_SETTINGS,
   SUDOKU_LEVELS,
   SUDOKU_SIZES,
   sudokuHasLevels,
@@ -27,22 +29,23 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
  * The sudoku card page: Generuj, the size, level and shapes-or-digits choices, the card, Drukuj, and the shared profile
- * corner. It has no character bar. The settings live only in this component (the profile does not remember them) and
- * the page never touches the maze's last-used parameters; it only keeps the bar values the profile corner shows.
+ * corner. It has no character bar. The settings and the colors come from `useCardSettings` (the active profile's, or
+ * the device's) and every change is remembered at once; the page never touches the maze's last-used parameters, it
+ * only keeps the bar values the profile corner shows. A profile switch with a card shown draws a new card when the
+ * size, level or symbols changed.
  * Changing a setting while a card is shown generates a new card for the new settings; the Kolory switch (shapes only) redraws the same card in crayon colors and never generates a new one.
  */
 export default function SudokuGenerator() {
-  const { profiles, activeId, ask, waitingForChild, visitStart, corner } = useChildProfileVisit({
-    onApply: applyProfileBar,
-  });
+  const visit = useChildProfileVisit({ onApply: applyProfileBar });
+  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
   const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
-  const [settings, setSettings] = useState<SudokuSettings>(DEFAULT_SUDOKU_SETTINGS);
-  const [colors, setColors] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SudokuCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
+  const memory = useCardSettings("sudoku", visit, handleProfileSwitch);
+  const { colors, ...settings } = memory.settings;
   const sheetShown = card !== null;
 
   useEffect(() => {
@@ -76,9 +79,17 @@ export default function SudokuGenerator() {
     if (waitingForChild) {
       return;
     }
-    const next = { ...settings, ...change };
-    setSettings(next);
+    const next = memory.remember(change);
     if (card !== null) {
+      generateFor(next);
+    }
+  }
+
+  function handleProfileSwitch(next: SudokuCardSettings, previous: SudokuCardSettings): void {
+    if (
+      card !== null &&
+      (next.size !== previous.size || next.level !== previous.level || next.symbols !== previous.symbols)
+    ) {
       generateFor(next);
     }
   }
@@ -133,7 +144,12 @@ export default function SudokuGenerator() {
       ) : null}
       {settings.symbols === "shapes" ? (
         <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
-          <Switch checked={colors} onCheckedChange={setColors} />
+          <Switch
+            checked={colors}
+            onCheckedChange={(next) => {
+              memory.remember({ colors: next });
+            }}
+          />
           Kolory
         </label>
       ) : null}
@@ -153,11 +169,12 @@ export default function SudokuGenerator() {
         barCharacter={barCharacter}
         barLevel={barLevel}
         ask={ask}
-        onCreated={corner.onCreated}
-        onChoose={corner.onChoose}
-        onFavoriteSaved={corner.onFavoriteSaved}
-        onDeleted={corner.onDeleted}
-        onClearProfile={corner.onClearProfile}
+        onCreated={memory.corner.onCreated}
+        onChoose={memory.corner.onChoose}
+        onFavoriteSaved={memory.corner.onFavoriteSaved}
+        onDeleted={memory.corner.onDeleted}
+        onClearProfile={memory.corner.onClearProfile}
+        newProfileCards={memory.newProfileCards}
       />
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
@@ -165,6 +182,7 @@ export default function SudokuGenerator() {
             {settingsControls}
             {failedNote}
           </div>
+          <RememberedNote note={memory.note} profileActive={activeId !== null} />
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -186,6 +204,7 @@ export default function SudokuGenerator() {
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
           <div className={cn("flex flex-wrap items-center justify-center gap-3")}>{settingsControls}</div>
+          <RememberedNote note={memory.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
