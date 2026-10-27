@@ -9,6 +9,7 @@ import {
   barAfterFavoriteSave,
   profileNameError,
   profileToCreate,
+  readChildProfiles,
   sortProfiles,
   visitAfterDelete,
   withFavorite,
@@ -211,6 +212,7 @@ export function ProfileCorner({
   }
 
   function openFavoriteList(): void {
+    setFavoriteError(null);
     setPanel("favorite-list");
   }
 
@@ -242,22 +244,23 @@ export function ProfileCorner({
 
   /** A pick in the favorite list is the save: there is no draft and no button. The edit window shows the stored favorite. */
   function saveFavorite(id: SheetCharacterId, imageHref: string | null): void {
-    setPanel("edit");
+    setFavoriteError(null);
     if (activeProfile === null) {
       return;
     }
-    const previousFavorite = activeProfile.character;
-    if (id === previousFavorite && (id !== OWN_IMAGE_ID || imageHref === (activeProfile.image ?? null))) {
+    setPanel("edit");
+    // Read just before writing, so a change made on another open page is not overwritten with a stale list.
+    const stored = readChildProfiles(localStorage, ALLOWED_CHARACTER_IDS);
+    const current = stored.find((profile) => profile.id === activeProfile.id);
+    if (current === undefined) {
+      setFavoriteError(SAVE_ERROR_TEXT);
       return;
     }
-    const nextProfiles = withFavorite(
-      profiles,
-      activeProfile.id,
-      id,
-      activeProfile.level,
-      ALLOWED_CHARACTER_IDS,
-      imageHref,
-    );
+    const previousFavorite = current.character;
+    if (id === previousFavorite && (id !== OWN_IMAGE_ID || imageHref === (current.image ?? null))) {
+      return;
+    }
+    const nextProfiles = withFavorite(stored, current.id, id, current.level, ALLOWED_CHARACTER_IDS, imageHref);
     if (nextProfiles === null || !writeChildProfiles(localStorage, nextProfiles)) {
       setFavoriteError(SAVE_ERROR_TEXT);
       return;
@@ -265,7 +268,6 @@ export function ProfileCorner({
     const nextCharacter = barAfterFavoriteSave(barCharacter, previousFavorite, id);
     const sheetHref = nextCharacter !== OWN_IMAGE_ID ? null : id === OWN_IMAGE_ID ? imageHref : undefined;
     onFavoriteSaved(nextProfiles, nextCharacter, barLevel, sheetHref);
-    setFavoriteError(null);
   }
 
   function handleCancel(): void {
