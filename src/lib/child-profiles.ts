@@ -174,6 +174,18 @@ export function profileToCreate(
   return { id, name, character, level, ...withCards };
 }
 
+/**
+ * Whether the bar's character differs from the profile's favorite, the way a visit shows it: a stored `wlasne` without
+ * a drawable copy is "none" (see `drawnVisitCharacter`), so a broken favorite does not offer to be overwritten at once.
+ */
+export function favoriteDiffers(profile: ChildProfile, character: string, ownImageHref: string | null): boolean {
+  const shown = profile.character === OWN_IMAGE_ID && !isOwnImageDataUrl(profile.image) ? "none" : profile.character;
+  if (character !== shown) {
+    return true;
+  }
+  return character === OWN_IMAGE_ID && ownImageHref !== (profile.image ?? null);
+}
+
 export function barAfterFavoriteSave<T extends string>(bar: T, previousFavorite: T, nextFavorite: T): T {
   return bar === previousFavorite ? nextFavorite : bar;
 }

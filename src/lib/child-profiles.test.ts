@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import {
   barAfterFavoriteSave,
+  favoriteDiffers,
   hrefForFavoriteSave,
   openingVisit,
   profileNameError,
@@ -709,3 +710,27 @@ function memoryStorage(storedValue: string | null): ChildProfileStorage & { writ
     },
   };
 }
+
+void describe("favoriteDiffers", () => {
+  const kot: ChildProfile = { id: "z1", name: "Zosia", character: "kot", level: "lat5" };
+  const own: ChildProfile = { id: "z1", name: "Zosia", character: "wlasne", level: "lat5", image: JPEG };
+
+  void test("the same catalog character is not different, another one is", () => {
+    assert.equal(favoriteDiffers(kot, "kot", null), false);
+    assert.equal(favoriteDiffers(kot, "smok", null), true);
+    assert.equal(favoriteDiffers(kot, "none", null), true);
+    assert.equal(favoriteDiffers(kot, "wlasne", PNG), true);
+  });
+
+  void test("an own-image favorite differs when the bar shows another character or another picture", () => {
+    assert.equal(favoriteDiffers(own, "wlasne", JPEG), false);
+    assert.equal(favoriteDiffers(own, "wlasne", PNG), true);
+    assert.equal(favoriteDiffers(own, "kot", null), true);
+  });
+
+  void test("a stored wlasne without a drawable picture is shown as none and does not offer itself", () => {
+    const broken: ChildProfile = { id: "z1", name: "Zosia", character: "wlasne", level: "lat5" };
+    assert.equal(favoriteDiffers(broken, "none", null), false);
+    assert.equal(favoriteDiffers(broken, "kot", null), true);
+  });
+});

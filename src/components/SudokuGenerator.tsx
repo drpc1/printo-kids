@@ -7,6 +7,7 @@ import { ProfileCorner } from "@/components/ProfileCorner";
 import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { useBarCharacter } from "@/hooks/useBarCharacter";
+import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { SudokuCardSettings } from "@/lib/card-settings";
@@ -44,6 +45,7 @@ export default function SudokuGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const bar = useBarCharacter(visit, barLevel);
+  const favorite = useFavoriteCharacter(visit, bar);
   const [sizeOpen, setSizeOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SudokuCard | null>(null);
@@ -121,6 +123,7 @@ export default function SudokuGenerator() {
       onOpenChange={bar.setChoiceOpen}
       onSelect={bar.select}
       onCopied={bar.setOwnImage}
+      favorite={favorite.offer}
     />
   );
   const settingsControls = (
@@ -198,7 +201,7 @@ export default function SudokuGenerator() {
             {settingsControls}
             {failedNote}
           </div>
-          <RememberedNote note={memory.note} profileActive={activeId !== null} />
+          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -220,7 +223,7 @@ export default function SudokuGenerator() {
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
           <div className={cn("flex flex-wrap items-center justify-center gap-3")}>{settingsControls}</div>
-          <RememberedNote note={memory.note} profileActive={activeId !== null} />
+          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
