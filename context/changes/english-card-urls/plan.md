@@ -276,6 +276,6 @@ Zapis w przeglądarce zostaje. Nie ma migracji `localStorage` ani profili, bo `i
 
 #### Manual
 
-- [x] 3.1 Kryterium US-05 wymienia labirynt jako `/maze` i symetrię jako `/symmetry`
-- [x] 3.2 `AGENTS.md` podaje adres labiryntu jako `/maze`
-- [x] 3.3 Zamknięte plastry w `context/foundation/roadmap.md` i foldery w `context/archive/` nadal zapisują stare ścieżki
+- [x] 3.1 Kryterium US-05 wymienia labirynt jako `/maze` i symetrię jako `/symmetry` — 8cabe69
+- [x] 3.2 `AGENTS.md` podaje adres labiryntu jako `/maze` — 8cabe69
+- [x] 3.3 Zamknięte plastry w `context/foundation/roadmap.md` i foldery w `context/archive/` nadal zapisują stare ścieżki — 8cabe69
