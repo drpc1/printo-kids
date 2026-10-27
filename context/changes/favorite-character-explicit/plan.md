@@ -195,9 +195,9 @@ Format danych bez zmian; nic do migracji.
 
 #### Automated
 
-- [ ] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build`
-- [ ] 2.2 E2E (z `E2E_PORT=4399`): `profile-summary`, `own-image`, `favorite-character`, `phone-layout`, `card-settings`, `catalog`, `character-speaks`
-- [ ] 2.3 Break-check: przywrócenie wymogu „Zapisz” albo brak zapisu w `saveFavorite` czerwieni testy
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build`
+- [x] 2.2 E2E (z `E2E_PORT=4399`): `profile-summary`, `own-image`, `favorite-character`, `phone-layout`, `card-settings`, `catalog`, `character-speaks`
+- [x] 2.3 Break-check: przywrócenie wymogu „Zapisz” albo brak zapisu w `saveFavorite` czerwieni testy
 
 #### Manual
 

@@ -3,7 +3,6 @@ import { describe, test } from "node:test";
 import {
   barAfterFavoriteSave,
   favoriteDiffers,
-  hrefForFavoriteSave,
   openingVisit,
   profileNameError,
   profileToCreate,
@@ -394,7 +393,7 @@ void describe("profile image", () => {
     });
   });
 
-  void test("Zapisz stores image for wlasne and a catalog save clears it", () => {
+  void test("a favorite save stores image for wlasne and a catalog save clears it", () => {
     const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5", image: JPEG }];
 
     assert.deepEqual(withFavorite(profiles, "z1", "wlasne", "lat5", WITH_OWN, JPEG), [
@@ -408,12 +407,6 @@ void describe("profile image", () => {
     const cleared = withFavorite(profiles, "z1", "dinozaur", "lat6", WITH_OWN);
     assert.ok(cleared);
     assert.equal("image" in cleared[0], false);
-  });
-
-  void test("an untouched wlasne save keeps the profile snapshot when the device copy differs", () => {
-    assert.equal(hrefForFavoriteSave("wlasne", false, PNG, JPEG), JPEG);
-    assert.equal(hrefForFavoriteSave("wlasne", true, PNG, JPEG), PNG);
-    assert.equal(hrefForFavoriteSave("kot", true, PNG, JPEG), null);
   });
 });
 
