@@ -325,15 +325,15 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 #### Automated
 
-- [x] 1.1 Testy geometrii pasa i dopasowania kratki przechodzą: `npm test`
-- [x] 1.6 `src/lib/sheet/speech.test.ts` jest w skrypcie `test` w `package.json` i `npm test` go uruchamia
-- [x] 1.2 Lint bez błędów: `npm run lint`
-- [x] 1.3 `npx astro check` bez błędów
-- [x] 1.4 Labirynt bez zmian wyglądu: test kontraktu druku i istniejące e2e labiryntu zielone
+- [x] 1.1 Testy geometrii pasa i dopasowania kratki przechodzą: `npm test` — 07b67a4
+- [x] 1.6 `src/lib/sheet/speech.test.ts` jest w skrypcie `test` w `package.json` i `npm test` go uruchamia — 07b67a4
+- [x] 1.2 Lint bez błędów: `npm run lint` — 07b67a4
+- [x] 1.3 `npx astro check` bez błędów — 07b67a4
+- [x] 1.4 Labirynt bez zmian wyglądu: test kontraktu druku i istniejące e2e labiryntu zielone — 07b67a4
 
 #### Manual
 
-- [x] 1.5 Strona labiryntu: przycisk „Postać” wygląda i działa jak przed zmianą
+- [x] 1.5 Strona labiryntu: przycisk „Postać” wygląda i działa jak przed zmianą — 07b67a4
 
 ### Phase 2: Symetria i sekwencje
 
