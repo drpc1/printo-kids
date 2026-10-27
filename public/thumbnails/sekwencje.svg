@@ -3,87 +3,87 @@
 <rect x="0.25" y="0.25" width="209.5" height="296.5" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>
 <text x="105" y="13.5" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle" dominant-baseline="middle">Co pasuje w puste pole? Uzupełnij.</text>
 <rect x="10" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="15.468,30.468 27.702,30.468 27.702,42.702 15.468,42.702" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M28.259 29.912 L27.654 38.038 L26.319 34.278 L17.338 43.259 L14.912 40.833 L23.893 31.852 L20.133 30.517 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="37.805" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="43.273,30.468 55.507,30.468 55.507,42.702 43.273,42.702" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M56.063 29.912 L55.459 38.038 L54.124 34.278 L45.143 43.259 L42.717 40.833 L51.698 31.852 L47.937 30.517 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="65.61" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
 <circle cx="77.195" cy="36.585" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
 <rect x="93.415" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="98.883,30.468 111.117,30.468 111.117,42.702 98.883,42.702" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M111.673 29.912 L111.068 38.038 L109.734 34.278 L100.753 43.259 L98.327 40.833 L107.308 31.852 L103.547 30.517 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="121.22" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="126.688,30.468 138.922,30.468 138.922,42.702 126.688,42.702" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M139.478 29.912 L138.873 38.038 L137.539 34.278 L128.558 43.259 L126.132 40.833 L135.113 31.852 L131.352 30.517 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="149.024" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
 <text x="170.695" y="26.5" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 <rect x="176.829" y="25" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
 <text x="198.5" y="26.5" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 <rect x="10" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="21.585,78.064 23.301,82.653 28.196,82.867 24.362,85.917 25.671,90.639 21.585,87.935 17.5,90.639 18.809,85.917 14.974,82.867 19.869,82.653" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<circle cx="21.585" cy="84.351" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
 <rect x="37.805" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="49.39,78.064 51.106,82.653 56.001,82.867 52.167,85.917 53.476,90.639 49.39,87.935 45.304,90.639 46.614,85.917 42.779,82.867 47.674,82.653" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<circle cx="49.39" cy="84.351" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
 <rect x="65.61" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<circle cx="77.195" cy="84.351" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
+<path d="M84.145 79.564 L79.358 84.351 L84.145 89.139 L81.983 91.301 L77.195 86.514 L72.408 91.301 L70.245 89.139 L75.032 84.351 L70.245 79.564 L72.408 77.401 L77.195 82.189 L81.983 77.401 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="93.415" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="105,78.064 106.716,82.653 111.611,82.867 107.777,85.917 109.086,90.639 105,87.935 100.914,90.639 102.223,85.917 98.389,82.867 103.284,82.653" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<circle cx="105" cy="84.351" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
 <rect x="121.22" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="132.805,78.064 134.521,82.653 139.416,82.867 135.581,85.917 136.891,90.639 132.805,87.935 128.719,90.639 130.028,85.917 126.194,82.867 131.089,82.653" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<circle cx="132.805" cy="84.351" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
 <rect x="149.024" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<circle cx="160.61" cy="84.351" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
+<path d="M167.56 79.564 L162.772 84.351 L167.56 89.139 L165.397 91.301 L160.61 86.514 L155.822 91.301 L153.66 89.139 L158.447 84.351 L153.66 79.564 L155.822 77.401 L160.61 82.189 L165.397 77.401 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="176.829" y="72.766" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
 <text x="198.5" y="74.266" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 <rect x="10" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="21.585,125.83 23.301,130.419 28.196,130.633 24.362,133.683 25.671,138.405 21.585,135.7 17.5,138.405 18.809,133.683 14.974,130.633 19.869,130.419" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="15.468,126 27.702,126 27.702,138.234 15.468,138.234" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="37.805" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="49.39,125.861 56.341,138.373 42.439,138.373" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<circle cx="49.39" cy="132.117" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
 <rect x="65.61" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="71.078,126 83.312,126 83.312,138.234 71.078,138.234" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M77.195 138.721 C74.415 136.288 70.244 133.16 70.244 129.337 C70.244 126.904 71.982 125.513 73.72 125.513 C75.457 125.513 76.639 126.556 77.195 127.946 C77.751 126.556 78.933 125.513 80.671 125.513 C82.409 125.513 84.146 126.904 84.146 129.337 C84.146 133.16 79.976 136.288 77.195 138.721 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="93.415" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="105,125.83 106.716,130.419 111.611,130.633 107.777,133.683 109.086,138.405 105,135.7 100.914,138.405 102.223,133.683 98.389,130.633 103.284,130.419" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
-<rect x="121.22" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
-<text x="142.89" y="122.032" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
-<rect x="149.024" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="154.493,126 166.727,126 166.727,138.234 154.493,138.234" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="98.883,126 111.117,126 111.117,138.234 98.883,138.234" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="121.22" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<circle cx="132.805" cy="132.117" r="6.951" fill="none" stroke="#000" stroke-width="0.9"/>
+<rect x="149.024" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="170.695" y="122.032" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 <rect x="176.829" y="120.532" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
 <text x="198.5" y="122.032" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 <rect x="10" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
 <polygon points="21.585,173.595 23.301,178.185 28.196,178.399 24.362,181.449 25.671,186.17 21.585,183.466 17.5,186.17 18.809,181.449 14.974,178.399 19.869,178.185" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="37.805" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="49.39,173.627 56.341,186.139 42.439,186.139" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M56.063 173.21 L55.459 181.336 L54.124 177.575 L45.143 186.556 L42.717 184.13 L51.698 175.149 L47.937 173.815 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="65.61" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
 <polygon points="77.195,173.595 78.911,178.185 83.806,178.399 79.972,181.449 81.281,186.17 77.195,183.466 73.109,186.17 74.419,181.449 70.584,178.399 75.479,178.185" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="93.415" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="105,173.627 111.951,186.139 98.049,186.139" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M111.673 173.21 L111.068 181.336 L109.734 177.575 L100.753 186.556 L98.327 184.13 L107.308 175.149 L103.547 173.815 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="121.22" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
 <polygon points="132.805,173.595 134.521,178.185 139.416,178.399 135.581,181.449 136.891,186.17 132.805,183.466 128.719,186.17 130.028,181.449 126.194,178.399 131.089,178.185" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="149.024" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="160.61,173.627 167.561,186.139 153.659,186.139" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M167.283 173.21 L166.678 181.336 L165.344 177.575 L156.363 186.556 L153.937 184.13 L162.918 175.149 L159.157 173.815 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="176.829" y="168.298" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
 <text x="198.5" y="169.798" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 <rect x="10" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="21.585,221.393 28.537,233.905 14.634,233.905" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M28.536 222.861 L23.748 227.649 L28.536 232.436 L26.373 234.599 L21.585 229.811 L16.798 234.599 L14.635 232.436 L19.423 227.649 L14.635 222.861 L16.798 220.699 L21.585 225.486 L26.373 220.699 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="37.805" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="43.273,221.532 55.507,221.532 55.507,233.766 43.273,233.766" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M49.39 234.252 C46.61 231.82 42.439 228.691 42.439 224.868 C42.439 222.435 44.177 221.045 45.915 221.045 C47.652 221.045 48.834 222.088 49.39 223.478 C49.946 222.088 51.128 221.045 52.866 221.045 C54.604 221.045 56.341 222.435 56.341 224.868 C56.341 228.691 52.171 231.82 49.39 234.252 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="65.61" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="77.195,221.393 84.146,233.905 70.244,233.905" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M84.145 222.861 L79.358 227.649 L84.145 232.436 L81.983 234.599 L77.195 229.811 L72.408 234.599 L70.245 232.436 L75.032 227.649 L70.245 222.861 L72.408 220.699 L77.195 225.486 L81.983 220.699 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="93.415" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="98.883,221.532 111.117,221.532 111.117,233.766 98.883,233.766" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M105 234.252 C102.22 231.82 98.049 228.691 98.049 224.868 C98.049 222.435 99.787 221.045 101.524 221.045 C103.262 221.045 104.444 222.088 105 223.478 C105.556 222.088 106.738 221.045 108.476 221.045 C110.213 221.045 111.951 222.435 111.951 224.868 C111.951 228.691 107.78 231.82 105 234.252 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="121.22" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="132.805,221.393 139.756,233.905 125.854,233.905" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M139.755 222.861 L134.968 227.649 L139.755 232.436 L137.592 234.599 L132.805 229.811 L128.017 234.599 L125.855 232.436 L130.642 227.649 L125.855 222.861 L128.017 220.699 L132.805 225.486 L137.592 220.699 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="149.024" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="154.493,221.532 166.727,221.532 166.727,233.766 154.493,233.766" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M160.61 234.252 C157.829 231.82 153.659 228.691 153.659 224.868 C153.659 222.435 155.396 221.045 157.134 221.045 C158.872 221.045 160.054 222.088 160.61 223.478 C161.166 222.088 162.348 221.045 164.085 221.045 C165.823 221.045 167.561 222.435 167.561 224.868 C167.561 228.691 163.39 231.82 160.61 234.252 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="176.829" y="216.063" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
 <text x="198.5" y="217.563" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 <rect x="10" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
 <polygon points="15.468,269.298 27.702,269.298 27.702,281.532 15.468,281.532" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="37.805" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="49.39,269.127 51.106,273.716 56.001,273.93 52.167,276.981 53.476,281.702 49.39,278.998 45.304,281.702 46.614,276.981 42.779,273.93 47.674,273.716" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="49.39,269.159 56.341,281.671 42.439,281.671" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="65.61" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="77.195,269.159 84.146,281.671 70.244,281.671" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<path d="M83.868 268.741 L83.264 276.867 L81.929 273.107 L72.948 282.088 L70.522 279.662 L79.503 270.681 L75.742 269.346 Z" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
 <rect x="93.415" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
 <polygon points="98.883,269.298 111.117,269.298 111.117,281.532 98.883,281.532" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
-<rect x="121.22" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
-<text x="142.89" y="265.329" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
-<rect x="149.024" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
-<polygon points="160.61,269.159 167.561,281.671 153.659,281.671" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="121.22" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.3"/>
+<polygon points="132.805,269.159 139.756,281.671 125.854,281.671" fill="none" stroke="#000" stroke-width="0.9" stroke-linejoin="round"/>
+<rect x="149.024" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
+<text x="170.695" y="265.329" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 <rect x="176.829" y="263.829" width="23.171" height="23.171" fill="none" stroke="#000" stroke-width="0.5" stroke-dasharray="2.5 1.8"/>
 <text x="198.5" y="265.329" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="5" text-anchor="end" dominant-baseline="hanging">?</text>
 </svg>

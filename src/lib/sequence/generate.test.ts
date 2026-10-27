@@ -21,7 +21,7 @@ const ORACLE_SEEDS = 120;
 
 const [KOLO, KWADRAT, TROJKAT, GWIAZDKA] = SEQUENCE_SHAPES;
 
-/** What a field may hold on a card: four shapes or a number from 1 to 20. */
+/** What a field may hold on a card: a shape from the catalog or a number from 1 to 20. */
 const SYMBOLS: SequenceItem[] = [...SEQUENCE_SHAPES, ...Array.from({ length: 20 }, (_, index) => index + 1)];
 
 /**
@@ -93,7 +93,7 @@ function isMixed(full: readonly SequenceItem[], shapeParity: number): boolean {
   );
 }
 
-/** Every way of filling the gaps with the 24 symbols that leaves a row following some rule. */
+/** Every way of filling the gaps with the symbols of a card that leaves a row following some rule. */
 function fillingsThatFollowARule(row: SequenceRow): SequenceItem[][] {
   const found: SequenceItem[][] = [];
   const total = SYMBOLS.length ** row.gaps.length;
@@ -243,6 +243,45 @@ void describe("generateSequenceCard", () => {
     }
     assert.ok(performance.now() - started < 5000);
   });
+
+  void test("serce, krzyzyk and strzalka appear on lat4, lat5 and lat6 and in groups or mixed on lat7", () => {
+    const patternLevels = [LAT4, LAT5, LAT6] as const;
+    const seen = {
+      lat4: new Set<string>(),
+      lat5: new Set<string>(),
+      lat6: new Set<string>(),
+      lat7: new Set<string>(),
+    };
+    for (let seed = 0; seed < SEEDS; seed += 1) {
+      for (const level of patternLevels) {
+        const card = generateSequenceCard(mulberry32(seed), null, level);
+        assert.ok(card, `${level.id} seed ${seed}`);
+        for (const item of card.rows.flatMap((row) => row.values)) {
+          if (typeof item === "string") {
+            seen[level.id].add(item);
+          }
+        }
+      }
+      const card = generateSequenceCard(mulberry32(seed), null, LAT7);
+      assert.ok(card, `lat7 seed ${seed}`);
+      for (const row of card.rows) {
+        if (row.rule !== "groups" && row.rule !== "mixed") {
+          continue;
+        }
+        for (const item of row.values) {
+          if (typeof item === "string") {
+            seen.lat7.add(item);
+          }
+        }
+      }
+    }
+    for (const shape of ["serce", "krzyzyk", "strzalka"]) {
+      assert.ok(seen.lat4.has(shape), `lat4 ${shape}`);
+      assert.ok(seen.lat5.has(shape), `lat5 ${shape}`);
+      assert.ok(seen.lat6.has(shape), `lat6 ${shape}`);
+      assert.ok(seen.lat7.has(shape), `lat7 ${shape}`);
+    }
+  });
 });
 
 void describe("sequenceAnswers", () => {
@@ -346,7 +385,8 @@ void describe("sequenceRowProblems", () => {
   });
 
   void test("an unknown shape and a number outside 1 to 20 are reported", () => {
-    const values = good.values.map((item) => (item === KOLO ? "serce" : item)) as SequenceItem[];
+    const values = good.values.map((item) => (item === KOLO ? ("romb" as SequenceItem) : item));
+    assert.ok(!(SEQUENCE_SHAPES as readonly string[]).includes("romb"));
     const tooBig: SequenceRow = { rule: "up1", values: [15, 16, 17, 18, 19, 20, 21, 22], gaps: [3, 5] };
 
     assert.ok(sequenceRowProblems({ ...good, values }, LAT5).includes("unknown-item"));
