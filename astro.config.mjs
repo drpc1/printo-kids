@@ -9,6 +9,12 @@ import cloudflare from "@astrojs/cloudflare";
 // https://astro.build/config
 export default defineConfig({
   output: "server",
+  redirects: {
+    "/labirynt": "/maze",
+    "/symetria": "/symmetry",
+    "/sekwencje": "/sequences",
+    "/dyktando": "/dictation",
+  },
   integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

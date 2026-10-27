@@ -264,13 +264,13 @@ Zapis w przeglądarce zostaje. Nie ma migracji `localStorage` ani profili, bo `i
 
 #### Automated
 
-- [ ] 2.1 `npm run smoke` przy działającym serwerze: `/maze`, `/symmetry`, `/sequences` i `/dictation` zwracają 200 z dotychczasowymi polskimi zdaniami, a `/labirynt` → `/maze`, `/symetria` → `/symmetry`, `/sekwencje` → `/sequences` i `/dyktando` → `/dictation` zwracają 301 z tą ścieżką w `Location`
+- [x] 2.1 `npm run smoke` przy działającym serwerze: `/maze`, `/symmetry`, `/sequences` i `/dictation` zwracają 200 z dotychczasowymi polskimi zdaniami, a `/labirynt` → `/maze`, `/symetria` → `/symmetry`, `/sekwencje` → `/sequences` i `/dyktando` → `/dictation` zwracają 301 z tą ścieżką w `Location`
 
 #### Manual
 
-- [ ] 2.2 Wpisanie `/labirynt` w pasek adresu kończy się kartą labiryntu pod `/maze`
-- [ ] 2.3 Wpisanie `/dyktando/` ze slashem na końcu kończy się kartą dyktanda pod `/dictation`
-- [ ] 2.4 Wygenerowana sitemapa nie zawiera `/labirynt`, `/symetria`, `/sekwencje` ani `/dyktando`
+- [x] 2.2 Wpisanie `/labirynt` w pasek adresu kończy się kartą labiryntu pod `/maze`
+- [x] 2.3 Wpisanie `/dyktando/` ze slashem na końcu kończy się kartą dyktanda pod `/dictation`
+- [x] 2.4 Wygenerowana sitemapa nie zawiera `/labirynt`, `/symetria`, `/sekwencje` ani `/dyktando`
 
 ### Phase 3: Żywe dokumenty
 
