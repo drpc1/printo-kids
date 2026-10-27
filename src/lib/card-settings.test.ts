@@ -76,9 +76,9 @@ void describe("parseCardSettings", () => {
 });
 
 void describe("sudoku settings are normalized to a state the page can show", () => {
-  void test("4×4 has one level and only shapes", () => {
+  void test("4×4 has only shapes and keeps the stored level, which the bar hides", () => {
     assert.deepEqual(parseCardSettings({ sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } }), {
-      sudoku: { size: 4, level: "latwy", symbols: "shapes", colors: true },
+      sudoku: { size: 4, level: "trudny", symbols: "shapes", colors: true },
     });
   });
 
@@ -96,7 +96,7 @@ void describe("sudoku settings are normalized to a state the page can show", () 
 
   void test("an unknown size falls back to 4×4", () => {
     assert.deepEqual(parseCardSettings({ sudoku: { size: 5, level: "sredni" } }), {
-      sudoku: { size: 4, level: "latwy", symbols: "shapes", colors: false },
+      sudoku: { size: 4, level: "sredni", symbols: "shapes", colors: false },
     });
   });
 });
@@ -124,7 +124,7 @@ void describe("withCardSettings and cardSettingsOf", () => {
     const map: CardSettingsMap = { sudoku: { size: 9, level: "trudny", symbols: "shapes", colors: true } };
     assert.deepEqual(withCardSettings(map, "sudoku", { size: 4 }).sudoku, {
       size: 4,
-      level: "latwy",
+      level: "trudny",
       symbols: "shapes",
       colors: true,
     });

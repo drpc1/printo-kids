@@ -32,7 +32,7 @@ Automated: `npm test` 553/553, `npm run lint`, `npx astro check` (0 errors), `np
 - **Location**: plan.md ## Progress (Phase 3 i 4, Manual)
 - **Detail**: Użytkowniczka kazała przejść dalej bez potwierdzenia ręcznych testów faz 3 i 4. Wiersze zostają `[ ]`. 4.4 (archiwizacja) jest faktycznie wykonana (commit 7be2a09), ale nieodhaczona zgodnie z regułą.
 - **Fix**: Wykonać testy ręczne 3.3–3.6 i 4.5, potwierdzić, odhaczyć też 4.4.
-- **Decision**: PENDING
+- **Decision**: SKIPPED (kroki ręczne zostają do testu użytkowniczki)
 
 ### F2 — Sudoku zeruje zapamiętany poziom przy 4×4
 
@@ -46,7 +46,7 @@ Automated: `npm test` 553/553, `npm run lint`, `npx astro check` (0 errors), `np
   - Tradeoff: Zapis może trzymać poziom, którego 4×4 nie pokazuje.
   - Confidence: HIGH — generator dla 4 ignoruje poziom.
   - Blind spot: Podsumowanie profilu w S-29 musi pokazać rozmiar 4 bez poziomu.
-- **Decision**: PENDING
+- **Decision**: FIXED (poziom zostaje przy 4×4)
 
 ### F3 — Zapis ginie po cichu, gdy aktywnego profilu nie ma już w localStorage
 

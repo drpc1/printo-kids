@@ -158,10 +158,13 @@ function normalizeCard<K extends CardSettingsId>(cardId: K, settings: CardSettin
   return normalizeSudoku(settings as unknown as SudokuCardSettings) as unknown as CardSettingsOf<K>;
 }
 
-/** 4×4 offers only shapes and has one level. The colors switch is hidden for digits, but its value stays, so shapes bring it back as it was. */
+/**
+ * 4×4 offers only shapes. The bar hides the level at 4×4 and the colors switch for digits, but both values stay, so
+ * going back to 6×6 or to shapes brings them back as they were.
+ */
 function normalizeSudoku(settings: SudokuCardSettings): SudokuCardSettings {
   const size: SudokuSize = settings.size;
-  const level: SudokuLevelId = size === 4 ? DEFAULT_SUDOKU_SETTINGS.level : settings.level;
+  const level: SudokuLevelId = settings.level;
   const symbols: SudokuSymbols = sudokuHasSymbolChoice(size) ? settings.symbols : "shapes";
   const colors = settings.colors;
   return { size, level, symbols, colors };

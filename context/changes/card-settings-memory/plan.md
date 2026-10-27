@@ -191,7 +191,7 @@ Ten sam wzorzec na sekwencjach, sudoku, nonogramie i dyktandzie.
 
 **Intent**: Rozmiar, poziom, „Kształty / Cyfry” i kolory startują z zapamiętanych i zapisują się razem.
 
-**Contract**: `settings`/`colors` inicjowane z zapamiętanych; `handleSettingChange` i przełącznik kolorów wołają `remember`. Zapamiętana kombinacja zawsze przechodzi normalizację z Fazy 1 (rozmiar 4 → jeden poziom, cyfry → bez kolorów), więc pasek nigdy nie pokazuje stanu, którego strona nie umie ustawić. **Uwaga z implementacji:** normalizacja nie zeruje kolorów przy cyfrach (patrz Faza 1); strona je tylko ukrywa.
+**Contract**: `settings`/`colors` inicjowane z zapamiętanych; `handleSettingChange` i przełącznik kolorów wołają `remember`. Zapamiętana kombinacja zawsze przechodzi normalizację z Fazy 1 (rozmiar 4 → jeden poziom, cyfry → bez kolorów), więc pasek nigdy nie pokazuje stanu, którego strona nie umie ustawić. **Uwaga z implementacji:** normalizacja nie zeruje kolorów przy cyfrach ani poziomu przy 4×4 (patrz Faza 1); strona je tylko ukrywa.
 
 #### 3. Nonogram
 
