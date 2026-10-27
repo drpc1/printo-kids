@@ -21,6 +21,8 @@ const DICTATION_GENERATOR = "src/components/DictationGenerator.tsx";
 const NONOGRAM_PAGE = "src/pages/nonogram.astro";
 const NONOGRAM_GENERATOR = "src/components/NonogramGenerator.tsx";
 const NONOGRAM_SIMPLE_SHEET = "src/components/NonogramSimpleSheet.tsx";
+const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
+const SPEECH_LIB = "src/lib/sheet/speech.ts";
 const GLOBAL_CSS = "src/styles/global.css";
 
 void describe("print contract", () => {
@@ -273,6 +275,59 @@ void describe("print contract", () => {
     assert.match(page, /<GeneratorShell\b/);
     assert.match(page, /<NonogramGenerator\s+client:only="react"\s*\/>/);
     assert.equal(page.includes("@page"), false);
+  });
+
+  void test("every card page except the maze has the Postać bar and draws the character beside the instruction", () => {
+    for (const path of [
+      SYMMETRY_GENERATOR,
+      SEQUENCE_GENERATOR,
+      SUDOKU_GENERATOR,
+      NONOGRAM_GENERATOR,
+      NONOGRAM_SIMPLE_SHEET,
+      DICTATION_GENERATOR,
+    ]) {
+      const source = readRepoFile(path);
+      assert.match(source, /<CharacterInstruction\b/, `${path} draws the speech band`);
+      assert.doesNotMatch(
+        source,
+        /It has no (colors or )?character (bar|controls)/,
+        `${path} still says it has no bar`,
+      );
+    }
+    for (const path of [
+      SYMMETRY_GENERATOR,
+      SEQUENCE_GENERATOR,
+      SUDOKU_GENERATOR,
+      NONOGRAM_GENERATOR,
+      DICTATION_GENERATOR,
+    ]) {
+      const source = readRepoFile(path);
+      assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
+      assert.match(source, /useBarCharacter\(/, `${path} keeps the bar character`);
+    }
+  });
+
+  void test("every card's printed SVG asks the printer to keep the character's colors", () => {
+    for (const path of [
+      SYMMETRY_GENERATOR,
+      SEQUENCE_GENERATOR,
+      SUDOKU_GENERATOR,
+      NONOGRAM_GENERATOR,
+      NONOGRAM_SIMPLE_SHEET,
+      DICTATION_GENERATOR,
+    ]) {
+      assert.match(readRepoFile(path), /printColorAdjust:\s*"exact"/, path);
+    }
+  });
+
+  void test("the speech band uses the screen tokens and no color literal", () => {
+    for (const path of [SPEECH_BAND_COMPONENT, SPEECH_LIB]) {
+      const source = readRepoFile(path);
+      assert.doesNotMatch(source, /#[0-9a-fA-F]{3,8}\b/, `${path} has a hex color`);
+      assert.doesNotMatch(source, /\b(rgb|hsl|oklch)a?\(/, `${path} has a color function`);
+    }
+    assert.match(readRepoFile(SPEECH_BAND_COMPONENT), /var\(--foreground\)/);
+    assert.match(readRepoFile(SPEECH_BAND_COMPONENT), /var\(--card\)/);
   });
 
   void test("the screen-only padding tweak stays inside @media screen", () => {
