@@ -10,6 +10,8 @@ import {
   sortProfiles,
   visitAfterDelete,
   withFavorite,
+  withProfileCards,
+  withProfileLevel,
   writeChildProfiles,
   type ChildProfile,
   type ChildProfileStorage,
@@ -565,6 +567,116 @@ void describe("sortProfiles", () => {
     ]);
     assert.notEqual(ordered, profiles);
     assert.deepEqual(profiles, input);
+  });
+});
+
+void describe("card settings in a profile", () => {
+  const CARDS = { nonogram: { level: "trudny", category: "zwierzeta" } } as const;
+
+  void test("an old profile without cards reads without a cards field", () => {
+    assertStoredRead(stored([{ id: "z1", name: "Zosia", character: "rakieta", level: "lat6" }]), [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat6" },
+    ]);
+  });
+
+  void test("stored cards read back and a bad field falls back to the default of that field", () => {
+    assertStoredRead(
+      stored([
+        {
+          id: "z1",
+          name: "Zosia",
+          character: "rakieta",
+          level: "lat6",
+          cards: { nonogram: { level: "trudny", category: "nie-ma" }, sudoku: "śmieci" },
+        },
+      ]),
+      [
+        {
+          id: "z1",
+          name: "Zosia",
+          character: "rakieta",
+          level: "lat6",
+          cards: { nonogram: { level: "trudny", category: "wszystkie" } },
+        },
+      ],
+    );
+  });
+
+  void test("garbage in cards reads as empty cards and keeps the profile", () => {
+    assertStoredRead(stored([{ id: "z1", name: "Zosia", character: "rakieta", level: "lat6", cards: 7 }]), [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat6", cards: {} },
+    ]);
+  });
+
+  void test("withFavorite keeps the cards of the saved profile and of the others", () => {
+    const profiles: ChildProfile[] = [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat5", cards: CARDS },
+      { id: "a1", name: "Antek", character: "samochodzik", level: "lat4", cards: CARDS },
+    ];
+
+    assert.deepEqual(withFavorite(profiles, "z1", "dinozaur", "lat6", ALLOWED), [
+      { id: "z1", name: "Zosia", character: "dinozaur", level: "lat6", cards: CARDS },
+      { id: "a1", name: "Antek", character: "samochodzik", level: "lat4", cards: CARDS },
+    ]);
+  });
+
+  void test("withFavorite keeps the cards when the favorite is the own image", () => {
+    const profiles: ChildProfile[] = [{ id: "z1", name: "Zosia", character: "rakieta", level: "lat5", cards: CARDS }];
+
+    assert.deepEqual(withFavorite(profiles, "z1", "wlasne", "lat5", WITH_OWN, JPEG), [
+      { id: "z1", name: "Zosia", character: "wlasne", level: "lat5", image: JPEG, cards: CARDS },
+    ]);
+  });
+
+  void test("profileToCreate carries the cards it is given and adds none otherwise", () => {
+    assert.deepEqual(profileToCreate("z1", "Zosia", "rakieta", "lat5", null, CARDS), {
+      id: "z1",
+      name: "Zosia",
+      character: "rakieta",
+      level: "lat5",
+      cards: CARDS,
+    });
+    assert.deepEqual(profileToCreate("z1", "Zosia", "rakieta", "lat5", null), {
+      id: "z1",
+      name: "Zosia",
+      character: "rakieta",
+      level: "lat5",
+    });
+    assert.deepEqual(profileToCreate("z1", "Zosia", "wlasne", "lat5", JPEG, CARDS), {
+      id: "z1",
+      name: "Zosia",
+      character: "wlasne",
+      level: "lat5",
+      image: JPEG,
+      cards: CARDS,
+    });
+  });
+
+  void test("withProfileCards replaces the cards of one profile and nothing else", () => {
+    const profiles: ChildProfile[] = [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat5", image: JPEG },
+      { id: "a1", name: "Antek", character: "samochodzik", level: "lat4" },
+    ];
+
+    assert.deepEqual(withProfileCards(profiles, "z1", CARDS), [
+      { id: "z1", name: "Zosia", character: "rakieta", level: "lat5", image: JPEG, cards: CARDS },
+      { id: "a1", name: "Antek", character: "samochodzik", level: "lat4" },
+    ]);
+    assert.equal(withProfileCards(profiles, "missing", CARDS), null);
+  });
+
+  void test("withProfileLevel changes only the level of one profile", () => {
+    const profiles: ChildProfile[] = [
+      { id: "z1", name: "Zosia", character: "wlasne", level: "lat5", image: JPEG, cards: CARDS },
+      { id: "a1", name: "Antek", character: "samochodzik", level: "lat4" },
+    ];
+
+    assert.deepEqual(withProfileLevel(profiles, "z1", "nastolatek"), [
+      { id: "z1", name: "Zosia", character: "wlasne", level: "nastolatek", image: JPEG, cards: CARDS },
+      { id: "a1", name: "Antek", character: "samochodzik", level: "lat4" },
+    ]);
+    assert.equal(withProfileLevel(profiles, "missing", "lat6"), null);
+    assert.equal(withProfileLevel(profiles, "z1", "dorosly" as LevelId), null);
   });
 });
 

@@ -16,13 +16,13 @@ Poziom 3 pokazuje tylko wzory AB, AAB i ABC. Każdy jest co najmniej w dwóch wi
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) |
-| --- | --- | --- |
-| +1 i +2 | Znikają z losowania, zostają w sprawdzaniu odpowiedzi | Issue zostawia liczby na Poziomie 4, a ten poziom nie ma miejsca na dwie dodatkowe reguły przy siedmiu wierszach |
-| Poziom 4 | Bez zmian | Przeniesienie +1 i +2 ścięłoby jego dzisiejsze minima |
-| Mieszanka Poziomu 3 | Po dwa wiersze AB, AAB i ABC oraz jeden dowolny | Każda karta ćwiczy wszystkie trzy wzory więcej niż raz |
-| Rosnące grupy | Zostają na Poziomie 4 | Issue wymienia wzory AB, AAB i ABC, nie grupy |
-| Etykiety | Zostają „6 lat” i „7 lat” | Nazwy bez wieku to slice S-27 |
+| Decision            | Choice                                                | Why (1 sentence)                                                                                                 |
+| ------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| +1 i +2             | Znikają z losowania, zostają w sprawdzaniu odpowiedzi | Issue zostawia liczby na Poziomie 4, a ten poziom nie ma miejsca na dwie dodatkowe reguły przy siedmiu wierszach |
+| Poziom 4            | Bez zmian                                             | Przeniesienie +1 i +2 ścięłoby jego dzisiejsze minima                                                            |
+| Mieszanka Poziomu 3 | Po dwa wiersze AB, AAB i ABC oraz jeden dowolny       | Każda karta ćwiczy wszystkie trzy wzory więcej niż raz                                                           |
+| Rosnące grupy       | Zostają na Poziomie 4                                 | Issue wymienia wzory AB, AAB i ABC, nie grupy                                                                    |
+| Etykiety            | Zostają „6 lat” i „7 lat”                             | Nazwy bez wieku to slice S-27                                                                                    |
 
 ## Scope
 
@@ -45,10 +45,10 @@ Generator czyta pulę z tablicy poziomu i nie ma osobnej ścieżki dla wieku. Zm
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Pula reguł Poziomu 3 | Tablica i testy bez `up1` i `up2` na tej karcie | Test liczb 1–20 dziś czyta też Poziom 3 |
-| 2. Kontrakt w PRD | Tabela i doprecyzowanie zgodne z tablicą | Zostawienie zdania o pięciu regułach przywróciłoby +1 i +2 |
+| Phase                   | What it delivers                                | Key risk                                                   |
+| ----------------------- | ----------------------------------------------- | ---------------------------------------------------------- |
+| 1. Pula reguł Poziomu 3 | Tablica i testy bez `up1` i `up2` na tej karcie | Test liczb 1–20 dziś czyta też Poziom 3                    |
+| 2. Kontrakt w PRD       | Tabela i doprecyzowanie zgodne z tablicą        | Zostawienie zdania o pięciu regułach przywróciłoby +1 i +2 |
 
 **Prerequisites:** Brak. Folder zmiany jest `new`, a kod poziomów jest na gałęzi roboczej.
 **Estimated effort:** Jedna sesja, dwie fazy. Faza 1 to edycja tablicy i dwóch testów. Faza 2 to trzy miejsca w PRD.
