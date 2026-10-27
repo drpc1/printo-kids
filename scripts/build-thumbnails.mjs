@@ -276,11 +276,13 @@ sequenceCard.rows.forEach((row, rowIndex) => {
     }
     const outline = sequenceShapeOutline(item, field.x + fieldSize / 2, field.y + fieldSize / 2, shapeSize);
     const common = `fill="none" stroke="#000" stroke-width="${SEQUENCE.shapeStroke}"`;
-    sequenceLines.push(
-      outline.kind === "circle"
-        ? `<circle cx="${num(outline.cx)}" cy="${num(outline.cy)}" r="${num(outline.r)}" ${common}/>`
-        : `<polygon points="${outline.points}" ${common} stroke-linejoin="round"/>`,
-    );
+    if (outline.kind === "circle") {
+      sequenceLines.push(`<circle cx="${num(outline.cx)}" cy="${num(outline.cy)}" r="${num(outline.r)}" ${common}/>`);
+    } else if (outline.kind === "path") {
+      sequenceLines.push(`<path d="${outline.d}" ${common} stroke-linejoin="round"/>`);
+    } else {
+      sequenceLines.push(`<polygon points="${outline.points}" ${common} stroke-linejoin="round"/>`);
+    }
   });
 });
 sequenceLines.push("</svg>", "");
