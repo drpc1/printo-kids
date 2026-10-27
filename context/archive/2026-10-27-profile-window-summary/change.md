@@ -1,10 +1,10 @@
 ---
 change_id: profile-window-summary
 title: Okno profilu z podsumowaniem i plakietki w katalogu
-status: impl_reviewed
+status: archived
 created: 2026-10-27
 updated: 2026-10-27
-archived_at: null
+archived_at: 2026-10-27T13:47:39Z
 ---
 
 ## Notes
