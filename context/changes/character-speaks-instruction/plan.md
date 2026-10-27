@@ -364,12 +364,12 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 #### Automated
 
-- [ ] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` zielone
-- [ ] 4.2 Test układu dyktanda ze wszystkimi poziomami z pasem i bez przechodzi
+- [x] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` zielone
+- [x] 4.2 Test układu dyktanda ze wszystkimi poziomami z pasem i bez przechodzi
 
 #### Manual
 
-- [ ] 4.3 Dyktando trudne z postacią: lista 84 poleceń, kratka czytelna na wydruku próbnym, nic nie wychodzi poza 10 mm
+- [x] 4.3 Dyktando trudne z postacią: lista 84 poleceń, kratka czytelna na wydruku próbnym, nic nie wychodzi poza 10 mm
 
 ### Phase 5: Kontrakt druku, e2e i wydruk próbny
 
