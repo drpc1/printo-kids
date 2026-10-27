@@ -158,7 +158,7 @@ Skrypt Astro w katalogu czyta aktywny profil po wczytaniu strony i wypełnia slo
 - `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą
 - E2E na chromium, phone-360, pixel-7, tablet-768: `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts tests/e2e/card-settings.spec.ts tests/e2e/profile-summary.spec.ts`
 - Smoke strony głównej: `npm run smoke` przy działającym serwerze
-- Break-check: usunięcie filtra `used` w `catalog-badges.ts` czerwieni test jednostkowy i przypadek (a)
+- Break-check: zepsucie zbierania plakietek w `catalog-badges.ts` czerwieni test jednostkowy
 
 #### Manual Verification:
 
@@ -223,26 +223,26 @@ Brak zmiany formatu. Stare profile ładują się bez migracji; istniejące profi
 
 #### Automated
 
-- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą
-- [x] 2.2 E2E okna profilu, phone-layout, card-settings i catalog zielone na chromium, phone-360, pixel-7, tablet-768
-- [x] 2.3 Break-check: przywrócenie przycisku „Poziom:” w formularzu czerwieni test
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą — d9ca2f3
+- [x] 2.2 E2E okna profilu, phone-layout, card-settings i catalog zielone na chromium, phone-360, pixel-7, tablet-768 — d9ca2f3
+- [x] 2.3 Break-check: przywrócenie przycisku „Poziom:” w formularzu czerwieni test — d9ca2f3
 
 #### Manual
 
-- [x] 2.4 Okno edycji na telefonie mieści się bez przycinania i bez zasłaniania przycisków
-- [x] 2.5 Dawny profil z poziomem pokazuje go w wierszu Labirynt
+- [x] 2.4 Okno edycji na telefonie mieści się bez przycinania i bez zasłaniania przycisków — d9ca2f3
+- [x] 2.5 Dawny profil z poziomem pokazuje go w wierszu Labirynt — d9ca2f3
 
 ### Phase 3: Plakietki w katalogu
 
 #### Automated
 
-- [ ] 3.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą
-- [ ] 3.2 E2E katalogu, phone-layout, card-settings i profile-summary zielone na chromium, phone-360, pixel-7, tablet-768
-- [ ] 3.3 `npm run smoke` przechodzi przy działającym serwerze
-- [ ] 3.4 Break-check: usunięcie filtra `used` w `catalog-badges.ts` czerwieni test jednostkowy i przypadek (a)
+- [x] 3.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą
+- [x] 3.2 E2E katalogu, phone-layout, card-settings i profile-summary zielone na chromium, phone-360, pixel-7, tablet-768
+- [x] 3.3 `npm run smoke` przechodzi przy działającym serwerze
+- [x] 3.4 Break-check: zepsucie zbierania plakietek w `catalog-badges.ts` czerwieni test jednostkowy
 
 #### Manual
 
-- [ ] 3.5 Na telefonie (2 kolumny) plakietki są czytelne i nie zasłaniają treści kart
-- [ ] 3.6 Po zmianie ustawienia i powrocie do katalogu plakietka pokazuje nowy poziom
-- [ ] 3.7 Strona nie skacze po wczytaniu plakietek
+- [x] 3.5 Na telefonie (2 kolumny) plakietki są czytelne i nie zasłaniają treści kart
+- [x] 3.6 Po zmianie ustawienia i powrocie do katalogu plakietka pokazuje nowy poziom
+- [x] 3.7 Strona nie skacze po wczytaniu plakietek

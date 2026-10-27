@@ -2,22 +2,73 @@
 import { CARD_KINDS } from "@/lib/cards";
 ---
 
-<ul class="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
-  {CARD_KINDS.map((kind) => (
-    <li>
-      <a
-        href={kind.href}
-        class="focus-visible:border-ring focus-visible:ring-ring/50 flex min-h-11 flex-col gap-2 rounded-md text-foreground outline-none focus-visible:ring-[3px]"
-      >
-        <img
-          src={kind.thumbnail}
-          alt=""
-          width="210"
-          height="297"
-          class="aspect-[210/297] h-auto w-full rounded-md border border-border bg-card object-contain"
-        />
-        <span class="text-center text-base font-medium sm:text-lg">{kind.title}</span>
-      </a>
-    </li>
-  ))}
-</ul>
+<div class="flex w-full flex-col gap-4">
+  <p data-profile-caption class="min-h-6 text-center text-base text-muted-foreground"></p>
+  <ul class="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
+    {CARD_KINDS.map((kind) => (
+      <li>
+        <a
+          href={kind.href}
+          data-card-title={kind.title}
+          class="focus-visible:border-ring focus-visible:ring-ring/50 flex min-h-11 flex-col gap-4 rounded-md text-foreground outline-none focus-visible:ring-[3px]"
+        >
+          <div class="relative">
+            <img
+              src={kind.thumbnail}
+              alt=""
+              width="210"
+              height="297"
+              class="aspect-[210/297] h-auto w-full rounded-md border border-border bg-card object-contain"
+            />
+            <span
+              data-badge-for={kind.id}
+              aria-hidden="true"
+              hidden
+              class="absolute -bottom-3 right-2 rounded-full bg-primary px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-primary-foreground ring-2 ring-background"
+            />
+          </div>
+          <span class="text-center text-base font-medium sm:text-lg">{kind.title}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script>
+  import { catalogBadges } from "@/lib/catalog-badges";
+
+  // The catalog is rendered on the server and the profile lives in the browser, so the badges arrive after load.
+  function showBadges(): void {
+    let shown;
+    try {
+      shown = catalogBadges(localStorage);
+    } catch {
+      return;
+    }
+
+    const caption = document.querySelector<HTMLElement>("[data-profile-caption]");
+    if (caption !== null) {
+      caption.textContent = shown.profileName === null ? "" : `Profil: ${shown.profileName}`;
+    }
+    for (const slot of document.querySelectorAll<HTMLElement>("[data-badge-for]")) {
+      const text = shown.badges[slot.dataset.badgeFor ?? ""];
+      slot.textContent = text ?? "";
+      slot.hidden = text === undefined;
+      // The badge is drawn over the thumbnail, so the link carries it in its name: "Sudoku, 6×6 · średni".
+      const link = slot.closest("a");
+      const title = link?.dataset.cardTitle;
+      if (link !== null && title !== undefined) {
+        if (text === undefined) {
+          link.removeAttribute("aria-label");
+        } else {
+          link.setAttribute("aria-label", `${title}, ${text}`);
+        }
+      }
+    }
+  }
+
+  showBadges();
+  // A page restored from the browser cache and a profile changed in another tab both need a fresh read.
+  window.addEventListener("pageshow", showBadges);
+  window.addEventListener("storage", showBadges);
+</script>
