@@ -21,6 +21,10 @@ import {
 } from "./levels.ts";
 import { SUDOKU_SHAPES, SUDOKU_SHAPES_4, type SudokuShapeId } from "./shapes.ts";
 
+// Mutation runs (stryker/*.config.json) set MUTATION_RUN=1: instrumented code is several times slower, so a wall-clock
+// budget would kill mutants for the wrong reason. npm test keeps every time budget.
+const MUTATION_RUN = process.env.MUTATION_RUN === "1";
+
 const SIZES: readonly SudokuSize[] = [4, 6, 9];
 
 function mulberry32(seed: number): () => number {
@@ -404,7 +408,7 @@ void describe("generateSudokuCard for every size, level and symbols", () => {
       const card = generateSudokuCard(random, null, hardest);
 
       assert.ok(card);
-      assert.ok(performance.now() - started < 1000, "one card took over a second");
+      assert.ok(MUTATION_RUN || performance.now() - started < 1000, "one card took over a second");
     }
   });
 });
