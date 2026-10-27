@@ -127,6 +127,8 @@ test("a favorite pick keeps card settings written on another open page meanwhile
   await seed(page, [ANIA], ANIA.id);
   await page.goto("/labirynt");
 
+  // The island must have read the profiles before the other tab writes, or it would simply read the new value.
+  await expect(page.getByRole("button", { name: "Ania", exact: true })).toBeVisible();
   // Another tab changes Ania's nonogram level after this page loaded.
   await page.evaluate((key) => {
     const raw = JSON.parse(localStorage.getItem(key) ?? "null") as { profiles: { cards: { nonogram: object } }[] };
