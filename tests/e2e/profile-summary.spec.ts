@@ -122,6 +122,33 @@ test("a pick in the favorite list is saved at once and keeps the card settings",
   expect(stored).toMatchObject({ character: "pies", level: "lat6", cards: ANIA.cards });
 });
 
+test("a favorite pick keeps card settings written on another open page meanwhile", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/labirynt");
+
+  // Another tab changes Ania's nonogram level after this page loaded.
+  await page.evaluate((key) => {
+    const raw = JSON.parse(localStorage.getItem(key) ?? "null") as { profiles: { cards: { nonogram: object } }[] };
+    raw.profiles[0].cards.nonogram = { level: "trudny", category: "zwierzeta" };
+    localStorage.setItem(key, JSON.stringify(raw));
+  }, PROFILES_KEY);
+
+  const dialog = await openEdit(page, "Ania");
+  await dialog.getByRole("button", { name: /^Postać:/ }).click();
+  await dialog.getByRole("button", { name: "Pies" }).click();
+  await expect(dialog.getByRole("button", { name: "Postać: Pies" })).toBeVisible();
+
+  const stored = await page.evaluate((key) => {
+    const raw = JSON.parse(localStorage.getItem(key) ?? "null") as {
+      profiles: { character: string; cards?: { nonogram?: { level: string } } }[];
+    } | null;
+    return raw?.profiles[0];
+  }, PROFILES_KEY);
+  expect(stored?.character).toBe("pies");
+  expect(stored?.cards?.nonogram?.level).toBe("trudny");
+});
+
 test("an own image picked in the favorite list is the favorite after a reload", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
