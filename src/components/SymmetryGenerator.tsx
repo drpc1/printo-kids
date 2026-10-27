@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
 import { CategoryChoice } from "@/components/CategoryChoice";
+import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { LevelChoice } from "@/components/LevelChoice";
 import { RememberedNote } from "@/components/RememberedNote";
+import { CharacterInstruction } from "@/components/SpeechBand";
 import { Switch } from "@/components/ui/switch";
+import { useBarCharacter } from "@/hooks/useBarCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { SymmetrySettings } from "@/lib/card-settings";
@@ -15,13 +18,14 @@ import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate
 import { SYMMETRY_LEVELS, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
+import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The symmetry card page: Generuj, the level and category buttons, the colors switch, the card, Drukuj, and the
- * shared profile corner. It has no character bar. The level, category and colors come from `useCardSettings`: the
+ * The symmetry card page: Generuj, the character, level and category buttons, the colors switch, the card, Drukuj, and the
+ * shared profile corner. The chosen character stands by the instruction on the card and says it. The level, category and colors come from `useCardSettings`: the
  * active profile's (or the device's), and every change is remembered at once. The page never touches the maze's
  * last-used parameters; it only keeps the bar values the profile corner shows. Switching colors redraws the same
  * card; it never generates a new one. A profile switch with a card shown draws a new card when the level or the
@@ -30,8 +34,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 export default function SymmetryGenerator() {
   const visit = useChildProfileVisit({ onApply: applyProfileBar });
   const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const bar = useBarCharacter(visit, barLevel);
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [card, setCard] = useState<SymmetryCard | null>(null);
@@ -89,11 +93,22 @@ export default function SymmetryGenerator() {
     window.print();
   }
 
-  function applyProfileBar(bar: ProfileBar): void {
-    setBarCharacter(bar.character);
-    setBarLevel(bar.level);
+  function applyProfileBar(next: ProfileBar): void {
+    bar.applyBar(next);
+    setBarLevel(next.level);
   }
 
+  const characterControl = (
+    <CharacterChoiceControl
+      character={bar.character}
+      label={bar.label}
+      thumbSrc={bar.thumbSrc}
+      choiceOpen={bar.choiceOpen}
+      onOpenChange={bar.setChoiceOpen}
+      onSelect={bar.select}
+      onCopied={bar.setOwnImage}
+    />
+  );
   const levelControl = (
     <LevelChoice
       level={symmetryLevelById(levelId)}
@@ -137,7 +152,7 @@ export default function SymmetryGenerator() {
       <ProfileCorner
         profiles={profiles}
         activeId={activeId}
-        barCharacter={barCharacter}
+        barCharacter={bar.character}
         barLevel={barLevel}
         ask={ask}
         onCreated={memory.corner.onCreated}
@@ -150,6 +165,7 @@ export default function SymmetryGenerator() {
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {characterControl}
             {levelControl}
             {categoryControl}
             {colorsControl}
@@ -177,6 +193,7 @@ export default function SymmetryGenerator() {
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
           <div className={cn("flex flex-wrap items-center justify-center gap-3")}>
+            {characterControl}
             {levelControl}
             {categoryControl}
             {colorsControl}
@@ -186,12 +203,25 @@ export default function SymmetryGenerator() {
           {failedNote}
         </div>
       )}
-      {card !== null ? <SymmetrySheet card={card} colors={colors} /> : null}
+      {card !== null ? (
+        <SymmetrySheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+      ) : null}
     </div>
   );
 }
 
-function SymmetrySheet({ card, colors }: { card: SymmetryCard; colors: boolean }) {
+function SymmetrySheet({
+  card,
+  colors,
+  characterId,
+  characterSrc,
+}: {
+  card: SymmetryCard;
+  colors: boolean;
+  characterId: string;
+  characterSrc: string | null;
+}) {
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, SYMMETRY_SHEET.instructionSize);
   const sheet = layoutSymmetrySheet({
     pageWidth: SYMMETRY_SHEET.pageWidth,
     pageHeight: SYMMETRY_SHEET.pageHeight,
@@ -199,7 +229,7 @@ function SymmetrySheet({ card, colors }: { card: SymmetryCard; colors: boolean }
     columns: card.columns,
     rows: card.rows,
     cellSize: card.cellSize,
-    instructionHeight: SYMMETRY_SHEET.instructionSize,
+    instructionHeight,
     instructionGap: SYMMETRY_SHEET.instructionGap,
   });
   const grid = sheet.grid;
@@ -218,17 +248,28 @@ function SymmetrySheet({ card, colors }: { card: SymmetryCard; colors: boolean }
       aria-label="Symetria"
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
-      <text
-        x={sheet.instruction.x}
-        y={sheet.instruction.y}
-        fill="var(--foreground)"
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-        fontSize={SYMMETRY_SHEET.instructionSize}
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        {SYMMETRY_SHEET.instructionText}
-      </text>
+      {characterSrc !== null ? (
+        <CharacterInstruction
+          pageWidth={sheet.page.width}
+          inset={SYMMETRY_SHEET.inset}
+          top={sheet.instruction.y - instructionHeight / 2}
+          characterId={characterId}
+          characterSrc={characterSrc}
+          text={SYMMETRY_SHEET.instructionText}
+        />
+      ) : (
+        <text
+          x={sheet.instruction.x}
+          y={sheet.instruction.y}
+          fill="var(--foreground)"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize={SYMMETRY_SHEET.instructionSize}
+          textAnchor="middle"
+          dominantBaseline="middle"
+        >
+          {SYMMETRY_SHEET.instructionText}
+        </text>
+      )}
       <g>
         {symmetryDrawnCells(card, colors).map(({ cell, fill, opacity }) => (
           <rect
