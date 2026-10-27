@@ -236,13 +236,13 @@ Brak zmiany formatu. Stare profile ładują się bez migracji; istniejące profi
 
 #### Automated
 
-- [x] 3.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą
-- [x] 3.2 E2E katalogu, phone-layout, card-settings i profile-summary zielone na chromium, phone-360, pixel-7, tablet-768
-- [x] 3.3 `npm run smoke` przechodzi przy działającym serwerze
-- [x] 3.4 Break-check: zepsucie zbierania plakietek w `catalog-badges.ts` czerwieni test jednostkowy
+- [x] 3.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą — 09fb6ea
+- [x] 3.2 E2E katalogu, phone-layout, card-settings i profile-summary zielone na chromium, phone-360, pixel-7, tablet-768 — 09fb6ea
+- [x] 3.3 `npm run smoke` przechodzi przy działającym serwerze — 09fb6ea
+- [x] 3.4 Break-check: zepsucie zbierania plakietek w `catalog-badges.ts` czerwieni test jednostkowy — 09fb6ea
 
 #### Manual
 
-- [x] 3.5 Na telefonie (2 kolumny) plakietki są czytelne i nie zasłaniają treści kart
-- [x] 3.6 Po zmianie ustawienia i powrocie do katalogu plakietka pokazuje nowy poziom
-- [x] 3.7 Strona nie skacze po wczytaniu plakietek
+- [x] 3.5 Na telefonie (2 kolumny) plakietki są czytelne i nie zasłaniają treści kart — 09fb6ea
+- [x] 3.6 Po zmianie ustawienia i powrocie do katalogu plakietka pokazuje nowy poziom — 09fb6ea
+- [x] 3.7 Strona nie skacze po wczytaniu plakietek — 09fb6ea
