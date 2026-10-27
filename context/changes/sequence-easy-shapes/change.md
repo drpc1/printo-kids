@@ -1,7 +1,7 @@
 ---
 change_id: sequence-easy-shapes
 title: Sequence easy shapes: cross, heart, and arrow
-status: implemented
+status: impl_reviewed
 created: 2026-10-26
 updated: 2026-10-27
 archived_at: null
