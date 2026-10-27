@@ -12,6 +12,12 @@
     "test": "node --experimental-strip-types --test src/lib/maze/generate.test.ts src/lib/sheet/layout.test.ts src/lib/sheet/walls.test.ts src/lib/sheet/speech.test.ts src/lib/sheet/print-contract.test.ts src/lib/last-used.test.ts src/lib/active-profile.test.ts src/lib/child-profiles.test.ts src/lib/sheet/character.test.ts src/lib/sheet/own-image.test.ts src/lib/sheet/own-image-store.test.ts src/lib/symmetry/colors.test.ts src/lib/card-settings.test.ts src/lib/card-summary.test.ts src/lib/catalog-badges.test.ts src/lib/symmetry/generate.test.ts src/lib/symmetry/layout.test.ts src/lib/symmetry/levels.test.ts src/lib/symmetry/templates.test.ts src/lib/object-categories.test.ts src/lib/sequence/generate.test.ts src/lib/sequence/layout.test.ts src/lib/sequence/levels.test.ts src/lib/sequence/shapes.test.ts src/lib/sudoku/colors.test.ts src/lib/dictation/levels.test.ts src/lib/dictation/outline.test.ts src/lib/dictation/generate.test.ts src/lib/dictation/layout.test.ts src/lib/sudoku/shapes.test.ts src/lib/sudoku/layout.test.ts src/lib/sudoku/levels.test.ts src/lib/sudoku/generate.test.ts src/lib/nonogram/sizes.test.ts src/lib/nonogram/clues.test.ts src/lib/nonogram/solve.test.ts src/lib/nonogram/simple.test.ts src/lib/nonogram/generate.test.ts src/lib/nonogram/layout.test.ts scripts/agent-hooks.test.mjs scripts/site-icons.test.mjs",
     "format": "prettier --write .",
     "smoke": "node scripts/smoke.mjs",
+    "mutate:dictation": "stryker run stryker/dictation.config.json",
+    "mutate:sudoku": "stryker run stryker/sudoku.config.json",
+    "mutate:nonogram": "stryker run stryker/nonogram.config.json",
+    "mutate:sequence": "stryker run stryker/sequence.config.json",
+    "mutate:symmetry": "stryker run stryker/symmetry.config.json",
+    "mutate:local-data": "stryker run stryker/local-data.config.json",
     "thumbnails": "node --experimental-strip-types scripts/build-thumbnails.mjs"
   },
   "dependencies": {

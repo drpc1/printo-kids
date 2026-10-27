@@ -13,6 +13,10 @@ import { composeSimpleNonogramCard, simpleNonogramProblems } from "./simple.ts";
 import { CLASSIC_NONOGRAM_SIZES, NONOGRAM_SIZES, nonogramSizeById } from "./sizes.ts";
 import { solveNonogram } from "./solve.ts";
 
+// Mutation runs (stryker/*.config.json) set MUTATION_RUN=1: instrumented code is several times slower, so a wall-clock
+// budget would kill mutants for the wrong reason. npm test keeps every time budget.
+const MUTATION_RUN = process.env.MUTATION_RUN === "1";
+
 const SMALL = nonogramSizeById("latwy");
 const MEDIUM = nonogramSizeById("sredni");
 const LARGE = nonogramSizeById("trudny");
@@ -111,7 +115,7 @@ void describe("every variant of every classic level", () => {
       const elapsed = performance.now() - started;
       t.diagnostic(`${size.id}: ${passing} of ${variants.length} variants have one solution, ${elapsed.toFixed(0)} ms`);
       assert.ok(passing >= 1, `no ${size.id} variant passes`);
-      assert.ok(elapsed < 5000, `${size.id} took ${elapsed} ms`);
+      assert.ok(MUTATION_RUN || elapsed < 5000, `${size.id} took ${elapsed} ms`);
     });
   }
 
@@ -176,7 +180,7 @@ void describe("every variant of the easy level", () => {
     const elapsed = performance.now() - started;
     t.diagnostic(`latwy: ${passing} of ${variants.length} variants pass, ${elapsed.toFixed(0)} ms`);
     assert.ok(passing >= 1);
-    assert.ok(elapsed < 5000);
+    assert.ok(MUTATION_RUN || elapsed < 5000);
   });
 });
 
