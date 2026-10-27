@@ -713,6 +713,8 @@ void describe("favoriteDiffers", () => {
     assert.equal(favoriteDiffers(kot, "smok", null), true);
     assert.equal(favoriteDiffers(kot, "none", null), true);
     assert.equal(favoriteDiffers(kot, "wlasne", PNG), true);
+    // A catalog favorite is the same character whatever picture the bar still remembers.
+    assert.equal(favoriteDiffers(kot, "kot", PNG), false);
   });
 
   void test("an own-image favorite differs when the bar shows another character or another picture", () => {
