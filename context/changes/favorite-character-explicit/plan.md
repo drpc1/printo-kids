@@ -179,17 +179,17 @@ Format danych bez zmian; nic do migracji.
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy: `npx astro check`
-- [x] 1.4 Build przechodzi: `npm run build`
-- [x] 1.5 E2E (z `E2E_PORT=4399`): `favorite-character`, `phone-layout`, `card-settings`, `catalog`, `profile-summary`, `own-image`, `character-speaks`
-- [x] 1.6 Break-check: zepsucie `favoriteDiffers` albo `save` czerwieni nowe testy
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — 2a75fb3
+- [x] 1.2 Lint przechodzi: `npm run lint` — 2a75fb3
+- [x] 1.3 Typy: `npx astro check` — 2a75fb3
+- [x] 1.4 Build przechodzi: `npm run build` — 2a75fb3
+- [x] 1.5 E2E (z `E2E_PORT=4399`): `favorite-character`, `phone-layout`, `card-settings`, `catalog`, `profile-summary`, `own-image`, `character-speaks` — 2a75fb3
+- [x] 1.6 Break-check: zepsucie `favoriteDiffers` albo `save` czerwieni nowe testy — 2a75fb3
 
 #### Manual
 
-- [x] 1.7 Na telefonie (360 px) stopka listy jest widoczna i klikalna, nie zasłania wierszy ani przycisków Generuj i Drukuj
-- [x] 1.8 Teksty po polsku, długie imię w przycisku zawija się
+- [x] 1.7 Na telefonie (360 px) stopka listy jest widoczna i klikalna, nie zasłania wierszy ani przycisków Generuj i Drukuj — 2a75fb3
+- [x] 1.8 Teksty po polsku, długie imię w przycisku zawija się — 2a75fb3
 
 ### Phase 2: Okno profilu bez „Zapisz”
 
