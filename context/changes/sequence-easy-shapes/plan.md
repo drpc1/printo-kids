@@ -192,9 +192,9 @@ Karty nie są zapisane na serwerze. Jedyny artefakt do odświeżenia to `public/
 
 #### Automated
 
-- [ ] 1.1 `node --experimental-strip-types --test src/lib/sequence/shapes.test.ts` przechodzi: `d` dla `serce` równa się `sudokuShapePath("heart")`, a dla `krzyzyk` równa się `sudokuShapePath("cross")`, przy tym samym środku i boku; `strzalka` jest zamkniętą ścieżką wewnątrz kwadratu, wyśrodkowaną, o szerokości i wysokości co najmniej 0,8 boku, z grotem w górę w prawo (największe x powyżej środka, najmniejsze x poniżej środka)
-- [ ] 1.2 `npm run lint` przechodzi
-- [ ] 1.3 `npx astro check` przechodzi
+- [x] 1.1 `node --experimental-strip-types --test src/lib/sequence/shapes.test.ts` przechodzi: `d` dla `serce` równa się `sudokuShapePath("heart")`, a dla `krzyzyk` równa się `sudokuShapePath("cross")`, przy tym samym środku i boku; `strzalka` jest zamkniętą ścieżką wewnątrz kwadratu, wyśrodkowaną, o szerokości i wysokości co najmniej 0,8 boku, z grotem w górę w prawo (największe x powyżej środka, najmniejsze x poniżej środka)
+- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.3 `npx astro check` przechodzi
 
 ### Phase 2: Jedna lista na wszystkich poziomach
 

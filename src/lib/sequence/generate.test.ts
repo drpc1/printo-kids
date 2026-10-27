@@ -346,7 +346,7 @@ void describe("sequenceRowProblems", () => {
   });
 
   void test("an unknown shape and a number outside 1 to 20 are reported", () => {
-    const values = good.values.map((item) => (item === KOLO ? "serce" : item)) as SequenceItem[];
+    const values = good.values.map((item) => (item === KOLO ? "serce" : item));
     const tooBig: SequenceRow = { rule: "up1", values: [15, 16, 17, 18, 19, 20, 21, 22], gaps: [3, 5] };
 
     assert.ok(sequenceRowProblems({ ...good, values }, LAT5).includes("unknown-item"));
