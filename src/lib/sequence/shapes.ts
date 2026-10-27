@@ -1,9 +1,13 @@
-export type SequenceShape = "kolo" | "kwadrat" | "trojkat" | "gwiazdka";
+import { sudokuShapePath } from "../sudoku/shapes.ts";
+
+export type SequenceShape = "kolo" | "kwadrat" | "trojkat" | "gwiazdka" | "serce" | "krzyzyk" | "strzalka";
 
 export const SEQUENCE_SHAPES: readonly SequenceShape[] = ["kolo", "kwadrat", "trojkat", "gwiazdka"];
 
 export type SequenceShapeOutline =
-  { kind: "circle"; cx: number; cy: number; r: number } | { kind: "polygon"; points: string };
+  | { kind: "circle"; cx: number; cy: number; r: number }
+  | { kind: "polygon"; points: string }
+  | { kind: "path"; d: string };
 
 /**
  * The SVG primitive of a shape centered on (cx, cy) and inscribed in a square of side `size`. The page component and
@@ -49,11 +53,36 @@ export function sequenceShapeOutline(shape: SequenceShape, cx: number, cy: numbe
       }
       return { kind: "polygon", points: polygonPoints(points) };
     }
+    case "serce":
+      return { kind: "path", d: sudokuShapePath("heart", cx, cy, size) };
+    case "krzyzyk":
+      return { kind: "path", d: sudokuShapePath("cross", cx, cy, size) };
+    case "strzalka":
+      return { kind: "path", d: arrowPath(cx, cy, size) };
   }
 }
 
 function polygonPoints(points: readonly (readonly [number, number])[]): string {
   return points.map(([x, y]) => `${round(x)},${round(y)}`).join(" ");
+}
+
+/** Closed arrow on the up-right diagonal. y grows downward, so the tip is the greatest x above the center. */
+function arrowPath(cx: number, cy: number, size: number): string {
+  const half = size / 2;
+  const unit: readonly (readonly [number, number])[] = [
+    [0.96, -0.96],
+    [0.873, 0.209],
+    [0.681, -0.332],
+    [-0.611, 0.96],
+    [-0.96, 0.611],
+    [0.332, -0.681],
+    [-0.209, -0.873],
+  ];
+  const drawn = unit.map(([x, y], index) => {
+    const command = index === 0 ? "M" : "L";
+    return `${command}${round(cx + x * half)} ${round(cy + y * half)}`;
+  });
+  return [...drawn, "Z"].join(" ");
 }
 
 function round(value: number): number {
