@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { SPEECH_BAND } from "../sheet/speech.ts";
 import { layoutSudokuSheet, type SudokuSheetInput } from "./layout.ts";
 import { SUDOKU_SHEET } from "./sheet.ts";
 
@@ -122,5 +123,39 @@ void describe("layoutSudokuSheet", () => {
       SUDOKU_SHEET.instructionLines.join(" "),
       "Uzupełnij puste pola. Nic się nie powtarza w rzędzie, kolumnie i bloku.",
     );
+  });
+});
+
+void describe("layoutSudokuSheet with the speech band", () => {
+  const sizes = [
+    { size: 4, blockRows: 2, blockColumns: 2 },
+    { size: 6, blockRows: 2, blockColumns: 3 },
+    { size: 9, blockRows: 3, blockColumns: 3 },
+  ] as const;
+
+  for (const { size, blockRows, blockColumns } of sizes) {
+    void test(`the ${size} by ${size} board fits inside the margin with a 26 mm band instead of the lines of text`, () => {
+      const sheet = layoutSudokuSheet({
+        ...FOUR,
+        size,
+        blockRows,
+        blockColumns,
+        cellSize: SUDOKU_SHEET.cellSize[size],
+        instructionBoxHeight: SPEECH_BAND.characterSize,
+      });
+
+      assert.equal(sheet.instruction.height, SPEECH_BAND.characterSize);
+      assert.ok(sheet.instruction.top >= 10 - 1e-9, `band top ${sheet.instruction.top}`);
+      assert.ok(sheet.grid.y >= sheet.instruction.top + SPEECH_BAND.characterSize + SUDOKU_SHEET.instructionGap - 1e-9);
+      assert.ok(sheet.grid.y + sheet.grid.height <= SUDOKU_SHEET.pageHeight - 10 + 1e-9);
+    });
+  }
+
+  void test("without a band the instruction height is the two lines of text", () => {
+    const sheet = layoutSudokuSheet(FOUR);
+    const lines = FOUR.instructionLineCount;
+    const expected = lines * FOUR.instructionSize + (lines - 1) * FOUR.instructionLineGap;
+
+    assert.ok(Math.abs(sheet.instruction.height - expected) < 1e-9);
   });
 });
