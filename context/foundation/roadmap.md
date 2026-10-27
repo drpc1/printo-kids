@@ -106,7 +106,7 @@ Brak. Zapis na urządzeniu już istnieje (Baseline: Data), a każda karta ma pas
 
 ### S-29: Okno profilu z podsumowaniem i plakietki w katalogu
 
-- **Outcome:** Rodzic tworzy profil, podając tylko imię i postać; okno profilu nie ma już kontrolek poziomu, pokazuje jedno zdanie o zasadzie i podsumowanie ustawień kart tylko do odczytu („Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta”), z których każda pozycja prowadzi do strony karty. W katalogu przy wybranym profilu każda miniatura ma plakietkę z zapamiętanym poziomem.
+- **Outcome:** Rodzic tworzy profil, podając tylko imię i postać; okno profilu nie ma już kontrolek poziomu, pokazuje jedno zdanie o zasadzie i podsumowanie ustawień kart tylko do odczytu („Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta”), z których każda pozycja prowadzi do strony karty. W katalogu przy wybranym profilu miniatura każdej karty, której profil używał, ma plakietkę z zapamiętanym poziomem.
 - **Change ID:** profile-window-summary
 - **PRD refs:** FR-007, FR-017, US-05, US-08
 - **Prerequisites:** S-28
