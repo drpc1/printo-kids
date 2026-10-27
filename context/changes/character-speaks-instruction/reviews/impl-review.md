@@ -34,7 +34,7 @@ Drift from the plan, all benign and in code comments or commit messages: `layout
 - **Location**: tests/e2e/character-speaks.spec.ts
 - **Detail**: The spec runs each card at its default level. The chip card (`NonogramSimpleSheet`) and the hard dictation grid are guarded only by layout unit tests, the print-contract test and a screenshot taken by hand.
 - **Fix**: Add one case that picks the easy nonogram level and one for the hard dictation level.
-- **Decision**: PENDING
+- **Decision**: SKIPPED
 
 ### F2 — `CharacterChoiceControl` has a `disabled` prop that no page passes
 
@@ -44,7 +44,7 @@ Drift from the plan, all benign and in code comments or commit messages: `layout
 - **Location**: src/components/CharacterChoiceControl.tsx
 - **Detail**: Level and category controls get `disabled={waitingForChild}`; the character button does not, like on the maze page.
 - **Fix**: Remove the unused prop, or pass `waitingForChild` on all pages (a product decision for the favorite-character slice S-31).
-- **Decision**: PENDING
+- **Decision**: SKIPPED
 
 ### F3 — Start screen groups the controls differently on nonogram and sequences
 
@@ -54,4 +54,4 @@ Drift from the plan, all benign and in code comments or commit messages: `layout
 - **Location**: src/components/NonogramGenerator.tsx, src/components/SequenceGenerator.tsx (hero branch)
 - **Detail**: Carried from the phase 3–4 review: Postać and Poziom sit in one row and Kategoria below on nonogram; the other pages put all controls in one row.
 - **Fix**: Put the nonogram controls in one wrapped row, or leave it.
-- **Decision**: PENDING
+- **Decision**: SKIPPED
