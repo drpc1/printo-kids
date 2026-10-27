@@ -8,6 +8,7 @@ import {
   CHARACTER_CHOICES,
   characterChoice,
   characterContentLeft,
+  characterContentRight,
   characterRow,
   characterSheetSrc,
 } from "./character.ts";
@@ -105,5 +106,27 @@ void describe("characterChoice", () => {
     assert.equal(catalogIds.includes("wlasne"), false);
     assert.equal(characterSheetSrc("wlasne"), null);
     assert.equal(characterChoice("wlasne"), "wlasne");
+  });
+});
+
+void describe("character drawing margins", () => {
+  void test("every catalog character has a drawing narrower than its square file, and own images have no margins", () => {
+    for (const row of CHARACTER_CHOICES) {
+      if (row.src === null) {
+        continue;
+      }
+      const left = characterContentLeft(row.id);
+      const right = characterContentRight(row.id);
+      assert.ok(left > 0 && right > 0, `${row.id} has margins on both sides`);
+      assert.ok(1 - left - right > 0 && 1 - left - right <= 1, `${row.id} drawing fits the file`);
+    }
+    assert.equal(characterContentRight("wlasne"), 0);
+    assert.equal(characterContentRight("none"), 0);
+    assert.equal(characterContentRight("unknown"), 0);
+  });
+
+  void test("the right margin of a few characters matches the measured file", () => {
+    assert.equal(characterContentRight("dinozaur"), 212 / 1024);
+    assert.equal(characterContentRight("samochodzik"), 189 / 1024);
   });
 });
