@@ -192,18 +192,18 @@ Karty nie są zapisane na serwerze. Jedyny artefakt do odświeżenia to `public/
 
 #### Automated
 
-- [x] 1.1 `node --experimental-strip-types --test src/lib/sequence/shapes.test.ts` przechodzi: `d` dla `serce` równa się `sudokuShapePath("heart")`, a dla `krzyzyk` równa się `sudokuShapePath("cross")`, przy tym samym środku i boku; `strzalka` jest zamkniętą ścieżką wewnątrz kwadratu, wyśrodkowaną, o szerokości i wysokości co najmniej 0,8 boku, z grotem w górę w prawo (największe x powyżej środka, najmniejsze x poniżej środka)
-- [x] 1.2 `npm run lint` przechodzi
-- [x] 1.3 `npx astro check` przechodzi
+- [x] 1.1 `node --experimental-strip-types --test src/lib/sequence/shapes.test.ts` przechodzi: `d` dla `serce` równa się `sudokuShapePath("heart")`, a dla `krzyzyk` równa się `sudokuShapePath("cross")`, przy tym samym środku i boku; `strzalka` jest zamkniętą ścieżką wewnątrz kwadratu, wyśrodkowaną, o szerokości i wysokości co najmniej 0,8 boku, z grotem w górę w prawo (największe x powyżej środka, najmniejsze x poniżej środka) — 17f8fea
+- [x] 1.2 `npm run lint` przechodzi — 17f8fea
+- [x] 1.3 `npx astro check` przechodzi — 17f8fea
 
 ### Phase 2: Jedna lista na wszystkich poziomach
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi: w pętli ziaren `serce`, `krzyzyk` i `strzalka` występują na `lat4`, `lat5` i `lat6` oraz na `lat7` w wierszu `groups` albo `mixed`; token nieznanego kształtu leży poza katalogiem; sto kart `lat7` mieści się w 5 s
-- [ ] 2.2 `node scripts/build-thumbnails.mjs` zapisuje od nowa `public/thumbnails/sekwencje.svg` dla ziarna `20261025`
+- [x] 2.1 `npm test` przechodzi: w pętli ziaren `serce`, `krzyzyk` i `strzalka` występują na `lat4`, `lat5` i `lat6` oraz na `lat7` w wierszu `groups` albo `mixed`; token nieznanego kształtu leży poza katalogiem; sto kart `lat7` mieści się w 5 s
+- [x] 2.2 `node scripts/build-thumbnails.mjs` zapisuje od nowa `public/thumbnails/sekwencje.svg` dla ziarna `20261025`
 
 #### Manual
 
-- [ ] 2.3 Na `/sekwencje` poziomy 1 i 4 pokazują serce, ukośny krzyżyk i strzałkę w górę w prawo jako czarne kontury nie większe od koła w tym samym polu; strzałka różni się od trójkąta i od krzyżyka
-- [ ] 2.4 Miniatura sekwencji w katalogu i podgląd druku `/sekwencje` to nadal jedna strona A4
+- [x] 2.3 Na `/sekwencje` poziomy 1 i 4 pokazują serce, ukośny krzyżyk i strzałkę w górę w prawo jako czarne kontury nie większe od koła w tym samym polu; strzałka różni się od trójkąta i od krzyżyka
+- [x] 2.4 Miniatura sekwencji w katalogu i podgląd druku `/sekwencje` to nadal jedna strona A4
