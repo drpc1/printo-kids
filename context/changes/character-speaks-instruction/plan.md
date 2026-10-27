@@ -339,14 +339,14 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 #### Automated
 
-- [ ] 2.1 `npm test`, `npm run lint`, `npx astro check` zielone
-- [ ] 2.2 Testy układów dla wszystkich poziomów z pasem i bez
-- [ ] 2.5 e2e układu paska na telefonie bez regresji: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check` zielone
+- [x] 2.2 Testy układów dla wszystkich poziomów z pasem i bez
+- [x] 2.5 e2e układu paska na telefonie bez regresji: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
 
 #### Manual
 
-- [ ] 2.3 Symetria i sekwencje: postać po lewej, dymek z poleceniem, karta mieści się na stronie, „Bez postaci” jak dotąd
-- [ ] 2.4 Przełączenie Kolory na symetrii nie zmienia postaci ani karty
+- [x] 2.3 Symetria i sekwencje: postać po lewej, dymek z poleceniem, karta mieści się na stronie, „Bez postaci” jak dotąd
+- [x] 2.4 Przełączenie Kolory na symetrii nie zmienia postaci ani karty
 
 ### Phase 3: Sudoku i nonogram
 

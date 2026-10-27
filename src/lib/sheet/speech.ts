@@ -34,6 +34,8 @@ export interface SpeechRect {
 export interface SpeechBandInput {
   pageWidth: number;
   inset: number;
+  /** Top of the band on the page; the card layout centers its block, so this is not always the inset. */
+  top: number;
   /** One text line per sentence of the instruction. */
   lines: readonly string[];
   /** Empty margin left and right of the drawing in the character file, as fractions of the file. */
@@ -67,22 +69,22 @@ export function estimatedTextWidth(line: string, size: number): number {
 }
 
 export function layoutSpeechBand(input: SpeechBandInput): SpeechBandLayout {
-  const { pageWidth, inset, lines, contentLeft, contentRight } = input;
+  const { pageWidth, inset, top, lines, contentLeft, contentRight } = input;
   const size = SPEECH_BAND.characterSize;
   const drawnRight = inset + size * (1 - contentLeft - contentRight);
   const bubbleX = drawnRight + SPEECH_BAND.tailLength;
   const bubbleWidth = pageWidth - inset - bubbleX;
   const bubbleHeight = size - SPEECH_BAND.bubbleInset * 2;
-  const centerY = inset + size / 2;
+  const centerY = top + size / 2;
   const textSize = lines.length > 1 ? SPEECH_BAND.multiLineSize : SPEECH_BAND.singleLineSize;
   const pitch = textSize * SPEECH_BAND.lineHeightRatio;
 
   return {
     height: size,
-    character: { x: inset - contentLeft * size, y: inset, width: size, height: size },
+    character: { x: inset - contentLeft * size, y: top, width: size, height: size },
     bubble: {
       x: bubbleX,
-      y: inset + SPEECH_BAND.bubbleInset,
+      y: top + SPEECH_BAND.bubbleInset,
       width: bubbleWidth,
       height: bubbleHeight,
       radius: SPEECH_BAND.bubbleRadius,

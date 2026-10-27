@@ -54,6 +54,7 @@ void describe("speech band", () => {
         const layout = layoutSpeechBand({
           pageWidth: PAGE_WIDTH,
           inset: INSET,
+          top: INSET,
           lines: instructionLines(text),
           contentLeft: characterContentLeft(row.id),
           contentRight: characterContentRight(row.id),
@@ -79,6 +80,7 @@ void describe("speech band", () => {
         const layout = layoutSpeechBand({
           pageWidth: PAGE_WIDTH,
           inset: INSET,
+          top: INSET,
           lines,
           contentLeft: characterContentLeft(row.id),
           contentRight: characterContentRight(row.id),
@@ -97,6 +99,7 @@ void describe("speech band", () => {
     const layout = layoutSpeechBand({
       pageWidth: PAGE_WIDTH,
       inset: INSET,
+      top: INSET,
       lines: ["Jedno zdanie."],
       contentLeft: 0.2,
       contentRight: 0.2,
@@ -109,7 +112,7 @@ void describe("speech band", () => {
   });
 
   void test("one sentence is one larger line and two sentences are two smaller lines around the center", () => {
-    const base = { pageWidth: PAGE_WIDTH, inset: INSET, contentLeft: 0, contentRight: 0 };
+    const base = { pageWidth: PAGE_WIDTH, inset: INSET, top: INSET, contentLeft: 0, contentRight: 0 };
     const one = layoutSpeechBand({ ...base, lines: ["A."] });
     const two = layoutSpeechBand({ ...base, lines: ["A.", "B."] });
     assert.equal(one.text.size, SPEECH_BAND.singleLineSize);
@@ -122,6 +125,7 @@ void describe("speech band", () => {
     const layout = layoutSpeechBand({
       pageWidth: PAGE_WIDTH,
       inset: INSET,
+      top: INSET,
       lines: ["A."],
       contentLeft: 0,
       contentRight: 0,
