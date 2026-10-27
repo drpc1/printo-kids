@@ -252,30 +252,30 @@ Zapis w przeglądarce zostaje. Nie ma migracji `localStorage` ani profili, bo `i
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, a stałe stron w `src/lib/sheet/print-contract.test.ts` wskazują `src/pages/maze.astro`, `symmetry.astro`, `sequences.astro` i `dictation.astro` — c470cd9
-- [x] 1.2 `npx playwright test --project=chromium` przechodzi na zaktualizowanych ścieżkach e2e — c470cd9
+- [x] 1.1 `npm test` przechodzi, a stałe stron w `src/lib/sheet/print-contract.test.ts` wskazują `src/pages/maze.astro`, `symmetry.astro`, `sequences.astro` i `dictation.astro` — 8fd3d2b
+- [x] 1.2 `npx playwright test --project=chromium` przechodzi na zaktualizowanych ścieżkach e2e — 8fd3d2b
 
 #### Manual
 
-- [x] 1.3 Z katalogu `/` cztery karty otwierają `/maze`, `/symmetry`, `/sequences` i `/dictation`, a napisy zostają: Labirynt, Symetria, Sekwencje, Dyktando graficzne — c470cd9
-- [x] 1.4 Z katalogu `/sudoku` i `/nonogram` otwierają się tak jak przed zmianą — c470cd9
+- [x] 1.3 Z katalogu `/` cztery karty otwierają `/maze`, `/symmetry`, `/sequences` i `/dictation`, a napisy zostają: Labirynt, Symetria, Sekwencje, Dyktando graficzne — 8fd3d2b
+- [x] 1.4 Z katalogu `/sudoku` i `/nonogram` otwierają się tak jak przed zmianą — 8fd3d2b
 
 ### Phase 2: Stare adresy przekierowują
 
 #### Automated
 
-- [x] 2.1 `npm run smoke` przy działającym serwerze: `/maze`, `/symmetry`, `/sequences` i `/dictation` zwracają 200 z dotychczasowymi polskimi zdaniami, a `/labirynt` → `/maze`, `/symetria` → `/symmetry`, `/sekwencje` → `/sequences` i `/dyktando` → `/dictation` zwracają 301 z tą ścieżką w `Location` — e221215
+- [x] 2.1 `npm run smoke` przy działającym serwerze: `/maze`, `/symmetry`, `/sequences` i `/dictation` zwracają 200 z dotychczasowymi polskimi zdaniami, a `/labirynt` → `/maze`, `/symetria` → `/symmetry`, `/sekwencje` → `/sequences` i `/dyktando` → `/dictation` zwracają 301 z tą ścieżką w `Location` — 3dcd226
 
 #### Manual
 
-- [x] 2.2 Wpisanie `/labirynt` w pasek adresu kończy się kartą labiryntu pod `/maze` — e221215
-- [x] 2.3 Wpisanie `/dyktando/` ze slashem na końcu kończy się kartą dyktanda pod `/dictation` — e221215
-- [x] 2.4 Wygenerowana sitemapa nie zawiera `/labirynt`, `/symetria`, `/sekwencje` ani `/dyktando` — e221215
+- [x] 2.2 Wpisanie `/labirynt` w pasek adresu kończy się kartą labiryntu pod `/maze` — 3dcd226
+- [x] 2.3 Wpisanie `/dyktando/` ze slashem na końcu kończy się kartą dyktanda pod `/dictation` — 3dcd226
+- [x] 2.4 Wygenerowana sitemapa nie zawiera `/labirynt`, `/symetria`, `/sekwencje` ani `/dyktando` — 3dcd226
 
 ### Phase 3: Żywe dokumenty
 
 #### Manual
 
-- [x] 3.1 Kryterium US-05 wymienia labirynt jako `/maze` i symetrię jako `/symmetry` — 8cabe69
-- [x] 3.2 `AGENTS.md` podaje adres labiryntu jako `/maze` — 8cabe69
-- [x] 3.3 Zamknięte plastry w `context/foundation/roadmap.md` i foldery w `context/archive/` nadal zapisują stare ścieżki — 8cabe69
+- [x] 3.1 Kryterium US-05 wymienia labirynt jako `/maze` i symetrię jako `/symmetry` — 14afdf0
+- [x] 3.2 `AGENTS.md` podaje adres labiryntu jako `/maze` — 14afdf0
+- [x] 3.3 Zamknięte plastry w `context/foundation/roadmap.md` i foldery w `context/archive/` nadal zapisują stare ścieżki — 14afdf0
