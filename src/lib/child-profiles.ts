@@ -136,22 +136,6 @@ function cardsOf(profile: ChildProfile): { cards?: CardSettingsMap } {
   return profile.cards === undefined ? {} : { cards: profile.cards };
 }
 
-/** Href passed to withFavorite. A catalog id clears the snapshot. An untouched `wlasne` keeps the saved one. */
-export function hrefForFavoriteSave(
-  character: string,
-  touched: boolean,
-  deviceHref: string | null,
-  profileHref: string | undefined,
-): string | null {
-  if (character !== OWN_IMAGE_ID) {
-    return null;
-  }
-  if (touched) {
-    return deviceHref;
-  }
-  return profileHref ?? null;
-}
-
 /** A profile row for Utwórz. `wlasne` keeps the device href in `image`; the character field stays the id. */
 export function profileToCreate(
   id: string,
