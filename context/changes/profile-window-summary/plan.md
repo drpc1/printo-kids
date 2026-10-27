@@ -210,27 +210,27 @@ Brak zmiany formatu. Stare profile ładują się bez migracji; istniejące profi
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
-- [x] 1.4 Break-check: zepsucie reguły plakietki dla sudoku 4×4 czerwieni test
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — 5d9bd81
+- [x] 1.2 Lint przechodzi: `npm run lint` — 5d9bd81
+- [x] 1.3 Typy przechodzą: `npx astro check` — 5d9bd81
+- [x] 1.4 Break-check: zepsucie reguły plakietki dla sudoku 4×4 czerwieni test — 5d9bd81
 
 #### Manual
 
-- [x] 1.5 Teksty z testów zgadzają się z makietą zaakceptowaną przez użytkowniczkę
+- [x] 1.5 Teksty z testów zgadzają się z makietą zaakceptowaną przez użytkowniczkę — 5d9bd81
 
 ### Phase 2: Okno profilu bez poziomu, z podsumowaniem
 
 #### Automated
 
-- [ ] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą
-- [ ] 2.2 E2E okna profilu, phone-layout, card-settings i catalog zielone na chromium, phone-360, pixel-7, tablet-768
-- [ ] 2.3 Break-check: przywrócenie przycisku „Poziom:” w formularzu czerwieni test
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` przechodzą
+- [x] 2.2 E2E okna profilu, phone-layout, card-settings i catalog zielone na chromium, phone-360, pixel-7, tablet-768
+- [x] 2.3 Break-check: przywrócenie przycisku „Poziom:” w formularzu czerwieni test
 
 #### Manual
 
-- [ ] 2.4 Okno edycji na telefonie mieści się bez przycinania i bez zasłaniania przycisków
-- [ ] 2.5 Dawny profil z poziomem pokazuje go w wierszu Labirynt
+- [x] 2.4 Okno edycji na telefonie mieści się bez przycinania i bez zasłaniania przycisków
+- [x] 2.5 Dawny profil z poziomem pokazuje go w wierszu Labirynt
 
 ### Phase 3: Plakietki w katalogu
 
