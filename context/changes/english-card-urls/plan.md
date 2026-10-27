@@ -264,18 +264,18 @@ Zapis w przeglądarce zostaje. Nie ma migracji `localStorage` ani profili, bo `i
 
 #### Automated
 
-- [x] 2.1 `npm run smoke` przy działającym serwerze: `/maze`, `/symmetry`, `/sequences` i `/dictation` zwracają 200 z dotychczasowymi polskimi zdaniami, a `/labirynt` → `/maze`, `/symetria` → `/symmetry`, `/sekwencje` → `/sequences` i `/dyktando` → `/dictation` zwracają 301 z tą ścieżką w `Location`
+- [x] 2.1 `npm run smoke` przy działającym serwerze: `/maze`, `/symmetry`, `/sequences` i `/dictation` zwracają 200 z dotychczasowymi polskimi zdaniami, a `/labirynt` → `/maze`, `/symetria` → `/symmetry`, `/sekwencje` → `/sequences` i `/dyktando` → `/dictation` zwracają 301 z tą ścieżką w `Location` — e221215
 
 #### Manual
 
-- [x] 2.2 Wpisanie `/labirynt` w pasek adresu kończy się kartą labiryntu pod `/maze`
-- [x] 2.3 Wpisanie `/dyktando/` ze slashem na końcu kończy się kartą dyktanda pod `/dictation`
-- [x] 2.4 Wygenerowana sitemapa nie zawiera `/labirynt`, `/symetria`, `/sekwencje` ani `/dyktando`
+- [x] 2.2 Wpisanie `/labirynt` w pasek adresu kończy się kartą labiryntu pod `/maze` — e221215
+- [x] 2.3 Wpisanie `/dyktando/` ze slashem na końcu kończy się kartą dyktanda pod `/dictation` — e221215
+- [x] 2.4 Wygenerowana sitemapa nie zawiera `/labirynt`, `/symetria`, `/sekwencje` ani `/dyktando` — e221215
 
 ### Phase 3: Żywe dokumenty
 
 #### Manual
 
-- [ ] 3.1 Kryterium US-05 wymienia labirynt jako `/maze` i symetrię jako `/symmetry`
-- [ ] 3.2 `AGENTS.md` podaje adres labiryntu jako `/maze`
-- [ ] 3.3 Zamknięte plastry w `context/foundation/roadmap.md` i foldery w `context/archive/` nadal zapisują stare ścieżki
+- [x] 3.1 Kryterium US-05 wymienia labirynt jako `/maze` i symetrię jako `/symmetry`
+- [x] 3.2 `AGENTS.md` podaje adres labiryntu jako `/maze`
+- [x] 3.3 Zamknięte plastry w `context/foundation/roadmap.md` i foldery w `context/archive/` nadal zapisują stare ścieżki
