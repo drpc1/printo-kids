@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { useBarCharacter } from "@/hooks/useBarCharacter";
+import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { DictationSettings } from "@/lib/card-settings";
@@ -35,6 +36,7 @@ export default function DictationGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const bar = useBarCharacter(visit, barLevel);
+  const favorite = useFavoriteCharacter(visit, bar);
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -108,6 +110,7 @@ export default function DictationGenerator() {
       onOpenChange={bar.setChoiceOpen}
       onSelect={bar.select}
       onCopied={bar.setOwnImage}
+      favorite={favorite.offer}
     />
   );
   const levelControl = (
@@ -167,7 +170,7 @@ export default function DictationGenerator() {
             {solutionControl}
             {failedNote}
           </div>
-          <RememberedNote note={memory.note} profileActive={activeId !== null} />
+          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -193,7 +196,7 @@ export default function DictationGenerator() {
             {levelControl}
             {categoryControl}
           </div>
-          <RememberedNote note={memory.note} profileActive={activeId !== null} />
+          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>

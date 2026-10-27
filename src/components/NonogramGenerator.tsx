@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { useBarCharacter } from "@/hooks/useBarCharacter";
+import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { NonogramSettings } from "@/lib/card-settings";
@@ -37,6 +38,7 @@ export default function NonogramGenerator() {
   const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
   const [barLevel, setBarLevel] = useState(visitStart.level);
   const bar = useBarCharacter(visit, barLevel);
+  const favorite = useFavoriteCharacter(visit, bar);
   const [showSolution, setShowSolution] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
@@ -111,6 +113,7 @@ export default function NonogramGenerator() {
       onOpenChange={bar.setChoiceOpen}
       onSelect={bar.select}
       onCopied={bar.setOwnImage}
+      favorite={favorite.offer}
     />
   );
   const sizeControl = (
@@ -172,7 +175,7 @@ export default function NonogramGenerator() {
             {solutionControl}
             {failedNote}
           </div>
-          <RememberedNote note={memory.note} profileActive={activeId !== null} />
+          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={() => {
@@ -200,7 +203,7 @@ export default function NonogramGenerator() {
             {sizeControl}
           </div>
           {categoryControl}
-          <RememberedNote note={memory.note} profileActive={activeId !== null} />
+          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <GenerateButton
             onClick={() => {
               handleGenerate();
