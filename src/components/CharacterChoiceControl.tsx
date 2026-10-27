@@ -94,7 +94,7 @@ export function CharacterChoiceControl({
               type="button"
               variant="outline"
               aria-describedby={noteId}
-              className={cn(DIALOG_ROW_CLASS, "w-full justify-center break-words whitespace-normal")}
+              className={cn(DIALOG_ROW_CLASS, "min-h-11 w-full justify-center break-words whitespace-normal")}
               onClick={handleSetFavorite}
             >
               {`Ustaw jako ulubioną ${favorite.name}`}
