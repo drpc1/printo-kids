@@ -1,27 +1,31 @@
 import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
 import { CategoryChoice } from "@/components/CategoryChoice";
+import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { LevelChoice } from "@/components/LevelChoice";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { Switch } from "@/components/ui/switch";
 import { RememberedNote } from "@/components/RememberedNote";
+import { CharacterInstruction } from "@/components/SpeechBand";
+import { useBarCharacter } from "@/hooks/useBarCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { DictationSettings } from "@/lib/card-settings";
 import { generateDictationCard, type DictationCard } from "@/lib/dictation/generate";
-import { layoutDictationSheet } from "@/lib/dictation/layout";
+import { dictationCellSize, layoutDictationSheet } from "@/lib/dictation/layout";
 import { DICTATION_LEVELS, dictationLevelById, type DictationLevelId } from "@/lib/dictation/levels";
 import { walkCommands } from "@/lib/dictation/outline";
 import { DICTATION_SHEET, formatDictationCommand } from "@/lib/dictation/sheet";
+import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
  * The graphic dictation page: Generuj, the level and category buttons, the card, Drukuj, and the shared profile corner.
- * It has no colors or character controls. The level and the category come from `useCardSettings` (the active
+ * It has no colors; the chosen character stands by the instruction on the card and says it. The level and the category come from `useCardSettings` (the active
  * profile's, or the device's) and every change is remembered at once, the solution switch is not. The page never
  * touches the maze's last-used parameters; it only keeps the bar values the profile corner shows. A profile switch
  * with a card shown draws a new card when the level or the category changed.
@@ -29,8 +33,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 export default function DictationGenerator() {
   const visit = useChildProfileVisit({ onApply: applyProfileBar });
   const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const bar = useBarCharacter(visit, barLevel);
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -90,11 +94,22 @@ export default function DictationGenerator() {
     window.print();
   }
 
-  function applyProfileBar(bar: ProfileBar): void {
-    setBarCharacter(bar.character);
-    setBarLevel(bar.level);
+  function applyProfileBar(next: ProfileBar): void {
+    bar.applyBar(next);
+    setBarLevel(next.level);
   }
 
+  const characterControl = (
+    <CharacterChoiceControl
+      character={bar.character}
+      label={bar.label}
+      thumbSrc={bar.thumbSrc}
+      choiceOpen={bar.choiceOpen}
+      onOpenChange={bar.setChoiceOpen}
+      onSelect={bar.select}
+      onCopied={bar.setOwnImage}
+    />
+  );
   const levelControl = (
     <LevelChoice
       level={dictationLevelById(levelId)}
@@ -133,7 +148,7 @@ export default function DictationGenerator() {
       <ProfileCorner
         profiles={profiles}
         activeId={activeId}
-        barCharacter={barCharacter}
+        barCharacter={bar.character}
         barLevel={barLevel}
         ask={ask}
         onCreated={memory.corner.onCreated}
@@ -146,6 +161,7 @@ export default function DictationGenerator() {
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {characterControl}
             {levelControl}
             {categoryControl}
             {solutionControl}
@@ -173,6 +189,7 @@ export default function DictationGenerator() {
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
           <div className={cn("flex flex-wrap items-center justify-center gap-3")}>
+            {characterControl}
             {levelControl}
             {categoryControl}
           </div>
@@ -181,34 +198,68 @@ export default function DictationGenerator() {
           {failedNote}
         </div>
       )}
-      {card !== null ? <DictationSheet card={card} showSolution={showSolution} /> : null}
+      {card !== null ? (
+        <DictationSheet
+          card={card}
+          showSolution={showSolution}
+          characterId={bar.character}
+          characterSrc={bar.characterSrc}
+        />
+      ) : null}
     </div>
   );
 }
 
 /** The printed card. It draws the commands, the grid, and the start dot. The outline stroke is only on screen. */
-function DictationSheet({ card, showSolution }: { card: DictationCard; showSolution: boolean }) {
+function DictationSheet({
+  card,
+  showSolution,
+  characterId,
+  characterSrc,
+}: {
+  card: DictationCard;
+  showSolution: boolean;
+  characterId: string;
+  characterSrc: string | null;
+}) {
   const level = dictationLevelById(card.levelId);
+  const withBand = characterSrc !== null;
+  const instructionHeight = instructionBoxHeight(withBand, DICTATION_SHEET.instructionSize);
+  // With a character the grid shrinks only as far as the commands of this card need; without one it keeps the level size.
+  const cellSize = dictationCellSize(
+    {
+      pageHeight: DICTATION_SHEET.pageHeight,
+      inset: DICTATION_SHEET.inset,
+      nominal: card.cellSize,
+      rows: card.rows,
+      commandCount: card.commands.length,
+      commandsPerRow: level.commandsPerRow,
+      commandRowHeight: level.commandRowHeight,
+      instructionGap: DICTATION_SHEET.instructionGap,
+      listGap: DICTATION_SHEET.listGap,
+    },
+    withBand,
+  );
   const sheet = layoutDictationSheet({
     pageWidth: DICTATION_SHEET.pageWidth,
     pageHeight: DICTATION_SHEET.pageHeight,
     inset: DICTATION_SHEET.inset,
     columns: card.columns,
     rows: card.rows,
-    cellSize: card.cellSize,
+    cellSize,
     commandCount: card.commands.length,
     commandsPerRow: level.commandsPerRow,
     commandRowHeight: level.commandRowHeight,
-    instructionSize: DICTATION_SHEET.instructionSize,
+    instructionSize: instructionHeight,
     instructionGap: DICTATION_SHEET.instructionGap,
     listGap: DICTATION_SHEET.listGap,
   });
   const grid = sheet.grid;
-  const columnLines = Array.from({ length: card.columns - 1 }, (_, index) => grid.x + (index + 1) * card.cellSize);
-  const rowLines = Array.from({ length: card.rows - 1 }, (_, index) => grid.y + (index + 1) * card.cellSize);
+  const columnLines = Array.from({ length: card.columns - 1 }, (_, index) => grid.x + (index + 1) * cellSize);
+  const rowLines = Array.from({ length: card.rows - 1 }, (_, index) => grid.y + (index + 1) * cellSize);
   const inset = DICTATION_SHEET.commandBoxInset;
   const solutionPoints = walkCommands({ x: card.start.col, y: card.start.row }, card.commands)
-    .map((vertex) => `${grid.x + vertex.x * card.cellSize},${grid.y + vertex.y * card.cellSize}`)
+    .map((vertex) => `${grid.x + vertex.x * cellSize},${grid.y + vertex.y * cellSize}`)
     .join(" ");
 
   return (
@@ -222,17 +273,28 @@ function DictationSheet({ card, showSolution }: { card: DictationCard; showSolut
       aria-label="Dyktando graficzne"
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
-      <text
-        x={sheet.instruction.x}
-        y={sheet.instruction.y}
-        fill="var(--foreground)"
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-        fontSize={DICTATION_SHEET.instructionSize}
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        {DICTATION_SHEET.instructionText}
-      </text>
+      {characterSrc !== null ? (
+        <CharacterInstruction
+          pageWidth={sheet.page.width}
+          inset={DICTATION_SHEET.inset}
+          top={sheet.instruction.y - instructionHeight / 2}
+          characterId={characterId}
+          characterSrc={characterSrc}
+          text={DICTATION_SHEET.instructionText}
+        />
+      ) : (
+        <text
+          x={sheet.instruction.x}
+          y={sheet.instruction.y}
+          fill="var(--foreground)"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize={DICTATION_SHEET.instructionSize}
+          textAnchor="middle"
+          dominantBaseline="middle"
+        >
+          {DICTATION_SHEET.instructionText}
+        </text>
+      )}
       {card.commands.map((command, index) => {
         const box = sheet.commands[index];
         return (
@@ -303,8 +365,8 @@ function DictationSheet({ card, showSolution }: { card: DictationCard; showSolut
         </g>
       ) : null}
       <circle
-        cx={grid.x + card.start.col * card.cellSize}
-        cy={grid.y + card.start.row * card.cellSize}
+        cx={grid.x + card.start.col * cellSize}
+        cy={grid.y + card.start.row * cellSize}
         r={DICTATION_SHEET.startDotRadius}
         fill="var(--foreground)"
       />
