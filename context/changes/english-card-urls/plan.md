@@ -252,13 +252,13 @@ Zapis w przeglądarce zostaje. Nie ma migracji `localStorage` ani profili, bo `i
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, a stałe stron w `src/lib/sheet/print-contract.test.ts` wskazują `src/pages/maze.astro`, `symmetry.astro`, `sequences.astro` i `dictation.astro`
-- [x] 1.2 `npx playwright test --project=chromium` przechodzi na zaktualizowanych ścieżkach e2e
+- [x] 1.1 `npm test` przechodzi, a stałe stron w `src/lib/sheet/print-contract.test.ts` wskazują `src/pages/maze.astro`, `symmetry.astro`, `sequences.astro` i `dictation.astro` — c470cd9
+- [x] 1.2 `npx playwright test --project=chromium` przechodzi na zaktualizowanych ścieżkach e2e — c470cd9
 
 #### Manual
 
-- [x] 1.3 Z katalogu `/` cztery karty otwierają `/maze`, `/symmetry`, `/sequences` i `/dictation`, a napisy zostają: Labirynt, Symetria, Sekwencje, Dyktando graficzne
-- [x] 1.4 Z katalogu `/sudoku` i `/nonogram` otwierają się tak jak przed zmianą
+- [x] 1.3 Z katalogu `/` cztery karty otwierają `/maze`, `/symmetry`, `/sequences` i `/dictation`, a napisy zostają: Labirynt, Symetria, Sekwencje, Dyktando graficzne — c470cd9
+- [x] 1.4 Z katalogu `/sudoku` i `/nonogram` otwierają się tak jak przed zmianą — c470cd9
 
 ### Phase 2: Stare adresy przekierowują
 
