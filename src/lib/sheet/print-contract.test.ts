@@ -9,6 +9,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../
 const WORKSHEET_HOME = "src/components/GeneratorShell.astro";
 const MAZE_PAGE = "src/pages/labirynt.astro";
 const WORKSHEET_GENERATOR = "src/components/WorksheetGenerator.tsx";
+const CHARACTER_CHOICE_CONTROL = "src/components/CharacterChoiceControl.tsx";
 const SYMMETRY_PAGE = "src/pages/symetria.astro";
 const SYMMETRY_GENERATOR = "src/components/SymmetryGenerator.tsx";
 const SEQUENCE_PAGE = "src/pages/sekwencje.astro";
@@ -76,6 +77,9 @@ void describe("print contract", () => {
       "flex w-full flex-col gap-3 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
       "max-h-[calc(100dvh-2rem)] print:hidden",
+    ]);
+    // The character list dialog moved to the shared control the maze page imports.
+    assert.deepEqual(classNamesContaining(readRepoFile(CHARACTER_CHOICE_CONTROL), "print:hidden"), [
       "max-h-[calc(100dvh-2rem)] print:hidden",
     ]);
   });
