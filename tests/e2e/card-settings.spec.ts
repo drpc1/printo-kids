@@ -27,14 +27,14 @@ interface CardCase {
 const CARDS: CardCase[] = [
   {
     id: "symetria",
-    path: "/symetria",
+    path: "/symmetry",
     changes: [
       { bar: "Poziom", option: "Poziom 4", shown: "4" },
       { bar: "Kategoria", option: "Zwierzęta", shown: "Zwierzęta" },
     ],
     colors: true,
   },
-  { id: "sekwencje", path: "/sekwencje", changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }] },
+  { id: "sekwencje", path: "/sequences", changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }] },
   {
     id: "sudoku",
     path: "/sudoku",
@@ -54,7 +54,7 @@ const CARDS: CardCase[] = [
   },
   {
     id: "dyktando",
-    path: "/dyktando",
+    path: "/dictation",
     changes: [
       { bar: "Poziom", option: "trudny", shown: "trudny" },
       { bar: "Kategoria", option: "Jedzenie", shown: "Jedzenie" },
@@ -172,12 +172,12 @@ test.describe("profiles", () => {
   test.skip(({ isMobile }) => isMobile, "layout-independent flow");
 
   test("an old profile with only a level still loads: the level is the maze level", async ({ page }) => {
-    await seedAndOpen(page, "/labirynt", profileSeed({ ...OLA, level: "lat6" }));
+    await seedAndOpen(page, "/maze", profileSeed({ ...OLA, level: "lat6" }));
     await expect(page.getByRole("button", { name: "Poziom: 4" })).toBeVisible();
   });
 
   test("the maze level picked with a profile is saved in the profile", async ({ page }) => {
-    await seedAndOpen(page, "/labirynt", profileSeed({ ...OLA, level: "lat6" }));
+    await seedAndOpen(page, "/maze", profileSeed({ ...OLA, level: "lat6" }));
     await choose(page, { bar: "Poziom", option: "Poziom 2", shown: "2" });
     await expect(page.getByRole("status")).toHaveText("Zapamiętane dla Ola");
 

@@ -46,7 +46,7 @@ test("a new profile asks for the name and the character only and starts at the d
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   // The bar is moved off the default first, so the reset to the default level is visible.
   await page.getByRole("button", { name: /^Poziom:/ }).click();
@@ -73,7 +73,7 @@ test("a new profile asks for the name and the character only and starts at the d
 test("the edit window shows the rule and a read-only summary of every card", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   const dialog = await openEdit(page, "Ania");
   await expect(dialog.getByRole("button", { name: /^Poziom:/ })).toHaveCount(0);
@@ -93,7 +93,7 @@ test("the edit window shows the rule and a read-only summary of every card", asy
 test("a summary row opens the card page and the profile stays chosen", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   const dialog = await openEdit(page, "Ania");
   await dialog.getByRole("link", { name: /^Nonogram/ }).click();
@@ -106,7 +106,7 @@ test("a summary row opens the card page and the profile stays chosen", async ({ 
 test("a pick in the favorite list is saved at once and keeps the card settings", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   const dialog = await openEdit(page, "Ania");
   await dialog.getByRole("button", { name: /^Postać:/ }).click();
@@ -125,7 +125,7 @@ test("a pick in the favorite list is saved at once and keeps the card settings",
 test("a favorite pick keeps card settings written on another open page meanwhile", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   // The island must have read the profiles before the other tab writes, or it would simply read the new value.
   await expect(page.getByRole("button", { name: "Ania", exact: true })).toBeVisible();
@@ -154,7 +154,7 @@ test("a favorite pick keeps card settings written on another open page meanwhile
 test("an own image picked in the favorite list is the favorite after a reload", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   const dialog = await openEdit(page, "Ania");
   await dialog.getByRole("button", { name: /^Postać:/ }).click();
@@ -187,7 +187,7 @@ test("an own image picked in the favorite list is the favorite after a reload", 
 
 test("the edit window keeps the character row reachable and the summary inside it", async ({ page }) => {
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   const dialog = await openEdit(page, "Ania");
   const height = page.viewportSize()?.height ?? 0;

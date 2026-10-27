@@ -52,7 +52,7 @@ test("a character picked on the bar is for this visit only and the favorite is b
 }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
   await expect(page.getByRole("button", { name: "Postać: Kot" })).toBeVisible();
 
   await pick(page, "Smok");
@@ -66,7 +66,7 @@ test("a character picked on the bar is for this visit only and the favorite is b
 test("the list says Tylko na tę kartę and one click makes the character the favorite", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
 
   // The favorite itself offers nothing.
   let dialog = await openList(page);
@@ -92,7 +92,7 @@ test("the list says Tylko na tę kartę and one click makes the character the fa
 test("the maze page offers the favorite too", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   await pick(page, "Pies");
   const dialog = await openList(page);
@@ -102,7 +102,7 @@ test("the maze page offers the favorite too", async ({ page }, testInfo) => {
 
 test("without a profile the list offers nothing", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
 
   await pick(page, "Smok");
   const dialog = await openList(page);
@@ -113,7 +113,7 @@ test("without a profile the list offers nothing", async ({ page }, testInfo) => 
 test("a stored own image without a picture does not offer to be overwritten on entry", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [{ ...ANIA, character: "wlasne" }], ANIA.id);
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
 
   await expect(page.getByRole("button", { name: "Postać: Bez postaci" })).toBeVisible();
   const dialog = await openList(page);
@@ -123,7 +123,7 @@ test("a stored own image without a picture does not offer to be overwritten on e
 test("an own image is saved as the favorite from the bar and is not offered again", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
 
   let dialog = await openList(page);
   const chooser = page.waitForEvent("filechooser");
@@ -142,7 +142,7 @@ test("an own image is saved as the favorite from the bar and is not offered agai
 
 test("on every screen size the offer stays reachable under the long list", async ({ page }) => {
   await seed(page, [ANIA], ANIA.id);
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
   await pick(page, "Smok");
 
   const dialog = await openList(page);
