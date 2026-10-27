@@ -43,7 +43,7 @@ Makieta zaakceptowana 2026-10-27 na prawdziwej stronie (dyktando trudne z dinoza
 
 - Wszystkie układy mają już parametr „wysokość pola polecenia”; pas postaci to wartość 26 zamiast 7 (sudoku: jedna dodatkowa wysokość pola zamiast liczby linii), więc zmiana układu jest mała i zachowuje środkowanie bloku.
 - Symetria mieści się z pasem o 1 mm (276 z 277), więc żaden dodatek nad zadaniem (przerwa pod pasem) nie może być większy niż dziś; przerwa pod pasem zostaje wartością karty (`instructionGap`), w tym oś wystaje 4 mm w przerwę.
-- Kratka dyktanda z pasem liczy się z liczby poleceń karty: trudne 277 − 26 − 6 − 6 − (wiersze × 8,3) na 26 wierszy (6 wierszy → 7,2 mm, 5 wierszy → 7,8 mm); łatwe i średnie przy 55 poleceniach (5 wierszy po 12 mm) 179 mm na 14 i 17 wierszy → 12,7 i 10,5 mm, ale przy typowych 20–44 poleceniach (3–4 wiersze) nominalne 14 i 11 mm się mieszczą.
+- Kratka dyktanda z pasem liczy się z liczby poleceń karty: trudne 277 − 26 − 6 − 6 − (wiersze × 8,3) na 26 wierszy (6 wierszy → 7,2 mm, 5 wierszy → 7,5 mm); łatwe i średnie przy 55 poleceniach (5 wierszy po 12 mm) 179 mm na 14 i 17 wierszy → 12,7 i 10,5 mm, ale przy typowych 20–44 poleceniach (3–4 wiersze) nominalne 14 i 11 mm się mieszczą.
 
 ## What We're NOT Doing
 
@@ -222,7 +222,7 @@ Najciaśniejsza karta: lista poleceń i kratka wypełniają dziś całą stronę
 
 **Intent**: Gdy postać jest wybrana, strona liczy kratkę z `fitCellSize` z faktycznej liczby poleceń wygenerowanej karty (nie z `maxCommands`) i przekazuje ją do układu; bez postaci kratka nominalna. Kratka może więc różnić się między kartami tego samego poziomu, ale tylko gdy lista poleceń jest długa.
 
-**Contract**: `dictationCellSize(level, commandCount, withBand)` → mm; bez pasa kratka nominalna; z pasem największa kratka z krokiem 0,1 mm, przy której blok mieści się w 10 mm dla `ceil(commandCount / commandsPerRow)` wierszy listy. Przy typowych liczbach poleceń (łatwe do 33 = 3 wiersze, średnie do 44 = 4 wiersze) kratka zostaje nominalna; zmniejsza się dopiero gęsta lista (łatwe i średnie 55 poleceń: ≈ 12,7 i ≈ 10,5 mm; trudne ≈ 7,2–7,8 mm). Test: każdy poziom z `maxCommands` poleceń i z pasem mieści się w 10 mm; kratka z pasem ≥ 85% nominalnej; obrys obiektu dalej mieści się w kratce (kolumny × wiersze bez zmian); ta sama karta ma tę samą kratkę po przełączeniu postaci.
+**Contract**: `dictationCellSize(level, commandCount, withBand)` → mm; bez pasa kratka nominalna; z pasem największa kratka z krokiem 0,1 mm, przy której blok mieści się w 10 mm dla `ceil(commandCount / commandsPerRow)` wierszy listy. Przy typowych liczbach poleceń (łatwe do 33 = 3 wiersze, średnie do 44 = 4 wiersze) kratka zostaje nominalna; zmniejsza się dopiero gęsta lista (łatwe i średnie 55 poleceń: ≈ 12,7 i ≈ 10,5 mm; trudne ≈ 7,2–7,5 mm). Test: każdy poziom z `maxCommands` poleceń i z pasem mieści się w 10 mm; kratka z pasem ≥ 85% nominalnej; obrys obiektu dalej mieści się w kratce (kolumny × wiersze bez zmian); ta sama karta ma tę samą kratkę po przełączeniu postaci.
 
 #### 2. Strona
 
@@ -325,15 +325,15 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 #### Automated
 
-- [ ] 1.1 Testy geometrii pasa i dopasowania kratki przechodzą: `npm test`
-- [ ] 1.6 `src/lib/sheet/speech.test.ts` jest w skrypcie `test` w `package.json` i `npm test` go uruchamia
-- [ ] 1.2 Lint bez błędów: `npm run lint`
-- [ ] 1.3 `npx astro check` bez błędów
-- [ ] 1.4 Labirynt bez zmian wyglądu: test kontraktu druku i istniejące e2e labiryntu zielone
+- [x] 1.1 Testy geometrii pasa i dopasowania kratki przechodzą: `npm test`
+- [x] 1.6 `src/lib/sheet/speech.test.ts` jest w skrypcie `test` w `package.json` i `npm test` go uruchamia
+- [x] 1.2 Lint bez błędów: `npm run lint`
+- [x] 1.3 `npx astro check` bez błędów
+- [x] 1.4 Labirynt bez zmian wyglądu: test kontraktu druku i istniejące e2e labiryntu zielone
 
 #### Manual
 
-- [ ] 1.5 Strona labiryntu: przycisk „Postać” wygląda i działa jak przed zmianą
+- [x] 1.5 Strona labiryntu: przycisk „Postać” wygląda i działa jak przed zmianą
 
 ### Phase 2: Symetria i sekwencje
 
