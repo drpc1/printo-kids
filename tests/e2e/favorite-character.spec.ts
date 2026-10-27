@@ -148,6 +148,8 @@ test("on every screen size the offer stays reachable under the long list", async
   const dialog = await openList(page);
   const offer = dialog.getByRole("button", { name: "Ustaw jako ulubioną Ania" });
   await expect(offer).toBeVisible();
+  // The dialog zooms in from 95%: a box measured mid-animation is a few percent smaller than the settled one.
+  await expect.poll(async () => (await offer.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
   const box = await offer.boundingBox();
   const viewport = page.viewportSize();
   expect(box).not.toBeNull();
