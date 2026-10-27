@@ -201,5 +201,5 @@ Format danych bez zmian; nic do migracji.
 
 #### Manual
 
-- [ ] 2.4 Okno profilu na telefonie mieści listę postaci i podsumowanie bez przycisków zapisu
-- [ ] 2.5 Własne zdjęcie wybrane w oknie jest ulubioną po odświeżeniu strony
+- [x] 2.4 Okno profilu na telefonie mieści listę postaci i podsumowanie bez przycisków zapisu — 28390db
+- [x] 2.5 Własne zdjęcie wybrane w oknie jest ulubioną po odświeżeniu strony — 28390db
