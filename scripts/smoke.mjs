@@ -1,4 +1,4 @@
-// Smoke test: the product pages (/ card catalog, /labirynt maze generator, /symetria symmetry generator, /sekwencje sequence generator, /sudoku sudoku generator, /nonogram nonogram generator, /dyktando graphic dictation generator) are served and the starter account routes are gone.
+// Smoke test: the product pages (/ card catalog, /maze maze generator, /symmetry symmetry generator, /sequences sequence generator, /sudoku sudoku generator, /nonogram nonogram generator, /dictation graphic dictation generator) are served and the starter account routes are gone.
 // Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
@@ -25,19 +25,19 @@ const steps = [
   ],
   [
     "labirynt renders the worksheet sentence",
-    () => request("/labirynt"),
+    () => request("/maze"),
     (actual) => actual.status === 200 && actual.body.includes(HOME_SENTENCE),
     `200 and ${HOME_SENTENCE}`,
   ],
   [
     "symetria renders the worksheet sentence",
-    () => request("/symetria"),
+    () => request("/symmetry"),
     (actual) => actual.status === 200 && actual.body.includes(SYMMETRY_SENTENCE),
     `200 and ${SYMMETRY_SENTENCE}`,
   ],
   [
     "sekwencje renders the worksheet sentence",
-    () => request("/sekwencje"),
+    () => request("/sequences"),
     (actual) => actual.status === 200 && actual.body.includes(SEQUENCE_SENTENCE),
     `200 and ${SEQUENCE_SENTENCE}`,
   ],
@@ -55,7 +55,7 @@ const steps = [
   ],
   [
     "dyktando renders the worksheet sentence",
-    () => request("/dyktando"),
+    () => request("/dictation"),
     (actual) => actual.status === 200 && actual.body.includes(DICTATION_SENTENCE),
     `200 and ${DICTATION_SENTENCE}`,
   ],

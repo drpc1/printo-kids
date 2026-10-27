@@ -65,7 +65,7 @@ test.beforeEach(async ({ page }, testInfo) => {
       window.sessionStorage.setItem("e2e-seeded", "1");
     }
   }, PROFILES_KEY);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 });
 
 test("the close X on the delete question returns to the list and keeps the profile", async ({ page }) => {

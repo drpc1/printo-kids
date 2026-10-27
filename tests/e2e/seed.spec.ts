@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test("generate shows the maze with Start and Meta", async ({ page }) => {
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   // client:only island: Generuj is absent until React mounts. The click waits for it.
   await page.getByRole("button", { name: "Generuj" }).click();
