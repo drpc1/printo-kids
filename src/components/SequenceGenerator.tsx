@@ -295,6 +295,15 @@ function SequenceSheet({
                   strokeLinejoin="round"
                 />
               ) : null}
+              {outline?.kind === "path" ? (
+                <path
+                  d={outline.d}
+                  fill="none"
+                  stroke="var(--foreground)"
+                  strokeWidth={SEQUENCE_SHEET.shapeStroke}
+                  strokeLinejoin="round"
+                />
+              ) : null}
             </g>
           );
         }),
