@@ -2,7 +2,15 @@ import { sudokuShapePath } from "../sudoku/shapes.ts";
 
 export type SequenceShape = "kolo" | "kwadrat" | "trojkat" | "gwiazdka" | "serce" | "krzyzyk" | "strzalka";
 
-export const SEQUENCE_SHAPES: readonly SequenceShape[] = ["kolo", "kwadrat", "trojkat", "gwiazdka"];
+export const SEQUENCE_SHAPES: readonly SequenceShape[] = [
+  "kolo",
+  "kwadrat",
+  "trojkat",
+  "gwiazdka",
+  "serce",
+  "krzyzyk",
+  "strzalka",
+];
 
 export type SequenceShapeOutline =
   | { kind: "circle"; cx: number; cy: number; r: number }
