@@ -141,7 +141,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma.
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
 - Wybrany profil dziecka zostaje po przejściu między katalogiem a stronami generatorów.
-- Przy wybranym profilu miniatura każdej karty pokazuje zapamiętany poziom tego profilu (np. „poz. 4”, „średni”) (US-08).
+- Przy wybranym profilu miniatura karty, której profil już używał, pokazuje zapamiętany poziom (np. „poz. 4”, „średni”); karta, której profil jeszcze nie używał, nie ma plakietki (US-08; decyzja 2026-10-27).
 - Druk nadal nie wymaga profilu dziecka.
 - Pasek „Postać” jest na stronie każdego rodzaju karty. Na labiryncie postać stoi przy starcie, na pozostałych kartach przy poleceniu (US-21; decyzja 2026-10-26, wcześniej pasek był tylko przy labiryncie).
 - Strony generatorów można zmieniać niezależnie od siebie: zmiana jednej nie zmienia drugiej.
@@ -186,7 +186,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Profil dziecka to imię i ulubiona postać. Tworzenie profilu pyta tylko o imię i postać, bez poziomów.
+- Profil dziecka to imię i ulubiona postać. Tworzenie profilu pyta tylko o imię i postać, bez poziomów; nowy profil zaczyna od domyślnego poziomu labiryntu (Poziom 3) (decyzja 2026-10-27).
 - Każdy rodzaj karty ma w profilu własne ustawienia: wszystko, co jest na pasku tej karty poza postacią i poza „Pokaż rozwiązanie” (tabela w Business Logic „Profil i zapamiętane ustawienia”). Nowe rodzaje kart dokładają swoje ustawienia w ten sam sposób.
 - Ustawienia karty zmienia się wyłącznie na pasku tej karty. Przy aktywnym profilu każda zmiana zapisuje się w profilu od razu, bez przycisku „Zapisz”, i dotyczy tylko tej karty.
 - Karta, której profil jeszcze nie używał, startuje z domyślnymi ustawieniami tej karty.
