@@ -44,7 +44,7 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 | S-27 | level-labels-without-age     | Rodzic wybiera Poziom 1…N w labiryncie, symetrii i sekwencjach oraz łatwy / średni / trudny w dyktandzie, a każdy poziom na liście ma pół zdania o tym, co zmienia                 | —                | FR-001, FR-016, FR-020, FR-027, US-07, US-11, US-18 | done     |
 | S-28 | card-settings-memory         | Rodzic wraca na stronę dowolnej karty i ma na pasku ustawienia, które ostatnio wybrał dla tej karty: w aktywnym profilu (zapis od razu, „Zapamiętane dla {imię}”) albo bez profilu | —                | US-08, FR-017, FR-006                               | done     |
 | S-29 | profile-window-summary       | Rodzic tworzy profil z samym imieniem i postacią, widzi w oknie profilu podsumowanie ustawień kart tylko do odczytu, a w katalogu plakietki z poziomem przy miniaturach            | S-28             | FR-007, FR-017, US-05, US-08                        | proposed |
-| S-30 | character-speaks-instruction | Rodzic wybiera postać na pasku każdej karty, a na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie postać w kolorze stoi przy poleceniu i mówi je w dymku                    | —                | US-21, FR-030, US-03                                | ready    |
+| S-30 | character-speaks-instruction | Rodzic wybiera postać na pasku każdej karty, a na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie postać w kolorze stoi przy poleceniu i mówi je w dymku                    | —                | US-21, FR-030, US-03                                | planning |
 | S-31 | favorite-character-explicit  | Rodzic przy aktywnym profilu zmienia postać tylko na tę wizytę albo jednym wyborem „Ustaw jako ulubioną”; bez profilu ostatnia postać jest wspólna dla wszystkich kart             | S-28, S-30       | FR-009, US-03, US-08, US-22                         | proposed |
 | S-32 | how-it-works-page            | Rodzic otwiera ze stopki krótką stronę „Jak to działa” z zasadą poziomów, profilu i postaci                                                                                        | S-27, S-29, S-31 | US-22, FR-031                                       | proposed |
 
@@ -129,7 +129,7 @@ Brak. Zapis na urządzeniu już istnieje (Baseline: Data), a każda karta ma pas
   - Jak wygląda dymek i gdzie stoi postać względem polecenia na każdej z pięciu kart, także na telefonie? Rozstrzyga makieta przed planem. — Owner: user. Block: no.
   - Prawa do postaci (PRD Open Questions 3) blokują publikację szerszego katalogu, nie planowanie. — Owner: user. Block: no.
 - **Risk:** Postać zabiera wysokość nad zadaniem; najciaśniejsze są trudny nonogram (kratka 7 mm) i trudne dyktando z długą listą poleceń, które dziś wypełniają stronę. Pasek „Postać” na pięciu nowych stronach dzieli pliki z S-27 i S-28.
-- **Status:** ready
+- **Status:** planning
 
 ### S-31: Ulubiona postać zmienia się tylko jawnie
 
