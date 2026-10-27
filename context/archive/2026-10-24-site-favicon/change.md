@@ -1,10 +1,10 @@
 ---
 change_id: site-favicon
 title: Site favicon
-status: impl_reviewed
+status: archived
 created: 2026-10-24
 updated: 2026-10-25
-archived_at: null
+archived_at: 2026-10-25T19:54:17Z
 ---
 
 ## Notes

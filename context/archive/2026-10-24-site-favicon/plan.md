@@ -192,12 +192,12 @@ Podmiana idzie w ten sam adres `/favicon.png`. Stary znak Astro znika z repozyto
 
 #### Automated
 
-- [x] 2.1 `npm test` sprawdza PNG 180, 192 i 512, `display` równy `browser` oraz oba nowe `href` w układzie — 3b8a729
-- [x] 2.2 `npm test` przechodzi — 3b8a729
-- [x] 2.3 `npm run lint` przechodzi — 3b8a729
-- [x] 2.4 `npx astro check` przechodzi — 3b8a729
+- [x] 2.1 `npm test` sprawdza PNG 180, 192 i 512, `display` równy `browser` oraz oba nowe `href` w układzie — 108e112
+- [x] 2.2 `npm test` przechodzi — 108e112
+- [x] 2.3 `npm run lint` przechodzi — 108e112
+- [x] 2.4 `npx astro check` przechodzi — 108e112
 
 #### Manual
 
-- [x] 2.5 Na `/` i na `/labirynt` w źródle strony widać link apple-touch i link manifestu — 3b8a729
-- [x] 2.6 Ikony z manifestu to ta sama kartka z krótkim labiryntem co w zakładce — 3b8a729
+- [x] 2.5 Na `/` i na `/labirynt` w źródle strony widać link apple-touch i link manifestu — 108e112
+- [x] 2.6 Ikony z manifestu to ta sama kartka z krótkim labiryntem co w zakładce — 108e112
