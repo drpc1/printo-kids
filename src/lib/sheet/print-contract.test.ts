@@ -7,16 +7,16 @@ import { fileURLToPath } from "node:url";
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
 const WORKSHEET_HOME = "src/components/GeneratorShell.astro";
-const MAZE_PAGE = "src/pages/labirynt.astro";
+const MAZE_PAGE = "src/pages/maze.astro";
 const WORKSHEET_GENERATOR = "src/components/WorksheetGenerator.tsx";
 const CHARACTER_CHOICE_CONTROL = "src/components/CharacterChoiceControl.tsx";
-const SYMMETRY_PAGE = "src/pages/symetria.astro";
+const SYMMETRY_PAGE = "src/pages/symmetry.astro";
 const SYMMETRY_GENERATOR = "src/components/SymmetryGenerator.tsx";
-const SEQUENCE_PAGE = "src/pages/sekwencje.astro";
+const SEQUENCE_PAGE = "src/pages/sequences.astro";
 const SEQUENCE_GENERATOR = "src/components/SequenceGenerator.tsx";
 const SUDOKU_PAGE = "src/pages/sudoku.astro";
 const SUDOKU_GENERATOR = "src/components/SudokuGenerator.tsx";
-const DICTATION_PAGE = "src/pages/dyktando.astro";
+const DICTATION_PAGE = "src/pages/dictation.astro";
 const DICTATION_GENERATOR = "src/components/DictationGenerator.tsx";
 const NONOGRAM_PAGE = "src/pages/nonogram.astro";
 const NONOGRAM_GENERATOR = "src/components/NonogramGenerator.tsx";
@@ -86,7 +86,7 @@ void describe("print contract", () => {
     ]);
   });
 
-  void test("the maze page lives under /labirynt and uses the shared shell", () => {
+  void test("the maze page lives under /maze and uses the shared shell", () => {
     const page = readRepoFile(MAZE_PAGE);
     assert.match(page, /<GeneratorShell\b/);
     assert.match(page, /<WorksheetGenerator\b/);
@@ -118,7 +118,7 @@ void describe("print contract", () => {
     ]);
   });
 
-  void test("the symmetry page lives under /symetria and uses the shared shell", () => {
+  void test("the symmetry page lives under /symmetry and uses the shared shell", () => {
     const page = readRepoFile(SYMMETRY_PAGE);
     assert.match(page, /<GeneratorShell\b/);
     // The island reads localStorage on its first render, so it must never render on the server.
@@ -144,7 +144,7 @@ void describe("print contract", () => {
     ]);
   });
 
-  void test("the sequence page lives under /sekwencje and uses the shared shell", () => {
+  void test("the sequence page lives under /sequences and uses the shared shell", () => {
     const page = readRepoFile(SEQUENCE_PAGE);
     assert.match(page, /<GeneratorShell\b/);
     // The island reads localStorage on its first render, so it must never render on the server.
@@ -211,7 +211,7 @@ void describe("print contract", () => {
     assert.ok(generator.includes('className={cn("print:hidden")}') && generator.includes("data-solution"));
   });
 
-  void test("the dictation page lives under /dyktando, uses the shared shell, and has no @page of its own", () => {
+  void test("the dictation page lives under /dictation, uses the shared shell, and has no @page of its own", () => {
     const page = readRepoFile(DICTATION_PAGE);
     assert.match(page, /<GeneratorShell\b/);
     assert.match(page, /<DictationGenerator\s+client:only="react"\s*\/>/);

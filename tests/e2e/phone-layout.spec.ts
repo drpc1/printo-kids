@@ -1,6 +1,6 @@
 // Provenance: phone-worksheet (S-09, US-04); symmetry-first-printable (phase 4, US-06); sequences-first-printable (phase 3); picture-sudoku-first-printable (US-12)
 // Protects the screen around the sheet on phones, tablets and desktop: no sideways scroll,
-// Generuj, Drukuj and Postać do not cover each other (on /symetria: Generuj, Drukuj and the
+// Generuj, Drukuj and Postać do not cover each other (on /symmetry: Generuj, Drukuj and the
 // Profil corner, after Generuj), and the Profil corner does not cover
 // the heading or, on touch screens, the sheet. On a coarse pointer that corner is at least
 // 44 px tall and under 48 px; a precise pointer keeps it under 44 px. It does not prove
@@ -68,7 +68,7 @@ async function generate(page: Page): Promise<void> {
 }
 
 test("the action bar fits the screen and its controls do not cover each other", async ({ page }) => {
-  await page.goto("/labirynt");
+  await page.goto("/maze");
   await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
   await expectNoSidewaysScroll(page);
 
@@ -93,7 +93,7 @@ test("the action bar fits the screen and its controls do not cover each other", 
 });
 
 test("the symmetry page fits the screen and Generuj, Drukuj and Profil do not cover each other", async ({ page }) => {
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
   await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
   await expectNoSidewaysScroll(page);
 
@@ -120,7 +120,7 @@ test("the symmetry page fits the screen and Generuj, Drukuj and Profil do not co
 });
 
 test("the sequence page fits the screen and Generuj, Drukuj and Profil do not cover each other", async ({ page }) => {
-  await page.goto("/sekwencje");
+  await page.goto("/sequences");
   await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
   await expectNoSidewaysScroll(page);
 
@@ -147,7 +147,7 @@ test("the sequence page fits the screen and Generuj, Drukuj and Profil do not co
 });
 
 test("every sequence level fits the screen and keeps Poziom, Generuj, Drukuj and Profil apart", async ({ page }) => {
-  await page.goto("/sekwencje");
+  await page.goto("/sequences");
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect(page.getByRole("img", { name: "Sekwencje" })).toBeVisible();
 
@@ -285,7 +285,7 @@ test("every sudoku size with shapes and colors on fits the screen and keeps Rozm
 test("every symmetry level fits the screen and keeps Poziom, Kolory, Generuj, Drukuj and Profil apart", async ({
   page,
 }) => {
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect(page.getByRole("img", { name: "Symetria" })).toBeVisible();
 
@@ -319,7 +319,7 @@ test("every symmetry level fits the screen and keeps Poziom, Kolory, Generuj, Dr
 test("the Profil corner grows on a touch screen and stays short on a mouse", async ({ page }, testInfo) => {
   // No profile is chosen, so the corner reads "Profil". pointer-coarse:min-h-11 is 44 px at a
   // 16 px root and does not apply to a precise pointer, which keeps the height of the text.
-  await page.goto("/labirynt");
+  await page.goto("/maze");
   const corner = page.getByRole("button", { name: "Profil", exact: true });
   await expect(corner).toBeVisible();
 
@@ -345,7 +345,7 @@ test.describe("with a profile that has the longest allowed name", () => {
   });
 
   test("the Profil corner does not cover the heading", async ({ page }) => {
-    await page.goto("/labirynt");
+    await page.goto("/maze");
     const corner = page.getByRole("button", { name: LONG_NAME });
     const heading = page.getByRole("heading", { level: 1 });
     await expect(corner).toBeVisible();
@@ -357,7 +357,7 @@ test.describe("with a profile that has the longest allowed name", () => {
   });
 
   test("the Wszystkie karty link covers neither the Profil corner, the heading, nor the sheet", async ({ page }) => {
-    await page.goto("/labirynt");
+    await page.goto("/maze");
     const link = page.getByRole("link", { name: "Wszystkie karty" });
     const corner = page.getByRole("button", { name: LONG_NAME });
     const heading = page.getByRole("heading", { level: 1 });
@@ -381,7 +381,7 @@ test.describe("with a profile that has the longest allowed name", () => {
 
     // A short window makes the sheet taller than the screen, so a fixed corner would land on it.
     await page.setViewportSize({ width: viewportWidth(page), height: 400 });
-    await page.goto("/labirynt");
+    await page.goto("/maze");
     await generate(page);
 
     const sheet = page.getByRole("img", { name: "Labirynt" });
@@ -421,7 +421,7 @@ test("a long profile list shows a scrollbar the eye can find", async ({ page }, 
     );
   }, PROFILES_KEY);
   await page.setViewportSize({ width: viewportWidth(page), height: 600 });
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   // Two or more profiles and none chosen: the corner opens the list on its own.
   const dialog = page.getByRole("dialog");
@@ -474,7 +474,7 @@ test("a long profile list shows a scrollbar the eye can find", async ({ page }, 
 });
 
 test("the maze level list fits the screen with all six rows and no scrolling", async ({ page }) => {
-  await page.goto("/labirynt");
+  await page.goto("/maze");
   await page.getByRole("button", { name: /^Poziom:/ }).click();
   const dialog = page.getByRole("dialog");
   await expect(dialog.getByRole("button", { name: /^Poziom 6\b/ })).toBeVisible();
