@@ -29,7 +29,7 @@ void describe("cardSummaries", () => {
     assert.deepEqual(byId(summaries, "labirynt"), {
       id: "labirynt",
       title: "Labirynt",
-      href: "/labirynt",
+      href: "/maze",
       used: true,
       badge: "poz. 4",
       detail: "Poziom 4",
