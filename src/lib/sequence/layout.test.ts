@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { SPEECH_BAND } from "../sheet/speech.ts";
 import { layoutSequenceSheet, type SequenceSheetInput } from "./layout.ts";
 import { SEQUENCE_LEVEL_LAT5, SEQUENCE_LEVELS } from "./levels.ts";
 import { SEQUENCE_SHEET } from "./sheet.ts";
@@ -80,6 +81,28 @@ void describe("layoutSequenceSheet", () => {
       // A digit of a bold sans-serif face is at most about 0.65 em wide; two of them stay inside the field.
       const twoDigits = 2 * 0.65 * SEQUENCE_SHEET.numberFontScale * sheet.fieldSize;
       assert.ok(twoDigits < sheet.fieldSize * 0.8, `${level.id} ${twoDigits}`);
+    }
+  });
+});
+
+void describe("layoutSequenceSheet with the speech band", () => {
+  void test("every level fits inside the 10 mm margin with a 26 mm band instead of the 7 mm line", () => {
+    for (const level of SEQUENCE_LEVELS) {
+      const sheet = layoutSequenceSheet({
+        pageWidth: SEQUENCE_SHEET.pageWidth,
+        pageHeight: SEQUENCE_SHEET.pageHeight,
+        inset: SEQUENCE_SHEET.inset,
+        fieldsPerRow: level.fieldsPerRow,
+        rowCount: level.rowCount,
+        fieldGapRatio: SEQUENCE_SHEET.fieldGapRatio,
+        instructionHeight: SPEECH_BAND.characterSize,
+        instructionGap: SEQUENCE_SHEET.instructionGap,
+      });
+
+      assert.equal(sheet.instruction.y - SPEECH_BAND.characterSize / 2, SEQUENCE_SHEET.inset, `${level.id} band top`);
+      assert.ok(sheet.rows[0].y >= SEQUENCE_SHEET.inset + SPEECH_BAND.characterSize, `${level.id} rows under band`);
+      const last = sheet.rows[sheet.rows.length - 1];
+      assert.ok(last.y + sheet.fieldSize <= 287 + EPSILON, `${level.id} last row inside the margin`);
     }
   });
 });

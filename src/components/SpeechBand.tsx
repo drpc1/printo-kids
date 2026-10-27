@@ -1,4 +1,5 @@
-import { SPEECH_BAND, type SpeechBandLayout } from "@/lib/sheet/speech";
+import { characterContentLeft, characterContentRight } from "@/lib/sheet/character";
+import { instructionLines, layoutSpeechBand, SPEECH_BAND, type SpeechBandLayout } from "@/lib/sheet/speech";
 
 /**
  * The top of a card where the character stands and says the instruction. It is SVG for the card's own page: the
@@ -62,4 +63,35 @@ export function SpeechBand({
       ))}
     </g>
   );
+}
+
+/**
+ * The instruction of a card with a character: the band laid out for the character's file and the instruction's
+ * sentences. The card's own layout has already made room for it (`instructionBoxHeight`) and says where its top is.
+ */
+export function CharacterInstruction({
+  pageWidth,
+  inset,
+  top,
+  characterId,
+  characterSrc,
+  text,
+}: {
+  pageWidth: number;
+  inset: number;
+  top: number;
+  characterId: string;
+  characterSrc: string;
+  text: string;
+}) {
+  const lines = instructionLines(text);
+  const layout = layoutSpeechBand({
+    pageWidth,
+    inset,
+    top,
+    lines,
+    contentLeft: characterContentLeft(characterId),
+    contentRight: characterContentRight(characterId),
+  });
+  return <SpeechBand layout={layout} characterSrc={characterSrc} lines={lines} />;
 }
