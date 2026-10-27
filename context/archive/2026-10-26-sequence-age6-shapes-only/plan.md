@@ -160,21 +160,21 @@ Nie ma zapisanych kart ani migracji. Profil nie wybiera reguł sekwencji. Identy
 
 #### Automated
 
-- [x] 1.1 `node --experimental-strip-types --test src/lib/sequence/levels.test.ts` przechodzi, a Poziom 3 ma tylko AB, AAB i ABC z `minRows` 2 — e0c5d4f
-- [x] 1.2 `node --experimental-strip-types --test src/lib/sequence/generate.test.ts` przechodzi: karty Poziomu 3 losują tylko te trzy reguły, liczby 1–20 pochodzą z Poziomu 4, a każdy wiersz każdego poziomu ma jedną odpowiedź — e0c5d4f
-- [x] 1.3 `npm test` przechodzi — e0c5d4f
-- [x] 1.4 `npm run lint` przechodzi — e0c5d4f
+- [x] 1.1 `node --experimental-strip-types --test src/lib/sequence/levels.test.ts` przechodzi, a Poziom 3 ma tylko AB, AAB i ABC z `minRows` 2 — 7546fdf
+- [x] 1.2 `node --experimental-strip-types --test src/lib/sequence/generate.test.ts` przechodzi: karty Poziomu 3 losują tylko te trzy reguły, liczby 1–20 pochodzą z Poziomu 4, a każdy wiersz każdego poziomu ma jedną odpowiedź — 7546fdf
+- [x] 1.3 `npm test` przechodzi — 7546fdf
+- [x] 1.4 `npm run lint` przechodzi — 7546fdf
 
 #### Manual
 
-- [x] 1.5 Na `/sekwencje` kilka kart poziomu „6 lat” nie ma cyfr, pokazuje wzory AB, AAB i ABC i mieści się na jednej stronie A4 — e0c5d4f
+- [x] 1.5 Na `/sekwencje` kilka kart poziomu „6 lat” nie ma cyfr, pokazuje wzory AB, AAB i ABC i mieści się na jednej stronie A4 — 7546fdf
 
 ### Phase 2: Kontrakt w PRD
 
 #### Automated
 
-- [x] 2.1 W `context/foundation/prd.md` wiersz Poziomu 3 i punkt doprecyzowania wymagają dwóch ciągów AB, AAB i ABC oraz jednego dowolnego i nie wymagają +1 ani +2 na tym poziomie — 56ede97
+- [x] 2.1 W `context/foundation/prd.md` wiersz Poziomu 3 i punkt doprecyzowania wymagają dwóch ciągów AB, AAB i ABC oraz jednego dowolnego i nie wymagają +1 ani +2 na tym poziomie — 989193b
 
 #### Manual
 
-- [x] 2.2 Zdanie o całej liście reguł nadal wymienia liczby +1 i +2, zdanie o Poziomie 4 w tym samym punkcie jest bez zmian, a pytanie otwarte 9 odnotowuje cofnięcie mieszanki +1/+2 tylko dla Poziomu 3 — 56ede97
+- [x] 2.2 Zdanie o całej liście reguł nadal wymienia liczby +1 i +2, zdanie o Poziomie 4 w tym samym punkcie jest bez zmian, a pytanie otwarte 9 odnotowuje cofnięcie mieszanki +1/+2 tylko dla Poziomu 3 — 989193b
