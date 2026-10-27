@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { layoutDictationSheet, type DictationSheetInput, type DictationSheetLayout } from "./layout.ts";
+import { SPEECH_BAND } from "../sheet/speech.ts";
+import {
+  dictationCellSize,
+  layoutDictationSheet,
+  type DictationSheetInput,
+  type DictationSheetLayout,
+} from "./layout.ts";
 import { DICTATION_LEVELS, DICTATION_LEVEL_LAT6, type DictationLevel } from "./levels.ts";
 import { DICTATION_ARROWS, DICTATION_SHEET, formatDictationCommand } from "./sheet.ts";
 
@@ -127,3 +133,62 @@ function assertInsideMargin(sheet: DictationSheetLayout): void {
   assert.ok(sheet.grid.x >= inset && sheet.grid.x + sheet.grid.width <= maxX);
   assert.ok(sheet.grid.y >= inset && sheet.grid.y + sheet.grid.height <= maxY + 1e-9);
 }
+
+void describe("dictationCellSize and the speech band", () => {
+  function sizeInput(level: DictationLevel, commandCount: number) {
+    return {
+      pageHeight,
+      inset,
+      nominal: level.cellSize,
+      rows: level.rows,
+      commandCount,
+      commandsPerRow: level.commandsPerRow,
+      commandRowHeight: level.commandRowHeight,
+      instructionGap: DICTATION_SHEET.instructionGap,
+      listGap: DICTATION_SHEET.listGap,
+    };
+  }
+
+  void test("without a character the level keeps its own cell size", () => {
+    for (const level of DICTATION_LEVELS) {
+      assert.equal(dictationCellSize(sizeInput(level, level.maxCommands), false), level.cellSize);
+    }
+  });
+
+  void test("every level with a full command list fits inside the margin and keeps at least 85% of its cell", () => {
+    for (const level of DICTATION_LEVELS) {
+      const cell = dictationCellSize(sizeInput(level, level.maxCommands), true);
+      const sheet = layoutDictationSheet({
+        ...inputFor(level),
+        cellSize: cell,
+        instructionSize: SPEECH_BAND.characterSize,
+      });
+
+      assert.ok(cell >= level.cellSize * 0.85, `${level.id} cell ${cell}`);
+      assert.ok(sheet.grid.y + sheet.grid.height <= pageHeight - inset + 1e-9, `${level.id} grid bottom`);
+      assert.ok(sheet.instruction.y - SPEECH_BAND.characterSize / 2 >= inset - 1e-9, `${level.id} band top`);
+    }
+  });
+
+  void test("the sizes of a full list are 12.7, 10.5 and 7.2 mm", () => {
+    assert.deepEqual(
+      DICTATION_LEVELS.map((level) => dictationCellSize(sizeInput(level, level.maxCommands), true)),
+      [12.7, 10.5, 7.2],
+    );
+  });
+
+  void test("a short command list keeps the nominal cell: 33 commands on easy, 44 on medium", () => {
+    const [easy, medium] = DICTATION_LEVELS;
+
+    assert.equal(dictationCellSize(sizeInput(easy, 33), true), easy.cellSize);
+    assert.equal(dictationCellSize(sizeInput(medium, 44), true), medium.cellSize);
+    assert.ok(dictationCellSize(sizeInput(easy, 34), true) < easy.cellSize);
+  });
+
+  void test("the hard level shrinks to 7.5 mm with five rows of commands and to 7.2 mm with six", () => {
+    const hard = DICTATION_LEVELS[2];
+
+    assert.equal(dictationCellSize(sizeInput(hard, 70), true), 7.5);
+    assert.equal(dictationCellSize(sizeInput(hard, 84), true), 7.2);
+  });
+});

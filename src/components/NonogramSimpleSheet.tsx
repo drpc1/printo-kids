@@ -1,6 +1,8 @@
+import { CharacterInstruction } from "@/components/SpeechBand";
 import { blockLines, layoutSimpleNonogramSheet } from "@/lib/nonogram/layout";
 import { NONOGRAM_SHEET, NONOGRAM_SIMPLE_SHEET } from "@/lib/nonogram/sheet";
 import type { SimpleNonogramCard, Tone } from "@/lib/nonogram/simple";
+import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 const TONE_FILL: Record<Tone, string> = {
@@ -14,7 +16,18 @@ const TONE_FILL: Record<Tone, string> = {
  * of cells), the child colors the row left to right. White cells stay empty. The solution group paints the grays and
  * blacks on screen only; the print never shows it.
  */
-export function NonogramSimpleSheet({ card, showSolution }: { card: SimpleNonogramCard; showSolution: boolean }) {
+export function NonogramSimpleSheet({
+  card,
+  showSolution,
+  characterId,
+  characterSrc,
+}: {
+  card: SimpleNonogramCard;
+  showSolution: boolean;
+  characterId: string;
+  characterSrc: string | null;
+}) {
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, NONOGRAM_SHEET.instructionSize);
   const chips = NONOGRAM_SIMPLE_SHEET;
   const sheet = layoutSimpleNonogramSheet({
     pageWidth: NONOGRAM_SHEET.pageWidth,
@@ -24,7 +37,7 @@ export function NonogramSimpleSheet({ card, showSolution }: { card: SimpleNonogr
     rows: card.rows,
     cellSize: card.cellSize,
     maxRuns: Math.max(...card.runs.map((row) => row.length)),
-    instructionSize: NONOGRAM_SHEET.instructionSize,
+    instructionSize: instructionHeight,
     instructionGap: NONOGRAM_SHEET.instructionGap * 2,
     chipSize: chips.chipSize,
     chipGap: chips.chipGap,
@@ -48,17 +61,28 @@ export function NonogramSimpleSheet({ card, showSolution }: { card: SimpleNonogr
       aria-label="Nonogram ze znaczkami"
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
-      <text
-        x={sheet.instruction.x}
-        y={sheet.instruction.y}
-        fill="var(--foreground)"
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-        fontSize={NONOGRAM_SHEET.instructionSize}
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        {chips.instructionText}
-      </text>
+      {characterSrc !== null ? (
+        <CharacterInstruction
+          pageWidth={sheet.page.width}
+          inset={NONOGRAM_SHEET.inset}
+          top={sheet.instruction.y - instructionHeight / 2}
+          characterId={characterId}
+          characterSrc={characterSrc}
+          text={chips.instructionText}
+        />
+      ) : (
+        <text
+          x={sheet.instruction.x}
+          y={sheet.instruction.y}
+          fill="var(--foreground)"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize={NONOGRAM_SHEET.instructionSize}
+          textAnchor="middle"
+          dominantBaseline="middle"
+        >
+          {chips.instructionText}
+        </text>
+      )}
       {showSolution ? (
         <g className={cn("print:hidden")} data-solution>
           {card.tones.flatMap((row, rowIndex) =>

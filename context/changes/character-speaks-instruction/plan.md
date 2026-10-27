@@ -352,24 +352,24 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 #### Automated
 
-- [ ] 3.1 `npm test`, `npm run lint`, `npx astro check` zielone
-- [ ] 3.2 Testy układów dla każdego rozmiaru/poziomu z pasem i bez
-- [ ] 3.4 e2e układu paska na telefonie bez regresji: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
+- [x] 3.1 `npm test`, `npm run lint`, `npx astro check` zielone — f0765c0
+- [x] 3.2 Testy układów dla każdego rozmiaru/poziomu z pasem i bez — f0765c0
+- [x] 3.4 e2e układu paska na telefonie bez regresji: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7` — f0765c0
 
 #### Manual
 
-- [ ] 3.3 Sudoku 4×4, 6×6, 9×9 (kształty i cyfry) i nonogram łatwy/średni/trudny: postać po lewej, dymek czytelny, nic nie wchodzi w margines
+- [x] 3.3 Sudoku 4×4, 6×6, 9×9 (kształty i cyfry) i nonogram łatwy/średni/trudny: postać po lewej, dymek czytelny, nic nie wchodzi w margines — f0765c0
 
 ### Phase 4: Dyktando z zmniejszaną kratką
 
 #### Automated
 
-- [ ] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` zielone
-- [ ] 4.2 Test układu dyktanda ze wszystkimi poziomami z pasem i bez przechodzi
+- [x] 4.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` zielone — 9f7ef06
+- [x] 4.2 Test układu dyktanda ze wszystkimi poziomami z pasem i bez przechodzi — 9f7ef06
 
 #### Manual
 
-- [ ] 4.3 Dyktando trudne z postacią: lista 84 poleceń, kratka czytelna na wydruku próbnym, nic nie wychodzi poza 10 mm
+- [x] 4.3 Dyktando trudne z postacią: lista 84 poleceń, kratka czytelna na wydruku próbnym, nic nie wychodzi poza 10 mm — 9f7ef06
 
 ### Phase 5: Kontrakt druku, e2e i wydruk próbny
 

@@ -22,12 +22,14 @@ export interface SudokuSheetInput {
   instructionLineGap: number;
   /** Space between the last instruction line and the grid frame. */
   instructionGap: number;
+  /** Height of the whole instruction when a speech band replaces the lines of text; the line count then only places `ys`. */
+  instructionBoxHeight?: number;
 }
 
 export interface SudokuSheetLayout {
   page: { width: number; height: number };
   /** Horizontal center of the instruction, and the vertical center of each of its lines. */
-  instruction: { x: number; ys: number[] };
+  instruction: { x: number; ys: number[]; top: number; height: number };
   grid: { x: number; y: number; width: number; height: number };
   /** Thin lines between cells, without the ones that sit on a block border. */
   cellLines: SudokuLine[];
@@ -45,8 +47,9 @@ export function layoutSudokuSheet(input: SudokuSheetInput): SudokuSheetLayout {
   const { pageWidth, pageHeight, inset, size, blockRows, blockColumns, cellSize } = input;
   const { instructionLineCount, instructionSize, instructionLineGap, instructionGap } = input;
   const side = size * cellSize;
-  const instructionHeight =
+  const textHeight =
     instructionLineCount * instructionSize + Math.max(0, instructionLineCount - 1) * instructionLineGap;
+  const instructionHeight = input.instructionBoxHeight ?? textHeight;
   const blockHeight = instructionHeight + instructionGap + side;
 
   if (side > pageWidth - inset * 2 || blockHeight > pageHeight - inset * 2) {
@@ -74,7 +77,7 @@ export function layoutSudokuSheet(input: SudokuSheetInput): SudokuSheetLayout {
 
   return {
     page: { width: pageWidth, height: pageHeight },
-    instruction: { x: pageWidth / 2, ys },
+    instruction: { x: pageWidth / 2, ys, top, height: instructionHeight },
     grid: { x: gridX, y: gridY, width: side, height: side },
     cellLines,
     blockLines,
