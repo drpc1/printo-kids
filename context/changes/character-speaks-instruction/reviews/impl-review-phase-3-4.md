@@ -32,7 +32,7 @@ Automated gates re-run on the branch: `npm test` 583/583, `npm run lint`, `npx a
 - **Location**: src/components/NonogramGenerator.tsx (hero branch), src/components/SequenceGenerator.tsx (hero branch)
 - **Detail**: Before the first card, Postać and Poziom sit in one row and Kategoria stays stacked below on nonogram, while symmetry and dictation put all controls in one row.
 - **Fix**: Keep as is, or put all nonogram controls in one wrapped row like symmetry. Decide when the page is seen in the phase 5 manual check.
-- **Decision**: PENDING
+- **Decision**: SKIPPED (do fazy 5)
 
 ### F2 — `instructionBoxHeight(true, 0)` in the sudoku sheet reads oddly
 
@@ -42,7 +42,7 @@ Automated gates re-run on the branch: `npm test` 583/583, `npm run lint`, `npx a
 - **Location**: src/components/SudokuGenerator.tsx (SudokuSheet layout input)
 - **Detail**: The second argument is unused when the first is true, so `0` is a placeholder.
 - **Fix**: Use `SPEECH_BAND.characterSize` directly in that spot.
-- **Decision**: PENDING
+- **Decision**: FIXED
 
 ### F3 — The bubble text has only a width estimate, no guard in the renderer
 
@@ -52,4 +52,4 @@ Automated gates re-run on the branch: `npm test` 583/583, `npm run lint`, `npx a
 - **Location**: src/lib/sheet/speech.ts (estimatedTextWidth), src/components/SpeechBand.tsx
 - **Detail**: The symmetry sentence at 7.5 mm leaves about 6 mm of slack in the narrowest bubble by the 0.52 width estimate. A wider system font on iOS print could use it up.
 - **Fix**: Check on the phase 5 phone and print test; if a line gets tight, lower `singleLineSize` or add `textLength` to the text.
-- **Decision**: PENDING
+- **Decision**: SKIPPED (do fazy 5)

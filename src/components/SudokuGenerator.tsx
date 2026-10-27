@@ -26,7 +26,7 @@ import {
 } from "@/lib/sudoku/levels";
 import { SUDOKU_SHEET } from "@/lib/sudoku/sheet";
 import { sudokuShapePath } from "@/lib/sudoku/shapes";
-import { instructionBoxHeight } from "@/lib/sheet/speech";
+import { SPEECH_BAND } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
@@ -257,7 +257,7 @@ function SudokuSheet({
     instructionSize: SUDOKU_SHEET.instructionSize,
     instructionLineGap: SUDOKU_SHEET.instructionLineGap,
     instructionGap: SUDOKU_SHEET.instructionGap,
-    ...(characterSrc !== null ? { instructionBoxHeight: instructionBoxHeight(true, 0) } : {}),
+    ...(characterSrc !== null ? { instructionBoxHeight: SPEECH_BAND.characterSize } : {}),
   });
   const grid = sheet.grid;
   const shapeSize = cellSize * SUDOKU_SHEET.shapeScale;
