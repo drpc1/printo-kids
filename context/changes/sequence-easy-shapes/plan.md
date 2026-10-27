@@ -200,10 +200,10 @@ Karty nie są zapisane na serwerze. Jedyny artefakt do odświeżenia to `public/
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi: w pętli ziaren `serce`, `krzyzyk` i `strzalka` występują na `lat4`, `lat5` i `lat6` oraz na `lat7` w wierszu `groups` albo `mixed`; token nieznanego kształtu leży poza katalogiem; sto kart `lat7` mieści się w 5 s
-- [x] 2.2 `node scripts/build-thumbnails.mjs` zapisuje od nowa `public/thumbnails/sekwencje.svg` dla ziarna `20261025`
+- [x] 2.1 `npm test` przechodzi: w pętli ziaren `serce`, `krzyzyk` i `strzalka` występują na `lat4`, `lat5` i `lat6` oraz na `lat7` w wierszu `groups` albo `mixed`; token nieznanego kształtu leży poza katalogiem; sto kart `lat7` mieści się w 5 s — e8f63b3
+- [x] 2.2 `node scripts/build-thumbnails.mjs` zapisuje od nowa `public/thumbnails/sekwencje.svg` dla ziarna `20261025` — e8f63b3
 
 #### Manual
 
-- [x] 2.3 Na `/sekwencje` poziomy 1 i 4 pokazują serce, ukośny krzyżyk i strzałkę w górę w prawo jako czarne kontury nie większe od koła w tym samym polu; strzałka różni się od trójkąta i od krzyżyka
-- [x] 2.4 Miniatura sekwencji w katalogu i podgląd druku `/sekwencje` to nadal jedna strona A4
+- [x] 2.3 Na `/sekwencje` poziomy 1 i 4 pokazują serce, ukośny krzyżyk i strzałkę w górę w prawo jako czarne kontury nie większe od koła w tym samym polu; strzałka różni się od trójkąta i od krzyżyka — e8f63b3
+- [x] 2.4 Miniatura sekwencji w katalogu i podgląd druku `/sekwencje` to nadal jedna strona A4 — e8f63b3
