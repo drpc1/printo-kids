@@ -380,6 +380,6 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 #### Manual
 
-- [ ] 5.3 Wydruk próbny pięciu kart z postacią na kolorowej i czarno-białej drukarce: postać w kolorze (szarość na czarno-białej), karta w jednej stronie A4, marginesy 10 mm
-- [ ] 5.4 Własny obrazek jako postać i „Bez postaci” na jednej karcie
-- [ ] 5.5 Telefon (375 px): pasek „Postać” nie zasłania Generuj i Drukuj, karta mieści się
+- [x] 5.3 Wydruk próbny pięciu kart z postacią na kolorowej i czarno-białej drukarce: postać w kolorze (szarość na czarno-białej), karta w jednej stronie A4, marginesy 10 mm
+- [x] 5.4 Własny obrazek jako postać i „Bez postaci” na jednej karcie
+- [x] 5.5 Telefon (375 px): pasek „Postać” nie zasłania Generuj i Drukuj, karta mieści się
