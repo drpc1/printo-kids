@@ -333,15 +333,15 @@ Brak zmian w danych ani w kodzie produktu.
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint i typy: `npm run lint`, `npx astro check`
+- [x] 1.1 Testy przechodzą: `npm test` — c3ad524
+- [x] 1.2 Lint i typy: `npm run lint`, `npx astro check` — c3ad524
 - [x] 1.3 Każdy `npm run mutate:<zakres>` startuje i kończy się wynikiem na wąskim zakresie
-- [x] 1.4 Szybki oracle sekwencji: czas komendy z `stryker/sequence.config.json` jest zmierzony i zapisany w `stryker-results.md` (cel: kilkanaście sekund)
+- [x] 1.4 Szybki oracle sekwencji: czas komendy z `stryker/sequence.config.json` jest zmierzony i zapisany w `stryker-results.md` (cel: kilkanaście sekund) — c3ad524
 
 #### Manual
 
-- [x] 1.5 `stryker.config.json` (stary rdzeń) działa jak dotąd po zmianie skryptów
-- [x] 1.6 Opis w `reviews/stryker-results.md` pozwala powtórzyć przebieg bez znajomości kontekstu
+- [x] 1.5 `stryker.config.json` (stary rdzeń) działa jak dotąd po zmianie skryptów — c3ad524
+- [x] 1.6 Opis w `reviews/stryker-results.md` pozwala powtórzyć przebieg bez znajomości kontekstu — c3ad524
 
 ### Phase 2: Dyktando: testy negatywne i Stryker
 
