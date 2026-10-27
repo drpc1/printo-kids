@@ -210,14 +210,14 @@ Brak zmiany formatu. Stare profile ładują się bez migracji; istniejące profi
 
 #### Automated
 
-- [ ] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 1.2 Lint przechodzi: `npm run lint`
-- [ ] 1.3 Typy przechodzą: `npx astro check`
-- [ ] 1.4 Break-check: zepsucie reguły plakietki dla sudoku 4×4 czerwieni test
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
+- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.4 Break-check: zepsucie reguły plakietki dla sudoku 4×4 czerwieni test
 
 #### Manual
 
-- [ ] 1.5 Teksty z testów zgadzają się z makietą zaakceptowaną przez użytkowniczkę
+- [x] 1.5 Teksty z testów zgadzają się z makietą zaakceptowaną przez użytkowniczkę
 
 ### Phase 2: Okno profilu bez poziomu, z podsumowaniem
 
