@@ -12,11 +12,11 @@ interface CardCase {
 }
 
 const CARDS: CardCase[] = [
-  { path: "/symetria", sheet: "Symetria", sentence: "Dorysuj drugą połowę" },
-  { path: "/sekwencje", sheet: "Sekwencje", sentence: "Co pasuje w puste pole?" },
+  { path: "/symmetry", sheet: "Symetria", sentence: "Dorysuj drugą połowę" },
+  { path: "/sequences", sheet: "Sekwencje", sentence: "Co pasuje w puste pole?" },
   { path: "/sudoku", sheet: "Sudoku", sentence: "Uzupełnij puste pola." },
   { path: "/nonogram", sheet: /^Nonogram/, sentence: "Zamaluj kratki według liczb." },
-  { path: "/dyktando", sheet: "Dyktando graficzne", sentence: "Rysuj po liniach kratki" },
+  { path: "/dictation", sheet: "Dyktando graficzne", sentence: "Rysuj po liniach kratki" },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {

@@ -1,4 +1,4 @@
-// Smoke test: the product pages (/ card catalog, /labirynt maze generator, /symetria symmetry generator, /sekwencje sequence generator, /sudoku sudoku generator, /nonogram nonogram generator, /dyktando graphic dictation generator) are served and the starter account routes are gone.
+// Smoke test: the product pages (/ card catalog, /maze maze generator, /symmetry symmetry generator, /sequences sequence generator, /sudoku sudoku generator, /nonogram nonogram generator, /dictation graphic dictation generator) are served, the old Polish card paths redirect, and the starter account routes are gone.
 // Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
@@ -13,7 +13,15 @@ const DICTATION_SENTENCE = "Wygeneruj kartę dyktanda graficznego i wydrukuj ją
 async function request(path) {
   const response = await fetch(BASE_URL + path, { redirect: "manual" });
   const body = await response.text();
-  return { status: response.status, body };
+  return { status: response.status, body, location: response.headers.get("location") };
+}
+
+function locationPath(location) {
+  if (!location) return "";
+  const absolute = /^https?:\/\/[^/?#]*/i.exec(location);
+  const path = absolute ? location.slice(absolute[0].length) : location;
+  const pathname = path.split(/[?#]/, 1)[0];
+  return pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
 }
 
 const steps = [
@@ -25,19 +33,19 @@ const steps = [
   ],
   [
     "labirynt renders the worksheet sentence",
-    () => request("/labirynt"),
+    () => request("/maze"),
     (actual) => actual.status === 200 && actual.body.includes(HOME_SENTENCE),
     `200 and ${HOME_SENTENCE}`,
   ],
   [
     "symetria renders the worksheet sentence",
-    () => request("/symetria"),
+    () => request("/symmetry"),
     (actual) => actual.status === 200 && actual.body.includes(SYMMETRY_SENTENCE),
     `200 and ${SYMMETRY_SENTENCE}`,
   ],
   [
     "sekwencje renders the worksheet sentence",
-    () => request("/sekwencje"),
+    () => request("/sequences"),
     (actual) => actual.status === 200 && actual.body.includes(SEQUENCE_SENTENCE),
     `200 and ${SEQUENCE_SENTENCE}`,
   ],
@@ -55,9 +63,33 @@ const steps = [
   ],
   [
     "dyktando renders the worksheet sentence",
-    () => request("/dyktando"),
+    () => request("/dictation"),
     (actual) => actual.status === 200 && actual.body.includes(DICTATION_SENTENCE),
     `200 and ${DICTATION_SENTENCE}`,
+  ],
+  [
+    "labirynt redirects to /maze",
+    () => request("/labirynt"),
+    (actual) => actual.status === 301 && locationPath(actual.location) === "/maze",
+    "301 and Location path /maze",
+  ],
+  [
+    "symetria redirects to /symmetry",
+    () => request("/symetria"),
+    (actual) => actual.status === 301 && locationPath(actual.location) === "/symmetry",
+    "301 and Location path /symmetry",
+  ],
+  [
+    "sekwencje redirects to /sequences",
+    () => request("/sekwencje"),
+    (actual) => actual.status === 301 && locationPath(actual.location) === "/sequences",
+    "301 and Location path /sequences",
+  ],
+  [
+    "dyktando redirects to /dictation",
+    () => request("/dyktando"),
+    (actual) => actual.status === 301 && locationPath(actual.location) === "/dictation",
+    "301 and Location path /dictation",
   ],
   ["signin is not served", () => request("/auth/signin"), (actual) => actual.status === 404, "404"],
   ["signup is not served", () => request("/auth/signup"), (actual) => actual.status === 404, "404"],

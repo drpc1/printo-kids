@@ -1,5 +1,5 @@
 // Provenance: symmetry-color-codes (S-15, US-09)
-// The Kolory switch on /symetria: off by default, it redraws the same card (same cells, same
+// The Kolory switch on /symmetry: off by default, it redraws the same card (same cells, same
 // positions) with crayon tokens and never generates a new card. It does not prove the print.
 import { expect, test, type Page } from "@playwright/test";
 
@@ -18,7 +18,7 @@ async function cellFills(page: Page): Promise<string[]> {
 }
 
 test("Kolory is off by default and recolors the same card without generating a new one", async ({ page }) => {
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
   const colors = page.getByRole("switch", { name: "Kolory" });
   await expect(colors).toBeVisible();
   await expect(colors).not.toBeChecked();
@@ -50,7 +50,7 @@ test("Kolory is off by default and recolors the same card without generating a n
 });
 
 test("Kolory is there before the first card and works from the keyboard", async ({ page }) => {
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
   const colors = page.getByRole("switch", { name: "Kolory" });
   await colors.focus();
   await page.keyboard.press("Space");

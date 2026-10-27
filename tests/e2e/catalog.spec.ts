@@ -15,7 +15,7 @@ test("the Labirynt card on the catalog opens the maze generator", async ({ page 
   await expect(card).toBeVisible();
   await card.click();
 
-  await expect(page).toHaveURL(/\/labirynt$/);
+  await expect(page).toHaveURL(/\/maze$/);
   await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
 });
 
@@ -36,7 +36,7 @@ test("the chosen profile persists across the catalog round trip", async ({ page 
     }
   }, PROFILES_KEY);
 
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   // Two profiles and none chosen: the dialog opens by itself and asks who is playing.
   const dialog = page.getByRole("dialog");
@@ -48,7 +48,7 @@ test("the chosen profile persists across the catalog round trip", async ({ page 
   await expect(page).toHaveURL(/\/$/);
 
   await page.getByRole("link", { name: "Labirynt" }).click();
-  await expect(page).toHaveURL(/\/labirynt$/);
+  await expect(page).toHaveURL(/\/maze$/);
 
   await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -59,7 +59,7 @@ test("the Symetria card on the catalog opens the symmetry generator and leads ba
   await page.goto("/");
 
   await page.getByRole("link", { name: "Symetria" }).click();
-  await expect(page).toHaveURL(/\/symetria$/);
+  await expect(page).toHaveURL(/\/symmetry$/);
 
   // client:only island: Generuj is absent until React mounts. The click waits for it.
   await page.getByRole("button", { name: "Generuj" }).click();
@@ -75,7 +75,7 @@ test("the Sekwencje card on the catalog opens the sequence generator and leads b
   await page.goto("/");
 
   await page.getByRole("link", { name: "Sekwencje" }).click();
-  await expect(page).toHaveURL(/\/sekwencje$/);
+  await expect(page).toHaveURL(/\/sequences$/);
 
   // client:only island: Generuj is absent until React mounts. The click waits for it.
   await page.getByRole("button", { name: "Generuj" }).click();
@@ -88,7 +88,7 @@ test("the Sekwencje card on the catalog opens the sequence generator and leads b
 
 test("each Generuj on the sequence page draws a different card", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
-  await page.goto("/sekwencje");
+  await page.goto("/sequences");
 
   const generuj = page.getByRole("button", { name: "Generuj" });
   const sheet = page.getByRole("img", { name: "Sekwencje" });
@@ -107,7 +107,7 @@ test("choosing a level on the sequence page draws a new card with that level's r
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
-  await page.goto("/sekwencje");
+  await page.goto("/sequences");
 
   await page.getByRole("button", { name: "Generuj" }).click();
   const sheet = page.getByRole("img", { name: "Sekwencje" });
@@ -137,7 +137,7 @@ test("choosing a level on the sequence page draws a new card with that level's r
 
 test("each Generuj on the symmetry page draws a different card", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
 
   const generuj = page.getByRole("button", { name: "Generuj" });
   const sheet = page.getByRole("img", { name: "Symetria" });
@@ -154,7 +154,7 @@ test("each Generuj on the symmetry page draws a different card", async ({ page }
 
 test("choosing a level on the symmetry page draws a new card of that level", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
 
   await page.getByRole("button", { name: "Generuj" }).click();
   const sheet = page.getByRole("img", { name: "Symetria" });
@@ -185,7 +185,7 @@ test("the profile chosen on the symmetry page persists across the catalog round 
     }
   }, PROFILES_KEY);
 
-  await page.goto("/symetria");
+  await page.goto("/symmetry");
 
   // Two profiles and none chosen: the dialog opens by itself on the symmetry page too.
   const dialog = page.getByRole("dialog");
@@ -208,7 +208,7 @@ test("the profile chosen on the symmetry page persists across the catalog round 
   await expect(page).toHaveURL(/\/$/);
 
   await page.getByRole("link", { name: "Symetria" }).click();
-  await expect(page).toHaveURL(/\/symetria$/);
+  await expect(page).toHaveURL(/\/symmetry$/);
 
   await expect(page.getByRole("button", { name: "Ania", exact: true })).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);

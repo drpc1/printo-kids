@@ -38,7 +38,7 @@ test("a picked PNG is drawn on the sheet, Kot removes it, and the row keeps the 
 }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   const leaked = trackImageLeak(page, ["data:image", PNG_BASE64]);
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect(page.getByRole("img", { name: "Labirynt" })).toBeVisible();
@@ -72,7 +72,7 @@ test("Ala's saved Kot is on the sheet after reload and the device thumbnail stay
     );
     localStorage.setItem("printo-kids:active-profile", "ala");
   });
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect.poll(() => sheetHref(page)).toBe("/characters/kot.png");
@@ -102,7 +102,7 @@ test("a GIF leaves Kot on the sheet and the open dialog explains JPEG, PNG, or W
   await page.addInitScript(() => {
     localStorage.setItem("printo-kids:last-used", JSON.stringify({ character: "kot", level: "lat5" }));
   });
-  await page.goto("/labirynt");
+  await page.goto("/maze");
 
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect.poll(() => sheetHref(page)).toBe("/characters/kot.png");
