@@ -3,7 +3,7 @@
 // and Sekwencje show their card after Generuj and lead back with "Wszystkie karty", and the chosen child profile stays
 // chosen across the round trip catalog -> generator -> catalog -> generator on both pages.
 // The flow is the same on every screen size, so it runs on desktop Chromium only.
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 const PROFILES_KEY = "printo-kids:child-profiles";
 
@@ -248,4 +248,81 @@ test("the Sudoku card on the catalog opens the sudoku generator and leads back",
   await expect(page).toHaveURL(/\/sudoku$/);
   await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
+});
+
+const ACTIVE_KEY = "printo-kids:active-profile";
+
+const ANIA = {
+  id: "profile-ania",
+  name: "Ania",
+  character: "kot",
+  level: "lat6",
+  cards: {
+    symetria: { level: "lat6", colors: true, category: "wszystkie" },
+    sudoku: { size: 6, level: "sredni", symbols: "shapes", colors: false },
+    nonogram: { level: "sredni", category: "zwierzeta" },
+  },
+};
+const ZOSIA = { id: "profile-zosia", name: "Zosia", character: "none", level: "lat3" };
+
+async function seedProfiles(page: Page, profiles: unknown[], active: string | null): Promise<void> {
+  // Seed once: the init script runs on every navigation and must not overwrite later changes.
+  await page.addInitScript(
+    ([profilesKey, activeKey, stored, activeId]) => {
+      if (localStorage.getItem(profilesKey) === null) {
+        localStorage.setItem(profilesKey, JSON.stringify({ profiles: stored }));
+        if (activeId !== null) {
+          localStorage.setItem(activeKey, activeId);
+        }
+      }
+    },
+    [PROFILES_KEY, ACTIVE_KEY, profiles, active] as const,
+  );
+}
+
+test("the catalog shows the remembered level on the cards the chosen profile used", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
+  await page.goto("/");
+
+  await expect(page.getByText("Profil: Ania")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Labirynt, poz. 4" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Symetria, poz. 3" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Sudoku, 6×6 · średni" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Nonogram, średni" })).toBeVisible();
+  // Cards the profile never used carry no badge.
+  await expect(page.getByRole("link", { name: /^Sekwencje$/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /^Dyktando graficzne$/ })).toBeVisible();
+});
+
+test("the catalog stays plain with several profiles and none chosen, and with no profile", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], null);
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: "Labirynt", exact: true })).toBeVisible();
+  await expect(page.getByText(/^Profil: /)).toHaveCount(0);
+  await expect(page.locator("[data-badge-for]:not([hidden])")).toHaveCount(0);
+
+  await page.evaluate((key) => {
+    localStorage.setItem(key, "none");
+  }, ACTIVE_KEY);
+  await page.reload();
+  await expect(page.getByRole("link", { name: "Labirynt", exact: true })).toBeVisible();
+  await expect(page.locator("[data-badge-for]:not([hidden])")).toHaveCount(0);
+});
+
+test("a level changed on a card page shows on the catalog after going back", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
+  await page.goto("/nonogram");
+  await page.getByRole("button", { name: /^Poziom:/ }).click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: /^trudny/ })
+    .click();
+
+  await page.getByRole("link", { name: "Wszystkie karty" }).click();
+  await expect(page.getByRole("link", { name: "Nonogram, trudny" })).toBeVisible();
 });

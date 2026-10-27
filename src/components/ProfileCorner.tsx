@@ -19,8 +19,9 @@ import {
 } from "@/lib/child-profiles";
 import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
+import { cardSummaries } from "@/lib/card-summary";
 import { readLastUsed } from "@/lib/last-used";
-import { LEVELS, levelById, type LevelId } from "@/lib/maze/levels";
+import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "@/lib/maze/levels";
 import {
   ALLOWED_CHARACTER_IDS,
   CHARACTER_CHOICES,
@@ -52,8 +53,7 @@ const FILE_ERROR_TEXT = {
 } as const;
 const STORE_ERROR_TEXT = "Nie udało się zachować zdjęcia.";
 
-type ProfilePanel =
-  "menu" | "form" | "delete" | "edit" | "favorite-list" | "draft-list" | "favorite-level-list" | "draft-level-list";
+type ProfilePanel = "menu" | "form" | "delete" | "edit" | "favorite-list" | "draft-list";
 
 export function ProfileCorner({
   profiles,
@@ -96,16 +96,12 @@ export function ProfileCorner({
   const [draftName, setDraftName] = useState("");
   const [draftCharacter, setDraftCharacter] = useState<SheetCharacterId>("none");
   const [draftImageHref, setDraftImageHref] = useState<string | null>(null);
-  const [draftLevel, setDraftLevel] = useState<LevelId>(barLevel);
   const [formError, setFormError] = useState<string | null>(null);
   const [favoriteDraft, setFavoriteDraft] = useState<SheetCharacterId>(
     activeProfile === null ? barCharacter : characterChoice(activeProfile.character),
   );
   const [favoriteImageHref, setFavoriteImageHref] = useState<string | null>(savedOwnImage(activeProfile));
   const [favoriteImageTouched, setFavoriteImageTouched] = useState(false);
-  const [favoriteLevelDraft, setFavoriteLevelDraft] = useState<LevelId>(
-    activeProfile === null ? barLevel : activeProfile.level,
-  );
   const [favoriteError, setFavoriteError] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<ChildProfile | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
@@ -116,7 +112,6 @@ export function ProfileCorner({
     setFavoriteDraft(source === null ? barCharacter : characterChoice(source.character));
     setFavoriteImageHref(savedOwnImage(source));
     setFavoriteImageTouched(false);
-    setFavoriteLevelDraft(source === null ? barLevel : source.level);
     setFavoriteError(null);
   }
 
@@ -132,7 +127,6 @@ export function ProfileCorner({
     setDraftName("");
     setDraftCharacter("none");
     setDraftImageHref(null);
-    setDraftLevel(barLevel);
     setFormError(null);
     abandonFavoriteDraft();
     setPanel("form");
@@ -193,7 +187,6 @@ export function ProfileCorner({
       setFavoriteDraft(characterChoice(activeProfile.character));
       setFavoriteImageHref(savedOwnImage(activeProfile));
       setFavoriteImageTouched(false);
-      setFavoriteLevelDraft(activeProfile.level);
       setFavoriteError(null);
       setPanel("edit");
       return;
@@ -201,7 +194,6 @@ export function ProfileCorner({
     setFavoriteDraft(characterChoice(profile.character));
     setFavoriteImageHref(savedOwnImage(profile));
     setFavoriteImageTouched(false);
-    setFavoriteLevelDraft(profile.level);
     setFavoriteError(null);
     onChoose(profile);
     setPanel("edit");
@@ -241,7 +233,6 @@ export function ProfileCorner({
       setFavoriteDraft(nextActive === null ? characterChoice(next.character) : characterChoice(nextActive.character));
       setFavoriteImageHref(savedOwnImage(nextActive));
       setFavoriteImageTouched(false);
-      setFavoriteLevelDraft(nextActive === null ? next.level : nextActive.level);
       setFavoriteError(null);
     }
     onDeleted(next);
@@ -268,14 +259,6 @@ export function ProfileCorner({
 
   function openDraftList(): void {
     setPanel("draft-list");
-  }
-
-  function openFavoriteLevelList(): void {
-    setPanel("favorite-level-list");
-  }
-
-  function openDraftLevelList(): void {
-    setPanel("draft-level-list");
   }
 
   function handleFavoritePicked(id: SheetCharacterId): void {
@@ -305,25 +288,12 @@ export function ProfileCorner({
     setPanel("form");
   }
 
-  function handleFavoriteLevelPicked(id: LevelId): void {
-    favoriteLock.current = false;
-    setFavoriteLevelDraft(id);
-    setPanel("edit");
-  }
-
-  function handleDraftLevelPicked(id: LevelId): void {
-    setDraftLevel(id);
-    setPanel("form");
-  }
-
   function handleSaveFavorite(): void {
     if (favoriteLock.current || activeProfile === null) {
       return;
     }
     const previousFavorite = activeProfile.character;
-    const previousLevel = activeProfile.level;
-    const sameStoredFavorite = favoriteDraft === previousFavorite && favoriteLevelDraft === previousLevel;
-    if (sameStoredFavorite && !(favoriteImageTouched && favoriteDraft === OWN_IMAGE_ID)) {
+    if (favoriteDraft === previousFavorite && !(favoriteImageTouched && favoriteDraft === OWN_IMAGE_ID)) {
       return;
     }
     const imageHref = hrefForFavoriteSave(
@@ -336,7 +306,7 @@ export function ProfileCorner({
       profiles,
       activeProfile.id,
       favoriteDraft,
-      favoriteLevelDraft,
+      activeProfile.level,
       ALLOWED_CHARACTER_IDS,
       imageHref,
     );
@@ -355,12 +325,7 @@ export function ProfileCorner({
     }
     const nextCharacter = barAfterFavoriteSave(barCharacter, previousFavorite, favoriteDraft);
     const sheetHref = nextCharacter !== OWN_IMAGE_ID ? null : favoriteDraft === OWN_IMAGE_ID ? imageHref : undefined;
-    onFavoriteSaved(
-      nextProfiles,
-      nextCharacter,
-      barAfterFavoriteSave(barLevel, previousLevel, favoriteLevelDraft),
-      sheetHref,
-    );
+    onFavoriteSaved(nextProfiles, nextCharacter, barLevel, sheetHref);
     setFavoriteError(null);
     setPanel("menu");
   }
@@ -393,7 +358,7 @@ export function ProfileCorner({
       crypto.randomUUID(),
       draftName.trim(),
       draftCharacter,
-      draftLevel,
+      DEFAULT_LEVEL_ID,
       draftCharacter === OWN_IMAGE_ID ? readOwnImage(localStorage) : null,
       newProfileCards,
     );
@@ -477,14 +442,6 @@ export function ProfileCorner({
               onCopied={panel === "draft-list" ? handleDraftCopied : handleFavoriteCopied}
             />
           </div>
-        ) : panel === "favorite-level-list" || panel === "draft-level-list" ? (
-          <div className={cn("flex flex-col gap-2")}>
-            <DialogTitle className={cn("sr-only")}>Wybierz poziom</DialogTitle>
-            <LevelChoiceRows
-              selected={panel === "draft-level-list" ? draftLevel : favoriteLevelDraft}
-              onSelect={panel === "draft-level-list" ? handleDraftLevelPicked : handleFavoriteLevelPicked}
-            />
-          </div>
         ) : panel === "edit" && activeProfile !== null ? (
           <div className={cn("flex flex-col gap-4")}>
             <DialogTitle className={cn("break-words")}>{activeProfile.name}</DialogTitle>
@@ -493,7 +450,7 @@ export function ProfileCorner({
               thumbHref={favoriteDraft === OWN_IMAGE_ID ? favoriteImageHref : null}
               onOpen={openFavoriteList}
             />
-            <ProfileLevelControl level={favoriteLevelDraft} onOpen={openFavoriteLevelList} />
+            <ProfileSummary profile={activeProfile} />
             {favoriteError !== null ? (
               <p id="child-profile-save-error" role="alert" className={cn("text-destructive text-sm")}>
                 {favoriteError}
@@ -506,9 +463,7 @@ export function ProfileCorner({
               <Button
                 type="button"
                 disabled={
-                  favoriteDraft === activeProfile.character &&
-                  favoriteLevelDraft === activeProfile.level &&
-                  !(favoriteImageTouched && favoriteDraft === OWN_IMAGE_ID)
+                  favoriteDraft === activeProfile.character && !(favoriteImageTouched && favoriteDraft === OWN_IMAGE_ID)
                 }
                 aria-describedby={favoriteError !== null ? "child-profile-save-error" : undefined}
                 onClick={handleSaveFavorite}
@@ -623,7 +578,6 @@ export function ProfileCorner({
               thumbHref={draftCharacter === OWN_IMAGE_ID ? draftImageHref : null}
               onOpen={openDraftList}
             />
-            <ProfileLevelControl level={draftLevel} onOpen={openDraftLevelList} />
             <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end")}>
               <Button type="button" variant="outline" onClick={handleCancel}>
                 Anuluj
@@ -671,20 +625,31 @@ function ProfileCharacterControl({
   );
 }
 
-function ProfileLevelControl({ level, onOpen }: { level: LevelId; onOpen: () => void }) {
-  const label = levelById(level).barLabel;
+/** What the profile remembers for each card, read-only: the bar of every card is the one place that changes it. */
+function ProfileSummary({ profile }: { profile: ChildProfile }) {
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      aria-label={`Poziom: ${label}`}
-      className={cn(DIALOG_ROW_CLASS, "w-full")}
-      onClick={onOpen}
-    >
-      <span>Poziom:</span>
-      {label}
-      <ChevronDown className={cn("size-4")} aria-hidden />
-    </Button>
+    <div className={cn("flex flex-col gap-2")}>
+      <p className={cn("text-muted-foreground text-sm")}>
+        Ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
+      </p>
+      <ul className={cn("border-border rounded-md border")}>
+        {cardSummaries(profile).map((summary) => (
+          <li key={summary.id} className={cn("border-border border-t first:border-t-0")}>
+            <a
+              href={summary.href}
+              className={cn(
+                "focus-visible:ring-ring/50 flex min-h-11 items-center justify-between gap-2 rounded-md px-3 py-1.5 text-sm outline-none focus-visible:ring-[3px]",
+              )}
+            >
+              <span className={cn("font-medium")}>{summary.title}</span>
+              <span className={cn("text-muted-foreground text-right", !summary.used && "italic")}>
+                {summary.detail} ›
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

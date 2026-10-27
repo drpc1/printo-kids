@@ -492,3 +492,56 @@ test("the maze level list fits the screen with all six rows and no scrolling", a
     expect(box.y + box.height).toBeLessThanOrEqual(height);
   }
 });
+
+test("the catalog badges stay inside their tile and the screen and do not cover a card name", async ({ page }) => {
+  await page.addInitScript((key) => {
+    if (localStorage.getItem(key) === null) {
+      localStorage.setItem(
+        key,
+        JSON.stringify({
+          profiles: [
+            {
+              id: "profile-ania",
+              name: "Ania",
+              character: "kot",
+              level: "lat6",
+              cards: {
+                symetria: { level: "lat6", colors: true, category: "wszystkie" },
+                sekwencje: { level: "lat6" },
+                sudoku: { size: 9, level: "trudny", symbols: "shapes", colors: false },
+                nonogram: { level: "sredni", category: "zwierzeta" },
+                dyktando: { level: "lat7", category: "wszystkie" },
+              },
+            },
+          ],
+        }),
+      );
+    }
+  }, PROFILES_KEY);
+  await page.goto("/");
+  const slots = page.locator("[data-badge-for]:not([hidden])");
+  await expect(slots).toHaveCount(6);
+  const heightWith = await page.evaluate(() => document.documentElement.scrollHeight);
+
+  const width = viewportWidth(page);
+  for (const slot of await slots.all()) {
+    const badge = await viewportBox(slot);
+    expect(badge.x).toBeGreaterThanOrEqual(0);
+    expect(badge.x + badge.width).toBeLessThanOrEqual(width);
+    const tile = slot.locator("xpath=ancestor::a[1]");
+    const tileBox = await viewportBox(tile);
+    expect(badge.x + badge.width).toBeLessThanOrEqual(tileBox.x + tileBox.width);
+    const name = await viewportBox(tile.locator("> span").last());
+    expect(overlaps(badge, name)).toBe(false);
+  }
+  await expectNoSidewaysScroll(page);
+
+  // The badges arrive after load: hiding them again must not change the page height.
+  const heightWithout = await page.evaluate(() => {
+    document.querySelectorAll<HTMLElement>("[data-badge-for]").forEach((slot) => {
+      slot.hidden = true;
+    });
+    return document.documentElement.scrollHeight;
+  });
+  expect(heightWithout).toBe(heightWith);
+});
