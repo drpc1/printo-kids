@@ -375,8 +375,8 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 #### Automated
 
-- [x] 5.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` zielone
-- [x] 5.2 e2e Chromium: `npx playwright test tests/e2e/character-speaks.spec.ts` (oraz pełny zestaw bez regresji)
+- [x] 5.1 `npm test`, `npm run lint`, `npx astro check`, `npm run build` zielone — 160adb4
+- [x] 5.2 e2e Chromium: `npx playwright test tests/e2e/character-speaks.spec.ts` (oraz pełny zestaw bez regresji) — 160adb4
 
 #### Manual
 
