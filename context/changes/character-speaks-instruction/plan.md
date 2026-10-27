@@ -43,7 +43,7 @@ Makieta zaakceptowana 2026-10-27 na prawdziwej stronie (dyktando trudne z dinoza
 
 - Wszystkie układy mają już parametr „wysokość pola polecenia”; pas postaci to wartość 26 zamiast 7 (sudoku: jedna dodatkowa wysokość pola zamiast liczby linii), więc zmiana układu jest mała i zachowuje środkowanie bloku.
 - Symetria mieści się z pasem o 1 mm (276 z 277), więc żaden dodatek nad zadaniem (przerwa pod pasem) nie może być większy niż dziś; przerwa pod pasem zostaje wartością karty (`instructionGap`), w tym oś wystaje 4 mm w przerwę.
-- Kratka dyktanda przy `maxCommands`: trudne 277 − 26 − 6 − 49,8 − 6 = 189,2 mm na 26 wierszy → 7,2 mm; łatwe (55 poleceń, 5 wierszy po 12 mm) 179 mm na 14 → 12,7 mm; średnie 179 na 17 → 10,5 mm. Liczone od `maxCommands`, więc kratka nie zmienia się od karty do karty.
+- Kratka dyktanda z pasem liczy się z liczby poleceń karty: trudne 277 − 26 − 6 − 6 − (wiersze × 8,3) na 26 wierszy (6 wierszy → 7,2 mm, 5 wierszy → 7,8 mm); łatwe i średnie przy 55 poleceniach (5 wierszy po 12 mm) 179 mm na 14 i 17 wierszy → 12,7 i 10,5 mm, ale przy typowych 20–44 poleceniach (3–4 wiersze) nominalne 14 i 11 mm się mieszczą.
 
 ## What We're NOT Doing
 
@@ -61,7 +61,7 @@ Jedna wspólna geometria pasa (czysta funkcja z testami) i jeden komponent SVG r
 
 ## Critical Implementation Details
 
-- **Szerokość dymka od postaci:** dymek zaczyna się za widoczną częścią postaci. Dodaj do katalogu `contentRight` (pusty margines z prawej jako ułamek pliku) wyliczony z pikseli PNG, tak jak `contentLeft`; własny obrazek ma oba 0. Bez tego dymek zasłoni szeroką postać albo zostawi dziurę przy wąskiej.
+- **Szerokość dymka od postaci:** dymek zaczyna się za widoczną częścią postaci. Dodaj do katalogu `contentRight` (pusty margines z prawej jako ułamek pliku) tak jak `contentLeft`; repo nie ma biblioteki do pikseli PNG, więc zmierz go jednorazowo (np. skryptem Playwright na canvasie) i zapisz jako stałe. Własny obrazek ma oba marginesy 0 i nie musi być kwadratowy (skalowany do maksymalnej krawędzi), więc dymek zaczyna się za prawą krawędzią pola 26 mm. Bez tego dymek zasłoni szeroką postać albo zostawi dziurę przy wąskiej.
 - **Pas tylko z postacią:** `bandHeight` to 26 mm, gdy `character !== "none"` i jest czym rysować (katalog albo własny obrazek ze zdjęciem); inaczej układ dostaje dzisiejszą wysokość pola, więc „Bez postaci” i własny obrazek bez pliku wyglądają jak dziś.
 - **Kolor w druku:** SVG kartki każdej z pięciu kart zachowuje `printColorAdjust: exact` (już je mają), bo bez tego przeglądarka może wydrukować `<image>` w szarości lub zgubić tło dymka.
 
@@ -121,6 +121,7 @@ Fundament bez zmiany wyglądu żadnej karty: geometria pasa, reguła dopasowania
 - Lint bez błędów: `npm run lint`
 - `npx astro check` bez błędów
 - Labirynt bez zmian wyglądu: test kontraktu druku i istniejące e2e labiryntu zielone
+- `src/lib/sheet/speech.test.ts` jest w skrypcie `test` w `package.json` i `npm test` go uruchamia
 
 #### Manual Verification:
 
@@ -160,6 +161,7 @@ Pierwsze dwie karty z postacią i dymkiem. Obie mają duży zapas; symetria jest
 
 - `npm test`, `npm run lint`, `npx astro check` zielone
 - Testy układów dla wszystkich poziomów z pasem i bez
+- Układ paska na telefonie: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
 
 #### Manual Verification:
 
@@ -198,6 +200,7 @@ Dwie karty z kilkoma układami: sudoku trzy rozmiary, nonogram klasyczny (średn
 
 - `npm test`, `npm run lint`, `npx astro check` zielone
 - Testy układów dla każdego rozmiaru/poziomu z pasem i bez
+- Układ paska na telefonie: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
 
 #### Manual Verification:
 
@@ -217,9 +220,9 @@ Najciaśniejsza karta: lista poleceń i kratka wypełniają dziś całą stronę
 
 **File**: `src/lib/dictation/layout.ts`, `src/lib/dictation/levels.ts`, `src/lib/dictation/layout.test.ts`, `src/lib/dictation/levels.test.ts`
 
-**Intent**: Gdy postać jest wybrana, strona liczy kratkę z `fitCellSize` na podstawie `maxCommands` poziomu (stała dla poziomu, nie zmienia się między kartami) i przekazuje ją do układu; bez postaci kratka nominalna.
+**Intent**: Gdy postać jest wybrana, strona liczy kratkę z `fitCellSize` z faktycznej liczby poleceń wygenerowanej karty (nie z `maxCommands`) i przekazuje ją do układu; bez postaci kratka nominalna. Kratka może więc różnić się między kartami tego samego poziomu, ale tylko gdy lista poleceń jest długa.
 
-**Contract**: `dictationCellSize(level, withBand)` → mm; przy `withBand` zgodnie z tabelą w Key Discoveries (trudne ≈ 7,2, średnie ≈ 10,5, łatwe ≈ 12,7). Test: każdy poziom z `maxCommands` poleceń i z pasem mieści się w 10 mm; kratka z pasem ≥ 85% nominalnej; obrys obiektu dalej mieści się w kratce (kolumny × wiersze bez zmian).
+**Contract**: `dictationCellSize(level, commandCount, withBand)` → mm; bez pasa kratka nominalna; z pasem największa kratka z krokiem 0,1 mm, przy której blok mieści się w 10 mm dla `ceil(commandCount / commandsPerRow)` wierszy listy. Przy typowych liczbach poleceń (łatwe do 33 = 3 wiersze, średnie do 44 = 4 wiersze) kratka zostaje nominalna; zmniejsza się dopiero gęsta lista (łatwe i średnie 55 poleceń: ≈ 12,7 i ≈ 10,5 mm; trudne ≈ 7,2–7,8 mm). Test: każdy poziom z `maxCommands` poleceń i z pasem mieści się w 10 mm; kratka z pasem ≥ 85% nominalnej; obrys obiektu dalej mieści się w kratce (kolumny × wiersze bez zmian); ta sama karta ma tę samą kratkę po przełączeniu postaci.
 
 #### 2. Strona
 
@@ -254,7 +257,7 @@ Zabezpieczenie: kontrakt druku, przeglądarka i telefon, ręczny wydruk.
 
 **File**: `src/lib/sheet/print-contract.test.ts`, `package.json` (lista plików `test`)
 
-**Intent**: Każdy generator kart rysuje `SpeechBand`, każdy SVG kartki ma `printColorAdjust: exact`, a żaden generator poza labiryntem nie ma komentarza „no character bar”. Dopisać `src/lib/sheet/speech.test.ts` do skryptu `test`.
+**Intent**: Każdy generator kart rysuje `SpeechBand`, każdy SVG kartki ma `printColorAdjust: exact`, a żaden generator poza labiryntem nie ma komentarza „no character bar”.
 
 **Contract**: Testy czytają pliki jak dotychczasowe i pilnują obecności `SpeechBand` oraz braku zakodowanych literałów kolorów w `speech`/`SpeechBand`.
 
@@ -323,6 +326,7 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 #### Automated
 
 - [ ] 1.1 Testy geometrii pasa i dopasowania kratki przechodzą: `npm test`
+- [ ] 1.6 `src/lib/sheet/speech.test.ts` jest w skrypcie `test` w `package.json` i `npm test` go uruchamia
 - [ ] 1.2 Lint bez błędów: `npm run lint`
 - [ ] 1.3 `npx astro check` bez błędów
 - [ ] 1.4 Labirynt bez zmian wyglądu: test kontraktu druku i istniejące e2e labiryntu zielone
@@ -337,6 +341,7 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 - [ ] 2.1 `npm test`, `npm run lint`, `npx astro check` zielone
 - [ ] 2.2 Testy układów dla wszystkich poziomów z pasem i bez
+- [ ] 2.5 e2e układu paska na telefonie bez regresji: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
 
 #### Manual
 
@@ -349,6 +354,7 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 - [ ] 3.1 `npm test`, `npm run lint`, `npx astro check` zielone
 - [ ] 3.2 Testy układów dla każdego rozmiaru/poziomu z pasem i bez
+- [ ] 3.4 e2e układu paska na telefonie bez regresji: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
 
 #### Manual
 

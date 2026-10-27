@@ -16,14 +16,14 @@ Na każdej z pięciu kart przycisk „Postać” jak na labiryncie. Z wybraną p
 
 ## Key Decisions Made
 
-| Decision             | Choice                                                                            | Why                                                          | Source  |
-| -------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------ | ------- |
-| Wygląd               | Postać 26 mm z lewej, dymek obok, ogonek do postaci, 1 linia 7,5 albo 2 linie 6,2 | Makieta zaakceptowana na prawdziwej stronie                  | Plan    |
-| Pas bez postaci      | Układ jak dziś, bez pasa                                                          | PRD: „Bez postaci” = samo polecenie                          | PRD     |
-| Ciasne dyktando      | Zmniejsz kratkę (trudne 8→ok. 7,2 mm, łatwe 14→ok. 12,7) liczoną od `maxCommands` | Zostają wszystkie polecenia i obiekty; jedna reguła dla kart | Plan    |
-| Szerokość dymka      | Nowe `contentRight` w katalogu postaci                                            | Dymek nie zasłania szerokiej postaci                         | Plan    |
-| Zapis wyboru postaci | Jak dziś na labiryncie, zmiany tylko S-31                                         | Zakres S-30                                                  | Roadmap |
-| Testy                | Jednostkowe układów i kontrakt druku plus e2e (5 kart, „Bez postaci”, telefon)    | Przepełnienie strony łapią testy, wygląd wydruk próbny       | Plan    |
+| Decision             | Choice                                                                                                                                                  | Why                                                          | Source           |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------- |
+| Wygląd               | Postać 26 mm z lewej, dymek obok, ogonek do postaci, 1 linia 7,5 albo 2 linie 6,2                                                                       | Makieta zaakceptowana na prawdziwej stronie                  | Plan             |
+| Pas bez postaci      | Układ jak dziś, bez pasa                                                                                                                                | PRD: „Bez postaci” = samo polecenie                          | PRD              |
+| Ciasne dyktando      | Zmniejsz kratkę tylko gdy lista poleceń jest długa, liczoną z faktycznej liczby poleceń karty (trudne ok. 7,2–7,8 mm; łatwe i średnie zwykle bez zmian) | Zostają wszystkie polecenia i obiekty; jedna reguła dla kart | Plan (review F1) |
+| Szerokość dymka      | Nowe `contentRight` w katalogu postaci                                                                                                                  | Dymek nie zasłania szerokiej postaci                         | Plan             |
+| Zapis wyboru postaci | Jak dziś na labiryncie, zmiany tylko S-31                                                                                                               | Zakres S-30                                                  | Roadmap          |
+| Testy                | Jednostkowe układów i kontrakt druku plus e2e (5 kart, „Bez postaci”, telefon)                                                                          | Przepełnienie strony łapią testy, wygląd wydruk próbny       | Plan             |
 
 ## Scope
 
@@ -51,7 +51,8 @@ Czysta geometria pasa (`speech.ts`) i jeden komponent SVG (`SpeechBand`) dla pi�
 ## Open Risks & Assumptions
 
 - Kratka dyktanda trudnego 7,2 mm z postacią może być za drobna; wydruk próbny w fazie 4 rozstrzyga i ewentualnie wraca do mniejszej postaci na tej karcie.
-- Zakładamy, że `contentRight` wyliczony z PNG wystarcza do dymka dla każdej postaci i że własny obrazek jest kwadratowy.
+- Zakładamy, że `contentRight` zmierzony jednorazowo wystarcza do dymka dla każdej postaci; własny obrazek nie musi być kwadratowy, dymek zaczyna się za polem 26 mm.
+- Nowy przycisk „Postać” na telefonie (360 px) może przestawić zawijanie paska, najciaśniej na sudoku; faza 2 i 3 uruchamiają `phone-layout.spec.ts`.
 - S-31 zmieni zapis postaci z paska na tych samych plikach; konflikty scalania są możliwe, ale zmiany są małe.
 
 ## Success Criteria (Summary)
