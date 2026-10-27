@@ -8,6 +8,7 @@ import { LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
 import { RememberedNote } from "@/components/RememberedNote";
 import { useMazeLevelMemory } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
+import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
 import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
 import {
@@ -37,6 +38,7 @@ export default function WorksheetGenerator() {
   const [character, setCharacter] = useState(visitStart.character);
   const [ownImageHref, setOwnImageHref] = useState(visitStart.ownImageHref ?? null);
   const [level, setLevel] = useState(visitStart.level);
+  const favorite = useFavoriteCharacter(visit, { character, ownImageHref });
   const [generateFailed, setGenerateFailed] = useState(false);
   const [maze, setMaze] = useState<Maze | null>(null);
   const [sheetShown, setSheetShown] = useState(false);
@@ -160,11 +162,12 @@ export default function WorksheetGenerator() {
               onOpenChange={setChoiceOpen}
               onSelect={handleCharacterSelect}
               onCopied={handleOwnImage}
+              favorite={favorite.offer}
             />
             {levelControl}
             {failedNote}
           </div>
-          <RememberedNote note={mazeLevelMemory.note} profileActive={activeId !== null} />
+          <RememberedNote note={mazeLevelMemory.note ?? favorite.note} profileActive={activeId !== null} />
           <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
             <GenerateButton
               onClick={handleGenerate}
@@ -195,10 +198,11 @@ export default function WorksheetGenerator() {
               onOpenChange={setChoiceOpen}
               onSelect={handleCharacterSelect}
               onCopied={handleOwnImage}
+              favorite={favorite.offer}
             />
             {levelControl}
           </div>
-          <RememberedNote note={mazeLevelMemory.note} profileActive={activeId !== null} />
+          <RememberedNote note={mazeLevelMemory.note ?? favorite.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
