@@ -2,7 +2,8 @@
 // Protects the profile window: a new profile asks only for the name and the character and starts at the default maze
 // level, the edit window has no level control but one sentence about the rule and a read-only summary of the six
 // cards (each row leads to its card page, an old profile shows its level as the maze level, a card the profile never
-// used says "domyślne"), "Zapisz" waits for a character change, and on a phone the window keeps its buttons reachable.
+// used says "domyślne"), a pick in the favorite list is saved at once (no "Zapisz" and no "Anuluj"; favorite-character-
+// explicit, S-31), and on a phone the window keeps its character row and summary reachable.
 // The flows are the same on every screen size, so they run on desktop Chromium; the reach check runs on every project.
 import { expect, test, type Page } from "@playwright/test";
 
@@ -85,7 +86,8 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Sekwencje\s+domyślne/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Nonogram\s+średni · Zwierzęta/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Dyktando graficzne\s+domyślne/ })).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "Zapisz" })).toBeDisabled();
+  await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
+  await expect(dialog.getByRole("button", { name: "Anuluj" })).toHaveCount(0);
 });
 
 test("a summary row opens the card page and the profile stays chosen", async ({ page }, testInfo) => {
@@ -101,42 +103,63 @@ test("a summary row opens the card page and the profile stays chosen", async ({ 
   await expect(page.getByRole("button", { name: "Kategoria: Zwierzęta" })).toBeVisible();
 });
 
-test("Zapisz stays disabled until the favorite character changes", async ({ page }, testInfo) => {
+test("a pick in the favorite list is saved at once and keeps the card settings", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
   await page.goto("/labirynt");
 
   const dialog = await openEdit(page, "Ania");
-  const save = dialog.getByRole("button", { name: "Zapisz" });
-  await expect(save).toBeDisabled();
   await dialog.getByRole("button", { name: /^Postać:/ }).click();
   await dialog.getByRole("button", { name: "Pies" }).click();
-  await expect(save).toBeEnabled();
-  await save.click();
+  await expect(dialog.getByRole("button", { name: "Postać: Pies" })).toBeVisible();
 
   const stored = await page.evaluate((key) => {
     const raw = JSON.parse(localStorage.getItem(key) ?? "null") as {
-      profiles: { character: string; level: string }[];
+      profiles: { character: string; level: string; cards?: unknown }[];
     } | null;
     return raw?.profiles[0];
   }, PROFILES_KEY);
-  expect(stored).toMatchObject({ character: "pies", level: "lat6" });
+  expect(stored).toMatchObject({ character: "pies", level: "lat6", cards: ANIA.cards });
 });
 
-test("the edit window keeps Zapisz and Anuluj reachable and the summary inside it", async ({ page }) => {
+test("an own image picked in the favorite list is the favorite after a reload", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/labirynt");
+
+  const dialog = await openEdit(page, "Ania");
+  await dialog.getByRole("button", { name: /^Postać:/ }).click();
+  const chooser = page.waitForEvent("filechooser");
+  await dialog.getByRole("button", { name: "Własne zdjęcie", exact: true }).click();
+  await (
+    await chooser
+  ).setFiles({
+    name: "a.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "base64",
+    ),
+  });
+  await expect(dialog.getByRole("button", { name: "Postać: Własne zdjęcie" })).toBeVisible();
+
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Postać: Własne zdjęcie" })).toBeVisible();
+});
+
+test("the edit window keeps the character row reachable and the summary inside it", async ({ page }) => {
   await seed(page, [ANIA], ANIA.id);
   await page.goto("/labirynt");
 
   const dialog = await openEdit(page, "Ania");
   const height = page.viewportSize()?.height ?? 0;
-  for (const name of ["Zapisz", "Anuluj"]) {
-    const button = dialog.getByRole("button", { name, exact: true });
-    await button.scrollIntoViewIfNeeded();
-    const box = await button.boundingBox();
-    expect(box, name).not.toBeNull();
-    expect(box?.y ?? -1).toBeGreaterThanOrEqual(0);
-    expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(height);
-  }
+  const row = dialog.getByRole("button", { name: /^Postać:/ });
+  await row.scrollIntoViewIfNeeded();
+  const box = await row.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box?.y ?? -1).toBeGreaterThanOrEqual(0);
+  expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(height);
+  await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
   const list = await dialog.getByRole("list").boundingBox();
   const frame = await dialog.boundingBox();
   expect(list).not.toBeNull();

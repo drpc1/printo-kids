@@ -136,22 +136,6 @@ function cardsOf(profile: ChildProfile): { cards?: CardSettingsMap } {
   return profile.cards === undefined ? {} : { cards: profile.cards };
 }
 
-/** Href passed to withFavorite. A catalog id clears the snapshot. An untouched `wlasne` keeps the saved one. */
-export function hrefForFavoriteSave(
-  character: string,
-  touched: boolean,
-  deviceHref: string | null,
-  profileHref: string | undefined,
-): string | null {
-  if (character !== OWN_IMAGE_ID) {
-    return null;
-  }
-  if (touched) {
-    return deviceHref;
-  }
-  return profileHref ?? null;
-}
-
 /** A profile row for Utwórz. `wlasne` keeps the device href in `image`; the character field stays the id. */
 export function profileToCreate(
   id: string,
@@ -172,6 +156,18 @@ export function profileToCreate(
     return null;
   }
   return { id, name, character, level, ...withCards };
+}
+
+/**
+ * Whether the bar's character differs from the profile's favorite, the way a visit shows it: a stored `wlasne` without
+ * a drawable copy is "none" (see `drawnVisitCharacter`), so a broken favorite does not offer to be overwritten at once.
+ */
+export function favoriteDiffers(profile: ChildProfile, character: string, ownImageHref: string | null): boolean {
+  const shown = profile.character === OWN_IMAGE_ID && !isOwnImageDataUrl(profile.image) ? "none" : profile.character;
+  if (character !== shown) {
+    return true;
+  }
+  return character === OWN_IMAGE_ID && ownImageHref !== (profile.image ?? null);
 }
 
 export function barAfterFavoriteSave<T extends string>(bar: T, previousFavorite: T, nextFavorite: T): T {

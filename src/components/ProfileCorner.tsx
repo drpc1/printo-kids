@@ -8,7 +8,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import {
   barAfterFavoriteSave,
   profileNameError,
-  hrefForFavoriteSave,
   profileToCreate,
   sortProfiles,
   visitAfterDelete,
@@ -91,29 +90,14 @@ export function ProfileCorner({
   const [profileOpen, setProfileOpen] = useState(ask);
   const [panel, setPanel] = useState<ProfilePanel>("menu");
   const createLock = useRef(false);
-  const favoriteLock = useRef(false);
   const deleteLock = useRef(false);
   const [draftName, setDraftName] = useState("");
   const [draftCharacter, setDraftCharacter] = useState<SheetCharacterId>("none");
   const [draftImageHref, setDraftImageHref] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
-  const [favoriteDraft, setFavoriteDraft] = useState<SheetCharacterId>(
-    activeProfile === null ? barCharacter : characterChoice(activeProfile.character),
-  );
-  const [favoriteImageHref, setFavoriteImageHref] = useState<string | null>(savedOwnImage(activeProfile));
-  const [favoriteImageTouched, setFavoriteImageTouched] = useState(false);
   const [favoriteError, setFavoriteError] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<ChildProfile | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-
-  function abandonFavoriteDraft(): void {
-    favoriteLock.current = false;
-    const source = activeProfile;
-    setFavoriteDraft(source === null ? barCharacter : characterChoice(source.character));
-    setFavoriteImageHref(savedOwnImage(source));
-    setFavoriteImageTouched(false);
-    setFavoriteError(null);
-  }
 
   function clearPendingViews(): void {
     deleteLock.current = false;
@@ -128,7 +112,7 @@ export function ProfileCorner({
     setDraftCharacter("none");
     setDraftImageHref(null);
     setFormError(null);
-    abandonFavoriteDraft();
+    setFavoriteError(null);
     setPanel("form");
   }
 
@@ -136,11 +120,6 @@ export function ProfileCorner({
     deleteLock.current = false;
     setPendingDelete(null);
     setDeleteError(null);
-    setPanel("menu");
-  }
-
-  function cancelEdit(): void {
-    abandonFavoriteDraft();
     setPanel("menu");
   }
 
@@ -157,24 +136,24 @@ export function ProfileCorner({
         setDraftName("");
         setFormError(null);
         clearPendingViews();
-        abandonFavoriteDraft();
+        setFavoriteError(null);
       }
     } else {
       clearPendingViews();
       setPanel("menu");
-      abandonFavoriteDraft();
+      setFavoriteError(null);
     }
     setProfileOpen(open);
   }
 
   function handleChoose(profile: ChildProfile): void {
-    abandonFavoriteDraft();
+    setFavoriteError(null);
     onChoose(profile);
     setProfileOpen(false);
   }
 
   function handleClearProfile(): void {
-    abandonFavoriteDraft();
+    setFavoriteError(null);
     onClearProfile();
     setProfileOpen(false);
   }
@@ -184,16 +163,10 @@ export function ProfileCorner({
       if (activeProfile === null) {
         return;
       }
-      setFavoriteDraft(characterChoice(activeProfile.character));
-      setFavoriteImageHref(savedOwnImage(activeProfile));
-      setFavoriteImageTouched(false);
       setFavoriteError(null);
       setPanel("edit");
       return;
     }
-    setFavoriteDraft(characterChoice(profile.character));
-    setFavoriteImageHref(savedOwnImage(profile));
-    setFavoriteImageTouched(false);
     setFavoriteError(null);
     onChoose(profile);
     setPanel("edit");
@@ -228,11 +201,6 @@ export function ProfileCorner({
     setDeleteError(null);
     setPendingDelete(null);
     if (next.activeId !== activeId) {
-      const nextActive = next.profiles.find((profile) => profile.id === next.activeId) ?? null;
-      favoriteLock.current = false;
-      setFavoriteDraft(nextActive === null ? characterChoice(next.character) : characterChoice(nextActive.character));
-      setFavoriteImageHref(savedOwnImage(nextActive));
-      setFavoriteImageTouched(false);
       setFavoriteError(null);
     }
     onDeleted(next);
@@ -240,17 +208,6 @@ export function ProfileCorner({
     if (next.profiles.length === 0) {
       setProfileOpen(false);
     }
-  }
-
-  function handleFavoriteSelect(id: SheetCharacterId): void {
-    favoriteLock.current = false;
-    setFavoriteDraft(id);
-    if (id === OWN_IMAGE_ID) {
-      setFavoriteImageHref(readOwnImage(localStorage));
-      setFavoriteImageTouched(true);
-      return;
-    }
-    setFavoriteImageTouched(false);
   }
 
   function openFavoriteList(): void {
@@ -262,8 +219,7 @@ export function ProfileCorner({
   }
 
   function handleFavoritePicked(id: SheetCharacterId): void {
-    handleFavoriteSelect(id);
-    setPanel("edit");
+    saveFavorite(id, id === OWN_IMAGE_ID ? readOwnImage(localStorage) : null);
   }
 
   function handleDraftPicked(id: SheetCharacterId): void {
@@ -275,11 +231,7 @@ export function ProfileCorner({
   }
 
   function handleFavoriteCopied(href: string): void {
-    favoriteLock.current = false;
-    setFavoriteDraft(OWN_IMAGE_ID);
-    setFavoriteImageHref(href);
-    setFavoriteImageTouched(true);
-    setPanel("edit");
+    saveFavorite(OWN_IMAGE_ID, href);
   }
 
   function handleDraftCopied(href: string): void {
@@ -288,46 +240,32 @@ export function ProfileCorner({
     setPanel("form");
   }
 
-  function handleSaveFavorite(): void {
-    if (favoriteLock.current || activeProfile === null) {
+  /** A pick in the favorite list is the save: there is no draft and no button. The edit window shows the stored favorite. */
+  function saveFavorite(id: SheetCharacterId, imageHref: string | null): void {
+    setPanel("edit");
+    if (activeProfile === null) {
       return;
     }
     const previousFavorite = activeProfile.character;
-    if (favoriteDraft === previousFavorite && !(favoriteImageTouched && favoriteDraft === OWN_IMAGE_ID)) {
+    if (id === previousFavorite && (id !== OWN_IMAGE_ID || imageHref === (activeProfile.image ?? null))) {
       return;
     }
-    const imageHref = hrefForFavoriteSave(
-      favoriteDraft,
-      favoriteImageTouched,
-      readOwnImage(localStorage),
-      activeProfile.image,
-    );
     const nextProfiles = withFavorite(
       profiles,
       activeProfile.id,
-      favoriteDraft,
+      id,
       activeProfile.level,
       ALLOWED_CHARACTER_IDS,
       imageHref,
     );
-    if (nextProfiles === null) {
-      if (favoriteDraft === OWN_IMAGE_ID) {
-        setFavoriteError(SAVE_ERROR_TEXT);
-      }
-      return;
-    }
-    favoriteLock.current = true;
-    const saved = writeChildProfiles(localStorage, nextProfiles);
-    if (!saved) {
-      favoriteLock.current = false;
+    if (nextProfiles === null || !writeChildProfiles(localStorage, nextProfiles)) {
       setFavoriteError(SAVE_ERROR_TEXT);
       return;
     }
-    const nextCharacter = barAfterFavoriteSave(barCharacter, previousFavorite, favoriteDraft);
-    const sheetHref = nextCharacter !== OWN_IMAGE_ID ? null : favoriteDraft === OWN_IMAGE_ID ? imageHref : undefined;
+    const nextCharacter = barAfterFavoriteSave(barCharacter, previousFavorite, id);
+    const sheetHref = nextCharacter !== OWN_IMAGE_ID ? null : id === OWN_IMAGE_ID ? imageHref : undefined;
     onFavoriteSaved(nextProfiles, nextCharacter, barLevel, sheetHref);
     setFavoriteError(null);
-    setPanel("menu");
   }
 
   function handleCancel(): void {
@@ -437,7 +375,13 @@ export function ProfileCorner({
           <div className={cn("flex flex-col gap-2")}>
             <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
             <CharacterChoiceRows
-              selected={panel === "draft-list" ? draftCharacter : favoriteDraft}
+              selected={
+                panel === "draft-list"
+                  ? draftCharacter
+                  : activeProfile === null
+                    ? "none"
+                    : characterChoice(activeProfile.character)
+              }
               onSelect={panel === "draft-list" ? handleDraftPicked : handleFavoritePicked}
               onCopied={panel === "draft-list" ? handleDraftCopied : handleFavoriteCopied}
             />
@@ -446,8 +390,8 @@ export function ProfileCorner({
           <div className={cn("flex flex-col gap-4")}>
             <DialogTitle className={cn("break-words")}>{activeProfile.name}</DialogTitle>
             <ProfileCharacterControl
-              character={favoriteDraft}
-              thumbHref={favoriteDraft === OWN_IMAGE_ID ? favoriteImageHref : null}
+              character={characterChoice(activeProfile.character)}
+              thumbHref={savedOwnImage(activeProfile)}
               onOpen={openFavoriteList}
             />
             <ProfileSummary profile={activeProfile} />
@@ -456,21 +400,6 @@ export function ProfileCorner({
                 {favoriteError}
               </p>
             ) : null}
-            <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end")}>
-              <Button type="button" variant="outline" onClick={cancelEdit}>
-                Anuluj
-              </Button>
-              <Button
-                type="button"
-                disabled={
-                  favoriteDraft === activeProfile.character && !(favoriteImageTouched && favoriteDraft === OWN_IMAGE_ID)
-                }
-                aria-describedby={favoriteError !== null ? "child-profile-save-error" : undefined}
-                onClick={handleSaveFavorite}
-              >
-                Zapisz
-              </Button>
-            </div>
           </div>
         ) : panel !== "form" ? (
           <div className={cn("flex flex-col gap-2")}>

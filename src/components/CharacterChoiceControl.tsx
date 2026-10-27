@@ -1,7 +1,9 @@
+import { useId, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CharacterChoiceRows } from "@/components/ProfileCorner";
+import { CharacterChoiceRows, DIALOG_ROW_CLASS } from "@/components/ProfileCorner";
+import type { FavoriteOffer } from "@/hooks/useFavoriteCharacter";
 import type { SheetCharacterId } from "@/lib/sheet/character";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +17,7 @@ export function CharacterChoiceControl({
   onSelect,
   onCopied,
   disabled,
+  favorite,
 }: {
   character: SheetCharacterId;
   label: string;
@@ -24,9 +27,30 @@ export function CharacterChoiceControl({
   onSelect: (id: SheetCharacterId) => void;
   onCopied: (href: string) => void;
   disabled?: boolean;
+  /** With an active profile and a character other than its favorite: the footer that saves it as the favorite. */
+  favorite?: FavoriteOffer | null;
 }) {
+  const [saveFailed, setSaveFailed] = useState(false);
+  const noteId = useId();
+
+  function handleOpenChange(open: boolean): void {
+    setSaveFailed(false);
+    onOpenChange(open);
+  }
+
+  function handleSetFavorite(): void {
+    if (favorite === null || favorite === undefined) {
+      return;
+    }
+    if (favorite.save()) {
+      onOpenChange(false);
+      return;
+    }
+    setSaveFailed(true);
+  }
+
   return (
-    <Dialog open={choiceOpen} onOpenChange={onOpenChange}>
+    <Dialog open={choiceOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           type="button"
@@ -54,6 +78,29 @@ export function CharacterChoiceControl({
             onOpenChange(false);
           }}
         />
+        {favorite !== null && favorite !== undefined ? (
+          <div
+            className={cn("border-border bg-background sticky bottom-0 mt-2 flex flex-col gap-2 border-t pt-3 pb-1")}
+          >
+            <p id={noteId} className={cn("text-muted-foreground text-sm")}>
+              Tylko na tę kartę
+            </p>
+            {saveFailed ? (
+              <p role="alert" className={cn("text-destructive text-sm")}>
+                Nie udało się zapisać profilu
+              </p>
+            ) : null}
+            <Button
+              type="button"
+              variant="outline"
+              aria-describedby={noteId}
+              className={cn(DIALOG_ROW_CLASS, "w-full justify-center break-words whitespace-normal")}
+              onClick={handleSetFavorite}
+            >
+              {`Ustaw jako ulubioną ${favorite.name}`}
+            </Button>
+          </div>
+        ) : null}
       </DialogContent>
     </Dialog>
   );

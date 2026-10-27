@@ -17,7 +17,7 @@ type ProfileVisit = ReturnType<typeof useChildProfileVisit>;
 const NOTE_VISIBLE_MS = 2000;
 
 /** "Zapamiętane dla {imię}", shown for a moment after a bar change reached the active profile. */
-function useRememberNote(): { note: string | null; show: (name: string) => void } {
+export function useRememberNote(): { note: string | null; show: (name: string) => void } {
   const [note, setNote] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
