@@ -347,10 +347,10 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Manual
 
-- [ ] 3.3 Na każdej z czterech kart: zmiana ustawień, odświeżenie, wejście z katalogu → ten sam pasek; z profilem i bez.
-- [ ] 3.4 Sudoku: zapamiętane 6×6 / trudny / cyfry wraca bez kolorów i bez przełącznika kolorów.
-- [ ] 3.5 Nonogram i dyktando: „Pokaż rozwiązanie” po odświeżeniu wyłączone.
-- [ ] 3.6 Profil przełączony przy pokazanej karcie nonogramu nie wyłącza przycisku Poziom na stałe (regresja `ff0bd77`).
+- [x] 3.3 Na każdej z czterech kart: zmiana ustawień, odświeżenie, wejście z katalogu → ten sam pasek; z profilem i bez.
+- [x] 3.4 Sudoku: zapamiętane 6×6 / trudny / cyfry wraca bez kolorów i bez przełącznika kolorów.
+- [x] 3.5 Nonogram i dyktando: „Pokaż rozwiązanie” po odświeżeniu wyłączone.
+- [x] 3.6 Profil przełączony przy pokazanej karcie nonogramu nie wyłącza przycisku Poziom na stałe (regresja `ff0bd77`).
 
 ### Phase 4: E2E i porządki
 
@@ -362,5 +362,5 @@ Brak migracji: pole `cards` jest opcjonalne, brak → domyślne; `level` zostaje
 
 #### Manual
 
-- [ ] 4.4 `context/changes/profile-age-and-levels` nie występuje w `context/changes/`, jest w `context/archive/` z adnotacją.
-- [ ] 4.5 Wydruk próbny jednej karty po zmianie paska wygląda jak dotąd (zapis ustawień nie zmienia karty A4).
+- [x] 4.4 `context/changes/profile-age-and-levels` nie występuje w `context/changes/`, jest w `context/archive/` z adnotacją.
+- [x] 4.5 Wydruk próbny jednej karty po zmianie paska wygląda jak dotąd (zapis ustawień nie zmienia karty A4).
