@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { SPEECH_BAND } from "../sheet/speech.ts";
 import { composeNonogramCard, nonogramVariants } from "./generate.ts";
 import { composeSimpleNonogramCard } from "./simple.ts";
 import {
@@ -200,5 +201,40 @@ void describe("layoutSimpleNonogramSheet", () => {
 
   void test("a row with more chips than fit beside the grid throws", () => {
     assert.throws(() => layoutSimpleNonogramSheet(simpleInputFor(9)));
+  });
+});
+
+void describe("the nonogram layouts with the speech band", () => {
+  for (const size of CLASSIC_NONOGRAM_SIZES) {
+    void test(`the ${size.id} block with the longest clues fits inside the margin with a 26 mm band`, () => {
+      const input = { ...inputFor(size), instructionSize: SPEECH_BAND.characterSize };
+      const sheet = layoutNonogramSheet(input);
+      const slot = size.digitSize * SLOT_FACTOR;
+      const bandTop = sheet.instruction.y - SPEECH_BAND.characterSize / 2;
+
+      assert.ok(bandTop >= INSET - 1e-9, `band top ${bandTop}`);
+      assert.ok(sheet.columnClueY(input.maxColumnClues - 1) - slot / 2 >= bandTop + SPEECH_BAND.characterSize);
+      assert.ok(sheet.rowClueX(input.maxRowClues - 1) - slot / 2 >= INSET);
+      assert.ok(sheet.grid.y + sheet.grid.height <= NONOGRAM_SHEET.pageHeight - INSET + 1e-9);
+    });
+  }
+
+  void test("the easy chip card with the longest row of chips fits inside the margin with a 26 mm band", () => {
+    const easy = nonogramSizeById("latwy");
+    let longest = 0;
+    for (const { template, variants } of nonogramVariants(easy)) {
+      const card = composeSimpleNonogramCard(template, variants, easy);
+      longest = Math.max(longest, ...card.runs.map((row) => row.length));
+    }
+    const sheet = layoutSimpleNonogramSheet({
+      ...simpleInputFor(longest),
+      instructionSize: SPEECH_BAND.characterSize,
+    });
+    const bandTop = sheet.instruction.y - SPEECH_BAND.characterSize / 2;
+
+    assert.ok(bandTop >= INSET - 1e-9, `band top ${bandTop}`);
+    assert.ok(sheet.grid.y >= bandTop + SPEECH_BAND.characterSize);
+    assert.ok(sheet.grid.y + sheet.grid.height <= NONOGRAM_SHEET.pageHeight - INSET + 1e-9);
+    assert.ok(sheet.chipX(0, longest) >= INSET);
   });
 });

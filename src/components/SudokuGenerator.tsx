@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
+import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { RememberedNote } from "@/components/RememberedNote";
+import { CharacterInstruction } from "@/components/SpeechBand";
+import { useBarCharacter } from "@/hooks/useBarCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { SudokuCardSettings } from "@/lib/card-settings";
@@ -23,13 +26,14 @@ import {
 } from "@/lib/sudoku/levels";
 import { SUDOKU_SHEET } from "@/lib/sudoku/sheet";
 import { sudokuShapePath } from "@/lib/sudoku/shapes";
+import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The sudoku card page: Generuj, the size, level and shapes-or-digits choices, the card, Drukuj, and the shared profile
- * corner. It has no character bar. The settings and the colors come from `useCardSettings` (the active profile's, or
+ * The sudoku card page: Generuj, the character, size, level and shapes-or-digits choices, the card, Drukuj, and the shared profile
+ * corner. The chosen character stands by the instruction on the card and says it. The settings and the colors come from `useCardSettings` (the active profile's, or
  * the device's) and every change is remembered at once; the page never touches the maze's last-used parameters, it
  * only keeps the bar values the profile corner shows. A profile switch with a card shown draws a new card when the
  * size, level or symbols changed.
@@ -38,8 +42,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 export default function SudokuGenerator() {
   const visit = useChildProfileVisit({ onApply: applyProfileBar });
   const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const bar = useBarCharacter(visit, barLevel);
   const [sizeOpen, setSizeOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SudokuCard | null>(null);
@@ -98,9 +102,9 @@ export default function SudokuGenerator() {
     window.print();
   }
 
-  function applyProfileBar(bar: ProfileBar): void {
-    setBarCharacter(bar.character);
-    setBarLevel(bar.level);
+  function applyProfileBar(next: ProfileBar): void {
+    bar.applyBar(next);
+    setBarLevel(next.level);
   }
 
   // The level rows say how many cells are empty for the current size.
@@ -108,8 +112,20 @@ export default function SudokuGenerator() {
     ...option,
     description: settings.size === 4 ? undefined : sudokuLevelDescription(settings.size, option.id),
   }));
+  const characterControl = (
+    <CharacterChoiceControl
+      character={bar.character}
+      label={bar.label}
+      thumbSrc={bar.thumbSrc}
+      choiceOpen={bar.choiceOpen}
+      onOpenChange={bar.setChoiceOpen}
+      onSelect={bar.select}
+      onCopied={bar.setOwnImage}
+    />
+  );
   const settingsControls = (
     <>
+      {characterControl}
       <SudokuChoice
         label="Rozmiar"
         dialogTitle="Wybierz rozmiar"
@@ -166,7 +182,7 @@ export default function SudokuGenerator() {
       <ProfileCorner
         profiles={profiles}
         activeId={activeId}
-        barCharacter={barCharacter}
+        barCharacter={bar.character}
         barLevel={barLevel}
         ask={ask}
         onCreated={memory.corner.onCreated}
@@ -209,12 +225,24 @@ export default function SudokuGenerator() {
           {failedNote}
         </div>
       )}
-      {card !== null ? <SudokuSheet card={card} colors={colors} /> : null}
+      {card !== null ? (
+        <SudokuSheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+      ) : null}
     </div>
   );
 }
 
-function SudokuSheet({ card, colors }: { card: SudokuCard; colors: boolean }) {
+function SudokuSheet({
+  card,
+  colors,
+  characterId,
+  characterSrc,
+}: {
+  card: SudokuCard;
+  colors: boolean;
+  characterId: string;
+  characterSrc: string | null;
+}) {
   const block = sudokuBlock(card.size);
   const cellSize = SUDOKU_SHEET.cellSize[card.size];
   const sheet = layoutSudokuSheet({
@@ -229,6 +257,7 @@ function SudokuSheet({ card, colors }: { card: SudokuCard; colors: boolean }) {
     instructionSize: SUDOKU_SHEET.instructionSize,
     instructionLineGap: SUDOKU_SHEET.instructionLineGap,
     instructionGap: SUDOKU_SHEET.instructionGap,
+    ...(characterSrc !== null ? { instructionBoxHeight: instructionBoxHeight(true, 0) } : {}),
   });
   const grid = sheet.grid;
   const shapeSize = cellSize * SUDOKU_SHEET.shapeScale;
@@ -245,20 +274,31 @@ function SudokuSheet({ card, colors }: { card: SudokuCard; colors: boolean }) {
       aria-label="Sudoku"
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
-      {SUDOKU_SHEET.instructionLines.map((text, index) => (
-        <text
-          key={text}
-          x={sheet.instruction.x}
-          y={sheet.instruction.ys[index]}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={SUDOKU_SHEET.instructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {text}
-        </text>
-      ))}
+      {characterSrc !== null ? (
+        <CharacterInstruction
+          pageWidth={sheet.page.width}
+          inset={SUDOKU_SHEET.inset}
+          top={sheet.instruction.top}
+          characterId={characterId}
+          characterSrc={characterSrc}
+          text={SUDOKU_SHEET.instructionLines.join(" ")}
+        />
+      ) : (
+        SUDOKU_SHEET.instructionLines.map((text, index) => (
+          <text
+            key={text}
+            x={sheet.instruction.x}
+            y={sheet.instruction.ys[index]}
+            fill="var(--foreground)"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+            fontSize={SUDOKU_SHEET.instructionSize}
+            textAnchor="middle"
+            dominantBaseline="middle"
+          >
+            {text}
+          </text>
+        ))
+      )}
       {card.symbols === "digits" ? (
         <g
           fill="var(--foreground)"

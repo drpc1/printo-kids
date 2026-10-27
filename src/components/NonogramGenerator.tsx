@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
 import { CategoryChoice } from "@/components/CategoryChoice";
+import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
@@ -8,6 +9,8 @@ import { NonogramSimpleSheet } from "@/components/NonogramSimpleSheet";
 import { SudokuChoice } from "@/components/SudokuChoice";
 import { Switch } from "@/components/ui/switch";
 import { RememberedNote } from "@/components/RememberedNote";
+import { CharacterInstruction } from "@/components/SpeechBand";
+import { useBarCharacter } from "@/hooks/useBarCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { NonogramSettings } from "@/lib/card-settings";
@@ -16,13 +19,14 @@ import { blockLines, layoutNonogramSheet, longestClues } from "@/lib/nonogram/la
 import { NONOGRAM_SHEET } from "@/lib/nonogram/sheet";
 import { NONOGRAM_SIZES, nonogramSizeById, type NonogramSizeId } from "@/lib/nonogram/sizes";
 import type { SimpleNonogramCard } from "@/lib/nonogram/simple";
+import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
  * The nonogram page: Generuj, the card, Drukuj, the level and category choices, the solution switch, and the shared
- * profile corner. It has no colors and no character bar; the level and the category come from `useCardSettings` (the
+ * profile corner. It has no colors; the chosen character stands by the instruction on the card and says it. The level and the category come from `useCardSettings` (the
  * active profile's, or the device's) and every change is remembered at once, the solution switch is not. Changing the
  * level with a card shown draws a new card at that level, and so does a profile switch that changed the level or the
  * category. Switching the solution on redraws the same card; it never generates a
@@ -31,8 +35,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 export default function NonogramGenerator() {
   const visit = useChildProfileVisit({ onApply: applyProfileBar });
   const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const bar = useBarCharacter(visit, barLevel);
   const [showSolution, setShowSolution] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
@@ -93,11 +97,22 @@ export default function NonogramGenerator() {
     window.print();
   }
 
-  function applyProfileBar(bar: ProfileBar): void {
-    setBarCharacter(bar.character);
-    setBarLevel(bar.level);
+  function applyProfileBar(next: ProfileBar): void {
+    bar.applyBar(next);
+    setBarLevel(next.level);
   }
 
+  const characterControl = (
+    <CharacterChoiceControl
+      character={bar.character}
+      label={bar.label}
+      thumbSrc={bar.thumbSrc}
+      choiceOpen={bar.choiceOpen}
+      onOpenChange={bar.setChoiceOpen}
+      onSelect={bar.select}
+      onCopied={bar.setOwnImage}
+    />
+  );
   const sizeControl = (
     <SudokuChoice
       label="Poziom"
@@ -138,7 +153,7 @@ export default function NonogramGenerator() {
       <ProfileCorner
         profiles={profiles}
         activeId={activeId}
-        barCharacter={barCharacter}
+        barCharacter={bar.character}
         barLevel={barLevel}
         ask={ask}
         onCreated={memory.corner.onCreated}
@@ -151,6 +166,7 @@ export default function NonogramGenerator() {
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {characterControl}
             {sizeControl}
             {categoryControl}
             {solutionControl}
@@ -179,7 +195,10 @@ export default function NonogramGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          {sizeControl}
+          <div className={cn("flex flex-wrap items-center justify-center gap-2")}>
+            {characterControl}
+            {sizeControl}
+          </div>
           {categoryControl}
           <RememberedNote note={memory.note} profileActive={activeId !== null} />
           <GenerateButton
@@ -192,13 +211,38 @@ export default function NonogramGenerator() {
           {failedNote}
         </div>
       )}
-      {card?.kind === "liczby" ? <NonogramSheet card={card} showSolution={showSolution} /> : null}
-      {card?.kind === "znaczki" ? <NonogramSimpleSheet card={card} showSolution={showSolution} /> : null}
+      {card?.kind === "liczby" ? (
+        <NonogramSheet
+          card={card}
+          showSolution={showSolution}
+          characterId={bar.character}
+          characterSrc={bar.characterSrc}
+        />
+      ) : null}
+      {card?.kind === "znaczki" ? (
+        <NonogramSimpleSheet
+          card={card}
+          showSolution={showSolution}
+          characterId={bar.character}
+          characterSrc={bar.characterSrc}
+        />
+      ) : null}
     </div>
   );
 }
 
-function NonogramSheet({ card, showSolution }: { card: NonogramCard; showSolution: boolean }) {
+function NonogramSheet({
+  card,
+  showSolution,
+  characterId,
+  characterSrc,
+}: {
+  card: NonogramCard;
+  showSolution: boolean;
+  characterId: string;
+  characterSrc: string | null;
+}) {
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, NONOGRAM_SHEET.instructionSize);
   const size = nonogramSizeById(card.sizeId);
   const sheet = layoutNonogramSheet({
     pageWidth: NONOGRAM_SHEET.pageWidth,
@@ -209,7 +253,7 @@ function NonogramSheet({ card, showSolution }: { card: NonogramCard; showSolutio
     cellSize: card.cellSize,
     digitSize: size.digitSize,
     ...longestClues(card.clues),
-    instructionSize: NONOGRAM_SHEET.instructionSize,
+    instructionSize: instructionHeight,
     instructionGap: NONOGRAM_SHEET.instructionGap,
     clueGap: NONOGRAM_SHEET.clueGap,
     clueSlot: NONOGRAM_SHEET.clueSlot,
@@ -232,17 +276,28 @@ function NonogramSheet({ card, showSolution }: { card: NonogramCard; showSolutio
       aria-label="Nonogram"
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
-      <text
-        x={sheet.instruction.x}
-        y={sheet.instruction.y}
-        fill="var(--foreground)"
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-        fontSize={NONOGRAM_SHEET.instructionSize}
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        {NONOGRAM_SHEET.instructionText}
-      </text>
+      {characterSrc !== null ? (
+        <CharacterInstruction
+          pageWidth={sheet.page.width}
+          inset={NONOGRAM_SHEET.inset}
+          top={sheet.instruction.y - instructionHeight / 2}
+          characterId={characterId}
+          characterSrc={characterSrc}
+          text={NONOGRAM_SHEET.instructionText}
+        />
+      ) : (
+        <text
+          x={sheet.instruction.x}
+          y={sheet.instruction.y}
+          fill="var(--foreground)"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize={NONOGRAM_SHEET.instructionSize}
+          textAnchor="middle"
+          dominantBaseline="middle"
+        >
+          {NONOGRAM_SHEET.instructionText}
+        </text>
+      )}
       {showSolution ? (
         <g className={cn("print:hidden")} fill="var(--foreground)" data-solution>
           {card.solution.flatMap((row, rowIndex) =>

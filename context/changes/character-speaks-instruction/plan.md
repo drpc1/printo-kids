@@ -352,13 +352,13 @@ Brak zmian zapisanych danych. Postać z paska zapisuje się tak jak dziś na lab
 
 #### Automated
 
-- [ ] 3.1 `npm test`, `npm run lint`, `npx astro check` zielone
-- [ ] 3.2 Testy układów dla każdego rozmiaru/poziomu z pasem i bez
-- [ ] 3.4 e2e układu paska na telefonie bez regresji: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
+- [x] 3.1 `npm test`, `npm run lint`, `npx astro check` zielone
+- [x] 3.2 Testy układów dla każdego rozmiaru/poziomu z pasem i bez
+- [x] 3.4 e2e układu paska na telefonie bez regresji: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360 --project=pixel-7`
 
 #### Manual
 
-- [ ] 3.3 Sudoku 4×4, 6×6, 9×9 (kształty i cyfry) i nonogram łatwy/średni/trudny: postać po lewej, dymek czytelny, nic nie wchodzi w margines
+- [x] 3.3 Sudoku 4×4, 6×6, 9×9 (kształty i cyfry) i nonogram łatwy/średni/trudny: postać po lewej, dymek czytelny, nic nie wchodzi w margines
 
 ### Phase 4: Dyktando z zmniejszaną kratką
 
