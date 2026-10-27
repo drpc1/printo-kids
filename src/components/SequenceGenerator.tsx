@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
+import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { LevelChoice } from "@/components/LevelChoice";
 import { RememberedNote } from "@/components/RememberedNote";
+import { CharacterInstruction } from "@/components/SpeechBand";
+import { useBarCharacter } from "@/hooks/useBarCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { SequenceSettings } from "@/lib/card-settings";
@@ -13,21 +16,22 @@ import { layoutSequenceSheet } from "@/lib/sequence/layout";
 import { SEQUENCE_LEVELS, sequenceLevelById, type SequenceLevelId } from "@/lib/sequence/levels";
 import { SEQUENCE_SHEET } from "@/lib/sequence/sheet";
 import { sequenceShapeOutline } from "@/lib/sequence/shapes";
+import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The sequence card page: Generuj, the level button, the card, Drukuj, and the shared profile corner. It has no
- * character bar. The level comes from `useCardSettings` (the active profile's, or the device's) and every change is
+ * The sequence card page: Generuj, the character and level buttons, the card, Drukuj, and the shared profile corner. The
+ * chosen character stands by the instruction on the card and says it. The level comes from `useCardSettings` (the active profile's, or the device's) and every change is
  * remembered at once; the page never touches the maze's last-used parameters, it only keeps the bar values the
  * profile corner shows. A profile switch with a card shown draws a new card when the level changed.
  */
 export default function SequenceGenerator() {
   const visit = useChildProfileVisit({ onApply: applyProfileBar });
   const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barCharacter, setBarCharacter] = useState(visitStart.character);
   const [barLevel, setBarLevel] = useState(visitStart.level);
+  const bar = useBarCharacter(visit, barLevel);
   const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SequenceCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
@@ -79,11 +83,22 @@ export default function SequenceGenerator() {
     window.print();
   }
 
-  function applyProfileBar(bar: ProfileBar): void {
-    setBarCharacter(bar.character);
-    setBarLevel(bar.level);
+  function applyProfileBar(next: ProfileBar): void {
+    bar.applyBar(next);
+    setBarLevel(next.level);
   }
 
+  const characterControl = (
+    <CharacterChoiceControl
+      character={bar.character}
+      label={bar.label}
+      thumbSrc={bar.thumbSrc}
+      choiceOpen={bar.choiceOpen}
+      onOpenChange={bar.setChoiceOpen}
+      onSelect={bar.select}
+      onCopied={bar.setOwnImage}
+    />
+  );
   const levelControl = (
     <LevelChoice
       level={sequenceLevelById(levelId)}
@@ -105,7 +120,7 @@ export default function SequenceGenerator() {
       <ProfileCorner
         profiles={profiles}
         activeId={activeId}
-        barCharacter={barCharacter}
+        barCharacter={bar.character}
         barLevel={barLevel}
         ask={ask}
         onCreated={memory.corner.onCreated}
@@ -118,6 +133,7 @@ export default function SequenceGenerator() {
       {sheetShown ? (
         <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
+            {characterControl}
             {levelControl}
             {failedNote}
           </div>
@@ -142,18 +158,30 @@ export default function SequenceGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          {levelControl}
+          <div className={cn("flex flex-wrap items-center justify-center gap-3")}>
+            {characterControl}
+            {levelControl}
+          </div>
           <RememberedNote note={memory.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
       )}
-      {card !== null ? <SequenceSheet card={card} /> : null}
+      {card !== null ? <SequenceSheet card={card} characterId={bar.character} characterSrc={bar.characterSrc} /> : null}
     </div>
   );
 }
 
-function SequenceSheet({ card }: { card: SequenceCard }) {
+function SequenceSheet({
+  card,
+  characterId,
+  characterSrc,
+}: {
+  card: SequenceCard;
+  characterId: string;
+  characterSrc: string | null;
+}) {
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, SEQUENCE_SHEET.instructionSize);
   const sheet = layoutSequenceSheet({
     pageWidth: SEQUENCE_SHEET.pageWidth,
     pageHeight: SEQUENCE_SHEET.pageHeight,
@@ -161,7 +189,7 @@ function SequenceSheet({ card }: { card: SequenceCard }) {
     fieldsPerRow: card.fieldsPerRow,
     rowCount: card.rows.length,
     fieldGapRatio: SEQUENCE_SHEET.fieldGapRatio,
-    instructionHeight: SEQUENCE_SHEET.instructionSize,
+    instructionHeight,
     instructionGap: SEQUENCE_SHEET.instructionGap,
   });
   const fieldSize = sheet.fieldSize;
@@ -178,17 +206,28 @@ function SequenceSheet({ card }: { card: SequenceCard }) {
       aria-label="Sekwencje"
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
-      <text
-        x={sheet.instruction.x}
-        y={sheet.instruction.y}
-        fill="var(--foreground)"
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-        fontSize={SEQUENCE_SHEET.instructionSize}
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        {SEQUENCE_SHEET.instructionText}
-      </text>
+      {characterSrc !== null ? (
+        <CharacterInstruction
+          pageWidth={sheet.page.width}
+          inset={SEQUENCE_SHEET.inset}
+          top={sheet.instruction.y - instructionHeight / 2}
+          characterId={characterId}
+          characterSrc={characterSrc}
+          text={SEQUENCE_SHEET.instructionText}
+        />
+      ) : (
+        <text
+          x={sheet.instruction.x}
+          y={sheet.instruction.y}
+          fill="var(--foreground)"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize={SEQUENCE_SHEET.instructionSize}
+          textAnchor="middle"
+          dominantBaseline="middle"
+        >
+          {SEQUENCE_SHEET.instructionText}
+        </text>
+      )}
       {card.rows.map((row, rowIndex) =>
         sheet.rows[rowIndex].fields.map((field, fieldIndex) => {
           const empty = row.gaps.includes(fieldIndex);

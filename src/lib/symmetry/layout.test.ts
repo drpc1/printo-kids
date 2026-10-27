@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { SPEECH_BAND } from "../sheet/speech.ts";
 import { layoutSymmetrySheet, type SymmetrySheetInput, type SymmetrySheetLayout } from "./layout.ts";
+import { SYMMETRY_LEVELS } from "./levels.ts";
+import { SYMMETRY_SHEET } from "./sheet.ts";
 
 const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
@@ -102,3 +105,28 @@ function assertInsideMargin(sheet: SymmetrySheetLayout): void {
   assert.ok(sheet.axis.y1 >= min && sheet.axis.y2 <= maxY);
   assert.ok(sheet.axis.x1 >= min && sheet.axis.x1 <= maxX);
 }
+
+void describe("layoutSymmetrySheet with the speech band", () => {
+  void test("every level fits inside the 10 mm margin with a 26 mm band instead of the 7 mm line", () => {
+    for (const level of SYMMETRY_LEVELS) {
+      const input = {
+        pageWidth: SYMMETRY_SHEET.pageWidth,
+        pageHeight: SYMMETRY_SHEET.pageHeight,
+        inset: SYMMETRY_SHEET.inset,
+        columns: level.columns,
+        rows: level.rows,
+        cellSize: level.cellSize,
+        instructionGap: SYMMETRY_SHEET.instructionGap,
+      };
+      const plain = layoutSymmetrySheet({ ...input, instructionHeight: SYMMETRY_SHEET.instructionSize });
+      const band = layoutSymmetrySheet({ ...input, instructionHeight: SPEECH_BAND.characterSize });
+
+      const bandTop = band.instruction.y - SPEECH_BAND.characterSize / 2;
+      assert.ok(bandTop >= INSET - 1e-9, `${level.id} band top ${bandTop}`);
+      assert.ok(band.axis.y2 <= PAGE_HEIGHT - INSET + 1e-9, `${level.id} axis bottom ${band.axis.y2}`);
+      assert.ok(band.grid.y > bandTop + SPEECH_BAND.characterSize, `${level.id} grid is under the band`);
+      assert.equal(band.grid.width, plain.grid.width, `${level.id} keeps its cell size`);
+      assert.equal(band.grid.height, plain.grid.height);
+    }
+  });
+});
