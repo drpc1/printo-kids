@@ -67,7 +67,7 @@ Każdy zakres z raportu da się uruchomić jedną komendą, a test sekwencji ma 
 
 **File**: `src/lib/sequence/generate.test.ts`, `stryker/sequence.config.json`
 
-**Intent**: Liczba ziaren brute-force oracle czytana ze zmiennej środowiskowej; domyślnie 120 (jak dziś, więc `npm test` bez zmian), a konfiguracja Strykera ustawia małą wartość, żeby komenda trwała kilka sekund.
+**Intent**: Koszt brute-force oracle sekwencji czytany ze zmiennej środowiskowej; domyślnie jak dziś (120 ziaren i pełne `fixedRows` × zestawy luk, więc `npm test` bez zmian), a konfiguracja Strykera ustawia małą wartość. Drogie są dwa testy, nie jeden: pętla po ziarnach (`generate.test.ts:20,160`) oraz test „walidator nazywa wiersz dwuznacznym dokładnie wtedy, gdy oracle znajduje więcej niż jedno wypełnienie” (`:445`, `fixedRows` × zestawy luk × 27^k); zmienna musi ograniczać oba (np. mniej ziaren i podzbiór `fixedRows`), a podzbiór ma nadal zawierać przypadki jednoznaczne i dwuznaczne.
 
 **Contract**: `ORACLE_SEEDS = Number(process.env.SEQUENCE_ORACLE_SEEDS ?? 120)`; komenda w `stryker/sequence.config.json` ustawia `SEQUENCE_ORACLE_SEEDS` (np. `10`) przez `node -e`/prefiks zgodny z Windows i Linuksem (zmienna ustawiona w `commandRunner.command` w sposób niezależny od powłoki, np. przez skrypt `scripts/with-env.mjs` jeśli `cross-env` niedostępny). Decyzja o sposobie ustawienia zmiennej zapada w implementacji i jest zapisana w `reviews/stryker-results.md`.
 
@@ -86,7 +86,7 @@ Każdy zakres z raportu da się uruchomić jedną komendą, a test sekwencji ma 
 - Testy przechodzą: `npm test`
 - Lint i typy: `npm run lint`, `npx astro check`
 - Każdy `npm run mutate:<zakres>` startuje i kończy się wynikiem na wąskim zakresie (np. `-- --mutate "src/lib/card-settings.ts:94-107"` dla `local-data`)
-- Szybki oracle sekwencji: komenda z `stryker/sequence.config.json` kończy się w mniej niż 15 s
+- Szybki oracle sekwencji: czas komendy z `stryker/sequence.config.json` jest zmierzony i zapisany w `stryker-results.md` (cel: kilkanaście sekund; jeśli nie do osiągnięcia bez utraty przypadków dwuznacznych, zapisujemy faktyczny czas i szacunek całego przebiegu)
 
 #### Manual Verification:
 
@@ -336,7 +336,7 @@ Brak zmian w danych ani w kodzie produktu.
 - [ ] 1.1 Testy przechodzą: `npm test`
 - [ ] 1.2 Lint i typy: `npm run lint`, `npx astro check`
 - [ ] 1.3 Każdy `npm run mutate:<zakres>` startuje i kończy się wynikiem na wąskim zakresie
-- [ ] 1.4 Szybki oracle sekwencji: komenda z `stryker/sequence.config.json` kończy się w mniej niż 15 s
+- [ ] 1.4 Szybki oracle sekwencji: czas komendy z `stryker/sequence.config.json` jest zmierzony i zapisany w `stryker-results.md` (cel: kilkanaście sekund)
 
 #### Manual
 
