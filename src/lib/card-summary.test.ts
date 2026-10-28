@@ -16,7 +16,7 @@ function byId(summaries: ReturnType<typeof cardSummaries>, id: string) {
 }
 
 void describe("cardSummaries", () => {
-  void test("lists the six cards in catalog order with their pages", () => {
+  void test("lists the six cards in the order of CARD_KINDS with their pages", () => {
     const summaries = cardSummaries(profile("lat5"));
     assert.deepEqual(
       summaries.map((summary) => [summary.id, summary.href]),
