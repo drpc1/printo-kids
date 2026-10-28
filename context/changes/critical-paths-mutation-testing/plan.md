@@ -347,13 +347,13 @@ Brak zmian w danych ani w kodzie produktu.
 
 #### Automated
 
-- [ ] 2.1 `npm test`, `npm run lint`, `npx astro check`
-- [ ] 2.2 `npm run mutate:dictation` kończy się, wynik zapisany w `stryker-results.md`
-- [ ] 2.3 Break-check: usunięcie reguły `repeated-vertex` w `dictationCardProblems` czerwieni nowy test
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`
+- [x] 2.2 `npm run mutate:dictation` kończy się, wynik zapisany w `stryker-results.md`
+- [x] 2.3 Break-check: usunięcie reguły `repeated-vertex` w `dictationCardProblems` czerwieni nowy test
 
 #### Manual
 
-- [ ] 2.4 Każdy ocalały mutant ma zapisaną decyzję z uzasadnieniem
+- [x] 2.4 Każdy ocalały mutant ma zapisaną decyzję z uzasadnieniem
 
 ### Phase 3: Sudoku: negatywne testy, niezależna kontrola unikalności i Stryker
 
