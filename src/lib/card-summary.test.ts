@@ -70,6 +70,15 @@ void describe("cardSummaries", () => {
     assert.equal(off.detail, "Poziom 2 · Wszystkie");
   });
 
+  void test("the sequence colors appear only when they are on", () => {
+    const off = byId(cardSummaries(profile("lat5", { sekwencje: { level: "lat5", colors: false } })), "sekwencje");
+    assert.equal(off.badge, "poz. 2");
+    assert.equal(off.detail, "Poziom 2");
+    const on = byId(cardSummaries(profile("lat5", { sekwencje: { level: "lat5", colors: true } })), "sekwencje");
+    assert.equal(on.badge, "poz. 2");
+    assert.equal(on.detail, "Poziom 2 · kolory");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),

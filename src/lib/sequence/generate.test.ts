@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { SEQUENCE_CRAYONS } from "./colors.ts";
 import {
   generateSequenceCard,
   type SequenceCard,
@@ -10,7 +11,7 @@ import {
 } from "./generate.ts";
 import { sequenceLevelById, SEQUENCE_LEVELS, type SequenceLevel } from "./levels.ts";
 import type { SequenceItem } from "./rules.ts";
-import { SEQUENCE_SHAPES } from "./shapes.ts";
+import { SEQUENCE_SHAPES, type SequenceShape } from "./shapes.ts";
 
 const LAT4 = sequenceLevelById("lat4");
 const LAT5 = sequenceLevelById("lat5");
@@ -240,6 +241,26 @@ void describe("generateSequenceCard", () => {
         generateSequenceCard(mulberry32(3), null, level)?.key,
         generateSequenceCard(mulberry32(3), null, level)?.key,
       );
+    }
+  });
+
+  void test("an accepted card gives every shape one crayon and keeps crayon names out of the key", () => {
+    for (const level of SEQUENCE_LEVELS) {
+      const first = generateSequenceCard(mulberry32(3), null, level);
+      const second = generateSequenceCard(mulberry32(3), null, level);
+      assert.ok(first, level.id);
+      assert.ok(second, level.id);
+      assert.equal(first.key, second.key);
+      assert.deepEqual(first.shapeColors, second.shapeColors);
+      for (const name of SEQUENCE_CRAYONS) {
+        assert.equal(first.key.includes(name), false, `${level.id} key names ${name}`);
+      }
+      const shapes = new Set(
+        first.rows.flatMap((row) => row.values).filter((item): item is SequenceShape => typeof item === "string"),
+      );
+      assert.deepEqual(Object.keys(first.shapeColors).sort(), [...shapes].sort(), level.id);
+      const crayons = Object.values(first.shapeColors);
+      assert.equal(new Set(crayons).size, crayons.length, level.id);
     }
   });
 
