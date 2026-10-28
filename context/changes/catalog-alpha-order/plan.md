@@ -160,9 +160,9 @@ Zapisane profile i `localStorage` zostają. Kolejność podsumowania wynika z ta
 
 #### Automated
 
-- [x] 2.1 `npx playwright test tests/e2e/catalog.spec.ts --project=chromium` pokazuje sześć linków katalogu, bez zapisanego profilu, w kolejności Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria
+- [x] 2.1 `npx playwright test tests/e2e/catalog.spec.ts --project=chromium` pokazuje sześć linków katalogu, bez zapisanego profilu, w kolejności Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria — 6519bd9
 
 #### Manual
 
-- [x] 2.2 Na `/` widać te same sześć kart, miniatury i adresy co dziś, w kolejności Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria
-- [x] 2.3 Okno profilu nadal zaczyna się od Labirynt i kończy na Dyktando graficzne
+- [x] 2.2 Na `/` widać te same sześć kart, miniatury i adresy co dziś, w kolejności Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria — 6519bd9
+- [x] 2.3 Okno profilu nadal zaczyna się od Labirynt i kończy na Dyktando graficzne — 6519bd9
