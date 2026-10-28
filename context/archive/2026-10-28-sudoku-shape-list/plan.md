@@ -223,16 +223,16 @@ Zestaw jest już na karcie, a kredka wynika z identyfikatora kształtu. Klucz ka
 
 #### Automated
 
-- [x] 1.1 Test rzędu dla zestawu heart, circle, triangle, square zwraca nazwy koło, kwadrat, trójkąt, serce, a dla cyfr nie zwraca żadnej pozycji. — e1a1522
-- [x] 1.2 Ten sam test zostawia prostokąt siatki 4×4, 6×6 i 9×9, z dymkiem i bez, równy wynikowi `layoutSudokuSheet`, a na 9×9 z `instructionBoxHeight` 26 rysunek i nazwa „gwiazdka” mieszczą się w marginesie 10 mm poniżej ramki, a szerokość „gwiazdki” liczona jako `8 * fontSize * 0.55` jest mniejsza niż szerokość slotu. — e1a1522
-- [x] 1.3 `npm test` uruchamia `src/lib/sudoku/shape-list.test.ts`, bo plik jest w skrypcie `test`. — e1a1522
+- [x] 1.1 Test rzędu dla zestawu heart, circle, triangle, square zwraca nazwy koło, kwadrat, trójkąt, serce, a dla cyfr nie zwraca żadnej pozycji. — 82067ce
+- [x] 1.2 Ten sam test zostawia prostokąt siatki 4×4, 6×6 i 9×9, z dymkiem i bez, równy wynikowi `layoutSudokuSheet`, a na 9×9 z `instructionBoxHeight` 26 rysunek i nazwa „gwiazdka” mieszczą się w marginesie 10 mm poniżej ramki, a szerokość „gwiazdki” liczona jako `8 * fontSize * 0.55` jest mniejsza niż szerokość slotu. — 82067ce
+- [x] 1.3 `npm test` uruchamia `src/lib/sudoku/shape-list.test.ts`, bo plik jest w skrypcie `test`. — 82067ce
 
 ### Phase 2: Rysowanie
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi. — af4f490
-- [x] 2.2 `npx astro check` kończy się bez błędów. — af4f490
+- [x] 2.1 `npm test` przechodzi. — 8b85caf
+- [x] 2.2 `npx astro check` kończy się bez błędów. — 8b85caf
 
 #### Manual
 
@@ -244,8 +244,8 @@ Zestaw jest już na karcie, a kredka wynika z identyfikatora kształtu. Klucz ka
 
 #### Automated
 
-- [x] 3.1 `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium` przechodzi: nazwy są na karcie z kształtami, znikają po Cyfrach, a włączone Kolory malują ścieżki listy kredką. — f7461d0
-- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą. — f7461d0
+- [x] 3.1 `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium` przechodzi: nazwy są na karcie z kształtami, znikają po Cyfrach, a włączone Kolory malują ścieżki listy kredką. — 65e53a3
+- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą. — 65e53a3
 
 #### Manual
 
