@@ -583,6 +583,8 @@ Doprecyzowanie z planu poziomów (2026-10-24):
 - Jedna karta nie pokazuje dwa razy tej samej sekwencji, nawet z lukami w innych polach.
 - Dwuznaczność liczy się względem całej listy reguł, także na Poziomach 1 i 2; wiersz, do którego pasuje inna reguła z inną odpowiedzią (np. AAB z dwiema lukami pasujące też do rosnących grup), nie jest pokazany.
 
+Kolory są osobnym ustawieniem rodzica, niezależnym od poziomu. Domyślnie kształty są czarnymi konturami. Po włączeniu każdy kształt tej karty ma jedną kredkę, tę samą w każdym wierszu, wylosowaną przy Generuj z dziewięciu kredek. Liczby, „?” i puste pola zostają jak przy wyłączonych kolorach. Przełącznik nie układa nowej karty.
+
 Wartości są startowe i zostają potwierdzone na wydruku. Wynikiem jest karta A4; ciągi zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
 ### Karta sudoku
@@ -673,7 +675,7 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | ------------------ | ------------------------------------------- |
 | Labirynt           | poziom                                      |
 | Symetria           | poziom, kolory, kategoria                   |
-| Sekwencje          | poziom                                      |
+| Sekwencje          | poziom, kolory                              |
 | Sudoku             | rozmiar, poziom, „Kształty / Cyfry”, kolory |
 | Nonogram           | poziom, kategoria                           |
 | Dyktando graficzne | poziom, kategoria                           |

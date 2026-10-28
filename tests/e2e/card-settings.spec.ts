@@ -34,7 +34,12 @@ const CARDS: CardCase[] = [
     ],
     colors: true,
   },
-  { id: "sekwencje", path: "/sequences", changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }] },
+  {
+    id: "sekwencje",
+    path: "/sequences",
+    changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }],
+    colors: true,
+  },
   {
     id: "sudoku",
     path: "/sudoku",
