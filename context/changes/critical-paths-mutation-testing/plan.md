@@ -359,8 +359,8 @@ Brak zmian w danych ani w kodzie produktu.
 
 #### Automated
 
-- [x] 3.1 `npm test`, `npm run lint`, `npx astro check`
-- [x] 3.2 `npm run mutate:sudoku` kończy się, wynik zapisany
+- [x] 3.1 `npm test`, `npm run lint`, `npx astro check` — 4ce99db
+- [x] 3.2 `npm run mutate:sudoku` kończy się, wynik zapisany — 4ce99db
 - [x] 3.3 Break-check: zepsucie `countSudokuSolutions` czerwieni test brute-force; usunięcie `blank-count` czerwieni test 6×6
 
 #### Manual
