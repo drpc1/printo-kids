@@ -250,8 +250,8 @@ Zapis profilu i ostatnich ustawień bez pola `colors` czyta się jako wyłączon
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi
-- [x] 2.2 `npm run lint` przechodzi
+- [x] 2.1 `npm test` przechodzi — 6a0dea0
+- [x] 2.2 `npm run lint` przechodzi — 6a0dea0
 
 #### Manual
 
@@ -261,9 +261,9 @@ Zapis profilu i ostatnich ustawień bez pola `colors` czyta się jako wyłączon
 
 #### Automated
 
-- [ ] 3.1 `npx playwright test tests/e2e/sequence-colors.spec.ts tests/e2e/card-settings.spec.ts tests/e2e/phone-layout.spec.ts` przechodzi
-- [ ] 3.2 `npm test` przechodzi
-- [ ] 3.3 `npm run lint` przechodzi
+- [x] 3.1 `npx playwright test tests/e2e/sequence-colors.spec.ts tests/e2e/card-settings.spec.ts tests/e2e/phone-layout.spec.ts` przechodzi
+- [x] 3.2 `npm test` przechodzi
+- [x] 3.3 `npm run lint` przechodzi
 
 #### Manual
 
