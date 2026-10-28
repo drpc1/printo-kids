@@ -3,18 +3,19 @@
 // crayon token per shape, never generates a new board, and is not there for digits. It does not prove the print.
 import { expect, test, type Page } from "@playwright/test";
 
+/** Given outlines on the board. Paths in the shape list under the frame are not givens. */
+const BOARD_SHAPE_PATHS = 'xpath=.//*[local-name()="path" and not(ancestor::*[@data-shape-list])]';
+
+function boardShapePaths(page: Page) {
+  return page.getByRole("img", { name: "Sudoku" }).locator(BOARD_SHAPE_PATHS);
+}
+
 async function shapePlaces(page: Page): Promise<string[]> {
-  return page
-    .getByRole("img", { name: "Sudoku" })
-    .locator("path")
-    .evaluateAll((paths) => paths.map((path) => path.getAttribute("d") ?? ""));
+  return boardShapePaths(page).evaluateAll((paths) => paths.map((path) => path.getAttribute("d") ?? ""));
 }
 
 async function shapeStrokes(page: Page): Promise<string[]> {
-  return page
-    .getByRole("img", { name: "Sudoku" })
-    .locator("path")
-    .evaluateAll((paths) => paths.map((path) => path.getAttribute("stroke") ?? ""));
+  return boardShapePaths(page).evaluateAll((paths) => paths.map((path) => path.getAttribute("stroke") ?? ""));
 }
 
 test("Kolory is off by default and recolors the same board without generating a new one", async ({ page }) => {
@@ -38,10 +39,9 @@ test("Kolory is off by default and recolors the same board without generating a 
   expect(colorStrokes.every((stroke) => stroke.startsWith("var(--symmetry-"))).toBe(true);
   // A 4×4 board draws four shapes, so four different crayons, and one shape always has one crayon.
   expect(new Set(colorStrokes).size).toBe(4);
-  const fills = await page
-    .getByRole("img", { name: "Sudoku" })
-    .locator("path")
-    .evaluateAll((paths) => paths.map((path) => path.getAttribute("fill") ?? ""));
+  const fills = await boardShapePaths(page).evaluateAll((paths) =>
+    paths.map((path) => path.getAttribute("fill") ?? ""),
+  );
   expect(fills).toEqual(colorStrokes);
 
   await colors.click();
