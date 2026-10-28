@@ -231,8 +231,8 @@ Zestaw jest już na karcie, a kredka wynika z identyfikatora kształtu. Klucz ka
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi.
-- [x] 2.2 `npx astro check` kończy się bez błędów.
+- [x] 2.1 `npm test` przechodzi. — af4f490
+- [x] 2.2 `npx astro check` kończy się bez błędów. — af4f490
 
 #### Manual
 
@@ -244,8 +244,8 @@ Zestaw jest już na karcie, a kredka wynika z identyfikatora kształtu. Klucz ka
 
 #### Automated
 
-- [ ] 3.1 `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium` przechodzi: nazwy są na karcie z kształtami, znikają po Cyfrach, a włączone Kolory malują ścieżki listy kredką.
-- [ ] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą.
+- [x] 3.1 `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium` przechodzi: nazwy są na karcie z kształtami, znikają po Cyfrach, a włączone Kolory malują ścieżki listy kredką.
+- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą.
 
 #### Manual
 
