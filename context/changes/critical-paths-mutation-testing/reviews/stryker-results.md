@@ -42,3 +42,32 @@ To są próby potoku, nie wyniki faz: zakresy są małe, a ocalałe mutanty z ni
 ## Przegląd ocalałych mutantów
 
 Wypełniany w fazach 2–6: dla każdego ocalałego mutanta jedna decyzja (asercja dopisana albo „równoważny/kosmetyczny” z uzasadnieniem).
+
+## Faza 3: sudoku (2026-10-28)
+
+Zakresy: `sudoku/generate.ts:160-250` i `295-353`, `npm run mutate:sudoku` (237 mutantów, ok. 7 min na przebieg). Komenda testów w `stryker/sudoku.config.json` dostała `bruteforce.test.ts`; bez niego mutant `board.clear` ocalał, choć test go zabija.
+
+| Przebieg                                                           | Mutanty | Zabite | Timeouty | Ocalałe | Wynik  |
+| ------------------------------------------------------------------ | ------- | ------ | -------- | ------- | ------ |
+| przed (testy z `main`)                                             | 237     | 177    | 35       | 25      | 89,45% |
+| po testach z luk i po dopisaniu asercji (`bruteforce` w komendzie) | 237     | 199    | 32       | 6       | 97,47% |
+
+### Nowe testy
+
+- `generate.test.ts`: karty 6×6 i 9×9 budowane ręcznie (stały wzór rozwiązania i stałe współrzędne pustych pól, generator nie ustala oczekiwań): `blank-count` (jedno pole więcej/mniej), niedopasowany poziom, `shape-outside-pool` (nieznany kształt; gwiazdka i księżyc w puli dziewięciu są poprawne), `shape-count`, `invalid-solution` osobno dla kolumny (zamiana dwóch komórek w wierszu), bloku (cykliczny kwadrat łaciński), wartości poza zakresem, krótkiego i za długiego wiersza, brakującego wiersza; karta z brakującym wierszem w podanych polach i pełna plansza z uciętym wierszem; ponowne losowanie, gdy klucz powtarza poprzedni.
+- `bruteforce.test.ts` (dopisany do `npm test`): niezależny licznik wszystkich wypełnień 4×4 (bez solvera z `generate.ts`) porównany z `countSudokuSolutions` na przypadkach ręcznych (prostokąt do zamiany = 2 rozwiązania), 120 losowych planszach z kilkoma pustymi polami i 40 wygenerowanych kartach (każda ma dokładnie 1 rozwiązanie); plus plansza 6×6 z jednym rozwiązaniem, które wymaga błędnego zgadywania (liczba sprawdzona zwykłym przeszukiwaniem).
+- Break-check (zepsuj, test czerwienieje, przywróć): `countSudokuSolutions` zwraca 1 (3 testy czerwone); bez `blank-count` (4); bez `shape-outside-pool` (2); bez `shape-count` (2); pula zawsze 4 kształty (11); bez sprawdzania kolumn (tylko test kolumny); bez sprawdzania bloków (tylko test bloku); bez `board.clear` (test 6×6); bez sprawdzania długości wiersza rozwiązania; bez porównania z poprzednim kluczem; bez `givens.length !== size`; `every` → `some` w `wellFormed`.
+
+### Ocalałe mutanty po fazie 3
+
+| Linia      | Mutant                                         | Decyzja                                                                                                                                                  |
+| ---------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 168:25     | `index <= board.cells.length`                  | Równoważny: `cells[length]` to `undefined`, które przechodzi `!== null` i `continue`.                                                                    |
+| 172:11 (2) | `count <= bestCount`, `if (true)`              | Równoważne wynikowo: zmienia tylko, którą pustą komórkę solver bierze pierwszą (heurystyka szybkości); liczba rozwiązań ta sama.                         |
+| 183:25     | `value <= size`                                | Równoważny: maska kandydatów nie ma bitu `size`.                                                                                                         |
+| 232:25     | `attempt <= MAX_PUZZLE_ATTEMPTS`               | Kosmetyczny: 51 zamiast 50 prób nowej planszy, bez wpływu na kartę.                                                                                      |
+| 296:37     | `&& sudokuCardProblems(...) === 0` → `&& true` | Siatka bezpieczeństwa: generator nie daje kart łamiących reguły (4×4 z konstrukcji, 6×6/9×9 z `carveSudoku`), więc nie ma wejścia, które by to pokazało. |
+
+### Ustalenie do wiadomości (bez zmiany kodu)
+
+`countSudokuSolutions` nie sprawdza, czy podane pola nie kłócą się ze sobą (dwie takie same wartości w wierszu): zwraca wtedy liczbę, jakby kłótni nie było. Rodzica to nie dotyczy, bo `sudokuCardProblems` porównuje pola z poprawnym rozwiązaniem (`givens-differ-from-solution`, `invalid-solution`). Test losowy porównuje więc tylko plansze o zgodnych polach.
