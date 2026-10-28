@@ -255,17 +255,17 @@ Zapis profilu i ostatnich ustawień bez pola `colors` czyta się jako wyłączon
 
 #### Manual
 
-- [ ] 2.3 Na `/sequences` przełącznik „Kolory” jest wyłączony; po Generuj włączenie wypełnia kształty i zostawia te same ciągi, a wyłączenie wraca do czarnych konturów; liczby i „?” zostają czarne
+- [x] 2.3 Na `/sequences` przełącznik „Kolory” jest wyłączony; po Generuj włączenie wypełnia kształty i zostawia te same ciągi, a wyłączenie wraca do czarnych konturów; liczby i „?” zostają czarne
 
 ### Phase 3: Przeglądarka i PRD
 
 #### Automated
 
-- [x] 3.1 `npx playwright test tests/e2e/sequence-colors.spec.ts tests/e2e/card-settings.spec.ts tests/e2e/phone-layout.spec.ts` przechodzi
-- [x] 3.2 `npm test` przechodzi
-- [x] 3.3 `npm run lint` przechodzi
+- [x] 3.1 `npx playwright test tests/e2e/sequence-colors.spec.ts tests/e2e/card-settings.spec.ts tests/e2e/phone-layout.spec.ts` przechodzi — d6929da
+- [x] 3.2 `npm test` przechodzi — d6929da
+- [x] 3.3 `npm run lint` przechodzi — d6929da
 
 #### Manual
 
-- [ ] 3.4 Wydruk z włączonymi kolorami mieści się na jednej stronie A4, liczby są czarne, a puste pola nie pokazują odpowiedzi
-- [ ] 3.5 W `context/foundation/prd.md` wiersz Sekwencje zawiera „kolory”, a „Karta sekwencji” opisuje przełącznik
+- [x] 3.4 Wydruk z włączonymi kolorami mieści się na jednej stronie A4, liczby są czarne, a puste pola nie pokazują odpowiedzi
+- [x] 3.5 W `context/foundation/prd.md` wiersz Sekwencje zawiera „kolory”, a „Karta sekwencji” opisuje przełącznik
