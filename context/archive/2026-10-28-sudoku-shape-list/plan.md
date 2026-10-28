@@ -223,34 +223,34 @@ Zestaw jest już na karcie, a kredka wynika z identyfikatora kształtu. Klucz ka
 
 #### Automated
 
-- [x] 1.1 Test rzędu dla zestawu heart, circle, triangle, square zwraca nazwy koło, kwadrat, trójkąt, serce, a dla cyfr nie zwraca żadnej pozycji. — e1a1522
-- [x] 1.2 Ten sam test zostawia prostokąt siatki 4×4, 6×6 i 9×9, z dymkiem i bez, równy wynikowi `layoutSudokuSheet`, a na 9×9 z `instructionBoxHeight` 26 rysunek i nazwa „gwiazdka” mieszczą się w marginesie 10 mm poniżej ramki, a szerokość „gwiazdki” liczona jako `8 * fontSize * 0.55` jest mniejsza niż szerokość slotu. — e1a1522
-- [x] 1.3 `npm test` uruchamia `src/lib/sudoku/shape-list.test.ts`, bo plik jest w skrypcie `test`. — e1a1522
+- [x] 1.1 Test rzędu dla zestawu heart, circle, triangle, square zwraca nazwy koło, kwadrat, trójkąt, serce, a dla cyfr nie zwraca żadnej pozycji. — 82067ce
+- [x] 1.2 Ten sam test zostawia prostokąt siatki 4×4, 6×6 i 9×9, z dymkiem i bez, równy wynikowi `layoutSudokuSheet`, a na 9×9 z `instructionBoxHeight` 26 rysunek i nazwa „gwiazdka” mieszczą się w marginesie 10 mm poniżej ramki, a szerokość „gwiazdki” liczona jako `8 * fontSize * 0.55` jest mniejsza niż szerokość slotu. — 82067ce
+- [x] 1.3 `npm test` uruchamia `src/lib/sudoku/shape-list.test.ts`, bo plik jest w skrypcie `test`. — 82067ce
 
 ### Phase 2: Rysowanie
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi. — af4f490
-- [x] 2.2 `npx astro check` kończy się bez błędów. — af4f490
+- [x] 2.1 `npm test` przechodzi. — 8b85caf
+- [x] 2.2 `npx astro check` kończy się bez błędów. — 8b85caf
 
 #### Manual
 
-- [ ] 2.3 Na `/sudoku` wygenerowana karta 4×4 pokazuje pod planszą cztery nazwy w kolejności katalogu. Włączenie Kolorów wypełnia te rysunki kredką planszy, nazwy zostają czarne, a podane kształty nie zmieniają miejsca.
-- [ ] 2.4 Karta 6×6 przełączona na Cyfry nie ma nazw kształtów, a plansza zostaje na tej samej wysokości.
-- [ ] 2.5 Karta 9×9 z kształtami i z postacią ma jeden rząd, który nie styka się z ramką i nie wychodzi poza stronę.
+- [x] 2.3 Na `/sudoku` wygenerowana karta 4×4 pokazuje pod planszą cztery nazwy w kolejności katalogu. Włączenie Kolorów wypełnia te rysunki kredką planszy, nazwy zostają czarne, a podane kształty nie zmieniają miejsca.
+- [x] 2.4 Karta 6×6 przełączona na Cyfry nie ma nazw kształtów, a plansza zostaje na tej samej wysokości.
+- [x] 2.5 Karta 9×9 z kształtami i z postacią ma jeden rząd, który nie styka się z ramką i nie wychodzi poza stronę.
 
 ### Phase 3: Przeglądarka i PRD
 
 #### Automated
 
-- [x] 3.1 `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium` przechodzi: nazwy są na karcie z kształtami, znikają po Cyfrach, a włączone Kolory malują ścieżki listy kredką. — f7461d0
-- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą. — f7461d0
+- [x] 3.1 `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium` przechodzi: nazwy są na karcie z kształtami, znikają po Cyfrach, a włączone Kolory malują ścieżki listy kredką. — 65e53a3
+- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą. — 65e53a3
 
 #### Manual
 
-- [ ] 3.3 Podgląd druku karty 9×9 z postacią jest jedną stroną A4, a rząd zostaje w marginesie 10 mm.
-- [ ] 3.4 W podglądzie czarno-białym nazwy da się przeczytać, gdy kredki zejdą do szarości.
-- [ ] 3.5 Miniatura sudoku w katalogu nie ma nazw pod planszą.
-- [ ] 3.6 W wąskim oknie telefonu rząd widać w podglądzie, a Generuj nie nachodzi na Drukuj.
-- [ ] 3.7 US-12, US-14 i Business Logic „Karta sudoku” opisują rząd figur i dalej zabraniają liter przy kolorach. Zdania symetrii o legendzie są bez zmian.
+- [x] 3.3 Podgląd druku karty 9×9 z postacią jest jedną stroną A4, a rząd zostaje w marginesie 10 mm.
+- [x] 3.4 W podglądzie czarno-białym nazwy da się przeczytać, gdy kredki zejdą do szarości.
+- [x] 3.5 Miniatura sudoku w katalogu nie ma nazw pod planszą.
+- [x] 3.6 W wąskim oknie telefonu rząd widać w podglądzie, a Generuj nie nachodzi na Drukuj.
+- [x] 3.7 US-12, US-14 i Business Logic „Karta sudoku” opisują rząd figur i dalej zabraniają liter przy kolorach. Zdania symetrii o legendzie są bez zmian.
