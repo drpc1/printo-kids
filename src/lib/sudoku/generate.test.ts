@@ -412,3 +412,240 @@ void describe("generateSudokuCard for every size, level and symbols", () => {
     }
   });
 });
+
+// Hand-built 6×6 and 9×9 cards. The solution is a fixed shifted pattern and the empty cells are fixed coordinates, so
+// nothing the generator returns decides what a rule is checked against.
+function patternSolution(size: 6 | 9): number[][] {
+  const block = sudokuBlock(size);
+  return Array.from({ length: size }, (_, row) =>
+    Array.from(
+      { length: size },
+      (_, column) => (block.columns * (row % block.rows) + Math.floor(row / block.rows) + column) % size,
+    ),
+  );
+}
+
+const BLANK_CELLS: Record<6 | 9, readonly (readonly [number, number])[]> = {
+  6: [
+    [0, 0],
+    [0, 2],
+    [2, 0],
+    [2, 1],
+    [2, 4],
+    [3, 1],
+    [3, 3],
+    [4, 0],
+    [4, 2],
+    [5, 1],
+    [5, 2],
+    [5, 3],
+  ],
+  9: [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 5],
+    [0, 6],
+    [0, 7],
+    [0, 8],
+    [1, 4],
+    [1, 8],
+    [2, 0],
+    [2, 5],
+    [2, 7],
+    [3, 1],
+    [3, 4],
+    [3, 5],
+    [3, 6],
+    [4, 2],
+    [4, 5],
+    [4, 6],
+    [5, 1],
+    [5, 2],
+    [5, 3],
+    [5, 4],
+    [5, 5],
+    [5, 6],
+    [5, 7],
+    [6, 0],
+    [6, 2],
+    [6, 3],
+    [6, 7],
+    [7, 1],
+    [8, 1],
+    [8, 2],
+    [8, 3],
+    [8, 7],
+  ],
+};
+
+function handCard(size: 6 | 9): SudokuCard {
+  const solution = patternSolution(size);
+  const givens: (number | null)[][] = solution.map((row) => [...row]);
+  for (const [row, column] of BLANK_CELLS[size]) givens[row][column] = null;
+  return {
+    size,
+    level: "latwy",
+    symbols: "shapes",
+    shapes: SUDOKU_SHAPES.slice(0, size),
+    givens,
+    solution,
+    key: `hand-${size}`,
+  };
+}
+
+const BIG_SIZES = [6, 9] as const;
+
+void describe("sudokuCardProblems on hand-built 6×6 and 9×9 cards", () => {
+  void test("the untouched hand-built card has no problem", () => {
+    for (const size of BIG_SIZES) {
+      const card = handCard(size);
+
+      assert.equal(blankCount(card.givens), sudokuBlankCount(size, "latwy"));
+      assert.deepEqual(sudokuCardProblems(card), [], `${size}×${size}`);
+    }
+  });
+
+  void test("one given more is a blank-count problem and nothing else", () => {
+    for (const size of BIG_SIZES) {
+      const card = handCard(size);
+      const [row, column] = BLANK_CELLS[size][0];
+      const givens = card.givens.map((givensRow) => [...givensRow]);
+      givens[row][column] = card.solution[row][column];
+
+      assert.deepEqual(sudokuCardProblems({ ...card, givens }), ["blank-count"], `${size}×${size}`);
+    }
+  });
+
+  void test("one given less is a blank-count problem", () => {
+    for (const size of BIG_SIZES) {
+      const card = handCard(size);
+      const givens = card.givens.map((givensRow) => [...givensRow]);
+      givens[1][1] = null;
+
+      assert.equal(blankCount(givens), sudokuBlankCount(size, "latwy") + 1);
+      assert.ok(sudokuCardProblems({ ...card, givens }).includes("blank-count"), `${size}×${size}`);
+    }
+  });
+
+  void test("a level that wants another number of blanks is a blank-count problem and nothing else", () => {
+    for (const size of BIG_SIZES) {
+      for (const level of ["sredni", "trudny"] as const) {
+        assert.deepEqual(sudokuCardProblems({ ...handCard(size), level }), ["blank-count"], `${size}×${size} ${level}`);
+      }
+    }
+  });
+
+  void test("a shape outside the pool of nine is reported, and a shape outside the pool of five is not", () => {
+    for (const size of BIG_SIZES) {
+      const card = handCard(size);
+      const unknown: SudokuShapeId[] = [...card.shapes];
+      unknown[0] = "hexagon" as SudokuShapeId;
+      const rare: SudokuShapeId[] = ["star", "moon", ...card.shapes.filter((id) => id !== "star" && id !== "moon")];
+
+      assert.deepEqual(sudokuCardProblems({ ...card, shapes: unknown }), ["shape-outside-pool"], `${size}×${size}`);
+      assert.deepEqual(
+        sudokuCardProblems({ ...card, shapes: rare.slice(0, size) }),
+        [],
+        `${size}×${size} star and moon`,
+      );
+    }
+  });
+
+  void test("too few or too many shapes is a shape-count problem", () => {
+    for (const size of BIG_SIZES) {
+      const card = handCard(size);
+      const fewer = SUDOKU_SHAPES.slice(0, size - 1);
+      const more: SudokuShapeId[] = [...SUDOKU_SHAPES.slice(0, size), SUDOKU_SHAPES[size % SUDOKU_SHAPES.length]];
+
+      assert.deepEqual(sudokuCardProblems({ ...card, shapes: fewer }), ["shape-count"], `${size}×${size} one less`);
+      assert.ok(sudokuCardProblems({ ...card, shapes: more }).includes("shape-count"), `${size}×${size} one more`);
+    }
+  });
+
+  void test("a column that repeats a symbol is an invalid solution", () => {
+    for (const size of BIG_SIZES) {
+      // Two cells of one row and one block swapped: the row and the block stay full, two columns do not.
+      const solution = patternSolution(size).map((row) => [...row]);
+      [solution[0][0], solution[0][1]] = [solution[0][1], solution[0][0]];
+      const givens = solution.map((row) => [...row]);
+
+      assert.ok(
+        sudokuCardProblems({ ...handCard(size), solution, givens }).includes("invalid-solution"),
+        `${size}×${size}`,
+      );
+    }
+  });
+
+  void test("a block that repeats a symbol while rows and columns stay full is an invalid solution", () => {
+    for (const size of BIG_SIZES) {
+      // A cyclic Latin square: every row and column holds each symbol once, but the blocks do not.
+      const solution = Array.from({ length: size }, (_, row) =>
+        Array.from({ length: size }, (_, column) => (row + column) % size),
+      );
+      const givens = solution.map((row) => [...row]);
+
+      assert.ok(
+        sudokuCardProblems({ ...handCard(size), solution, givens }).includes("invalid-solution"),
+        `${size}×${size}`,
+      );
+    }
+  });
+
+  void test("a solution with a symbol out of range, a short or long row or too few rows is an invalid solution", () => {
+    for (const size of BIG_SIZES) {
+      const card = handCard(size);
+      const high = card.solution.map((row) => [...row]);
+      high[0][0] = size;
+      const negative = card.solution.map((row) => [...row]);
+      negative[0][0] = -1;
+      const fraction = card.solution.map((row) => [...row]);
+      fraction[0][0] = 0.5;
+      const short = card.solution.map((row, r) => (r === 0 ? row.slice(0, size - 1) : [...row]));
+      const long = card.solution.map((row, r) => (r === 0 ? [...row, row[0]] : [...row]));
+      const fewRows = card.solution.slice(0, size - 1);
+
+      for (const solution of [high, negative, fraction, short, long, fewRows]) {
+        assert.ok(sudokuCardProblems({ ...card, solution }).includes("invalid-solution"), `${size}×${size}`);
+      }
+    }
+  });
+
+  void test("a given that is not part of the solution is reported on a big card too", () => {
+    for (const size of BIG_SIZES) {
+      const card = handCard(size);
+      const givens = card.givens.map((row) => [...row]);
+      givens[1][1] = (card.solution[1][1] + 1) % size;
+
+      assert.ok(sudokuCardProblems({ ...card, givens }).includes("givens-differ-from-solution"), `${size}×${size}`);
+    }
+  });
+});
+
+void describe("a card that repeats or that is cut short", () => {
+  void test("a card is drawn again when the draw repeats the previous key", () => {
+    const first = goodCard(1);
+    const next = generateSudokuCard(mulberry32(1), first.key);
+
+    assert.ok(next);
+    assert.notEqual(next.key, first.key);
+  });
+
+  void test("givens with a row missing are reported as differing from the solution and as not unique", () => {
+    for (const card of [goodCard(), handCard(6), handCard(9)]) {
+      const givens = card.givens.slice(0, card.size - 1);
+      const problems = sudokuCardProblems({ ...card, givens });
+
+      assert.ok(problems.includes("givens-differ-from-solution"), `${card.size}×${card.size}`);
+      assert.ok(problems.includes("not-unique"), `${card.size}×${card.size}`);
+    }
+  });
+
+  void test("a full board with one row cut short is not unique even though the solver would count one solution", () => {
+    for (const card of [goodCard(), handCard(6), handCard(9)]) {
+      const givens = card.solution.map((row, r) => (r === 0 ? row.slice(0, card.size - 1) : [...row]));
+
+      assert.ok(sudokuCardProblems({ ...card, givens }).includes("not-unique"), `${card.size}×${card.size}`);
+    }
+  });
+});
