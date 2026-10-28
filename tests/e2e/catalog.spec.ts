@@ -1,4 +1,4 @@
-// Provenance: card-catalog-home (phase 3); symmetry-first-printable (phase 4, US-05); sequences-first-printable (phase 3); picture-sudoku-first-printable (US-12)
+// Provenance: card-catalog-home (phase 3); symmetry-first-printable (phase 4, US-05); sequences-first-printable (phase 3); picture-sudoku-first-printable (US-12); catalog-alpha-order (phase 2)
 // Protects the card catalog on /: the Labirynt, Symetria and Sekwencje thumbnails open their generators, Symetria
 // and Sekwencje show their card after Generuj and lead back with "Wszystkie karty", and the chosen child profile stays
 // chosen across the round trip catalog -> generator -> catalog -> generator on both pages.
@@ -6,6 +6,19 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const PROFILES_KEY = "printo-kids:child-profiles";
+
+test("the catalog lists cards in alphabetical order when no profile is saved", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  // A saved profile rewrites each link's accessible name to "title, badge", so this visit stays unseeded.
+  await page.goto("/");
+
+  const links = page.getByRole("link");
+  const order = ["Dyktando graficzne", "Labirynt", "Nonogram", "Sekwencje", "Sudoku", "Symetria"];
+  await expect(links).toHaveCount(order.length);
+  for (const [index, name] of order.entries()) {
+    await expect(links.nth(index)).toHaveAccessibleName(name);
+  }
+});
 
 test("the Labirynt card on the catalog opens the maze generator", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");

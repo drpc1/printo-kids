@@ -154,15 +154,15 @@ Zapisane profile i `localStorage` zostają. Kolejność podsumowania wynika z ta
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, a `src/lib/cards.test.ts` jest na liście skryptu `test` i sprawdza kolejność Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria oraz to, że `CARD_KINDS` nadal zaczyna się od Labirynt i kończy na Dyktando graficzne
+- [x] 1.1 `npm test` przechodzi, a `src/lib/cards.test.ts` jest na liście skryptu `test` i sprawdza kolejność Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria oraz to, że `CARD_KINDS` nadal zaczyna się od Labirynt i kończy na Dyktando graficzne — 53fb0f5
 
 ### Phase 2: Siatka na stronie głównej
 
 #### Automated
 
-- [ ] 2.1 `npx playwright test tests/e2e/catalog.spec.ts --project=chromium` pokazuje sześć linków katalogu, bez zapisanego profilu, w kolejności Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria
+- [x] 2.1 `npx playwright test tests/e2e/catalog.spec.ts --project=chromium` pokazuje sześć linków katalogu, bez zapisanego profilu, w kolejności Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria
 
 #### Manual
 
-- [ ] 2.2 Na `/` widać te same sześć kart, miniatury i adresy co dziś, w kolejności Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria
-- [ ] 2.3 Okno profilu nadal zaczyna się od Labirynt i kończy na Dyktando graficzne
+- [x] 2.2 Na `/` widać te same sześć kart, miniatury i adresy co dziś, w kolejności Dyktando graficzne, Labirynt, Nonogram, Sekwencje, Sudoku, Symetria
+- [x] 2.3 Okno profilu nadal zaczyna się od Labirynt i kończy na Dyktando graficzne
