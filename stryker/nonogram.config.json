@@ -1,0 +1,12 @@
+{
+  "$schema": "../node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress"],
+  "testRunner": "command",
+  "coverageAnalysis": "off",
+  "concurrency": 4,
+  "commandRunner": {
+    "command": "node scripts/with-env.mjs MUTATION_RUN=1 -- node --experimental-strip-types --test src/lib/nonogram/solve.test.ts src/lib/nonogram/clues.test.ts src/lib/nonogram/simple.test.ts src/lib/nonogram/generate.test.ts src/lib/nonogram/sizes.test.ts"
+  },
+  "mutate": ["src/lib/nonogram/solve.ts", "src/lib/nonogram/generate.ts:40-123", "src/lib/nonogram/simple.ts"]
+}
