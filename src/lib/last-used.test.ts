@@ -132,7 +132,10 @@ void describe("card settings in last-used", () => {
       {
         character: "none",
         level: "lat5",
-        cards: { nonogram: { level: "trudny", category: "zwierzeta" }, sekwencje: { level: "lat5" } },
+        cards: {
+          nonogram: { level: "trudny", category: "zwierzeta" },
+          sekwencje: { level: "lat5", colors: false },
+        },
       },
     );
   });
@@ -143,7 +146,7 @@ void describe("card settings in last-used", () => {
     assert.deepEqual(readLastUsed(storage, ALLOWED), {
       character: "rakieta",
       level: "lat6",
-      cards: { sekwencje: { level: "lat7" } },
+      cards: { sekwencje: { level: "lat7", colors: false } },
     });
   });
 

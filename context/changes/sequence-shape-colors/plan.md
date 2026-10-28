@@ -243,15 +243,15 @@ Zapis profilu i ostatnich ustawień bez pola `colors` czyta się jako wyłączon
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, a `src/lib/sequence/colors.test.ts` jest w skrypcie `test`
-- [x] 1.2 `npm run lint` przechodzi
+- [x] 1.1 `npm test` przechodzi, a `src/lib/sequence/colors.test.ts` jest w skrypcie `test` — a57a3c0
+- [x] 1.2 `npm run lint` przechodzi — a57a3c0
 
 ### Phase 2: Pasek i rysowanie
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi
-- [ ] 2.2 `npm run lint` przechodzi
+- [x] 2.1 `npm test` przechodzi
+- [x] 2.2 `npm run lint` przechodzi
 
 #### Manual
 

@@ -74,7 +74,7 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
         return null;
       }
       const level = sequenceLevelById(settings.level);
-      return { badge: badgeOf(level), level: level.label, extras: [] };
+      return { badge: badgeOf(level), level: level.label, extras: settings.colors ? ["kolory"] : [] };
     }
     case "sudoku":
       return sudokuParts(cards.sudoku);
