@@ -1,7 +1,7 @@
 ---
 change_id: sudoku-shape-list
 title: Lista figur pod planszą sudoku z kształtami
-status: impl_reviewed
+status: implemented
 created: 2026-10-28
 updated: 2026-10-28
 archived_at: null

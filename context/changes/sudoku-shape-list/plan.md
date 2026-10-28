@@ -236,9 +236,9 @@ Zestaw jest już na karcie, a kredka wynika z identyfikatora kształtu. Klucz ka
 
 #### Manual
 
-- [ ] 2.3 Na `/sudoku` wygenerowana karta 4×4 pokazuje pod planszą cztery nazwy w kolejności katalogu. Włączenie Kolorów wypełnia te rysunki kredką planszy, nazwy zostają czarne, a podane kształty nie zmieniają miejsca.
-- [ ] 2.4 Karta 6×6 przełączona na Cyfry nie ma nazw kształtów, a plansza zostaje na tej samej wysokości.
-- [ ] 2.5 Karta 9×9 z kształtami i z postacią ma jeden rząd, który nie styka się z ramką i nie wychodzi poza stronę.
+- [x] 2.3 Na `/sudoku` wygenerowana karta 4×4 pokazuje pod planszą cztery nazwy w kolejności katalogu. Włączenie Kolorów wypełnia te rysunki kredką planszy, nazwy zostają czarne, a podane kształty nie zmieniają miejsca.
+- [x] 2.4 Karta 6×6 przełączona na Cyfry nie ma nazw kształtów, a plansza zostaje na tej samej wysokości.
+- [x] 2.5 Karta 9×9 z kształtami i z postacią ma jeden rząd, który nie styka się z ramką i nie wychodzi poza stronę.
 
 ### Phase 3: Przeglądarka i PRD
 
@@ -249,8 +249,8 @@ Zestaw jest już na karcie, a kredka wynika z identyfikatora kształtu. Klucz ka
 
 #### Manual
 
-- [ ] 3.3 Podgląd druku karty 9×9 z postacią jest jedną stroną A4, a rząd zostaje w marginesie 10 mm.
-- [ ] 3.4 W podglądzie czarno-białym nazwy da się przeczytać, gdy kredki zejdą do szarości.
-- [ ] 3.5 Miniatura sudoku w katalogu nie ma nazw pod planszą.
-- [ ] 3.6 W wąskim oknie telefonu rząd widać w podglądzie, a Generuj nie nachodzi na Drukuj.
-- [ ] 3.7 US-12, US-14 i Business Logic „Karta sudoku” opisują rząd figur i dalej zabraniają liter przy kolorach. Zdania symetrii o legendzie są bez zmian.
+- [x] 3.3 Podgląd druku karty 9×9 z postacią jest jedną stroną A4, a rząd zostaje w marginesie 10 mm.
+- [x] 3.4 W podglądzie czarno-białym nazwy da się przeczytać, gdy kredki zejdą do szarości.
+- [x] 3.5 Miniatura sudoku w katalogu nie ma nazw pod planszą.
+- [x] 3.6 W wąskim oknie telefonu rząd widać w podglądzie, a Generuj nie nachodzi na Drukuj.
+- [x] 3.7 US-12, US-14 i Business Logic „Karta sudoku” opisują rząd figur i dalej zabraniają liter przy kolorach. Zdania symetrii o legendzie są bez zmian.
