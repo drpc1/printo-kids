@@ -1,11 +1,11 @@
 ---
-import { CARD_KINDS } from "@/lib/cards";
+import { cardsInCatalogOrder } from "@/lib/cards";
 ---
 
 <div class="flex w-full flex-col gap-4">
   <p data-profile-caption class="min-h-6 text-center text-base text-muted-foreground"></p>
   <ul class="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
-    {CARD_KINDS.map((kind) => (
+    {cardsInCatalogOrder().map((kind) => (
       <li>
         <a
           href={kind.href}

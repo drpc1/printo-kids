@@ -13,3 +13,7 @@ export const CARD_KINDS: readonly CardKind[] = [
   { id: "nonogram", title: "Nonogram", href: "/nonogram", thumbnail: "/thumbnails/nonogram.svg" },
   { id: "dyktando", title: "Dyktando graficzne", href: "/dictation", thumbnail: "/thumbnails/dyktando.svg" },
 ];
+
+export function cardsInCatalogOrder(): CardKind[] {
+  return [...CARD_KINDS].sort((left, right) => left.title.localeCompare(right.title, "pl"));
+}
