@@ -10,7 +10,7 @@ import {
   type DictationCard,
 } from "./generate.ts";
 import { DICTATION_LEVELS, DICTATION_LEVEL_LAT6 } from "./levels.ts";
-import { dictationSilhouette, outlineProblems, walkCommands } from "./outline.ts";
+import { dictationSilhouette, outlineProblems, walkCommands, type DictationCommand } from "./outline.ts";
 
 const LEVEL = DICTATION_LEVEL_LAT6;
 
@@ -108,6 +108,29 @@ void describe("generateDictationCard", () => {
     assert.notEqual(cardAt(() => 0, first.key).key, first.key);
   });
 
+  void test("a random that returns its highest value still gives a valid card", () => {
+    const card = cardAt(() => 0.9999999999);
+
+    assert.deepEqual(dictationCardProblems(card), []);
+  });
+
+  void test("many draws reach several different outlines on every level", () => {
+    for (const level of DICTATION_LEVELS) {
+      const random = seeded(21);
+      const keys = new Set<string>();
+      let previousKey: string | null = null;
+      for (let index = 0; index < 200; index += 1) {
+        const card = generateDictationCard(random, previousKey, level);
+        assert.ok(card, level.id);
+        keys.add(card.key);
+        previousKey = card.key;
+      }
+
+      assert.ok(dictationVariantCount(level).distinctOutlines >= 5, level.id);
+      assert.ok(keys.size >= 5, `${level.id} drew only ${keys.size} outlines`);
+    }
+  });
+
   void test("the same random gives the same card", () => {
     assert.deepEqual(cardAt(seeded(5)), cardAt(seeded(5)));
   });
@@ -174,5 +197,104 @@ void describe("dictationCardProblems", () => {
     const shifted: DictationCard = { ...card, outline: card.outline.slice(1) };
 
     assert.ok(dictationCardProblems(shifted).includes("not-the-outline"));
+  });
+});
+
+void describe("dictationCardProblems on hand-built cards", () => {
+  // Two cells side by side, traced clockwise from the top-left corner: right 2, down 1, left 2, up 1.
+  const RECTANGLE: readonly DictationCommand[] = [
+    { direction: "right", length: 2 },
+    { direction: "down", length: 1 },
+    { direction: "left", length: 2 },
+    { direction: "up", length: 1 },
+  ];
+
+  /** The rectangle with its top-left corner at the given vertex, on a 6 by 5 grid. */
+  function rectangleAt(col: number, row: number, commands: readonly DictationCommand[] = RECTANGLE): DictationCard {
+    return {
+      levelId: LEVEL.id,
+      columns: 6,
+      rows: 5,
+      cellSize: LEVEL.cellSize,
+      start: { col, row },
+      commands,
+      outline: [
+        { col, row },
+        { col: col + 1, row },
+      ],
+      key: "hand-built",
+    };
+  }
+
+  void test("a clean rectangle has no problems, also with the outline on the last allowed lines", () => {
+    assert.deepEqual(dictationCardProblems(rectangleAt(1, 1)), []);
+    assert.deepEqual(dictationCardProblems(rectangleAt(3, 3)), []);
+  });
+
+  void test("a path that ends on the start row but not the start column is not closed", () => {
+    const open = rectangleAt(1, 1, [{ direction: "right", length: 2 }]);
+
+    assert.ok(dictationCardProblems(open).includes("not-closed"));
+  });
+
+  void test("no commands at all is its own problem", () => {
+    const empty = { ...rectangleAt(1, 1), commands: [] };
+
+    assert.ok(dictationCardProblems(empty).includes("no-commands"));
+  });
+
+  void test("a path that crosses itself repeats a vertex", () => {
+    const crossing: readonly DictationCommand[] = [
+      { direction: "right", length: 2 },
+      { direction: "down", length: 1 },
+      { direction: "left", length: 1 },
+      { direction: "up", length: 1 },
+    ];
+
+    assert.ok(dictationCardProblems(rectangleAt(1, 1, crossing)).includes("repeated-vertex"));
+  });
+
+  void test("a closed path that touches itself at a corner repeats a vertex", () => {
+    const touching: readonly DictationCommand[] = [
+      { direction: "right", length: 1 },
+      { direction: "down", length: 1 },
+      { direction: "right", length: 1 },
+      { direction: "down", length: 1 },
+      { direction: "left", length: 1 },
+      { direction: "up", length: 1 },
+      { direction: "left", length: 1 },
+      { direction: "up", length: 1 },
+    ];
+    const problems = dictationCardProblems(rectangleAt(1, 1, touching));
+
+    assert.ok(problems.includes("repeated-vertex"));
+    assert.ok(!problems.includes("not-closed"));
+  });
+
+  void test("the start vertex is not a repeat when the path simply closes", () => {
+    assert.ok(!dictationCardProblems(rectangleAt(1, 1)).includes("repeated-vertex"));
+  });
+
+  void test("a path that leaves the free ring on any of the four sides is outside the margin", () => {
+    // 6 by 5 grid: vertices must stay within columns 1..5 and rows 1..4.
+    assert.ok(dictationCardProblems(rectangleAt(0, 1)).includes("outside-margin"));
+    assert.ok(dictationCardProblems(rectangleAt(4, 1)).includes("outside-margin"));
+    assert.ok(dictationCardProblems(rectangleAt(1, 0)).includes("outside-margin"));
+    assert.ok(dictationCardProblems(rectangleAt(1, 4)).includes("outside-margin"));
+    assert.ok(!dictationCardProblems(rectangleAt(3, 1)).includes("outside-margin"));
+    assert.ok(!dictationCardProblems(rectangleAt(1, 3)).includes("outside-margin"));
+  });
+
+  void test("the same outline walked counter-clockwise is not the outline the child must draw", () => {
+    const counterClockwise: readonly DictationCommand[] = [
+      { direction: "down", length: 1 },
+      { direction: "right", length: 2 },
+      { direction: "up", length: 1 },
+      { direction: "left", length: 2 },
+    ];
+    const problems = dictationCardProblems(rectangleAt(1, 1, counterClockwise));
+
+    assert.ok(problems.includes("not-the-outline"));
+    assert.ok(!problems.includes("not-closed"));
   });
 });

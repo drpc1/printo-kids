@@ -45,6 +45,17 @@ void describe("outlineProblems", () => {
     assert.deepEqual(outlineProblems(shape(["#.", "##", ".#"])), []);
   });
 
+  void test("a corner touch is found on the other diagonal too", () => {
+    // Mirror of the case above: the top-right and bottom-left cells meet at the vertex.
+    assert.deepEqual(outlineProblems(shape(["###", "#.#", "##."])), ["corner-touch"]);
+    assert.deepEqual(outlineProblems(shape(["###", "#.#", ".##"])), ["corner-touch"]);
+  });
+
+  void test("a single cell passes and an empty silhouette is disconnected", () => {
+    assert.deepEqual(outlineProblems(shape(["#"])), []);
+    assert.deepEqual(outlineProblems({ width: 0, height: 0, cells: [] }), ["disconnected"]);
+  });
+
   void test("two separate pieces are rejected as disconnected", () => {
     assert.deepEqual(outlineProblems(shape(["#.#"])), ["disconnected"]);
   });
@@ -140,5 +151,19 @@ void describe("dictationSilhouette", () => {
     assert.deepEqual(outlineProblems(dictationSilhouette(strawberry, [0, 0])), []);
     assert.notDeepEqual(outlineProblems(dictationSilhouette(strawberry, [1, 0])), []);
     assert.notDeepEqual(outlineProblems(dictationSilhouette(strawberry, [1, 1])), []);
+  });
+});
+
+void describe("traceOutline on the smallest silhouette", () => {
+  void test("a single cell is walked once around, clockwise from its top-left corner", () => {
+    const traced = traceOutline(shape(["#"]));
+
+    assert.deepEqual(traced.start, { x: 0, y: 0 });
+    assert.deepEqual(traced.commands, [
+      { direction: "right", length: 1 },
+      { direction: "down", length: 1 },
+      { direction: "left", length: 1 },
+      { direction: "up", length: 1 },
+    ]);
   });
 });

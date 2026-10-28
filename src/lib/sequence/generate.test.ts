@@ -17,8 +17,16 @@ const LAT4 = sequenceLevelById("lat4");
 const LAT5 = sequenceLevelById("lat5");
 const LAT6 = sequenceLevelById("lat6");
 const LAT7 = sequenceLevelById("lat7");
-const SEEDS = 300;
-const ORACLE_SEEDS = 120;
+// Mutation runs (stryker/*.config.json) set MUTATION_RUN=1: instrumented code is several times slower, so a wall-clock
+// budget would kill mutants for the wrong reason. npm test keeps every time budget.
+const MUTATION_RUN = process.env.MUTATION_RUN === "1";
+// The brute-force oracle (about 45 s) and the 300-seed generation loops dominate the run time, and instrumented code
+// multiplies it. Mutation testing sets SEQUENCE_ORACLE_SEEDS to a small number (stryker/sequence.config.json) to
+// shrink the oracle loops and the generation seeds; npm test keeps the full 120 and 300.
+const FULL_ORACLE_SEEDS = 120;
+const ORACLE_SEEDS = Number(process.env.SEQUENCE_ORACLE_SEEDS ?? FULL_ORACLE_SEEDS);
+const FAST_ORACLE = ORACLE_SEEDS < FULL_ORACLE_SEEDS;
+const SEEDS = FAST_ORACLE ? 30 : 300;
 
 const [KOLO, KWADRAT, TROJKAT, GWIAZDKA] = SEQUENCE_SHAPES;
 
@@ -262,7 +270,7 @@ void describe("generateSequenceCard", () => {
     for (let step = 0; step < 100; step += 1) {
       assert.ok(generateSequenceCard(random, null, LAT7));
     }
-    assert.ok(performance.now() - started < 5000);
+    assert.ok(MUTATION_RUN || performance.now() - started < 5000);
   });
 
   void test("serce, krzyzyk and strzalka appear on lat4, lat5 and lat6 and in groups or mixed on lat7", () => {
@@ -469,7 +477,8 @@ void describe("sequenceRowProblems against the oracle", () => {
     for (const base of fixedRows) {
       for (const size of [2, 3]) {
         const level: SequenceLevel = { ...LAT7, gaps: size, extraGapRows: 0, gapPlacement: "free" };
-        for (const gaps of gapSets(size)) {
+        // The fast oracle keeps every seventh three-gap set: both ambiguous and unambiguous rows stay in.
+        for (const gaps of gapSets(size).filter((_, index) => !FAST_ORACLE || size === 2 || index % 7 === 0)) {
           const row: SequenceRow = { ...base, gaps };
           const label = `${base.rule} gaps ${gaps.join(",")}`;
           const fillings = fillingsThatFollowARule(row).length;
