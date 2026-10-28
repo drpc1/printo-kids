@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Printer } from "lucide-react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
@@ -17,6 +17,7 @@ import { Switch } from "@/components/ui/switch";
 import { sudokuShapeInk } from "@/lib/sudoku/colors";
 import { generateSudokuCard, sudokuBlock, type SudokuCard } from "@/lib/sudoku/generate";
 import { layoutSudokuSheet } from "@/lib/sudoku/layout";
+import { layoutSudokuShapeList } from "@/lib/sudoku/shape-list";
 import {
   SUDOKU_LEVELS,
   SUDOKU_SIZES,
@@ -265,6 +266,14 @@ function SudokuSheet({
   const grid = sheet.grid;
   const shapeSize = cellSize * SUDOKU_SHEET.shapeScale;
   const digitSize = cellSize * SUDOKU_SHEET.digitScale;
+  const shapeList = layoutSudokuShapeList({
+    grid: sheet.grid,
+    pageWidth: SUDOKU_SHEET.pageWidth,
+    pageHeight: SUDOKU_SHEET.pageHeight,
+    inset: SUDOKU_SHEET.inset,
+    symbols: card.symbols,
+    shapes: card.shapes,
+  });
 
   return (
     <svg
@@ -366,6 +375,35 @@ function SudokuSheet({
         strokeWidth={SUDOKU_SHEET.frameStroke}
         strokeLinejoin="miter"
       />
+      {shapeList.items.length > 0 ? (
+        <g data-shape-list="">
+          {shapeList.items.map((item) => {
+            const ink = sudokuShapeInk(item.id, colors);
+            return (
+              <Fragment key={item.id}>
+                <path
+                  d={sudokuShapePath(item.id, item.drawing.x, item.drawing.y, item.drawing.size)}
+                  fill={colors ? ink : "none"}
+                  stroke={ink}
+                  strokeWidth={SUDOKU_SHEET.shapeStroke}
+                  strokeLinejoin="round"
+                />
+                <text
+                  x={item.label.x}
+                  y={item.label.y}
+                  fill="var(--foreground)"
+                  fontFamily="ui-sans-serif, system-ui, sans-serif"
+                  fontSize={item.label.size}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                >
+                  {item.name}
+                </text>
+              </Fragment>
+            );
+          })}
+        </g>
+      ) : null}
     </svg>
   );
 }

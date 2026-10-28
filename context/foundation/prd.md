@@ -248,7 +248,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Plansza 4×4 używa czterech kształtów wylosowanych z pięciu najprostszych: koło, kwadrat, trójkąt, serce, krzyżyk (decyzja 2026-10-24). Kształty są grubymi czarnymi konturami z pustym środkiem. Nad planszą jest zdanie polecenia, bez paska kształtów i bez legendy.
+- Plansza 4×4 używa czterech kształtów wylosowanych z pięciu najprostszych: koło, kwadrat, trójkąt, serce, krzyżyk (decyzja 2026-10-24). Kształty są grubymi czarnymi konturami z pustym środkiem. Nad planszą jest zdanie polecenia. Pod planszą jest jeden rząd: rysunek i nazwa każdej figury tej karty, w kolejności katalogu, ta sama wielkość na każdym rozmiarze.
 - W każdym wierszu jest dokładnie jedno puste pole; jego miejsce w wierszu jest losowe.
 - Rozwiązanie jest dokładnie jedno: plansza ma jedno poprawne uzupełnienie, które aplikacja potrafi wyliczyć i sprawdzić. Plansza z więcej niż jednym uzupełnieniem nie jest pokazana.
 - Każde Generuj daje nową planszę: inny układ albo inne kształty niż poprzednia karta.
@@ -281,7 +281,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Kolory to osobny przełącznik na pasku strony sudoku, jak w symetrii (US-09). Domyślnie są wyłączone: kształty są czarnymi konturami.
-- Każdy kształt ma jeden stały kolor na całej planszy (np. serce czerwone, koło niebieskie, trójkąt zielony). Bez liter i bez legendy kolorów. Na drukarce czarno-białej kolory schodzą do odcieni szarości.
+- Każdy kształt ma jeden stały kolor na całej planszy (np. serce czerwone, koło niebieskie, trójkąt zielony). Bez liter i bez legendy kolorów. Rysunek na liście używa tej samej kredki, a nazwa zostaje czarna. Na drukarce czarno-białej kolory schodzą do odcieni szarości.
 - Przełączenie kolorów zostawia tę samą planszę; nie generuje nowej.
 - Przy cyfrach przełącznik kolorów nie jest dostępny.
 
@@ -464,7 +464,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-020: Rodzic może wybrać poziom karty sekwencji (Poziom 1–4: długość ciągu, rodzaj reguł, liczba pustych pól). Priority: must-have
   > Socrates: Counter-argument considered: poziomy bez mierzalnych reguł wprowadzają w błąd. Resolution: kept; reguły są w Business Logic, wartości startowe potwierdza wydruk. Numery zamiast wieku od 2026-10-26 (FR-001).
 - FR-021: Rodzic może wygenerować kartę sudoku 4×4 z prostymi kształtami do narysowania i jednym rozwiązaniem, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
-  > Socrates: Counter-argument considered: dziecko w wieku przedszkolnym nie rysuje postaci w małych polach. Resolution: revised (2026-10-24); zamiast postaci z katalogu proste kształty (koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla), które dziecko umie narysować; legenda numerów odpada, a z nią pytanie o prawa do postaci w sudoku.
+  > Socrates: Counter-argument considered: dziecko w wieku przedszkolnym nie rysuje postaci w małych polach. Resolution: revised (2026-10-24); zamiast postaci z katalogu proste kształty (koło, kwadrat, trójkąt, serce, krzyżyk, gwiazdka, romb, księżyc, kropla), które dziecko umie narysować; legenda numerów odpada, a z nią pytanie o prawa do postaci w sudoku.
 - FR-022: Rodzic może wybrać rozmiar sudoku (4×4, 6×6, 9×9) i poziom (łatwy, średni, trudny: liczba pustych pól), a przy 6×6 i 9×9 kształty albo cyfry. Priority: must-have
   > Socrates: Counter-argument considered: im więcej pustych pól, tym łatwiej o wiele rozwiązań, a dwa paski odchodzą od poziomów nazwanych wiekiem jak w innych kartach. Resolution: revised (2026-10-24); generator zostawia tylko takie pola, przy których rozwiązanie jest dokładnie jedno; użytkowniczka wybrała dwa paski, bo 7-latek robi już 9×9 i wiek nie wyznacza rozmiaru.
 - FR-023: Rodzic może włączyć kolory kształtów na karcie sudoku; każdy kształt ma stały kolor kredki, domyślnie czarne kontury. Priority: must-have
@@ -593,7 +593,7 @@ Przebudowane 2026-10-24: zamiast planszy 4×4 z postaciami z katalogu trzy rozmi
 
 Aplikacja zawsze tworzy planszę z dokładnie jednym rozwiązaniem. Zasada: w każdym wierszu, w każdej kolumnie i w każdym bloku każdy symbol występuje raz. Generator układa pełne poprawne sudoku, potem usuwa pola tak, by pozostałe wypełnione pola nadal miały jedno rozwiązanie, aż do liczby pustych pól dla rozmiaru i poziomu. Plansza, która tego nie spełnia, nie jest pokazana. Plansza nie używa postaci z katalogu; postać stoi tylko przy poleceniu (US-21).
 
-Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księżyc, kropla — proste do narysowania przez dziecko. Plansza 4×4 losuje cztery z pięciu najprostszych (koło, kwadrat, trójkąt, serce, krzyżyk), 6×6 sześć, 9×9 używa wszystkich dziewięciu. Przy 6×6 i 9×9 rodzic wybiera kształty albo cyfry (przełącznik „Kształty / Cyfry”, 9×9 z cyframi to zwykłe sudoku).
+Kształty to: koło, kwadrat, trójkąt, serce, krzyżyk, gwiazdka, romb, księżyc, kropla — proste do narysowania przez dziecko. Plansza 4×4 losuje cztery z pięciu najprostszych (koło, kwadrat, trójkąt, serce, krzyżyk), 6×6 sześć, 9×9 używa wszystkich dziewięciu. Przy 6×6 i 9×9 rodzic wybiera kształty albo cyfry (przełącznik „Kształty / Cyfry”, 9×9 z cyframi to zwykłe sudoku). Pod planszą z kształtami jest jeden rząd: rysunek i nazwa każdej figury tej karty, w kolejności katalogu, ta sama wielkość na każdym rozmiarze. Karta z cyframi rzędu nie ma.
 
 | Rozmiar | Bloki | Symbole                                  | Poziom | Puste pola                                     |
 | ------- | ----- | ---------------------------------------- | ------ | ---------------------------------------------- |
@@ -607,7 +607,7 @@ Kształty to: koło, kwadrat, trójkąt, serce, gwiazdka, krzyżyk, romb, księ�
 
 Plansza 4×4 z jednym pustym polem w każdym wierszu ma zawsze jedno rozwiązanie: brakujący kształt wynika z samego wiersza.
 
-Kolory (US-14): przy kształtach rodzic może włączyć kolory. Każdy kształt ma wtedy jeden stały kolor kredki na całej planszy, bez liter i bez legendy. Przypisanie (zatwierdzone na wydruku 2026-10-25, kształty wypełnione kolorem): serce czerwone, koło niebieskie, trójkąt zielony, kwadrat pomarańczowy, krzyżyk fioletowy, gwiazdka żółta, romb brązowy, księżyc szary, kropla czarna. Przełącznik nie zmienia planszy. Domyślnie kształty są czarnymi konturami. Przy cyfrach kolorów nie ma.
+Kolory (US-14): przy kształtach rodzic może włączyć kolory. Każdy kształt ma wtedy jeden stały kolor kredki na całej planszy, bez liter i bez legendy kolorów. Rysunek na liście używa tej samej kredki, a nazwa zostaje czarna. Przypisanie (zatwierdzone na wydruku 2026-10-25, kształty wypełnione kolorem): serce czerwone, koło niebieskie, trójkąt zielony, kwadrat pomarańczowy, krzyżyk fioletowy, gwiazdka żółta, romb brązowy, księżyc szary, kropla czarna. Przełącznik nie zmienia planszy. Domyślnie kształty są czarnymi konturami. Przy cyfrach kolorów nie ma.
 
 Wartości są startowe i zostają potwierdzone na wydruku; użytkowniczka nie jest pewna, czy 6×6 i 9×9 nie są za trudne (Open Questions 9). Wynikiem jest karta A4: plansza zajmuje większą część strony i zachowuje margines co najmniej 10 mm.
 
