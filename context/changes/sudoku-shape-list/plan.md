@@ -244,8 +244,8 @@ Zestaw jest już na karcie, a kredka wynika z identyfikatora kształtu. Klucz ka
 
 #### Automated
 
-- [x] 3.1 `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium` przechodzi: nazwy są na karcie z kształtami, znikają po Cyfrach, a włączone Kolory malują ścieżki listy kredką.
-- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą.
+- [x] 3.1 `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium` przechodzi: nazwy są na karcie z kształtami, znikają po Cyfrach, a włączone Kolory malują ścieżki listy kredką. — f7461d0
+- [x] 3.2 `npm test`, `npm run lint` i `npx astro check` przechodzą. — f7461d0
 
 #### Manual
 
