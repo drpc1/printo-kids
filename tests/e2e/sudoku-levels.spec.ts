@@ -5,6 +5,9 @@ import { expect, test, type Page } from "@playwright/test";
 
 const INSTRUCTION_LINES = 2;
 
+/** Given outlines on the board. Paths in the shape list under the frame are not givens. */
+const BOARD_SHAPE_PATHS = 'xpath=.//*[local-name()="path" and not(ancestor::*[@data-shape-list])]';
+
 async function choose(page: Page, bar: "Rozmiar" | "Poziom", option: string): Promise<void> {
   await page.getByRole("button", { name: new RegExp(`^${bar}:`) }).click();
   // Rows may carry a description, so match from the start of the name.
@@ -39,7 +42,7 @@ test("a 6×6 easy card with shapes has 24 shapes, and the hardest 9×9 card with
   await page.getByRole("button", { name: "Generuj" }).click();
   const sheet = page.getByRole("img", { name: "Sudoku" });
   await expect(sheet).toBeVisible();
-  await expect(sheet.locator("path")).toHaveCount(36 - 12);
+  await expect(sheet.locator(BOARD_SHAPE_PATHS)).toHaveCount(36 - 12);
 
   await choose(page, "Rozmiar", "9×9");
   await choose(page, "Poziom", "trudny");
@@ -53,12 +56,12 @@ test("changing a setting with a card on screen draws a new card for the new sett
   await page.goto("/sudoku");
   await page.getByRole("button", { name: "Generuj" }).click();
   const sheet = page.getByRole("img", { name: "Sudoku" });
-  await expect(sheet.locator("path")).toHaveCount(16 - 4);
+  await expect(sheet.locator(BOARD_SHAPE_PATHS)).toHaveCount(16 - 4);
 
   await choose(page, "Rozmiar", "9×9");
-  await expect(sheet.locator("path")).toHaveCount(81 - 35);
+  await expect(sheet.locator(BOARD_SHAPE_PATHS)).toHaveCount(81 - 35);
   await choose(page, "Poziom", "średni");
-  await expect(sheet.locator("path")).toHaveCount(81 - 45);
+  await expect(sheet.locator(BOARD_SHAPE_PATHS)).toHaveCount(81 - 45);
 });
 
 test("a 6×6 level row says how many cells are empty", async ({ page }) => {
