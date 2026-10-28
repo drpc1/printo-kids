@@ -361,11 +361,11 @@ Brak zmian w danych ani w kodzie produktu.
 
 - [x] 3.1 `npm test`, `npm run lint`, `npx astro check` — 4ce99db
 - [x] 3.2 `npm run mutate:sudoku` kończy się, wynik zapisany — 4ce99db
-- [x] 3.3 Break-check: zepsucie `countSudokuSolutions` czerwieni test brute-force; usunięcie `blank-count` czerwieni test 6×6
+- [x] 3.3 Break-check: zepsucie `countSudokuSolutions` czerwieni test brute-force; usunięcie `blank-count` czerwieni test 6×6 — 4ce99db
 
 #### Manual
 
-- [x] 3.4 Czas `npm test` nie rośnie o więcej niż kilka sekund
+- [x] 3.4 Czas `npm test` nie rośnie o więcej niż kilka sekund — 4ce99db
 
 ### Phase 4: Nonogram: niezależna kontrola i Stryker
 
