@@ -3,6 +3,7 @@ import { Printer } from "lucide-react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { ProfileCorner } from "@/components/ProfileCorner";
 import { LevelChoice } from "@/components/LevelChoice";
 import { RememberedNote } from "@/components/RememberedNote";
@@ -12,6 +13,7 @@ import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { SequenceSettings } from "@/lib/card-settings";
+import { sequenceShapeInk } from "@/lib/sequence/colors";
 import { generateSequenceCard, type SequenceCard } from "@/lib/sequence/generate";
 import { layoutSequenceSheet } from "@/lib/sequence/layout";
 import { SEQUENCE_LEVELS, sequenceLevelById, type SequenceLevelId } from "@/lib/sequence/levels";
@@ -23,10 +25,12 @@ import { cn } from "@/lib/utils";
 const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
- * The sequence card page: Generuj, the character and level buttons, the card, Drukuj, and the shared profile corner. The
- * chosen character stands by the instruction on the card and says it. The level comes from `useCardSettings` (the active profile's, or the device's) and every change is
- * remembered at once; the page never touches the maze's last-used parameters, it only keeps the bar values the
- * profile corner shows. A profile switch with a card shown draws a new card when the level changed.
+ * The sequence card page: Generuj, the character and level buttons, the colors switch, the card, Drukuj, and the shared
+ * profile corner. The chosen character stands by the instruction on the card and says it. The level and colors come
+ * from `useCardSettings` (the active profile's, or the device's) and every change is remembered at once; the page never
+ * touches the maze's last-used parameters, it only keeps the bar values the profile corner shows. Switching colors
+ * redraws the same card; it never generates a new one. A profile switch with a card shown draws a new card when the
+ * level changed.
  */
 export default function SequenceGenerator() {
   const visit = useChildProfileVisit({ onApply: applyProfileBar });
@@ -38,7 +42,7 @@ export default function SequenceGenerator() {
   const [card, setCard] = useState<SequenceCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
   const memory = useCardSettings("sekwencje", visit, handleProfileSwitch);
-  const levelId = memory.settings.level;
+  const { level: levelId, colors } = memory.settings;
   const sheetShown = card !== null;
 
   useEffect(() => {
@@ -112,6 +116,17 @@ export default function SequenceGenerator() {
       disabled={waitingForChild}
     />
   );
+  const colorsControl = (
+    <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
+      <Switch
+        checked={colors}
+        onCheckedChange={(next) => {
+          memory.remember({ colors: next });
+        }}
+      />
+      Kolory
+    </label>
+  );
   const failedNote = generateFailed ? (
     <p role="alert" className={cn("text-destructive text-sm")}>
       {GENERATE_FAILED_TEXT}
@@ -138,6 +153,7 @@ export default function SequenceGenerator() {
           <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
             {characterControl}
             {levelControl}
+            {colorsControl}
             {failedNote}
           </div>
           <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
@@ -164,23 +180,28 @@ export default function SequenceGenerator() {
           <div className={cn("flex flex-wrap items-center justify-center gap-3")}>
             {characterControl}
             {levelControl}
+            {colorsControl}
           </div>
           <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
         </div>
       )}
-      {card !== null ? <SequenceSheet card={card} characterId={bar.character} characterSrc={bar.characterSrc} /> : null}
+      {card !== null ? (
+        <SequenceSheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+      ) : null}
     </div>
   );
 }
 
 function SequenceSheet({
   card,
+  colors,
   characterId,
   characterSrc,
 }: {
   card: SequenceCard;
+  colors: boolean;
   characterId: string;
   characterSrc: string | null;
 }) {
@@ -235,11 +256,15 @@ function SequenceSheet({
         sheet.rows[rowIndex].fields.map((field, fieldIndex) => {
           const empty = row.gaps.includes(fieldIndex);
           const item = row.values[fieldIndex];
+          const shape = empty || typeof item === "number" ? null : item;
           const outline =
-            empty || typeof item === "number"
+            shape === null
               ? null
-              : sequenceShapeOutline(item, field.x + fieldSize / 2, field.y + fieldSize / 2, shapeSize);
+              : sequenceShapeOutline(shape, field.x + fieldSize / 2, field.y + fieldSize / 2, shapeSize);
           const number = !empty && typeof item === "number" ? item : null;
+          const shapeInk = shape === null ? null : sequenceShapeInk(shape, colors, card.shapeColors);
+          const shapeFill = colors && shapeInk !== null ? shapeInk : "none";
+          const shapeStroke = colors && shapeInk !== null ? shapeInk : "var(--foreground)";
           return (
             <g key={`${rowIndex},${fieldIndex}`}>
               <rect
@@ -284,16 +309,16 @@ function SequenceSheet({
                   cx={outline.cx}
                   cy={outline.cy}
                   r={outline.r}
-                  fill="none"
-                  stroke="var(--foreground)"
+                  fill={shapeFill}
+                  stroke={shapeStroke}
                   strokeWidth={SEQUENCE_SHEET.shapeStroke}
                 />
               ) : null}
               {outline?.kind === "polygon" ? (
                 <polygon
                   points={outline.points}
-                  fill="none"
-                  stroke="var(--foreground)"
+                  fill={shapeFill}
+                  stroke={shapeStroke}
                   strokeWidth={SEQUENCE_SHEET.shapeStroke}
                   strokeLinejoin="round"
                 />
@@ -301,8 +326,8 @@ function SequenceSheet({
               {outline?.kind === "path" ? (
                 <path
                   d={outline.d}
-                  fill="none"
-                  stroke="var(--foreground)"
+                  fill={shapeFill}
+                  stroke={shapeStroke}
                   strokeWidth={SEQUENCE_SHEET.shapeStroke}
                   strokeLinejoin="round"
                 />
