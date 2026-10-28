@@ -27,6 +27,7 @@ export interface SymmetrySettings {
 
 export interface SequenceSettings {
   level: SequenceLevelId;
+  colors: boolean;
 }
 
 export interface SudokuCardSettings extends SudokuSettings {
@@ -62,7 +63,7 @@ type Defaults = { [K in CardSettingsId]-?: NonNullable<CardSettingsMap[K]> };
 
 const DEFAULTS: Defaults = {
   symetria: { level: DEFAULT_SYMMETRY_LEVEL_ID, colors: false, category: DEFAULT_OBJECT_CATEGORY_ID },
-  sekwencje: { level: DEFAULT_SEQUENCE_LEVEL_ID },
+  sekwencje: { level: DEFAULT_SEQUENCE_LEVEL_ID, colors: false },
   sudoku: { ...DEFAULT_SUDOKU_SETTINGS, colors: false },
   nonogram: { level: DEFAULT_NONOGRAM_SIZE_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
   dyktando: { level: DEFAULT_DICTATION_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },

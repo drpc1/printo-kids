@@ -12,7 +12,7 @@ import {
 void describe("defaultCardSettings", () => {
   void test("every card has the defaults its page starts from today", () => {
     assert.deepEqual(defaultCardSettings("symetria"), { level: "lat5", colors: false, category: "wszystkie" });
-    assert.deepEqual(defaultCardSettings("sekwencje"), { level: "lat5" });
+    assert.deepEqual(defaultCardSettings("sekwencje"), { level: "lat5", colors: false });
     assert.deepEqual(defaultCardSettings("sudoku"), { size: 4, level: "latwy", symbols: "shapes", colors: false });
     assert.deepEqual(defaultCardSettings("nonogram"), { level: "sredni", category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("dyktando"), { level: "lat6", category: "wszystkie" });
@@ -34,7 +34,9 @@ void describe("parseCardSettings", () => {
   });
 
   void test("a card that is absent stays absent, so the page starts from its defaults", () => {
-    assert.deepEqual(parseCardSettings({ sekwencje: { level: "lat7" } }), { sekwencje: { level: "lat7" } });
+    assert.deepEqual(parseCardSettings({ sekwencje: { level: "lat7" } }), {
+      sekwencje: { level: "lat7", colors: false },
+    });
   });
 
   void test("a bad field falls back to its own default and the rest of the card is kept", () => {
@@ -43,6 +45,9 @@ void describe("parseCardSettings", () => {
     });
     assert.deepEqual(parseCardSettings({ symetria: { level: "lat7", colors: "tak", category: 3 } }), {
       symetria: { level: "lat7", colors: false, category: "wszystkie" },
+    });
+    assert.deepEqual(parseCardSettings({ sekwencje: { level: "lat6", colors: "tak" } }), {
+      sekwencje: { level: "lat6", colors: false },
     });
   });
 
@@ -66,7 +71,7 @@ void describe("parseCardSettings", () => {
   void test("a full valid map reads back unchanged", () => {
     const map: CardSettingsMap = {
       symetria: { level: "lat7", colors: true, category: "zwierzeta" },
-      sekwencje: { level: "lat4" },
+      sekwencje: { level: "lat4", colors: false },
       sudoku: { size: 9, level: "trudny", symbols: "digits", colors: false },
       nonogram: { level: "latwy", category: "jedzenie" },
       dyktando: { level: "lat7", category: "budowle" },
@@ -110,12 +115,12 @@ void describe("withCardSettings and cardSettingsOf", () => {
   void test("a patch keeps the other fields and the other cards, and does not change the input", () => {
     const map: CardSettingsMap = {
       symetria: { level: "lat6", colors: true, category: "kosmos" },
-      sekwencje: { level: "lat4" },
+      sekwencje: { level: "lat4", colors: false },
     };
     const next = withCardSettings(map, "symetria", { level: "lat7" });
     assert.deepEqual(next, {
       symetria: { level: "lat7", colors: true, category: "kosmos" },
-      sekwencje: { level: "lat4" },
+      sekwencje: { level: "lat4", colors: false },
     });
     assert.deepEqual(map.symetria, { level: "lat6", colors: true, category: "kosmos" });
   });

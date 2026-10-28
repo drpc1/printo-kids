@@ -119,7 +119,9 @@ test("the symmetry page fits the screen and Generuj, Drukuj and Profil do not co
   expect(boxes.drukuj.height).toBeGreaterThanOrEqual(44);
 });
 
-test("the sequence page fits the screen and Generuj, Drukuj and Profil do not cover each other", async ({ page }) => {
+test("the sequence page fits the screen and Kolory, Generuj, Drukuj and Profil do not cover each other", async ({
+  page,
+}) => {
   await page.goto("/sequences");
   await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
   await expectNoSidewaysScroll(page);
@@ -131,10 +133,14 @@ test("the sequence page fits the screen and Generuj, Drukuj and Profil do not co
 
   const width = viewportWidth(page);
   const boxes = {
+    kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
     generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
     drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
     profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
   };
+  expect(overlaps(boxes.kolory, boxes.generuj)).toBe(false);
+  expect(overlaps(boxes.kolory, boxes.drukuj)).toBe(false);
+  expect(overlaps(boxes.kolory, boxes.profil)).toBe(false);
   expect(overlaps(boxes.generuj, boxes.drukuj)).toBe(false);
   expect(overlaps(boxes.generuj, boxes.profil)).toBe(false);
   expect(overlaps(boxes.drukuj, boxes.profil)).toBe(false);
@@ -146,7 +152,9 @@ test("the sequence page fits the screen and Generuj, Drukuj and Profil do not co
   expect(boxes.drukuj.height).toBeGreaterThanOrEqual(44);
 });
 
-test("every sequence level fits the screen and keeps Poziom, Generuj, Drukuj and Profil apart", async ({ page }) => {
+test("every sequence level fits the screen and keeps Poziom, Kolory, Generuj, Drukuj and Profil apart", async ({
+  page,
+}) => {
   await page.goto("/sequences");
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect(page.getByRole("img", { name: "Sekwencje" })).toBeVisible();
@@ -162,6 +170,7 @@ test("every sequence level fits the screen and keeps Poziom, Generuj, Drukuj and
     const width = viewportWidth(page);
     const boxes = {
       poziom: await viewportBox(page.getByRole("button", { name: /^Poziom:/ })),
+      kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
       generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
       drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
       profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
