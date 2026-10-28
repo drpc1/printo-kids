@@ -1,3 +1,4 @@
+import { assignSequenceColors, type SequenceShapeColors } from "./colors.ts";
 import type { SequenceLevel, SequenceLevelId } from "./levels.ts";
 import { pick, shuffle } from "./random.ts";
 import {
@@ -9,7 +10,7 @@ import {
   type SequenceItem,
   type SequenceRuleId,
 } from "./rules.ts";
-import { SEQUENCE_SHAPES } from "./shapes.ts";
+import { SEQUENCE_SHAPES, type SequenceShape } from "./shapes.ts";
 
 export interface SequenceRow {
   rule: SequenceRuleId;
@@ -23,8 +24,10 @@ export interface SequenceCard {
   levelId: SequenceLevelId;
   fieldsPerRow: number;
   rows: readonly SequenceRow[];
-  /** Names every row (rule and items, not the gaps), so two cards with one key show the same sequences. */
+  /** Names every row (rule and items, not the gaps or crayons), so two cards with one key show the same sequences. */
   key: string;
+  /** Crayon of each shape present in `rows`. Written after the card is accepted, so it stays out of `key`. */
+  shapeColors: SequenceShapeColors;
 }
 
 export type SequenceRowProblem =
@@ -55,13 +58,13 @@ export function generateSequenceCard(
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     const card = drawSequenceCard(random, level);
     if (card !== null && card.key !== previousKey && sequenceCardProblems(card, level).length === 0) {
-      return card;
+      return { ...card, shapeColors: assignSequenceColors(random, shapesIn(card.rows)) };
     }
   }
   return null;
 }
 
-function drawSequenceCard(random: () => number, level: SequenceLevel): SequenceCard | null {
+function drawSequenceCard(random: () => number, level: SequenceLevel): Omit<SequenceCard, "shapeColors"> | null {
   const rules: SequenceRuleId[] = level.rules.flatMap(({ rule, minRows }) => Array<SequenceRuleId>(minRows).fill(rule));
   while (rules.length < level.rowCount) {
     rules.push(level.rules[pick(random, level.rules.length)].rule);
@@ -86,6 +89,11 @@ function drawSequenceCard(random: () => number, level: SequenceLevel): SequenceC
     rows,
     key: `${level.id}:${rows.map(valuesKey).join("|")}`,
   };
+}
+
+/** Shape identifiers in the rows, numbers left out. Order does not matter; the assignment sorts them. */
+function shapesIn(rows: readonly SequenceRow[]): SequenceShape[] {
+  return rows.flatMap((row) => row.values.filter((item): item is SequenceShape => typeof item === "string"));
 }
 
 /** A row of `rule` with `gapCount` gaps that passes the row rules and is not in `taken`, or null. */
@@ -209,7 +217,10 @@ export function sequenceRowProblems(row: SequenceRow, level: SequenceLevel): rea
 }
 
 /** The rules for a sequence card, rows included. An empty list means the card may be shown. */
-export function sequenceCardProblems(card: SequenceCard, level: SequenceLevel): readonly SequenceProblem[] {
+export function sequenceCardProblems(
+  card: Omit<SequenceCard, "shapeColors">,
+  level: SequenceLevel,
+): readonly SequenceProblem[] {
   const problems = new Set<SequenceProblem>();
 
   if (card.rows.length !== level.rowCount) {
