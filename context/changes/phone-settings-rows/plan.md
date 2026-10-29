@@ -137,5 +137,5 @@ Brak danych do przeniesienia. Ustawienia karty w pamięci przeglądarki zostają
 
 #### Manual
 
-- [ ] 1.3 Na telefonie napis „Kształty” zaczyna się tam gdzie „Postać”, a trzy linie nonogramu mają równy odstęp
-- [ ] 1.4 Od 640 px padding symboli i odstęp nad „Kategorią” oraz nad „Generuj” zostają jak dziś
+- [x] 1.3 Na telefonie napis „Kształty” zaczyna się tam gdzie „Postać”, a trzy linie nonogramu mają równy odstęp
+- [x] 1.4 Od 640 px padding symboli i odstęp nad „Kategorią” oraz nad „Generuj” zostają jak dziś
