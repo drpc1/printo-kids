@@ -151,19 +151,19 @@ Brak. Ustawienia karty i wydruk zostają.
 
 #### Automated
 
-- [x] 1.1 `npm run lint` przechodzi
+- [x] 1.1 `npm run lint` przechodzi — 21566f9
 
 #### Manual
 
-- [x] 1.2 Po wygenerowaniu karty przy szerokości 360 px lewa krawędź toru pokrywa się z lewą krawędzią napisu przycisku ustawień z linii powyżej na `/sudoku` (figury), `/sequences`, `/symmetry`, `/nonogram` i `/dictation`
-- [x] 1.3 Przy szerokości 768 px i na desktopie przełącznik nie ma dodatkowego lewego wcięcia ponad `gap-3` wiersza
+- [x] 1.2 Po wygenerowaniu karty przy szerokości 360 px lewa krawędź toru pokrywa się z lewą krawędzią napisu przycisku ustawień z linii powyżej na `/sudoku` (figury), `/sequences`, `/symmetry`, `/nonogram` i `/dictation` — 21566f9
+- [x] 1.3 Przy szerokości 768 px i na desktopie przełącznik nie ma dodatkowego lewego wcięcia ponad `gap-3` wiersza — 21566f9
 
 ### Phase 2: Asercja na phone-360
 
 #### Automated
 
-- [ ] 2.1 `npx playwright test tests/e2e/phone-toggle-align.spec.ts --project=phone-360` przechodzi
-- [ ] 2.2 `npx playwright test tests/e2e/phone-toggle-align.spec.ts --project=chromium --project=tablet-768` przechodzi, bo asercja wyrównania jest pominięta poza `phone-360`
+- [x] 2.1 `npx playwright test tests/e2e/phone-toggle-align.spec.ts --project=phone-360` przechodzi
+- [x] 2.2 `npx playwright test tests/e2e/phone-toggle-align.spec.ts --project=chromium --project=tablet-768` przechodzi, bo asercja wyrównania jest pominięta poza `phone-360`
 
 #### Manual
 
