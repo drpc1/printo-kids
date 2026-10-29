@@ -125,9 +125,9 @@ Brak danych do przeniesienia. Wszystkie okna dziedziczą krzyżyk z `DialogConte
 
 #### Automated
 
-- [x] 1.1 `npx playwright test tests/e2e/phone-layout.spec.ts`: na `hasTouch` góra glifu i jego prawa krawędź są po 3 px od krawędzi paddingu okna (tolerancja 1 px), a dotychczasowe asercje tego pliku przechodzą
-- [x] 1.2 `npx playwright test tests/e2e/dialog-close.spec.ts`: na `chromium` pole „Zamknij” zostaje 44×44 px, jego prawa krawędź schodzi się z prawą krawędzią ciała, i oba scenariusze zamknięcia przechodzą
-- [x] 1.3 `npm test` i `npm run lint` przechodzą
+- [x] 1.1 `npx playwright test tests/e2e/phone-layout.spec.ts`: na `hasTouch` góra glifu i jego prawa krawędź są po 3 px od krawędzi paddingu okna (tolerancja 1 px), a dotychczasowe asercje tego pliku przechodzą — 963460a
+- [x] 1.2 `npx playwright test tests/e2e/dialog-close.spec.ts`: na `chromium` pole „Zamknij” zostaje 44×44 px, jego prawa krawędź schodzi się z prawą krawędzią ciała, i oba scenariusze zamknięcia przechodzą — 963460a
+- [x] 1.3 `npm test` i `npm run lint` przechodzą — 963460a
 
 #### Manual
 
