@@ -117,7 +117,7 @@ export default function SequenceGenerator() {
     />
   );
   const colorsControl = (
-    <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
+    <label className={cn("text-muted-foreground flex items-center gap-2 text-base max-sm:basis-full max-sm:px-3")}>
       <Switch
         checked={colors}
         onCheckedChange={(next) => {
@@ -177,7 +177,7 @@ export default function SequenceGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          <div className={cn("flex flex-wrap items-center justify-center gap-3")}>
+          <div className={cn("flex flex-wrap items-center justify-center gap-3 max-sm:justify-start")}>
             {characterControl}
             {levelControl}
             {colorsControl}

@@ -6,7 +6,7 @@ Na szerokości poniżej 640 px lewa krawędź toru przełącznika ma pokrywać s
 
 ## Current State Analysis
 
-Przyciski ustawień są duchami z `px-2`, więc napis zaczyna się 8 px w głąb pudełka. Pięć etykiet przełącznika to `flex items-center gap-2` bez poziomego paddingu, więc tor zaczyna się na lewej krawędzi wiersza. Wiersz to `flex-wrap` z `gap-3`. Pasek ustawień jest w kontenerze `print:hidden` i pojawia się dopiero, gdy karta jest wygenerowana.
+Przyciski ustawień są duchami, które deklarują `px-2`. Te z chevronem renderują napis 12 px w głąb pudełka, bo zostaje `has-[>svg]:px-3`. Pięć etykiet przełącznika to `flex items-center gap-2` bez poziomego paddingu, więc tor zaczyna się na lewej krawędzi wiersza. Wiersz to `flex-wrap` z `gap-3`. Pasek ustawień jest w kontenerze `print:hidden` i pojawia się dopiero, gdy karta jest wygenerowana.
 
 Na telefonie wiersz łamie się i przełącznik zaczyna własną linię bliżej lewej krawędzi niż napis w przyciskach nad nim. `tests/e2e/phone-layout.spec.ts` mierzy bounding box i sprawdza, że kontrolki się nie zakrywają. Nie porównuje lewej krawędzi toru z napisem.
 
@@ -16,7 +16,7 @@ Po wygenerowaniu karty, przy szerokości poniżej 640 px, lewa krawędź toru (b
 
 ### Key Discoveries:
 
-- `src/components/LevelChoice.tsx:51`, `src/components/SudokuChoice.tsx:41`, `src/components/SudokuSymbolsChoice.tsx:30` i `src/components/CharacterChoiceControl.tsx:60` — przyciski ustawień mają `px-2`.
+- `src/components/LevelChoice.tsx:51`, `src/components/SudokuChoice.tsx:41`, `src/components/SudokuSymbolsChoice.tsx:30` i `src/components/CharacterChoiceControl.tsx:60` — przyciski ustawień deklarują `px-2`. Przyciski z `ChevronDown` zostawiają też `has-[>svg]:px-3` z domyślnego rozmiaru `Button` (`src/components/ui/button.tsx`), i ten selektor wygrywa, więc napis zaczyna się 12 px w głąb pudełka. `SudokuSymbolsChoice` nie ma ikony, więc tam `px-2` naprawdę jest 8 px; domyślne sudoku 4×4 tego przycisku nie pokazuje.
 - Etykiety bez wcięcia: `SudokuGenerator.tsx:166` („Kolory”, tylko przy `symbols === "shapes"`), `SequenceGenerator.tsx:120`, `SymmetryGenerator.tsx:137`, `NonogramGenerator.tsx:143`, `DictationGenerator.tsx:138`.
 - Wiersz: `flex w-full min-w-0 flex-wrap items-center gap-3` (np. `SudokuGenerator.tsx:201`). `sm:` w tych plikach to próg 640 px.
 - Pasek jest pod `{sheetShown ? (` i `print:hidden`. Domyślne sudoku to figury (`DEFAULT_SUDOKU_SETTINGS` w `src/lib/sudoku/levels.ts`).
@@ -26,8 +26,8 @@ Po wygenerowaniu karty, przy szerokości poniżej 640 px, lewa krawędź toru (b
 
 - Zdejmowanie `px-2` z przycisków ustawień.
 - Wcięcie od 640 px wzwyż, w tym na `tablet-768` i na desktopie.
-- Wykrywanie złamania wiersza w CSS. Poniżej 640 px wcięcie jest zawsze, także gdy przełącznik stoi w tej samej linii co przyciski.
-- Nowy komponent etykiety. Pięć istniejących `className` dostaje jedną klasę.
+- Wykrywanie złamania wiersza w CSS. Poniżej 640 px etykieta i tak bierze cały wiersz (`max-sm:basis-full`), więc przełącznik nie stoi obok przycisku.
+- Nowy komponent etykiety. Pięć istniejących `className` dostaje `max-sm:basis-full` i `max-sm:px-3`.
 - Asercja na `pixel-7`, `iphone-13`, `tablet-768` i `chromium`. Klasa działa na każdym viewportcie poniżej 640 px, ale porównanie krawędzi jest umową dla `phone-360`.
 - Labirynt. Nie ma tam takiego przełącznika.
 - Układ wydruku. Pasek ustawień jest `print:hidden`.
@@ -35,24 +35,24 @@ Po wygenerowaniu karty, przy szerokości poniżej 640 px, lewa krawędź toru (b
 
 ## Implementation Approach
 
-Jedna klasa `max-sm:px-2` na pięciu etykietach. `px-2` przycisku i `max-sm:px-2` etykiety to ten sam inset 8 px, więc tor i napis zaczynają się w tym samym miejscu, gdy oba są pierwszymi elementami swoich linii. Od `sm` klasa nie działa i odstęp zostaje `gap-3`.
+Pięć etykiet dostaje `max-sm:basis-full` i `max-sm:px-3`. Poniżej 640 px etykieta jest jedynym elementem swojej linii, a brak ikony sprawia, że `px-3` to inset 12 px, ten sam co napis w przycisku z chevronem. Tor i napis zaczynają się w tym samym miejscu. Od `sm` obie klasy milczą: etykieta nie bierze całego wiersza, a odstęp zostaje `gap-3`.
 
 Test jest osobnym specem, nie dopiskiem do `phone-layout.spec.ts`, żeby kontrakt „nie nachodzą na siebie” został osobno. Spec pomija asercję poza projektem `phone-360`, bo na szerszych projektach wcięcia nie ma i przełącznik często jest w tej samej linii.
 
 ## Critical Implementation Details
 
-- Klasa to `max-sm:px-2`, nie samo `px-2`. Samo `px-2` poszerzyłoby odstęp przed przełącznikiem także od 640 px.
-- Punkt odniesienia to napis, nie pudełko przycisku. Przycisk ma `px-2`, więc jego lewa krawędź jest o 8 px wcześniej niż napis. Mierzyć lewą krawędź pierwszego `span` w przycisku (np. „Postać:”, „Poziom:”) i lewą krawędź `[role=switch]`.
+- Klasy to `max-sm:basis-full` i `max-sm:px-3`. `basis-full` bez `max-sm:` rozciągałby etykietę także od 640 px. `px-2` na etykiecie dałoby 8 px, a napis przycisku z chevronem stoi na 12 px. Samo `px-3` poszerzyłoby odstęp przed przełącznikiem także od 640 px.
+- Punkt odniesienia to napis, nie pudełko przycisku. Przycisk z chevronem ma efektywny inset 12 px, więc jego lewa krawędź jest o 12 px wcześniej niż napis. Mierzyć lewą krawędź pierwszego `span` w przycisku (np. „Postać:”, „Poziom:”) i lewą krawędź `[role=switch]`.
 - Przycisk odniesienia to najbliższy przycisk ustawień z linii powyżej przełącznika: jego dół jest nad górą przełącznika, a spośród przycisków na tej linii bierze się ten z najmniejszą współrzędną `x`. Sąsiad z tej samej linii nie jest odniesieniem.
 - Pasek istnieje dopiero po wygenerowaniu karty. Sudoku mierzyć przy figurach. Przy cyfrach przełącznika „Kolory” nie ma.
 - Równość krawędzi: różnica co najwyżej 1 px.
-- Założenie: na `phone-360` każdy z pięciu przełączników leży na niższej linii niż jakiś przycisk ustawień. Jeśli któryś zostaje w tej samej linii, nie porównywać sąsiada z boku. Zatrzymać się i zgłosić, że założenie o złamaniu wiersza nie trzyma dla tej karty.
+- `max-sm:basis-full` stawia etykietę na własnej linii poniżej 640 px. Jeśli na `phone-360` przełącznik nadal jest w tej samej linii co przycisk ustawień, nie porównywać sąsiada z boku. Zatrzymać się i zgłosić, że etykieta nie wzięła całego wiersza.
 
 ## Phase 1: Wcięcie poniżej sm
 
 ### Overview
 
-Pięć etykiet dostaje `max-sm:px-2`. Na telefonie tor przesuwa się o ten sam inset co napis przycisku. Od 640 px klasa nie dokłada wcięcia.
+Pięć etykiet dostaje `max-sm:basis-full` i `max-sm:px-3`. Na telefonie etykieta zajmuje własną linię, a tor przesuwa się o ten sam inset co napis przycisku z chevronem. Od 640 px obie klasy milczą.
 
 ### Changes Required:
 
@@ -62,7 +62,7 @@ Pięć etykiet dostaje `max-sm:px-2`. Na telefonie tor przesuwa się o ten sam i
 
 **Intent**: Na szerokości poniżej 640 px lewa krawędź toru ma się pokrywać z lewą krawędzią napisu w wierszu ustawień nad przełącznikiem. Od `sm` odstęp w jednej linii zostaje `gap-3`.
 
-**Contract**: Każda z pięciu etykiet zachowuje `text-muted-foreground flex items-center gap-2 text-base` i dostaje dodatkowo `max-sm:px-2`. Bez bezwarunkowego `px-2`. Tekst, `Switch`, `checked` i `onCheckedChange` zostają. Sudoku nadal renderuje etykietę tylko przy `symbols === "shapes"`.
+**Contract**: Każda z pięciu etykiet zachowuje `text-muted-foreground flex items-center gap-2 text-base` i dostaje dodatkowo `max-sm:basis-full max-sm:px-3`. Bez bezwarunkowego `basis-full`, `px-3` i `px-2`. Tekst, `Switch`, `checked` i `onCheckedChange` zostają. Sudoku nadal renderuje etykietę tylko przy `symbols === "shapes"`.
 
 ### Success Criteria:
 
@@ -151,12 +151,12 @@ Brak. Ustawienia karty i wydruk zostają.
 
 #### Automated
 
-- [ ] 1.1 `npm run lint` przechodzi
+- [x] 1.1 `npm run lint` przechodzi
 
 #### Manual
 
-- [ ] 1.2 Po wygenerowaniu karty przy szerokości 360 px lewa krawędź toru pokrywa się z lewą krawędzią napisu przycisku ustawień z linii powyżej na `/sudoku` (figury), `/sequences`, `/symmetry`, `/nonogram` i `/dictation`
-- [ ] 1.3 Przy szerokości 768 px i na desktopie przełącznik nie ma dodatkowego lewego wcięcia ponad `gap-3` wiersza
+- [x] 1.2 Po wygenerowaniu karty przy szerokości 360 px lewa krawędź toru pokrywa się z lewą krawędzią napisu przycisku ustawień z linii powyżej na `/sudoku` (figury), `/sequences`, `/symmetry`, `/nonogram` i `/dictation`
+- [x] 1.3 Przy szerokości 768 px i na desktopie przełącznik nie ma dodatkowego lewego wcięcia ponad `gap-3` wiersza
 
 ### Phase 2: Asercja na phone-360
 
