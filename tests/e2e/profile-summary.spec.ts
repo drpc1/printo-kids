@@ -6,7 +6,7 @@
 // explicit, S-31), the list opened from edit shows a visible heading "Ulubiona postać" in the window title, level
 // with the close control and above the character rows, and has no "Wybierz postać", the add and edit forms show that
 // caption under the name (beside the chosen character on a wide screen, above it on a phone), the list opened from
-// "Dodaj profil" has no "Ulubiona postać" heading, and on a phone the window keeps its character row
+// "Dodaj profil" uses that same window title, and on a phone the window keeps its character row
 // and summary reachable.
 // The flows are the same on every screen size, so they run on desktop Chromium; the reach check runs on every project.
 import { expect, test, type Page } from "@playwright/test";
@@ -150,7 +150,7 @@ test("the list opened from edit shows a visible Ulubiona postać heading", async
   await expect(dialog.getByRole("heading", { name: "Wybierz postać", exact: true })).toHaveCount(0);
 });
 
-test("the list opened from Dodaj profil has no Ulubiona postać heading", async ({ page }, testInfo) => {
+test("the list opened from Dodaj profil shows the same Ulubiona postać title", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seed(page, [ANIA], ANIA.id);
   await page.goto("/maze");
@@ -160,7 +160,19 @@ test("the list opened from Dodaj profil has no Ulubiona postać heading", async 
   await dialog.getByRole("button", { name: "Dodaj profil" }).click();
   await expect(dialog.getByText("Ulubiona postać:", { exact: true })).toBeVisible();
   await dialog.getByRole("button", { name: /^Postać:/ }).click();
-  await expect(dialog.getByRole("heading", { name: "Ulubiona postać", exact: true })).toHaveCount(0);
+  const heading = dialog.getByRole("heading", { name: "Ulubiona postać", exact: true });
+  const close = dialog.getByRole("button", { name: "Zamknij" });
+  await expect(heading).toBeVisible();
+  const headingBox = await heading.boundingBox();
+  const closeBox = await close.boundingBox();
+  expect(headingBox).not.toBeNull();
+  expect(closeBox).not.toBeNull();
+  const headingMid = (headingBox?.y ?? 0) + (headingBox?.height ?? 0) / 2;
+  const closeMid = (closeBox?.y ?? 0) + (closeBox?.height ?? 0) / 2;
+  expect(Math.abs(headingMid - closeMid)).toBeLessThan(8);
+  const rowBox = await dialog.getByRole("button", { name: "Bez postaci", exact: true }).boundingBox();
+  expect(rowBox?.y ?? 0).toBeGreaterThan((headingBox?.y ?? 0) + (headingBox?.height ?? 0));
+  await expect(dialog.getByRole("heading", { name: "Wybierz postać", exact: true })).toHaveCount(0);
 });
 
 test("the favorite caption sits under the name, beside the character on a wide screen and above it on a phone", async ({
