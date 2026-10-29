@@ -64,6 +64,8 @@ Pięć etykiet dostaje `max-sm:basis-full` i `max-sm:px-3`. Na telefonie etykiet
 
 **Contract**: Każda z pięciu etykiet zachowuje `text-muted-foreground flex items-center gap-2 text-base` i dostaje dodatkowo `max-sm:basis-full max-sm:px-3`. Bez bezwarunkowego `basis-full`, `px-3` i `px-2`. Tekst, `Switch`, `checked` i `onCheckedChange` zostają. Sudoku nadal renderuje etykietę tylko przy `symbols === "shapes"`.
 
+**Addendum**: Przed wygenerowaniem karty wiersz ustawień w sudoku, sekwencjach i symetrii dostaje też `max-sm:justify-start`. Poniżej 640 px przyciski są dosunięte do lewej, tak jak po „Generuj”, i tor pokrywa się z napisem. Od `sm` zostaje `justify-center`. Nonogram i dyktando nie pokazują przełącznika przed generowaniem, więc ich wiersz zostaje wyśrodkowany.
+
 ### Success Criteria:
 
 #### Automated Verification:
@@ -151,20 +153,20 @@ Brak. Ustawienia karty i wydruk zostają.
 
 #### Automated
 
-- [x] 1.1 `npm run lint` przechodzi — 21566f9
+- [x] 1.1 `npm run lint` przechodzi — 5059ddb
 
 #### Manual
 
-- [x] 1.2 Po wygenerowaniu karty przy szerokości 360 px lewa krawędź toru pokrywa się z lewą krawędzią napisu przycisku ustawień z linii powyżej na `/sudoku` (figury), `/sequences`, `/symmetry`, `/nonogram` i `/dictation` — 21566f9
-- [x] 1.3 Przy szerokości 768 px i na desktopie przełącznik nie ma dodatkowego lewego wcięcia ponad `gap-3` wiersza — 21566f9
+- [x] 1.2 Po wygenerowaniu karty przy szerokości 360 px lewa krawędź toru pokrywa się z lewą krawędzią napisu przycisku ustawień z linii powyżej na `/sudoku` (figury), `/sequences`, `/symmetry`, `/nonogram` i `/dictation` — 5059ddb
+- [x] 1.3 Przy szerokości 768 px i na desktopie przełącznik nie ma dodatkowego lewego wcięcia ponad `gap-3` wiersza — 5059ddb
 
 ### Phase 2: Asercja na phone-360
 
 #### Automated
 
-- [x] 2.1 `npx playwright test tests/e2e/phone-toggle-align.spec.ts --project=phone-360` przechodzi
-- [x] 2.2 `npx playwright test tests/e2e/phone-toggle-align.spec.ts --project=chromium --project=tablet-768` przechodzi, bo asercja wyrównania jest pominięta poza `phone-360`
+- [x] 2.1 `npx playwright test tests/e2e/phone-toggle-align.spec.ts --project=phone-360` przechodzi — 1cafe41
+- [x] 2.2 `npx playwright test tests/e2e/phone-toggle-align.spec.ts --project=chromium --project=tablet-768` przechodzi, bo asercja wyrównania jest pominięta poza `phone-360` — 1cafe41
 
 #### Manual
 
-- [ ] 2.3 Przełączenie „Kolory” albo „Pokaż rozwiązanie” nadal zmienia kartę, a lewa krawędź toru zostaje na miejscu
+- [x] 2.3 Przełączenie „Kolory” albo „Pokaż rozwiązanie” nadal zmienia kartę, a lewa krawędź toru zostaje na miejscu — 1cafe41
