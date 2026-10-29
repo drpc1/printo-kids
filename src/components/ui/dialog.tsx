@@ -55,7 +55,7 @@ function DialogContent({
         className={cn(
           "bg-background data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 flex w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] flex-col gap-4 overflow-hidden rounded-lg border p-6 shadow-lg duration-200 outline-none sm:max-w-lg print:hidden",
           showCloseButton && header == null && "pt-14",
-          header != null && "pt-16",
+          header != null && "pt-14",
           showCloseButton && "pr-4",
           className,
         )}
@@ -63,8 +63,10 @@ function DialogContent({
       >
         {header != null ? (
           <>
-            <div className={cn("absolute top-2 right-16 left-6 flex h-11 items-center")}>{header}</div>
-            <div aria-hidden className={cn("border-border absolute inset-x-0 top-13 border-t")} />
+            {/* The close control's 44px target starts at top-2; its visible 36px plate is -top-0.5.
+                The title shares that plate, so the words sit with the glyph. */}
+            <div className={cn("absolute top-1.5 right-16 left-6 flex h-9 items-center")}>{header}</div>
+            <div aria-hidden className={cn("border-border absolute inset-x-0 top-11 border-t")} />
           </>
         ) : null}
         <div

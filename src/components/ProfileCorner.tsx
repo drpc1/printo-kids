@@ -338,7 +338,9 @@ export function ProfileCorner({
       <DialogContent
         className={cn("max-h-[calc(100dvh-2rem)]")}
         header={
-          panel === "favorite-list" ? <DialogTitle className={cn("truncate")}>Ulubiona postać</DialogTitle> : undefined
+          panel === "favorite-list" || panel === "draft-list" ? (
+            <DialogTitle className={cn("truncate")}>Ulubiona postać</DialogTitle>
+          ) : undefined
         }
         onEscapeKeyDown={(event) => {
           if (panel !== "delete") {
@@ -378,7 +380,6 @@ export function ProfileCorner({
           </div>
         ) : panel === "favorite-list" || panel === "draft-list" ? (
           <div className={cn("flex flex-col gap-2")}>
-            {panel === "draft-list" ? <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle> : null}
             <CharacterChoiceRows
               selected={
                 panel === "draft-list"
