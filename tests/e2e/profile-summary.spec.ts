@@ -3,7 +3,9 @@
 // level, the edit window has no level control but one sentence about the rule and a read-only summary of the six
 // cards (each row leads to its card page, an old profile shows its level as the maze level, a card the profile never
 // used says "domyślne"), a pick in the favorite list is saved at once (no "Zapisz" and no "Anuluj"; favorite-character-
-// explicit, S-31), and on a phone the window keeps its character row and summary reachable.
+// explicit, S-31), the list opened from edit shows a visible heading "Ulubiona postać" and has no "Wybierz postać",
+// the list opened from "Dodaj profil" has no "Ulubiona postać", and on a phone the window keeps its character row
+// and summary reachable.
 // The flows are the same on every screen size, so they run on desktop Chromium; the reach check runs on every project.
 import { expect, test, type Page } from "@playwright/test";
 
@@ -120,6 +122,32 @@ test("a pick in the favorite list is saved at once and keeps the card settings",
     return raw?.profiles[0];
   }, PROFILES_KEY);
   expect(stored).toMatchObject({ character: "pies", level: "lat6", cards: ANIA.cards });
+});
+
+test("the list opened from edit shows a visible Ulubiona postać heading", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/maze");
+
+  const dialog = await openEdit(page, "Ania");
+  await dialog.getByRole("button", { name: /^Postać:/ }).click();
+  // A screen-reader-only title stays a heading and is one pixel tall. The painted title is a line of text.
+  const heading = dialog.getByRole("heading", { name: "Ulubiona postać", exact: true });
+  await expect(heading).toBeVisible();
+  expect((await heading.boundingBox())?.height ?? 0).toBeGreaterThan(1);
+  await expect(dialog.getByRole("heading", { name: "Wybierz postać", exact: true })).toHaveCount(0);
+});
+
+test("the list opened from Dodaj profil has no Ulubiona postać heading", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/maze");
+
+  await page.getByRole("button", { name: "Ania", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("button", { name: "Dodaj profil" }).click();
+  await dialog.getByRole("button", { name: /^Postać:/ }).click();
+  await expect(dialog.getByRole("heading", { name: "Ulubiona postać", exact: true })).toHaveCount(0);
 });
 
 test("a favorite pick keeps card settings written on another open page meanwhile", async ({ page }, testInfo) => {

@@ -375,7 +375,9 @@ export function ProfileCorner({
           </div>
         ) : panel === "favorite-list" || panel === "draft-list" ? (
           <div className={cn("flex flex-col gap-2")}>
-            <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
+            <DialogTitle className={cn(panel === "draft-list" && "sr-only")}>
+              {panel === "favorite-list" ? "Ulubiona postać" : "Wybierz postać"}
+            </DialogTitle>
             <CharacterChoiceRows
               selected={
                 panel === "draft-list"
