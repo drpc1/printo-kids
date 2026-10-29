@@ -94,9 +94,11 @@ function DialogContent({
               // pr-4, this glyph's right edge, and `+ 3` in useScrollIndicator.ts are one corner. On
               // pointer-coarse the glyph's right edge meets the drawn track; on a precise pointer it
               // meets the native scrollbar (pr-4 minus the body's -m-1). The track formula does not change.
-              // The 44 px hit area stays put. The visible plate is the same 36 px ghost square as the
-              // pencil and trash buttons, centered on the glyph so the glyph's right edge does not move.
-              "group absolute top-2 right-3 size-11 outline-none disabled:pointer-events-none pointer-coarse:right-[3px]",
+              // On a precise pointer the glyph's top stays 16 px. On pointer-coarse the whole control is
+              // raised so the icon's top gap equals its right gap (3 px from the padding edge). The visible
+              // plate is the same 36 px ghost square as the pencil and trash buttons, centered on the glyph
+              // so the glyph's right edge does not move.
+              "group absolute top-2 right-3 size-11 outline-none disabled:pointer-events-none pointer-coarse:top-[-5px] pointer-coarse:right-[3px]",
             )}
           >
             <span
