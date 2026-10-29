@@ -140,7 +140,7 @@ export default function NonogramGenerator() {
     />
   );
   const solutionControl = (
-    <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
+    <label className={cn("text-muted-foreground flex items-center gap-2 text-base max-sm:basis-full max-sm:px-3")}>
       <Switch checked={showSolution} onCheckedChange={setShowSolution} />
       Pokaż rozwiązanie
     </label>
