@@ -337,6 +337,11 @@ export function ProfileCorner({
       </DialogTrigger>
       <DialogContent
         className={cn("max-h-[calc(100dvh-2rem)]")}
+        header={
+          panel === "favorite-list" || panel === "draft-list" ? (
+            <DialogTitle className={cn("truncate")}>Ulubiona postać</DialogTitle>
+          ) : undefined
+        }
         onEscapeKeyDown={(event) => {
           if (panel !== "delete") {
             return;
@@ -375,7 +380,6 @@ export function ProfileCorner({
           </div>
         ) : panel === "favorite-list" || panel === "draft-list" ? (
           <div className={cn("flex flex-col gap-2")}>
-            <DialogTitle className={cn("sr-only")}>Wybierz postać</DialogTitle>
             <CharacterChoiceRows
               selected={
                 panel === "draft-list"
@@ -486,7 +490,7 @@ export function ProfileCorner({
             <DialogTitle className={cn("sr-only")}>Imię</DialogTitle>
             <div className={cn("flex flex-col gap-2")}>
               <label htmlFor="child-profile-name" className={cn("text-sm font-medium")}>
-                Imię
+                Imię:
               </label>
               <Input
                 id="child-profile-name"
@@ -542,17 +546,20 @@ function ProfileCharacterControl({
   const label = catalog === null ? OWN_IMAGE_LABEL : catalog.label;
   const src = catalog === null ? thumbHref : catalog.src;
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      aria-label={`Postać: ${label}`}
-      className={cn(DIALOG_ROW_CLASS, "w-full")}
-      onClick={onOpen}
-    >
-      {src !== null ? <img src={src} alt="" width={40} height={40} className={cn("size-10")} /> : null}
-      {label}
-      <ChevronDown className={cn("size-4")} aria-hidden />
-    </Button>
+    <div className={cn("flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between")}>
+      <p className={cn("text-sm font-medium")}>Ulubiona postać:</p>
+      <Button
+        type="button"
+        variant="ghost"
+        aria-label={`Postać: ${label}`}
+        className={cn(DIALOG_ROW_CLASS, "w-full sm:w-auto")}
+        onClick={onOpen}
+      >
+        {src !== null ? <img src={src} alt="" width={40} height={40} className={cn("size-10")} /> : null}
+        {label}
+        <ChevronDown className={cn("size-4")} aria-hidden />
+      </Button>
+    </div>
   );
 }
 

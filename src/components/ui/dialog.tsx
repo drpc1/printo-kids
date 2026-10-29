@@ -39,9 +39,12 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  header,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
+  /** Sits in the top band, on the same line as the close control, above the scrolling body. */
+  header?: React.ReactNode;
 }) {
   const { bodyRef, trackRef, thumbRef } = useScrollIndicator();
   return (
@@ -51,11 +54,21 @@ function DialogContent({
         data-slot="dialog-content"
         className={cn(
           "bg-background data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 flex w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] flex-col gap-4 overflow-hidden rounded-lg border p-6 shadow-lg duration-200 outline-none sm:max-w-lg print:hidden",
-          showCloseButton && "pt-14 pr-4",
+          showCloseButton && header == null && "pt-14",
+          header != null && "pt-14",
+          showCloseButton && "pr-4",
           className,
         )}
         {...props}
       >
+        {header != null ? (
+          <>
+            {/* The close control's 44px target starts at top-2; its visible 36px plate is -top-0.5.
+                The title shares that plate, so the words sit with the glyph. */}
+            <div className={cn("absolute top-1.5 right-16 left-6 flex h-9 items-center")}>{header}</div>
+            <div aria-hidden className={cn("border-border absolute inset-x-0 top-11 border-t")} />
+          </>
+        ) : null}
         <div
           ref={bodyRef}
           data-slot="dialog-body"
@@ -83,9 +96,11 @@ function DialogContent({
               // pr-4, this glyph's right edge, and `+ 3` in useScrollIndicator.ts are one corner. On
               // pointer-coarse the glyph's right edge meets the drawn track; on a precise pointer it
               // meets the native scrollbar (pr-4 minus the body's -m-1). The track formula does not change.
-              // The 44 px hit area stays put. The visible plate is the same 36 px ghost square as the
-              // pencil and trash buttons, centered on the glyph so the glyph's right edge does not move.
-              "group absolute top-2 right-3 size-11 outline-none disabled:pointer-events-none pointer-coarse:right-[3px]",
+              // On a precise pointer the glyph's top stays 16 px. On pointer-coarse the whole control is
+              // raised so the icon's top gap equals its right gap (3 px from the padding edge). The visible
+              // plate is the same 36 px ghost square as the pencil and trash buttons, centered on the glyph
+              // so the glyph's right edge does not move.
+              "group absolute top-2 right-3 size-11 outline-none disabled:pointer-events-none pointer-coarse:top-[-5px] pointer-coarse:right-[3px]",
             )}
           >
             <span

@@ -409,6 +409,7 @@ test("a long profile list shows a scrollbar the eye can find", async ({ page }, 
   // Touch screens hide the native scrollbar until scrolling, so ui/dialog.tsx draws its own
   // (useScrollIndicator). A mouse screen keeps the native one, coloured from the theme.
   // On touch the close target is 44 px, stays clear of the first row, and lines up with that track.
+  // The glyph's top and right each sit 3 px inside the padding edge.
   await page.addInitScript((key) => {
     const names = [
       "Ala",
@@ -465,6 +466,19 @@ test("a long profile list shows a scrollbar the eye can find", async ({ page }, 
   expect(Math.abs(closeBox.x + closeBox.width - (trackBox.x + trackBox.width))).toBeLessThanOrEqual(1);
   const glyphBox = await viewportBox(close.locator("svg"));
   expect(trackBox.x).toBeGreaterThanOrEqual(glyphBox.x);
+  // boundingBox is the border box. The padding edge is inset by the border width.
+  const border = await dialog.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      top: Number.parseFloat(style.borderTopWidth),
+      right: Number.parseFloat(style.borderRightWidth),
+    };
+  });
+  const dialogBox = await viewportBox(dialog);
+  const topGap = glyphBox.y - (dialogBox.y + border.top);
+  const rightGap = dialogBox.x + dialogBox.width - border.right - (glyphBox.x + glyphBox.width);
+  expect(Math.abs(topGap - 3)).toBeLessThanOrEqual(1);
+  expect(Math.abs(rightGap - 3)).toBeLessThanOrEqual(1);
 
   const thumb = track.locator("div");
   const top = await viewportBox(thumb);
