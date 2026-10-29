@@ -1,7 +1,7 @@
 ---
 change_id: gh180-no-character
 title: Replace Bez postaci with Brak
-status: implementing
+status: implemented
 created: 2026-10-29
 updated: 2026-10-29
 archived_at: null
