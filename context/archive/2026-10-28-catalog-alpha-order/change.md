@@ -1,10 +1,10 @@
 ---
 change_id: catalog-alpha-order
 title: Katalog na stronie głównej alfabetycznie
-status: impl_reviewed
+status: archived
 created: 2026-10-28
-updated: 2026-10-28
-archived_at: null
+updated: 2026-10-29
+archived_at: 2026-10-29T12:29:29Z
 ---
 
 ## Notes
