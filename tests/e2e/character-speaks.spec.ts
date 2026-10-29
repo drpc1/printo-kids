@@ -25,10 +25,10 @@ async function pickCharacter(page: Page, name: string): Promise<void> {
 }
 
 for (const card of CARDS) {
-  test(`${card.path}: Bez postaci keeps the plain sentence, a character speaks it in a bubble`, async ({ page }) => {
+  test(`${card.path}: Brak keeps the plain sentence, a character speaks it in a bubble`, async ({ page }) => {
     await page.goto(card.path);
-    await pickCharacter(page, "Bez postaci");
-    await expect(page.getByRole("button", { name: "Postać: Bez postaci" })).toBeVisible();
+    await pickCharacter(page, "Brak");
+    await expect(page.getByRole("button", { name: "Postać: Brak" })).toBeVisible();
     await page.getByRole("button", { name: "Generuj" }).click();
     const sheet = page.getByRole("img", { name: card.sheet });
     await expect(sheet).toBeVisible();
@@ -40,7 +40,7 @@ for (const card of CARDS) {
     await expect(sheet.locator('image[href="/characters/dinozaur.png"]')).toHaveCount(1);
     await expect(sheet.locator("text", { hasText: card.sentence }).first()).toBeVisible();
 
-    await pickCharacter(page, "Bez postaci");
+    await pickCharacter(page, "Brak");
     await expect(sheet.locator("image")).toHaveCount(0);
   });
 

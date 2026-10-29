@@ -125,7 +125,7 @@ test("a stored own image without a picture does not offer to be overwritten on e
   await seed(page, [{ ...ANIA, character: "wlasne" }], ANIA.id);
   await page.goto("/symmetry");
 
-  await expect(page.getByRole("button", { name: "Postać: Bez postaci" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Postać: Brak" })).toBeVisible();
   const dialog = await openList(page);
   await expect(dialog.getByText("Tylko na tę kartę")).toHaveCount(0);
 });
