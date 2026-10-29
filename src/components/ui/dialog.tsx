@@ -39,9 +39,12 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  header,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
+  /** Sits in the top band, on the same line as the close control, above the scrolling body. */
+  header?: React.ReactNode;
 }) {
   const { bodyRef, trackRef, thumbRef } = useScrollIndicator();
   return (
@@ -51,11 +54,19 @@ function DialogContent({
         data-slot="dialog-content"
         className={cn(
           "bg-background data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 flex w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] flex-col gap-4 overflow-hidden rounded-lg border p-6 shadow-lg duration-200 outline-none sm:max-w-lg print:hidden",
-          showCloseButton && "pt-14 pr-4",
+          showCloseButton && header == null && "pt-14",
+          header != null && "pt-16",
+          showCloseButton && "pr-4",
           className,
         )}
         {...props}
       >
+        {header != null ? (
+          <>
+            <div className={cn("absolute top-2 right-16 left-6 flex h-11 items-center")}>{header}</div>
+            <div aria-hidden className={cn("border-border absolute inset-x-0 top-13 border-t")} />
+          </>
+        ) : null}
         <div
           ref={bodyRef}
           data-slot="dialog-body"
