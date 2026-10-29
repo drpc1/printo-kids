@@ -1,7 +1,7 @@
 ---
 change_id: phone-toggle-margin
 title: Align phone toggle left margin with settings rows
-status: planned
+status: implementing
 created: 2026-10-29
 updated: 2026-10-29
 archived_at: null
