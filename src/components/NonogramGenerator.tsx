@@ -198,11 +198,13 @@ export default function NonogramGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          <div className={cn("flex flex-wrap items-center justify-center gap-2")}>
-            {characterControl}
-            {sizeControl}
+          <div className={cn("flex flex-col items-center gap-6 max-sm:gap-2")}>
+            <div className={cn("flex flex-wrap items-center justify-center gap-2")}>
+              {characterControl}
+              {sizeControl}
+            </div>
+            {categoryControl}
           </div>
-          {categoryControl}
           <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <GenerateButton
             onClick={() => {
