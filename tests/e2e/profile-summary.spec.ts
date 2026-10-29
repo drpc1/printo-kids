@@ -3,7 +3,11 @@
 // level, the edit window has no level control but one sentence about the rule and a read-only summary of the six
 // cards (each row leads to its card page, an old profile shows its level as the maze level, a card the profile never
 // used says "domyślne"), a pick in the favorite list is saved at once (no "Zapisz" and no "Anuluj"; favorite-character-
-// explicit, S-31), and on a phone the window keeps its character row and summary reachable.
+// explicit, S-31), the list opened from edit shows a visible heading "Ulubiona postać" in the window title, level
+// with the close control and above the character rows, and has no "Wybierz postać", the add and edit forms show that
+// caption under the name (beside the chosen character on a wide screen, above it on a phone), the list opened from
+// "Dodaj profil" uses that same window title, and on a phone the window keeps its character row
+// and summary reachable.
 // The flows are the same on every screen size, so they run on desktop Chromium; the reach check runs on every project.
 import { expect, test, type Page } from "@playwright/test";
 
@@ -120,6 +124,83 @@ test("a pick in the favorite list is saved at once and keeps the card settings",
     return raw?.profiles[0];
   }, PROFILES_KEY);
   expect(stored).toMatchObject({ character: "pies", level: "lat6", cards: ANIA.cards });
+});
+
+test("the list opened from edit shows a visible Ulubiona postać heading", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/maze");
+
+  const dialog = await openEdit(page, "Ania");
+  await dialog.getByRole("button", { name: /^Postać:/ }).click();
+  // A screen-reader-only title stays a heading and is one pixel tall. The painted title is a line of text.
+  const heading = dialog.getByRole("heading", { name: "Ulubiona postać", exact: true });
+  const close = dialog.getByRole("button", { name: "Zamknij" });
+  await expect(heading).toBeVisible();
+  const headingBox = await heading.boundingBox();
+  const closeBox = await close.boundingBox();
+  expect(headingBox).not.toBeNull();
+  expect(closeBox).not.toBeNull();
+  expect(headingBox?.height ?? 0).toBeGreaterThan(1);
+  const headingMid = (headingBox?.y ?? 0) + (headingBox?.height ?? 0) / 2;
+  const closeMid = (closeBox?.y ?? 0) + (closeBox?.height ?? 0) / 2;
+  expect(Math.abs(headingMid - closeMid)).toBeLessThan(8);
+  const kotBox = await dialog.getByRole("button", { name: "Kot", exact: true }).boundingBox();
+  expect(kotBox?.y ?? 0).toBeGreaterThan((headingBox?.y ?? 0) + (headingBox?.height ?? 0));
+  await expect(dialog.getByRole("heading", { name: "Wybierz postać", exact: true })).toHaveCount(0);
+});
+
+test("the list opened from Dodaj profil shows the same Ulubiona postać title", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/maze");
+
+  await page.getByRole("button", { name: "Ania", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("button", { name: "Dodaj profil" }).click();
+  await expect(dialog.getByText("Ulubiona postać:", { exact: true })).toBeVisible();
+  await dialog.getByRole("button", { name: /^Postać:/ }).click();
+  const heading = dialog.getByRole("heading", { name: "Ulubiona postać", exact: true });
+  const close = dialog.getByRole("button", { name: "Zamknij" });
+  await expect(heading).toBeVisible();
+  const headingBox = await heading.boundingBox();
+  const closeBox = await close.boundingBox();
+  expect(headingBox).not.toBeNull();
+  expect(closeBox).not.toBeNull();
+  const headingMid = (headingBox?.y ?? 0) + (headingBox?.height ?? 0) / 2;
+  const closeMid = (closeBox?.y ?? 0) + (closeBox?.height ?? 0) / 2;
+  expect(Math.abs(headingMid - closeMid)).toBeLessThan(8);
+  const rowBox = await dialog.getByRole("button", { name: "Bez postaci", exact: true }).boundingBox();
+  expect(rowBox?.y ?? 0).toBeGreaterThan((headingBox?.y ?? 0) + (headingBox?.height ?? 0));
+  await expect(dialog.getByRole("heading", { name: "Wybierz postać", exact: true })).toHaveCount(0);
+});
+
+test("the favorite caption sits under the name, beside the character on a wide screen and above it on a phone", async ({
+  page,
+}, testInfo) => {
+  test.skip(!["chromium", "phone-360"].includes(testInfo.project.name), "wide and phone layouts");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/maze");
+
+  const dialog = await openEdit(page, "Ania");
+  const nameBox = await dialog.getByRole("heading", { name: "Ania", exact: true }).boundingBox();
+  const caption = dialog.getByText("Ulubiona postać:", { exact: true });
+  const character = dialog.getByRole("button", { name: "Postać: Kot" });
+  await expect(caption).toBeVisible();
+  const captionBox = await caption.boundingBox();
+  const characterBox = await character.boundingBox();
+  expect(nameBox).not.toBeNull();
+  expect(captionBox).not.toBeNull();
+  expect(characterBox).not.toBeNull();
+  expect(captionBox?.y ?? 0).toBeGreaterThan((nameBox?.y ?? 0) + (nameBox?.height ?? 0) - 1);
+  if (testInfo.project.name === "chromium") {
+    expect(characterBox?.x ?? 0).toBeGreaterThan((captionBox?.x ?? 0) + (captionBox?.width ?? 0) - 1);
+    const captionMid = (captionBox?.y ?? 0) + (captionBox?.height ?? 0) / 2;
+    const characterMid = (characterBox?.y ?? 0) + (characterBox?.height ?? 0) / 2;
+    expect(Math.abs(captionMid - characterMid)).toBeLessThan(16);
+  } else {
+    expect(characterBox?.y ?? 0).toBeGreaterThan((captionBox?.y ?? 0) + (captionBox?.height ?? 0) - 1);
+  }
 });
 
 test("a favorite pick keeps card settings written on another open page meanwhile", async ({ page }, testInfo) => {

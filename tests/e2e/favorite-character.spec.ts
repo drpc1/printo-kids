@@ -2,8 +2,9 @@
 // Protects the explicit favorite: with a profile active, a character picked on the bar is for this visit only (the
 // favorite is back after a reload), the list of characters then says "Tylko na tę kartę" and offers "Ustaw jako
 // ulubioną {imię}", one click saves it in the profile and closes the list, the favorite itself and a profile-less
-// visit offer nothing, a stored own image without a picture does not offer to be overwritten, and on a phone the
-// offer stays reachable under the long list. The flows are the same on every screen size, so they run on desktop
+// visit offer nothing, a stored own image without a picture does not offer to be overwritten, the list opened from
+// the card bar has no heading "Ulubiona postać", and on a phone the offer stays reachable under the long list. The
+// flows are the same on every screen size, so they run on desktop
 // Chromium; the reach check runs on every project.
 import { expect, test, type Page } from "@playwright/test";
 
@@ -108,6 +109,15 @@ test("without a profile the list offers nothing", async ({ page }, testInfo) => 
   const dialog = await openList(page);
   await expect(dialog.getByText("Tylko na tę kartę")).toHaveCount(0);
   await expect(dialog.getByRole("button", { name: /^Ustaw jako ulubioną/ })).toHaveCount(0);
+});
+
+test("the list opened from the card bar has no Ulubiona postać heading", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/symmetry");
+
+  const dialog = await openList(page);
+  await expect(dialog.getByRole("heading", { name: "Ulubiona postać", exact: true })).toHaveCount(0);
 });
 
 test("a stored own image without a picture does not offer to be overwritten on entry", async ({ page }, testInfo) => {
