@@ -121,8 +121,8 @@ Dane profilu i ostatnio użyta postać zostają bez zmian. Nie ma migracji.
 
 #### Automated
 
-- [x] 1.1 Na Chromium widać nagłówek „Ulubiona postać” tylko po otwarciu listy z edycji profilu, a nie na liście tworzenia profilu ani na liście paska: `E2E_PORT=4399 npx playwright test tests/e2e/profile-summary.spec.ts tests/e2e/favorite-character.spec.ts --project=chromium`
-- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.1 Na Chromium widać nagłówek „Ulubiona postać” tylko po otwarciu listy z edycji profilu, a nie na liście tworzenia profilu ani na liście paska: `E2E_PORT=4399 npx playwright test tests/e2e/profile-summary.spec.ts tests/e2e/favorite-character.spec.ts --project=chromium` — ad96ab4
+- [x] 1.2 Lint przechodzi: `npm run lint` — ad96ab4
 
 #### Manual
 
