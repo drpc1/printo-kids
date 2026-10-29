@@ -1,10 +1,10 @@
 ---
 change_id: phone-settings-rows
 title: Align sudoku and nonogram settings rows on the phone
-status: implemented
+status: archived
 created: 2026-10-29
 updated: 2026-10-29
-archived_at: null
+archived_at: 2026-10-29T13:11:44Z
 ---
 
 ## Notes
