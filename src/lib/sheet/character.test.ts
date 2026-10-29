@@ -16,7 +16,7 @@ import {
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
 const catalog = [
-  { id: "none", label: "Bez postaci", src: null },
+  { id: "none", label: "Brak", src: null },
   { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.png" },
   { id: "jednorozec", label: "Jednorożec", src: "/characters/jednorozec.png" },
   { id: "kot", label: "Kot", src: "/characters/kot.png" },
@@ -31,7 +31,7 @@ const catalog = [
 ] as const;
 
 void describe("character catalog", () => {
-  void test("lists Bez postaci and eleven characters in Polish alphabetical order", () => {
+  void test("lists Brak and eleven characters in Polish alphabetical order", () => {
     assert.deepEqual(
       CHARACTER_CHOICES.map((row) => ({ id: row.id, label: row.label, src: row.src })),
       [...catalog],
@@ -49,13 +49,13 @@ void describe("character catalog", () => {
     assert.equal(characterContentLeft("wlasne"), 0);
   });
 
-  void test("an id outside the catalog is Bez postaci", () => {
+  void test("an id outside the catalog is Brak", () => {
     assert.equal(characterSheetSrc("poza-katalogiem"), null);
 
     const row = characterRow("poza-katalogiem");
 
     assert.equal(row.id, "none");
-    assert.equal(row.label, "Bez postaci");
+    assert.equal(row.label, "Brak");
     assert.equal(row.src, null);
   });
 
