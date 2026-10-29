@@ -1,4 +1,4 @@
-const noneChoice = { id: "none", label: "Bez postaci", src: null } as const;
+const noneChoice = { id: "none", label: "Brak", src: null } as const;
 
 export const CHARACTER_CHOICES = [
   noneChoice,

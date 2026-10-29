@@ -170,7 +170,7 @@ test("the list opened from Dodaj profil shows the same Ulubiona postać title", 
   const headingMid = (headingBox?.y ?? 0) + (headingBox?.height ?? 0) / 2;
   const closeMid = (closeBox?.y ?? 0) + (closeBox?.height ?? 0) / 2;
   expect(Math.abs(headingMid - closeMid)).toBeLessThan(8);
-  const rowBox = await dialog.getByRole("button", { name: "Bez postaci", exact: true }).boundingBox();
+  const rowBox = await dialog.getByRole("button", { name: "Brak", exact: true }).boundingBox();
   expect(rowBox?.y ?? 0).toBeGreaterThan((headingBox?.y ?? 0) + (headingBox?.height ?? 0));
   await expect(dialog.getByRole("heading", { name: "Wybierz postać", exact: true })).toHaveCount(0);
 });
