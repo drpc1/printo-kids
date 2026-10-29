@@ -163,7 +163,7 @@ export default function SudokuGenerator() {
         />
       ) : null}
       {settings.symbols === "shapes" ? (
-        <label className={cn("text-muted-foreground flex items-center gap-2 text-base")}>
+        <label className={cn("text-muted-foreground flex items-center gap-2 text-base max-sm:basis-full max-sm:px-3")}>
           <Switch
             checked={colors}
             onCheckedChange={(next) => {
@@ -223,7 +223,9 @@ export default function SudokuGenerator() {
         </div>
       ) : (
         <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          <div className={cn("flex flex-wrap items-center justify-center gap-3")}>{settingsControls}</div>
+          <div className={cn("flex flex-wrap items-center justify-center gap-3 max-sm:justify-start")}>
+            {settingsControls}
+          </div>
           <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
           <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
           {failedNote}
