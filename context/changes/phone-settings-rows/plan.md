@@ -132,8 +132,8 @@ Brak danych do przeniesienia. Ustawienia karty w pamięci przeglądarki zostają
 
 #### Automated
 
-- [x] 1.1 Spec `tests/e2e/phone-settings-rows.spec.ts` przechodzi: `npx playwright test tests/e2e/phone-settings-rows.spec.ts`
-- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.1 Spec `tests/e2e/phone-settings-rows.spec.ts` przechodzi: `npx playwright test tests/e2e/phone-settings-rows.spec.ts` — f0c974d
+- [x] 1.2 Lint przechodzi: `npm run lint` — f0c974d
 
 #### Manual
 
