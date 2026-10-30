@@ -5,6 +5,7 @@ import {
   type SymmetryTemplate,
 } from "../symmetry/templates.ts";
 import type { DictationLevel, DictationLevelId } from "./levels.ts";
+import { dictationShapesFor, shapeSilhouette } from "./shapes.ts";
 import {
   dictationSilhouette,
   outlineProblems,
@@ -98,17 +99,25 @@ function catalogFor(level: DictationLevel, category: ObjectCategoryChoiceId): Di
   const byKey = new Map<string, DictationCard>();
   let total = 0;
   let passing = 0;
+  const keep = (card: DictationCard | null): void => {
+    total += 1;
+    if (card === null || card.commands.length > level.maxCommands || dictationCardProblems(card).length > 0) {
+      return;
+    }
+    passing += 1;
+    if (!byKey.has(card.key)) {
+      byKey.set(card.key, card);
+    }
+  };
   for (const template of symmetryTemplatesFor(level.templateLevel, category)) {
     for (const variants of variantCombinations(template.parts.map((part) => part.variants.length))) {
-      total += 1;
-      const card = dictationCardFor(template, variants, level);
-      if (card === null || card.commands.length > level.maxCommands || dictationCardProblems(card).length > 0) {
-        continue;
-      }
-      passing += 1;
-      if (!byKey.has(card.key)) {
-        byKey.set(card.key, card);
-      }
+      keep(dictationCardFor(template, variants, level));
+    }
+  }
+  // A shape and its mirror image are two cards: the child draws another outline.
+  for (const shape of dictationShapesFor(level.id, category)) {
+    for (const mirrored of [false, true]) {
+      keep(dictationCardFromSilhouette(shapeSilhouette(shape, level.id, mirrored), level));
     }
   }
   const catalog = { total, passing, cards: [...byKey.values()] };
@@ -125,7 +134,14 @@ export function dictationCardFor(
   variants: readonly number[],
   level: DictationLevel,
 ): DictationCard | null {
-  const silhouette = dictationSilhouette(template, variants);
+  return dictationCardFromSilhouette(dictationSilhouette(template, variants), level);
+}
+
+/** The same for any silhouette, whether it comes from a mirrored template or from a hand-drawn shape. */
+export function dictationCardFromSilhouette(
+  silhouette: DictationSilhouette,
+  level: DictationLevel,
+): DictationCard | null {
   const fits = silhouette.width <= level.columns - 2 && silhouette.height <= level.rows - 2;
   if (!fits || outlineProblems(silhouette).length > 0) {
     return null;
