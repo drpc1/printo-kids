@@ -247,13 +247,13 @@ Katalog budowany raz na poziom i kategorię (cache `catalogs`); dodatkowo najwy�
 
 #### Automated
 
-- [x] 2.1 Testy przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Typy przechodzą: `npx astro check`
+- [x] 2.1 Testy przechodzą: `npm test` — ed95407
+- [x] 2.2 Lint przechodzi: `npm run lint` — ed95407
+- [x] 2.3 Typy przechodzą: `npx astro check` — ed95407
 
 #### Manual
 
-- [x] 2.4 Na stronie dyktanda po wielu Generuj pojawia się kształt z nowego katalogu, także odbity, i obrys działa
+- [x] 2.4 Na stronie dyktanda po wielu Generuj pojawia się kształt z nowego katalogu, także odbity, i obrys działa — ed95407
 
 ### Phase 3: Wszystkie rysunki i kategorie
 
