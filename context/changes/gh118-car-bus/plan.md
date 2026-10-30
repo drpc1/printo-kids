@@ -140,24 +140,24 @@ Dwa obiekty więcej w katalogu; wpływ na czas Generuj pomijalny.
 
 #### Automated
 
-- [x] 1.1 Testy katalogu przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.1 Testy katalogu przechodzą: `npm test` — 46f763a
+- [x] 1.2 Lint przechodzi: `npm run lint` — 46f763a
+- [x] 1.3 Typy przechodzą: `npx astro check` — 46f763a
 
 #### Manual
 
-- [x] 1.4 Auto i autobus są rozpoznawalne na podglądzie karty symetrii w poziomach 1, 2 i 4 (4×12, 6×15, 9×24)
-- [x] 1.5 Odbicie daje pojazd z jednakowymi końcami, bez dziwnych szwów na osi
+- [x] 1.4 Auto i autobus są rozpoznawalne na podglądzie karty symetrii w poziomach 1, 2 i 4 (4×12, 6×15, 9×24) — 46f763a
+- [x] 1.5 Odbicie daje pojazd z jednakowymi końcami, bez dziwnych szwów na osi — 46f763a
 
 ### Phase 2: Testy, nonogram i dyktando, PRD
 
 #### Automated
 
-- [ ] 2.1 Wszystkie testy przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Budowanie przechodzi: `npm run build`
+- [x] 2.1 Wszystkie testy przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.3 Budowanie przechodzi: `npm run build`
 
 #### Manual
 
-- [ ] 2.4 Kilkakrotne Generuj w nonogramie i dyktandzie (kategoria „Kosmos i maszyny”) pokazuje auto i autobus lub wybiera inne obiekty bez błędu
-- [ ] 2.5 Pojazdy mieszczą się na karcie w marginesie 10 mm na telefonie
+- [x] 2.4 Kilkakrotne Generuj w nonogramie i dyktandzie (kategoria „Kosmos i maszyny”) pokazuje auto i autobus lub wybiera inne obiekty bez błędu
+- [x] 2.5 Pojazdy mieszczą się na karcie w marginesie 10 mm na telefonie
