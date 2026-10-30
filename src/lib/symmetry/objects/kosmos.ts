@@ -531,8 +531,155 @@ const UFO_9: SymmetryTemplate = {
   ],
 };
 
+// Car and bus, side view (context/changes/gh118-car-bus/mockup-drawings.json). A side view is symmetric left-right
+// because both ends are alike: the cabin sits on the axis, the body runs the full width and a wheel stands on each half.
+// The windows and the wheel hubs are holes. Every part changes the silhouette, not only a color.
+
+const CAR_4: SymmetryTemplate = {
+  id: "auto",
+  width: 4,
+  height: 6,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    ".rrr", // 0 roof
+    ".r.r", // 1 windows
+    ".rrr", // 2 headlight (part) on column 0
+    ".rrr", // 3 bumper (part) on column 0
+    ".kk.", // 4 wheel
+    ".kk.", // 5
+  ]),
+  parts: [
+    { id: "light", variants: [drawing(["y"], 2, 0), drawing([])] },
+    { id: "bumper", variants: [drawing(["k"], 3, 0), drawing([])] },
+  ],
+};
+
+const CAR_6: SymmetryTemplate = {
+  id: "auto",
+  width: 6,
+  height: 8,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    "......", // 0 roof (part)
+    "...rrr", // 1
+    "...r.r", // 2 windows
+    ".rrrrr", // 3 headlight (part) on column 0
+    "rrrrrr", // 4
+    ".kkk..", // 5 wheel
+    ".k.k..", // 6 hub
+    ".kkk..", // 7
+  ]),
+  parts: [
+    { id: "roof", variants: [drawing(["....rr"]), drawing(["...rrr"])] },
+    { id: "light", variants: [drawing(["y"], 3, 0), drawing([])] },
+  ],
+};
+
+const CAR_9: SymmetryTemplate = {
+  id: "auto",
+  width: 9,
+  height: 12,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    ".........", // 0 roof (part)
+    ".....rrrr", // 1
+    "....rr..r", // 2 windows
+    "....rr..r", // 3
+    "rrrrrrrrr", // 4
+    ".rrrrrrrr", // 5 headlight (part) on column 0
+    "rrrrrrrrr", // 6
+    ".rrrrrrrr", // 7 bumper (part) on column 0
+    "..kkkk...", // 8 wheel
+    "..k..k...", // 9 hub
+    "..k..k...", // 10
+    "..kkkk...", // 11
+  ]),
+  parts: [
+    { id: "roof", variants: [drawing(["......rrr"]), drawing([".....rrrr"])] },
+    { id: "light", variants: [drawing(["y"], 5, 0), drawing([])] },
+    { id: "bumper", variants: [drawing(["k"], 7, 0), drawing([])] },
+  ],
+};
+
+const BUS_4: SymmetryTemplate = {
+  id: "autobus",
+  width: 4,
+  height: 8,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    "....", // 0 roof rack (part)
+    "yyyy", // 1 roof
+    "y..y", // 2 windows
+    "y..y", // 3
+    "yyyy", // 4
+    ".yyy", // 5 headlight (part) on column 0
+    ".kk.", // 6 wheel
+    ".kk.", // 7
+  ]),
+  parts: [
+    { id: "rack", variants: [drawing([]), drawing(["..kk"])] },
+    { id: "light", variants: [drawing(["r"], 5, 0), drawing([])] },
+  ],
+};
+
+const BUS_6: SymmetryTemplate = {
+  id: "autobus",
+  width: 6,
+  height: 10,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    "......", // 0 roof rack (part)
+    "yyyyyy", // 1 roof
+    "y.yy.y", // 2 windows
+    "y.yy.y", // 3
+    "yyyyyy", // 4
+    "rrrrrr", // 5 stripe
+    ".yyyyy", // 6 headlight (part) on column 0
+    ".kkk..", // 7 wheel
+    ".k.k..", // 8 hub
+    ".kkk..", // 9
+  ]),
+  parts: [
+    { id: "rack", variants: [drawing([]), drawing(["...kkk"])] },
+    { id: "light", variants: [drawing(["r"], 6, 0), drawing([])] },
+  ],
+};
+
+const BUS_9: SymmetryTemplate = {
+  id: "autobus",
+  width: 9,
+  height: 13,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    ".........", // 0 roof rack (part)
+    "yyyyyyyyy", // 1 roof
+    "y.yy.yy.y", // 2 windows
+    "y.yy.yy.y", // 3
+    "y.yy.yy.y", // 4
+    "yyyyyyyyy", // 5
+    "rrrrrrrrr", // 6 stripe
+    ".yyyyyyyy", // 7 headlight (part) on column 0
+    ".yyyyyyyy", // 8 bumper (part) on column 0
+    "..kkkk...", // 9 wheel
+    "..k..k...", // 10 hub
+    "..k..k...", // 11
+    "..kkkk...", // 12
+  ]),
+  parts: [
+    { id: "rack", variants: [drawing([]), drawing(["...kkkkkk"])] },
+    { id: "light", variants: [drawing(["r"], 7, 0), drawing([])] },
+    { id: "bumper", variants: [drawing(["k"], 8, 0), drawing([])] },
+  ],
+};
+
 export const KOSMOS: SymmetryObjectSizes = {
-  half4: [ROCKET_4, ROBOT_4, BALLOON_4, UFO_4],
-  half6: [ROCKET, ROBOT, BALLOON_6, UFO_6],
-  half9: [ROCKET_7, ROBOT_7, BALLOON_9, UFO_9],
+  half4: [ROCKET_4, ROBOT_4, BALLOON_4, UFO_4, CAR_4, BUS_4],
+  half6: [ROCKET, ROBOT, BALLOON_6, UFO_6, CAR_6, BUS_6],
+  half9: [ROCKET_7, ROBOT_7, BALLOON_9, UFO_9, CAR_9, BUS_9],
 };
