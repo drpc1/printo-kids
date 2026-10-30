@@ -24,4 +24,6 @@ export const SUDOKU_SHEET = {
   shapeStroke: 1.2,
   /** Height of a digit relative to its cell. */
   digitScale: 0.6,
+  /** How far a digit baseline sits below the cell center, relative to the digit size: about half the digit height. */
+  digitBaselineShift: 0.35,
 } as const;
