@@ -127,6 +127,7 @@ export default function WorksheetGenerator() {
       generateFailed={generateFailed}
       failedText={GENERATE_FAILED_TEXT}
       onGenerate={handleGenerate}
+      printDisabled={maze === null}
       controls={
         <>
           <CharacterChoiceControl
