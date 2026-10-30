@@ -1,10 +1,10 @@
 ---
 change_id: gh192-pages-sceleton
 title: Wspólny szkielet strony karty przed kolejnym rodzajem (GH 192)
-status: impl_reviewed
+status: archived
 created: 2026-10-30
 updated: 2026-10-30
-archived_at: null
+archived_at: 2026-10-30T22:31:54Z
 ---
 
 ## Notes
