@@ -230,28 +230,28 @@ Generowanie ma zostać poniżej 5 s; trudny nonogram sprawdza wszystkie warianty
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą z nową kategorią i wpiętymi figurami, które przeszły miernik: `npm test`
-- [x] 1.2 Typy przechodzą: `npx astro check`
-- [x] 1.3 Lint przechodzi: `npm run lint`
-- [x] 1.4 Miernik wypisuje wynik dla 8 figur × 3 rozmiarów
+- [x] 1.1 Testy przechodzą z nową kategorią i wpiętymi figurami, które przeszły miernik: `npm test` — 2c4f2f1
+- [x] 1.2 Typy przechodzą: `npx astro check` — 2c4f2f1
+- [x] 1.3 Lint przechodzi: `npm run lint` — 2c4f2f1
+- [x] 1.4 Miernik wypisuje wynik dla 8 figur × 3 rozmiarów — 2c4f2f1
 
 #### Manual
 
-- [x] 1.5 Pasek „Kategoria” ma wpis „Kształty” na trzech stronach i da się wygenerować kartę
-- [x] 1.6 Figury są rozpoznawalne na ekranie (koło jest kołem, nie owalem)
+- [x] 1.5 Pasek „Kategoria” ma wpis „Kształty” na trzech stronach i da się wygenerować kartę — 2c4f2f1
+- [x] 1.6 Figury są rozpoznawalne na ekranie (koło jest kołem, nie owalem) — 2c4f2f1
 
 ### Phase 2: Selekcja figur i zmienność kart
 
 #### Automated
 
-- [ ] 2.1 Wszystkie testy przechodzą: `npm test`
-- [ ] 2.2 Typy i lint przechodzą: `npx astro check`, `npm run lint`
-- [ ] 2.3 Co najmniej 4 figury w każdym rozmiarze
+- [x] 2.1 Wszystkie testy przechodzą: `npm test`
+- [x] 2.2 Typy i lint przechodzą: `npx astro check`, `npm run lint`
+- [x] 2.3 Co najmniej 4 figury w każdym rozmiarze
 
 #### Manual
 
-- [ ] 2.4 Kilkanaście razy Generuj w „Kształty” na każdej karcie daje różne karty
-- [ ] 2.5 Nonogram trudny i dyktando trudne mieszczą się na A4 i da się je rozwiązać
+- [x] 2.4 Kilkanaście razy Generuj w „Kształty” na każdej karcie daje różne karty
+- [x] 2.5 Nonogram trudny i dyktando trudne mieszczą się na A4 i da się je rozwiązać
 
 ### Phase 3: Zasięg poza szablonami i PRD
 
