@@ -142,6 +142,6 @@ None; one arithmetic expression per digit.
 
 #### Manual
 
-- [ ] 1.7 On an iPhone in Chrome or Brave, a 9×9 and a 6×6 digit card show every digit centered in its cell
-- [ ] 1.8 The print preview from the same iPhone shows the same centering
-- [ ] 1.9 Desktop Chrome, Firefox and Safari still show centered digits, and a shape card is unchanged
+- [x] 1.7 On an iPhone in Chrome or Brave, a 9×9 and a 6×6 digit card show every digit centered in its cell
+- [x] 1.8 The print preview from the same iPhone shows the same centering
+- [x] 1.9 Desktop Chrome, Firefox and Safari still show centered digits, and a shape card is unchanged
