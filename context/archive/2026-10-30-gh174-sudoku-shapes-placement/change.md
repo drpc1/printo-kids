@@ -1,10 +1,10 @@
 ---
 change_id: gh174-sudoku-shapes-placement
 title: Sudoku shapes list - no names, same gap and width as the grid
-status: impl_reviewed
+status: archived
 created: 2026-10-30
 updated: 2026-10-30
-archived_at: null
+archived_at: 2026-10-30T15:52:25Z
 ---
 
 ## Notes
