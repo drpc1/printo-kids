@@ -259,46 +259,46 @@ Brak: identyfikatory poziomów (`lat7`) i zapisane profile bez zmian. `groups` z
 
 #### Automated
 
-- [x] 1.1 Nowe testy `mixed` przechodzą, w tym wiersz z jedną liczbą ma problem: `node --experimental-strip-types --test src/lib/sequence/generate.test.ts`
-- [x] 1.2 Typy przechodzą: `npx astro check`
-- [x] 1.3 Lint przechodzi: `npm run lint`
+- [x] 1.1 Nowe testy `mixed` przechodzą, w tym wiersz z jedną liczbą ma problem: `node --experimental-strip-types --test src/lib/sequence/generate.test.ts` — 7c0b6ed
+- [x] 1.2 Typy przechodzą: `npx astro check` — 7c0b6ed
+- [x] 1.3 Lint przechodzi: `npm run lint` — 7c0b6ed
 
 #### Manual
 
-- [x] 1.4 Ręczne wygenerowanie kilku kart lat7 pokazuje w wierszach `mixed` co najmniej dwie liczby
+- [x] 1.4 Ręczne wygenerowanie kilku kart lat7 pokazuje w wierszach `mixed` co najmniej dwie liczby — 7c0b6ed
 
 ### Phase 2: Poszerzone sprawdzenie dwuznaczności
 
 #### Automated
 
-- [x] 2.1 Testy sekwencji przechodzą: `node --experimental-strip-types --test src/lib/sequence/generate.test.ts src/lib/sequence/levels.test.ts`
-- [x] 2.2 Typy i lint przechodzą: `npx astro check` oraz `npm run lint`
-- [x] 2.3 Pomiar 1000 kart na poziom: `null` = 0 na lat4–lat7, p99 czasu < 100 ms
+- [x] 2.1 Testy sekwencji przechodzą: `node --experimental-strip-types --test src/lib/sequence/generate.test.ts src/lib/sequence/levels.test.ts` — 7c0b6ed
+- [x] 2.2 Typy i lint przechodzą: `npx astro check` oraz `npm run lint` — 7c0b6ed
+- [x] 2.3 Pomiar 1000 kart na poziom: `null` = 0 na lat4–lat7, p99 czasu < 100 ms — 7c0b6ed
 
 #### Manual
 
-- [x] 2.4 Generuj na lat5 i lat6 daje karty z wierszami AAB, bez widocznych niejednoznaczności na wydruku próbnym
+- [x] 2.4 Generuj na lat5 i lat6 daje karty z wierszami AAB, bez widocznych niejednoznaczności na wydruku próbnym — 7c0b6ed
 
 ### Phase 3: ABB zamiast `groups` na lat7
 
 #### Automated
 
-- [x] 3.1 Wszystkie testy sekwencji przechodzą: `node --experimental-strip-types --test src/lib/sequence/generate.test.ts src/lib/sequence/levels.test.ts src/lib/sequence/layout.test.ts src/lib/sequence/colors.test.ts src/lib/sequence/shapes.test.ts`
-- [x] 3.2 Cały zestaw przechodzi: `npm test`
-- [x] 3.3 Typy i lint przechodzą: `npx astro check` oraz `npm run lint`
-- [x] 3.4 Pomiar z fazy 2 powtórzony na lat7: `null` = 0
+- [x] 3.1 Wszystkie testy sekwencji przechodzą: `node --experimental-strip-types --test src/lib/sequence/generate.test.ts src/lib/sequence/levels.test.ts src/lib/sequence/layout.test.ts src/lib/sequence/colors.test.ts src/lib/sequence/shapes.test.ts` — 7c0b6ed
+- [x] 3.2 Cały zestaw przechodzi: `npm test` — 7c0b6ed
+- [x] 3.3 Typy i lint przechodzą: `npx astro check` oraz `npm run lint` — 7c0b6ed
+- [x] 3.4 Pomiar z fazy 2 powtórzony na lat7: `null` = 0 — 7c0b6ed
 
 #### Manual
 
-- [ ] 3.5 Karta lat7 w podglądzie ma wiersze `mixed`, `down1` i ABB; ABB pokazuje całą jednostkę przed lukami; karta mieści się na A4 (`/sequences`)
+- [x] 3.5 Karta lat7 w podglądzie ma wiersze `mixed`, `down1` i ABB; ABB pokazuje całą jednostkę przed lukami; karta mieści się na A4 (`/sequences`) — 7c0b6ed
 
 ### Phase 4: PRD, oracle i przegląd poziomów
 
 #### Automated
 
-- [x] 4.1 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą
-- [x] 4.2 Test oracle'a przechodzi dla lat4–lat7
+- [x] 4.1 `npm test`, `npm run lint`, `npx astro check` i `npm run build` przechodzą — 7c0b6ed
+- [x] 4.2 Test oracle'a przechodzi dla lat4–lat7 — 7c0b6ed
 
 #### Manual
 
-- [ ] 4.3 Wydruk próbny karty lat7 (3–4 karty): w każdym wierszu dziecko widzi jedną odpowiedź
+- [x] 4.3 Wydruk próbny karty lat7 (3–4 karty): w każdym wierszu dziecko widzi jedną odpowiedź — 7c0b6ed

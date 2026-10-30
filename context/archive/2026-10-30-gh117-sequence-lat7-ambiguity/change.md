@@ -1,10 +1,10 @@
 ---
 change_id: gh117-sequence-lat7-ambiguity
 title: Sekwencje, 7 lat: wiersz czasem ma więcej niż jedną odpowiedź
-status: implementing
+status: archived
 created: 2026-10-30
 updated: 2026-10-30
-archived_at: null
+archived_at: 2026-10-30T16:06:06Z
 ---
 
 ## Notes
