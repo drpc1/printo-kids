@@ -271,9 +271,9 @@ Katalog budowany raz na poziom i kategorię (cache `catalogs`); dodatkowo najwy�
 
 #### Automated
 
-- [x] 4.1 Format dokumentu przechodzi: `npx prettier --check context/foundation/prd.md`
+- [x] 4.1 Format dokumentu przechodzi: `npx prettier --check context/foundation/prd.md` — 2e6003a
 
 #### Manual
 
-- [x] 4.2 Wydruk próbny: nowe kształty czytelne, obrys do narysowania, bez dotykania rogiem
-- [x] 4.3 PRD zgodne z zachowaniem aplikacji
+- [x] 4.2 Wydruk próbny: nowe kształty czytelne, obrys do narysowania, bez dotykania rogiem — 2e6003a
+- [x] 4.3 PRD zgodne z zachowaniem aplikacji — 2e6003a
