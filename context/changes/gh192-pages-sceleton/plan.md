@@ -301,21 +301,21 @@ Brak zmian formatu danych w `localStorage`.
 
 #### Automated
 
-- [x] 3.1 Lint, testy, typy i build: `npm run lint && npm test && npx astro check && npm run build`
-- [x] 3.2 E2E na czterech projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
+- [x] 3.1 Lint, testy, typy i build: `npm run lint && npm test && npx astro check && npm run build` — 29bb914
+- [x] 3.2 E2E na czterech projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` — 29bb914
 
 #### Manual
 
-- [x] 3.3 Labirynt: wybór poziomu 1-6 i postaci, zapis przy aktywnym profilu i bez profilu, Poziom 6 z postacią nad startem.
-- [x] 3.4 Druk labiryntu na jednej stronie A4 bez paska.
+- [x] 3.3 Labirynt: wybór poziomu 1-6 i postaci, zapis przy aktywnym profilu i bez profilu, Poziom 6 z postacią nad startem. — 29bb914
+- [x] 3.4 Druk labiryntu na jednej stronie A4 bez paska. — 29bb914
 
 ### Phase 4: E2E dla wszystkich kart i zasada dla kolejnych
 
 #### Automated
 
-- [ ] 4.1 Lint, testy, typy i build: `npm run lint && npm test && npx astro check && npm run build`
-- [ ] 4.2 Uogólniony test wiersza przechodzi na czterech projektach Chromium: `npx playwright test tests/e2e/phone-settings-rows.spec.ts --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
+- [x] 4.1 Lint, testy, typy i build: `npm run lint && npm test && npx astro check && npm run build`
+- [x] 4.2 Uogólniony test wiersza przechodzi na czterech projektach Chromium: `npx playwright test tests/e2e/phone-settings-rows.spec.ts --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
 
 #### Manual
 
-- [ ] 4.3 Kontrola końcowa na telefonie i komputerze: wszystkie sześć stron przed i po Generuj wygląda spójnie, a druk jest bez zmian.
+- [x] 4.3 Kontrola końcowa na telefonie i komputerze: wszystkie sześć stron przed i po Generuj wygląda spójnie, a druk jest bez zmian.

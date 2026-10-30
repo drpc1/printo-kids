@@ -27,6 +27,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 - `src/pages/` routes and `src/pages/api/` endpoints; `src/layouts/` Astro layouts; `src/components/` Astro + React; `src/components/ui/` shadcn new-york (@components.json); `src/lib/` helpers.
 - Import with `@/*` → `./src/*` (@tsconfig.json). Use Astro for static content and layout; React only when interactivity is required. Add shadcn pieces with `npx shadcn@latest add [name]`.
 - API routes export uppercase `GET` / `POST`. Put shared DTOs in `src/types.ts`. Extract React hooks to `src/hooks/` (`@/hooks` in @components.json).
+- A card generator page is a React island on `CardPage` (@src/components/CardPage.tsx) and `useCardPage` (@src/hooks/useCardPage.ts): it passes its settings controls, its sheet and what Generuj does, and does not copy the profile corner, the bar, Generuj or Drukuj. Its rules, layout in millimetres and SVG stay in its own module. The maze keeps its level memory outside `CardSettingsMap`.
 - Full SSR: `output: "server"` in @astro.config.mjs. Deploy with `npx wrangler deploy` (@wrangler.jsonc).
 
 ## Tests and CI
