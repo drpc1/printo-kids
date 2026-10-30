@@ -3,9 +3,9 @@ import { CategoryChoice } from "@/components/CategoryChoice";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { NonogramSimpleSheet } from "@/components/NonogramSimpleSheet";
 import { SudokuChoice } from "@/components/SudokuChoice";
-import { Switch } from "@/components/ui/switch";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
+import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { NonogramSettings } from "@/lib/card-settings";
@@ -107,10 +107,7 @@ export default function NonogramGenerator() {
     />
   );
   const solutionControl = (
-    <label className={cn("text-muted-foreground flex items-center gap-2 text-base max-sm:basis-full max-sm:px-3")}>
-      <Switch checked={showSolution} onCheckedChange={setShowSolution} />
-      Pokaż rozwiązanie
-    </label>
+    <SettingToggle label="Pokaż rozwiązanie" checked={showSolution} onCheckedChange={setShowSolution} />
   );
   return (
     <CardPage

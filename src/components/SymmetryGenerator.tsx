@@ -3,8 +3,8 @@ import { CategoryChoice } from "@/components/CategoryChoice";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoice } from "@/components/LevelChoice";
 import { CharacterInstruction } from "@/components/SpeechBand";
-import { Switch } from "@/components/ui/switch";
 import { CardPage } from "@/components/CardPage";
+import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { SymmetrySettings } from "@/lib/card-settings";
@@ -101,15 +101,13 @@ export default function SymmetryGenerator() {
     />
   );
   const colorsControl = (
-    <label className={cn("text-muted-foreground flex items-center gap-2 text-base max-sm:basis-full max-sm:px-3")}>
-      <Switch
-        checked={colors}
-        onCheckedChange={(next) => {
-          memory.remember({ colors: next });
-        }}
-      />
-      Kolory
-    </label>
+    <SettingToggle
+      label="Kolory"
+      checked={colors}
+      onCheckedChange={(next) => {
+        memory.remember({ colors: next });
+      }}
+    />
   );
   return (
     <CardPage

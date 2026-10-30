@@ -2,12 +2,12 @@ import { useState } from "react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
+import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { SudokuCardSettings } from "@/lib/card-settings";
 import { SudokuChoice } from "@/components/SudokuChoice";
 import { SudokuSymbolsChoice } from "@/components/SudokuSymbolsChoice";
-import { Switch } from "@/components/ui/switch";
 import { sudokuShapeInk } from "@/lib/sudoku/colors";
 import { generateSudokuCard, sudokuBlock, type SudokuCard } from "@/lib/sudoku/generate";
 import { layoutSudokuSheet, sudokuDigitBaselineY } from "@/lib/sudoku/layout";
@@ -130,15 +130,13 @@ export default function SudokuGenerator() {
         />
       ) : null}
       {settings.symbols === "shapes" ? (
-        <label className={cn("text-muted-foreground flex items-center gap-2 text-base max-sm:basis-full max-sm:px-3")}>
-          <Switch
-            checked={colors}
-            onCheckedChange={(next) => {
-              memory.remember({ colors: next });
-            }}
-          />
-          Kolory
-        </label>
+        <SettingToggle
+          label="Kolory"
+          checked={colors}
+          onCheckedChange={(next) => {
+            memory.remember({ colors: next });
+          }}
+        />
       ) : null}
     </>
   );
