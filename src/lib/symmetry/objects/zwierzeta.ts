@@ -284,7 +284,7 @@ const PENGUIN_4: SymmetryTemplate = {
     },
     {
       id: "feet",
-      variants: [drawing(["oo"], 11, 1), drawing(["o."], 11, 1)],
+      variants: [drawing(["oo"], 11, 1), drawing(["o."], 11, 1), drawing(["..oo"], 11)],
     },
   ],
 };
@@ -319,11 +319,15 @@ const PENGUIN_6: SymmetryTemplate = {
     },
     {
       id: "flippers",
-      variants: [drawing(["kk", "kk", "kk"], 7, 0), drawing(["kk", "k.", "kk"], 7, 0)],
+      variants: [
+        drawing(["kk", "kk", "kk"], 7, 0),
+        drawing(["kk", "k.", "kk"], 7, 0),
+        drawing(["k.....", "kk....", "kk...."], 7),
+      ],
     },
     {
       id: "feet",
-      variants: [drawing(["ooo"], 14, 1), drawing([".oo"], 14, 1)],
+      variants: [drawing(["ooo"], 14, 1), drawing([".oo"], 14, 1), drawing([".oooo."], 14)],
     },
   ],
 };
@@ -370,7 +374,7 @@ const PENGUIN_9: SymmetryTemplate = {
     },
     {
       id: "feet",
-      variants: [drawing(["oooo"], 22, 2), drawing([".ooo"], 22, 2)],
+      variants: [drawing(["oooo"], 22, 2), drawing([".ooo"], 22, 2), drawing(["...oooooo"], 22)],
     },
   ],
 };
@@ -398,7 +402,7 @@ const CAT_4: SymmetryTemplate = {
   parts: [
     {
       id: "ears",
-      variants: [drawing(["o.", "oo"], 0, 0), drawing(["..", ".o"], 0, 0)],
+      variants: [drawing(["o.", "oo"], 0, 0), drawing(["..", ".o"], 0, 0), drawing([".o..", ".oo."])],
     },
     {
       id: "eyes",
@@ -406,7 +410,7 @@ const CAT_4: SymmetryTemplate = {
     },
     {
       id: "paws",
-      variants: [drawing(["ooo."], 11, 0), drawing([".oo."], 11, 0)],
+      variants: [drawing(["ooo."], 11, 0), drawing([".oo."], 11, 0), drawing(["oo.o"], 11)],
     },
   ],
 };
@@ -437,7 +441,11 @@ const CAT_6: SymmetryTemplate = {
   parts: [
     {
       id: "ears",
-      variants: [drawing(["o..", "oo.", "ooo"], 0, 0), drawing(["...", "o..", "oo."], 0, 0)],
+      variants: [
+        drawing(["o..", "oo.", "ooo"], 0, 0),
+        drawing(["...", "o..", "oo."], 0, 0),
+        drawing([".o....", ".oo..."], 1),
+      ],
     },
     {
       id: "eyes",
@@ -445,7 +453,7 @@ const CAT_6: SymmetryTemplate = {
     },
     {
       id: "paws",
-      variants: [drawing([".ooo."], 14, 1), drawing(["oo.oo"], 14, 1)],
+      variants: [drawing([".ooo."], 14, 1), drawing(["oo.oo"], 14, 1), drawing(["oo..oo"], 14)],
     },
   ],
 };
@@ -485,7 +493,11 @@ const CAT_9: SymmetryTemplate = {
   parts: [
     {
       id: "ears",
-      variants: [drawing(["o...", "oo..", "ooo.", "oooo"], 0, 0), drawing(["....", "o...", "oo..", "ooo."], 0, 0)],
+      variants: [
+        drawing(["o...", "oo..", "ooo.", "oooo"], 0, 0),
+        drawing(["....", "o...", "oo..", "ooo."], 0, 0),
+        drawing([".o.......", ".oo......", ".ooo....."], 1),
+      ],
     },
     {
       id: "eyes",
@@ -497,7 +509,11 @@ const CAT_9: SymmetryTemplate = {
     },
     {
       id: "paws",
-      variants: [drawing(["oooo", "oooo"], 22, 2), drawing(["oo.o", "oo.o"], 22, 2)],
+      variants: [
+        drawing(["oooo", "oooo"], 22, 2),
+        drawing(["oo.o", "oo.o"], 22, 2),
+        drawing(["..ooo.oo.", "..ooo.oo."], 22),
+      ],
     },
   ],
 };

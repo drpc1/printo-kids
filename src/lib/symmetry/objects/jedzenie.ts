@@ -31,7 +31,11 @@ const STRAWBERRY: SymmetryTemplate = {
   parts: [
     {
       id: "leaves",
-      variants: [drawing([".....g", "..g.gg", ".g.g.g"], 0, 0), drawing([".....g", "gg..gg", "..g.gg"], 0, 0)],
+      variants: [
+        drawing([".....g", "..g.gg", ".g.g.g"], 0, 0),
+        drawing([".....g", "gg..gg", "..g.gg"], 0, 0),
+        drawing(["....gg", "....gg", ".g..gg"]),
+      ],
     },
     {
       id: "seeds",
@@ -68,7 +72,7 @@ const STRAWBERRY_4: SymmetryTemplate = {
   parts: [
     {
       id: "leaves",
-      variants: [drawing(["...g", ".ggg"], 0, 0), drawing(["..gg", "g.gg"], 0, 0)],
+      variants: [drawing(["...g", ".ggg"], 0, 0), drawing(["..gg", "g.gg"], 0, 0), drawing(["..gg", ".ggg"])],
     },
     {
       id: "seeds",
@@ -120,6 +124,7 @@ const STRAWBERRY_7: SymmetryTemplate = {
       variants: [
         drawing(["........g", "....g..gg", "..g.g.ggg", ".gggggggg"], 0, 0),
         drawing(["........g", "...gg..gg", ".gggg.ggg", "..ggggggg"], 0, 0),
+        drawing(["........g", ".......gg", "......ggg", "....ggggg"]),
       ],
     },
     {
@@ -554,7 +559,7 @@ const PINEAPPLE_4: SymmetryTemplate = {
   parts: [
     {
       id: "crown",
-      variants: [drawing([".g.g", ".ggg"], 0, 0), drawing(["g..g", "gggg"], 0, 0)],
+      variants: [drawing([".g.g", ".ggg"], 0, 0), drawing(["g..g", "gggg"], 0, 0), drawing(["...g", "..gg"])],
     },
     {
       id: "scales",
@@ -592,7 +597,7 @@ const PINEAPPLE_6: SymmetryTemplate = {
   parts: [
     {
       id: "crown",
-      variants: [drawing(["g..g", "g.gg"], 0, 2), drawing(["...g", ".g.g"], 0, 2)],
+      variants: [drawing(["g..g", "g.gg"], 0, 2), drawing(["...g", ".g.g"], 0, 2), drawing([".g...g", ".gg.gg"])],
     },
     {
       id: "scales",
@@ -641,6 +646,7 @@ const PINEAPPLE_9: SymmetryTemplate = {
       variants: [
         drawing(["g....g", "gg..gg", ".ggggg", "..gggg", "gggggg", "..gggg"], 0, 3),
         drawing(["....g.", "...gg.", "..gggg", "...ggg", "..gggg", "..gggg"], 0, 3),
+        drawing(["........g", "........g", ".......gg", "......ggg", ".....gggg", ".....gggg"]),
       ],
     },
     {

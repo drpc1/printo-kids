@@ -274,30 +274,30 @@ Brak: warianty i obiekty są danymi w kodzie; zapisane profile i ostatnie parame
 
 #### Automated
 
-- [x] 2.1 Testy przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Typy przechodzą: `npx astro check`
+- [x] 2.1 Testy przechodzą: `npm test` — 6df283a
+- [x] 2.2 Lint przechodzi: `npm run lint` — 6df283a
+- [x] 2.3 Typy przechodzą: `npx astro check` — 6df283a
 
 #### Manual
 
-- [x] 2.4 Kotwica i lizak są rozpoznawalne na podglądzie symetrii w poziomach 1, 2 i 4
-- [x] 2.5 Odbicie nie ma szwów na osi; kolory kratek poprawne po włączeniu kolorów
-- [x] 2.6 Nonogram i dyktando w odpowiednich kategoriach pokazują oba obiekty lub losują inne bez błędu
+- [x] 2.4 Kotwica i lizak są rozpoznawalne na podglądzie symetrii w poziomach 1, 2 i 4 — 6df283a
+- [x] 2.5 Odbicie nie ma szwów na osi; kolory kratek poprawne po włączeniu kolorów — 6df283a
+- [x] 2.6 Nonogram i dyktando w odpowiednich kategoriach pokazują oba obiekty lub losują inne bez błędu — 6df283a
 
 ### Phase 3: Warianty siedmiu obiektów
 
 #### Automated
 
-- [ ] 3.1 Testy przechodzą, w tym katalog, symetria, nonogram, dyktando: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Typy przechodzą: `npx astro check`
-- [ ] 3.4 Pomiar po zmianach: kot i tulipan mają ≥ 1 przechodzący wariant w trudnym nonogramie (lub notatka, który nie ma i dlaczego)
-- [ ] 3.5 Czas testu trudnego nonogramu mieści się w tym samym rzędzie wielkości co przed zmianą
+- [x] 3.1 Testy przechodzą, w tym katalog, symetria, nonogram, dyktando: `npm test`
+- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.3 Typy przechodzą: `npx astro check`
+- [x] 3.4 Pomiar po zmianach: kot i tulipan mają ≥ 1 przechodzący wariant w trudnym nonogramie (lub notatka, który nie ma i dlaczego)
+- [x] 3.5 Czas testu trudnego nonogramu mieści się w tym samym rzędzie wielkości co przed zmianą
 
 #### Manual
 
-- [ ] 3.6 Klikanie Generuj w symetrii na poziomach 1, 2, 4 pokazuje wyraźnie inne wersje siedmiu obiektów
-- [ ] 3.7 Wersje są rozpoznawalne i dobrze odbijają się w osi, także z kolorami
+- [x] 3.6 Klikanie Generuj w symetrii na poziomach 1, 2, 4 pokazuje wyraźnie inne wersje siedmiu obiektów
+- [x] 3.7 Wersje są rozpoznawalne i dobrze odbijają się w osi, także z kolorami
 
 ### Phase 4: Domknięcie
 
