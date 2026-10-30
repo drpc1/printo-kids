@@ -1,7 +1,7 @@
 ---
 change_id: gh124-more-symetric-shapes
 title: Więcej symetrycznych kształtów i wariantów w istniejących kategoriach
-status: implementing
+status: implemented
 created: 2026-10-30
 updated: 2026-10-30
 archived_at: null
