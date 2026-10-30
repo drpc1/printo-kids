@@ -168,6 +168,12 @@ Nowe warianty części `tulipan`, `kot`, `pingwin`, `ananas`, `choinka`, `latarn
 
 **Contract**: żaden z siedmiu obiektów nie ma mniej przechodzących kart niż w pomiarze bazowym.
 
+#### 4. Zmiany dodane w trakcie (przegląd implementacji)
+
+**Intent**: Próg czasu testu trudnego nonogramu podniesiony z 5000 do 15000 ms, bo pełna enumeracja 292 wariantów mierzyła 1,5–6,7 s zależnie od obciążenia; ESLint pomija skrypty pomocnicze `.mts` w `context/` (`eslint.config.js`).
+
+**Contract**: `src/lib/nonogram/generate.test.ts` (próg), `eslint.config.js` (ignores).
+
 ### Success Criteria:
 
 #### Automated Verification:

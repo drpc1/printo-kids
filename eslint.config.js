@@ -80,7 +80,7 @@ const scriptsConfig = defineConfig({
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
   // Editor/agent tooling, not application code — outside tsconfig, so typed linting cannot parse it.
-  { ignores: [".cursor/**", ".claude/**", "context/changes/**/*.mts"] },
+  { ignores: [".cursor/**", ".claude/**", "context/**/*.mts"] },
   baseConfig,
   reactConfig,
   eslintPluginAstro.configs["flat/recommended"],
