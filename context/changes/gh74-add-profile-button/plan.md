@@ -103,13 +103,13 @@ Zmiana przycisku i test regresji wyglądu.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Typy przechodzą: `npx astro check`
-- [x] 1.3 Testy jednostkowe: `npm test`
-- [x] 1.4 E2E profilu: `npx playwright test tests/e2e/profile-summary.spec.ts --project=chromium`
+- [x] 1.1 Lint przechodzi: `npm run lint` — 570f746
+- [x] 1.2 Typy przechodzą: `npx astro check` — 570f746
+- [x] 1.3 Testy jednostkowe: `npm test` — 570f746
+- [x] 1.4 E2E profilu: `npx playwright test tests/e2e/profile-summary.spec.ts --project=chromium` — 570f746
 
 #### Manual
 
-- [x] 1.5 Na desktopie i telefonie „Dodaj profil” jest wyraźnie akcją, nie kolejnym profilem
-- [x] 1.6 Przycisk mieści się w dialogu bez ucinania, wysokość 44 px
+- [x] 1.5 Na desktopie i telefonie „Dodaj profil” jest wyraźnie akcją, nie kolejnym profilem — 570f746
+- [x] 1.6 Przycisk mieści się w dialogu bez ucinania, wysokość 44 px — 570f746
 - [x] 1.7 Tryb ciemny i fokus klawiatury wyglądają poprawnie
