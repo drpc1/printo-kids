@@ -2,11 +2,11 @@
 import GeneratorShell from "@/components/GeneratorShell.astro";
 import SequenceGenerator from "@/components/SequenceGenerator";
 import Layout from "@/layouts/Layout.astro";
-import { cardTitle } from "@/lib/cards";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
 ---
 
-<Layout title={cardTitle("sekwencje")} lang="pl">
-  <GeneratorShell description="Wygeneruj kartę sekwencji i wydrukuj ją na kartce A4.">
+<Layout title={cardPageTitle("sekwencje")} lang="pl">
+  <GeneratorShell heading={cardTitle("sekwencje")} description="Wygeneruj kartę sekwencji i wydrukuj ją na kartce A4.">
     <SequenceGenerator client:only="react" />
   </GeneratorShell>
 </Layout>
