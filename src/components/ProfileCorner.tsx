@@ -1,5 +1,5 @@
 import { useRef, useState, type SubmitEvent } from "react";
-import { ChevronDown, Pencil, Trash2 } from "lucide-react";
+import { ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
 import { LevelRow, levelRowClass } from "@/components/LevelRow";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -481,7 +481,13 @@ export function ProfileCorner({
             ) : (
               <DialogTitle className={cn("break-words")}>Profil</DialogTitle>
             )}
-            <Button type="button" variant="ghost" className={cn(DIALOG_ROW_CLASS, "w-full")} onClick={openCreateForm}>
+            <Button
+              type="button"
+              variant="outline"
+              className={cn(DIALOG_ROW_CLASS, "w-full justify-center")}
+              onClick={openCreateForm}
+            >
+              <Plus className={cn("size-4")} aria-hidden />
               Dodaj profil
             </Button>
           </div>
