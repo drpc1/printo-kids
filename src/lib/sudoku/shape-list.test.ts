@@ -9,6 +9,9 @@ import { SUDOKU_SHEET } from "./sheet.ts";
 /** Rough width of a text character relative to the font size, the estimate the plan uses. */
 const CHARACTER_WIDTH = 0.55;
 
+/** Height of the speech band with a character, in mm (SPEECH_BAND.characterSize). */
+const BAND = 26;
+
 const FOUR: SudokuSheetInput = {
   pageWidth: SUDOKU_SHEET.pageWidth,
   pageHeight: SUDOKU_SHEET.pageHeight,
@@ -24,9 +27,9 @@ const FOUR: SudokuSheetInput = {
 };
 
 const BOARDS = [
-  { size: 4, blockRows: 2, blockColumns: 2 },
-  { size: 6, blockRows: 2, blockColumns: 3 },
-  { size: 9, blockRows: 3, blockColumns: 3 },
+  { size: 4, blockRows: 2, blockColumns: 2, shapes: SUDOKU_SHAPES.slice(0, 4) },
+  { size: 6, blockRows: 2, blockColumns: 3, shapes: SUDOKU_SHAPES.slice(0, 6) },
+  { size: 9, blockRows: 3, blockColumns: 3, shapes: SUDOKU_SHAPES },
 ] as const;
 
 const SAMPLE: readonly SudokuShapeId[] = ["heart", "circle", "triangle", "square"];
@@ -49,111 +52,157 @@ function board(
 
 function place(input: SudokuSheetInput, symbols: SudokuSymbols, shapes: readonly SudokuShapeId[]) {
   const sheet = layoutSudokuSheet(input);
-  return {
-    sheet,
-    row: layoutSudokuShapeList({
-      grid: sheet.grid,
-      pageWidth: input.pageWidth,
-      pageHeight: input.pageHeight,
-      inset: input.inset,
-      symbols,
-      shapes,
-    }),
-  };
+  return { sheet, row: layoutSudokuShapeList({ grid: sheet.grid, symbols, shapes }) };
+}
+
+/** Every board, with and without a speech band, with the full set of shapes of that board. */
+function everyCard() {
+  return BOARDS.flatMap(({ size, blockRows, blockColumns, shapes }) =>
+    ([undefined, BAND] as const).map((band) => ({
+      label: `${size}×${size}${band === undefined ? "" : " band"}`,
+      ...place(board(size, blockRows, blockColumns, band), "shapes", shapes),
+    })),
+  );
 }
 
 void describe("layoutSudokuShapeList", () => {
-  void test("heart, circle, triangle, square read koło, kwadrat, trójkąt, serce", () => {
+  void test("the row lists the shapes in catalog order, without names", () => {
     const { row } = place(FOUR, "shapes", SAMPLE);
 
     assert.deepEqual(
-      row.items.map((item) => item.name),
-      ["koło", "kwadrat", "trójkąt", "serce"],
+      row.items.map((item) => item.id),
+      ["circle", "square", "triangle", "heart"],
     );
+    for (const item of row.items) {
+      assert.deepEqual(Object.keys(item).sort(), ["drawing", "id"]);
+    }
+    assert.equal(row.label?.text, "Użyj:");
   });
 
-  void test("a digits card returns no positions", () => {
+  void test("a digits card gets no frame, no caption and no positions", () => {
     const { row } = place(FOUR, "digits", SAMPLE);
 
-    assert.deepEqual(row.items, []);
+    assert.deepEqual(row, { panel: null, label: null, items: [] });
   });
 
-  void test("an empty shape list returns no positions", () => {
+  void test("an empty shape list gets no frame, no caption and no positions", () => {
     const { row } = place(FOUR, "shapes", []);
 
-    assert.deepEqual(row.items, []);
+    assert.deepEqual(row, { panel: null, label: null, items: [] });
   });
 
   void test("the row leaves the grid where layoutSudokuSheet put it, with and without a 26 mm band", () => {
     for (const { size, blockRows, blockColumns } of BOARDS) {
-      for (const instructionBoxHeight of [undefined, 26] as const) {
-        const input = board(size, blockRows, blockColumns, instructionBoxHeight);
+      for (const band of [undefined, BAND] as const) {
+        const input = board(size, blockRows, blockColumns, band);
         const sheet = layoutSudokuSheet(input);
         const snapshot = { ...sheet.grid };
-        const label = `${size}×${size}${instructionBoxHeight === undefined ? "" : " band"}`;
 
-        layoutSudokuShapeList({
-          grid: sheet.grid,
-          pageWidth: input.pageWidth,
-          pageHeight: input.pageHeight,
-          inset: input.inset,
-          symbols: "shapes",
-          shapes: SAMPLE,
-        });
+        layoutSudokuShapeList({ grid: sheet.grid, symbols: "shapes", shapes: SAMPLE });
 
-        assert.deepEqual(sheet.grid, snapshot, label);
-        assert.deepEqual(sheet.grid, layoutSudokuSheet(input).grid, label);
+        assert.deepEqual(sheet.grid, snapshot, `${size}×${size}`);
+        assert.deepEqual(sheet.grid, layoutSudokuSheet(input).grid, `${size}×${size}`);
       }
     }
   });
 
-  void test("a 9×9 card with a 26 mm band keeps every drawing and gwiazdka inside the 10 mm margin", () => {
-    const input = board(9, 3, 3, 26);
-    const { sheet, row } = place(input, "shapes", SUDOKU_SHAPES);
-    const frameBottom = sheet.grid.y + sheet.grid.height + SUDOKU_SHEET.frameStroke / 2;
+  void test("the frame has the width of the grid and sits one instruction gap below it", () => {
+    for (const { label, sheet, row } of everyCard()) {
+      assert.ok(row.panel, label);
+      const above = sheet.grid.y - (sheet.instruction.top + sheet.instruction.height);
+      const below = row.panel.y - (sheet.grid.y + sheet.grid.height);
 
-    assert.deepEqual(
-      row.items.map((item) => item.id),
-      [...SUDOKU_SHAPES],
-    );
-
-    for (const item of row.items) {
-      const half = item.drawing.size / 2;
-      const left = item.drawing.x - half;
-      const right = item.drawing.x + half;
-      const top = item.drawing.y - half;
-      const bottom = item.drawing.y + half;
-
-      assert.ok(left >= 10 - 1e-9, `${item.id} left ${left}`);
-      assert.ok(right <= 200 + 1e-9, `${item.id} right ${right}`);
-      assert.ok(bottom <= 287 + 1e-9, `${item.id} bottom ${bottom}`);
-      assert.ok(top >= frameBottom - 1e-9, `${item.id} top ${top}`);
+      assert.equal(row.panel.x, sheet.grid.x, `${label} left`);
+      assert.equal(row.panel.width, sheet.grid.width, `${label} width`);
+      assert.ok(Math.abs(above - SUDOKU_SHEET.instructionGap) < 1e-9, `${label} instruction gap`);
+      assert.ok(Math.abs(below - above) < 1e-9, `${label} gap under the grid`);
     }
-
-    const star = row.items.find((item) => item.name === "gwiazdka");
-    assert.ok(star, "gwiazdka");
-    const width = 8 * star.label.size * CHARACTER_WIDTH;
-    const labelLeft = star.label.x - width / 2;
-    const labelRight = star.label.x + width / 2;
-    const labelTop = star.label.y - star.label.size / 2;
-    const labelBottom = star.label.y + star.label.size / 2;
-
-    assert.ok(labelLeft >= 10 - 1e-9, `gwiazdka left ${labelLeft}`);
-    assert.ok(labelRight <= 200 + 1e-9, `gwiazdka right ${labelRight}`);
-    assert.ok(labelBottom <= 287 + 1e-9, `gwiazdka bottom ${labelBottom}`);
-    assert.ok(labelTop >= frameBottom - 1e-9, `gwiazdka top ${labelTop}`);
-    assert.ok(8 * star.label.size * 0.55 < (input.pageWidth - 2 * input.inset) / 9);
   });
 
-  void test("the drawing side and the name size are the same on a 4×4 row and a 9×9 row", () => {
-    const small = place(FOUR, "shapes", SAMPLE).row;
-    const large = place(board(9, 3, 3, 26), "shapes", SUDOKU_SHAPES).row;
+  void test("the frame stays inside the 10 mm margin, also on 9×9 with a 26 mm band", () => {
+    for (const { label, row } of everyCard()) {
+      assert.ok(row.panel, label);
+      assert.ok(row.panel.y + row.panel.height <= 287 + 1e-9, `${label} bottom ${row.panel.y + row.panel.height}`);
+      assert.ok(row.panel.x >= 10 - 1e-9 && row.panel.x + row.panel.width <= 200 + 1e-9, `${label} sides`);
+    }
+  });
 
-    const smallDrawing = small.items[0];
-    const largeDrawing = large.items[0];
-    assert.ok(smallDrawing);
-    assert.ok(largeDrawing);
-    assert.equal(smallDrawing.drawing.size, largeDrawing.drawing.size);
-    assert.equal(smallDrawing.label.size, largeDrawing.label.size);
+  void test("the drawings sit inside the frame after the caption, with equal gaps that do not touch", () => {
+    for (const { label, row } of everyCard()) {
+      assert.ok(row.panel && row.label, label);
+      const first = row.items.at(0);
+      const last = row.items.at(-1);
+      assert.ok(first && last, label);
+
+      const captionRight = row.label.x + 5 * row.label.size * CHARACTER_WIDTH;
+      assert.ok(first.drawing.x - first.drawing.size / 2 > captionRight, `${label} caption`);
+      assert.ok(last.drawing.x + last.drawing.size / 2 <= row.panel.x + row.panel.width - 3 + 1e-9, `${label} right`);
+
+      for (const item of row.items) {
+        const half = item.drawing.size / 2;
+        assert.ok(
+          item.drawing.y - half >= row.panel.y && item.drawing.y + half <= row.panel.y + row.panel.height,
+          `${label} vertical`,
+        );
+      }
+
+      const gaps = row.items.slice(1).map((item, index) => {
+        const previous = row.items[index];
+        assert.ok(previous, label);
+        return item.drawing.x - previous.drawing.x - item.drawing.size;
+      });
+      for (const gap of gaps) {
+        assert.ok(Math.abs(gap - (gaps[0] ?? 0)) < 1e-9, `${label} equal gaps`);
+        assert.ok(gap >= 3 - 1e-9 && gap <= 8 + 1e-9, `${label} gap ${gap}`);
+      }
+    }
+  });
+
+  void test("4×4 and 6×6 pack the shapes with an 8 mm gap and 9×9 fits them with a smaller one", () => {
+    const gapOf = (size: 4 | 6 | 9) => {
+      const entry = everyCard().find((card) => card.label === `${size}×${size}`);
+      const items = entry?.row.items ?? [];
+      const a = items.at(0);
+      const b = items.at(1);
+      assert.ok(a && b, `${size}`);
+      return b.drawing.x - a.drawing.x - a.drawing.size;
+    };
+
+    assert.ok(Math.abs(gapOf(4) - 8) < 1e-9);
+    assert.ok(Math.abs(gapOf(6) - 8) < 1e-9);
+    assert.ok(gapOf(9) < 8 && gapOf(9) >= 3);
+  });
+
+  void test("the group is centered in the space after the caption", () => {
+    for (const { label, row } of everyCard()) {
+      assert.ok(row.panel, label);
+      const first = row.items.at(0);
+      const last = row.items.at(-1);
+      assert.ok(first && last, label);
+      const fieldLeft = row.panel.x + 3 + 14 + 4;
+      const fieldRight = row.panel.x + row.panel.width - 3;
+      const left = first.drawing.x - first.drawing.size / 2 - fieldLeft;
+      const right = fieldRight - (last.drawing.x + last.drawing.size / 2);
+
+      assert.ok(Math.abs(left - right) < 1e-9, `${label} ${left} vs ${right}`);
+    }
+  });
+
+  void test("the drawing side is the same on a 4×4 row and a 9×9 row", () => {
+    const small = place(FOUR, "shapes", SAMPLE).row;
+    const large = place(board(9, 3, 3, BAND), "shapes", SUDOKU_SHAPES).row;
+
+    assert.ok(small.items[0]);
+    assert.ok(large.items[0]);
+    assert.equal(small.items[0].drawing.size, large.items[0].drawing.size);
+  });
+
+  void test("a single shape is centered in the space after the caption", () => {
+    const { row } = place(FOUR, "shapes", ["star"]);
+    const only = row.items[0];
+
+    assert.equal(row.items.length, 1);
+    assert.ok(row.panel && only);
+    assert.equal(only.drawing.x, (row.panel.x + 3 + 14 + 4 + row.panel.x + row.panel.width - 3) / 2);
   });
 });
