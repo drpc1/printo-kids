@@ -1,10 +1,10 @@
 ---
 change_id: gh163-page-title
 title: Tytuł kartki przeglądarki to nazwa karty pracy
-status: implemented
+status: archived
 created: 2026-10-30
 updated: 2026-10-30
-archived_at: null
+archived_at: 2026-10-30T20:08:35Z
 ---
 
 ## Notes
