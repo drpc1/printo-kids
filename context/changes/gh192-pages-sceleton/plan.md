@@ -286,28 +286,28 @@ Brak zmian formatu danych w `localStorage`.
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi: `npm run lint`
-- [x] 2.2 Testy przechodzą, w tym przepisany `print-contract.test.ts`: `npm test`
-- [x] 2.3 Typy i build przechodzą: `npx astro check && npm run build`
-- [x] 2.4 E2E przechodzi na czterech projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
+- [x] 2.1 Lint przechodzi: `npm run lint` — 1551fcb
+- [x] 2.2 Testy przechodzą, w tym przepisany `print-contract.test.ts`: `npm test` — 1551fcb
+- [x] 2.3 Typy i build przechodzą: `npx astro check && npm run build` — 1551fcb
+- [x] 2.4 E2E przechodzi na czterech projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` — 1551fcb
 
 #### Manual
 
-- [x] 2.5 Pięć kart przed i po wygenerowaniu na telefonie (360 px) i komputerze: wiersz kontrolek wygląda równo, nic nie nachodzi na Generuj i Drukuj.
-- [x] 2.6 Podgląd wydruku każdej z pięciu kart nie pokazuje paska, a arkusz mieści się na jednej stronie A4.
-- [x] 2.7 Nonogram i Dyktando: „Pokaż rozwiązanie” działa, a wydruk go nie zawiera.
+- [x] 2.5 Pięć kart przed i po wygenerowaniu na telefonie (360 px) i komputerze: wiersz kontrolek wygląda równo, nic nie nachodzi na Generuj i Drukuj. — 1551fcb
+- [x] 2.6 Podgląd wydruku każdej z pięciu kart nie pokazuje paska, a arkusz mieści się na jednej stronie A4. — 1551fcb
+- [x] 2.7 Nonogram i Dyktando: „Pokaż rozwiązanie” działa, a wydruk go nie zawiera. — 1551fcb
 
 ### Phase 3: Labirynt na szkielecie
 
 #### Automated
 
-- [ ] 3.1 Lint, testy, typy i build: `npm run lint && npm test && npx astro check && npm run build`
-- [ ] 3.2 E2E na czterech projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
+- [x] 3.1 Lint, testy, typy i build: `npm run lint && npm test && npx astro check && npm run build`
+- [x] 3.2 E2E na czterech projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
 
 #### Manual
 
-- [ ] 3.3 Labirynt: wybór poziomu 1-6 i postaci, zapis przy aktywnym profilu i bez profilu, Poziom 6 z postacią nad startem.
-- [ ] 3.4 Druk labiryntu na jednej stronie A4 bez paska.
+- [x] 3.3 Labirynt: wybór poziomu 1-6 i postaci, zapis przy aktywnym profilu i bez profilu, Poziom 6 z postacią nad startem.
+- [x] 3.4 Druk labiryntu na jednej stronie A4 bez paska.
 
 ### Phase 4: E2E dla wszystkich kart i zasada dla kolejnych
 

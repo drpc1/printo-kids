@@ -77,10 +77,12 @@ void describe("print contract", () => {
     );
 
     const generator = readRepoFile(WORKSHEET_GENERATOR);
-    assert.deepEqual(classNamesContaining(generator, "print:hidden"), [
+    // The bar and its buttons are CardPage's; the maze keeps only its level dialog.
+    assert.deepEqual(classNamesContaining(generator, "print:hidden"), ["max-h-[calc(100dvh-2rem)] print:hidden"]);
+    assertCardPageShell(generator);
+    assert.deepEqual(classNamesContaining(readRepoFile(CARD_PAGE), "print:hidden"), [
       "flex w-full flex-col gap-3 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
-      "max-h-[calc(100dvh-2rem)] print:hidden",
     ]);
     // The character list dialog moved to the shared control the maze page imports.
     assert.deepEqual(classNamesContaining(readRepoFile(CHARACTER_CHOICE_CONTROL), "print:hidden"), [
