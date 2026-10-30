@@ -34,7 +34,7 @@ const TREE_4: SymmetryTemplate = {
     },
     {
       id: "lower-bauble",
-      variants: [drawing(["gg.g"], 7, 0), drawing(["ggg."], 7, 0)],
+      variants: [drawing(["gg.g"], 7, 0), drawing(["ggg."], 7, 0), drawing([".ggg"], 7)],
     },
   ],
 };
@@ -69,7 +69,7 @@ const TREE_6: SymmetryTemplate = {
     },
     {
       id: "middle-baubles",
-      variants: [drawing(["ggg.g"], 8, 1), drawing(["gg.gg"], 8, 1)],
+      variants: [drawing(["ggg.g"], 8, 1), drawing(["gg.gg"], 8, 1), drawing(["..gggg"], 8)],
     },
     {
       id: "lower-baubles",
@@ -124,6 +124,7 @@ const TREE_9: SymmetryTemplate = {
       variants: [
         drawing([".ggg.ggg", "gggggggg", "ggg.gggg"], 17, 1),
         drawing([".gggggg.", "gggggggg", "gg.ggggg"], 17, 1),
+        drawing(["...ggg.gg", "ggggggggg", ".ggg.gggg"], 17),
       ],
     },
   ],
@@ -152,7 +153,7 @@ const TULIP_4: SymmetryTemplate = {
   parts: [
     {
       id: "petals",
-      variants: [drawing([".r.r"], 0, 0), drawing(["...r"], 0, 0)],
+      variants: [drawing([".r.r"], 0, 0), drawing(["...r"], 0, 0), drawing(["..rr"])],
     },
     {
       id: "leaves",
@@ -187,7 +188,7 @@ const TULIP_6: SymmetryTemplate = {
   parts: [
     {
       id: "petals",
-      variants: [drawing(["r..r"], 0, 2), drawing(["...r"], 0, 2)],
+      variants: [drawing(["r..r"], 0, 2), drawing(["...r"], 0, 2), drawing(["...r.r"])],
     },
     {
       id: "leaves",
@@ -231,7 +232,11 @@ const TULIP_9: SymmetryTemplate = {
   parts: [
     {
       id: "petals",
-      variants: [drawing(["r....r", "rr..rr"], 0, 3), drawing(["......", "r....r"], 0, 3)],
+      variants: [
+        drawing(["r....r", "rr..rr"], 0, 3),
+        drawing(["......", "r....r"], 0, 3),
+        drawing([".....r..r", "....rr..r"]),
+      ],
     },
     {
       id: "leaves",
