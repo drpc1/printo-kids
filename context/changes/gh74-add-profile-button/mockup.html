@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Mockup: przycisk Dodaj profil</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #f4f4f5; margin: 0; padding: 24px; color: #18181b; }
+  .wrap { display: flex; gap: 24px; flex-wrap: wrap; }
+  .col { flex: 1; min-width: 280px; max-width: 360px; }
+  h2 { font-size: 14px; font-weight: 500; color: #52525b; margin: 0 0 8px; }
+  .dialog { background: #fff; border: 1px solid #e4e4e7; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .person { display: flex; align-items: center; gap: 8px; }
+  .row { padding: 10px 16px; border-radius: 8px; font-size: 18px; min-height: 44px; box-sizing: border-box; display: flex; align-items: center; }
+  .person .row { flex: 1; }
+  .active { background: #f4f4f5; }
+  .ico { width: 36px; text-align: center; color: #52525b; font-size: 16px; }
+  .add-old { width: 100%; }
+  .add-new { width: 100%; border: 1px solid #a1a1aa; justify-content: center; gap: 8px; margin-top: 4px; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="col">
+    <h2>Teraz</h2>
+    <div class="dialog">
+      <div class="person"><div class="row active">Ola</div><span class="ico">&#9998;</span><span class="ico">&#128465;</span></div>
+      <div class="person"><div class="row">Kuba</div><span class="ico">&#9998;</span><span class="ico">&#128465;</span></div>
+      <div class="row">Bez profilu</div>
+      <div class="row add-old">Dodaj profil</div>
+    </div>
+  </div>
+  <div class="col">
+    <h2>Po zmianie: Plus i obramowanie</h2>
+    <div class="dialog">
+      <div class="person"><div class="row active">Ola</div><span class="ico">&#9998;</span><span class="ico">&#128465;</span></div>
+      <div class="person"><div class="row">Kuba</div><span class="ico">&#9998;</span><span class="ico">&#128465;</span></div>
+      <div class="row">Bez profilu</div>
+      <div class="row add-new"><span style="font-size:22px;line-height:1">+</span> Dodaj profil</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
