@@ -112,13 +112,13 @@ Helper, prop, sześć stron, testy.
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
-- [x] 1.4 Build przechodzi: `npm run build`
-- [x] 1.5 E2E tytułów i nagłówków przechodzi: `npx playwright test tests/e2e/catalog.spec.ts --project=chromium`
-- [x] 1.6 E2E układu telefonu przechodzi: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360`
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — 49c9950
+- [x] 1.2 Lint przechodzi: `npm run lint` — 49c9950
+- [x] 1.3 Typy przechodzą: `npx astro check` — 49c9950
+- [x] 1.4 Build przechodzi: `npm run build` — 49c9950
+- [x] 1.5 E2E tytułów i nagłówków przechodzi: `npx playwright test tests/e2e/catalog.spec.ts --project=chromium` — 49c9950
+- [x] 1.6 E2E układu telefonu przechodzi: `npx playwright test tests/e2e/phone-layout.spec.ts --project=phone-360` — 49c9950
 
 #### Manual
 
-- [x] 1.7 Na każdej z sześciu stron nagłówek to sama nazwa karty, a zakładka „PrintoKids - nazwa”; na `/` obie „PrintoKids”. Na telefonie nagłówek nie nachodzi na przycisk profilu ani link „Wszystkie karty”.
+- [x] 1.7 Na każdej z sześciu stron nagłówek to sama nazwa karty, a zakładka „PrintoKids - nazwa”; na `/` obie „PrintoKids”. Na telefonie nagłówek nie nachodzi na przycisk profilu ani link „Wszystkie karty”. — 49c9950
