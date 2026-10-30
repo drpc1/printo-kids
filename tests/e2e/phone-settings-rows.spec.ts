@@ -3,6 +3,9 @@
 // the text happens to wrap: the text of the first control on every line starts where the text of "Postać" does,
 // and the vertical gap between one line and the next is the same for every pair of lines. Other projects open the
 // pages and confirm the controls, then skip the boxes: from 640 px the inset and the tighter gap do not apply.
+// Known limit: the gap rule compares gaps between lines, so it checks nothing when the row fits on one or two
+// lines (one gap equals itself). It guards the pages whose row wraps into three or more lines; the alignment rule
+// holds on every page. Pinning a pixel value for the gap would close the hole but freeze a value nobody chose.
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
 interface Box {
