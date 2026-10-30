@@ -105,12 +105,12 @@ Helper, sześć stron, testy.
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
-- [x] 1.4 Build przechodzi: `npm run build`
-- [x] 1.5 E2E tytułów przechodzi: `npx playwright test tests/e2e/catalog.spec.ts --project=chromium`
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — 45b7a7d
+- [x] 1.2 Lint przechodzi: `npm run lint` — 45b7a7d
+- [x] 1.3 Typy przechodzą: `npx astro check` — 45b7a7d
+- [x] 1.4 Build przechodzi: `npm run build` — 45b7a7d
+- [x] 1.5 E2E tytułów przechodzi: `npx playwright test tests/e2e/catalog.spec.ts --project=chromium` — 45b7a7d
 
 #### Manual
 
-- [x] 1.6 W zakładce każdej z sześciu stron widać samą nazwę karty, na `/` „PrintoKids”.
+- [x] 1.6 W zakładce każdej z sześciu stron widać samą nazwę karty, na `/` „PrintoKids”. — 45b7a7d
