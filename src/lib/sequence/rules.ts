@@ -7,13 +7,14 @@ export type SequenceItem = SequenceShape | number;
 /** Numbers on a card run from 1 to this value, so a field never holds more than two digits. */
 export const SEQUENCE_NUMBER_MAX = 20;
 
-export type SequenceRuleId = "AB" | "AAB" | "ABC" | "up1" | "up2" | "down1" | "groups" | "mixed";
+export type SequenceRuleId = "AB" | "AAB" | "ABC" | "ABB" | "up1" | "up2" | "down1" | "groups" | "mixed";
 
 /** Which distinct shape of the unit sits at each position of a repeating pattern. */
 const PATTERN_UNITS = {
   AB: [0, 1],
   AAB: [0, 0, 1],
   ABC: [0, 1, 2],
+  ABB: [0, 1, 1],
 } as const;
 
 const NUMBER_STEPS = { up1: 1, up2: 2, down1: -1 } as const;
@@ -26,12 +27,16 @@ const SHOWN_BEFORE: Record<SequenceRuleId, number> = {
   AB: 2,
   AAB: 3,
   ABC: 3,
+  ABB: 3,
   up1: 2,
   up2: 2,
   down1: 2,
   groups: 3,
   mixed: 2,
 };
+
+/** A mixed row shows at least this many numbers, so the child can read the step of the counting from the row. */
+export const MIXED_MIN_VISIBLE_NUMBERS = 2;
 
 export function shownBefore(rule: SequenceRuleId): number {
   return SHOWN_BEFORE[rule];
@@ -45,7 +50,8 @@ export function rowFromRule(rule: SequenceRuleId, n: number, random: () => numbe
   switch (rule) {
     case "AB":
     case "AAB":
-    case "ABC": {
+    case "ABC":
+    case "ABB": {
       const shapes = shuffle(random, [...SEQUENCE_SHAPES]);
       const unit = PATTERN_UNITS[rule].map((slot) => shapes[slot]);
       return Array.from({ length: n }, (_, position) => unit[position % unit.length]);
@@ -114,7 +120,8 @@ function ruleSequences(rule: SequenceRuleId, n: number): SequenceItem[][] {
   switch (rule) {
     case "AB":
     case "AAB":
-    case "ABC": {
+    case "ABC":
+    case "ABB": {
       const slots = PATTERN_UNITS[rule];
       return arrangements(Math.max(...slots) + 1).map((shapes) =>
         Array.from({ length: n }, (_, position) => shapes[slots[position % slots.length]]),
@@ -165,7 +172,33 @@ function periodicSequences(n: number): SequenceShape[][] {
   return found;
 }
 
-const RULE_IDS: readonly SequenceRuleId[] = ["AB", "AAB", "ABC", "up1", "up2", "down1", "groups", "mixed"];
+/** The first block of a growing-groups variant holds between these numbers of repeats; shorter starts read as plain AB. */
+const GROUP_VARIANT_MIN_START = 2;
+const GROUP_VARIANT_MAX_START = 3;
+
+/**
+ * Other ways to read growing groups: the blocks may start further along (ABB, ABBB…) and either shape may be the
+ * one that grows (A, AB, AAB…). They are not rules of a card; they only make a row count as ambiguous when the child
+ * could read it this way.
+ */
+function groupVariants(n: number): SequenceShape[][] {
+  const found: SequenceShape[][] = [];
+  for (const [single, growing] of arrangements(2)) {
+    for (const growingFirst of [false, true]) {
+      for (let start = GROUP_VARIANT_MIN_START; start <= GROUP_VARIANT_MAX_START; start += 1) {
+        const row: SequenceShape[] = [];
+        for (let repeats = start; row.length < n; repeats += 1) {
+          const block = Array<SequenceShape>(repeats).fill(growing);
+          row.push(...(growingFirst ? [...block, single] : [single, ...block]));
+        }
+        found.push(row.slice(0, n));
+      }
+    }
+  }
+  return found;
+}
+
+const RULE_IDS: readonly SequenceRuleId[] = ["AB", "AAB", "ABC", "ABB", "up1", "up2", "down1", "groups", "mixed"];
 
 const hypothesisCache = new Map<number, readonly (readonly SequenceItem[])[]>();
 const ruleCache = new Map<string, ReadonlySet<string>>();
@@ -179,13 +212,52 @@ export function hypotheses(n: number): readonly (readonly SequenceItem[])[] {
   let cached = hypothesisCache.get(n);
   if (cached === undefined) {
     const byKey = new Map<string, readonly SequenceItem[]>();
-    for (const row of [...periodicSequences(n), ...RULE_IDS.flatMap((rule) => ruleSequences(rule, n))]) {
+    const rows = [...periodicSequences(n), ...groupVariants(n), ...RULE_IDS.flatMap((rule) => ruleSequences(rule, n))];
+    for (const row of rows) {
       byKey.set(row.join(","), row);
     }
     cached = [...byKey.values()];
     hypothesisCache.set(n, cached);
   }
   return cached;
+}
+
+/** The longest repeating unit the child is assumed to read from a row. */
+const LONGEST_VISIBLE_PERIOD = 6;
+
+/**
+ * What the gaps take when the shapes the child sees repeat with a period longer than half the row: every field of the
+ * unit is visible and at least one of them twice, so the unit can be read off the row itself. Empty when no such
+ * period fits. Rows with a number among the visible fields are never read this way.
+ */
+export function visiblePeriodReadings(visible: readonly (SequenceItem | null)[]): SequenceItem[][] {
+  const n = visible.length;
+  if (visible.some((item) => typeof item === "number")) {
+    return [];
+  }
+  const readings: SequenceItem[][] = [];
+  for (let period = Math.floor(n / 2) + 1; period <= Math.min(LONGEST_VISIBLE_PERIOD, n - 1); period += 1) {
+    const unit: (SequenceItem | undefined)[] = Array<SequenceItem | undefined>(period).fill(undefined);
+    const seen = Array<number>(period).fill(0);
+    let consistent = true;
+    for (const [position, item] of visible.entries()) {
+      if (item === null) {
+        continue;
+      }
+      const slot = position % period;
+      if (unit[slot] !== undefined && unit[slot] !== item) {
+        consistent = false;
+        break;
+      }
+      unit[slot] = item;
+      seen[slot] += 1;
+    }
+    if (consistent && seen.every((count) => count > 0) && seen.some((count) => count > 1)) {
+      const resolved = unit.filter((item): item is SequenceItem => item !== undefined);
+      readings.push(visible.map((_, position) => resolved[position % period]));
+    }
+  }
+  return readings;
 }
 
 /** True when `values` is a row that `rule` can produce at its length. */

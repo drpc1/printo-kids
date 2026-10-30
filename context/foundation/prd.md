@@ -562,26 +562,27 @@ Wynikiem jest karta A4. Kratka zajmuje większą część strony, zachowuje marg
 
 Aplikacja zawsze tworzy kartę, w której każdy ciąg ma dokładnie jedną odpowiedź. Poziom wyznaczają długość ciągu, rodzaj reguł i liczba pustych pól. Rodzic wybiera jeden z czterech numerowanych poziomów (Poziom 1–4). Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia na górze i ciągami jeden pod drugim; każdy ciąg to rząd pól, część pól jest wypełniona, część pusta.
 
-Elementy to cztery kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Reguły pochodzą z jawnej listy: powtarzanie wzoru (AB, ABC, AAB), liczby rosnące o 1 lub o 2, liczby malejące o 1, rosnące grupy (A, AB, ABB) i mieszanie: kształt na przemian z liczbą rosnącą. Ciąg dla pustego pola jest poprawny, gdy z całej listy reguł pasuje do niego dokładnie jedna odpowiedź. Karta, której którykolwiek ciąg nie spełnia tego, nie jest pokazana.
+Elementy to cztery kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Reguły pochodzą z jawnej listy: powtarzanie wzoru (AB, ABC, AAB, ABB), liczby rosnące o 1 lub o 2, liczby malejące o 1, rosnące grupy (A, AB, ABB) i mieszanie: kształt na przemian z liczbą rosnącą. Ciąg dla pustego pola jest poprawny, gdy z całej listy reguł pasuje do niego dokładnie jedna odpowiedź. Karta, której którykolwiek ciąg nie spełnia tego, nie jest pokazana.
 
-| Poziom   | Dawna nazwa | Długość ciągu | Reguły                                               | Puste pola w ciągu | Liczba ciągów |
-| -------- | ----------- | ------------- | ---------------------------------------------------- | ------------------ | ------------- |
-| Poziom 1 | 4 lata      | 5 pól         | wzór AB z dwoma kształtami                           | 1                  | 5             |
-| Poziom 2 | 5 lat       | 7 pól         | wzór AB, AAB, ABC z kształtami                       | 1–2                | 6             |
-| Poziom 3 | 6 lat       | 8 pól         | wzór AB, AAB, ABC z kształtami                       | 2                  | 7             |
-| Poziom 4 | 7 lat       | 8 pól         | mieszane: kształt z liczbą, malejące i rosnące grupy | 2–3                | 7             |
+| Poziom   | Dawna nazwa | Długość ciągu | Reguły                                         | Puste pola w ciągu | Liczba ciągów |
+| -------- | ----------- | ------------- | ---------------------------------------------- | ------------------ | ------------- |
+| Poziom 1 | 4 lata      | 5 pól         | wzór AB z dwoma kształtami                     | 1                  | 5             |
+| Poziom 2 | 5 lat       | 7 pól         | wzór AB, AAB, ABC z kształtami                 | 1–2                | 6             |
+| Poziom 3 | 6 lat       | 8 pól         | wzór AB, AAB, ABC z kształtami                 | 2                  | 7             |
+| Poziom 4 | 7 lat       | 8 pól         | mieszane: kształt z liczbą, malejące, wzór ABB | 2–3                | 7             |
 
 Pola wypełniają szerokość wiersza, więc krótszy ciąg daje większe pole na odpowiedź; dlatego najłatwiejszy poziom ma najkrótszy ciąg. Wszystkie pola mają cienką ramkę, puste pole ma ramkę przerywaną i mały znak zapytania w rogu. Kształty są obrysami. Polecenie: „Co pasuje w puste pole? Uzupełnij.” Na Poziomach 1 i 2 jedno puste pole jest zawsze na końcu ciągu, drugie (jeśli jest) leży w drugiej połowie, a wzór pokazuje się w całości przed pierwszą luką.
 
 Doprecyzowanie z planu poziomów (2026-10-24):
 
-- Rosnące grupy to bloki A, AB, ABB, ABBB… sklejone i ucięte do długości ciągu (przy 8 polach: A A B A B B A B).
+- Rosnące grupy to bloki A, AB, ABB, ABBB… sklejone i ucięte do długości ciągu (przy 8 polach: A A B A B B A B). Karta ich nie losuje (od 2026-10-30, GitHub 117: na 8 polach nie widać wzrostu grup), ale sprawdzenie dwuznaczności je zna, także w wariantach, w których bloki zaczynają się od ABB, ABBB… albo rośnie pierwszy kształt (AAB, AAAB…).
 - Mieszane to jeden stały kształt na przemian z liczbą rosnącą o 1 (kształt na polach parzystych albo nieparzystych).
 - Liczby na karcie mają od 1 do 20, więc w polu są najwyżej dwie cyfry. Liczba to gruba cyfra na środku pola, bez ramki.
-- Na Poziomach 1 i 2 luki wyglądają jak w tabeli (ostatnie pole, druga luka w drugiej połowie). Na Poziomach 3 i 4 luki leżą w dowolnych polach po tych, które pokazują regułę (liczby: dwa pierwsze pola, wzory ABC i AAB oraz grupy: trzy pierwsze). Poziom 4 ma trzy ciągi z trzema lukami, pozostałe cztery z dwiema.
-- Poziom 3 losuje po dwa ciągi AB, AAB i ABC oraz jeden dowolny z tych trzech; Poziom 4 po dwa ciągi kształt z liczbą, malejące o 1 i rosnące grupy oraz jeden dowolny.
+- Na Poziomach 1 i 2 luki wyglądają jak w tabeli (ostatnie pole, druga luka w drugiej połowie). Na Poziomach 3 i 4 luki leżą w dowolnych polach po tych, które pokazują regułę (liczby: dwa pierwsze pola, wzory ABC, AAB i ABB: trzy pierwsze). Poziom 4 ma trzy ciągi z trzema lukami, pozostałe cztery z dwiema.
+- Poziom 3 losuje po dwa ciągi AB, AAB i ABC oraz jeden dowolny z tych trzech; Poziom 4 po dwa ciągi kształt z liczbą, malejące o 1 i wzór ABB oraz jeden dowolny.
 - Jedna karta nie pokazuje dwa razy tej samej sekwencji, nawet z lukami w innych polach.
-- Dwuznaczność liczy się względem całej listy reguł, także na Poziomach 1 i 2; wiersz, do którego pasuje inna reguła z inną odpowiedzią (np. AAB z dwiema lukami pasujące też do rosnących grup), nie jest pokazany.
+- Dwuznaczność liczy się względem całej listy reguł, także na Poziomach 1 i 2; wiersz, do którego pasuje inna reguła z inną odpowiedzią (np. AAB z dwiema lukami pasujące też do rosnących grup), nie jest pokazany. Dwuznaczność liczy się też względem odczytań, które dziecko widzi na kartce poza listą: rosnące grupy w wariantach (patrz wyżej) oraz powtarzającą się jednostkę o okresie 5–6 pól, gdy każde jej pole jest widoczne, a któreś widać co najmniej dwa razy (decyzja 2026-10-30, GitHub 117). Przez to na Poziomie 2 wiersz AAB z dwiema lukami nie jest pokazany; wiersze AAB mają tam jedną lukę.
+- Mieszane pokazują co najmniej dwie liczby, żeby krok liczenia był widoczny w wierszu (decyzja 2026-10-30, GitHub 117).
 
 Kolory są osobnym ustawieniem rodzica, niezależnym od poziomu. Domyślnie kształty są czarnymi konturami. Po włączeniu każdy kształt tej karty ma jedną kredkę, tę samą w każdym wierszu, wylosowaną przy Generuj z dziewięciu kredek. Liczby, „?” i puste pola zostają jak przy wyłączonych kolorach. Przełącznik nie układa nowej karty.
 
