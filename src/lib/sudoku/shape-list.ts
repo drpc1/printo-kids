@@ -9,10 +9,10 @@ const DRAWING_SIZE = 13;
 const PANEL_HEIGHT = 17;
 
 /** Space between the frame edge and its content on the left and right, in mm. */
-const PANEL_PADDING = 3;
+export const PANEL_PADDING = 3;
 
 /** Largest space between two drawings, in mm. A wider board packs the shapes instead of spreading them. */
-const MAX_GAP = 8;
+export const MAX_GAP = 8;
 
 /** The caption in front of the shapes. */
 const LABEL_TEXT = "Użyj:";
@@ -21,10 +21,10 @@ const LABEL_TEXT = "Użyj:";
 const LABEL_SIZE = 5;
 
 /** Width reserved for the caption, in mm. About 11 mm of text at the font size above. */
-const LABEL_WIDTH = 14;
+export const LABEL_WIDTH = 14;
 
 /** Space between the caption and the first drawing, in mm. */
-const LABEL_GAP = 4;
+export const LABEL_GAP = 4;
 
 export interface SudokuShapeListItem {
   id: SudokuShapeId;

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import type { SudokuSymbols } from "./levels.ts";
 import { layoutSudokuSheet, type SudokuSheetInput } from "./layout.ts";
-import { layoutSudokuShapeList } from "./shape-list.ts";
+import { LABEL_GAP, LABEL_WIDTH, MAX_GAP, PANEL_PADDING, layoutSudokuShapeList } from "./shape-list.ts";
 import { SUDOKU_SHAPES, type SudokuShapeId } from "./shapes.ts";
 import { SUDOKU_SHEET } from "./sheet.ts";
 
@@ -136,7 +136,10 @@ void describe("layoutSudokuShapeList", () => {
 
       const captionRight = row.label.x + 5 * row.label.size * CHARACTER_WIDTH;
       assert.ok(first.drawing.x - first.drawing.size / 2 > captionRight, `${label} caption`);
-      assert.ok(last.drawing.x + last.drawing.size / 2 <= row.panel.x + row.panel.width - 3 + 1e-9, `${label} right`);
+      assert.ok(
+        last.drawing.x + last.drawing.size / 2 <= row.panel.x + row.panel.width - PANEL_PADDING + 1e-9,
+        `${label} right`,
+      );
 
       for (const item of row.items) {
         const half = item.drawing.size / 2;
@@ -153,7 +156,7 @@ void describe("layoutSudokuShapeList", () => {
       });
       for (const gap of gaps) {
         assert.ok(Math.abs(gap - (gaps[0] ?? 0)) < 1e-9, `${label} equal gaps`);
-        assert.ok(gap >= 3 - 1e-9 && gap <= 8 + 1e-9, `${label} gap ${gap}`);
+        assert.ok(gap >= 3 - 1e-9 && gap <= MAX_GAP + 1e-9, `${label} gap ${gap}`);
       }
     }
   });
@@ -168,9 +171,9 @@ void describe("layoutSudokuShapeList", () => {
       return b.drawing.x - a.drawing.x - a.drawing.size;
     };
 
-    assert.ok(Math.abs(gapOf(4) - 8) < 1e-9);
-    assert.ok(Math.abs(gapOf(6) - 8) < 1e-9);
-    assert.ok(gapOf(9) < 8 && gapOf(9) >= 3);
+    assert.ok(Math.abs(gapOf(4) - MAX_GAP) < 1e-9);
+    assert.ok(Math.abs(gapOf(6) - MAX_GAP) < 1e-9);
+    assert.ok(gapOf(9) < MAX_GAP && gapOf(9) >= 3);
   });
 
   void test("the group is centered in the space after the caption", () => {
@@ -179,8 +182,8 @@ void describe("layoutSudokuShapeList", () => {
       const first = row.items.at(0);
       const last = row.items.at(-1);
       assert.ok(first && last, label);
-      const fieldLeft = row.panel.x + 3 + 14 + 4;
-      const fieldRight = row.panel.x + row.panel.width - 3;
+      const fieldLeft = row.panel.x + PANEL_PADDING + LABEL_WIDTH + LABEL_GAP;
+      const fieldRight = row.panel.x + row.panel.width - PANEL_PADDING;
       const left = first.drawing.x - first.drawing.size / 2 - fieldLeft;
       const right = fieldRight - (last.drawing.x + last.drawing.size / 2);
 
@@ -203,6 +206,9 @@ void describe("layoutSudokuShapeList", () => {
 
     assert.equal(row.items.length, 1);
     assert.ok(row.panel && only);
-    assert.equal(only.drawing.x, (row.panel.x + 3 + 14 + 4 + row.panel.x + row.panel.width - 3) / 2);
+    assert.equal(
+      only.drawing.x,
+      (row.panel.x + PANEL_PADDING + LABEL_WIDTH + LABEL_GAP + row.panel.x + row.panel.width - PANEL_PADDING) / 2,
+    );
   });
 });
