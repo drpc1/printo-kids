@@ -1,0 +1,31 @@
+== half4 (lat4), nonogram latwy, dictation lat5
+truskawka  sets   6 clean   0 | nonogram 6/6 | dictation outlines lat5:2
+pingwin    sets   6 clean   6 | nonogram 6/6 | dictation outlines lat5:3
+kot        sets  18 clean  18 | nonogram 18/18 | dictation outlines lat5:9
+ananas     sets   6 clean   6 | nonogram 6/6 | dictation outlines lat5:3
+choinka    sets  12 clean  12 | nonogram 12/12 | dictation outlines lat5:4
+tulipan    sets   6 clean   6 | nonogram 6/6 | dictation outlines lat5:6
+latarnia   sets   6 clean   6 | nonogram 6/6 | dictation outlines lat5:2
+kotwica    sets   4 clean   4 | nonogram 4/4 | dictation outlines lat5:4
+lizak      sets   4 clean   4 | nonogram 4/4 | dictation outlines lat5:2
+== half6 (lat5), nonogram sredni, dictation lat6
+truskawka  sets   6 clean   0 | nonogram 6/6 | dictation outlines lat6:2
+pingwin    sets  18 clean  18 | nonogram 14/18 | dictation outlines lat6:3
+kot        sets  18 clean  18 | nonogram 18/18 | dictation outlines lat6:9
+ananas     sets   6 clean   3 | nonogram 6/6 | dictation outlines lat6:3
+choinka    sets  12 clean  12 | nonogram 12/12 | dictation outlines lat6:4
+tulipan    sets   6 clean   6 | nonogram 2/6 | dictation outlines lat6:4
+latarnia   sets   6 clean   6 | nonogram 6/6 | dictation outlines lat6:3
+kotwica    sets   4 clean   4 | nonogram 4/4 | dictation outlines lat6:4
+lizak      sets   4 clean   4 | nonogram 4/4 | dictation outlines lat6:2
+== half9 (lat7), nonogram trudny, dictation lat7
+truskawka  sets  12 clean   0 | nonogram 12/12 | dictation outlines lat7:6
+pingwin    sets  12 clean  12 | nonogram 4/12 | dictation outlines lat7:3
+kot        sets  36 clean  36 | nonogram 12/36 | dictation outlines lat7:9
+ananas     sets  12 clean  12 | nonogram 8/12 | dictation outlines lat7:3
+choinka    sets  12 clean  12 | nonogram 12/12 | dictation outlines lat7:4
+tulipan    sets  12 clean  12 | nonogram 4/12 | dictation outlines lat7:6
+latarnia   sets  12 clean  12 | nonogram 12/12 | dictation outlines lat7:6
+kotwica    sets   8 clean   8 | nonogram 8/8 | dictation outlines lat7:8
+lizak      sets   8 clean   8 | nonogram 8/8 | dictation outlines lat7:4
+RESULT: 0 errors

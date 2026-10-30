@@ -481,7 +481,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-027: Rodzic może wybrać poziom dyktanda graficznego (łatwy, średni, trudny: rozmiar kratki, katalog obiektów, liczba poleceń). Priority: must-have
   > Socrates: Counter-argument considered: poziomy bez mierzalnych reguł wprowadzają w błąd. Resolution: kept; reguły są w Business Logic, wartości startowe potwierdza wydruk. Revised (2026-10-26): łatwy / średni / trudny zamiast 5, 6 i 7 lat, jak nonogram (FR-025), z którym dyktando dzieli trzy rozmiary obiektów.
 - FR-028: Rodzic dostaje więcej obiektów z katalogu szablonów, pogrupowanych w pięć kategorii po co najmniej cztery obiekty, na karcie symetrii, nonogramie i dyktandzie. Priority: must-have
-  > Socrates: Counter-argument considered: każda gotowa lista szablonów to znowu skończona biblioteka (Open Questions 7). Resolution: kept; więcej obiektów z losowanymi częściami odsuwa powtórki, a trzy karty dzielą jeden katalog, więc każdy nowy obiekt działa trzy razy. Revised (2026-10-25): lista z przykładów (jabłko, motyl, korona) zamieniona na obiekty pionowe, bo wszystkie siatki są wyższe niż szersze, a szeroki obiekt zajmuje tylko pas kartki. Revised (2026-10-30, GitHub 115): dyktando ma dodatkowo własne kształty bez osi symetrii (Business Logic „Karta dyktanda graficznego”); kategoria „Kształty” z figurami geometrycznymi czeka w GitHub 198.
+  > Socrates: Counter-argument considered: każda gotowa lista szablonów to znowu skończona biblioteka (Open Questions 7). Resolution: kept; więcej obiektów z losowanymi częściami odsuwa powtórki, a trzy karty dzielą jeden katalog, więc każdy nowy obiekt działa trzy razy. Revised (2026-10-25): lista z przykładów (jabłko, motyl, korona) zamieniona na obiekty pionowe, bo wszystkie siatki są wyższe niż szersze, a szeroki obiekt zajmuje tylko pas kartki. Revised (2026-10-30, GitHub 115): dyktando ma dodatkowo własne kształty bez osi symetrii (Business Logic „Karta dyktanda graficznego”); kategoria „Kształty” z figurami geometrycznymi czeka w GitHub 198. Revised (2026-10-30, GitHub 124): kotwica (Kosmos i maszyny) i lizak (Jedzenie) wchodzą do istniejących kategorii, a istniejące obiekty dostają kolejne warianty części; korona zostaje dla GitHub 198.
 - FR-029: Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”. Priority: must-have
   > Socrates: Counter-argument considered: wąska kategoria szybciej się powtarza, a zaznaczanie kilku kategorii daje więcej swobody. Resolution: kept as single choice (2026-10-25, decyzja użytkownika); „Wszystkie” to osobna kategoria, a każda kategoria ma co najmniej cztery obiekty w każdym rozmiarze, więc kolejne karty się nie powtarzają.
 
@@ -620,15 +620,15 @@ Od 2026-10-25 (S-21) katalog ma 22 obiekty z tabeli poniżej, od 2026-10-30 (GH 
 
 Obiekty są pogrupowane w pięć kategorii (US-19). Obiekt ma co najmniej jedną kategorię i może mieć kilka. Lista (✓ — już jest):
 
-| Kategoria        | Obiekty                                                                    |
-| ---------------- | -------------------------------------------------------------------------- |
-| Zwierzęta        | sowa ✓, biedronka ✓, pingwin ✓, kot ✓, królik ✓                            |
-| Jedzenie         | truskawka ✓, babeczka ✓, gruszka ✓, marchewka ✓, ananas ✓                  |
-| Przyroda         | choinka ✓, tulipan w doniczce ✓, muchomor ✓, kaktus ✓                      |
-| Kosmos i maszyny | rakieta ✓, robot ✓, balon na ogrzane powietrze ✓, UFO ✓, auto ✓, autobus ✓ |
-| Domy i budowle   | domek ✓, wieża zamku ✓, latarnia morska ✓, wieżowiec ✓                     |
+| Kategoria        | Obiekty                                                                             |
+| ---------------- | ----------------------------------------------------------------------------------- |
+| Zwierzęta        | sowa ✓, biedronka ✓, pingwin ✓, kot ✓, królik ✓                                     |
+| Jedzenie         | truskawka ✓, babeczka ✓, gruszka ✓, marchewka ✓, ananas ✓, lizak                    |
+| Przyroda         | choinka ✓, tulipan w doniczce ✓, muchomor ✓, kaktus ✓                               |
+| Kosmos i maszyny | rakieta ✓, robot ✓, balon na ogrzane powietrze ✓, UFO ✓, auto ✓, autobus ✓, kotwica |
+| Domy i budowle   | domek ✓, wieża zamku ✓, latarnia morska ✓, wieżowiec ✓                              |
 
-Lista jest startowa; obiekt, który nie daje się narysować czytelnie w połowie 4×12, zastępuje inny obiekt tej samej kategorii. Sezonowa kategoria (święta, pory roku) i „Morze” czekają na więcej obiektów. Szerokie obiekty (motyl, korona) odpadły z listy startowej. Po makiecie z 2026-10-25 lody w rożku zastąpiły marchewka i ananas, a namiot wieżowiec: oba były nieczytelne w połowie 4×12. Królik doszedł jako piąte zwierzę, zapas dla nonogramu i dyktanda.
+Lista jest startowa; obiekt, który nie daje się narysować czytelnie w połowie 4×12, zastępuje inny obiekt tej samej kategorii. Sezonowa kategoria (święta, pory roku) i „Morze” czekają na więcej obiektów. Szerokie obiekty (motyl, korona) odpadły z listy startowej; korona nie pasuje do żadnej z pięciu kategorii i czeka na kategorię „Kształty” (GitHub 198). Kotwica (Kosmos i maszyny) i lizak (Jedzenie) dochodzą 2026-10-30 (GitHub 124): oba pionowe i symetryczne lewo–prawo; cukierek w papierku odpadł, bo jest szeroki i niski. GitHub 124 dokłada też kolejne warianty części istniejącym obiektom, najpierw tym, którym nonogram lub dyktando odrzuca najwięcej wariantów. Po makiecie z 2026-10-25 lody w rożku zastąpiły marchewka i ananas, a namiot wieżowiec: oba były nieczytelne w połowie 4×12. Królik doszedł jako piąte zwierzę, zapas dla nonogramu i dyktanda.
 
 Rodzic wybiera jedną kategorię albo „Wszystkie” (US-20); „Wszystkie” to osobna kategoria, kilku naraz nie da się zaznaczyć. Generator losuje obiekt tylko z wybranej kategorii. Nowy obiekt spełnia reguły karty symetrii w każdym rozmiarze. Nonogram i dyktando mogą pomijać warianty, które łamią ich reguły (nonogram bez jednego rozwiązania, obrys dotykający sam siebie); każda kategoria musi zostawić każdej karcie w każdym rozmiarze co najmniej kilka obiektów albo wariantów, żeby kolejne Generuj się nie powtarzało.
 
@@ -671,7 +671,7 @@ Kształty dyktanda (dodane 2026-10-30, GitHub 115): oprócz obiektów z szablon�
 | Przyroda         | parasol                                                             | łatwy, średni, trudny |
 | Domy i budowle   | klucz pionowy, klucz poziomy (okrągła główka, zęby po obu stronach) | łatwy, średni, trudny |
 
-Jedzenie nie ma kształtów dyktanda, tylko obiekty z szablonów. Kategoria „Kształty” z figurami geometrycznymi (serce, korona, cukierek, kotwica) czeka w GitHub 198. Te same reguły obrysu (jedna zamknięta linia, bez rozłączeń i bez styku rogiem, dziury wypełnione) obowiązują kształty tak samo jak obiekty z szablonów.
+Jedzenie nie ma kształtów dyktanda, tylko obiekty z szablonów. Kategoria „Kształty” z figurami geometrycznymi (serce, korona) czeka w GitHub 198; kotwica i lizak wchodzą do Kosmosu i maszyn oraz Jedzenia (GitHub 124). Te same reguły obrysu (jedna zamknięta linia, bez rozłączeń i bez styku rogiem, dziury wypełnione) obowiązują kształty tak samo jak obiekty z szablonów.
 
 Liczba poleceń wynika z obiektu; im bogatszy obiekt, tym więcej poleceń. Reguły, które generator sprawdza: droga wraca do punktu startu, nie przecina się i nie dotyka sama siebie (także w narożniku kratki), mieści się w kratce, a rysunek z poleceń to dokładnie obrys sylwetki. Wariant, który łamie którąś z tych reguł, nie jest pokazany. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć na ekranie kreskę zewnętrznego obrysu. Domyślnie wyłączone; przełączenie zostawia tę samą kartę. Udane Generuj oraz zmiana poziomu, która układa nową kartę, wyłączają przełącznik. Sama zmiana kategorii go nie wyłącza. Nieudane Generuj zostawia przełącznik i poprzednią kartę. Wydruk nigdy nie pokazuje obrysu (decyzja 2026-10-25). Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11). Wynikiem jest karta A4; kratka i polecenia zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
