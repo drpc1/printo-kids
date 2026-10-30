@@ -17,3 +17,11 @@ export const CARD_KINDS: readonly CardKind[] = [
 export function cardsInCatalogOrder(): CardKind[] {
   return [...CARD_KINDS].sort((left, right) => left.title.localeCompare(right.title, "pl"));
 }
+
+export function cardTitle(id: CardKind["id"]): string {
+  const kind = CARD_KINDS.find((candidate) => candidate.id === id);
+  if (!kind) {
+    throw new Error(`Unknown card kind: ${id}`);
+  }
+  return kind.title;
+}

@@ -2,9 +2,10 @@
 import GeneratorShell from "@/components/GeneratorShell.astro";
 import SudokuGenerator from "@/components/SudokuGenerator";
 import Layout from "@/layouts/Layout.astro";
+import { cardTitle } from "@/lib/cards";
 ---
 
-<Layout title="PrintoKids" lang="pl">
+<Layout title={cardTitle("sudoku")} lang="pl">
   <GeneratorShell description="Wygeneruj kartę sudoku i wydrukuj ją na kartce A4.">
     <SudokuGenerator client:only="react" />
   </GeneratorShell>
