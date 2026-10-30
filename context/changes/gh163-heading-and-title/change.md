@@ -1,7 +1,7 @@
 ---
 change_id: gh163-heading-and-title
 title: Nagłówek strony karty to nazwa karty, tytuł zakładki to „PrintoKids - nazwa”
-status: implementing
+status: implemented
 created: 2026-10-30
 updated: 2026-10-30
 archived_at: null
