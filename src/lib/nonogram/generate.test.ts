@@ -271,3 +271,36 @@ function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+void describe("generateNonogramCard by level kind", () => {
+  void test("the easy level gives a chip card and the classic levels give a clue card, with their own fields", () => {
+    const easy = generateNonogramCard(mulberry32(1), null, SMALL);
+    assert.ok(easy);
+    assert.equal(easy.kind, "znaczki");
+    assert.ok("runs" in easy && !("clues" in easy));
+
+    for (const size of [MEDIUM, LARGE]) {
+      const classic = generateNonogramCard(mulberry32(1), null, size);
+      assert.ok(classic);
+      assert.equal(classic.kind, "liczby");
+      assert.ok("clues" in classic && !("runs" in classic));
+    }
+  });
+
+  void test("a category with no objects gives no card", () => {
+    for (const size of [SMALL, MEDIUM]) {
+      assert.equal(generateNonogramCard(mulberry32(1), null, size, "nie-ma-takiej" as never), null);
+    }
+  });
+
+  void test("a draw that repeats the previous key is drawn again, on every level", () => {
+    for (const size of [SMALL, MEDIUM, LARGE]) {
+      const first = generateNonogramCard(mulberry32(7), null, size);
+      assert.ok(first);
+      const next = generateNonogramCard(mulberry32(7), first.key, size);
+
+      assert.ok(next, size.id);
+      assert.notEqual(next.key, first.key, size.id);
+    }
+  });
+});
