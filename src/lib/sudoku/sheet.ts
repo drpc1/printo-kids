@@ -22,6 +22,9 @@ export const SUDOKU_SHEET = {
   shapeScale: 0.65,
   /** Outline thickness of a shape, in mm. */
   shapeStroke: 1.2,
+  /** Frame around the shapes under the grid: line thickness and corner radius, in mm. */
+  shapeListStroke: 0.6,
+  shapeListRadius: 2.5,
   /** Height of a digit relative to its cell. */
   digitScale: 0.6,
   /** How far a digit baseline sits below the cell center, relative to the digit size: about half the digit height. */
