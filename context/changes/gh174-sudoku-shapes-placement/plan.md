@@ -180,11 +180,11 @@ Brak: obliczenie O(n) na kartę.
 
 #### Automated
 
-- [x] 2.1 Spec przechodzi: `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium --workers=1`
-- [x] 2.2 Specy sudoku kolorów i poziomów nadal przechodzą: `npx playwright test tests/e2e/sudoku-colors.spec.ts tests/e2e/sudoku-levels.spec.ts --project=chromium --workers=1`
-- [x] 2.3 Testy i lint przechodzą: `npm test && npm run lint`
+- [x] 2.1 Spec przechodzi: `npx playwright test tests/e2e/sudoku-shape-list.spec.ts --project=chromium --workers=1` — 422aed5
+- [x] 2.2 Specy sudoku kolorów i poziomów nadal przechodzą: `npx playwright test tests/e2e/sudoku-colors.spec.ts tests/e2e/sudoku-levels.spec.ts --project=chromium --workers=1` — 422aed5
+- [x] 2.3 Testy i lint przechodzą: `npm test && npm run lint` — 422aed5
 
 #### Manual
 
-- [x] 2.4 W podglądzie wydruku (Ctrl+P) karta sudoku 9×9 z kształtami, postacią i kolorami jest jedną stroną A4, a ramka mieści się w marginesie 10 mm.
-- [x] 2.5 PRD nie zawiera już „nazwa każdej figury” ani „nazwa zostaje czarna” w opisie sudoku i opisuje ramkę „Użyj:”.
+- [x] 2.4 W podglądzie wydruku (Ctrl+P) karta sudoku 9×9 z kształtami, postacią i kolorami jest jedną stroną A4, a ramka mieści się w marginesie 10 mm. — 422aed5
+- [x] 2.5 PRD nie zawiera już „nazwa każdej figury” ani „nazwa zostaje czarna” w opisie sudoku i opisuje ramkę „Użyj:”. — 422aed5
