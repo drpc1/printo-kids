@@ -29,7 +29,7 @@ void describe("SEQUENCE_LEVELS", () => {
         ["Poziom 1", "1", "dwa kształty na zmianę, 1 puste pole", "zwykle ok. 4 lata"],
         ["Poziom 2", "2", "wzory z kształtów, 1–2 puste pola", "zwykle ok. 5 lat"],
         ["Poziom 3", "3", "liczby i wzory, 2 puste pola", "zwykle ok. 6 lat"],
-        ["Poziom 4", "4", "kształt z liczbą, liczby w dół, wzór kształtów; 2–3 puste pola", "zwykle ok. 7 lat"],
+        ["Poziom 4", "4", "kształt z liczbą, liczby w dół, dłuższe wzory; 2–3 puste pola", "zwykle ok. 7 lat"],
       ],
     );
     for (const level of SEQUENCE_LEVELS) {

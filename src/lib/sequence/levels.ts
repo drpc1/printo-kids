@@ -80,7 +80,7 @@ export const SEQUENCE_LEVELS: readonly SequenceLevel[] = [
     id: "lat7",
     label: "Poziom 4",
     barLabel: "4",
-    description: "kształt z liczbą, liczby w dół, wzór kształtów; 2–3 puste pola",
+    description: "kształt z liczbą, liczby w dół, dłuższe wzory; 2–3 puste pola",
     typicalAge: "zwykle ok. 7 lat",
     fieldsPerRow: 8,
     rowCount: 7,
