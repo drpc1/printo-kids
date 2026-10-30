@@ -8,10 +8,8 @@ import { ProfileCorner } from "@/components/ProfileCorner";
 import { LevelChoice } from "@/components/LevelChoice";
 import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
-import { useBarCharacter } from "@/hooks/useBarCharacter";
-import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
+import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
-import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { SequenceSettings } from "@/lib/card-settings";
 import { sequenceShapeInk } from "@/lib/sequence/colors";
 import { generateSequenceCard, type SequenceCard } from "@/lib/sequence/generate";
@@ -33,11 +31,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
  * level changed.
  */
 export default function SequenceGenerator() {
-  const visit = useChildProfileVisit({ onApply: applyProfileBar });
-  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barLevel, setBarLevel] = useState(visitStart.level);
-  const bar = useBarCharacter(visit, barLevel);
-  const favorite = useFavoriteCharacter(visit, bar);
+  const { visit, bar, favorite, barLevel } = useCardPage();
+  const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SequenceCard | null>(null);
   const [generateFailed, setGenerateFailed] = useState(false);
@@ -87,11 +82,6 @@ export default function SequenceGenerator() {
 
   function handlePrint(): void {
     window.print();
-  }
-
-  function applyProfileBar(next: ProfileBar): void {
-    bar.applyBar(next);
-    setBarLevel(next.level);
   }
 
   const characterControl = (
