@@ -6,7 +6,7 @@
   "coverageAnalysis": "off",
   "concurrency": 4,
   "commandRunner": {
-    "command": "node scripts/with-env.mjs MUTATION_RUN=1 -- node --experimental-strip-types --test src/lib/dictation/generate.test.ts src/lib/dictation/outline.test.ts src/lib/dictation/layout.test.ts src/lib/dictation/levels.test.ts"
+    "command": "node scripts/with-env.mjs MUTATION_RUN=1 -- node --experimental-strip-types --test src/lib/dictation/generate.test.ts src/lib/dictation/outline.test.ts src/lib/dictation/shapes.test.ts src/lib/dictation/layout.test.ts src/lib/dictation/levels.test.ts"
   },
-  "mutate": ["src/lib/dictation/generate.ts:177-248", "src/lib/dictation/outline.ts:120-260"]
+  "mutate": ["src/lib/dictation/generate.ts:193-264", "src/lib/dictation/outline.ts:134-274"]
 }

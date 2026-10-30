@@ -326,13 +326,13 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Polecenie to liczba kratek i strzałka (→, ←, ↑, ↓), np. „3 →”. Polecenia stoją nad kratką w kolejności czytania, jedno zdanie polecenia nad nimi.
-- Droga z poleceń to zewnętrzny obrys sylwetki obiektu z katalogu szablonów symetrii. Zaczyna się i kończy w punkcie startu, nie przecina się i nie dotyka samej siebie. Dziury w sylwetce (okno, oczy) nie są rysowane.
+- Droga z poleceń to zewnętrzny obrys sylwetki obiektu: z katalogu szablonów symetrii albo z katalogu kształtów dyktanda, które nie muszą być symetryczne (decyzja 2026-10-30, GitHub 115). Zaczyna się i kończy w punkcie startu, nie przecina się i nie dotyka samej siebie. Dziury w sylwetce (okno, oczy) nie są rysowane.
 - Odpowiedź jest jedna: rysunek wynika wprost z poleceń. Aplikacja potrafi go wyliczyć i sprawdzić, że wraca do startu i mieści się w kratce.
-- Każde Generuj daje nową kartę: inny obiekt albo inny wariant niż poprzednia karta.
+- Każde Generuj daje nową kartę: inny obiekt albo inny wariant niż poprzednia karta. Kształt bez osi symetrii może wypaść też odbity w poziomie; odbicie to inny obrys, więc to inna karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez rysunku odpowiedzi.
 - Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć na ekranie kreskę zewnętrznego obrysu. Domyślnie wyłączone; przełączenie zostawia tę samą kartę. Udane Generuj oraz zmiana poziomu, która układa nową kartę, wyłączają przełącznik. Sama zmiana kategorii go nie wyłącza. Nieudane Generuj zostawia przełącznik i poprzednią kartę. Wydruk nigdy nie pokazuje obrysu (decyzja 2026-10-25).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
-- Strona dyktanda ma pasek „Postać”; wybrana postać stoi przy poleceniu (US-21). Rysunkiem nadal jest obrys obiektu z katalogu szablonów, nie postaci.
+- Strona dyktanda ma pasek „Postać”; wybrana postać stoi przy poleceniu (US-21). Rysunkiem nadal jest obrys obiektu z katalogu szablonów albo kształtów dyktanda, nie postaci.
 
 ### US-18: Rodzic wybiera poziom dyktanda graficznego
 
@@ -355,7 +355,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Katalog szablonów ma pięć kategorii: Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle. Każda ma co najmniej cztery obiekty; startowa lista jest w Business Logic („Katalog szablonów obiektów”).
-- Każdy obiekt jest symetryczny lewo–prawo, pionowy i rozpoznawalny po samej sylwetce. Ma wersję na każdy rozmiar szablonu (połowa 4×12, 6×15 i 9×24) i części losowane przez generator, jak dziś rakieta, robot i truskawka.
+- Każdy obiekt szablonów jest symetryczny lewo–prawo, pionowy i rozpoznawalny po samej sylwetce. Kształty tylko dla dyktanda (Business Logic „Karta dyktanda graficznego”) są wyjątkiem: nie muszą być symetryczne ani pionowe. Ma wersję na każdy rozmiar szablonu (połowa 4×12, 6×15 i 9×24) i części losowane przez generator, jak dziś rakieta, robot i truskawka.
 - Każdy obiekt ma co najmniej jedną kategorię; może mieć kilka.
 - Nowe obiekty spełniają reguły karty symetrii (dotykają osi, mają kolor szablonu) i są dostępne w nonogramie i dyktandzie, gdy te karty istnieją.
 - Kategorie są widoczne na pasku (US-20, S-26); „Wszystkie” jest domyślne.
@@ -476,12 +476,12 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
   > Socrates: Counter-argument considered: sylwetka narysowana do symetrii nie musi dawać nonogramu z jednym rozwiązaniem, a „Nonogram postaci” czekał na bitmapy postaci. Resolution: revised (2026-10-25); obrazkiem jest obiekt z szablonów symetrii zamiast postaci, a generator sprawdza solverem jedno rozwiązanie i nie pokazuje wariantu, który go nie ma.
 - FR-025: Rodzic może wybrać poziom nonogramu (łatwy, średni, trudny): łatwy to prosty wariant ze znaczkami przy wierszach, średni i trudny to klasyczny nonogram 12×15 i 18×24. Priority: must-have
   > Socrates: Counter-argument considered: poziomy nazwane wiekiem jak w innych kartach. Resolution: revised (2026-10-25); poziomy nazwane łatwy, średni, trudny, nie wiekiem, jak sudoku (FR-022). Po makiecie użytkowniczka uznała klasyczny nonogram za zbyt trudny dla przedszkolaków, więc łatwy to prosty wariant ze znaczkami (biały, szary, czarny z liczbą kratek), a klasyczny jest dla starszych dzieci.
-- FR-026: Rodzic może wygenerować kartę dyktanda graficznego z poleceniami (liczba kratek i strzałka), które prowadzą po liniach kratki wzdłuż obrysu obiektu z katalogu szablonów, z jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
-  > Socrates: Counter-argument considered: obrys sylwetki może dotykać sam siebie w narożniku kratki i wtedy polecenia są dwuznaczne dla dziecka. Resolution: kept; generator odrzuca warianty, których obrys się przecina albo dotyka sam siebie.
+- FR-026: Rodzic może wygenerować kartę dyktanda graficznego z poleceniami (liczba kratek i strzałka), które prowadzą po liniach kratki wzdłuż obrysu obiektu z katalogu szablonów albo z katalogu kształtów dyktanda, z jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: obrys sylwetki może dotykać sam siebie w narożniku kratki i wtedy polecenia są dwuznaczne dla dziecka. Resolution: kept; generator odrzuca warianty, których obrys się przecina albo dotyka sam siebie. Revised (2026-10-30, GitHub 115): obiekty tylko dla dyktanda nie muszą być symetryczne; rysuje się je ręcznie jako całe sylwetki, a te same reguły obrysu obowiązują je tak samo.
 - FR-027: Rodzic może wybrać poziom dyktanda graficznego (łatwy, średni, trudny: rozmiar kratki, katalog obiektów, liczba poleceń). Priority: must-have
   > Socrates: Counter-argument considered: poziomy bez mierzalnych reguł wprowadzają w błąd. Resolution: kept; reguły są w Business Logic, wartości startowe potwierdza wydruk. Revised (2026-10-26): łatwy / średni / trudny zamiast 5, 6 i 7 lat, jak nonogram (FR-025), z którym dyktando dzieli trzy rozmiary obiektów.
 - FR-028: Rodzic dostaje więcej obiektów z katalogu szablonów, pogrupowanych w pięć kategorii po co najmniej cztery obiekty, na karcie symetrii, nonogramie i dyktandzie. Priority: must-have
-  > Socrates: Counter-argument considered: każda gotowa lista szablonów to znowu skończona biblioteka (Open Questions 7). Resolution: kept; więcej obiektów z losowanymi częściami odsuwa powtórki, a trzy karty dzielą jeden katalog, więc każdy nowy obiekt działa trzy razy. Revised (2026-10-25): lista z przykładów (jabłko, motyl, korona) zamieniona na obiekty pionowe, bo wszystkie siatki są wyższe niż szersze, a szeroki obiekt zajmuje tylko pas kartki.
+  > Socrates: Counter-argument considered: każda gotowa lista szablonów to znowu skończona biblioteka (Open Questions 7). Resolution: kept; więcej obiektów z losowanymi częściami odsuwa powtórki, a trzy karty dzielą jeden katalog, więc każdy nowy obiekt działa trzy razy. Revised (2026-10-25): lista z przykładów (jabłko, motyl, korona) zamieniona na obiekty pionowe, bo wszystkie siatki są wyższe niż szersze, a szeroki obiekt zajmuje tylko pas kartki. Revised (2026-10-30, GitHub 115): dyktando ma dodatkowo własne kształty bez osi symetrii (Business Logic „Karta dyktanda graficznego”); kategoria „Kształty” z figurami geometrycznymi czeka w GitHub 198.
 - FR-029: Rodzic może wybrać na pasku symetrii, nonogramu i dyktanda jedną kategorię obiektów albo „Wszystkie”. Priority: must-have
   > Socrates: Counter-argument considered: wąska kategoria szybciej się powtarza, a zaznaczanie kilku kategorii daje więcej swobody. Resolution: kept as single choice (2026-10-25, decyzja użytkownika); „Wszystkie” to osobna kategoria, a każda kategoria ma co najmniej cztery obiekty w każdym rozmiarze, więc kolejne karty się nie powtarzają.
 
@@ -614,7 +614,7 @@ Wartości są startowe i zostają potwierdzone na wydruku; użytkowniczka nie je
 
 ### Katalog szablonów obiektów
 
-Dodane 2026-10-25. Karta symetrii, nonogram i dyktando graficzne biorą obiekty z jednego katalogu szablonów zapisanych w kodzie (patrz „Karta symetrii”). Szablon to połowa obiektu symetrycznego lewo–prawo z częściami losowanymi przez generator i kolorem kredki każdej kratki; cała sylwetka to połowa i jej odbicie. Każdy obiekt ma trzy rozmiary: połowa 4×12 (cała 8×12), 6×15 (cała 12×15) i 9×24 (cała 18×24).
+Dodane 2026-10-25. Karta symetrii, nonogram i dyktando graficzne biorą obiekty z jednego katalogu szablonów zapisanych w kodzie (patrz „Karta symetrii”). Szablon to połowa obiektu symetrycznego lewo–prawo z częściami losowanymi przez generator i kolorem kredki każdej kratki; cała sylwetka to połowa i jej odbicie. Każdy obiekt ma trzy rozmiary: połowa 4×12 (cała 8×12), 6×15 (cała 12×15) i 9×24 (cała 18×24). Kształty bez osi symetrii są tylko w dyktandzie i mają własny katalog (patrz „Karta dyktanda graficznego”); symetria i nonogram ich nie używają.
 
 Od 2026-10-25 (S-21) katalog ma 22 obiekty z tabeli poniżej, od 2026-10-30 (GH #118) 24; wcześniej miał trzy: rakieta, robot, truskawka. Obiekt pasuje do katalogu, gdy jest symetryczny lewo–prawo, pionowy (wszystkie siatki są wyższe niż szersze), rozpoznawalny po samej czarnej sylwetce także w połowie 4×12, szeroki przy osi, ma dziury na detale i warianty, mieści się w ośmiu kolorach kredek (z brązowym) i nie ma części stykających się tylko rogiem kratki (psują obrys dyktanda). Wyjątkiem od „pionowy” są auto i autobus (2026-10-30, GH #118): widok z boku, niski i szeroki, symetryczny, bo oba końce są takie same (kabina na osi, koło po każdej stronie); wypełniają całą szerokość siatki, a nie jej wysokość.
 
@@ -652,13 +652,26 @@ Reguła, którą generator sprawdza: z liczb wiersza i kolumn wynika dokładnie 
 
 Dodane 2026-10-25. Aplikacja zawsze tworzy kartę z jedną odpowiedzią: rysunkiem, który wynika z poleceń. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia, listą poleceń i pustą kratką z zaznaczonym punktem startu. Polecenie to liczba kratek i strzałka (→, ←, ↑, ↓); dziecko rysuje odcinek po linii kratki. Bez skosów. Polecenie: „Rysuj po liniach kratki według strzałek. Zacznij od kropki.”.
 
-Droga to zewnętrzny obrys całej sylwetki obiektu z katalogu szablonów, obiegany w jednym kierunku od punktu startu z powrotem do niego. Kolejne odcinki w tym samym kierunku łączą się w jedno polecenie. Dziury w sylwetce (okno, oczy, pestki) nie są rysowane. Kratka jest większa od obiektu o co najmniej jedną kratkę z każdej strony, a punkt startu leży na obrysie, w lewym górnym rogu sylwetki.
+Droga to zewnętrzny obrys całej sylwetki obiektu z katalogu szablonów albo z katalogu kształtów dyktanda (niżej), obiegany w jednym kierunku od punktu startu z powrotem do niego. Kolejne odcinki w tym samym kierunku łączą się w jedno polecenie. Dziury w sylwetce (okno, oczy, pestki) nie są rysowane. Kratka jest większa od obiektu o co najmniej jedną kratkę z każdej strony, a punkt startu leży na obrysie, w lewym górnym rogu sylwetki.
 
 | Poziom | Dawna nazwa | Kratka (około) | Obiekty                        |
 | ------ | ----------- | -------------- | ------------------------------ |
 | łatwy  | 5 lat       | 14 mm          | proste, z połowy 4×12 (8×12)   |
 | średni | 6 lat       | 11 mm          | szablony z połowy 6×15 (12×15) |
 | trudny | 7 lat       | 8 mm           | bogate, z połowy 9×24 (18×24)  |
+
+Kształty dyktanda (dodane 2026-10-30, GitHub 115): oprócz obiektów z szablonów dyktando ma własny katalog całych sylwetek, które nie muszą być symetryczne ani pionowe. Rysuje się je ręcznie na kratce (zatwierdzona makieta w `context/changes/gh115-non-symetric-shapes/`), nie mają losowanych części, a ich wariantem jest odbicie w poziomie: kształt i jego lustro to dwa obrysy, więc dwie różne karty. Kształt ma rysunek tylko na poziomach, na których wygląda czytelnie; na łatwej kratce 8 kolumn nie wszystkie się mieszczą. Kształty mają te same kategorie co obiekty szablonów i losują się razem z nimi:
+
+| Kategoria        | Kształt                                                             | Poziomy               |
+| ---------------- | ------------------------------------------------------------------- | --------------------- |
+| Zwierzęta        | ryba, kaczka                                                        | średni, trudny        |
+| Zwierzęta        | dinozaur                                                            | łatwy, średni, trudny |
+| Kosmos i maszyny | lokomotywa, ciężarówka, statek, łódka z masztem (bez żagla)         | łatwy, średni, trudny |
+| Kosmos i maszyny | helikopter                                                          | średni, trudny        |
+| Przyroda         | parasol                                                             | łatwy, średni, trudny |
+| Domy i budowle   | klucz pionowy, klucz poziomy (okrągła główka, zęby po obu stronach) | łatwy, średni, trudny |
+
+Jedzenie nie ma kształtów dyktanda, tylko obiekty z szablonów. Kategoria „Kształty” z figurami geometrycznymi (serce, korona, cukierek, kotwica) czeka w GitHub 198. Te same reguły obrysu (jedna zamknięta linia, bez rozłączeń i bez styku rogiem, dziury wypełnione) obowiązują kształty tak samo jak obiekty z szablonów.
 
 Liczba poleceń wynika z obiektu; im bogatszy obiekt, tym więcej poleceń. Reguły, które generator sprawdza: droga wraca do punktu startu, nie przecina się i nie dotyka sama siebie (także w narożniku kratki), mieści się w kratce, a rysunek z poleceń to dokładnie obrys sylwetki. Wariant, który łamie którąś z tych reguł, nie jest pokazany. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć na ekranie kreskę zewnętrznego obrysu. Domyślnie wyłączone; przełączenie zostawia tę samą kartę. Udane Generuj oraz zmiana poziomu, która układa nową kartę, wyłączają przełącznik. Sama zmiana kategorii go nie wyłącza. Nieudane Generuj zostawia przełącznik i poprzednią kartę. Wydruk nigdy nie pokazuje obrysu (decyzja 2026-10-25). Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11). Wynikiem jest karta A4; kratka i polecenia zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
