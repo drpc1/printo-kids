@@ -303,12 +303,12 @@ Brak: warianty i obiekty są danymi w kodzie; zapisane profile i ostatnie parame
 
 #### Automated
 
-- [x] 4.1 Wszystkie testy: `npm test`
-- [x] 4.2 Lint: `npm run lint`
-- [x] 4.3 Typy: `npx astro check`
-- [x] 4.4 Budowanie: `npm run build`
+- [x] 4.1 Wszystkie testy: `npm test` — 49eb64f
+- [x] 4.2 Lint: `npm run lint` — 49eb64f
+- [x] 4.3 Typy: `npx astro check` — 49eb64f
+- [x] 4.4 Budowanie: `npm run build` — 49eb64f
 
 #### Manual
 
-- [x] 4.5 Kotwica i lizak oraz nowe warianty mieszczą się na karcie A4 w marginesie 10 mm, także na telefonie
-- [x] 4.6 Wydruk próbny kotwicy w 4×12 jest czytelny dla dziecka
+- [x] 4.5 Kotwica i lizak oraz nowe warianty mieszczą się na karcie A4 w marginesie 10 mm, także na telefonie — 49eb64f
+- [x] 4.6 Wydruk próbny kotwicy w 4×12 jest czytelny dla dziecka — 49eb64f
