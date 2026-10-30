@@ -4,11 +4,13 @@ import { pick, shuffle } from "./random.ts";
 import {
   followsRule,
   hypotheses,
+  MIXED_MIN_VISIBLE_NUMBERS,
   rowFromRule,
   SEQUENCE_NUMBER_MAX,
   shownBefore,
   type SequenceItem,
   type SequenceRuleId,
+  visiblePeriodReadings,
 } from "./rules.ts";
 import { SEQUENCE_SHAPES, type SequenceShape } from "./shapes.ts";
 
@@ -38,6 +40,7 @@ export type SequenceRowProblem =
   | "last-not-gap"
   | "second-gap-outside-second-half"
   | "gap-before-rule-shown"
+  | "too-few-numbers"
   | "no-answer"
   | "ambiguous"
   | "answer-mismatch";
@@ -70,24 +73,41 @@ function drawSequenceCard(random: () => number, level: SequenceLevel): Omit<Sequ
     rules.push(level.rules[pick(random, level.rules.length)].rule);
   }
   shuffle(random, rules);
-  const extraGapRows = new Set(shuffle(random, [...rules.keys()]).slice(0, level.extraGapRows));
-
-  const rows: SequenceRow[] = [];
+  const rows: (SequenceRow | undefined)[] = rules.map(() => undefined);
   const taken = new Set<string>();
-  for (const [index, rule] of rules.entries()) {
-    const gapCount = level.gaps + (extraGapRows.has(index) ? 1 : 0);
-    const row = drawRow(random, level, rule, gapCount, taken);
-    if (row === null) {
-      return null;
+  // The rows with an extra gap go to rules that can carry it: some rows (AAB at 5 lat) have no unambiguous layout with
+  // one gap more, so a candidate that cannot be drawn is skipped for the next one.
+  let extraGapRows = 0;
+  for (const index of shuffle(random, [...rules.keys()])) {
+    if (extraGapRows === level.extraGapRows) {
+      break;
     }
-    taken.add(valuesKey(row));
-    rows.push(row);
+    const row = drawRow(random, level, rules[index], level.gaps + 1, taken);
+    if (row !== null) {
+      taken.add(valuesKey(row));
+      rows[index] = row;
+      extraGapRows += 1;
+    }
   }
+  if (extraGapRows < level.extraGapRows) {
+    return null;
+  }
+  for (const [index, rule] of rules.entries()) {
+    if (rows[index] === undefined) {
+      const row = drawRow(random, level, rule, level.gaps, taken);
+      if (row === null) {
+        return null;
+      }
+      taken.add(valuesKey(row));
+      rows[index] = row;
+    }
+  }
+  const drawnRows = rows.filter((row): row is SequenceRow => row !== undefined);
   return {
     levelId: level.id,
     fieldsPerRow: level.fieldsPerRow,
-    rows,
-    key: `${level.id}:${rows.map(valuesKey).join("|")}`,
+    rows: drawnRows,
+    key: `${level.id}:${drawnRows.map(valuesKey).join("|")}`,
   };
 }
 
@@ -153,6 +173,10 @@ export function sequenceAnswers(visible: readonly (SequenceItem | null)[]): {
       answers.set(tuple.join("-"), tuple);
     }
   }
+  for (const candidate of visiblePeriodReadings(visible)) {
+    const tuple = gapIndexes.map((index) => candidate[index]);
+    answers.set(tuple.join("-"), tuple);
+  }
   return { answers: [...answers.values()] };
 }
 
@@ -205,6 +229,9 @@ export function sequenceRowProblems(row: SequenceRow, level: SequenceLevel): rea
   }
 
   const visible = row.values.map((item, index) => (row.gaps.includes(index) ? null : item));
+  if (row.rule === "mixed" && visible.filter((item) => typeof item === "number").length < MIXED_MIN_VISIBLE_NUMBERS) {
+    problems.add("too-few-numbers");
+  }
   const { answers } = sequenceAnswers(visible);
   if (answers.length === 0) {
     problems.add("no-answer");
