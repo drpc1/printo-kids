@@ -313,9 +313,9 @@ Brak zmian formatu danych w `localStorage`.
 
 #### Automated
 
-- [x] 4.1 Lint, testy, typy i build: `npm run lint && npm test && npx astro check && npm run build`
-- [x] 4.2 Uogólniony test wiersza przechodzi na czterech projektach Chromium: `npx playwright test tests/e2e/phone-settings-rows.spec.ts --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
+- [x] 4.1 Lint, testy, typy i build: `npm run lint && npm test && npx astro check && npm run build` — fd834c7
+- [x] 4.2 Uogólniony test wiersza przechodzi na czterech projektach Chromium: `npx playwright test tests/e2e/phone-settings-rows.spec.ts --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` — fd834c7
 
 #### Manual
 
-- [x] 4.3 Kontrola końcowa na telefonie i komputerze: wszystkie sześć stron przed i po Generuj wygląda spójnie, a druk jest bez zmian.
+- [x] 4.3 Kontrola końcowa na telefonie i komputerze: wszystkie sześć stron przed i po Generuj wygląda spójnie, a druk jest bez zmian. — fd834c7
