@@ -52,13 +52,27 @@ export function dictationSilhouette(template: SymmetryTemplate, variants: readon
     half.push(...variant);
   });
   const width = template.width * 2;
-  const height = template.height;
+  return silhouetteOfCells(
+    half.flatMap((cell) => [
+      { col: cell.col, row: cell.row },
+      { col: width - 1 - cell.col, row: cell.row },
+    ]),
+    width,
+    template.height,
+  );
+}
+
+/**
+ * The silhouette of cells drawn in a `width` by `height` frame: every enclosed empty cell is filled, since the child
+ * only draws the outer line, and the result is moved to its bounding box. Shared by the mirrored templates and the
+ * hand-drawn shapes.
+ */
+export function silhouetteOfCells(cells: readonly DictationCell[], width: number, height: number): DictationSilhouette {
   const filled = new Set<number>();
   // The frame is padded by one empty ring, so the flood starts at its corner and reaches every open edge.
   const padded = width + 2;
-  for (const cell of half) {
+  for (const cell of cells) {
     filled.add((cell.row + 1) * padded + cell.col + 1);
-    filled.add((cell.row + 1) * padded + (width - 1 - cell.col) + 1);
   }
   const reached = new Set<number>([0]);
   const queue = [0];
@@ -79,15 +93,15 @@ export function dictationSilhouette(template: SymmetryTemplate, variants: readon
       }
     }
   }
-  const cells: DictationCell[] = [];
+  const solid: DictationCell[] = [];
   for (let row = 0; row < height; row += 1) {
     for (let col = 0; col < width; col += 1) {
       if (!reached.has((row + 1) * padded + col + 1)) {
-        cells.push({ col, row });
+        solid.push({ col, row });
       }
     }
   }
-  return normalize(cells);
+  return normalize(solid);
 }
 
 function normalize(cells: readonly DictationCell[]): DictationSilhouette {
