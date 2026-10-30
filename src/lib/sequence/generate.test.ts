@@ -34,9 +34,10 @@ const [KOLO, KWADRAT, TROJKAT, GWIAZDKA] = SEQUENCE_SHAPES;
 const SYMBOLS: SequenceItem[] = [...SEQUENCE_SHAPES, ...Array.from({ length: 20 }, (_, index) => index + 1)];
 
 /**
- * Independent oracle, written from the PRD and not from rules.ts: does this whole row follow one of the rules of the
- * list? Shapes repeating with a period up to half the row, the unit patterns AB, AAB and ABC, numbers rising by 1 or
- * 2 or falling by 1, the growing groups A, AB, ABB, and a shape on every other field with counting numbers between.
+ * Independent oracle, written from the PRD and not from rules.ts, and wider than the card rules on purpose: does this
+ * whole row follow a reading a child could have? Shapes repeating with a period up to half the row, the unit patterns
+ * AB, AAB, ABC and ABB, numbers rising or falling by 1 to 3, the growing groups A, AB, ABB (also starting later, either
+ * shape growing), and a shape on every other field with counting numbers between.
  */
 function followsAnyRule(full: readonly SequenceItem[]): boolean {
   const n = full.length;
@@ -47,14 +48,19 @@ function followsAnyRule(full: readonly SequenceItem[]): boolean {
     const periodic = Array.from({ length: Math.floor(n / 2) }, (_, offset) => offset + 1).some((period) =>
       full.every((item, index) => index < period || item === full[index - period]),
     );
-    if (periodic || ["AB", "AAB", "ABC"].some((unit) => repeatsUnit(full, unit)) || isGrowingGroups(full)) {
+    if (
+      periodic ||
+      ["AB", "AAB", "ABC", "ABB"].some((unit) => repeatsUnit(full, unit)) ||
+      isGrowingGroups(full) ||
+      isGrowingGroupVariant(full)
+    ) {
       return true;
     }
   }
   if (numbers.length === n) {
     const step = numbers[1] - numbers[0];
     return (
-      [1, 2, -1].includes(step) &&
+      [1, 2, 3, -1, -2, -3].includes(step) &&
       numbers.every(
         (value, index) => Number.isInteger(value) && value >= 1 && value <= 20 && value === numbers[0] + step * index,
       )
@@ -91,13 +97,63 @@ function isGrowingGroups(full: readonly SequenceItem[]): boolean {
   return full.every((item, index) => item === expected[index]);
 }
 
+/** Growing groups that start with two or three repeats, either shape growing: ABB ABBB…, AAB AAAB… */
+function isGrowingGroupVariant(full: readonly SequenceItem[]): boolean {
+  const shapes = [...new Set(full)];
+  for (const single of shapes) {
+    for (const growing of shapes) {
+      for (const growingFirst of [false, true]) {
+        for (const start of [2, 3]) {
+          const expected: SequenceItem[] = [];
+          for (let repeats = start; expected.length < full.length; repeats += 1) {
+            const block = Array<SequenceItem>(repeats).fill(growing);
+            expected.push(...(growingFirst ? [...block, single] : [single, ...block]));
+          }
+          if (single !== growing && full.every((item, index) => item === expected[index])) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Fillings from a period longer than half the row when the child sees the whole unit and one of its fields twice:
+ * every field of the unit visible, a repeat among the visible fields, no field contradicting its class.
+ */
+function visiblePeriodFillings(row: SequenceRow): SequenceItem[][] {
+  const n = row.values.length;
+  const visible = row.values.map((item, index) => (row.gaps.includes(index) ? null : item));
+  const found: SequenceItem[][] = [];
+  if (visible.some((item) => typeof item === "number")) {
+    return found;
+  }
+  for (let period = Math.floor(n / 2) + 1; period <= Math.min(6, n - 1); period += 1) {
+    const classes = Array.from({ length: period }, (_, slot) =>
+      visible.filter((item, index) => item !== null && index % period === slot),
+    );
+    if (
+      classes.every((members) => members.length > 0 && members.every((item) => item === members[0])) &&
+      classes.some((members) => members.length > 1)
+    ) {
+      found.push(row.gaps.map((gap) => classes[gap % period].find((item): item is SequenceItem => item !== null) ?? 0));
+    }
+  }
+  return found;
+}
+
 function isMixed(full: readonly SequenceItem[], shapeParity: number): boolean {
   const shapes = full.filter((_, index) => index % 2 === shapeParity);
   const numbers = full.filter((_, index) => index % 2 !== shapeParity);
+  const step = typeof numbers[1] === "number" && typeof numbers[0] === "number" ? numbers[1] - numbers[0] : 0;
   return (
+    [1, 2, 3, -1, -2, -3].includes(step) &&
     shapes.every((item) => item === shapes[0] && typeof item === "string") &&
     numbers.every(
-      (item, index) => typeof item === "number" && item >= 1 && item <= 20 && item === (numbers[0] as number) + index,
+      (item, index) =>
+        typeof item === "number" && item >= 1 && item <= 20 && item === (numbers[0] as number) + step * index,
     )
   );
 }
@@ -113,11 +169,16 @@ function fillingsThatFollowARule(row: SequenceRow): SequenceItem[][] {
       found.push(filling);
     }
   }
+  for (const filling of visiblePeriodFillings(row)) {
+    if (!found.some((other) => other.join("-") === filling.join("-"))) {
+      found.push(filling);
+    }
+  }
   return found;
 }
 
 /** The first field a gap may take, by rule, as the PRD describes it (hand-written, not read from rules.ts). */
-const FIRST_GAP_BY_RULE = { AB: 2, AAB: 3, ABC: 3, up1: 2, up2: 2, down1: 2, groups: 3, mixed: 2 } as const;
+const FIRST_GAP_BY_RULE = { AB: 2, AAB: 3, ABC: 3, ABB: 3, up1: 2, up2: 2, down1: 2, groups: 3, mixed: 2 } as const;
 
 void describe("generateSequenceCard", () => {
   void test("every card of every level passes the validator and has the shape the PRD table gives", () => {
@@ -161,7 +222,7 @@ void describe("generateSequenceCard", () => {
     assert.deepEqual(rulesOf(LAT4), ["AB"]);
     assert.deepEqual(rulesOf(LAT5), ["AAB", "AB", "ABC"]);
     assert.deepEqual(rulesOf(LAT6), ["AAB", "AB", "ABC"]);
-    assert.deepEqual(rulesOf(LAT7), ["down1", "groups", "mixed"]);
+    assert.deepEqual(rulesOf(LAT7), ["ABB", "down1", "mixed"]);
   });
 
   void test("every row of every level has exactly one answer, found by trying all fillings of the gaps", () => {
@@ -273,7 +334,7 @@ void describe("generateSequenceCard", () => {
     assert.ok(MUTATION_RUN || performance.now() - started < 5000);
   });
 
-  void test("serce, krzyzyk and strzalka appear on lat4, lat5 and lat6 and in groups or mixed on lat7", () => {
+  void test("serce, krzyzyk and strzalka appear on lat4, lat5 and lat6 and in ABB or mixed on lat7", () => {
     const patternLevels = [LAT4, LAT5, LAT6] as const;
     const seen = {
       lat4: new Set<string>(),
@@ -294,7 +355,7 @@ void describe("generateSequenceCard", () => {
       const card = generateSequenceCard(mulberry32(seed), null, LAT7);
       assert.ok(card, `lat7 seed ${seed}`);
       for (const row of card.rows) {
-        if (row.rule !== "groups" && row.rule !== "mixed") {
+        if (row.rule !== "ABB" && row.rule !== "mixed") {
           continue;
         }
         for (const item of row.values) {
@@ -332,7 +393,27 @@ void describe("sequenceAnswers", () => {
   });
 
   void test("visible fields that fit no rule give no answer", () => {
-    assert.deepEqual(sequenceAnswers([KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, KOLO, null]), { answers: [] });
+    assert.deepEqual(sequenceAnswers([KOLO, KWADRAT, TROJKAT, KOLO, TROJKAT, KWADRAT, null]), { answers: [] });
+  });
+
+  void test("growing groups that start later and periods of five or six give a second answer", () => {
+    const [A, B] = [KOLO, KWADRAT];
+    // A B B A B B _ _: the unit ABB (then A B) or the groups A BB, A BBB (then B A).
+    assert.equal(sequenceAnswers([A, B, B, A, B, B, null, null]).answers.length, 2);
+    // A B B A B _ _ _ and A B B _ B B _ _ read as groups too.
+    assert.ok(sequenceAnswers([A, B, B, A, B, null, null, null]).answers.length > 1);
+    assert.ok(sequenceAnswers([A, B, B, null, B, B, null, null]).answers.length > 1);
+    // A B B A B _ _ B: the unit A B B A B of five fields is visible in full.
+    assert.equal(sequenceAnswers([A, B, B, A, B, null, null, B]).answers.length, 2);
+    // A A B A A _ _ (5 lat) and A A B A A _ A _ (6 lat): AAB or the groups AAB, AAAB / a unit of five.
+    assert.equal(sequenceAnswers([A, A, B, A, A, null, null]).answers.length, 2);
+    assert.equal(sequenceAnswers([A, A, B, A, A, null, A, null]).answers.length, 2);
+  });
+
+  void test("a unit of five fields with a hidden field is not read off the row", () => {
+    const [A, B, C, D] = [KOLO, KWADRAT, TROJKAT, GWIAZDKA];
+    // Positions 0 and 5 repeat, but the field of the unit at position 4 is a gap: the child cannot see the unit.
+    assert.equal(sequenceAnswers([A, B, C, D, null, A, B, C]).answers.length, 0);
   });
 
   void test("a number and a shape in one run give no answer", () => {
@@ -342,8 +423,8 @@ void describe("sequenceAnswers", () => {
 
 void describe("sequenceRowProblems", () => {
   const good: SequenceRow = {
-    rule: "AAB",
-    values: [KOLO, KOLO, KWADRAT, KOLO, KOLO, KWADRAT, KOLO],
+    rule: "ABC",
+    values: [KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, TROJKAT, KOLO],
     gaps: [5, 6],
   };
 
@@ -375,7 +456,7 @@ void describe("sequenceRowProblems", () => {
   });
 
   void test("the validator reads the answer from the visible fields, not from the stored values", () => {
-    const row: SequenceRow = { ...good, values: [KOLO, KOLO, KWADRAT, KOLO, KOLO, KWADRAT, TROJKAT] };
+    const row: SequenceRow = { ...good, values: [KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, TROJKAT, TROJKAT] };
 
     assert.ok(sequenceRowProblems(row, LAT5).includes("answer-mismatch"));
   });
@@ -429,6 +510,11 @@ void describe("sequenceRowProblems", () => {
       values: [KOLO, KOLO, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT],
       gaps: [4, 6],
     };
+    const abb: SequenceRow = {
+      rule: "ABB",
+      values: [KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT],
+      gaps: [3, 6],
+    };
     const mixed: SequenceRow = {
       rule: "mixed",
       values: [GWIAZDKA, 1, GWIAZDKA, 2, GWIAZDKA, 3, GWIAZDKA, 4],
@@ -437,7 +523,31 @@ void describe("sequenceRowProblems", () => {
 
     assert.deepEqual(sequenceRowProblems(down, LAT6), []);
     assert.deepEqual(sequenceRowProblems(groups, LAT7), []);
+    assert.deepEqual(sequenceRowProblems(abb, LAT7), []);
     assert.deepEqual(sequenceRowProblems(mixed, LAT7), []);
+  });
+
+  void test("a mixed row with one visible number is reported", () => {
+    const oneNumber: SequenceRow = {
+      rule: "mixed",
+      values: [3, KOLO, 4, KOLO, 5, KOLO, 6, KOLO],
+      gaps: [2, 4, 6],
+    };
+    const twoNumbers: SequenceRow = { ...oneNumber, gaps: [3, 5, 7] };
+
+    assert.ok(sequenceRowProblems(oneNumber, LAT7).includes("too-few-numbers"));
+    assert.ok(!sequenceRowProblems(twoNumbers, LAT7).includes("too-few-numbers"));
+  });
+
+  void test("no mixed row of a lat7 card shows fewer than two numbers", () => {
+    for (let seed = 0; seed < SEEDS; seed += 1) {
+      const card = generateSequenceCard(mulberry32(seed), null, LAT7);
+      assert.ok(card, `seed ${seed}`);
+      for (const row of card.rows.filter((candidate) => candidate.rule === "mixed")) {
+        const numbers = row.values.filter((item, index) => typeof item === "number" && !row.gaps.includes(index));
+        assert.ok(numbers.length >= 2, `seed ${seed}: ${row.values.join(" ")} gaps ${row.gaps.join(",")}`);
+      }
+    }
   });
 
   void test("a gap row of the wrong size for the level is reported", () => {
@@ -457,6 +567,7 @@ void describe("sequenceRowProblems against the oracle", () => {
     { rule: "up1", values: [3, 4, 5, 6, 7, 8, 9, 10], gaps: [] },
     { rule: "up2", values: [2, 4, 6, 8, 10, 12, 14, 16], gaps: [] },
     { rule: "down1", values: [14, 13, 12, 11, 10, 9, 8, 7], gaps: [] },
+    { rule: "ABB", values: [KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT], gaps: [] },
     { rule: "groups", values: [KOLO, KOLO, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT], gaps: [] },
     { rule: "mixed", values: [GWIAZDKA, 1, GWIAZDKA, 2, GWIAZDKA, 3, GWIAZDKA, 4], gaps: [] },
   ];
@@ -471,7 +582,7 @@ void describe("sequenceRowProblems against the oracle", () => {
     );
   }
 
-  void test("the validator calls a row ambiguous exactly when the oracle finds more than one filling", () => {
+  void test("the validator calls a row ambiguous exactly when the oracle finds more than one filling, steps up to 3 included", () => {
     let ambiguous = 0;
     let unambiguous = 0;
     for (const base of fixedRows) {
@@ -482,9 +593,13 @@ void describe("sequenceRowProblems against the oracle", () => {
           const row: SequenceRow = { ...base, gaps };
           const label = `${base.rule} gaps ${gaps.join(",")}`;
           const fillings = fillingsThatFollowARule(row).length;
-          const isAmbiguous = sequenceRowProblems(row, level).includes("ambiguous");
-
+          const problems = sequenceRowProblems(row, level);
+          const isAmbiguous = problems.includes("ambiguous");
           assert.ok(fillings >= 1, label);
+          if (problems.includes("too-few-numbers")) {
+            // Its own rule, stricter than the oracle: a mixed row shows two numbers, whatever the oracle finds.
+            continue;
+          }
           assert.equal(isAmbiguous, fillings > 1, label);
           if (isAmbiguous) {
             ambiguous += 1;
