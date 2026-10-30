@@ -1,0 +1,495 @@
+{
+  "approved": null,
+  "note": "Left half of each drawing, one string per row; the axis is the last column. Letters as in drawing(): r red, g green, y yellow, b blue, o orange, s gray, k black, n brown. 'variants' add one more look to an existing part (top/left place the lines in the frame). 'objects' are new objects with a base and parts.",
+  "variants": [
+    {
+      "object": "kot",
+      "size": "half4",
+      "part": "ears",
+      "top": 0,
+      "lines": [".o..", ".oo."]
+    },
+    {
+      "object": "kot",
+      "size": "half4",
+      "part": "paws",
+      "top": 11,
+      "lines": ["oo.o"]
+    },
+    {
+      "object": "kot",
+      "size": "half6",
+      "part": "ears",
+      "top": 1,
+      "lines": [".o....", ".oo..."]
+    },
+    {
+      "object": "kot",
+      "size": "half6",
+      "part": "paws",
+      "top": 14,
+      "lines": ["oo..oo"]
+    },
+    {
+      "object": "kot",
+      "size": "half9",
+      "part": "ears",
+      "top": 1,
+      "lines": [".o.......", ".oo......", ".ooo....."]
+    },
+    {
+      "object": "kot",
+      "size": "half9",
+      "part": "paws",
+      "top": 22,
+      "lines": ["..ooo.oo.", "..ooo.oo."]
+    },
+    {
+      "object": "pingwin",
+      "size": "half4",
+      "part": "feet",
+      "top": 11,
+      "lines": ["..oo"]
+    },
+    {
+      "object": "pingwin",
+      "size": "half6",
+      "part": "flippers",
+      "top": 7,
+      "lines": ["k.....", "kk....", "kk...."]
+    },
+    {
+      "object": "pingwin",
+      "size": "half6",
+      "part": "feet",
+      "top": 14,
+      "lines": [".oooo."]
+    },
+    {
+      "object": "pingwin",
+      "size": "half9",
+      "part": "feet",
+      "top": 22,
+      "lines": ["...oooooo"]
+    },
+    {
+      "object": "ananas",
+      "size": "half4",
+      "part": "crown",
+      "top": 0,
+      "lines": ["...g", "..gg"]
+    },
+    {
+      "object": "ananas",
+      "size": "half6",
+      "part": "crown",
+      "top": 0,
+      "lines": [".g...g", ".gg.gg"]
+    },
+    {
+      "object": "ananas",
+      "size": "half9",
+      "part": "crown",
+      "top": 0,
+      "lines": ["........g", "........g", ".......gg", "......ggg", ".....gggg", ".....gggg"]
+    },
+    {
+      "object": "choinka",
+      "size": "half4",
+      "part": "lower-bauble",
+      "top": 7,
+      "lines": [".ggg"]
+    },
+    {
+      "object": "choinka",
+      "size": "half6",
+      "part": "middle-baubles",
+      "top": 8,
+      "lines": ["..gggg"]
+    },
+    {
+      "object": "choinka",
+      "size": "half9",
+      "part": "lower-baubles",
+      "top": 17,
+      "lines": ["...ggg.gg", "ggggggggg", ".ggg.gggg"]
+    },
+    {
+      "object": "latarnia",
+      "size": "half4",
+      "part": "lamp",
+      "top": 2,
+      "lines": [".yyy"]
+    },
+    {
+      "object": "latarnia",
+      "size": "half6",
+      "part": "roof",
+      "top": 1,
+      "lines": ["....rr", "...rrr"]
+    },
+    {
+      "object": "latarnia",
+      "size": "half9",
+      "part": "roof",
+      "top": 1,
+      "lines": ["........r", "........r", ".....rrrr"]
+    },
+    {
+      "object": "tulipan",
+      "size": "half4",
+      "part": "petals",
+      "top": 0,
+      "lines": ["..rr"]
+    },
+    {
+      "object": "tulipan",
+      "size": "half6",
+      "part": "petals",
+      "top": 0,
+      "lines": ["...r.r"]
+    },
+    {
+      "object": "tulipan",
+      "size": "half9",
+      "part": "petals",
+      "top": 0,
+      "lines": [".....r..r", "....rr..r"]
+    },
+    {
+      "object": "truskawka",
+      "size": "half4",
+      "part": "leaves",
+      "top": 0,
+      "lines": ["..gg", ".ggg"]
+    },
+    {
+      "object": "truskawka",
+      "size": "half6",
+      "part": "leaves",
+      "top": 0,
+      "lines": ["....gg", "....gg", ".g..gg"]
+    },
+    {
+      "object": "truskawka",
+      "size": "half9",
+      "part": "leaves",
+      "top": 0,
+      "lines": ["........g", ".......gg", "......ggg", "....ggggg"]
+    }
+  ],
+  "objects": [
+    {
+      "id": "kotwica",
+      "categories": ["kosmos"],
+      "holeColor": "blue",
+      "sizes": {
+        "half4": {
+          "width": 4,
+          "height": 12,
+          "base": ["..ss", "..s.", "..ss", "....", "...k", "...k", "...k", "...k", "...k", "...k", "kkkk"],
+          "parts": [
+            {
+              "id": "stock",
+              "variants": [
+                {
+                  "top": 3,
+                  "lines": [".nnk"]
+                },
+                {
+                  "top": 3,
+                  "lines": ["nnnk"]
+                }
+              ]
+            },
+            {
+              "id": "flukes",
+              "variants": [
+                {
+                  "top": 8,
+                  "lines": ["k...", "k..."]
+                },
+                {
+                  "top": 8,
+                  "lines": ["k...", "kk.."]
+                }
+              ]
+            }
+          ]
+        },
+        "half6": {
+          "width": 6,
+          "height": 15,
+          "base": [
+            "...sss",
+            "...s..",
+            "...s..",
+            "...sss",
+            "....kk",
+            "......",
+            "....kk",
+            "....kk",
+            "....kk",
+            "....kk",
+            "......",
+            "......",
+            "kkkkkk",
+            "kkkkkk"
+          ],
+          "parts": [
+            {
+              "id": "stock",
+              "variants": [
+                {
+                  "top": 5,
+                  "lines": [".nnnkk"]
+                },
+                {
+                  "top": 5,
+                  "lines": ["nnnnkk"]
+                }
+              ]
+            },
+            {
+              "id": "flukes",
+              "variants": [
+                {
+                  "top": 10,
+                  "lines": ["k...kk", "kk..kk"]
+                },
+                {
+                  "top": 10,
+                  "lines": ["....kk", "k...kk"]
+                }
+              ]
+            }
+          ]
+        },
+        "half9": {
+          "width": 9,
+          "height": 24,
+          "base": [
+            "....sssss",
+            "...ss....",
+            "...s.....",
+            "...s.....",
+            "...ss....",
+            "....sssss",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            ".......kk",
+            "kkkkkkkkk",
+            "..kkkkkkk"
+          ],
+          "parts": [
+            {
+              "id": "stock",
+              "variants": [
+                {
+                  "top": 7,
+                  "lines": [".nnnnnn..", ".nnnnnn.."]
+                },
+                {
+                  "top": 7,
+                  "lines": ["nnnnnnn..", "nnnnnnn.."]
+                }
+              ]
+            },
+            {
+              "id": "knot",
+              "variants": [
+                {
+                  "top": 11,
+                  "lines": []
+                },
+                {
+                  "top": 11,
+                  "lines": ["......k..", "......k.."]
+                }
+              ]
+            },
+            {
+              "id": "flukes",
+              "variants": [
+                {
+                  "top": 14,
+                  "lines": ["k........", "kk.......", "kkk......", "kkkk....."]
+                },
+                {
+                  "top": 14,
+                  "lines": ["kk.......", "kkk......", "kkkk.....", "kkkkk...."]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lizak",
+      "categories": ["jedzenie"],
+      "holeColor": "orange",
+      "sizes": {
+        "half4": {
+          "width": 4,
+          "height": 12,
+          "base": ["..rr", ".rrr", ".r..", ".rrr", "..rr", "...s", "...s", "...s", "...s", "...s", "...s"],
+          "parts": [
+            {
+              "id": "pattern",
+              "variants": [
+                {
+                  "top": 2,
+                  "lines": ["..r."]
+                },
+                {
+                  "top": 2,
+                  "lines": ["...r"]
+                }
+              ]
+            },
+            {
+              "id": "bow",
+              "variants": [
+                {
+                  "top": 6,
+                  "lines": []
+                },
+                {
+                  "top": 6,
+                  "lines": [".bb."]
+                }
+              ]
+            }
+          ]
+        },
+        "half6": {
+          "width": 6,
+          "height": 15,
+          "base": [
+            "..rrrr",
+            ".rrrrr",
+            "rrr...",
+            "rrr...",
+            "rrr...",
+            ".rrrrr",
+            "..rrrr",
+            "....ss",
+            "....ss",
+            "....ss",
+            "....ss",
+            "....ss",
+            "....ss",
+            "....ss"
+          ],
+          "parts": [
+            {
+              "id": "pattern",
+              "variants": [
+                {
+                  "top": 2,
+                  "lines": ["...rrr", "......", "...rrr"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["...rrr", "...r..", "...rrr"]
+                }
+              ]
+            },
+            {
+              "id": "bow",
+              "variants": [
+                {
+                  "top": 8,
+                  "lines": []
+                },
+                {
+                  "top": 8,
+                  "lines": ["..bb..", "..bb.."]
+                }
+              ]
+            }
+          ]
+        },
+        "half9": {
+          "width": 9,
+          "height": 24,
+          "base": [
+            "...rrrrrr",
+            ".rrrrrrrr",
+            ".rrrrrrrr",
+            "rrr......",
+            "rrr......",
+            "rrr......",
+            "rrr......",
+            "rrr......",
+            "rrr......",
+            ".rrrrrrrr",
+            ".rrrrrrrr",
+            "...rrrrrr",
+            ".......ss",
+            ".......ss",
+            ".......ss",
+            ".......ss",
+            ".......ss",
+            ".......ss",
+            ".......ss",
+            ".......ss",
+            ".......ss",
+            ".......ss"
+          ],
+          "parts": [
+            {
+              "id": "pattern",
+              "variants": [
+                {
+                  "top": 3,
+                  "lines": ["...rrrrrr", ".........", "...rrrrrr", ".........", "...rrrrrr", "........."]
+                },
+                {
+                  "top": 3,
+                  "lines": ["...rrrrrr", "...rrrr..", "...rrr...", "...rrr...", "...rrrr..", "...rrrrrr"]
+                }
+              ]
+            },
+            {
+              "id": "bow",
+              "variants": [
+                {
+                  "top": 13,
+                  "lines": []
+                },
+                {
+                  "top": 13,
+                  "lines": [".....bb..", ".....bb.."]
+                }
+              ]
+            },
+            {
+              "id": "tip",
+              "variants": [
+                {
+                  "top": 22,
+                  "lines": []
+                },
+                {
+                  "top": 22,
+                  "lines": ["......sss", "......sss"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

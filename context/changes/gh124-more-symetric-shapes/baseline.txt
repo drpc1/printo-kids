@@ -1,0 +1,25 @@
+== half4 (lat4), nonogram latwy, dictation lat5
+truskawka  sets   4 clean   0 | nonogram 4/4 | dictation outlines lat5:1
+pingwin    sets   4 clean   4 | nonogram 4/4 | dictation outlines lat5:2
+kot        sets   8 clean   8 | nonogram 8/8 | dictation outlines lat5:4
+ananas     sets   4 clean   4 | nonogram 4/4 | dictation outlines lat5:2
+choinka    sets   8 clean   8 | nonogram 8/8 | dictation outlines lat5:2
+tulipan    sets   4 clean   4 | nonogram 4/4 | dictation outlines lat5:4
+latarnia   sets   4 clean   4 | nonogram 4/4 | dictation outlines lat5:1
+== half6 (lat5), nonogram sredni, dictation lat6
+truskawka  sets   4 clean   0 | nonogram 4/4 | dictation outlines lat6:1
+pingwin    sets   8 clean   8 | nonogram 6/8 | dictation outlines lat6:2
+kot        sets   8 clean   8 | nonogram 8/8 | dictation outlines lat6:4
+ananas     sets   4 clean   2 | nonogram 4/4 | dictation outlines lat6:2
+choinka    sets   8 clean   8 | nonogram 8/8 | dictation outlines lat6:2
+tulipan    sets   4 clean   4 | nonogram 1/4 | dictation outlines lat6:3
+latarnia   sets   4 clean   4 | nonogram 4/4 | dictation outlines lat6:2
+== half9 (lat7), nonogram trudny, dictation lat7
+truskawka  sets   8 clean   0 | nonogram 8/8 | dictation outlines lat7:4
+pingwin    sets   8 clean   8 | nonogram 4/8 | dictation outlines lat7:2
+kot        sets  16 clean  16 | nonogram 0/16 | dictation outlines lat7:4
+ananas     sets   8 clean   8 | nonogram 4/8 | dictation outlines lat7:2
+choinka    sets   8 clean   8 | nonogram 8/8 | dictation outlines lat7:2
+tulipan    sets   8 clean   8 | nonogram 0/8 | dictation outlines lat7:4
+latarnia   sets   8 clean   8 | nonogram 8/8 | dictation outlines lat7:4
+RESULT: 0 errors
