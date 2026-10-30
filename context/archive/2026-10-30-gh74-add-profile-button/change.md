@@ -1,10 +1,10 @@
 ---
 change_id: gh74-add-profile-button
 title: Przycisk „Dodaj profil” odróżnia się od wierszy profili
-status: implemented
+status: archived
 created: 2026-10-30
 updated: 2026-10-30
-archived_at: null
+archived_at: 2026-10-30T14:13:21Z
 ---
 
 ## Notes
