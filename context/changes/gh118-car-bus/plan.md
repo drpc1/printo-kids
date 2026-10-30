@@ -153,11 +153,11 @@ Dwa obiekty więcej w katalogu; wpływ na czas Generuj pomijalny.
 
 #### Automated
 
-- [x] 2.1 Wszystkie testy przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Budowanie przechodzi: `npm run build`
+- [x] 2.1 Wszystkie testy przechodzą: `npm test` — 5d507c5
+- [x] 2.2 Lint przechodzi: `npm run lint` — 5d507c5
+- [x] 2.3 Budowanie przechodzi: `npm run build` — 5d507c5
 
 #### Manual
 
-- [x] 2.4 Kilkakrotne Generuj w nonogramie i dyktandzie (kategoria „Kosmos i maszyny”) pokazuje auto i autobus lub wybiera inne obiekty bez błędu
-- [x] 2.5 Pojazdy mieszczą się na karcie w marginesie 10 mm na telefonie
+- [x] 2.4 Kilkakrotne Generuj w nonogramie i dyktandzie (kategoria „Kosmos i maszyny”) pokazuje auto i autobus lub wybiera inne obiekty bez błędu — 5d507c5
+- [x] 2.5 Pojazdy mieszczą się na karcie w marginesie 10 mm na telefonie — 5d507c5
