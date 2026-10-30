@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
-import { Switch } from "@/components/ui/switch";
 import { LevelChoice } from "@/components/LevelChoice";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
+import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { SequenceSettings } from "@/lib/card-settings";
@@ -84,15 +84,13 @@ export default function SequenceGenerator() {
     />
   );
   const colorsControl = (
-    <label className={cn("text-muted-foreground flex items-center gap-2 text-base max-sm:basis-full max-sm:px-3")}>
-      <Switch
-        checked={colors}
-        onCheckedChange={(next) => {
-          memory.remember({ colors: next });
-        }}
-      />
-      Kolory
-    </label>
+    <SettingToggle
+      label="Kolory"
+      checked={colors}
+      onCheckedChange={(next) => {
+        memory.remember({ colors: next });
+      }}
+    />
   );
   return (
     <CardPage
