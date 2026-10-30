@@ -137,12 +137,12 @@ Zapis ostatniego wyboru i profilu trzyma id `none`, nie polską etykietę. Podmi
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, a test katalogu oczekuje etykiety „Brak” dla wiersza `none` i dla id spoza katalogu — 31d6f5c
-- [x] 1.2 `npx playwright test tests/e2e/character-speaks.spec.ts tests/e2e/favorite-character.spec.ts tests/e2e/profile-summary.spec.ts` przechodzi — 31d6f5c
-- [x] 1.3 `npm run lint` przechodzi — 31d6f5c
+- [x] 1.1 `npm test` przechodzi, a test katalogu oczekuje etykiety „Brak” dla wiersza `none` i dla id spoza katalogu — 1caabdb
+- [x] 1.2 `npx playwright test tests/e2e/character-speaks.spec.ts tests/e2e/favorite-character.spec.ts tests/e2e/profile-summary.spec.ts` przechodzi — 1caabdb
+- [x] 1.3 `npm run lint` przechodzi — 1caabdb
 
 #### Manual
 
-- [x] 1.4 Świeże `/maze` pokazuje zamknięty przycisk „Postać: Brak”; otwarta lista ma wiersz „Brak”; generowanie przy tym wierszu daje napis „Start” i brak obrazka — 31d6f5c
-- [x] 1.5 Na `/symmetry` wybór „Brak” zostawia samo zdanie polecenia, bez obrazka postaci — 31d6f5c
-- [x] 1.6 Lista postaci przy dodawaniu profilu ma wiersz „Brak” — 31d6f5c
+- [x] 1.4 Świeże `/maze` pokazuje zamknięty przycisk „Postać: Brak”; otwarta lista ma wiersz „Brak”; generowanie przy tym wierszu daje napis „Start” i brak obrazka — 1caabdb
+- [x] 1.5 Na `/symmetry` wybór „Brak” zostawia samo zdanie polecenia, bez obrazka postaci — 1caabdb
+- [x] 1.6 Lista postaci przy dodawaniu profilu ma wiersz „Brak” — 1caabdb
