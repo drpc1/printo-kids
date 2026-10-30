@@ -54,6 +54,15 @@ void describe("template catalog", () => {
     }
   });
 
+  void test("the car and the bus are in Kosmos i maszyny in every size", () => {
+    for (const { levelId } of SIZES) {
+      const kosmos = symmetryTemplatesFor(levelId, "kosmos").map((template) => template.id);
+
+      assert.ok(kosmos.includes("auto"), `${levelId} auto`);
+      assert.ok(kosmos.includes("autobus"), `${levelId} autobus`);
+    }
+  });
+
   void test("4 lat templates are 4 wide, 5 and 6 lat ones 6 wide, 7 lat ones at most 9 wide", () => {
     for (const { levelId, width } of SIZES) {
       for (const template of symmetryTemplatesFor(levelId)) {

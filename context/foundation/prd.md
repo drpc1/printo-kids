@@ -615,17 +615,17 @@ Wartości są startowe i zostają potwierdzone na wydruku; użytkowniczka nie je
 
 Dodane 2026-10-25. Karta symetrii, nonogram i dyktando graficzne biorą obiekty z jednego katalogu szablonów zapisanych w kodzie (patrz „Karta symetrii”). Szablon to połowa obiektu symetrycznego lewo–prawo z częściami losowanymi przez generator i kolorem kredki każdej kratki; cała sylwetka to połowa i jej odbicie. Każdy obiekt ma trzy rozmiary: połowa 4×12 (cała 8×12), 6×15 (cała 12×15) i 9×24 (cała 18×24).
 
-Od 2026-10-25 (S-21) katalog ma 22 obiekty z tabeli poniżej; wcześniej miał trzy: rakieta, robot, truskawka. Obiekt pasuje do katalogu, gdy jest symetryczny lewo–prawo, pionowy (wszystkie siatki są wyższe niż szersze), rozpoznawalny po samej czarnej sylwetce także w połowie 4×12, szeroki przy osi, ma dziury na detale i warianty, mieści się w ośmiu kolorach kredek (z brązowym) i nie ma części stykających się tylko rogiem kratki (psują obrys dyktanda).
+Od 2026-10-25 (S-21) katalog ma 22 obiekty z tabeli poniżej, od 2026-10-30 (GH #118) 24; wcześniej miał trzy: rakieta, robot, truskawka. Obiekt pasuje do katalogu, gdy jest symetryczny lewo–prawo, pionowy (wszystkie siatki są wyższe niż szersze), rozpoznawalny po samej czarnej sylwetce także w połowie 4×12, szeroki przy osi, ma dziury na detale i warianty, mieści się w ośmiu kolorach kredek (z brązowym) i nie ma części stykających się tylko rogiem kratki (psują obrys dyktanda). Wyjątkiem od „pionowy” są auto i autobus (2026-10-30, GH #118): widok z boku, niski i szeroki, symetryczny, bo oba końce są takie same (kabina na osi, koło po każdej stronie); wypełniają całą szerokość siatki, a nie jej wysokość.
 
 Obiekty są pogrupowane w pięć kategorii (US-19). Obiekt ma co najmniej jedną kategorię i może mieć kilka. Lista (✓ — już jest):
 
-| Kategoria        | Obiekty                                                   |
-| ---------------- | --------------------------------------------------------- |
-| Zwierzęta        | sowa ✓, biedronka ✓, pingwin ✓, kot ✓, królik ✓           |
-| Jedzenie         | truskawka ✓, babeczka ✓, gruszka ✓, marchewka ✓, ananas ✓ |
-| Przyroda         | choinka ✓, tulipan w doniczce ✓, muchomor ✓, kaktus ✓     |
-| Kosmos i maszyny | rakieta ✓, robot ✓, balon na ogrzane powietrze ✓, UFO ✓   |
-| Domy i budowle   | domek ✓, wieża zamku ✓, latarnia morska ✓, wieżowiec ✓    |
+| Kategoria        | Obiekty                                                                    |
+| ---------------- | -------------------------------------------------------------------------- |
+| Zwierzęta        | sowa ✓, biedronka ✓, pingwin ✓, kot ✓, królik ✓                            |
+| Jedzenie         | truskawka ✓, babeczka ✓, gruszka ✓, marchewka ✓, ananas ✓                  |
+| Przyroda         | choinka ✓, tulipan w doniczce ✓, muchomor ✓, kaktus ✓                      |
+| Kosmos i maszyny | rakieta ✓, robot ✓, balon na ogrzane powietrze ✓, UFO ✓, auto ✓, autobus ✓ |
+| Domy i budowle   | domek ✓, wieża zamku ✓, latarnia morska ✓, wieżowiec ✓                     |
 
 Lista jest startowa; obiekt, który nie daje się narysować czytelnie w połowie 4×12, zastępuje inny obiekt tej samej kategorii. Sezonowa kategoria (święta, pory roku) i „Morze” czekają na więcej obiektów. Szerokie obiekty (motyl, korona) odpadły z listy startowej. Po makiecie z 2026-10-25 lody w rożku zastąpiły marchewka i ananas, a namiot wieżowiec: oba były nieczytelne w połowie 4×12. Królik doszedł jako piąte zwierzę, zapas dla nonogramu i dyktanda.
 
