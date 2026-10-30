@@ -288,27 +288,27 @@ Brak: warianty i obiekty są danymi w kodzie; zapisane profile i ostatnie parame
 
 #### Automated
 
-- [x] 3.1 Testy przechodzą, w tym katalog, symetria, nonogram, dyktando: `npm test`
-- [x] 3.2 Lint przechodzi: `npm run lint`
-- [x] 3.3 Typy przechodzą: `npx astro check`
-- [x] 3.4 Pomiar po zmianach: kot i tulipan mają ≥ 1 przechodzący wariant w trudnym nonogramie (lub notatka, który nie ma i dlaczego)
-- [x] 3.5 Czas testu trudnego nonogramu mieści się w tym samym rzędzie wielkości co przed zmianą
+- [x] 3.1 Testy przechodzą, w tym katalog, symetria, nonogram, dyktando: `npm test` — 8febcce
+- [x] 3.2 Lint przechodzi: `npm run lint` — 8febcce
+- [x] 3.3 Typy przechodzą: `npx astro check` — 8febcce
+- [x] 3.4 Pomiar po zmianach: kot i tulipan mają ≥ 1 przechodzący wariant w trudnym nonogramie (lub notatka, który nie ma i dlaczego) — 8febcce
+- [x] 3.5 Czas testu trudnego nonogramu mieści się w tym samym rzędzie wielkości co przed zmianą — 8febcce
 
 #### Manual
 
-- [x] 3.6 Klikanie Generuj w symetrii na poziomach 1, 2, 4 pokazuje wyraźnie inne wersje siedmiu obiektów
-- [x] 3.7 Wersje są rozpoznawalne i dobrze odbijają się w osi, także z kolorami
+- [x] 3.6 Klikanie Generuj w symetrii na poziomach 1, 2, 4 pokazuje wyraźnie inne wersje siedmiu obiektów — 8febcce
+- [x] 3.7 Wersje są rozpoznawalne i dobrze odbijają się w osi, także z kolorami — 8febcce
 
 ### Phase 4: Domknięcie
 
 #### Automated
 
-- [ ] 4.1 Wszystkie testy: `npm test`
-- [ ] 4.2 Lint: `npm run lint`
-- [ ] 4.3 Typy: `npx astro check`
-- [ ] 4.4 Budowanie: `npm run build`
+- [x] 4.1 Wszystkie testy: `npm test`
+- [x] 4.2 Lint: `npm run lint`
+- [x] 4.3 Typy: `npx astro check`
+- [x] 4.4 Budowanie: `npm run build`
 
 #### Manual
 
-- [ ] 4.5 Kotwica i lizak oraz nowe warianty mieszczą się na karcie A4 w marginesie 10 mm, także na telefonie
-- [ ] 4.6 Wydruk próbny kotwicy w 4×12 jest czytelny dla dziecka
+- [x] 4.5 Kotwica i lizak oraz nowe warianty mieszczą się na karcie A4 w marginesie 10 mm, także na telefonie
+- [x] 4.6 Wydruk próbny kotwicy w 4×12 jest czytelny dla dziecka
