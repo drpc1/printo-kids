@@ -101,3 +101,37 @@ Zakresy: `sudoku/generate.ts:160-250` i `295-353`, `npm run mutate:sudoku` (237 
 ### Ustalenie do wiadomości (bez zmiany kodu)
 
 `countSudokuSolutions` nie sprawdza, czy podane pola nie kłócą się ze sobą (dwie takie same wartości w wierszu): zwraca wtedy liczbę, jakby kłótni nie było. Rodzica to nie dotyczy, bo `sudokuCardProblems` porównuje pola z poprawnym rozwiązaniem (`givens-differ-from-solution`, `invalid-solution`). Test losowy porównuje więc tylko plansze o zgodnych polach.
+
+## Faza 4: nonogram (2026-10-30)
+
+Zakresy: `nonogram/solve.ts` (cały), `nonogram/generate.ts:40-123`, `nonogram/simple.ts` (cały), `npm run mutate:nonogram`, 410 mutantów, ok. 106 min na przebieg (testy nonogramu są ciężkie pod instrumentacją). Komenda testów w `stryker/nonogram.config.json` dostała `oracle.test.ts`.
+
+| Przebieg                     | Mutanty | Zabite | Timeouty | Ocalałe | Wynik  |
+| ---------------------------- | ------- | ------ | -------- | ------- | ------ |
+| przed (testy z `main`)       | 410     | 318    | 56       | 36      | 91,22% |
+| po testach z luk i asercjach | 410     | 294    | 105      | 11      | 97,32% |
+
+Wg pliku po: `generate.ts` 96,10% (3 ocalałe), `simple.ts` 96,74% (3), `solve.ts` 97,93% (5). Więcej timeoutów po zmianie wynika z wolniejszej komendy testów (wyrocznia), a timeout liczy się jako zabity.
+
+### Nowe testy
+
+- `oracle.test.ts` (dopisany do `npm test`, ok. 8 s): niezależna wyrocznia bez importu `solve.ts`. Wylicza wszystkie ułożenia linii i zostawia to, co wspólne, a siatkę rozwiązuje własnym przechodzeniem po liniach do stałego punktu. Porównanie `solveLine`: wszystkie wskazówki i wszystkie układy znanych komórek dla linii do 5 komórek plus 400 losowych linii 6–8 komórek. Porównanie `solveNonogram` (status i obraz): wszystkie obrazki 3×3, 4×3, 3×4, co 13. obrazek 4×4 (ok. 5000; pełne 65 536 przeszły jednorazowo, ale trwały ok. 40 s) i 300 losowych 5×5, także z wskazówkami z dwóch różnych obrazków (sprzeczne). Test pilnuje, że w próbce są przypadki `solved`, `stuck`, `contradiction` i obrazki wymagające co najmniej 3 rund propagacji.
+- `simple.test.ts`: środek plusa jest szary (liczą się tylko cztery boki, nie rogi), brak dowolnego z czterech sąsiadów albo brzeg siatki daje czarny, nierówny obraz nie czyta poza wierszem, dokładnie 7 znaczków jest poprawne, a jeden wiersz z nadmiarem wśród poprawnych wystarcza do odrzucenia.
+- `generate.test.ts`: poziom łatwy daje kartę znaczków (`runs`, bez `clues`), średni i trudny karty z liczbami; kategoria bez obiektów daje `null`; powtórzony klucz losuje ponownie na każdym poziomie.
+- Break-check (zepsuj, test czerwienieje, przywróć): pominięcie znanej wypełnionej komórki w `solveLine` (5 czerwonych), `solveNonogram` nigdy nie zgłasza `stuck` (3), pominięcie lewego sąsiada w `outlineTones` (2), granica `>=` znaczków (2), `some` → `every` (1), przełącznik rodzaju karty (1), brak szablonów (1), ponowne losowanie przy powtórzonym kluczu łatwego (1).
+
+### Ocalałe mutanty po fazie 4
+
+| Linia                | Mutant                                                       | Decyzja                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate.ts:48`     | `attempt <= MAX_ATTEMPTS`                                    | Kosmetyczny: 21 zamiast 20 prób losowania.                                                                                                          |
+| `generate.ts:53:41`  | `... && true` (kontrola `simpleNonogramProblems`)            | Siatka bezpieczeństwa: karta znaczków z konstrukcji ma poprawne znaczki, więc żadne wejście z generatora tego nie pokaże.                           |
+| `generate.ts:122`    | `Math.min(count + 1, ...)`                                   | Równoważny: `Math.random()` jest mniejsze od 1, więc `floor(random * count)` nigdy nie wychodzi poza tablicę.                                       |
+| `simple.ts:39` (3)   | `column >= 0` → `true`, `column < długość` → `true` lub `<=` | Równoważne: odczyt poza tablicą w JS daje `undefined` (fałsz), więc granica kolumny nic nie zmienia.                                                |
+| `solve.ts:65`        | `new Array()` zamiast `new Array(length)`                    | Równoważny: niewpisane elementy to `undefined` (fałsz), tak jak `false`.                                                                            |
+| `solve.ts:66`        | `i <= length`                                                | Równoważny: dodatkowy obieg zapisuje tylko poza końcem linii, niczego nie czyta.                                                                    |
+| `solve.ts:78`        | `i - blocks[j] < length`                                     | Równoważny: różni się tylko zapisem `canEmpty` poza końcem linii.                                                                                   |
+| `solve.ts:111`       | `changed = false` w przebiegu po kolumnach                   | Brak różnicy w teście: 12 000 losowych obrazków do 12×15 oraz wszystkie 5×3 i 3×5 dają ten sam status co oryginał; uznany za równoważny w praktyce. |
+| `solve.ts:13`, `:30` | `blocks = clue`, `false \|\| known[end]...`                  | Równoważne (sprawdzone ręcznie, wyrocznia przechodzi): blok długości 0 niczego nie zmienia, a `known[length]` to `undefined`.                       |
+
+Ocalałe w przebiegu „po” to dokładnie 11 pozycji z tabeli bez dwóch ostatnich wierszy (`solve.ts:13` i `:30` w tym przebiegu zginęły, bo oba są równoważne, a Stryker policzył je jako timeout); decyzje te zostają dla porządku.
