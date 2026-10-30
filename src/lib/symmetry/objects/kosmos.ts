@@ -678,8 +678,91 @@ const BUS_9: SymmetryTemplate = {
   ],
 };
 
+// Anchor: upright and mirror-symmetric, with the ring on top, the stock across and the flukes at the bottom.
+const ANCHOR_4: SymmetryTemplate = {
+  id: "kotwica",
+  width: 4,
+  height: 12,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing(["..ss", "..s.", "..ss", "....", "...k", "...k", "...k", "...k", "...k", "...k", "kkkk"]),
+  parts: [
+    { id: "stock", variants: [drawing([".nnk"], 3), drawing(["nnnk"], 3)] },
+    { id: "flukes", variants: [drawing(["k...", "k..."], 8), drawing(["k...", "kk.."], 8)] },
+  ],
+};
+
+const ANCHOR_6: SymmetryTemplate = {
+  id: "kotwica",
+  width: 6,
+  height: 15,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    "...sss",
+    "...s..",
+    "...s..",
+    "...sss",
+    "....kk",
+    "......",
+    "....kk",
+    "....kk",
+    "....kk",
+    "....kk",
+    "......",
+    "......",
+    "kkkkkk",
+    "kkkkkk",
+  ]),
+  parts: [
+    { id: "stock", variants: [drawing([".nnnkk"], 5), drawing(["nnnnkk"], 5)] },
+    { id: "flukes", variants: [drawing(["k...kk", "kk..kk"], 10), drawing(["....kk", "k...kk"], 10)] },
+  ],
+};
+
+const ANCHOR_9: SymmetryTemplate = {
+  id: "kotwica",
+  width: 9,
+  height: 24,
+  holeColor: "blue",
+  categories: ["kosmos"],
+  base: drawing([
+    "....sssss",
+    "...ss....",
+    "...s.....",
+    "...s.....",
+    "...ss....",
+    "....sssss",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    ".......kk",
+    "kkkkkkkkk",
+    "..kkkkkkk",
+  ]),
+  parts: [
+    { id: "stock", variants: [drawing([".nnnnnn..", ".nnnnnn.."], 7), drawing(["nnnnnnn..", "nnnnnnn.."], 7)] },
+    { id: "knot", variants: [drawing([]), drawing(["......k..", "......k.."], 11)] },
+    {
+      id: "flukes",
+      variants: [
+        drawing(["k........", "kk.......", "kkk......", "kkkk....."], 14),
+        drawing(["kk.......", "kkk......", "kkkk.....", "kkkkk...."], 14),
+      ],
+    },
+  ],
+};
+
 export const KOSMOS: SymmetryObjectSizes = {
-  half4: [ROCKET_4, ROBOT_4, BALLOON_4, UFO_4, CAR_4, BUS_4],
-  half6: [ROCKET, ROBOT, BALLOON_6, UFO_6, CAR_6, BUS_6],
-  half9: [ROCKET_7, ROBOT_7, BALLOON_9, UFO_9, CAR_9, BUS_9],
+  half4: [ROCKET_4, ROBOT_4, BALLOON_4, UFO_4, CAR_4, BUS_4, ANCHOR_4],
+  half6: [ROCKET, ROBOT, BALLOON_6, UFO_6, CAR_6, BUS_6, ANCHOR_6],
+  half9: [ROCKET_7, ROBOT_7, BALLOON_9, UFO_9, CAR_9, BUS_9, ANCHOR_9],
 };

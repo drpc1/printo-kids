@@ -261,7 +261,7 @@ const LIGHTHOUSE_4: SymmetryTemplate = {
   parts: [
     {
       id: "lamp",
-      variants: [drawing(["y."], 2, 2), drawing(["yy"], 2, 2)],
+      variants: [drawing(["y."], 2, 2), drawing(["yy"], 2, 2), drawing([".yyy"], 2)],
     },
     {
       id: "stripes",
@@ -299,7 +299,11 @@ const LIGHTHOUSE_6: SymmetryTemplate = {
   parts: [
     {
       id: "roof",
-      variants: [drawing(["..r", ".rr", "rrr"], 0, 3), drawing(["...", "..r", "rrr"], 0, 3)],
+      variants: [
+        drawing(["..r", ".rr", "rrr"], 0, 3),
+        drawing(["...", "..r", "rrr"], 0, 3),
+        drawing(["....rr", "...rrr"], 1),
+      ],
     },
     {
       id: "lamp",
@@ -341,7 +345,11 @@ const LIGHTHOUSE_9: SymmetryTemplate = {
   parts: [
     {
       id: "roof",
-      variants: [drawing(["...r", "..rr", ".rrr", "rrrr"], 0, 5), drawing(["....", "...r", "..rr", "rrrr"], 0, 5)],
+      variants: [
+        drawing(["...r", "..rr", ".rrr", "rrrr"], 0, 5),
+        drawing(["....", "...r", "..rr", "rrrr"], 0, 5),
+        drawing(["........r", "........r", ".....rrrr"], 1),
+      ],
     },
     {
       id: "lamp",
