@@ -273,29 +273,29 @@ Brak zmian formatu danych w `localStorage`.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Testy przechodzą, w tym zaktualizowany test druku: `npm test`
-- [x] 1.3 Typy i build przechodzą: `npx astro check && npm run build`
-- [x] 1.4 E2E przechodzi na projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
+- [x] 1.1 Lint przechodzi: `npm run lint` — ab1b523
+- [x] 1.2 Testy przechodzą, w tym zaktualizowany test druku: `npm test` — ab1b523
+- [x] 1.3 Typy i build przechodzą: `npx astro check && npm run build` — ab1b523
+- [x] 1.4 E2E przechodzi na projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` — ab1b523
 
 #### Manual
 
-- [x] 1.5 Na każdej z pięciu kart: zmiana profilu, wybór postaci i „Ustaw jako ulubioną” działają jak przed zmianą.
+- [x] 1.5 Na każdej z pięciu kart: zmiana profilu, wybór postaci i „Ustaw jako ulubioną” działają jak przed zmianą. — ab1b523
 
 ### Phase 2: Komponent strony karty i wspólny wiersz kontrolek
 
 #### Automated
 
-- [ ] 2.1 Lint przechodzi: `npm run lint`
-- [ ] 2.2 Testy przechodzą, w tym przepisany `print-contract.test.ts`: `npm test`
-- [ ] 2.3 Typy i build przechodzą: `npx astro check && npm run build`
-- [ ] 2.4 E2E przechodzi na czterech projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
+- [x] 2.1 Lint przechodzi: `npm run lint`
+- [x] 2.2 Testy przechodzą, w tym przepisany `print-contract.test.ts`: `npm test`
+- [x] 2.3 Typy i build przechodzą: `npx astro check && npm run build`
+- [x] 2.4 E2E przechodzi na czterech projektach Chromium: `npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
 
 #### Manual
 
-- [ ] 2.5 Pięć kart przed i po wygenerowaniu na telefonie (360 px) i komputerze: wiersz kontrolek wygląda równo, nic nie nachodzi na Generuj i Drukuj.
-- [ ] 2.6 Podgląd wydruku każdej z pięciu kart nie pokazuje paska, a arkusz mieści się na jednej stronie A4.
-- [ ] 2.7 Nonogram i Dyktando: „Pokaż rozwiązanie” działa, a wydruk go nie zawiera.
+- [x] 2.5 Pięć kart przed i po wygenerowaniu na telefonie (360 px) i komputerze: wiersz kontrolek wygląda równo, nic nie nachodzi na Generuj i Drukuj.
+- [x] 2.6 Podgląd wydruku każdej z pięciu kart nie pokazuje paska, a arkusz mieści się na jednej stronie A4.
+- [x] 2.7 Nonogram i Dyktando: „Pokaż rozwiązanie” działa, a wydruk go nie zawiera.
 
 ### Phase 3: Labirynt na szkielecie
 

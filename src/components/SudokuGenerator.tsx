@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
-import { Printer } from "lucide-react";
+import { useState } from "react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
-import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
-import { Button } from "@/components/ui/button";
-import { ProfileCorner } from "@/components/ProfileCorner";
-import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
+import { CardPage } from "@/components/CardPage";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { SudokuCardSettings } from "@/lib/card-settings";
@@ -29,8 +25,6 @@ import { sudokuShapePath } from "@/lib/sudoku/shapes";
 import { SPEECH_BAND } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
-const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
-
 /**
  * The sudoku card page: Generuj, the character, size, level and shapes-or-digits choices, the card, Drukuj, and the shared profile
  * corner. The chosen character stands by the instruction on the card and says it. The settings and the colors come from `useCardSettings` (the active profile's, or
@@ -50,16 +44,6 @@ export default function SudokuGenerator() {
   const { colors, ...settings } = memory.settings;
   const sheetShown = card !== null;
 
-  useEffect(() => {
-    const main = document.getElementById("worksheet-home");
-    if (main === null) {
-      return;
-    }
-    main.classList.toggle("has-sheet", sheetShown);
-    main.classList.toggle("justify-start", sheetShown);
-    main.classList.toggle("justify-center", !sheetShown);
-  }, [sheetShown]);
-
   function generateFor(next: SudokuSettings): void {
     const nextCard = generateSudokuCard(Math.random, card?.key ?? null, next);
     if (nextCard === null) {
@@ -71,9 +55,6 @@ export default function SudokuGenerator() {
   }
 
   function handleGenerate(): void {
-    if (waitingForChild) {
-      return;
-    }
     generateFor(settings);
   }
 
@@ -94,10 +75,6 @@ export default function SudokuGenerator() {
     ) {
       generateFor(next);
     }
-  }
-
-  function handlePrint(): void {
-    window.print();
   }
 
   // The level rows say how many cells are empty for the current size.
@@ -165,66 +142,29 @@ export default function SudokuGenerator() {
       ) : null}
     </>
   );
-  const failedNote = generateFailed ? (
-    <p role="alert" className={cn("text-destructive text-sm")}>
-      {GENERATE_FAILED_TEXT}
-    </p>
-  ) : null;
-
   return (
-    <div className={cn("flex w-full flex-col items-center gap-4")}>
-      <ProfileCorner
-        profiles={profiles}
-        activeId={activeId}
-        barCharacter={bar.character}
-        barLevel={barLevel}
-        ask={ask}
-        onCreated={memory.corner.onCreated}
-        onChoose={memory.corner.onChoose}
-        onFavoriteSaved={memory.corner.onFavoriteSaved}
-        onDeleted={memory.corner.onDeleted}
-        onClearProfile={memory.corner.onClearProfile}
-        newProfileCards={memory.newProfileCards}
-      />
-      {sheetShown ? (
-        <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
-          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
-            {settingsControls}
-            {failedNote}
-          </div>
-          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
-          <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
-            <GenerateButton
-              onClick={handleGenerate}
-              tone="quiet"
-              disabled={waitingForChild}
-              className="flex-1 sm:flex-none"
-            />
-            <Button
-              type="button"
-              variant="default"
-              onClick={handlePrint}
-              className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
-            >
-              <Printer aria-hidden />
-              Drukuj
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          <div className={cn("flex flex-wrap items-center justify-center gap-3 max-sm:justify-start")}>
-            {settingsControls}
-          </div>
-          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
-          <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
-          {failedNote}
-        </div>
-      )}
-      {card !== null ? (
-        <SudokuSheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
-      ) : null}
-    </div>
+    <CardPage
+      profiles={profiles}
+      activeId={activeId}
+      ask={ask}
+      waitingForChild={waitingForChild}
+      barCharacter={bar.character}
+      barLevel={barLevel}
+      corner={memory.corner}
+      newProfileCards={memory.newProfileCards}
+      note={memory.note ?? favorite.note}
+      sheetShown={sheetShown}
+      generateFailed={generateFailed}
+      onGenerate={handleGenerate}
+      controls={<>{settingsControls}</>}
+      sheet={
+        <>
+          {card !== null ? (
+            <SudokuSheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+          ) : null}
+        </>
+      }
+    />
   );
 }
 
