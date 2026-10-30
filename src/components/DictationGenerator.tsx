@@ -9,10 +9,8 @@ import { ProfileCorner } from "@/components/ProfileCorner";
 import { Switch } from "@/components/ui/switch";
 import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
-import { useBarCharacter } from "@/hooks/useBarCharacter";
-import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
+import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
-import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { DictationSettings } from "@/lib/card-settings";
 import { generateDictationCard, type DictationCard } from "@/lib/dictation/generate";
 import { dictationCellSize, layoutDictationSheet } from "@/lib/dictation/layout";
@@ -32,11 +30,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
  * with a card shown draws a new card when the level or the category changed.
  */
 export default function DictationGenerator() {
-  const visit = useChildProfileVisit({ onApply: applyProfileBar });
-  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barLevel, setBarLevel] = useState(visitStart.level);
-  const bar = useBarCharacter(visit, barLevel);
-  const favorite = useFavoriteCharacter(visit, bar);
+  const { visit, bar, favorite, barLevel } = useCardPage();
+  const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -94,11 +89,6 @@ export default function DictationGenerator() {
 
   function handlePrint(): void {
     window.print();
-  }
-
-  function applyProfileBar(next: ProfileBar): void {
-    bar.applyBar(next);
-    setBarLevel(next.level);
   }
 
   const characterControl = (

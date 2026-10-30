@@ -9,10 +9,8 @@ import { LevelChoice } from "@/components/LevelChoice";
 import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { Switch } from "@/components/ui/switch";
-import { useBarCharacter } from "@/hooks/useBarCharacter";
-import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
+import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
-import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { SymmetrySettings } from "@/lib/card-settings";
 import { symmetryDrawnCells } from "@/lib/symmetry/colors";
 import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
@@ -33,11 +31,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
  * category changed.
  */
 export default function SymmetryGenerator() {
-  const visit = useChildProfileVisit({ onApply: applyProfileBar });
-  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barLevel, setBarLevel] = useState(visitStart.level);
-  const bar = useBarCharacter(visit, barLevel);
-  const favorite = useFavoriteCharacter(visit, bar);
+  const { visit, bar, favorite, barLevel } = useCardPage();
+  const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [card, setCard] = useState<SymmetryCard | null>(null);
@@ -93,11 +88,6 @@ export default function SymmetryGenerator() {
 
   function handlePrint(): void {
     window.print();
-  }
-
-  function applyProfileBar(next: ProfileBar): void {
-    bar.applyBar(next);
-    setBarLevel(next.level);
   }
 
   const characterControl = (

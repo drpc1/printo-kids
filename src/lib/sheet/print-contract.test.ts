@@ -21,6 +21,7 @@ const DICTATION_GENERATOR = "src/components/DictationGenerator.tsx";
 const NONOGRAM_PAGE = "src/pages/nonogram.astro";
 const NONOGRAM_GENERATOR = "src/components/NonogramGenerator.tsx";
 const NONOGRAM_SIMPLE_SHEET = "src/components/NonogramSimpleSheet.tsx";
+const CARD_PAGE_HOOK = "src/hooks/useCardPage.ts";
 const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
 const SPEECH_LIB = "src/lib/sheet/speech.ts";
 const GLOBAL_CSS = "src/styles/global.css";
@@ -303,8 +304,9 @@ void describe("print contract", () => {
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
-      assert.match(source, /useBarCharacter\(/, `${path} keeps the bar character`);
+      assert.match(source, /useCardPage\(/, `${path} keeps the bar character through useCardPage`);
     }
+    assert.match(readRepoFile(CARD_PAGE_HOOK), /useBarCharacter\(/, "useCardPage keeps the bar character");
   });
 
   void test("every card's printed SVG asks the printer to keep the character's colors", () => {

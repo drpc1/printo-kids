@@ -10,10 +10,8 @@ import { SudokuChoice } from "@/components/SudokuChoice";
 import { Switch } from "@/components/ui/switch";
 import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
-import { useBarCharacter } from "@/hooks/useBarCharacter";
-import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
+import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
-import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { NonogramSettings } from "@/lib/card-settings";
 import { generateNonogramCard, type NonogramCard } from "@/lib/nonogram/generate";
 import { blockLines, layoutNonogramSheet, longestClues } from "@/lib/nonogram/layout";
@@ -34,11 +32,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
  * new one, and the page never shows the name of the hidden object.
  */
 export default function NonogramGenerator() {
-  const visit = useChildProfileVisit({ onApply: applyProfileBar });
-  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barLevel, setBarLevel] = useState(visitStart.level);
-  const bar = useBarCharacter(visit, barLevel);
-  const favorite = useFavoriteCharacter(visit, bar);
+  const { visit, bar, favorite, barLevel } = useCardPage();
+  const { profiles, activeId, ask, waitingForChild } = visit;
   const [showSolution, setShowSolution] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
@@ -97,11 +92,6 @@ export default function NonogramGenerator() {
 
   function handlePrint(): void {
     window.print();
-  }
-
-  function applyProfileBar(next: ProfileBar): void {
-    bar.applyBar(next);
-    setBarLevel(next.level);
   }
 
   const characterControl = (
