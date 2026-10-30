@@ -1,5 +1,5 @@
 {
-  "approved": null,
+  "approved": "2026-10-30",
   "note": "Left half of each drawing, one string per row; the axis is the last column. Letters as in drawing(): r red, g green, y yellow, b blue, o orange, s gray, k black, n brown. 'variants' add one more look to an existing part (top/left place the lines in the frame). 'objects' are new objects with a base and parts.",
   "variants": [
     {
