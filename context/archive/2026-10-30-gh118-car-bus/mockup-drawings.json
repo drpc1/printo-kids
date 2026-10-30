@@ -1,0 +1,40 @@
+{
+  "approved": "2026-10-30",
+  "note": "Left half of each vehicle, one string per row; the axis is the last column. Letters as in drawing(): r red, g green, y yellow, b blue, o orange, s gray, k black, n brown. Holes (windows, hubs) are enclosed '.' cells; holeColor blue.",
+  "auto": {
+    "half4": [".rrr", ".r.r", "yrrr", "rrrr", ".kk.", ".kk."],
+    "half6": ["....rr", "...rrr", "...r.r", "yrrrrr", "rrrrrr", ".kkk..", ".k.k..", ".kkk.."],
+    "half9": [
+      "......rrr",
+      ".....rrrr",
+      "....rr..r",
+      "....rr..r",
+      "rrrrrrrrr",
+      "yrrrrrrrr",
+      "rrrrrrrrr",
+      "rrrrrrrrr",
+      "..kkkk...",
+      "..k..k...",
+      "..k..k...",
+      "..kkkk..."
+    ]
+  },
+  "autobus": {
+    "half4": ["yyyy", "y..y", "y..y", "yyyy", "yyyy", ".kk.", ".kk."],
+    "half6": ["yyyyyy", "y.yy.y", "y.yy.y", "yyyyyy", "rrrrrr", "yyyyyy", ".kkk..", ".k.k..", ".kkk.."],
+    "half9": [
+      "yyyyyyyyy",
+      "y.yy.yy.y",
+      "y.yy.yy.y",
+      "y.yy.yy.y",
+      "yyyyyyyyy",
+      "rrrrrrrrr",
+      "yyyyyyyyy",
+      "yyyyyyyyy",
+      "..kkkk...",
+      "..k..k...",
+      "..k..k...",
+      "..kkkk..."
+    ]
+  }
+}
