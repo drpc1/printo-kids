@@ -167,14 +167,14 @@ Brak: obliczenie O(n) na kartę.
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — 086e89e
+- [x] 1.2 Lint przechodzi: `npm run lint` — 086e89e
+- [x] 1.3 Typy przechodzą: `npx astro check` — 086e89e
 
 #### Manual
 
-- [x] 1.4 Na `/sudoku` w 4×4, 6×6 i 9×9 z kształtami pod planszą jest ramka na szerokość planszy z napisem „Użyj:” i kształtami bez nazw; na 9×9 kształty się nie zlewają.
-- [x] 1.5 Odstęp od dołu planszy do ramki wygląda tak samo jak od dymka do góry planszy (z postacią i bez).
+- [x] 1.4 Na `/sudoku` w 4×4, 6×6 i 9×9 z kształtami pod planszą jest ramka na szerokość planszy z napisem „Użyj:” i kształtami bez nazw; na 9×9 kształty się nie zlewają. — 086e89e
+- [x] 1.5 Odstęp od dołu planszy do ramki wygląda tak samo jak od dymka do góry planszy (z postacią i bez). — 086e89e
 
 ### Phase 2: E2E, PRD i sprawdzenie wydruku
 
@@ -186,5 +186,5 @@ Brak: obliczenie O(n) na kartę.
 
 #### Manual
 
-- [ ] 2.4 W podglądzie wydruku (Ctrl+P) karta sudoku 9×9 z kształtami, postacią i kolorami jest jedną stroną A4, a ramka mieści się w marginesie 10 mm.
-- [ ] 2.5 PRD nie zawiera już „nazwa każdej figury” ani „nazwa zostaje czarna” w opisie sudoku i opisuje ramkę „Użyj:”.
+- [x] 2.4 W podglądzie wydruku (Ctrl+P) karta sudoku 9×9 z kształtami, postacią i kolorami jest jedną stroną A4, a ramka mieści się w marginesie 10 mm.
+- [x] 2.5 PRD nie zawiera już „nazwa każdej figury” ani „nazwa zostaje czarna” w opisie sudoku i opisuje ramkę „Użyj:”.
