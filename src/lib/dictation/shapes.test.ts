@@ -108,6 +108,51 @@ void describe("dictation shapes", () => {
   });
 });
 
+void describe("the approved shapes", () => {
+  const ids = (levelId: DictationLevelId): string[] => dictationShapesFor(levelId).map((shape) => shape.id);
+
+  void test("the fish, the duck and the helicopter come on the medium and hard levels only", () => {
+    for (const id of ["ryba", "kaczka", "helikopter"]) {
+      assert.ok(!ids("lat5").includes(id), `${id} at lat5`);
+      assert.ok(ids("lat6").includes(id), `${id} at lat6`);
+      assert.ok(ids("lat7").includes(id), `${id} at lat7`);
+    }
+  });
+
+  void test("the other shapes come on all three levels", () => {
+    const everywhere = [
+      "dinozaur",
+      "lokomotywa",
+      "ciezarowka",
+      "statek",
+      "lodka-z-masztem",
+      "parasol",
+      "klucz-pionowy",
+      "klucz-poziomy",
+    ];
+    for (const id of everywhere) {
+      for (const level of DICTATION_LEVELS) {
+        assert.ok(ids(level.id).includes(id), `${id} at ${level.id}`);
+      }
+    }
+  });
+
+  void test("each shape sits in the approved category", () => {
+    const categoryOf = (id: string): readonly string[] | undefined =>
+      DICTATION_SHAPES.find((shape) => shape.id === id)?.categories;
+
+    assert.deepEqual(categoryOf("ryba"), ["zwierzeta"]);
+    assert.deepEqual(categoryOf("kaczka"), ["zwierzeta"]);
+    assert.deepEqual(categoryOf("dinozaur"), ["zwierzeta"]);
+    for (const id of ["lokomotywa", "helikopter", "ciezarowka", "statek", "lodka-z-masztem"]) {
+      assert.deepEqual(categoryOf(id), ["kosmos"], id);
+    }
+    assert.deepEqual(categoryOf("parasol"), ["przyroda"]);
+    assert.deepEqual(categoryOf("klucz-pionowy"), ["budowle"]);
+    assert.deepEqual(categoryOf("klucz-poziomy"), ["budowle"]);
+  });
+});
+
 void describe("dictation cards from shapes", () => {
   void test("Generuj reaches every shape, plain and mirrored, in its own category at every level it is drawn for", () => {
     for (const shape of DICTATION_SHAPES) {
