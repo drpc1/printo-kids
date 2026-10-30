@@ -178,7 +178,7 @@ function fillingsThatFollowARule(row: SequenceRow): SequenceItem[][] {
 }
 
 /** The first field a gap may take, by rule, as the PRD describes it (hand-written, not read from rules.ts). */
-const FIRST_GAP_BY_RULE = { AB: 2, AAB: 3, ABC: 3, ABB: 3, up1: 2, up2: 2, down1: 2, groups: 3, mixed: 2 } as const;
+const FIRST_GAP_BY_RULE = { AB: 2, AAB: 3, ABC: 3, ABB: 3, up1: 2, up2: 2, down1: 2, mixed: 2 } as const;
 
 void describe("generateSequenceCard", () => {
   void test("every card of every level passes the validator and has the shape the PRD table gives", () => {
@@ -503,13 +503,8 @@ void describe("sequenceRowProblems", () => {
     assert.ok(sequenceRowProblems(tooBig, LAT6).includes("unknown-item"));
   });
 
-  void test("falling numbers, growing groups and mixed rows with their gaps have no problems", () => {
+  void test("falling numbers, ABB and mixed rows with their gaps have no problems", () => {
     const down: SequenceRow = { rule: "down1", values: [14, 13, 12, 11, 10, 9, 8, 7], gaps: [3, 6] };
-    const groups: SequenceRow = {
-      rule: "groups",
-      values: [KOLO, KOLO, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT],
-      gaps: [4, 6],
-    };
     const abb: SequenceRow = {
       rule: "ABB",
       values: [KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT],
@@ -522,7 +517,6 @@ void describe("sequenceRowProblems", () => {
     };
 
     assert.deepEqual(sequenceRowProblems(down, LAT6), []);
-    assert.deepEqual(sequenceRowProblems(groups, LAT7), []);
     assert.deepEqual(sequenceRowProblems(abb, LAT7), []);
     assert.deepEqual(sequenceRowProblems(mixed, LAT7), []);
   });
@@ -568,7 +562,6 @@ void describe("sequenceRowProblems against the oracle", () => {
     { rule: "up2", values: [2, 4, 6, 8, 10, 12, 14, 16], gaps: [] },
     { rule: "down1", values: [14, 13, 12, 11, 10, 9, 8, 7], gaps: [] },
     { rule: "ABB", values: [KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT], gaps: [] },
-    { rule: "groups", values: [KOLO, KOLO, KWADRAT, KOLO, KWADRAT, KWADRAT, KOLO, KWADRAT], gaps: [] },
     { rule: "mixed", values: [GWIAZDKA, 1, GWIAZDKA, 2, GWIAZDKA, 3, GWIAZDKA, 4], gaps: [] },
   ];
 
