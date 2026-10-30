@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import { ChevronDown, Printer } from "lucide-react";
-import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { CardPage } from "@/components/CardPage";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
-import { LevelChoiceRows, ProfileCorner } from "@/components/ProfileCorner";
-import { RememberedNote } from "@/components/RememberedNote";
+import { LevelChoiceRows } from "@/components/ProfileCorner";
 import { useMazeLevelMemory } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
@@ -48,20 +47,7 @@ export default function WorksheetGenerator() {
   const barLabel = character === OWN_IMAGE_ID ? OWN_IMAGE_LABEL : catalogChoice.label;
   const barThumb = character === OWN_IMAGE_ID ? ownImageHref : catalogChoice.src;
 
-  useEffect(() => {
-    const main = document.getElementById("worksheet-home");
-    if (main === null) {
-      return;
-    }
-    main.classList.toggle("has-sheet", sheetShown);
-    main.classList.toggle("justify-start", sheetShown);
-    main.classList.toggle("justify-center", !sheetShown);
-  }, [sheetShown]);
-
   function handleGenerate(): void {
-    if (waitingForChild) {
-      return;
-    }
     const next = mazeForSheet(generateMaze(level, Math.random), level);
     if (next === null) {
       setGenerateFailed(true);
@@ -113,10 +99,6 @@ export default function WorksheetGenerator() {
     }
   }
 
-  function handlePrint(): void {
-    window.print();
-  }
-
   function applyProfileBar(bar: ProfileBar): void {
     setCharacter(bar.character);
     if (bar.ownImageHref !== undefined) {
@@ -131,86 +113,42 @@ export default function WorksheetGenerator() {
   const levelControl = (
     <LevelChoiceControl level={sheetLevel} open={levelOpen} onOpenChange={setLevelOpen} onSelect={handleLevelSelect} />
   );
-  const failedNote = generateFailed ? (
-    <p role="alert" className={cn("text-destructive text-sm")}>
-      {GENERATE_FAILED_TEXT}
-    </p>
-  ) : null;
-
   return (
-    <div className={cn("flex w-full flex-col items-center gap-4")}>
-      <ProfileCorner
-        profiles={profiles}
-        activeId={activeId}
-        barCharacter={character}
-        barLevel={level}
-        ask={ask}
-        onCreated={corner.onCreated}
-        onChoose={corner.onChoose}
-        onFavoriteSaved={corner.onFavoriteSaved}
-        onDeleted={corner.onDeleted}
-        onClearProfile={corner.onClearProfile}
-      />
-      {sheetShown ? (
-        <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
-          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
-            <CharacterChoiceControl
-              character={character}
-              label={barLabel}
-              thumbSrc={barThumb}
-              choiceOpen={choiceOpen}
-              onOpenChange={setChoiceOpen}
-              onSelect={handleCharacterSelect}
-              onCopied={handleOwnImage}
-              favorite={favorite.offer}
-            />
-            {levelControl}
-            {failedNote}
-          </div>
-          <RememberedNote note={mazeLevelMemory.note ?? favorite.note} profileActive={activeId !== null} />
-          <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
-            <GenerateButton
-              onClick={handleGenerate}
-              tone="quiet"
-              disabled={waitingForChild}
-              className="flex-1 sm:flex-none"
-            />
-            <Button
-              type="button"
-              variant="default"
-              onClick={handlePrint}
-              disabled={maze === null}
-              className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
-            >
-              <Printer aria-hidden />
-              Drukuj
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          <div className={cn("flex flex-wrap items-center justify-center gap-2")}>
-            <CharacterChoiceControl
-              character={character}
-              label={barLabel}
-              thumbSrc={barThumb}
-              choiceOpen={choiceOpen}
-              onOpenChange={setChoiceOpen}
-              onSelect={handleCharacterSelect}
-              onCopied={handleOwnImage}
-              favorite={favorite.offer}
-            />
-            {levelControl}
-          </div>
-          <RememberedNote note={mazeLevelMemory.note ?? favorite.note} profileActive={activeId !== null} />
-          <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
-          {failedNote}
-        </div>
-      )}
-      {maze !== null ? (
-        <MazeSheet maze={maze} characterId={character} level={sheetLevel} ownImageHref={ownImageHref} />
-      ) : null}
-    </div>
+    <CardPage
+      profiles={profiles}
+      activeId={activeId}
+      ask={ask}
+      waitingForChild={waitingForChild}
+      barCharacter={character}
+      barLevel={level}
+      corner={corner}
+      note={mazeLevelMemory.note ?? favorite.note}
+      sheetShown={sheetShown}
+      generateFailed={generateFailed}
+      failedText={GENERATE_FAILED_TEXT}
+      onGenerate={handleGenerate}
+      printDisabled={maze === null}
+      controls={
+        <>
+          <CharacterChoiceControl
+            character={character}
+            label={barLabel}
+            thumbSrc={barThumb}
+            choiceOpen={choiceOpen}
+            onOpenChange={setChoiceOpen}
+            onSelect={handleCharacterSelect}
+            onCopied={handleOwnImage}
+            favorite={favorite.offer}
+          />
+          {levelControl}
+        </>
+      }
+      sheet={
+        maze !== null ? (
+          <MazeSheet maze={maze} characterId={character} level={sheetLevel} ownImageHref={ownImageHref} />
+        ) : null
+      }
+    />
   );
 }
 

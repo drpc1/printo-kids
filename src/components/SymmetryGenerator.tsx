@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
-import { Printer } from "lucide-react";
+import { useState } from "react";
 import { CategoryChoice } from "@/components/CategoryChoice";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
-import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
-import { Button } from "@/components/ui/button";
-import { ProfileCorner } from "@/components/ProfileCorner";
 import { LevelChoice } from "@/components/LevelChoice";
-import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
-import { Switch } from "@/components/ui/switch";
-import { useBarCharacter } from "@/hooks/useBarCharacter";
-import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
+import { CardPage } from "@/components/CardPage";
+import { SettingToggle } from "@/components/SettingToggle";
+import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
-import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import type { SymmetrySettings } from "@/lib/card-settings";
 import { symmetryDrawnCells } from "@/lib/symmetry/colors";
 import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
@@ -21,8 +15,6 @@ import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
-
-const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
  * The symmetry card page: Generuj, the character, level and category buttons, the colors switch, the card, Drukuj, and the
@@ -33,11 +25,8 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
  * category changed.
  */
 export default function SymmetryGenerator() {
-  const visit = useChildProfileVisit({ onApply: applyProfileBar });
-  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
-  const [barLevel, setBarLevel] = useState(visitStart.level);
-  const bar = useBarCharacter(visit, barLevel);
-  const favorite = useFavoriteCharacter(visit, bar);
+  const { visit, bar, favorite, barLevel } = useCardPage();
+  const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [card, setCard] = useState<SymmetryCard | null>(null);
@@ -45,16 +34,6 @@ export default function SymmetryGenerator() {
   const memory = useCardSettings("symetria", visit, handleProfileSwitch);
   const { level: levelId, category: categoryId, colors } = memory.settings;
   const sheetShown = card !== null;
-
-  useEffect(() => {
-    const main = document.getElementById("worksheet-home");
-    if (main === null) {
-      return;
-    }
-    main.classList.toggle("has-sheet", sheetShown);
-    main.classList.toggle("justify-start", sheetShown);
-    main.classList.toggle("justify-center", !sheetShown);
-  }, [sheetShown]);
 
   function generateFor(settings: SymmetrySettings): void {
     const next = generateSymmetryCard(
@@ -72,9 +51,6 @@ export default function SymmetryGenerator() {
   }
 
   function handleGenerate(): void {
-    if (waitingForChild) {
-      return;
-    }
     generateFor(memory.settings);
   }
 
@@ -89,15 +65,6 @@ export default function SymmetryGenerator() {
     if (card !== null && (next.level !== previous.level || next.category !== previous.category)) {
       generateFor(next);
     }
-  }
-
-  function handlePrint(): void {
-    window.print();
-  }
-
-  function applyProfileBar(next: ProfileBar): void {
-    bar.applyBar(next);
-    setBarLevel(next.level);
   }
 
   const characterControl = (
@@ -134,82 +101,44 @@ export default function SymmetryGenerator() {
     />
   );
   const colorsControl = (
-    <label className={cn("text-muted-foreground flex items-center gap-2 text-base max-sm:basis-full max-sm:px-3")}>
-      <Switch
-        checked={colors}
-        onCheckedChange={(next) => {
-          memory.remember({ colors: next });
-        }}
-      />
-      Kolory
-    </label>
+    <SettingToggle
+      label="Kolory"
+      checked={colors}
+      onCheckedChange={(next) => {
+        memory.remember({ colors: next });
+      }}
+    />
   );
-  const failedNote = generateFailed ? (
-    <p role="alert" className={cn("text-destructive text-sm")}>
-      {GENERATE_FAILED_TEXT}
-    </p>
-  ) : null;
-
   return (
-    <div className={cn("flex w-full flex-col items-center gap-4")}>
-      <ProfileCorner
-        profiles={profiles}
-        activeId={activeId}
-        barCharacter={bar.character}
-        barLevel={barLevel}
-        ask={ask}
-        onCreated={memory.corner.onCreated}
-        onChoose={memory.corner.onChoose}
-        onFavoriteSaved={memory.corner.onFavoriteSaved}
-        onDeleted={memory.corner.onDeleted}
-        onClearProfile={memory.corner.onClearProfile}
-        newProfileCards={memory.newProfileCards}
-      />
-      {sheetShown ? (
-        <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
-          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
-            {characterControl}
-            {levelControl}
-            {categoryControl}
-            {colorsControl}
-            {failedNote}
-          </div>
-          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
-          <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
-            <GenerateButton
-              onClick={handleGenerate}
-              tone="quiet"
-              disabled={waitingForChild}
-              className="flex-1 sm:flex-none"
-            />
-            <Button
-              type="button"
-              variant="default"
-              onClick={handlePrint}
-              className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
-            >
-              <Printer aria-hidden />
-              Drukuj
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          <div className={cn("flex flex-wrap items-center justify-center gap-3 max-sm:justify-start")}>
-            {characterControl}
-            {levelControl}
-            {categoryControl}
-            {colorsControl}
-          </div>
-          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
-          <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
-          {failedNote}
-        </div>
-      )}
-      {card !== null ? (
-        <SymmetrySheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
-      ) : null}
-    </div>
+    <CardPage
+      profiles={profiles}
+      activeId={activeId}
+      ask={ask}
+      waitingForChild={waitingForChild}
+      barCharacter={bar.character}
+      barLevel={barLevel}
+      corner={memory.corner}
+      newProfileCards={memory.newProfileCards}
+      note={memory.note ?? favorite.note}
+      sheetShown={sheetShown}
+      generateFailed={generateFailed}
+      onGenerate={handleGenerate}
+      controls={
+        <>
+          {characterControl}
+          {levelControl}
+          {categoryControl}
+          {colorsControl}
+        </>
+      }
+      sheet={
+        <>
+          {card !== null ? (
+            <SymmetrySheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+          ) : null}
+        </>
+      }
+    />
   );
 }
 

@@ -21,6 +21,8 @@ const DICTATION_GENERATOR = "src/components/DictationGenerator.tsx";
 const NONOGRAM_PAGE = "src/pages/nonogram.astro";
 const NONOGRAM_GENERATOR = "src/components/NonogramGenerator.tsx";
 const NONOGRAM_SIMPLE_SHEET = "src/components/NonogramSimpleSheet.tsx";
+const CARD_PAGE = "src/components/CardPage.tsx";
+const CARD_PAGE_HOOK = "src/hooks/useCardPage.ts";
 const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
 const SPEECH_LIB = "src/lib/sheet/speech.ts";
 const GLOBAL_CSS = "src/styles/global.css";
@@ -75,14 +77,25 @@ void describe("print contract", () => {
     );
 
     const generator = readRepoFile(WORKSHEET_GENERATOR);
-    assert.deepEqual(classNamesContaining(generator, "print:hidden"), [
+    // The bar and its buttons are CardPage's; the maze keeps only its level dialog.
+    assert.deepEqual(classNamesContaining(generator, "print:hidden"), ["max-h-[calc(100dvh-2rem)] print:hidden"]);
+    assertCardPageShell(generator);
+    // A level change the maze cannot lay out leaves the bar without a card; Drukuj must stay off then.
+    assert.match(generator, /printDisabled=\{maze === null\}/);
+    assert.deepEqual(classNamesContaining(readRepoFile(CARD_PAGE), "print:hidden"), [
       "flex w-full flex-col gap-3 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
-      "max-h-[calc(100dvh-2rem)] print:hidden",
     ]);
     // The character list dialog moved to the shared control the maze page imports.
     assert.deepEqual(classNamesContaining(readRepoFile(CHARACTER_CHOICE_CONTROL), "print:hidden"), [
       "max-h-[calc(100dvh-2rem)] print:hidden",
+    ]);
+  });
+
+  void test("the card page shell hides its controls in print", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(CARD_PAGE), "print:hidden"), [
+      "flex w-full flex-col gap-3 print:hidden",
+      "flex flex-col items-center gap-6 print:hidden",
     ]);
   });
 
@@ -112,10 +125,8 @@ void describe("print contract", () => {
   });
 
   void test("print hides the symmetry controls", () => {
-    assert.deepEqual(classNamesContaining(readRepoFile(SYMMETRY_GENERATOR), "print:hidden"), [
-      "flex w-full flex-col gap-3 print:hidden",
-      "flex flex-col items-center gap-6 print:hidden",
-    ]);
+    assert.deepEqual(classNamesContaining(readRepoFile(SYMMETRY_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(SYMMETRY_GENERATOR));
   });
 
   void test("the symmetry page lives under /symmetry and uses the shared shell", () => {
@@ -138,10 +149,8 @@ void describe("print contract", () => {
   });
 
   void test("print hides the sequence controls", () => {
-    assert.deepEqual(classNamesContaining(readRepoFile(SEQUENCE_GENERATOR), "print:hidden"), [
-      "flex w-full flex-col gap-3 print:hidden",
-      "flex flex-col items-center gap-6 print:hidden",
-    ]);
+    assert.deepEqual(classNamesContaining(readRepoFile(SEQUENCE_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(SEQUENCE_GENERATOR));
   });
 
   void test("the sequence page lives under /sequences and uses the shared shell", () => {
@@ -170,10 +179,8 @@ void describe("print contract", () => {
   });
 
   void test("print hides the sudoku controls", () => {
-    assert.deepEqual(classNamesContaining(readRepoFile(SUDOKU_GENERATOR), "print:hidden"), [
-      "flex w-full flex-col gap-3 print:hidden",
-      "flex flex-col items-center gap-6 print:hidden",
-    ]);
+    assert.deepEqual(classNamesContaining(readRepoFile(SUDOKU_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(SUDOKU_GENERATOR));
   });
 
   void test("the sudoku choice dialog is hidden in print", () => {
@@ -202,11 +209,8 @@ void describe("print contract", () => {
 
   void test("print hides the dictation controls", () => {
     const generator = readRepoFile(DICTATION_GENERATOR);
-    assert.deepEqual(classNamesContaining(generator, "print:hidden"), [
-      "flex w-full flex-col gap-3 print:hidden",
-      "flex flex-col items-center gap-6 print:hidden",
-      "print:hidden",
-    ]);
+    assert.deepEqual(classNamesContaining(generator, "print:hidden"), ["print:hidden"]);
+    assertCardPageShell(generator);
     // The stroke sits on the solution group. Prettier wraps the <g> tag, so the two fragments stay separate.
     assert.ok(generator.includes('className={cn("print:hidden")}') && generator.includes("data-solution"));
   });
@@ -237,11 +241,8 @@ void describe("print contract", () => {
   });
 
   void test("print hides the nonogram controls and the solution group", () => {
-    assert.deepEqual(classNamesContaining(readRepoFile(NONOGRAM_GENERATOR), "print:hidden"), [
-      "flex w-full flex-col gap-3 print:hidden",
-      "flex flex-col items-center gap-6 print:hidden",
-      "print:hidden",
-    ]);
+    assert.deepEqual(classNamesContaining(readRepoFile(NONOGRAM_GENERATOR), "print:hidden"), ["print:hidden"]);
+    assertCardPageShell(readRepoFile(NONOGRAM_GENERATOR));
     // The third one must sit on the solution group itself, so a switch left on never prints the answer.
     assert.ok(
       readRepoFile(NONOGRAM_GENERATOR).includes(
@@ -303,8 +304,9 @@ void describe("print contract", () => {
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
-      assert.match(source, /useBarCharacter\(/, `${path} keeps the bar character`);
+      assert.match(source, /useCardPage\(/, `${path} keeps the bar character through useCardPage`);
     }
+    assert.match(readRepoFile(CARD_PAGE_HOOK), /useBarCharacter\(/, "useCardPage keeps the bar character");
   });
 
   void test("every card's printed SVG asks the printer to keep the character's colors", () => {
@@ -340,6 +342,14 @@ void describe("print contract", () => {
     assert.equal(withoutScreen.includes("padding-bottom: 2rem"), false);
   });
 });
+
+// The settings row, Generuj and Drukuj live in CardPage, so a card that renders it has no controls of its own to print.
+function assertCardPageShell(source: string): void {
+  // The card hands CardPage its controls, its sheet and what Generuj does; the bar and the buttons are CardPage's.
+  for (const prop of ["controls", "sheet", "onGenerate"]) {
+    assert.match(source, new RegExp(`<CardPage\\b[\\s\\S]*\\b${prop}=\\{`), `a card passes ${prop} to CardPage`);
+  }
+}
 
 function readRepoFile(relativePath: string): string {
   return readFileSync(path.join(repoRoot, relativePath), "utf8");
