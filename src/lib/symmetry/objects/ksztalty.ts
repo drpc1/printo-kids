@@ -19,8 +19,8 @@ interface FigureSpec {
   color: SymmetryColor;
   holeColor: SymmetryColor | null;
   /** Rows of the figure on a half of `half` columns; at most the rows of the smallest grid of that size. */
-  height: (half: number) => number;
-  inside: (half: number, height: number) => Inside;
+  height?: (half: number) => number;
+  inside?: (half: number, height: number) => Inside;
 }
 
 const CATEGORIES: readonly ObjectCategoryId[] = ["ksztalty"];
@@ -112,24 +112,30 @@ const FIGURES: readonly FigureSpec[] = [
     id: "chmurka",
     color: "gray",
     holeColor: "blue",
-    height: (half) => Math.round(1.3 * half),
-    inside: (half, height) => (dx, y) => {
-      const bump = (cx: number, cy: number, radius: number): boolean =>
-        square(dx - cx) + square(y - cy) <= square(radius);
-      const flat = y >= height * 0.62 && dx <= half * 0.9;
-      return (
-        flat ||
-        bump(0, height * 0.38, height * 0.38) ||
-        bump(half * 0.6, height * 0.56, height * 0.3) ||
-        bump(half * 0.88, height * 0.68, height * 0.24)
-      );
-    },
   },
 ];
 
-/** Hand-drawn left halves where the formula is too coarse to read as the figure ("#" is a filled cell). */
+/**
+ * Hand-drawn left halves ("#" is a filled cell) where a formula is too coarse to read as the figure: the 5-point star
+ * at 4 by 12, and the cloud, whose scalloped top needs three bumps that circles blur into a hill.
+ */
 const DRAWN: Readonly<Partial<Record<string, Readonly<Partial<Record<number, readonly string[]>>>>>> = {
   gwiazda: { 4: ["...#", "...#", "####", ".###", "..##", ".###", ".##.", ".#.."] },
+  chmurka: {
+    4: ["...#", "..##", "#.##", "####", ".###"],
+    6: ["...###", "...###", ".#.###", "##.###", "######", "######", ".#####"],
+    9: [
+      "......###",
+      ".....####",
+      "..##.####",
+      ".###.####",
+      "#########",
+      "#########",
+      "#########",
+      "#########",
+      ".########",
+    ],
+  },
 };
 
 /** The cells of the left half that are inside the figure, as rows of booleans, without empty rows above or below. */
@@ -137,6 +143,9 @@ function sample(spec: FigureSpec, half: number): boolean[][] {
   const drawn = DRAWN[spec.id]?.[half];
   if (drawn !== undefined) {
     return drawn.map((line) => line.split("").map((letter) => letter === "#"));
+  }
+  if (spec.height === undefined || spec.inside === undefined) {
+    throw new Error(`Figure ${spec.id} has no drawing for a half of ${half} columns`);
   }
   const height = spec.height(half);
   const inside = spec.inside(half, height);
