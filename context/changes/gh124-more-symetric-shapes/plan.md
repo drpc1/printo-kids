@@ -261,28 +261,28 @@ Brak: warianty i obiekty są danymi w kodzie; zapisane profile i ostatnie parame
 
 #### Automated
 
-- [x] 1.1 Makieta jest poprawnym JSON
-- [x] 1.2 Każdy rysunek makiety przechodzi reguły (jeden kawałek, ≥ 3 kratki na osi w 4×12, kolory z ośmiu liter)
-- [x] 1.3 Pomiar bazowy zgadza się z research.md dla kot i tulipan
+- [x] 1.1 Makieta jest poprawnym JSON — 284afc7
+- [x] 1.2 Każdy rysunek makiety przechodzi reguły (jeden kawałek, ≥ 3 kratki na osi w 4×12, kolory z ośmiu liter) — 284afc7
+- [x] 1.3 Pomiar bazowy zgadza się z research.md dla kot i tulipan — 284afc7
 
 #### Manual
 
-- [x] 1.4 Użytkownik zatwierdza podgląd makiety: kotwica i lizak są rozpoznawalne w 4×12, nowe warianty wyraźnie zmieniają sylwetkę
-- [x] 1.5 Użytkownik wskazuje rysunki do poprawy, jeśli są
+- [x] 1.4 Użytkownik zatwierdza podgląd makiety: kotwica i lizak są rozpoznawalne w 4×12, nowe warianty wyraźnie zmieniają sylwetkę — 284afc7
+- [x] 1.5 Użytkownik wskazuje rysunki do poprawy, jeśli są — 284afc7
 
 ### Phase 2: Kotwica i lizak
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Typy przechodzą: `npx astro check`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.3 Typy przechodzą: `npx astro check`
 
 #### Manual
 
-- [ ] 2.4 Kotwica i lizak są rozpoznawalne na podglądzie symetrii w poziomach 1, 2 i 4
-- [ ] 2.5 Odbicie nie ma szwów na osi; kolory kratek poprawne po włączeniu kolorów
-- [ ] 2.6 Nonogram i dyktando w odpowiednich kategoriach pokazują oba obiekty lub losują inne bez błędu
+- [x] 2.4 Kotwica i lizak są rozpoznawalne na podglądzie symetrii w poziomach 1, 2 i 4
+- [x] 2.5 Odbicie nie ma szwów na osi; kolory kratek poprawne po włączeniu kolorów
+- [x] 2.6 Nonogram i dyktando w odpowiednich kategoriach pokazują oba obiekty lub losują inne bez błędu
 
 ### Phase 3: Warianty siedmiu obiektów
 
