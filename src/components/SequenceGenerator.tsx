@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
-import { Printer } from "lucide-react";
+import { useState } from "react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
-import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ProfileCorner } from "@/components/ProfileCorner";
 import { LevelChoice } from "@/components/LevelChoice";
-import { RememberedNote } from "@/components/RememberedNote";
 import { CharacterInstruction } from "@/components/SpeechBand";
+import { CardPage } from "@/components/CardPage";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { SequenceSettings } from "@/lib/card-settings";
@@ -19,8 +15,6 @@ import { SEQUENCE_SHEET } from "@/lib/sequence/sheet";
 import { sequenceShapeOutline } from "@/lib/sequence/shapes";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
-
-const GENERATE_FAILED_TEXT = "Nie udało się ułożyć karty.";
 
 /**
  * The sequence card page: Generuj, the character and level buttons, the colors switch, the card, Drukuj, and the shared
@@ -40,16 +34,6 @@ export default function SequenceGenerator() {
   const { level: levelId, colors } = memory.settings;
   const sheetShown = card !== null;
 
-  useEffect(() => {
-    const main = document.getElementById("worksheet-home");
-    if (main === null) {
-      return;
-    }
-    main.classList.toggle("has-sheet", sheetShown);
-    main.classList.toggle("justify-start", sheetShown);
-    main.classList.toggle("justify-center", !sheetShown);
-  }, [sheetShown]);
-
   function generateFor(id: SequenceLevelId): void {
     const next = generateSequenceCard(Math.random, card?.key ?? null, sequenceLevelById(id));
     if (next === null) {
@@ -61,9 +45,6 @@ export default function SequenceGenerator() {
   }
 
   function handleGenerate(): void {
-    if (waitingForChild) {
-      return;
-    }
     generateFor(levelId);
   }
 
@@ -78,10 +59,6 @@ export default function SequenceGenerator() {
     if (card !== null && next.level !== previous.level) {
       generateFor(next.level);
     }
-  }
-
-  function handlePrint(): void {
-    window.print();
   }
 
   const characterControl = (
@@ -117,70 +94,35 @@ export default function SequenceGenerator() {
       Kolory
     </label>
   );
-  const failedNote = generateFailed ? (
-    <p role="alert" className={cn("text-destructive text-sm")}>
-      {GENERATE_FAILED_TEXT}
-    </p>
-  ) : null;
-
   return (
-    <div className={cn("flex w-full flex-col items-center gap-4")}>
-      <ProfileCorner
-        profiles={profiles}
-        activeId={activeId}
-        barCharacter={bar.character}
-        barLevel={barLevel}
-        ask={ask}
-        onCreated={memory.corner.onCreated}
-        onChoose={memory.corner.onChoose}
-        onFavoriteSaved={memory.corner.onFavoriteSaved}
-        onDeleted={memory.corner.onDeleted}
-        onClearProfile={memory.corner.onClearProfile}
-        newProfileCards={memory.newProfileCards}
-      />
-      {sheetShown ? (
-        <div className={cn("flex w-full flex-col gap-3 print:hidden")}>
-          <div className={cn("flex w-full min-w-0 flex-wrap items-center gap-3")}>
-            {characterControl}
-            {levelControl}
-            {colorsControl}
-            {failedNote}
-          </div>
-          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
-          <div className={cn("flex w-full items-center gap-3 sm:gap-4")}>
-            <GenerateButton
-              onClick={handleGenerate}
-              tone="quiet"
-              disabled={waitingForChild}
-              className="flex-1 sm:flex-none"
-            />
-            <Button
-              type="button"
-              variant="default"
-              onClick={handlePrint}
-              className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
-            >
-              <Printer aria-hidden />
-              Drukuj
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className={cn("flex flex-col items-center gap-6 print:hidden")}>
-          <div className={cn("flex flex-wrap items-center justify-center gap-3 max-sm:justify-start")}>
-            {characterControl}
-            {levelControl}
-            {colorsControl}
-          </div>
-          <RememberedNote note={memory.note ?? favorite.note} profileActive={activeId !== null} />
-          <GenerateButton onClick={handleGenerate} tone="hero" disabled={waitingForChild} />
-          {failedNote}
-        </div>
-      )}
-      {card !== null ? (
-        <SequenceSheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
-      ) : null}
-    </div>
+    <CardPage
+      profiles={profiles}
+      activeId={activeId}
+      ask={ask}
+      waitingForChild={waitingForChild}
+      barCharacter={bar.character}
+      barLevel={barLevel}
+      corner={memory.corner}
+      newProfileCards={memory.newProfileCards}
+      note={memory.note ?? favorite.note}
+      sheetShown={sheetShown}
+      generateFailed={generateFailed}
+      onGenerate={handleGenerate}
+      controls={
+        <>
+          {characterControl}
+          {levelControl}
+          {colorsControl}
+        </>
+      }
+      sheet={
+        <>
+          {card !== null ? (
+            <SequenceSheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+          ) : null}
+        </>
+      }
+    />
   );
 }
 
