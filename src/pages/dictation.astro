@@ -2,11 +2,14 @@
 import DictationGenerator from "@/components/DictationGenerator";
 import GeneratorShell from "@/components/GeneratorShell.astro";
 import Layout from "@/layouts/Layout.astro";
-import { cardTitle } from "@/lib/cards";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
 ---
 
-<Layout title={cardTitle("dyktando")} lang="pl">
-  <GeneratorShell description="Wygeneruj kartę dyktanda graficznego i wydrukuj ją na kartce A4.">
+<Layout title={cardPageTitle("dyktando")} lang="pl">
+  <GeneratorShell
+    heading={cardTitle("dyktando")}
+    description="Wygeneruj kartę dyktanda graficznego i wydrukuj ją na kartce A4."
+  >
     <DictationGenerator client:only="react" />
   </GeneratorShell>
 </Layout>

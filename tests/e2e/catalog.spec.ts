@@ -340,7 +340,7 @@ test("a level changed on a card page shows on the catalog after going back", asy
   await expect(page.getByRole("link", { name: "Nonogram, trudny" })).toBeVisible();
 });
 
-test("the catalog is titled PrintoKids and each generator page is titled with its card name", async ({
+test("the catalog is titled PrintoKids; each generator page has the card name as heading and in its tab title", async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
@@ -357,6 +357,7 @@ test("the catalog is titled PrintoKids and each generator page is titled with it
   ];
   for (const [path, title] of pages) {
     await page.goto(path);
-    await expect(page).toHaveTitle(title);
+    await expect(page).toHaveTitle(`PrintoKids - ${title}`);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
   }
 });

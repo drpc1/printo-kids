@@ -1,9 +1,10 @@
 ---
 interface Props {
+  heading: string;
   description: string;
 }
 
-const { description } = Astro.props;
+const { heading, description } = Astro.props;
 ---
 
 <main
@@ -34,7 +35,7 @@ const { description } = Astro.props;
     </svg>
   </a>
   <div class="flex w-full max-w-xl flex-col items-center gap-10 text-center">
-    <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">PrintoKids</h1>
+    <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">{heading}</h1>
 
     <p class="text-lg leading-relaxed text-muted-foreground sm:text-xl">{description}</p>
 
