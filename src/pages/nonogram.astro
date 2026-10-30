@@ -2,11 +2,11 @@
 import GeneratorShell from "@/components/GeneratorShell.astro";
 import NonogramGenerator from "@/components/NonogramGenerator";
 import Layout from "@/layouts/Layout.astro";
-import { cardTitle } from "@/lib/cards";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
 ---
 
-<Layout title={cardTitle("nonogram")} lang="pl">
-  <GeneratorShell description="Wygeneruj nonogram i wydrukuj go na kartce A4.">
+<Layout title={cardPageTitle("nonogram")} lang="pl">
+  <GeneratorShell heading={cardTitle("nonogram")} description="Wygeneruj nonogram i wydrukuj go na kartce A4.">
     <NonogramGenerator client:only="react" />
   </GeneratorShell>
 </Layout>

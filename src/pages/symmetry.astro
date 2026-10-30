@@ -2,11 +2,11 @@
 import GeneratorShell from "@/components/GeneratorShell.astro";
 import SymmetryGenerator from "@/components/SymmetryGenerator";
 import Layout from "@/layouts/Layout.astro";
-import { cardTitle } from "@/lib/cards";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
 ---
 
-<Layout title={cardTitle("symetria")} lang="pl">
-  <GeneratorShell description="Wygeneruj kartę symetrii i wydrukuj ją na kartce A4.">
+<Layout title={cardPageTitle("symetria")} lang="pl">
+  <GeneratorShell heading={cardTitle("symetria")} description="Wygeneruj kartę symetrii i wydrukuj ją na kartce A4.">
     <SymmetryGenerator client:only="react" />
   </GeneratorShell>
 </Layout>
