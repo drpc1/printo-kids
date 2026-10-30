@@ -2,11 +2,11 @@
 import GeneratorShell from "@/components/GeneratorShell.astro";
 import WorksheetGenerator from "@/components/WorksheetGenerator";
 import Layout from "@/layouts/Layout.astro";
-import { cardTitle } from "@/lib/cards";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
 ---
 
-<Layout title={cardTitle("labirynt")} lang="pl">
-  <GeneratorShell description="Wygeneruj labirynt i wydrukuj go na kartce A4.">
+<Layout title={cardPageTitle("labirynt")} lang="pl">
+  <GeneratorShell heading={cardTitle("labirynt")} description="Wygeneruj labirynt i wydrukuj go na kartce A4.">
     <WorksheetGenerator client:only="react" />
   </GeneratorShell>
 </Layout>

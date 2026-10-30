@@ -25,3 +25,7 @@ export function cardTitle(id: CardKind["id"]): string {
   }
   return kind.title;
 }
+
+export function cardPageTitle(id: CardKind["id"]): string {
+  return `PrintoKids - ${cardTitle(id)}`;
+}
