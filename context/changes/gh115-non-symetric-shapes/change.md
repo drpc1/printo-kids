@@ -1,7 +1,7 @@
 ---
 change_id: gh115-non-symetric-shapes
 title: Dyktando graficzne: kształty bez osi symetrii (GitHub 115)
-status: implemented
+status: impl_reviewed
 created: 2026-10-30
 updated: 2026-10-30
 archived_at: null
