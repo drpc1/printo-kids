@@ -80,6 +80,8 @@ void describe("print contract", () => {
     // The bar and its buttons are CardPage's; the maze keeps only its level dialog.
     assert.deepEqual(classNamesContaining(generator, "print:hidden"), ["max-h-[calc(100dvh-2rem)] print:hidden"]);
     assertCardPageShell(generator);
+    // A level change the maze cannot lay out leaves the bar without a card; Drukuj must stay off then.
+    assert.match(generator, /printDisabled=\{maze === null\}/);
     assert.deepEqual(classNamesContaining(readRepoFile(CARD_PAGE), "print:hidden"), [
       "flex w-full flex-col gap-3 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
@@ -343,7 +345,10 @@ void describe("print contract", () => {
 
 // The settings row, Generuj and Drukuj live in CardPage, so a card that renders it has no controls of its own to print.
 function assertCardPageShell(source: string): void {
-  assert.match(source, /<CardPage\b/);
+  // The card hands CardPage its controls, its sheet and what Generuj does; the bar and the buttons are CardPage's.
+  for (const prop of ["controls", "sheet", "onGenerate"]) {
+    assert.match(source, new RegExp(`<CardPage\\b[\\s\\S]*\\b${prop}=\\{`), `a card passes ${prop} to CardPage`);
+  }
 }
 
 function readRepoFile(relativePath: string): string {

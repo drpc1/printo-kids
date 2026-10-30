@@ -36,6 +36,7 @@ export function CardPage({
   onGenerate,
   generateFailed,
   failedText = DEFAULT_FAILED_TEXT,
+  printDisabled = false,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
@@ -53,6 +54,8 @@ export function CardPage({
   onGenerate: () => void;
   generateFailed: boolean;
   failedText?: string;
+  /** True while the shown bar has no card to print (the maze after a level change it could not lay out). */
+  printDisabled?: boolean;
 }) {
   useEffect(() => {
     const main = document.getElementById("worksheet-home");
@@ -63,6 +66,17 @@ export function CardPage({
     main.classList.toggle("justify-start", sheetShown);
     main.classList.toggle("justify-center", !sheetShown);
   }, [sheetShown]);
+
+  // The shell outlives this island only until the next page load, but a client-side navigation must not inherit the
+  // classes of this page's last card.
+  useEffect(
+    () => () => {
+      const main = document.getElementById("worksheet-home");
+      main?.classList.remove("has-sheet", "justify-start");
+      main?.classList.add("justify-center");
+    },
+    [],
+  );
 
   function handleGenerate(): void {
     if (waitingForChild) {
@@ -119,6 +133,7 @@ export function CardPage({
               type="button"
               variant="default"
               onClick={handlePrint}
+              disabled={printDisabled}
               className={cn(ACTION_BUTTON_CLASS, "flex-1 sm:ml-auto sm:flex-none")}
             >
               <Printer aria-hidden />
