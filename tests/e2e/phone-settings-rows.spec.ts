@@ -1,44 +1,15 @@
-// Provenance: phone-settings-rows (issue #173)
-// On phone-360, before Generuj, the sudoku "Kształty" text starts where "Postać" does,
-// and the nonogram gaps between Postać, Poziom and Kategoria match. Other projects open
-// both pages and confirm the controls, then skip the boxes: from 640 px the inset and
-// the tighter gap do not apply, and wrapping onto those lines is not guaranteed.
-import { expect, test, type Locator } from "@playwright/test";
+// Provenance: phone-settings-rows (issue #173), generalized to every card page by gh192-pages-sceleton (GH 192)
+// On phone-360, before and after the first card, the settings row follows two rules however many controls it holds and however
+// the text happens to wrap: the text of the first control on every line starts where the text of "Postać" does,
+// and the vertical gap between one line and the next is the same for every pair of lines. Other projects open the
+// pages and confirm the controls, then skip the boxes: from 640 px the inset and the tighter gap do not apply.
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 interface Box {
   x: number;
   y: number;
   width: number;
   height: number;
-}
-
-async function viewportBox(locator: Locator): Promise<Box> {
-  const box = await locator.boundingBox();
-  if (box === null) {
-    throw new Error("element has no box");
-  }
-  return box;
-}
-
-// "Kształty" is a text node inside the button, not a span. The span inset on "Postać"
-// is what the chevron padding produces; the button frame already lined up.
-async function textNodeBox(locator: Locator): Promise<Box> {
-  const box = await locator.evaluate((element) => {
-    const text = Array.from(element.childNodes).find(
-      (node) => node.nodeType === Node.TEXT_NODE && (node.textContent ?? "").trim() !== "",
-    );
-    if (text === undefined) {
-      return null;
-    }
-    const range = document.createRange();
-    range.selectNodeContents(text);
-    const rect = range.getBoundingClientRect();
-    return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-  });
-  if (box === null) {
-    throw new Error("element has no text");
-  }
-  return box;
 }
 
 function bottom(box: Box): number {
@@ -50,68 +21,133 @@ function sharesLine(a: Box, b: Box): boolean {
   return a.y < bottom(b) && b.y < bottom(a);
 }
 
-test("sudoku symbol text lines up with Postać before Generuj", async ({ page }, testInfo) => {
-  await page.goto("/sudoku");
-  // 4×4 has no symbol buttons. The click waits for the client:only island.
-  await page.getByRole("button", { name: /^Rozmiar:/ }).click();
-  await page.getByRole("button", { name: "6×6", exact: true }).click();
-
-  const postac = page.getByRole("button", { name: /^Postać:/ });
-  const ksztalty = page.getByRole("button", { name: "Kształty", exact: true });
-  await expect(page.getByRole("button", { name: "Rozmiar: 6×6" })).toBeVisible();
-  await expect(postac).toBeVisible();
-  await expect(ksztalty).toBeVisible();
-
-  if (testInfo.project.name !== "phone-360") {
-    return;
+// The left edge of the first visible text inside the element, in viewport pixels.
+async function textLeft(locator: Locator): Promise<number> {
+  const left = await locator.evaluate((element) => {
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
+      if ((node.textContent ?? "").trim() === "") {
+        continue;
+      }
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const rect = range.getBoundingClientRect();
+      if (rect.width > 0) {
+        return rect.x;
+      }
+    }
+    return null;
+  });
+  if (left === null) {
+    throw new Error("element has no text");
   }
+  return left;
+}
 
-  const postacBox = await viewportBox(postac);
-  const ksztaltyBox = await viewportBox(ksztalty);
-  expect(sharesLine(postacBox, ksztaltyBox), "Kształty stayed on Postać's line").toBe(false);
-  expect(ksztaltyBox.y).toBeGreaterThanOrEqual(bottom(postacBox));
+// Where a control's content starts: the switch of a toggle, otherwise the first text of a button.
+async function contentLeft(locator: Locator): Promise<number> {
+  const toggle = locator.getByRole("switch");
+  if ((await toggle.count()) > 0) {
+    const box = await toggle.first().boundingBox();
+    if (box === null) {
+      throw new Error("switch has no box");
+    }
+    return box.x;
+  }
+  return textLeft(locator);
+}
 
-  const row = ksztalty.locator("xpath=ancestor::div[contains(@class,'flex-wrap')][1]");
-  const line: Box[] = [];
-  for (const locator of await row.getByRole("button").all()) {
-    const box = await locator.boundingBox();
-    if (box !== null && sharesLine(box, ksztaltyBox)) {
-      line.push(box);
+// The settings row is the nearest wrapping flex row above "Postać".
+function settingsRow(page: Page): Locator {
+  return page.getByRole("button", { name: /^Postać:/ }).locator("xpath=ancestor::div[contains(@class,'flex-wrap')][1]");
+}
+
+async function expectRowRules(page: Page): Promise<void> {
+  const row = settingsRow(page);
+  const postac = page.getByRole("button", { name: /^Postać:/ });
+  const items: { box: Box; element: Locator }[] = [];
+  for (const element of await row.locator(":scope > *").all()) {
+    const box = await element.boundingBox();
+    if (box !== null && box.width > 0) {
+      items.push({ box, element });
     }
   }
-  expect(line.length).toBeGreaterThan(0);
-  const leftmost = line.reduce((left, box) => (box.x < left.x ? box : left));
-  expect(leftmost.x, "Kształty is not the leftmost button on its line").toBe(ksztaltyBox.x);
+  expect(items.length, "controls in the settings row").toBeGreaterThan(1);
 
-  const postacLabel = await viewportBox(postac.locator("span").first());
-  const ksztaltyText = await textNodeBox(ksztalty);
-  expect(Math.abs(postacLabel.x - ksztaltyText.x), "Kształty text left edge").toBeLessThanOrEqual(1);
-});
-
-test("nonogram category gap matches the row above before Generuj", async ({ page }, testInfo) => {
-  await page.goto("/nonogram");
-  const postac = page.getByRole("button", { name: /^Postać:/ });
-  const poziom = page.getByRole("button", { name: /^Poziom:/ });
-  const kategoria = page.getByRole("button", { name: /^Kategoria:/ });
-  await expect(postac).toBeVisible();
-  await expect(poziom).toBeVisible();
-  await expect(kategoria).toBeVisible();
-  await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
-
-  if (testInfo.project.name !== "phone-360") {
-    return;
+  // Lines, top to bottom.
+  items.sort((a, b) => a.box.y - b.box.y || a.box.x - b.box.x);
+  const lines: { box: Box; element: Locator }[][] = [];
+  for (const item of items) {
+    const line = lines.find((candidate) => candidate.some((other) => sharesLine(other.box, item.box)));
+    if (line === undefined) {
+      lines.push([item]);
+    } else {
+      line.push(item);
+    }
   }
 
-  const postacBox = await viewportBox(postac);
-  const poziomBox = await viewportBox(poziom);
-  const kategoriaBox = await viewportBox(kategoria);
-  expect(sharesLine(postacBox, poziomBox), "Postać and Poziom share a line").toBe(false);
-  expect(sharesLine(poziomBox, kategoriaBox), "Poziom and Kategoria share a line").toBe(false);
-  expect(sharesLine(postacBox, kategoriaBox), "Postać and Kategoria share a line").toBe(false);
-  expect(bottom(postacBox)).toBeLessThanOrEqual(poziomBox.y);
-  expect(bottom(poziomBox)).toBeLessThanOrEqual(kategoriaBox.y);
+  const postacLeft = await textLeft(postac);
+  for (const line of lines) {
+    const first = line.reduce((left, item) => (item.box.x < left.box.x ? item : left));
+    const left = await contentLeft(first.element);
+    expect(
+      Math.abs(left - postacLeft),
+      "text of the first control on a line starts where Postać does",
+    ).toBeLessThanOrEqual(1);
+  }
 
-  const postacToPoziom = poziomBox.y - bottom(postacBox);
-  const poziomToKategoria = kategoriaBox.y - bottom(poziomBox);
-  expect(Math.abs(postacToPoziom - poziomToKategoria), "category gap").toBeLessThanOrEqual(1);
-});
+  const gaps: number[] = [];
+  for (let index = 1; index < lines.length; index += 1) {
+    const above = Math.max(...lines[index - 1].map((item) => bottom(item.box)));
+    const below = Math.min(...lines[index].map((item) => item.box.y));
+    gaps.push(below - above);
+  }
+  for (const gap of gaps) {
+    expect(Math.abs(gap - gaps[0]), "gap between lines").toBeLessThanOrEqual(1);
+  }
+}
+
+// Every card page, with the controls its row has before the first card. Sudoku opens at 6×6 so the row holds the
+// symbol buttons and the colors switch as well.
+const CARD_PAGES: { path: string; label: string; controls: RegExp[]; prepare?: (page: Page) => Promise<void> }[] = [
+  { path: "/maze", label: "maze", controls: [/^Postać:/, /^Poziom:/] },
+  { path: "/symmetry", label: "symmetry", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
+  { path: "/sequences", label: "sequences", controls: [/^Postać:/, /^Poziom:/] },
+  {
+    path: "/sudoku",
+    label: "sudoku",
+    controls: [/^Postać:/, /^Rozmiar: 6×6/, /^Poziom:/, /^Kształty$/],
+    prepare: async (page) => {
+      // 4×4 has no symbol buttons. The click waits for the client:only island.
+      await page.getByRole("button", { name: /^Rozmiar:/ }).click();
+      await page.getByRole("button", { name: "6×6", exact: true }).click();
+    },
+  },
+  { path: "/nonogram", label: "nonogram", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
+  { path: "/dictation", label: "dictation", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
+];
+
+for (const card of CARD_PAGES) {
+  test(`${card.label} settings row keeps its rules before and after the first card`, async ({ page }, testInfo) => {
+    await page.goto(card.path);
+    await card.prepare?.(page);
+    for (const name of card.controls) {
+      await expect(page.getByRole("button", { name })).toBeVisible();
+    }
+    await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
+
+    const phone = testInfo.project.name === "phone-360";
+    if (phone) {
+      await expectRowRules(page);
+    }
+
+    await page.getByRole("button", { name: "Generuj" }).click();
+    await expect(page.getByRole("button", { name: "Drukuj" })).toBeVisible();
+    for (const name of card.controls) {
+      await expect(page.getByRole("button", { name })).toBeVisible();
+    }
+    if (phone) {
+      await expectRowRules(page);
+    }
+  });
+}
