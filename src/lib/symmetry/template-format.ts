@@ -9,6 +9,7 @@ export const OBJECT_CATEGORIES = [
   { id: "przyroda", label: "Przyroda" },
   { id: "kosmos", label: "Kosmos i maszyny" },
   { id: "budowle", label: "Domy i budowle" },
+  { id: "ksztalty", label: "Kształty" },
 ] as const;
 
 export type ObjectCategoryId = (typeof OBJECT_CATEGORIES)[number]["id"];

@@ -3,6 +3,68 @@ import { describe, test } from "node:test";
 import type { SymmetryLevelId } from "./levels.ts";
 import { drawing } from "./template-format.ts";
 import { OBJECT_CATEGORIES, symmetryTemplatesFor, type SymmetryTemplate } from "./templates.ts";
+// TEMP gh198 report imports (removed in phase 2)
+import { KSZTALTY } from "./objects/ksztalty.ts";
+import { composeSymmetryCard, symmetryCardProblems } from "./generate.ts";
+import { symmetryLevelById } from "./levels.ts";
+import { composeNonogramCard, nonogramCardProblems } from "../nonogram/generate.ts";
+import { composeSimpleNonogramCard, simpleNonogramProblems } from "../nonogram/simple.ts";
+import { nonogramSizeById } from "../nonogram/sizes.ts";
+import { dictationCardFor, variantCombinations } from "../dictation/generate.ts";
+import { dictationLevelById } from "../dictation/levels.ts";
+import type { SymmetryObjectSizes } from "./template-format.ts";
+
+// TEMP gh198 report: which figures of Kształty pass the rules of the three cards (removed in phase 2).
+void describe("ksztalty report", () => {
+  const sizes: [keyof SymmetryObjectSizes, SymmetryLevelId, "latwy" | "sredni" | "trudny", "lat5" | "lat6" | "lat7"][] =
+    [
+      ["half4", "lat4", "latwy", "lat5"],
+      ["half6", "lat5", "sredni", "lat6"],
+      ["half9", "lat7", "trudny", "lat7"],
+    ];
+  void test("report", () => {
+    const lines: string[] = [];
+    for (const [half, symLevel, nonoSize, dictLevel] of sizes) {
+      for (const template of KSZTALTY[half]) {
+        const sets = variantSets(template);
+        const clean = sets.filter((variants) => isCleanOutline(silhouette(template, variants))).length;
+        const level = symmetryLevelById(symLevel);
+        const symBad = new Set<string>();
+        let symOk = 0;
+        for (const variants of sets) {
+          const problems = symmetryCardProblems(composeSymmetryCard(template, variants, 0, level));
+          if (problems.length === 0) {
+            symOk += 1;
+          }
+          problems.forEach((problem) => symBad.add(problem));
+        }
+        const size = nonogramSizeById(nonoSize);
+        let nonoOk = 0;
+        for (const variants of sets) {
+          const problems =
+            size.kind === "znaczki"
+              ? simpleNonogramProblems(composeSimpleNonogramCard(template, variants, size))
+              : nonogramCardProblems(composeNonogramCard(template, variants, size));
+          if (problems.length === 0) {
+            nonoOk += 1;
+          }
+        }
+        const dict = dictationLevelById(dictLevel);
+        const outlines = new Set<string>();
+        for (const variants of variantCombinations(template.parts.map((part) => part.variants.length))) {
+          const card = dictationCardFor(template, variants, dict);
+          if (card !== null && card.commands.length <= dict.maxCommands) {
+            outlines.add(card.key);
+          }
+        }
+        lines.push(
+          `${half} ${template.id.padEnd(8)} ${template.width}x${template.height} sets=${sets.length} clean=${clean} sym=${symOk}${symBad.size > 0 ? ` (${[...symBad].join(",")})` : ""} nono=${nonoOk} dict=${outlines.size}`,
+        );
+      }
+    }
+    console.log(`\n${lines.join("\n")}`);
+  });
+});
 
 /** One level per half size: 4 by 12, 6 by 15 (shared by 5 and 6 lat), 9 by 24. */
 const SIZES: readonly { levelId: SymmetryLevelId; width: number }[] = [
