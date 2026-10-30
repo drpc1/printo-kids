@@ -339,3 +339,24 @@ test("a level changed on a card page shows on the catalog after going back", asy
   await page.getByRole("link", { name: "Wszystkie karty" }).click();
   await expect(page.getByRole("link", { name: "Nonogram, trudny" })).toBeVisible();
 });
+
+test("the catalog is titled PrintoKids and each generator page is titled with its card name", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/");
+  await expect(page).toHaveTitle("PrintoKids");
+
+  const pages = [
+    ["/maze", "Labirynt"],
+    ["/symmetry", "Symetria"],
+    ["/sudoku", "Sudoku"],
+    ["/sequences", "Sekwencje"],
+    ["/nonogram", "Nonogram"],
+    ["/dictation", "Dyktando graficzne"],
+  ];
+  for (const [path, title] of pages) {
+    await page.goto(path);
+    await expect(page).toHaveTitle(title);
+  }
+});
