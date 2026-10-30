@@ -6,7 +6,13 @@ import { collectWalls } from "./walls.ts";
 const closed: MazeCell = { north: true, east: true, south: true, west: true };
 
 function mazeOf(cells: MazeCell[][]): Maze {
-  return { width: cells[0]?.length ?? 0, height: cells.length, cells };
+  return {
+    width: cells[0]?.length ?? 0,
+    height: cells.length,
+    cells,
+    entrance: { row: 0, col: 0 },
+    exit: { row: cells.length - 1, col: 0 },
+  };
 }
 
 function geometry(walls: ReturnType<typeof collectWalls>): string[] {

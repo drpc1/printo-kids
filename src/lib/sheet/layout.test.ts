@@ -110,7 +110,7 @@ void describe("layoutSheet", () => {
     assert.equal(mark.x, sheet.maze.x);
     assert.equal(mark.y + mark.height, sheet.maze.y);
     assert.equal(sheet.meta.text, "Meta");
-    assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, 26));
+    assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, 28));
     assert.ok(Math.abs(mark.y - bandBelowMeta) <= 0.01, `${mark.y} vs ${bandBelowMeta}`);
   });
 
@@ -125,7 +125,7 @@ void describe("layoutSheet", () => {
     assert.equal(start.text, "Start");
     assert.equal(start.x, columnCenter(sheet, level.columns, 0));
     assert.equal(sheet.meta.text, "Meta");
-    assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, 26));
+    assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, 28));
     assert.equal(sheet.maze.y, withMark.maze.y);
     assert.equal(sheet.meta.y, withMark.meta.y);
   });
@@ -184,16 +184,19 @@ void describe("layoutSheet", () => {
     }
   });
 
-  void test("younger levels keep Meta on the shared entrance and exit column", () => {
+  void test("younger levels draw the exit away from the entrance column, and Meta follows the exit column", () => {
     for (const level of LEVELS) {
       if (level.id === "nastolatek") {
         continue;
       }
 
-      const sheet = layoutForLevel(level, level.showCharacter);
+      assert.ok(level.exitColumns.length >= 2, level.id);
+      for (const exitColumn of level.exitColumns) {
+        const sheet = layoutForLevel(level, level.showCharacter, level.showCharacter, exitColumn);
 
-      assert.equal(level.exit.col, level.entrance.col);
-      assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, level.exit.col));
+        assert.ok(Math.abs(exitColumn - level.entrance.col) >= 2, `${level.id} column ${exitColumn}`);
+        assert.equal(sheet.meta.x, columnCenter(sheet, level.columns, exitColumn), `${level.id} column ${exitColumn}`);
+      }
     }
   });
 });
@@ -223,6 +226,7 @@ function layoutForLevel(
   level: Level,
   characterSelected: boolean,
   levelShowsCharacter: boolean = level.showCharacter,
+  exitColumn: number = level.exitColumns[0],
 ): SheetLayout {
   return layoutSheet({
     pageWidth: PAGE_WIDTH,
@@ -231,7 +235,7 @@ function layoutForLevel(
     columns: level.columns,
     rows: level.rows,
     entranceColumn: level.entrance.col,
-    exitColumn: level.exit.col,
+    exitColumn,
     markSize: MARK_SIZE,
     characterSelected,
     levelShowsCharacter,
