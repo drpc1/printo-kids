@@ -1,5 +1,5 @@
-// Provenance: phone-settings-rows (issue #173), generalized by gh192-pages-sceleton
-// On phone-360, before Generuj, the settings row follows two rules however many controls it holds and however
+// Provenance: phone-settings-rows (issue #173), generalized to every card page by gh192-pages-sceleton (GH 192)
+// On phone-360, before and after the first card, the settings row follows two rules however many controls it holds and however
 // the text happens to wrap: the text of the first control on every line starts where the text of "Postać" does,
 // and the vertical gap between one line and the next is the same for every pair of lines. Other projects open the
 // pages and confirm the controls, then skip the boxes: from 640 px the inset and the tighter gap do not apply.
@@ -107,31 +107,47 @@ async function expectRowRules(page: Page): Promise<void> {
   }
 }
 
-test("sudoku settings row keeps its rules before Generuj", async ({ page }, testInfo) => {
-  await page.goto("/sudoku");
-  // 4×4 has no symbol buttons. The click waits for the client:only island.
-  await page.getByRole("button", { name: /^Rozmiar:/ }).click();
-  await page.getByRole("button", { name: "6×6", exact: true }).click();
+// Every card page, with the controls its row has before the first card. Sudoku opens at 6×6 so the row holds the
+// symbol buttons and the colors switch as well.
+const CARD_PAGES: { path: string; label: string; controls: RegExp[]; prepare?: (page: Page) => Promise<void> }[] = [
+  { path: "/maze", label: "maze", controls: [/^Postać:/, /^Poziom:/] },
+  { path: "/symmetry", label: "symmetry", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
+  { path: "/sequences", label: "sequences", controls: [/^Postać:/, /^Poziom:/] },
+  {
+    path: "/sudoku",
+    label: "sudoku",
+    controls: [/^Postać:/, /^Rozmiar: 6×6/, /^Poziom:/, /^Kształty$/],
+    prepare: async (page) => {
+      // 4×4 has no symbol buttons. The click waits for the client:only island.
+      await page.getByRole("button", { name: /^Rozmiar:/ }).click();
+      await page.getByRole("button", { name: "6×6", exact: true }).click();
+    },
+  },
+  { path: "/nonogram", label: "nonogram", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
+  { path: "/dictation", label: "dictation", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
+];
 
-  await expect(page.getByRole("button", { name: "Rozmiar: 6×6" })).toBeVisible();
-  await expect(page.getByRole("button", { name: /^Postać:/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Kształty", exact: true })).toBeVisible();
+for (const card of CARD_PAGES) {
+  test(`${card.label} settings row keeps its rules before and after the first card`, async ({ page }, testInfo) => {
+    await page.goto(card.path);
+    await card.prepare?.(page);
+    for (const name of card.controls) {
+      await expect(page.getByRole("button", { name })).toBeVisible();
+    }
+    await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
 
-  if (testInfo.project.name !== "phone-360") {
-    return;
-  }
-  await expectRowRules(page);
-});
+    const phone = testInfo.project.name === "phone-360";
+    if (phone) {
+      await expectRowRules(page);
+    }
 
-test("nonogram settings row keeps its rules before Generuj", async ({ page }, testInfo) => {
-  await page.goto("/nonogram");
-  await expect(page.getByRole("button", { name: /^Postać:/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: /^Poziom:/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: /^Kategoria:/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Generuj" })).toBeVisible();
-
-  if (testInfo.project.name !== "phone-360") {
-    return;
-  }
-  await expectRowRules(page);
-});
+    await page.getByRole("button", { name: "Generuj" }).click();
+    await expect(page.getByRole("button", { name: "Drukuj" })).toBeVisible();
+    for (const name of card.controls) {
+      await expect(page.getByRole("button", { name })).toBeVisible();
+    }
+    if (phone) {
+      await expectRowRules(page);
+    }
+  });
+}
