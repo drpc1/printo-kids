@@ -7,7 +7,7 @@ export type SequenceItem = SequenceShape | number;
 /** Numbers on a card run from 1 to this value, so a field never holds more than two digits. */
 export const SEQUENCE_NUMBER_MAX = 20;
 
-export type SequenceRuleId = "AB" | "AAB" | "ABC" | "ABB" | "up1" | "up2" | "down1" | "groups" | "mixed";
+export type SequenceRuleId = "AB" | "AAB" | "ABC" | "ABB" | "up1" | "up2" | "down1" | "mixed";
 
 /** Which distinct shape of the unit sits at each position of a repeating pattern. */
 const PATTERN_UNITS = {
@@ -21,7 +21,7 @@ const NUMBER_STEPS = { up1: 1, up2: 2, down1: -1 } as const;
 
 /**
  * The first field a gap may take for a rule, so that the child sees the rule at work first: a whole unit of a pattern,
- * two numbers of a number rule, the blocks A and AB of the growing groups.
+ * two numbers of a number rule.
  */
 const SHOWN_BEFORE: Record<SequenceRuleId, number> = {
   AB: 2,
@@ -31,7 +31,6 @@ const SHOWN_BEFORE: Record<SequenceRuleId, number> = {
   up1: 2,
   up2: 2,
   down1: 2,
-  groups: 3,
   mixed: 2,
 };
 
@@ -64,10 +63,6 @@ export function rowFromRule(rule: SequenceRuleId, n: number, random: () => numbe
       const lowest = 1 + pick(random, SEQUENCE_NUMBER_MAX - span);
       return numbersFrom(step > 0 ? lowest : lowest + span, step, n);
     }
-    case "groups": {
-      const [a, b] = shuffle(random, [...SEQUENCE_SHAPES]);
-      return growingGroups(a, b, n);
-    }
     case "mixed": {
       const shape = SEQUENCE_SHAPES[pick(random, SEQUENCE_SHAPES.length)];
       const shapeFirst = pick(random, 2) === 0;
@@ -82,7 +77,10 @@ function numbersFrom(start: number, step: number, n: number): number[] {
   return Array.from({ length: n }, (_, position) => start + step * position);
 }
 
-/** The blocks A, AB, ABB, ABBB, … joined and cut to `n` fields. */
+/**
+ * The blocks A, AB, ABB, ABBB, … joined and cut to `n` fields. Not a rule of a card: at 8 fields the growth shows only
+ * in the third block, so these rows only make a row count as ambiguous when the child could read it this way.
+ */
 function growingGroups(a: SequenceShape, b: SequenceShape, n: number): SequenceShape[] {
   const row: SequenceShape[] = [];
   for (let repeats = 0; row.length < n; repeats += 1) {
@@ -140,8 +138,6 @@ function ruleSequences(rule: SequenceRuleId, n: number): SequenceItem[][] {
       }
       return found;
     }
-    case "groups":
-      return arrangements(2).map(([a, b]) => growingGroups(a, b, n));
     case "mixed": {
       const found: SequenceItem[][] = [];
       for (const shape of SEQUENCE_SHAPES) {
@@ -198,7 +194,7 @@ function groupVariants(n: number): SequenceShape[][] {
   return found;
 }
 
-const RULE_IDS: readonly SequenceRuleId[] = ["AB", "AAB", "ABC", "ABB", "up1", "up2", "down1", "groups", "mixed"];
+const RULE_IDS: readonly SequenceRuleId[] = ["AB", "AAB", "ABC", "ABB", "up1", "up2", "down1", "mixed"];
 
 const hypothesisCache = new Map<number, readonly (readonly SequenceItem[])[]>();
 const ruleCache = new Map<string, ReadonlySet<string>>();
@@ -212,7 +208,12 @@ export function hypotheses(n: number): readonly (readonly SequenceItem[])[] {
   let cached = hypothesisCache.get(n);
   if (cached === undefined) {
     const byKey = new Map<string, readonly SequenceItem[]>();
-    const rows = [...periodicSequences(n), ...groupVariants(n), ...RULE_IDS.flatMap((rule) => ruleSequences(rule, n))];
+    const rows = [
+      ...periodicSequences(n),
+      ...arrangements(2).map(([a, b]) => growingGroups(a, b, n)),
+      ...groupVariants(n),
+      ...RULE_IDS.flatMap((rule) => ruleSequences(rule, n)),
+    ];
     for (const row of rows) {
       byKey.set(row.join(","), row);
     }
