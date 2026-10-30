@@ -384,10 +384,10 @@ function SudokuSheet({
             y={shapeList.panel.y}
             width={shapeList.panel.width}
             height={shapeList.panel.height}
-            rx={2.5}
+            rx={SUDOKU_SHEET.shapeListRadius}
             fill="none"
             stroke="var(--foreground)"
-            strokeWidth={0.6}
+            strokeWidth={SUDOKU_SHEET.shapeListStroke}
           />
           <text
             x={shapeList.label.x}
