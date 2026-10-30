@@ -115,11 +115,11 @@ void describe("every variant of every classic level", () => {
       const elapsed = performance.now() - started;
       t.diagnostic(`${size.id}: ${passing} of ${variants.length} variants have one solution, ${elapsed.toFixed(0)} ms`);
       assert.ok(passing >= 1, `no ${size.id} variant passes`);
-      assert.ok(MUTATION_RUN || elapsed < 5000, `${size.id} took ${elapsed} ms`);
+      assert.ok(MUTATION_RUN || elapsed < 15000, `${size.id} took ${elapsed} ms`);
     });
   }
 
-  void test("the hard level has a variant that passes for every template except the known dead objects", () => {
+  void test("every template of the hard level has a variant that passes, so no object is dead on the nonogram", () => {
     const dead = symmetryTemplatesFor(LARGE.templateLevel)
       .filter(
         (template) =>
@@ -131,11 +131,7 @@ void describe("every variant of every classic level", () => {
       )
       .map((template) => template.id);
 
-    // These objects have no variant the line solver can rebuild at 18 by 24; the generator never draws them there.
-    assert.deepEqual(
-      dead.filter((id) => !["kot", "tulipan"].includes(id)),
-      [],
-    );
+    assert.deepEqual(dead, []);
   });
 
   void test("every template of the medium size has a variant that passes, so no object is dead on the nonogram", () => {

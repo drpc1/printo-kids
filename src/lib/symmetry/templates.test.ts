@@ -63,6 +63,19 @@ void describe("template catalog", () => {
     }
   });
 
+  void test("the anchor is in Kosmos i maszyny and the lollipop in Jedzenie in every size", () => {
+    for (const { levelId } of SIZES) {
+      assert.ok(
+        symmetryTemplatesFor(levelId, "kosmos").some((template) => template.id === "kotwica"),
+        `${levelId} kotwica`,
+      );
+      assert.ok(
+        symmetryTemplatesFor(levelId, "jedzenie").some((template) => template.id === "lizak"),
+        `${levelId} lizak`,
+      );
+    }
+  });
+
   void test("4 lat templates are 4 wide, 5 and 6 lat ones 6 wide, 7 lat ones at most 9 wide", () => {
     for (const { levelId, width } of SIZES) {
       for (const template of symmetryTemplatesFor(levelId)) {
