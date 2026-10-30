@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Printer } from "lucide-react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
@@ -270,9 +270,6 @@ function SudokuSheet({
   const digitSize = cellSize * SUDOKU_SHEET.digitScale;
   const shapeList = layoutSudokuShapeList({
     grid: sheet.grid,
-    pageWidth: SUDOKU_SHEET.pageWidth,
-    pageHeight: SUDOKU_SHEET.pageHeight,
-    inset: SUDOKU_SHEET.inset,
     symbols: card.symbols,
     shapes: card.shapes,
   });
@@ -380,31 +377,38 @@ function SudokuSheet({
         strokeWidth={SUDOKU_SHEET.frameStroke}
         strokeLinejoin="miter"
       />
-      {shapeList.items.length > 0 ? (
+      {shapeList.panel !== null && shapeList.label !== null ? (
         <g data-shape-list="">
+          <rect
+            x={shapeList.panel.x}
+            y={shapeList.panel.y}
+            width={shapeList.panel.width}
+            height={shapeList.panel.height}
+            rx={2.5}
+            fill="none"
+            stroke="var(--foreground)"
+            strokeWidth={0.6}
+          />
+          <text
+            x={shapeList.label.x}
+            y={shapeList.label.y}
+            fill="var(--foreground)"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+            fontSize={shapeList.label.size}
+          >
+            {shapeList.label.text}
+          </text>
           {shapeList.items.map((item) => {
             const ink = sudokuShapeInk(item.id, colors);
             return (
-              <Fragment key={item.id}>
-                <path
-                  d={sudokuShapePath(item.id, item.drawing.x, item.drawing.y, item.drawing.size)}
-                  fill={colors ? ink : "none"}
-                  stroke={ink}
-                  strokeWidth={SUDOKU_SHEET.shapeStroke}
-                  strokeLinejoin="round"
-                />
-                <text
-                  x={item.label.x}
-                  y={item.label.y}
-                  fill="var(--foreground)"
-                  fontFamily="ui-sans-serif, system-ui, sans-serif"
-                  fontSize={item.label.size}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                >
-                  {item.name}
-                </text>
-              </Fragment>
+              <path
+                key={item.id}
+                d={sudokuShapePath(item.id, item.drawing.x, item.drawing.y, item.drawing.size)}
+                fill={colors ? ink : "none"}
+                stroke={ink}
+                strokeWidth={SUDOKU_SHEET.shapeStroke}
+                strokeLinejoin="round"
+              />
             );
           })}
         </g>

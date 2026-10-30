@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297" width="630" height="891" font-family="sans-serif">
+<rect width="210" height="297" fill="#fff" stroke="#999" stroke-width="0.4"/>
+<rect x="10" y="51" width="190" height="26" rx="5" fill="#eef" stroke="#99a" stroke-width="0.4"/>
+<circle cx="25" cy="64" r="10" fill="#cdd"/>
+<text x="115" y="66" font-size="6.5" text-anchor="middle">Uzupełnij puste pola.</text>
+<line x1="65" y1="86" x2="65" y2="246" stroke="#000" stroke-width="0.3"/>
+<line x1="25" y1="126" x2="185" y2="126" stroke="#000" stroke-width="0.3"/>
+<line x1="145" y1="86" x2="145" y2="246" stroke="#000" stroke-width="0.3"/>
+<line x1="25" y1="206" x2="185" y2="206" stroke="#000" stroke-width="0.3"/>
+<line x1="105" y1="86" x2="105" y2="246" stroke="#000" stroke-width="1.1"/>
+<line x1="25" y1="166" x2="185" y2="166" stroke="#000" stroke-width="1.1"/>
+<rect x="25" y="86" width="160" height="160" fill="none" stroke="#000" stroke-width="1.1"/>
+<path d="M73.56 94.56 L96.44 94.56 L96.44 117.44 L73.56 117.44 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M165 118.35 C159.8 113.8 152 107.95 152 100.8 C152 96.25 155.25 93.65 158.5 93.65 C161.75 93.65 163.96 95.6 165 98.2 C166.04 95.6 168.25 93.65 171.5 93.65 C174.75 93.65 178 96.25 178 100.8 C178 107.95 170.2 113.8 165 118.35 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M45 133.65 L58 157.05 L32 157.05 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M125 133 C132.18 133 138 138.82 138 146 C138 153.18 132.18 159 125 159 C117.82 159 112 153.18 112 146 C112 138.82 117.82 133 125 133 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M33.56 174.56 L56.44 174.56 L56.44 197.44 L33.56 197.44 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M85 173.65 L98 197.05 L72 197.05 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M165 173 C172.18 173 178 178.82 178 186 C178 193.18 172.18 199 165 199 C157.82 199 152 193.18 152 186 C152 178.82 157.82 173 165 173 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M85 213 C92.18 213 98 218.82 98 226 C98 233.18 92.18 239 85 239 C77.82 239 72 233.18 72 226 C72 218.82 77.82 213 85 213 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M113.56 214.56 L136.44 214.56 L136.44 237.44 L113.56 237.44 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<rect x="25" y="255" width="160" height="17" rx="2.5" fill="none" stroke="#000" stroke-width="0.6"/>
+<text x="28" y="265.1" font-size="5">Użyj:</text>
+<path d="M82.5 257 C86.09 257 89 259.91 89 263.5 C89 267.09 86.09 270 82.5 270 C78.91 270 76 267.09 76 263.5 C76 259.91 78.91 257 82.5 257 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M97.78 257.78 L109.22 257.78 L109.22 269.22 L97.78 269.22 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M124.5 257.325 L131 269.025 L118 269.025 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M145.5 269.675 C142.9 267.4 139 264.475 139 260.9 C139 258.625 140.625 257.325 142.25 257.325 C143.875 257.325 144.98 258.3 145.5 259.6 C146.02 258.3 147.125 257.325 148.75 257.325 C150.375 257.325 152 258.625 152 260.9 C152 264.475 148.1 267.4 145.5 269.675 Z" fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+<text x="5" y="293" font-size="3" fill="#c00">dół ramki: 272.0 mm (limit 287), odstęp kształtów: 8.0 mm</text>
+</svg>
