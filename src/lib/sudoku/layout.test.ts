@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { SPEECH_BAND } from "../sheet/speech.ts";
-import { layoutSudokuSheet, type SudokuSheetInput } from "./layout.ts";
+import { layoutSudokuSheet, sudokuDigitBaselineY, type SudokuSheetInput } from "./layout.ts";
 import { SUDOKU_SHEET } from "./sheet.ts";
 
 /** Rough width of a text character relative to the font size, the estimate the plan uses. */
@@ -157,5 +157,22 @@ void describe("layoutSudokuSheet with the speech band", () => {
     const expected = lines * FOUR.instructionSize + (lines - 1) * FOUR.instructionLineGap;
 
     assert.ok(Math.abs(sheet.instruction.height - expected) < 1e-9);
+  });
+});
+
+void describe("sudokuDigitBaselineY", () => {
+  void test("puts the baseline below the cell center by the shift times the digit size", () => {
+    assert.ok(Math.abs(sudokuDigitBaselineY(100, 12, 0.35) - 104.2) < 1e-9);
+  });
+
+  void test("keeps the whole digit inside its cell at every cell size", () => {
+    for (const cellSize of Object.values(SUDOKU_SHEET.cellSize)) {
+      const digitSize = cellSize * SUDOKU_SHEET.digitScale;
+      const baseline = sudokuDigitBaselineY(cellSize / 2, digitSize, SUDOKU_SHEET.digitBaselineShift);
+
+      assert.ok(baseline > cellSize / 2);
+      assert.ok(baseline < cellSize, "the baseline stays above the cell bottom");
+      assert.ok(baseline - digitSize > 0, "the digit top stays below the cell top");
+    }
   });
 });

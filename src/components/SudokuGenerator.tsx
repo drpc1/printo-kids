@@ -16,7 +16,7 @@ import { SudokuSymbolsChoice } from "@/components/SudokuSymbolsChoice";
 import { Switch } from "@/components/ui/switch";
 import { sudokuShapeInk } from "@/lib/sudoku/colors";
 import { generateSudokuCard, sudokuBlock, type SudokuCard } from "@/lib/sudoku/generate";
-import { layoutSudokuSheet } from "@/lib/sudoku/layout";
+import { layoutSudokuSheet, sudokuDigitBaselineY } from "@/lib/sudoku/layout";
 import { layoutSudokuShapeList } from "@/lib/sudoku/shape-list";
 import {
   SUDOKU_LEVELS,
@@ -319,7 +319,6 @@ function SudokuSheet({
           fontFamily="ui-sans-serif, system-ui, sans-serif"
           fontSize={digitSize}
           textAnchor="middle"
-          dominantBaseline="central"
         >
           {card.givens.flatMap((row, r) =>
             row.map((symbol, c) => {
@@ -328,7 +327,11 @@ function SudokuSheet({
               }
               const center = sheet.cellCenter(r, c);
               return (
-                <text key={`${r},${c}`} x={center.x} y={center.y}>
+                <text
+                  key={`${r},${c}`}
+                  x={center.x}
+                  y={sudokuDigitBaselineY(center.y, digitSize, SUDOKU_SHEET.digitBaselineShift)}
+                >
                   {symbol + 1}
                 </text>
               );

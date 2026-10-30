@@ -84,3 +84,11 @@ export function layoutSudokuSheet(input: SudokuSheetInput): SudokuSheetLayout {
     cellCenter: (row, column) => ({ x: gridX + (column + 0.5) * cellSize, y: gridY + (row + 0.5) * cellSize }),
   };
 }
+
+/**
+ * Baseline of a digit that looks centered on `centerY`. Set explicitly because WebKit ignores `dominant-baseline`
+ * on SVG text, which left digits at the top of the cell on iPhone.
+ */
+export function sudokuDigitBaselineY(centerY: number, digitSize: number, shift: number): number {
+  return centerY + digitSize * shift;
+}
