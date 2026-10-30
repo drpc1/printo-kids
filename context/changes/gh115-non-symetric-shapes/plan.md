@@ -259,13 +259,13 @@ Katalog budowany raz na poziom i kategorię (cache `catalogs`); dodatkowo najwy�
 
 #### Automated
 
-- [x] 3.1 Testy przechodzą: `npm test`
-- [x] 3.2 Lint, typy i build przechodzą: `npm run lint`, `npx astro check`, `npm run build`
+- [x] 3.1 Testy przechodzą: `npm test` — 5d10524
+- [x] 3.2 Lint, typy i build przechodzą: `npm run lint`, `npx astro check`, `npm run build` — 5d10524
 
 #### Manual
 
-- [x] 3.3 Dla każdej kategorii i poziomu pojawiają się nowe, rozpoznawalne kształty
-- [x] 3.4 Karta mieści się na A4, lista poleceń i siatka nie nachodzą na siebie, także na telefonie
+- [x] 3.3 Dla każdej kategorii i poziomu pojawiają się nowe, rozpoznawalne kształty — 5d10524
+- [x] 3.4 Karta mieści się na A4, lista poleceń i siatka nie nachodzą na siebie, także na telefonie — 5d10524
 
 ### Phase 4: PRD i sprawdzenie na wydruku
 
