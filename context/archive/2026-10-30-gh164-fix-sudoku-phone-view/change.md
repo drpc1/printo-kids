@@ -1,10 +1,10 @@
 ---
 change_id: gh164-fix-sudoku-phone-view
 title: Sudoku liczbowe na iPhonie: cyfry przy górnej krawędzi komórki
-status: impl_reviewed
+status: archived
 created: 2026-10-30
 updated: 2026-10-30
-archived_at: null
+archived_at: 2026-10-30T12:46:47Z
 ---
 
 ## Notes
