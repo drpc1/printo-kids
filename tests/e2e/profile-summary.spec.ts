@@ -285,3 +285,16 @@ test("the edit window keeps the character row reachable and the summary inside i
   expect(frame).not.toBeNull();
   expect((list?.x ?? 0) + (list?.width ?? 0)).toBeLessThanOrEqual((frame?.x ?? 0) + (frame?.width ?? 0));
 });
+
+test("Dodaj profil has a plus icon and a border, unlike the profile rows", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ANIA], ANIA.id);
+  await page.goto("/maze");
+
+  await page.getByRole("button", { name: "Ania", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  const add = dialog.getByRole("button", { name: "Dodaj profil", exact: true });
+  await expect(add.locator("svg")).toHaveCount(1);
+  await expect(add).toHaveCSS("border-top-width", "1px");
+  await expect(dialog.getByRole("button", { name: "Bez profilu", exact: true })).toHaveCSS("border-top-width", "0px");
+});
