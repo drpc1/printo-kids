@@ -660,8 +660,96 @@ const PINEAPPLE_9: SymmetryTemplate = {
   ],
 };
 
+// Lollipop: a round head whose pattern is part of the shape (holes show the swirl), a stick, an optional bow and tip.
+const LOLLIPOP_4: SymmetryTemplate = {
+  id: "lizak",
+  width: 4,
+  height: 12,
+  holeColor: "orange",
+  categories: ["jedzenie"],
+  base: drawing(["..rr", ".rrr", ".r..", ".rrr", "..rr", "...s", "...s", "...s", "...s", "...s", "...s"]),
+  parts: [
+    { id: "pattern", variants: [drawing(["..r."], 2), drawing(["...r"], 2)] },
+    { id: "bow", variants: [drawing([]), drawing([".bb."], 6)] },
+  ],
+};
+
+const LOLLIPOP_6: SymmetryTemplate = {
+  id: "lizak",
+  width: 6,
+  height: 15,
+  holeColor: "orange",
+  categories: ["jedzenie"],
+  base: drawing([
+    "..rrrr",
+    ".rrrrr",
+    "rrr...",
+    "rrr...",
+    "rrr...",
+    ".rrrrr",
+    "..rrrr",
+    "....ss",
+    "....ss",
+    "....ss",
+    "....ss",
+    "....ss",
+    "....ss",
+    "....ss",
+  ]),
+  parts: [
+    {
+      id: "pattern",
+      variants: [drawing(["...rrr", "......", "...rrr"], 2), drawing(["...rrr", "...r..", "...rrr"], 2)],
+    },
+    { id: "bow", variants: [drawing([]), drawing(["..bb..", "..bb.."], 8)] },
+  ],
+};
+
+const LOLLIPOP_9: SymmetryTemplate = {
+  id: "lizak",
+  width: 9,
+  height: 24,
+  holeColor: "orange",
+  categories: ["jedzenie"],
+  base: drawing([
+    "...rrrrrr",
+    ".rrrrrrrr",
+    ".rrrrrrrr",
+    "rrr......",
+    "rrr......",
+    "rrr......",
+    "rrr......",
+    "rrr......",
+    "rrr......",
+    ".rrrrrrrr",
+    ".rrrrrrrr",
+    "...rrrrrr",
+    ".......ss",
+    ".......ss",
+    ".......ss",
+    ".......ss",
+    ".......ss",
+    ".......ss",
+    ".......ss",
+    ".......ss",
+    ".......ss",
+    ".......ss",
+  ]),
+  parts: [
+    {
+      id: "pattern",
+      variants: [
+        drawing(["...rrrrrr", ".........", "...rrrrrr", ".........", "...rrrrrr", "........."], 3),
+        drawing(["...rrrrrr", "...rrrr..", "...rrr...", "...rrr...", "...rrrr..", "...rrrrrr"], 3),
+      ],
+    },
+    { id: "bow", variants: [drawing([]), drawing([".....bb..", ".....bb.."], 13)] },
+    { id: "tip", variants: [drawing([]), drawing(["......sss", "......sss"], 22)] },
+  ],
+};
+
 export const JEDZENIE: SymmetryObjectSizes = {
-  half4: [STRAWBERRY_4, CUPCAKE_4, PEAR_4, CARROT_4, PINEAPPLE_4],
-  half6: [STRAWBERRY, CUPCAKE_6, PEAR_6, CARROT_6, PINEAPPLE_6],
-  half9: [STRAWBERRY_7, CUPCAKE_9, PEAR_9, CARROT_9, PINEAPPLE_9],
+  half4: [STRAWBERRY_4, CUPCAKE_4, PEAR_4, CARROT_4, PINEAPPLE_4, LOLLIPOP_4],
+  half6: [STRAWBERRY, CUPCAKE_6, PEAR_6, CARROT_6, PINEAPPLE_6, LOLLIPOP_6],
+  half9: [STRAWBERRY_7, CUPCAKE_9, PEAR_9, CARROT_9, PINEAPPLE_9, LOLLIPOP_9],
 };
