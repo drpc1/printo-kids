@@ -1,7 +1,7 @@
 ---
 change_id: gh118-car-bus
 title: Symetria: auto i autobus w katalogu obiektów (GH #118)
-status: implemented
+status: impl_reviewed
 created: 2026-10-30
 updated: 2026-10-30
 archived_at: null
