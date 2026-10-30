@@ -235,13 +235,13 @@ Katalog budowany raz na poziom i kategorię (cache `catalogs`); dodatkowo najwy�
 
 #### Automated
 
-- [x] 1.1 Każda makieta przechodzi `outlineProblems` i mieści się w `maxCommands` poziomu
-- [x] 1.2 Zestaw to 11 kształtów w czterech kategoriach (Zwierzęta, Kosmos i maszyny, Przyroda, Domy i budowle)
+- [x] 1.1 Każda makieta przechodzi `outlineProblems` i mieści się w `maxCommands` poziomu — 03503be
+- [x] 1.2 Zestaw to 11 kształtów w czterech kategoriach (Zwierzęta, Kosmos i maszyny, Przyroda, Domy i budowle) — 03503be
 
 #### Manual
 
-- [x] 1.3 Użytkownik akceptuje rozpoznawalność każdego kształtu w makiecie
-- [x] 1.4 Kształty nie mają osi symetrii lewo–prawo
+- [x] 1.3 Użytkownik akceptuje rozpoznawalność każdego kształtu w makiecie — 03503be
+- [x] 1.4 Kształty nie mają osi symetrii lewo–prawo — 03503be
 
 ### Phase 2: Mechanizm kształtów bez symetrii
 
