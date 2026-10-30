@@ -48,6 +48,48 @@ void describe("outlineTones", () => {
   });
 });
 
+void describe("outlineTones neighbours", () => {
+  void test("the centre of a plus is gray: only the four side neighbours count, not the corners", () => {
+    const plus = [
+      [false, true, false],
+      [true, true, true],
+      [false, true, false],
+    ];
+
+    assert.equal(outlineTones(plus)[1][1], "gray");
+  });
+
+  void test("a filled cell missing any one of its four neighbours, or at the edge, is black", () => {
+    const full = [
+      [true, true, true],
+      [true, true, true],
+      [true, true, true],
+    ];
+    assert.equal(outlineTones(full)[1][1], "gray");
+
+    for (const [row, column] of [
+      [0, 1],
+      [2, 1],
+      [1, 0],
+      [1, 2],
+    ] as const) {
+      const image = full.map((cells) => [...cells]);
+      image[row][column] = false;
+
+      assert.equal(outlineTones(image)[1][1], "black", `hole at ${row},${column}`);
+    }
+    // The grid edge counts as empty on all four sides.
+    assert.equal(outlineTones(full)[0][1], "black");
+    assert.equal(outlineTones(full)[2][1], "black");
+    assert.equal(outlineTones(full)[1][0], "black");
+    assert.equal(outlineTones(full)[1][2], "black");
+  });
+
+  void test("a ragged image does not read past the end of a shorter row", () => {
+    assert.deepEqual(outlineTones([[true, true, true], [true]]), [["black", "black", "black"], ["black"]]);
+  });
+});
+
 void describe("toneRuns", () => {
   void test("describes a row in full, white included, so the counts add up to the row", () => {
     assert.deepEqual(toneRuns(["white", "white", "gray", "gray", "gray", "black", "white", "white"]), [
@@ -68,6 +110,12 @@ void describe("simpleNonogramProblems", () => {
     assert.deepEqual(simpleNonogramProblems(cardOf([["white", "white"]])), ["no-filled-cell"]);
   });
 
+  void test("accepts a row with exactly as many chips as fit beside the grid", () => {
+    const row = Array.from({ length: MAX_RUNS_PER_ROW }, (_, index) => (index % 2 === 0 ? "black" : "white") as Tone);
+
+    assert.deepEqual(simpleNonogramProblems(cardOf([row])), []);
+  });
+
   void test("rejects a row with more chips than fit beside the grid", () => {
     const row = Array.from(
       { length: MAX_RUNS_PER_ROW + 1 },
@@ -75,6 +123,16 @@ void describe("simpleNonogramProblems", () => {
     );
 
     assert.deepEqual(simpleNonogramProblems(cardOf([row])), ["too-many-runs"]);
+  });
+
+  void test("one row with too many chips is enough, even when the other rows are fine", () => {
+    const crowded = Array.from(
+      { length: MAX_RUNS_PER_ROW + 1 },
+      (_, index) => (index % 2 === 0 ? "black" : "white") as Tone,
+    );
+    const calm: Tone[] = crowded.map(() => "black");
+
+    assert.deepEqual(simpleNonogramProblems(cardOf([calm, crowded, calm])), ["too-many-runs"]);
   });
 
   void test("rejects chips that do not rebuild the tones", () => {

@@ -371,13 +371,13 @@ Brak zmian w danych ani w kodzie produktu.
 
 #### Automated
 
-- [ ] 4.1 `npm test`, `npm run lint`, `npx astro check`
-- [ ] 4.2 `npm run mutate:nonogram` kończy się, wynik zapisany
-- [ ] 4.3 Break-check: osłabienie `solveLine` czerwieni test wyroczni
+- [x] 4.1 `npm test`, `npm run lint`, `npx astro check`
+- [x] 4.2 `npm run mutate:nonogram` kończy się, wynik zapisany
+- [x] 4.3 Break-check: osłabienie `solveLine` czerwieni test wyroczni
 
 #### Manual
 
-- [ ] 4.4 Czas dodatkowych testów w `npm test` jest akceptowalny
+- [x] 4.4 Czas dodatkowych testów w `npm test` jest akceptowalny
 
 ### Phase 5: Sekwencje i symetria: Stryker
 
