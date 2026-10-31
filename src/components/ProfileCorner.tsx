@@ -1,6 +1,5 @@
 import { useRef, useState, type SubmitEvent } from "react";
 import { ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
-import { LevelRow, levelRowClass } from "@/components/LevelRow";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -21,7 +20,6 @@ import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
 import { cardSummaries } from "@/lib/card-summary";
 import { readLastUsed } from "@/lib/last-used";
-import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "@/lib/maze/levels";
 import {
   ALLOWED_CHARACTER_IDS,
   CHARACTER_CHOICES,
@@ -59,7 +57,6 @@ export function ProfileCorner({
   profiles,
   activeId,
   barCharacter,
-  barLevel,
   ask,
   onCreated,
   onChoose,
@@ -71,16 +68,10 @@ export function ProfileCorner({
   profiles: readonly ChildProfile[];
   activeId: string | null;
   barCharacter: SheetCharacterId;
-  barLevel: LevelId;
   ask: boolean;
   onCreated: (profile: ChildProfile) => void;
   onChoose: (profile: ChildProfile) => void;
-  onFavoriteSaved: (
-    profiles: ChildProfile[],
-    barCharacter: string,
-    barLevel: LevelId,
-    ownImageHref?: string | null,
-  ) => void;
+  onFavoriteSaved: (profiles: ChildProfile[], barCharacter: string, ownImageHref?: string | null) => void;
   onDeleted: (next: VisitAfterDelete) => void;
   onClearProfile: () => void;
   /** Card settings the new profile starts with: the bar of the card page it is created on. */
@@ -188,7 +179,7 @@ export function ProfileCorner({
       profiles,
       pendingDelete.id,
       activeId,
-      { character: barCharacter, level: barLevel },
+      { character: barCharacter },
       readLastUsed(localStorage, ALLOWED_CHARACTER_IDS),
       readActiveProfile(localStorage),
     );
@@ -260,14 +251,14 @@ export function ProfileCorner({
     if (id === previousFavorite && (id !== OWN_IMAGE_ID || imageHref === (current.image ?? null))) {
       return;
     }
-    const nextProfiles = withFavorite(stored, current.id, id, current.level, ALLOWED_CHARACTER_IDS, imageHref);
+    const nextProfiles = withFavorite(stored, current.id, id, ALLOWED_CHARACTER_IDS, imageHref);
     if (nextProfiles === null || !writeChildProfiles(localStorage, nextProfiles)) {
       setFavoriteError(SAVE_ERROR_TEXT);
       return;
     }
     const nextCharacter = barAfterFavoriteSave(barCharacter, previousFavorite, id);
     const sheetHref = nextCharacter !== OWN_IMAGE_ID ? null : id === OWN_IMAGE_ID ? imageHref : undefined;
-    onFavoriteSaved(nextProfiles, nextCharacter, barLevel, sheetHref);
+    onFavoriteSaved(nextProfiles, nextCharacter, sheetHref);
   }
 
   function handleCancel(): void {
@@ -298,7 +289,6 @@ export function ProfileCorner({
       crypto.randomUUID(),
       draftName.trim(),
       draftCharacter,
-      DEFAULT_LEVEL_ID,
       draftCharacter === OWN_IMAGE_ID ? readOwnImage(localStorage) : null,
       newProfileCards,
     );
@@ -593,32 +583,6 @@ function ProfileSummary({ profile }: { profile: ChildProfile }) {
           </li>
         ))}
       </ul>
-    </div>
-  );
-}
-
-export function LevelChoiceRows({ selected, onSelect }: { selected: LevelId; onSelect: (id: LevelId) => void }) {
-  return (
-    <div className={cn("flex flex-col gap-2")}>
-      {LEVELS.map((option) => (
-        <Button
-          key={option.id}
-          type="button"
-          variant="ghost"
-          aria-pressed={selected === option.id}
-          className={cn(
-            DIALOG_ROW_CLASS,
-            "w-full",
-            levelRowClass(option.description),
-            selected === option.id && "bg-muted",
-          )}
-          onClick={() => {
-            onSelect(option.id);
-          }}
-        >
-          <LevelRow label={option.label} description={option.description} typicalAge={option.typicalAge} />
-        </Button>
-      ))}
     </div>
   );
 }

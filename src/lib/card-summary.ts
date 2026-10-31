@@ -1,4 +1,4 @@
-import { type CardSettingsId, type CardSettingsMap } from "./card-settings.ts";
+import { cardSettingsOf, type CardSettingsId, type CardSettingsMap } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import { dictationLevelById } from "./dictation/levels.ts";
@@ -14,7 +14,7 @@ export interface CardSummary {
   id: string;
   title: string;
   href: string;
-  /** The profile has chosen something on this card's bar. The maze always counts: its level is the profile's own. */
+  /** The profile has chosen something on this card's bar. The maze always counts: a profile starts at the default level. */
   used: boolean;
   /** Level text for the catalog thumbnail; null while the card is not used. */
   badge: string | null;
@@ -49,13 +49,12 @@ interface SummaryParts {
 }
 
 function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | null {
-  if (cardId === "labirynt") {
-    const level = levelById(profile.level);
-    return { badge: badgeOf(level), level: level.label, extras: [] };
-  }
-
   const cards: CardSettingsMap = profile.cards ?? {};
   switch (cardId as CardSettingsId) {
+    case "labirynt": {
+      const level = levelById(cardSettingsOf(cards, "labirynt").level);
+      return { badge: badgeOf(level), level: level.label, extras: [] };
+    }
     case "symetria": {
       const settings = cards.symetria;
       if (settings === undefined) {

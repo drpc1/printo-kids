@@ -74,30 +74,41 @@ void describe("writeOwnImage", () => {
 void describe("recordBarCharacter", () => {
   void test("choosing Kot leaves the device copy and records last-used only without an active profile", () => {
     const storage = memoryStorage(JSON.stringify({ href: JPEG }));
-    writeLastUsed(storage, { character: "wlasne", level: "lat5" });
+    writeLastUsed(storage, { character: "wlasne" });
     storage.writes.length = 0;
 
-    recordBarCharacter(storage, null, "kot", "lat6");
+    recordBarCharacter(storage, null, "kot");
 
     assert.equal(readOwnImage(storage), JPEG);
-    assert.deepEqual(readLastUsed(storage, ["none", "kot", "wlasne"]), { character: "kot", level: "lat6", cards: {} });
+    assert.deepEqual(readLastUsed(storage, ["none", "kot", "wlasne"]), { character: "kot", cards: {} });
     assert.equal(
       storage.writes.some((write) => write.key === OWN_IMAGE_KEY),
       false,
     );
   });
 
+  void test("choosing Kot on a device with a legacy last-used level keeps that level as the maze card", () => {
+    const storage = memoryStorage(null);
+    storage.setItem("printo-kids:last-used", JSON.stringify({ character: "none", level: "lat6" }));
+
+    recordBarCharacter(storage, null, "kot");
+
+    assert.deepEqual(readLastUsed(storage, ["none", "kot", "wlasne"]), {
+      character: "kot",
+      cards: { labirynt: { level: "lat6" } },
+    });
+  });
+
   void test("an active profile does not record last-used and still leaves the device copy", () => {
     const storage = memoryStorage(JSON.stringify({ href: JPEG }));
-    writeLastUsed(storage, { character: "wlasne", level: "lat5" });
+    writeLastUsed(storage, { character: "wlasne" });
     storage.writes.length = 0;
 
-    recordBarCharacter(storage, "ala", "kot", "lat6");
+    recordBarCharacter(storage, "ala", "kot");
 
     assert.equal(readOwnImage(storage), JPEG);
     assert.deepEqual(readLastUsed(storage, ["none", "kot", "wlasne"]), {
       character: "wlasne",
-      level: "lat5",
       cards: {},
     });
     assert.deepEqual(storage.writes, []);
@@ -107,7 +118,7 @@ void describe("recordBarCharacter", () => {
 void describe("drawnVisitCharacter", () => {
   void test("wlasne without a drawable copy is none and nothing is written", () => {
     const storage = memoryStorage("{");
-    writeLastUsed(storage, { character: "wlasne", level: "lat7" });
+    writeLastUsed(storage, { character: "wlasne" });
     const before = storage.writes.length;
 
     assert.deepEqual(drawnVisitCharacter(storage, null, "wlasne"), { character: "none", href: null });

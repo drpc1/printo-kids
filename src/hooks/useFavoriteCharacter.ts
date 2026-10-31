@@ -34,7 +34,7 @@ export function useFavoriteCharacter(
       return false;
     }
     const href = bar.character === OWN_IMAGE_ID ? bar.ownImageHref : null;
-    const next = withFavorite(stored, current.id, bar.character, current.level, ALLOWED_CHARACTER_IDS, href);
+    const next = withFavorite(stored, current.id, bar.character, ALLOWED_CHARACTER_IDS, href);
     if (next === null || !writeChildProfiles(localStorage, next)) {
       return false;
     }

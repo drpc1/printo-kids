@@ -5,18 +5,20 @@ import {
   CARD_SETTINGS_IDS,
   defaultCardSettings,
   parseCardSettings,
+  parseStoredCards,
   withCardSettings,
   type CardSettingsMap,
 } from "./card-settings.ts";
 
 void describe("defaultCardSettings", () => {
   void test("every card has the defaults its page starts from today", () => {
+    assert.deepEqual(defaultCardSettings("labirynt"), { level: "lat5" });
     assert.deepEqual(defaultCardSettings("symetria"), { level: "lat5", colors: false, category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("sekwencje"), { level: "lat5", colors: false });
     assert.deepEqual(defaultCardSettings("sudoku"), { size: 4, level: "latwy", symbols: "shapes", colors: false });
     assert.deepEqual(defaultCardSettings("nonogram"), { level: "sredni", category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("dyktando"), { level: "lat6", category: "wszystkie" });
-    assert.equal(CARD_SETTINGS_IDS.length, 5);
+    assert.equal(CARD_SETTINGS_IDS.length, 6);
   });
 
   void test("a default is a copy, so changing it does not change the next default", () => {
@@ -67,12 +69,23 @@ void describe("parseCardSettings", () => {
     });
   });
 
-  void test("unknown cards and the maze are ignored", () => {
-    assert.deepEqual(parseCardSettings({ labirynt: { level: "lat3" }, inne: { a: 1 } }), {});
+  void test("unknown cards are ignored and the maze is read like any card", () => {
+    assert.deepEqual(parseCardSettings({ labirynt: { level: "lat3" }, inne: { a: 1 } }), {
+      labirynt: { level: "lat3" },
+    });
+  });
+
+  void test("the maze takes only its own levels", () => {
+    assert.deepEqual(parseCardSettings({ labirynt: { level: "trudny" } }), { labirynt: { level: "lat5" } });
+    assert.deepEqual(parseCardSettings({ labirynt: { level: "nastolatek" } }), {
+      labirynt: { level: "nastolatek" },
+    });
+    assert.deepEqual(parseCardSettings({ labirynt: "x" }), {});
   });
 
   void test("a full valid map reads back unchanged", () => {
     const map: CardSettingsMap = {
+      labirynt: { level: "lat6" },
       symetria: { level: "lat7", colors: true, category: "zwierzeta" },
       sekwencje: { level: "lat4", colors: false },
       sudoku: { size: 9, level: "trudny", symbols: "digits", colors: false },
@@ -168,5 +181,47 @@ void describe("the symbols of a sudoku card", () => {
     assert.equal(read(""), "shapes");
     assert.equal(read(6), "shapes");
     assert.equal(read(null), "shapes");
+  });
+});
+
+void describe("parseStoredCards", () => {
+  void test("a record without cards and without a level reads as an empty map", () => {
+    assert.deepEqual(parseStoredCards({}), {});
+    for (const raw of [undefined, null, "x", 7, []]) {
+      assert.deepEqual(parseStoredCards(raw), {});
+    }
+  });
+
+  void test("the legacy level becomes the maze card and the other cards stay", () => {
+    assert.deepEqual(parseStoredCards({ level: "lat6" }), { labirynt: { level: "lat6" } });
+    assert.deepEqual(parseStoredCards({ level: "lat6", cards: { sekwencje: { level: "lat7" } } }), {
+      sekwencje: { level: "lat7", colors: false },
+      labirynt: { level: "lat6" },
+    });
+  });
+
+  void test("a missing, unknown or non-string legacy level creates no maze card", () => {
+    assert.deepEqual(parseStoredCards({ level: "lat9" }), {});
+    assert.deepEqual(parseStoredCards({ level: 6 }), {});
+    assert.deepEqual(parseStoredCards({ level: "trudny" }), {});
+  });
+
+  void test("a valid cards.labirynt wins over the legacy level", () => {
+    assert.deepEqual(parseStoredCards({ level: "lat6", cards: { labirynt: { level: "lat3" } } }), {
+      labirynt: { level: "lat3" },
+    });
+  });
+
+  void test("a cards.labirynt with a bad level takes a valid legacy level, then the default", () => {
+    assert.deepEqual(parseStoredCards({ level: "lat6", cards: { labirynt: { level: "lat9" } } }), {
+      labirynt: { level: "lat6" },
+    });
+    assert.deepEqual(parseStoredCards({ level: "lat9", cards: { labirynt: { level: "lat9" } } }), {
+      labirynt: { level: "lat5" },
+    });
+  });
+
+  void test("garbage in cards is ignored and the legacy level still counts", () => {
+    assert.deepEqual(parseStoredCards({ level: "lat4", cards: 7 }), { labirynt: { level: "lat4" } });
   });
 });

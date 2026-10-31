@@ -7,9 +7,8 @@ import {
   type CardSettingsMap,
   type CardSettingsOf,
 } from "@/lib/card-settings";
-import { readChildProfiles, withProfileCards, withProfileLevel, writeChildProfiles } from "@/lib/child-profiles";
+import { readChildProfiles, withProfileCards, writeChildProfiles } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsedCards } from "@/lib/last-used";
-import type { LevelId } from "@/lib/maze/levels";
 import { ALLOWED_CHARACTER_IDS } from "@/lib/sheet/character";
 
 type ProfileVisit = ReturnType<typeof useChildProfileVisit>;
@@ -104,6 +103,10 @@ export function useCardSettings<K extends CardSettingsId>(
 
   const corner: ProfileCornerHandlers = {
     ...visit.corner,
+    onCreated: (profile) => {
+      visit.corner.onCreated(profile);
+      switchTo(profile.cards ?? {});
+    },
     onChoose: (profile) => {
       visit.corner.onChoose(profile);
       switchTo(profile.cards ?? {});
@@ -126,33 +129,4 @@ export function useCardSettings<K extends CardSettingsId>(
   };
 
   return { settings, remember, note, newProfileCards: { [cardId]: settings }, corner };
-}
-
-/**
- * The maze keeps its level in the profile's `level` field. With a profile active, a level picked on the bar is saved
- * at once; without one the page keeps writing the last-used parameters itself. Returns whether a profile took it.
- */
-export function useMazeLevelMemory(visit: ProfileVisit): {
-  note: string | null;
-  remember: (level: LevelId) => boolean;
-} {
-  const { note, show } = useRememberNote();
-
-  function remember(level: LevelId): boolean {
-    const name = activeProfileName(visit);
-    if (visit.activeId === null || name === null) {
-      return false;
-    }
-
-    const stored = readChildProfiles(localStorage, ALLOWED_CHARACTER_IDS);
-    const nextProfiles = withProfileLevel(stored, visit.activeId, level);
-    if (nextProfiles === null || !writeChildProfiles(localStorage, nextProfiles)) {
-      return true;
-    }
-    visit.replaceProfiles(nextProfiles);
-    show(name);
-    return true;
-  }
-
-  return { note, remember };
 }

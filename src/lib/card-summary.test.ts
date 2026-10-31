@@ -4,9 +4,11 @@ import type { CardSettingsMap } from "./card-settings.ts";
 import { cardSummaries } from "./card-summary.ts";
 import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
+import type { LevelId } from "./maze/levels.ts";
 
-function profile(level: ChildProfile["level"], cards?: CardSettingsMap): ChildProfile {
-  return { id: "p1", name: "Ania", character: "none", level, ...(cards === undefined ? {} : { cards }) };
+function profile(level: LevelId | null, cards: CardSettingsMap = {}): ChildProfile {
+  const withMaze: CardSettingsMap = level === null ? cards : { labirynt: { level }, ...cards };
+  return { id: "p1", name: "Ania", character: "none", cards: withMaze };
 }
 
 function byId(summaries: ReturnType<typeof cardSummaries>, id: string) {
@@ -24,7 +26,7 @@ void describe("cardSummaries", () => {
     );
   });
 
-  void test("an old profile with only a level shows it as the maze level and the rest as defaults", () => {
+  void test("a profile with only a maze level shows it and the rest as defaults", () => {
     const summaries = cardSummaries(profile("lat6"));
     assert.deepEqual(byId(summaries, "labirynt"), {
       id: "labirynt",
@@ -39,6 +41,13 @@ void describe("cardSummaries", () => {
       assert.equal(summary.badge, null, summary.id);
       assert.equal(summary.detail, "domyślne", summary.id);
     }
+  });
+
+  void test("a profile without a maze entry still counts the maze as used, at the default level", () => {
+    const maze = byId(cardSummaries(profile(null)), "labirynt");
+    assert.equal(maze.used, true);
+    assert.equal(maze.badge, "poz. 3");
+    assert.equal(maze.detail, "Poziom 3");
   });
 
   void test("a profile that used cards shows the level on the badge and every setting in the detail", () => {
