@@ -1,9 +1,9 @@
 ---
 change_id: print-printer-margins
 title: Wydruk z iPhone'a bez podwójnego marginesu
-status: new
+status: implementing
 created: 2026-10-16
-updated: 2026-10-20
+updated: 2026-10-31
 archived_at: null
 ---
 
@@ -20,3 +20,5 @@ Pomiary i metoda (Chromium z emulowanym obszarem druku): `context/changes/phone-
 Issue: https://github.com/drpc1/printo-kids/issues/38
 
 2026-10-20, iOS (Safari): Safari dokłada w marginesie drukarki adres strony i numer strony. CSS ich nie wyłącza, a okno druku iOS nie ma takiej opcji. Do uwzględnienia przy wyborze geometrii druku (zabierają część marginesu drukarki).
+
+2026-10-31, faza 1 (iPhone użytkowniczki, Safari, A4): próba w druku pokazała, że iOS spełnia `max-width: 170mm` i `max-height: 240mm`, choć obszar druku ma ok. 197 × 269 mm, a `100vh` to ok. 219 mm na kartce (ok. 82 % wysokości obszaru druku). Kartę ograniczało `max-height: 100vh`: labirynt Poziomu 3 ok. 140 mm szerokości. Warianty: `116vh` → ok. 162 mm, jedna strona; `122vh` → ok. 171 mm, jedna strona, ok. 1,5 mm zapasu; szerokość 100 % bez limitu → dwie strony. Plan przepisany na `116vh` w `@media print and (hover: none) and (max-width: 175mm)`. Po wdrożeniu: iPhone (Safari) jedna strona, labirynt jak w wariancie `116vh`; komputer (Chrome) bez zmian.
