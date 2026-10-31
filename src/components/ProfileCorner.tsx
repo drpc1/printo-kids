@@ -1,6 +1,5 @@
 import { useRef, useState, type SubmitEvent } from "react";
 import { ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
-import { LevelRow, levelRowClass } from "@/components/LevelRow";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -21,7 +20,6 @@ import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
 import { cardSummaries } from "@/lib/card-summary";
 import { readLastUsed } from "@/lib/last-used";
-import { LEVELS, type LevelId } from "@/lib/maze/levels";
 import {
   ALLOWED_CHARACTER_IDS,
   CHARACTER_CHOICES,
@@ -585,32 +583,6 @@ function ProfileSummary({ profile }: { profile: ChildProfile }) {
           </li>
         ))}
       </ul>
-    </div>
-  );
-}
-
-export function LevelChoiceRows({ selected, onSelect }: { selected: LevelId; onSelect: (id: LevelId) => void }) {
-  return (
-    <div className={cn("flex flex-col gap-2")}>
-      {LEVELS.map((option) => (
-        <Button
-          key={option.id}
-          type="button"
-          variant="ghost"
-          aria-pressed={selected === option.id}
-          className={cn(
-            DIALOG_ROW_CLASS,
-            "w-full",
-            levelRowClass(option.description),
-            selected === option.id && "bg-muted",
-          )}
-          onClick={() => {
-            onSelect(option.id);
-          }}
-        >
-          <LevelRow label={option.label} description={option.description} typicalAge={option.typicalAge} />
-        </Button>
-      ))}
     </div>
   );
 }
