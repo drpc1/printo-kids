@@ -131,5 +131,5 @@ Brak danych do przeniesienia. Wszystkie okna dziedziczą krzyżyk z `DialogConte
 
 #### Manual
 
-- [ ] 1.4 Na iPhonie, w oknie profilu, odstęp krzyżyka od góry i od prawej wygląda tak samo, pasek przewijania wygląda jak dziś, krzyżyk da się trafić, a pierwszy wiersz nie jest przykryty
-- [ ] 1.5 Na komputerze róg okna wygląda jak dziś
+- [x] 1.4 Na iPhonie, w oknie profilu, odstęp krzyżyka od góry i od prawej wygląda tak samo, pasek przewijania wygląda jak dziś, krzyżyk da się trafić, a pierwszy wiersz nie jest przykryty — 963460a
+- [x] 1.5 Na komputerze róg okna wygląda jak dziś — 963460a
