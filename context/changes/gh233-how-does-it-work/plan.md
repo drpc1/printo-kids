@@ -200,9 +200,9 @@ PRD opisuje nową zawartość strony.
 
 #### Automated
 
-- [x] 3.1 Wpis jest w PRD: `grep -c "GitHub 233" context/foundation/prd.md` zwraca co najmniej 1
-- [x] 3.2 Formatowanie przechodzi: `npx prettier --check context/foundation/prd.md`
+- [x] 3.1 Wpis jest w PRD: `grep -c "GitHub 233" context/foundation/prd.md` zwraca co najmniej 1 — 9f36242
+- [x] 3.2 Formatowanie przechodzi: `npx prettier --check context/foundation/prd.md` — 9f36242
 
 #### Manual
 
-- [x] 3.3 Brzmienie kryterium zatwierdza użytkownik
+- [x] 3.3 Brzmienie kryterium zatwierdza użytkownik — 9f36242
