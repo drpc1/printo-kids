@@ -29,4 +29,4 @@
 - **Location**: context/changes/gh165-x-location-on-phone/plan.md:134
 - **Detail**: Progress 1.4 (iPhone profile window) and 1.5 (desktop corner) are still unchecked. Automated checks passed. The boxes were left open because the look will be confirmed on production, not marked done ahead of that look.
 - **Fix**: Leave 1.4 and 1.5 unchecked until the production check on iPhone and on a computer confirms them.
-- **Decision**: FIXED (left 1.4 and 1.5 unchecked)
+- **Decision**: FIXED (left 1.4 and 1.5 unchecked until the look was confirmed). Confirmed by the user on 2026-10-31; both rows are now checked.
