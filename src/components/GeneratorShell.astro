@@ -116,4 +116,14 @@ const { heading, description } = Astro.props;
       max-height: 100vh;
     }
   }
+
+  /* iOS print reports a viewport smaller than the page: 100vh is about 82% of the printable height, so the
+     sheet above came out about 140 mm wide on A4. 116vh fit one page in Safari and Chrome, but Brave adds a
+     header line to the page and spilled onto a second page at 112vh and 116vh; 108vh fits one page in all
+     three. A desktop prints 210 mm wide and has a hover pointer, so it keeps 100vh. */
+  @media print and (hover: none) and (max-width: 175mm) {
+    #worksheet-home svg {
+      max-height: 108vh;
+    }
+  }
 </style>
