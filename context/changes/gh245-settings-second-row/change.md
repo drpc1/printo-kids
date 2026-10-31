@@ -1,7 +1,7 @@
 ---
 change_id: gh245-settings-second-row
 title: Druga linia ustawień karty na komputerze zaczyna się tam, gdzie pierwsza (GH 245)
-status: implemented
+status: impl_reviewed
 created: 2026-10-31
 updated: 2026-10-31
 archived_at: null
