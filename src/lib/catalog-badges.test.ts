@@ -54,6 +54,22 @@ void describe("catalogBadges", () => {
     assert.deepEqual(catalogBadges(storage([])), { profileName: null, badges: {} });
   });
 
+  void test("a profile made on the catalog shows its name and only the default maze level", () => {
+    const fresh = { id: "profile-nowy", name: "Nowy", character: "none", level: "lat5" };
+    const result = catalogBadges(storage([ANIA, fresh], fresh.id));
+    assert.equal(result.profileName, "Nowy");
+    assert.deepEqual(result.badges, { labirynt: "poz. 3" });
+  });
+
+  void test("choosing another profile switches the badges to that profile's cards", () => {
+    const data = storage([ANIA, ZOSIA], ANIA.id);
+    assert.equal(catalogBadges(data).profileName, "Ania");
+    data.setItem(ACTIVE_KEY, ZOSIA.id);
+    const result = catalogBadges(data);
+    assert.equal(result.profileName, "Zosia");
+    assert.deepEqual(result.badges, { labirynt: "poz. 1" });
+  });
+
   void test("a stored choice of a deleted profile falls back to the opening rule", () => {
     const result = catalogBadges(storage([ANIA], "profile-gone"));
     assert.equal(result.profileName, "Ania");
