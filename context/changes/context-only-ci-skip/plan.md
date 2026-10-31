@@ -200,4 +200,4 @@ Ochrony gałęzi nie ruszamy. Nic w danych aplikacji się nie migruje. Pull requ
 
 #### Manual
 
-- [ ] 2.1 `AGENTS.md`, `context/foundation/infrastructure.md` i punkt CI w `context/foundation/test-stack.md` opisują pominięcie `ci`, `smoke` i `e2e` przy samym `context/`, ich uruchomienie przy ścieżce spoza katalogu, przy rename albo błędzie liczenia, oraz brak podglądu.
+- [x] 2.1 `AGENTS.md`, `context/foundation/infrastructure.md` i punkt CI w `context/foundation/test-stack.md` opisują pominięcie `ci`, `smoke` i `e2e` przy samym `context/`, ich uruchomienie przy ścieżce spoza katalogu, przy rename albo błędzie liczenia, oraz brak podglądu. — 90387f8
