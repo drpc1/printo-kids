@@ -3,6 +3,10 @@ import { describe, mock, test } from "node:test";
 import { countPaths, generateCandidate, generateMaze, mazeForSheet, scoreMaze, type Maze } from "./generate.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, levelById, type LevelId, type MazePoint } from "./levels.ts";
 
+// Mutation runs (stryker/*.config.json) set MUTATION_RUN=1: instrumented code is several times slower, so a wall-clock
+// budget would kill mutants for the wrong reason. npm test keeps every time budget.
+const MUTATION_RUN = process.env.MUTATION_RUN === "1";
+
 void describe("LEVELS", () => {
   void test("lists six levels with the sheet grid, entrance, exit columns, and algorithm", () => {
     assert.equal(DEFAULT_LEVEL_ID, "lat5");
@@ -193,7 +197,7 @@ void describe("generateMaze", () => {
     for (let seed = 0; seed < 20; seed += 1) {
       generateMaze("nastolatek", mulberry32(seed));
     }
-    assert.ok((performance.now() - started) / 20 < 500);
+    assert.ok(MUTATION_RUN || (performance.now() - started) / 20 < 500);
   });
 
   void test("no level repeats one fixed route", () => {
@@ -347,6 +351,40 @@ void describe("mazeForSheet", () => {
 });
 
 const SAMPLE_SEEDS = 100;
+void describe("mutation gaps in the maze core", () => {
+  void test("Poziom 1 draws the short Kruskal route, not a winding one", () => {
+    const lengths = sample("lat3", "single").map((maze) => routeCells(maze, maze.entrance, maze.exit).length);
+    assert.ok(mean(lengths) < 28, `mean route ${mean(lengths)}`);
+  });
+
+  void test("the carving start cell comes from the first two draws, row first and column second", () => {
+    const draws = mulberry32(7);
+    const rest = Array.from({ length: 4000 }, () => draws());
+    function withStart(row: number, col: number): Maze {
+      const queue = [row, col, ...rest];
+      return generateCandidate("lat5", () => queue.shift() ?? 0.5);
+    }
+    assert.notDeepEqual(withStart(0, 0.5).cells, withStart(0.99, 0.5).cells);
+    assert.notDeepEqual(withStart(0.5, 0).cells, withStart(0.5, 0.99).cells);
+  });
+
+  void test("two routes that share a cell after they split are both counted", () => {
+    const maze = diamondWithTail();
+    assert.equal(countPaths(maze, maze.entrance, maze.exit), 2);
+  });
+
+  void test("a candidate of the wrong width or the wrong height is not a sheet", () => {
+    const maze = generateMaze("lat5", mulberry32(1));
+    assert.equal(mazeForSheet(maze, "lat5"), maze);
+    assert.equal(mazeForSheet({ ...maze, width: maze.width + 1 }, "lat5"), null);
+    assert.equal(mazeForSheet({ ...maze, height: maze.height + 1 }, "lat5"), null);
+  });
+
+  void test("a dead end that turns sideways still counts as deep", () => {
+    assert.equal(scoreMaze(sidewaysBranch(5)) - scoreMaze(sidewaysBranch(4)), 3);
+  });
+});
+
 const samples = new Map<string, Maze[]>();
 
 function sample(id: LevelId, kind: "picked" | "single" = "picked"): Maze[] {
@@ -384,6 +422,45 @@ function corridorWithBranch(branchCells: number, column = 1): Maze {
     for (let row = 0; row < branchCells - 1; row += 1) {
       knockDown(maze, row, side, "south");
     }
+  }
+  return maze;
+}
+
+/** A 3 by 3 grid: from (0,0) two routes split at (0,1), rejoin at (1,2) and leave through the tail (2,2) to the exit. */
+function diamondWithTail(): Maze {
+  const maze: Maze = {
+    width: 3,
+    height: 3,
+    cells: Array.from({ length: 3 }, () =>
+      Array.from({ length: 3 }, () => ({ north: true, east: true, south: true, west: true })),
+    ),
+    entrance: { row: 0, col: 0 },
+    exit: { row: 2, col: 2 },
+  };
+  knockDown(maze, 0, 0, "east");
+  knockDown(maze, 0, 1, "east");
+  knockDown(maze, 0, 2, "south");
+  knockDown(maze, 0, 1, "south");
+  knockDown(maze, 1, 1, "east");
+  knockDown(maze, 1, 2, "south");
+  return maze;
+}
+
+/** A 8 by 3 maze with a straight route down column 0 and a dead end of `cells` cells running east from the entrance. */
+function sidewaysBranch(cells: number): Maze {
+  const maze: Maze = {
+    width: 8,
+    height: 3,
+    cells: Array.from({ length: 3 }, () =>
+      Array.from({ length: 8 }, () => ({ north: true, east: true, south: true, west: true })),
+    ),
+    entrance: { row: 0, col: 0 },
+    exit: { row: 2, col: 0 },
+  };
+  knockDown(maze, 0, 0, "south");
+  knockDown(maze, 1, 0, "south");
+  for (let col = 0; col < cells; col += 1) {
+    knockDown(maze, 0, col, "east");
   }
   return maze;
 }
