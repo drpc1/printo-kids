@@ -225,24 +225,24 @@ Statyczna strona bez JS; brak wpływu na czas generowania.
 
 #### Automated
 
-- [x] 2.1 Lint i typy: `npm run lint` oraz `npx astro check`
-- [x] 2.2 Testy jednostkowe: `npm test`
-- [x] 2.3 Istniejące e2e układu i druku zielone: `E2E_PORT=<wolny port> npx playwright test --project=chromium --project=phone-360`
+- [x] 2.1 Lint i typy: `npm run lint` oraz `npx astro check` — 87b81ed
+- [x] 2.2 Testy jednostkowe: `npm test` — 87b81ed
+- [x] 2.3 Istniejące e2e układu i druku zielone: `E2E_PORT=<wolny port> npx playwright test --project=chromium --project=phone-360` — 87b81ed
 
 #### Manual
 
-- [x] 2.4 Stopka widoczna na `/` i na każdej z sześciu stron generatorów
-- [x] 2.5 Podgląd wydruku A4 pokazuje tylko kartę, bez stopki, na jednej stronie z marginesem 10 mm
-- [x] 2.6 Na telefonie stopka nie nachodzi na „Generuj"/„Drukuj"
+- [x] 2.4 Stopka widoczna na `/` i na każdej z sześciu stron generatorów — 87b81ed
+- [x] 2.5 Podgląd wydruku A4 pokazuje tylko kartę, bez stopki, na jednej stronie z marginesem 10 mm — 87b81ed
+- [x] 2.6 Na telefonie stopka nie nachodzi na „Generuj"/„Drukuj" — 87b81ed
 
 ### Phase 3: Test zgodności treści z UI i zamknięcie
 
 #### Automated
 
-- [ ] 3.1 Nowy test przechodzi: `E2E_PORT=<wolny port> npx playwright test tests/e2e/how-it-works.spec.ts`
-- [ ] 3.2 Całość CI lokalnie: `npm run lint`, `npm test`, `npx astro check`, `npm run build`
-- [ ] 3.3 Roadmapa i PRD mają nowe zapisy: `grep -c "s32-how-does-it-work" context/foundation/roadmap.md` zwraca 3, a `grep -c "Pod kartą nic nie ma\." context/foundation/prd.md` zwraca 0
+- [x] 3.1 Nowy test przechodzi: `E2E_PORT=<wolny port> npx playwright test tests/e2e/how-it-works.spec.ts`
+- [x] 3.2 Całość CI lokalnie: `npm run lint`, `npm test`, `npx astro check`, `npm run build`
+- [x] 3.3 Roadmapa i PRD mają nowe zapisy: `grep -c "s32-how-does-it-work" context/foundation/roadmap.md` zwraca 3, a `grep -c "Pod kartą nic nie ma\." context/foundation/prd.md` zwraca 0
 
 #### Manual
 
-- [ ] 3.4 Czytelnik, który nie zna aplikacji, po przeczytaniu strony rozumie, co pamięta profil i co zmienia poziom
+- [x] 3.4 Czytelnik, który nie zna aplikacji, po przeczytaniu strony rozumie, co pamięta profil i co zmienia poziom
