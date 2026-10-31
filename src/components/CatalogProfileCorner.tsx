@@ -5,14 +5,14 @@ import { PROFILE_CHANGED_EVENT } from "@/lib/catalog-badges";
 
 /**
  * The profile corner of the catalog page. It is the corner of the card pages without a bar of its own: the page keeps
- * the character and level the corner hands back only to give them to it again. The corner never opens by itself here;
+ * the character the corner hands back only to give it to it again. The corner never opens by itself here;
  * "which child?" waits for the card page.
  */
 function CatalogCorner() {
-  const [applied, setApplied] = useState<Pick<ProfileBar, "character" | "level"> | null>(null);
+  const [applied, setApplied] = useState<Pick<ProfileBar, "character"> | null>(null);
   const { profiles, activeId, visitStart, corner } = useChildProfileVisit({
     onApply: (next) => {
-      setApplied({ character: next.character, level: next.level });
+      setApplied({ character: next.character });
     },
   });
   const bar = applied ?? visitStart;
@@ -27,7 +27,6 @@ function CatalogCorner() {
       profiles={profiles}
       activeId={activeId}
       barCharacter={bar.character}
-      barLevel={bar.level}
       ask={false}
       onCreated={corner.onCreated}
       onChoose={corner.onChoose}

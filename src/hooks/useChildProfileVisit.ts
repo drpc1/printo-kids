@@ -3,13 +3,11 @@ import { clearActiveProfile, NO_PROFILE, readActiveProfile, writeActiveProfile }
 import type { CardSettingsMap } from "@/lib/card-settings";
 import { openingVisit, readChildProfiles, type ChildProfile, type VisitAfterDelete } from "@/lib/child-profiles";
 import { readLastUsed } from "@/lib/last-used";
-import type { LevelId } from "@/lib/maze/levels";
 import { ALLOWED_CHARACTER_IDS, characterChoice, OWN_IMAGE_ID, type SheetCharacterId } from "@/lib/sheet/character";
 import { drawnVisitCharacter } from "@/lib/sheet/own-image-store";
 
 export interface ProfileBar {
   character: SheetCharacterId;
-  level: LevelId;
   /** Omit to keep the copy already on the sheet. Null clears it. */
   ownImageHref?: string | null;
 }
@@ -25,12 +23,7 @@ interface VisitStart extends ProfileBar {
 export interface ProfileCornerHandlers {
   onCreated: (profile: ChildProfile) => void;
   onChoose: (profile: ChildProfile) => void;
-  onFavoriteSaved: (
-    profiles: ChildProfile[],
-    barCharacter: string,
-    barLevel: LevelId,
-    ownImageHref?: string | null,
-  ) => void;
+  onFavoriteSaved: (profiles: ChildProfile[], barCharacter: string, ownImageHref?: string | null) => void;
   onDeleted: (next: VisitAfterDelete) => void;
   onClearProfile: () => void;
 }
@@ -63,13 +56,13 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
   function handleCreated(profile: ChildProfile): void {
     setProfiles((current) => [...current, profile]);
     setActiveId(profile.id);
-    onApply(barForStored(profile.character, profile.level, profile.image ?? null));
+    onApply(barForStored(profile.character, profile.image ?? null));
     writeActiveProfile(localStorage, profile.id);
   }
 
   function handleChosen(profile: ChildProfile): void {
     setActiveId(profile.id);
-    onApply(barForStored(profile.character, profile.level, profile.image ?? null));
+    onApply(barForStored(profile.character, profile.image ?? null));
     writeActiveProfile(localStorage, profile.id);
   }
 
@@ -77,26 +70,20 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
     const lastUsed = readLastUsed(localStorage, ALLOWED_CHARACTER_IDS);
     const drawn = drawnVisitCharacter(localStorage, null, lastUsed.character);
     setActiveId(null);
-    onApply(barForStored(drawn.character, lastUsed.level, drawn.href));
+    onApply(barForStored(drawn.character, drawn.href));
     setAsk(false);
     writeActiveProfile(localStorage, NO_PROFILE);
   }
 
-  function handleFavoriteSaved(
-    nextProfiles: ChildProfile[],
-    nextBar: string,
-    nextLevel: LevelId,
-    ownImageHref?: string | null,
-  ): void {
+  function handleFavoriteSaved(nextProfiles: ChildProfile[], nextBar: string, ownImageHref?: string | null): void {
     setProfiles(nextProfiles);
     const character = characterChoice(nextBar);
     if (character !== OWN_IMAGE_ID) {
-      onApply({ character, level: nextLevel, ownImageHref: null });
+      onApply({ character, ownImageHref: null });
       return;
     }
     onApply({
       character,
-      level: nextLevel,
       ...(ownImageHref !== undefined ? { ownImageHref } : {}),
     });
   }
@@ -112,9 +99,9 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
         nextActive === null ? null : { character: nextActive.character, image: nextActive.image },
         next.character,
       );
-      onApply(barForStored(drawn.character, next.level, drawn.href));
+      onApply(barForStored(drawn.character, drawn.href));
     } else {
-      onApply(barForStored(next.character, next.level, next.character === OWN_IMAGE_ID ? undefined : null));
+      onApply(barForStored(next.character, next.character === OWN_IMAGE_ID ? undefined : null));
     }
     setAsk(next.ask);
     if (next.activeId !== null) {
@@ -130,7 +117,7 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
     activeId,
     ask,
     waitingForChild,
-    visitStart: { character: visit.character, level: visit.level, ownImageHref: visit.ownImageHref },
+    visitStart: { character: visit.character, ownImageHref: visit.ownImageHref },
     visitCards: visit.cards,
     replaceProfiles: setProfiles,
     corner: {
@@ -143,12 +130,12 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
   };
 }
 
-function barForStored(character: string, level: LevelId, href: string | null | undefined): ProfileBar {
+function barForStored(character: string, href: string | null | undefined): ProfileBar {
   const choice = characterChoice(character);
   if (href === undefined) {
-    return { character: choice, level };
+    return { character: choice };
   }
-  return { character: choice, level, ownImageHref: choice === OWN_IMAGE_ID ? href : null };
+  return { character: choice, ownImageHref: choice === OWN_IMAGE_ID ? href : null };
 }
 
 function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitStart {
@@ -165,7 +152,7 @@ function readVisitStart(storage: Pick<Storage, "getItem" | "setItem">): VisitSta
   return {
     profiles,
     activeId: opening.activeId,
-    ...barForStored(drawn.character, opening.level, drawn.href),
+    ...barForStored(drawn.character, drawn.href),
     cards: active === null ? lastUsed.cards : (active.cards ?? {}),
     ask: opening.ask,
   };
