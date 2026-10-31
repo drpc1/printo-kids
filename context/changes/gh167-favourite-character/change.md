@@ -3,7 +3,7 @@ change_id: gh167-favourite-character
 title: Gh167 favourite character
 status: impl_reviewed
 created: 2026-10-29
-updated: 2026-10-29
+updated: 2026-10-31
 archived_at: null
 ---
 
