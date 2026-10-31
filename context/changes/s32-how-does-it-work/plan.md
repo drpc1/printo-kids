@@ -239,10 +239,10 @@ Statyczna strona bez JS; brak wpływu na czas generowania.
 
 #### Automated
 
-- [x] 3.1 Nowy test przechodzi: `E2E_PORT=<wolny port> npx playwright test tests/e2e/how-it-works.spec.ts`
-- [x] 3.2 Całość CI lokalnie: `npm run lint`, `npm test`, `npx astro check`, `npm run build`
-- [x] 3.3 Roadmapa i PRD mają nowe zapisy: `grep -c "s32-how-does-it-work" context/foundation/roadmap.md` zwraca 3, a `grep -c "Pod kartą nic nie ma\." context/foundation/prd.md` zwraca 0
+- [x] 3.1 Nowy test przechodzi: `E2E_PORT=<wolny port> npx playwright test tests/e2e/how-it-works.spec.ts` — 72c9992
+- [x] 3.2 Całość CI lokalnie: `npm run lint`, `npm test`, `npx astro check`, `npm run build` — 72c9992
+- [x] 3.3 Roadmapa i PRD mają nowe zapisy: `grep -c "s32-how-does-it-work" context/foundation/roadmap.md` zwraca 3, a `grep -c "Pod kartą nic nie ma\." context/foundation/prd.md` zwraca 0 — 72c9992
 
 #### Manual
 
-- [x] 3.4 Czytelnik, który nie zna aplikacji, po przeczytaniu strony rozumie, co pamięta profil i co zmienia poziom
+- [x] 3.4 Czytelnik, który nie zna aplikacji, po przeczytaniu strony rozumie, co pamięta profil i co zmienia poziom — 72c9992
