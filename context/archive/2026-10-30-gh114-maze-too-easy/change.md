@@ -1,10 +1,10 @@
 ---
 change_id: gh114-maze-too-easy
 title: Labirynty odrobinę trudniejsze na każdym poziomie (GitHub 114)
-status: implemented
+status: archived
 created: 2026-10-30
 updated: 2026-10-31
-archived_at: null
+archived_at: 2026-10-31T07:58:46Z
 ---
 
 ## Notes
