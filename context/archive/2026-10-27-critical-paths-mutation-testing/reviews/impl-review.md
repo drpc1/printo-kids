@@ -5,7 +5,7 @@
 - **Plan**: context/changes/critical-paths-mutation-testing/plan.md
 - **Scope**: Full plan (fazy 1–6; w fazie 6 krok 6.3 czeka na potwierdzenie)
 - **Reviewed phases**: 1, 2, 3, 4, 5, 6
-- **Date**: 2026-11-03
+- **Date**: 2026-10-31
 - **Verdict**: APPROVED
 - **Findings**: 0 critical 1 warnings 3 observations
 
@@ -30,8 +30,8 @@ Sprawdzone: wszystkie fazy dotykają tylko testów, konfiguracji Strykera, skryp
 - **Impact**: 🏃 LOW — quick decision; fix is obvious and narrowly scoped
 - **Dimension**: Success Criteria
 - **Location**: context/foundation/test-plan.md:94
-- **Detail**: §4 mówi „około 750 testów, stan 2026-11-03”, a pierwsze zdanie §5 nadal „około 600 testów (stan 2026-10-27…)”. Krok 6.3 („test-plan zgadza się z stryker-results”) nie może być uczciwie odhaczony, dopóki te liczby się różnią.
-- **Fix**: Zmienić liczbę i datę w pierwszym zdaniu §5 na „około 750 (stan 2026-11-03)”.
+- **Detail**: §4 mówi „około 750 testów, stan 2026-10-31”, a pierwsze zdanie §5 nadal „około 600 testów (stan 2026-10-27…)”. Krok 6.3 („test-plan zgadza się z stryker-results”) nie może być uczciwie odhaczony, dopóki te liczby się różnią.
+- **Fix**: Zmienić liczbę i datę w pierwszym zdaniu §5 na „około 750 (stan 2026-10-31)”.
 - **Decision**: FIXED
 
 ### F2 — Wiersz 1.3 w Progress bez SHA
