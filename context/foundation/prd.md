@@ -370,7 +370,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Na pasku strony jest wybór „Kategoria”: Wszystkie, Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle, Kształty. Domyślnie „Wszystkie”.
+- Na pasku strony jest wybór „Kategoria”: Wszystkie, a po nim kategorie alfabetycznie po polskich nazwach (Domy i budowle, Jedzenie, Kosmos i maszyny, Kształty, Przyroda, Zwierzęta); nowa kategoria wpada w swoje miejsce alfabetu. Domyślnie „Wszystkie” (decyzja 2026-10-31, GitHub 211).
 - Można wybrać dokładnie jedną kategorię. „Wszystkie” to też kategoria, a nie zaznaczenie kilku; kilku kategorii naraz nie da się zaznaczyć.
 - Wybrana kategoria obowiązuje przy następnym Generuj, jak każde ustawienie generatora, i nie zmienia działania poziomu, rozmiaru ani kolorów.
 - Każde Generuj w kategorii daje inny obiekt albo inny wariant niż poprzednia karta, na każdym poziomie i rozmiarze.

@@ -49,15 +49,17 @@ function drawn<Card>(card: Card | null): Card {
 }
 
 void describe("category choices", () => {
-  void test("the bar lists Wszystkie first, then the six categories, each once", () => {
+  void test("the bar lists Wszystkie first, then the six categories alphabetically, each once", () => {
     assert.equal(OBJECT_CATEGORY_CHOICES[0].id, "wszystkie");
     assert.deepEqual(
-      OBJECT_CATEGORY_CHOICES.slice(1).map((choice) => choice.id),
-      CATEGORIES,
+      OBJECT_CATEGORY_CHOICES.slice(1)
+        .map((choice) => choice.id)
+        .sort(),
+      [...CATEGORIES].sort(),
     );
     assert.deepEqual(
       OBJECT_CATEGORY_CHOICES.map((choice) => choice.label),
-      ["Wszystkie", "Zwierzęta", "Jedzenie", "Przyroda", "Kosmos i maszyny", "Domy i budowle", "Kształty"],
+      ["Wszystkie", "Domy i budowle", "Jedzenie", "Kosmos i maszyny", "Kształty", "Przyroda", "Zwierzęta"],
     );
   });
 

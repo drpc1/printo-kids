@@ -41,10 +41,10 @@ const TEMPLATES_BY_LEVEL: Readonly<Record<SymmetryLevelId, readonly SymmetryTemp
   lat7: byOrder(CATALOG.flatMap((sizes) => sizes.half9)),
 };
 
-/** The choices of the "Kategoria" bar: all objects first, then one entry per category, in the order of the PRD. */
+/** The choices of the "Kategoria" bar: all objects first, then one entry per category, alphabetically by Polish label. */
 export const OBJECT_CATEGORY_CHOICES: readonly { id: ObjectCategoryChoiceId; label: string }[] = [
   { id: "wszystkie", label: "Wszystkie" },
-  ...OBJECT_CATEGORIES,
+  ...[...OBJECT_CATEGORIES].sort((a, b) => a.label.localeCompare(b.label, "pl")),
 ];
 
 export const DEFAULT_OBJECT_CATEGORY_ID: ObjectCategoryChoiceId = "wszystkie";
