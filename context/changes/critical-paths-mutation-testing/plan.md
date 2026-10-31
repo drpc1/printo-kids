@@ -383,13 +383,13 @@ Brak zmian w danych ani w kodzie produktu.
 
 #### Automated
 
-- [x] 5.1 `npm test`, `npm run lint`, `npx astro check`
-- [x] 5.2 `npm run mutate:sequence` i `npm run mutate:symmetry` kończą się, wyniki zapisane
-- [x] 5.3 Break-check dla każdej nowej asercji
+- [x] 5.1 `npm test`, `npm run lint`, `npx astro check` — e6170b0
+- [x] 5.2 `npm run mutate:sequence` i `npm run mutate:symmetry` kończą się, wyniki zapisane — e6170b0
+- [x] 5.3 Break-check dla każdej nowej asercji — e6170b0
 
 #### Manual
 
-- [x] 5.4 Porównanie krótkiego i pełnego oracle sekwencji zapisane w `stryker-results.md`
+- [x] 5.4 Porównanie krótkiego i pełnego oracle sekwencji zapisane w `stryker-results.md` — e6170b0
 
 ### Phase 6: Dane lokalne i test-plan
 
