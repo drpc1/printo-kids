@@ -60,11 +60,11 @@ void describe("print contract", () => {
   });
 
   void test("a phone print lifts the sheet's height limit, and a desktop print keeps 100vh", () => {
-    // iOS print reports 100vh as about 82% of the printable height; 116vh fit one A4 page on an iPhone.
+    // iOS print reports 100vh as about 82% of the printable height; 108vh fit one A4 page on an iPhone.
     // hover: none and the narrow width keep a desktop with a hover pointer and a 210 mm page on 100vh.
     const home = readRepoFile(WORKSHEET_HOME);
     const phonePrint = extractBlock(home, "@media print and (hover: none) and (max-width: 175mm)");
-    assert.match(phonePrint, /#worksheet-home svg\s*\{\s*max-height:\s*116vh\s*;\s*\}/);
+    assert.match(phonePrint, /#worksheet-home svg\s*\{\s*max-height:\s*108vh\s*;\s*\}/);
     assert.equal(home.match(/@media print\b/g)?.length, 2);
   });
 
