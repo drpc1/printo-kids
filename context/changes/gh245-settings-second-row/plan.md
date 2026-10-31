@@ -113,13 +113,13 @@ Brak.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Typy: `npx astro check`
-- [x] 1.3 Testy jednostkowe: `npm test`
-- [x] 1.4 E2E wiersza ustawień na projektach Chromium: `E2E_PORT=4399 npx playwright test tests/e2e/phone-settings-rows.spec.ts`
+- [x] 1.1 Lint przechodzi: `npm run lint` — 52b7e4f
+- [x] 1.2 Typy: `npx astro check` — 52b7e4f
+- [x] 1.3 Testy jednostkowe: `npm test` — 52b7e4f
+- [x] 1.4 E2E wiersza ustawień na projektach Chromium: `E2E_PORT=4399 npx playwright test tests/e2e/phone-settings-rows.spec.ts` — 52b7e4f
 
 #### Manual
 
-- [x] 1.5 Na komputerze (okno ok. 700 px) po Generuj na sudoku, nonogramie i dyktandzie druga linia zaczyna się tam, gdzie „Postać”
+- [x] 1.5 Na komputerze (okno ok. 700 px) po Generuj na sudoku, nonogramie i dyktandzie druga linia zaczyna się tam, gdzie „Postać” — 52b7e4f
 - [x] 1.6 Telefon (360 px) wygląda jak dotąd
-- [x] 1.7 Szeroki ekran (jedna linia) wygląda poprawnie, po Generuj (przed Generuj wiersz jest wyśrodkowany z założenia)
+- [x] 1.7 Szeroki ekran (jedna linia) wygląda poprawnie, po Generuj (przed Generuj wiersz jest wyśrodkowany z założenia) — 52b7e4f
