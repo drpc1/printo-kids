@@ -1,9 +1,9 @@
 ---
 change_id: critical-paths-mutation-testing
 title: Krytyczne ścieżki projektu, luki w testach i celowany Stryker na nowych kartach
-status: implementing
+status: impl_reviewed
 created: 2026-10-27
-updated: 2026-10-27
+updated: 2026-11-03
 archived_at: null
 ---
 

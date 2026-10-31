@@ -134,7 +134,7 @@ Wg pliku po: `generate.ts` 96,10% (3 ocalałe), `simple.ts` 96,74% (3), `solve.t
 | `solve.ts:111`       | `changed = false` w przebiegu po kolumnach                   | Brak różnicy w teście: 12 000 losowych obrazków do 12×15 oraz wszystkie 5×3 i 3×5 dają ten sam status co oryginał; uznany za równoważny w praktyce. |
 | `solve.ts:13`, `:30` | `blocks = clue`, `false \|\| known[end]...`                  | Równoważne (sprawdzone ręcznie, wyrocznia przechodzi): blok długości 0 niczego nie zmienia, a `known[length]` to `undefined`.                       |
 
-Ocalałe w przebiegu „po” to dokładnie 11 pozycji z tabeli bez dwóch ostatnich wierszy (`solve.ts:13` i `:30` w tym przebiegu zginęły, bo oba są równoważne, a Stryker policzył je jako timeout); decyzje te zostają dla porządku.
+W przebiegu „po” ocalało 11 mutantów (tabela wyżej bez wierszy `solve.ts:13` i `:30`). Te dwa nie ocalały: Stryker policzył je jako timeout, a ręczne sprawdzenie pokazało, że są równoważne, więc decyzja zostaje w tabeli dla porządku.
 
 ## Faza 5a: sekwencje (2026-11-02)
 
@@ -198,3 +198,33 @@ Wg pliku po: `colors.ts` 100%, `generate.ts` 96,91% (11 ocalałych).
 | `generate.ts:155`     | `reached` bez początkowego 0                           | Równoważny: wypełnianie i tak zaczyna od indeksu 0, a róg ramki dodaje się przez sąsiadów ramki.                                        |
 | `generate.ts:167` (4) | granice ramki wypełniania (`true`, `\|\|`, `<= width`) | Równoważne: ramka wokół siatki jest cała pusta i połączona, więc wyjście za jej brzeg wpada na kolejny wiersz ramki.                    |
 | `generate.ts:299`     | `Math.min(count + 1, ...)`                             | Równoważny: `Math.random()` jest mniejsze od 1, więc indeks nigdy nie wychodzi poza tablicę.                                            |
+
+## Faza 6: dane lokalne (2026-11-03)
+
+Zakres: `card-settings.ts`, `active-profile.ts`, `sheet/own-image-store.ts`, `sheet/speech.ts` (całe pliki), `npm run mutate:local-data`, 283 mutanty, ok. 4 min na przebieg.
+
+| Przebieg               | Mutanty | Zabite | Timeouty | Ocalałe | Wynik  |
+| ---------------------- | ------- | ------ | -------- | ------- | ------ |
+| przed (testy z `main`) | 283     | 232    | 1        | 50      | 82,33% |
+| po testach z luk       | 283     | 262    | 3        | 18      | 93,64% |
+
+Wg pliku po: `speech.ts` 100% (przed 73,77%), `card-settings.ts` 97,39% (94,78%), `active-profile.ts` 94,74% (89,47%), `own-image-store.ts` 84,09% (70,45%).
+
+### Nowe testy
+
+- `own-image-store.test.ts`: klucz kopii zdjęcia przypięty literalnie (`printo-kids:own-image`; zmiana klucza gubiłaby zapisane zdjęcia, a test używał stałej z kodu), `HREF_PATTERN` kotwiczony z obu stron (tekst przed, po, w środku, dopełnienie `===`, pusty ładunek, inny typ obrazu), nie-teksty (także tablica, która drukuje się jako href) nie są obrazkiem, `drawnVisitCharacter` nie bierze obrazka dla postaci z katalogu, własny obrazek bez poprawnej migawki to `none`, a postać z ostatnich parametrów jest rysowana tak, jak jest, także gdy istnieje kopia na urządzeniu.
+- `speech.test.ts`: `instructionLines` nie zostawia pustych linii ani spacji (spacja na końcu, podwójna spacja), szerokość linii, ręcznie policzone wszystkie liczby pasma (postać, bąbel, ogon, tekst, maksymalna szerokość) dla jednego, dwóch i trzech zdań oraz granica kroku `fitCellSize` (dokładnie 7,5 mm zostaje 7,5).
+- `active-profile.test.ts`: `NO_PROFILE` to `none` i wraca z odczytu (pusty zapis to brak wyboru).
+- `card-settings.test.ts`: symbole sudoku inne niż `shapes` i `digits` wracają do `shapes`.
+- Break-check (zepsuj, test czerwienieje, przywróć), 13 miejsc: klucz zdjęcia, obie kotwice wzorca, `typeof string`, sprawdzenie postaci przy własnym obrazku, ostatnia postać jako własny obrazek, puste linie, czubek ogona, `x` tekstu, epsilon kroku, szerokość tekstu, `NO_PROFILE`, symbole sudoku.
+
+### Ocalałe mutanty po fazie 6
+
+| Linia                              | Mutant                                                    | Decyzja                                                                                                                                                               |
+| ---------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `own-image-store.ts:22` (6)        | pusty zapis (`raw === ""`) nie zwraca od razu `null`      | Równoważne: `JSON.parse("")` rzuca, a `catch` zwraca `null`, tak samo jak wczesny powrót.                                                                             |
+| `own-image-store.ts:27` (2)        | brak `isRecord(stored)`                                   | Równoważne: `JSON.parse` daje `null`, liczbę, tekst lub tablicę, a odczyt `.href` kończy się `undefined` (nie jest obrazkiem) albo wyjątkiem ze `catch`.              |
+| `own-image-store.ts:101` (6)       | `isRecord` zawsze prawdziwe i warianty                    | Równoważne z tego samego powodu: strażnik jest zbędny, bo `isOwnImageDataUrl(stored.href)` odrzuca wszystko, co nie jest poprawnym href.                              |
+| `active-profile.ts:15`             | `raw === null` → `false`                                  | Równoważny: dla `null` wynik `null === ""` jest fałszem, więc zwracane jest `raw`, czyli `null`.                                                                      |
+| `card-settings.ts:132`             | `value === "shapes"` → `false`                            | Równoważny: wartość `shapes` wraca z `fallback`, który też jest `shapes`.                                                                                             |
+| `card-settings.ts:141`, `:145` (2) | usunięte `case "symetria"` i `case "sudoku"` w `levelIds` | Równoważne: wpada do następnego `case` (sekwencje, nonogram), których identyfikatory poziomów są takie same jak symetrii (`lat4`–`lat7`) i sudoku (`latwy`–`trudny`). |

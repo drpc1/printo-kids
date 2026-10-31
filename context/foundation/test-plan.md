@@ -1,6 +1,6 @@
 ---
 project: PrintoKids
-checked: 2026-10-27
+checked: 2026-11-03
 status: active
 ---
 
@@ -80,7 +80,7 @@ Kolejność bierze się z wpływu i sparzenia, zgodnie z wywiadem P3. Faza 1 ma 
 
 Astro 7 SSR, wyspy React, TypeScript, Tailwind, Cloudflare Workers. Node 22.14.0. Produkt nie ma kont, płatności, AI ani zadań w tle. Dane labiryntu, profili i ustawień kart zostają na urządzeniu.
 
-Baza testów: **zbudowana**. `npm test` (około 600 testów, stan 2026-10-27) uruchamia pliki wyliczone w skrypcie `test` w `package.json`: labirynt (`src/lib/maze/`), układ i znaczniki kartki (`src/lib/sheet/`), zapis lokalny (`last-used`, `active-profile`, `child-profiles`, `card-settings`, `card-summary`, `catalog-badges`, `own-image`, `own-image-store`) oraz generatory i układy kart (`src/lib/symmetry/`, `sequence/`, `sudoku/`, `nonogram/`, `dictation/`, `object-categories`) i dwa skrypty (`scripts/agent-hooks.test.mjs`, `scripts/site-icons.test.mjs`). Nowy plik testu trzeba dopisać do tego skryptu. Nie ma Vitest ani Jest, a Stryker działa selektywnie (`stryker.config.json`, wąskie `--mutate plik:start-end`; patrz §5). Playwright jest w `tests/e2e/`: `seed`, `phone-layout`, `level-bar`, `dialog-close`, `card-settings`, `catalog`, `profile-summary`, `own-image`, `character-speaks`, `favorite-character`, `symmetry-colors`, `sudoku-colors`, `sudoku-levels`. Działa lokalnie (`E2E_PORT=4399`, bo `reuseExistingServer` łączy się z serwerem na zajętym porcie) i w bramce CI (job `e2e` w `ci.yml`, projekty Chromium `chromium`, `phone-360`, `pixel-7`, `tablet-768`); ręczny workflow `e2e-phone.yml` uruchamia wszystkie projekty, także iPhone (WebKit). CI odpala `npm test`, `npm run lint`, `npx astro check`, build, smoke strony produktu i e2e.
+Baza testów: **zbudowana**. `npm test` (około 750 testów, stan 2026-11-03) uruchamia pliki wyliczone w skrypcie `test` w `package.json`: labirynt (`src/lib/maze/`), układ i znaczniki kartki (`src/lib/sheet/`), zapis lokalny (`last-used`, `active-profile`, `child-profiles`, `card-settings`, `card-summary`, `catalog-badges`, `own-image`, `own-image-store`) oraz generatory i układy kart (`src/lib/symmetry/`, `sequence/`, `sudoku/`, `nonogram/`, `dictation/`, `object-categories`) i dwa skrypty (`scripts/agent-hooks.test.mjs`, `scripts/site-icons.test.mjs`). Nowy plik testu trzeba dopisać do tego skryptu. Nie ma Vitest ani Jest, a Stryker działa selektywnie (`stryker.config.json`, wąskie `--mutate plik:start-end`; patrz §5). Playwright jest w `tests/e2e/`: `seed`, `phone-layout`, `level-bar`, `dialog-close`, `card-settings`, `catalog`, `profile-summary`, `own-image`, `character-speaks`, `favorite-character`, `symmetry-colors`, `sudoku-colors`, `sudoku-levels`. Działa lokalnie (`E2E_PORT=4399`, bo `reuseExistingServer` łączy się z serwerem na zajętym porcie) i w bramce CI (job `e2e` w `ci.yml`, projekty Chromium `chromium`, `phone-360`, `pixel-7`, `tablet-768`); ręczny workflow `e2e-phone.yml` uruchamia wszystkie projekty, także iPhone (WebKit). CI odpala `npm test`, `npm run lint`, `npx astro check`, build, smoke strony produktu i e2e.
 
 **Stack grounding tools (current session):**
 
@@ -91,7 +91,7 @@ Baza testów: **zbudowana**. `npm test` (około 600 testów, stan 2026-10-27) ur
 
 ## §5 Co jest już sprawdzone
 
-`npm test` ma około 600 testów (stan 2026-10-27; 114 w stanie z 2026-10-21). Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
+`npm test` ma około 750 testów (stan 2026-11-03; 114 w stanie z 2026-10-21). Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
 
 Dla każdego z sześciu poziomów kilka ustalonych ziaren daje siatkę tego poziomu, otwarte ściany wejścia i wyjścia, jedną drogę i osiągalność każdej komórki. Na 200 ziarnach mediana drogi 4 lat jest większa niż 3 lat, a 6 lat niż 5 lat; to kolejność, nie próg. Żaden poziom nie powtarza jednej drogi na ośmiu ziarnach. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Te sprawdzenia nie dowodzą odmowy kartki przy zero ścieżkach.
 
@@ -114,6 +114,28 @@ Kontrakt ostatniej postaci w schowku jest pokryty: brak klucza, pusty zapis, zł
 Układ przy „jakiejś” postaci wymaga znacznika 30 na 30, a bez postaci wymaga napisu „Start”.
 
 Smoke w osobnym jobie CI (`scripts/smoke.mjs`) sprawdza, że strona produktu się wyświetla, a trasy kont ze startera zwracają 404. To nie jest dowód, że profil zostaje na urządzeniu.
+
+## §5a Mutacje Strykera: karty i dane lokalne
+
+Zmiana `critical-paths-mutation-testing` (2026-10-27 do 2026-11-03) uruchomiła Strykera osobno na każdym zakresie i dopisała testy z luk (decyzja: Faza 0 z raportu tylko dla pozycji 1–3, reszta przez Strykera). Każdy zakres ma plik `stryker/<zakres>.config.json` i skrypt `npm run mutate:<zakres>`; wąski przebieg: `npm run mutate:<zakres> -- --mutate "plik:start-end"`. Stryker pod `MUTATION_RUN=1` wyłącza budżety czasu, a sekwencje dostają krótszy oracle (`SEQUENCE_ORACLE_SEEDS=5`); `npm test` ma pełne budżety i 120 ziaren. Wyniki, decyzje dla każdego ocalałego mutanta i instrukcja powtórzenia: `context/changes/critical-paths-mutation-testing/reviews/stryker-results.md`.
+
+| Zakres                                                                        | Ryzyko | Mutanty | Wynik przed | Wynik po | Ocalałe przed → po |
+| ----------------------------------------------------------------------------- | ------ | ------- | ----------- | -------- | ------------------ |
+| dyktando (`dictation`)                                                        | 9      | 327     | 93,9%       | 96,0%    | 20 → 13            |
+| sudoku (`generate.ts`)                                                        | 9      | 237     | 89,45%      | 97,47%   | 25 → 6             |
+| nonogram (`solve`, `generate`, `simple`)                                      | 9      | 410     | 91,22%      | 97,32%   | 36 → 11            |
+| sekwencje (`rules`, `generate`, `colors`)                                     | 8      | 628     | 81,37%      | 99,20%   | 117 → 5            |
+| symetria (`generate`, `colors`)                                               | 7      | 366     | 87,70%      | 96,99%   | 45 → 11            |
+| dane lokalne (`card-settings`, `active-profile`, `own-image-store`, `speech`) | 5      | 283     | 82,33%      | 93,64%   | 50 → 18            |
+
+Luki zamknięte, każda z break-checkiem (zepsuty kod produkcyjny czerwieni test):
+
+- **Ryzyko 9, jedno rozwiązanie.** Sudoku: negatywne testy 6×6 i 9×9 na ręcznych kartach (`blank-count`, poziom, `shape-*`, `invalid-solution` osobno dla kolumny, bloku, zakresu i długości) oraz niezależny brute-force 4×4 (`bruteforce.test.ts`), z którym zgadza się `countSudokuSolutions`, także na planszy 6×6 wymagającej błędnego zgadywania. Nonogram: `oracle.test.ts` wylicza wszystkie ułożenia linii i przechodzi po liniach do stałego punktu bez importu `solve.ts`; porównuje `solveLine` i `solveNonogram` (status i obraz) na wszystkich małych siatkach i próbce 4×4, 5×5. Dyktando: testy negatywne obrysu (m.in. `not-closed`, pusta sylwetka jako `disconnected`, dotknięcie w narożniku na obu przekątnych).
+- **Ryzyko 8, sekwencje.** `rules.test.ts` testuje reguły bezpośrednio, a `hypotheses` porównuje z niezależnie zbudowanym zbiorem dla 5, 7 i 8 pól; walidator wierszy ma testy granic liczb, luk i `no-answer`.
+- **Ryzyko 7, symetria.** Szczeliny sylwetki porównane z niezależnym wypełnianiem od zewnątrz dla każdego obiektu, wariantu i przesunięcia, plus ręczna komora otwarta na oś; podpowiedzi przy małej liczbie komórek na osi; błędy szablonu; granice szczegółów.
+- **Ryzyko 5, dane lokalne.** Klucz kopii własnego obrazka jest przypięty literalnie (zmiana klucza gubiłaby zapisane zdjęcia), `HREF_PATTERN` jest kotwiczony z obu stron i odrzuca nie-teksty, `drawnVisitCharacter` nie bierze obrazka dla postaci z katalogu, `NO_PROFILE` jest słowem `none`, a obojętne wartości symboli sudoku wracają do domyślnych. `speech.ts` ma ręcznie policzone liczby pasma (ogon, bąbel, tekst) i granicę kroku `fitCellSize`.
+
+Ocalałe mutanty po przebiegach to równoważne (odczyt poza tablicą, zapis poza końcem, granica `Math.random() < 1`), kosmetyczne (jedna próba losowania więcej) albo siatki bezpieczeństwa (druga walidacja po poprawnej konstrukcji); każdy ma jedno zdanie uzasadnienia w `stryker-results.md`. Krótki oracle sekwencji zabija podzbiór tego, co zabija pełny: pięć mutantów, które przeżyły krótki, zabił pełny. Wynik Strykera nie jest bramką CI.
 
 ## §6 Podręcznik
 
@@ -147,6 +169,8 @@ TBD — patrz §3 Faza 4 dla wzorca bramki, która pilnuje kartki i nie obrasta 
 - Automatyczne „czy rodzic rozumie ekran”. To zostaje ręcznym sprawdzeniem.
 - Macierz automatycznych przeglądarek jako pierwszy test druku.
 - Asercje ostatniej postaci dopisane tylko po to, by zabić równoważnego mutanta, który i tak zwraca „none”.
+- Uszkodzony sąsiad profilu przy odczycie i zapisie (jeden zły wpis w liście profili): osobna zmiana, nie ta.
+- Opis Poziomu 3 sekwencji w `levels.ts`, emulacja druku i liczba stron w Playwright, dedykowane e2e dyktanda i nonogramu, test przekroczonej kwoty `localStorage`.
 - Gonienie 100% wyniku Strykera: mutant ocalały dopisuje asercję tylko wtedy, gdy jest widoczny dla rodzica albo zmienia wynik karty (AGENTS.md).
 
 ## Koniec projektu

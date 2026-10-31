@@ -3,6 +3,7 @@ import { describe, test } from "node:test";
 import { readLastUsed, writeLastUsed, type LastUsedStorage } from "../last-used.ts";
 import {
   drawnVisitCharacter,
+  isOwnImageDataUrl,
   OWN_IMAGE_KEY,
   readOwnImage,
   recordBarCharacter,
@@ -158,3 +159,85 @@ function memoryStorage(
     },
   };
 }
+
+void describe("the device copy key and the shape of a stored href", () => {
+  void test("the copy lives under the key earlier visits used, so an existing photo is still found", () => {
+    assert.equal(OWN_IMAGE_KEY, "printo-kids:own-image");
+    const storage = memoryStorage(null);
+    writeOwnImage(storage, JPEG);
+
+    assert.deepEqual(storage.writes, [{ key: "printo-kids:own-image", value: JSON.stringify({ href: JPEG }) }]);
+  });
+
+  void test("only a whole JPEG or PNG data URL is an own image: no text before, after or inside, no padding of three", () => {
+    for (const good of [
+      JPEG,
+      PNG,
+      "data:image/png;base64,AZaz09+/",
+      "data:image/png;base64,aa==",
+      "data:image/png;base64,aaa=",
+    ]) {
+      assert.equal(isOwnImageDataUrl(good), true, good);
+    }
+    for (const bad of [
+      "x" + JPEG,
+      JPEG + "!",
+      JPEG + " ",
+      JPEG + "\n",
+      "data:image/png;base64,",
+      "data:image/png;base64,aaa===",
+      "data:image/webp;base64,aaaa",
+      "data:image/png;base64,aa aa",
+      "javascript:alert(1)",
+      "",
+    ]) {
+      assert.equal(isOwnImageDataUrl(bad), false, bad);
+    }
+  });
+
+  void test("something that is not a string is not an own image, even when it prints as one", () => {
+    for (const value of [null, undefined, 5, {}, [JPEG], { toString: () => JPEG }]) {
+      assert.equal(isOwnImageDataUrl(value), false);
+    }
+    assert.equal(readOwnImage(memoryStorage(JSON.stringify({ href: [JPEG] }))), null);
+  });
+
+  void test("a stored href with text around it reads as no copy, and is not written", () => {
+    assert.equal(readOwnImage(memoryStorage(JSON.stringify({ href: JPEG + "!" }))), null);
+    assert.equal(readOwnImage(memoryStorage(JSON.stringify({ href: "x" + JPEG }))), null);
+    const storage = memoryStorage(null);
+    assert.equal(writeOwnImage(storage, JPEG + "!"), false);
+    assert.deepEqual(storage.writes, []);
+  });
+});
+
+void describe("drawnVisitCharacter picks only what it may draw", () => {
+  void test("an active catalog character with an image field is still the catalog character", () => {
+    const storage = memoryStorage(null);
+
+    assert.deepEqual(drawnVisitCharacter(storage, { character: "kot", image: JPEG }, "wlasne"), {
+      character: "kot",
+      href: null,
+    });
+  });
+
+  void test("an active own image without a drawable snapshot is none, whatever the device holds", () => {
+    const storage = memoryStorage(JSON.stringify({ href: PNG }));
+
+    for (const active of [
+      { character: "wlasne" },
+      { character: "wlasne", image: "https://example.test/a.png" },
+      { character: "wlasne", image: JPEG + "!" },
+    ]) {
+      assert.deepEqual(drawnVisitCharacter(storage, active, "kot"), { character: "none", href: null });
+    }
+  });
+
+  void test("with nobody active a catalog character from last-used is drawn as it is, even when a device copy exists", () => {
+    const storage = memoryStorage(JSON.stringify({ href: PNG }));
+
+    assert.deepEqual(drawnVisitCharacter(storage, null, "kot"), { character: "kot", href: null });
+    assert.deepEqual(drawnVisitCharacter(storage, null, "none"), { character: "none", href: null });
+    assert.deepEqual(drawnVisitCharacter(memoryStorage(null), null, "kot"), { character: "kot", href: null });
+  });
+});
