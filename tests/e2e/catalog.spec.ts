@@ -405,6 +405,32 @@ test("the profile corner on the catalog edits the favorite character", async ({ 
   await expect(dialog.getByRole("button", { name: "Postać: Pies" })).toBeVisible();
 });
 
+test("the corner follows a profile changed in another tab or restored from the back-forward cache", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Ania", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Labirynt, poz. 4" })).toBeVisible();
+
+  // Another tab chooses Zosia: the storage event reaches this tab, and the badges and the corner follow together.
+  await page.evaluate((key) => {
+    localStorage.setItem(key, "profile-zosia");
+    window.dispatchEvent(new StorageEvent("storage", { key }));
+  }, ACTIVE_KEY);
+  await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Labirynt, poz. 1" })).toBeVisible();
+
+  // A card page chose no profile while this page sat in the cache; pageshow with persisted brings it back.
+  await page.evaluate((key) => {
+    localStorage.setItem(key, "none");
+    window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true }));
+  }, ACTIVE_KEY);
+  await expect(page.getByRole("button", { name: "Profil", exact: true })).toBeVisible();
+  await expect(page.locator("[data-badge-for]:not([hidden])")).toHaveCount(0);
+});
+
 test("on a phone the profile corner and the catalog heading do not overlap", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "phone-360", "phone layout");
   await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);

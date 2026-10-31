@@ -8,7 +8,7 @@ import { PROFILE_CHANGED_EVENT } from "@/lib/catalog-badges";
  * the character and level the corner hands back only to give them to it again. The corner never opens by itself here;
  * "which child?" waits for the card page.
  */
-export default function CatalogProfileCorner() {
+function CatalogCorner() {
   const [applied, setApplied] = useState<Pick<ProfileBar, "character" | "level"> | null>(null);
   const { profiles, activeId, visitStart, corner } = useChildProfileVisit({
     onApply: (next) => {
@@ -36,4 +36,32 @@ export default function CatalogProfileCorner() {
       onClearProfile={corner.onClearProfile}
     />
   );
+}
+
+/**
+ * The corner reads the stored profiles once, so a page restored from the back-forward cache, or a profile changed in
+ * another tab, would leave it behind the badges of the catalog. Both events remount it, and the hook reads again.
+ * A change made in this tab fires no storage event, so the corner never remounts under its own dialog.
+ */
+export default function CatalogProfileCorner() {
+  const [reads, setReads] = useState(0);
+
+  useEffect(() => {
+    const refresh = () => {
+      setReads((count) => count + 1);
+    };
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        refresh();
+      }
+    };
+    window.addEventListener("pageshow", onPageShow);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("storage", refresh);
+    };
+  }, []);
+
+  return <CatalogCorner key={reads} />;
 }
