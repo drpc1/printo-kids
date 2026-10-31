@@ -58,4 +58,4 @@
 - **Location**: commit e66a235
 - **Detail**: Plan przewidywał, że po Fazie 1 `astro check` nie przechodzi, a użytkownik wybrał dwa osobne commity. `git bisect` może więc trafić na czerwony `e66a235`. Stan końcowy (`HEAD`) jest zielony.
 - **Fix**: Brak działania; ewentualnie zsquashować p1 i p2 przy merge PR.
-- **Decision**: PENDING
+- **Decision**: SKIPPED (opcja A wybrana przez użytkownika; ewentualny squash p1+p2 przy merge PR)
