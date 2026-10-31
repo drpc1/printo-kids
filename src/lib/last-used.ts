@@ -1,5 +1,4 @@
-import { parseCardSettings, type CardSettingsMap } from "./card-settings.ts";
-import { DEFAULT_LEVEL_ID, isLevelId, type LevelId } from "./maze/levels.ts";
+import { parseStoredCards, type CardSettingsMap } from "./card-settings.ts";
 
 const LAST_USED_KEY = "printo-kids:last-used";
 const UNSET_CHARACTER = "none";
@@ -11,12 +10,11 @@ export interface LastUsedStorage {
 
 export interface LastUsed {
   character: string;
-  level: LevelId;
-  /** Bar settings of the cards other than the maze, kept apart per card. */
+  /** Bar settings of every card, the maze level included, kept apart per card. */
   cards: CardSettingsMap;
 }
 
-const UNSET: LastUsed = { character: UNSET_CHARACTER, level: DEFAULT_LEVEL_ID, cards: {} };
+const UNSET: LastUsed = { character: UNSET_CHARACTER, cards: {} };
 
 export function readLastUsed(storage: LastUsedStorage, allowed: readonly string[]): LastUsed {
   try {
@@ -29,7 +27,6 @@ export function readLastUsed(storage: LastUsedStorage, allowed: readonly string[
     const character = characterField(stored);
     return {
       character: character !== null && allowed.includes(character) ? character : UNSET_CHARACTER,
-      level: levelField(stored),
       cards: cardsField(stored),
     };
   } catch {
@@ -37,21 +34,25 @@ export function readLastUsed(storage: LastUsedStorage, allowed: readonly string[
   }
 }
 
-/** Writes the maze part (character and level). The stored card settings stay as they are. */
-export function writeLastUsed(storage: LastUsedStorage, lastUsed: Pick<LastUsed, "character" | "level">): void {
+/** Writes the character. The stored card settings stay as they are, and a legacy `level` moves into them. */
+export function writeLastUsed(storage: LastUsedStorage, lastUsed: Pick<LastUsed, "character">): void {
   try {
     const cards = storedCards(storage);
-    const maze = { character: lastUsed.character, level: lastUsed.level };
-    storage.setItem(LAST_USED_KEY, JSON.stringify(Object.keys(cards).length === 0 ? maze : { ...maze, cards }));
+    const character = { character: lastUsed.character };
+    storage.setItem(
+      LAST_USED_KEY,
+      JSON.stringify(Object.keys(cards).length === 0 ? character : { ...character, cards }),
+    );
   } catch {
     // A blocked store must not surface to the caller.
   }
 }
 
-/** Writes the card settings. The stored character and level stay as they are. */
+/** Writes the card settings. The stored character stays as it is, and a legacy `level` is dropped. */
 export function writeLastUsedCards(storage: LastUsedStorage, cards: CardSettingsMap): boolean {
   try {
     const stored = storedRecord(storage);
+    delete stored.level;
     storage.setItem(LAST_USED_KEY, JSON.stringify({ ...stored, cards }));
     return true;
   } catch {
@@ -75,7 +76,7 @@ function storedCards(storage: LastUsedStorage): CardSettingsMap {
 }
 
 function cardsField(value: unknown): CardSettingsMap {
-  return isRecord(value) ? parseCardSettings(value.cards) : {};
+  return parseStoredCards(value);
 }
 
 function parseStored(raw: string): unknown {
@@ -89,14 +90,6 @@ function characterField(value: unknown): string | null {
 
   const character = value.character;
   return typeof character === "string" ? character : null;
-}
-
-function levelField(value: unknown): LevelId {
-  if (!isRecord(value)) {
-    return DEFAULT_LEVEL_ID;
-  }
-
-  return isLevelId(value.level) ? value.level : DEFAULT_LEVEL_ID;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
