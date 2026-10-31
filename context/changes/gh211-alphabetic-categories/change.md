@@ -1,7 +1,7 @@
 ---
 change_id: gh211-alphabetic-categories
 title: Lista kategorii obiektów alfabetycznie (GitHub 211)
-status: implementing
+status: implemented
 created: 2026-10-31
 updated: 2026-10-31
 archived_at: null
