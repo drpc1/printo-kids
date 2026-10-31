@@ -184,6 +184,18 @@ void describe("layoutSheet", () => {
     }
   });
 
+  void test("Meta stays inside the page margins in every exit column of every level", () => {
+    for (const level of LEVELS) {
+      for (const exitColumn of level.exitColumns) {
+        const sheet = layoutForLevel(level, level.showCharacter, level.showCharacter, exitColumn);
+        const halfWord = (4 * 0.6 * LABEL_HEIGHT) / 2;
+
+        assert.ok(sheet.meta.x - halfWord >= 0, `${level.id} column ${exitColumn}`);
+        assert.ok(sheet.meta.x + halfWord <= PAGE_WIDTH, `${level.id} column ${exitColumn}`);
+      }
+    }
+  });
+
   void test("younger levels draw the exit away from the entrance column, and Meta follows the exit column", () => {
     for (const level of LEVELS) {
       if (level.id === "nastolatek") {

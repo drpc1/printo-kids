@@ -294,32 +294,32 @@ Identyfikatory poziomów (`lat3` … `nastolatek`) się nie zmieniają, więc pr
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi z nowymi testami generatora
-- [x] 1.2 `npm run lint` przechodzi
-- [x] 1.3 `npx astro check` przechodzi
-- [x] 1.4 Jedno wywołanie `generateMaze("nastolatek", …)` trwa poniżej 500 ms w teście czasu na 20 ziarnach
-- [x] 1.5 Zawężony Stryker na `scoreMaze` i `generateMaze` uruchomiony, a przeżyłe mutanty przejrzane
+- [x] 1.1 `npm test` przechodzi z nowymi testami generatora — 8248f63
+- [x] 1.2 `npm run lint` przechodzi — 8248f63
+- [x] 1.3 `npx astro check` przechodzi — 8248f63
+- [x] 1.4 Jedno wywołanie `generateMaze("nastolatek", …)` trwa poniżej 500 ms w teście czasu na 20 ziarnach — 8248f63
+- [x] 1.5 Zawężony Stryker na `scoreMaze` i `generateMaze` uruchomiony, a przeżyłe mutanty przejrzane — 8248f63
 
 #### Manual
 
-- [x] 1.6 Na `/maze` w `npm run dev` po 5 kart z każdego poziomu: droga nie biegnie prosto w dół przy środku
+- [x] 1.6 Na `/maze` w `npm run dev` po 5 kart z każdego poziomu: droga nie biegnie prosto w dół przy środku — 8248f63
 
 ### Phase 2: Kartka, miniatura i e2e
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi
-- [ ] 2.2 `npm run lint` przechodzi
-- [ ] 2.3 `npx astro check` przechodzi
-- [ ] 2.4 `npm run build` przechodzi
+- [x] 2.1 `npm test` przechodzi
+- [x] 2.2 `npm run lint` przechodzi
+- [x] 2.3 `npx astro check` przechodzi
+- [x] 2.4 `npm run build` przechodzi
 - [ ] 2.5 Playwright na projektach Chromium (`chromium`, `phone-360`, `pixel-7`, `tablet-768`) przechodzi
 
 #### Manual
 
-- [ ] 2.6 Na `/maze` każdy poziom generuje kartę z metą poza środkiem (Poziomy 1–5) i z postacią na środku wejścia
-- [ ] 2.7 Podgląd wydruku w Chrome każdego poziomu to jedna strona A4, a ściany i ramka zachowują margines 10 mm
-- [ ] 2.8 Na telefonie (np. `phone-360`) Generuj i Drukuj nie nachodzą na siebie, a karta mieści się na A4
-- [ ] 2.9 Miniatura w katalogu na `/` pokazuje nowy labirynt
+- [x] 2.6 Na `/maze` każdy poziom generuje kartę z metą poza środkiem (Poziomy 1–5) i z postacią na środku wejścia
+- [x] 2.7 Podgląd wydruku w Chrome każdego poziomu to jedna strona A4, a ściany i ramka zachowują margines 10 mm
+- [x] 2.8 Na telefonie (np. `phone-360`) Generuj i Drukuj nie nachodzą na siebie, a karta mieści się na A4
+- [x] 2.9 Miniatura w katalogu na `/` pokazuje nowy labirynt
 
 ### Phase 3: PRD i wydruk próbny
 
