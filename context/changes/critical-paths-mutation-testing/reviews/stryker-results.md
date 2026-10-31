@@ -135,3 +135,34 @@ Wg pliku po: `generate.ts` 96,10% (3 ocalałe), `simple.ts` 96,74% (3), `solve.t
 | `solve.ts:13`, `:30` | `blocks = clue`, `false \|\| known[end]...`                  | Równoważne (sprawdzone ręcznie, wyrocznia przechodzi): blok długości 0 niczego nie zmienia, a `known[length]` to `undefined`.                       |
 
 Ocalałe w przebiegu „po” to dokładnie 11 pozycji z tabeli bez dwóch ostatnich wierszy (`solve.ts:13` i `:30` w tym przebiegu zginęły, bo oba są równoważne, a Stryker policzył je jako timeout); decyzje te zostają dla porządku.
+
+## Faza 5a: sekwencje (2026-11-02)
+
+Symetria zostaje na osobny PR (katalog kształtów w symetrii jeszcze się zmienia). Kod sekwencji zmienił się od planu (kolory kształtów, usunięta reguła `groups`), więc zakresy to: `sequence/rules.ts` (cały), `sequence/generate.ts:51-276`, `sequence/colors.ts` (cały). `npm run mutate:sequence`, 628 mutantów, z krótkim oracle (`SEQUENCE_ORACLE_SEEDS=5`). Komenda testów w `stryker/sequence.config.json` dostała `rules.test.ts` i `colors.test.ts`.
+
+| Przebieg               | Mutanty | Zabite | Timeouty | Ocalałe | Wynik  | Czas       |
+| ---------------------- | ------- | ------ | -------- | ------- | ------ | ---------- |
+| przed (testy z `main`) | 628     | 453    | 58       | 117     | 81,37% | 3 h 17 min |
+| po testach z luk       | 628     | 195    | 428      | 5       | 99,20% | 1 h 33 min |
+
+Wg pliku po: `rules.ts` 100% (0 ocalałych), `colors.ts` 100%, `generate.ts` 98,51% (5). Wiele mutantów, które wcześniej ocalały, po zmianie kończy się teraz timeoutem (np. gdy zmieniony generator nie kończy pętli); timeout liczy się jako zabity.
+
+### Nowe testy
+
+- `rules.test.ts` (dopisany do `npm test`, poniżej 1 s): `rowFromRule` dla wszystkich ośmiu reguł i długości 5, 7, 8 (każdy wiersz sprawdzony pole po polu przez własny opis reguły; liczby sięgają 1 i 20; mieszany zaczyna raz kształtem, raz liczbą), `shownBefore`, `followsRule` (ręczne wiersze poprawne i zepsute w jednym polu, brak przecieku między długościami), `hypotheses` (dokładna równość ze zbiorem zbudowanym w teście niezależnie z PRD, dla 5, 7, 8 pól, plus ręczne rosnące grupy) i `visiblePeriodReadings` (okresy 4–6, liczby, ukryte pole, jedno wystąpienie).
+- `generate.test.ts`: ponowne losowanie przy powtórzonym kluczu na każdym poziomie, stały `random` nie wywala generatora ani nie daje powtórzonego wiersza, kolejność reguł zmienia się między kartami, granice liczb (0, 21, ułamek, 1 i 20 poprawne), luki źle sformowane (puste, poza wierszem, nieposortowane, ułamek) dają tylko `gap-count`, pierwsza dozwolona luka po pokazaniu reguły, druga luka w drugiej połowie, `no-answer` bez `ambiguous`, przekazanie problemów wiersza do karty.
+- `colors.test.ts`: kształt bez kredki wraca do koloru tuszu.
+- Break-check (zepsuj, test czerwienieje, przywróć), 13 miejsc, m.in.: `lowest` poza zakresem, `down1` rosnące, mieszany nie sięga 20, `hypotheses` bez startu 20, brak rosnących grup, liczby czytane jak okres, cache `followsRule` bez długości, brak porównania z poprzednim kluczem, reguły bez tasowania, ignorowanie wiersza `null`, granica 21, wyłączone `no-answer`, powrót do tuszu. Liczba 21 wymagała dopisania testu, bo pierwotny przypadek 22 go nie łapał.
+
+### Ocalałe mutanty po fazie 5a (krótki oracle)
+
+| Linia                 | Mutant                                                           | Decyzja                                                                                                         |
+| --------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `generate.ts:63:54`   | `&& true` (kontrola `sequenceCardProblems` przy zwróceniu karty) | Siatka bezpieczeństwa: wiersze są walidowane przy losowaniu, więc karta z poprawnych wierszy zwykle przechodzi. |
+| `generate.ts:116` (2) | `shapesIn` bez filtra kształtów                                  | Równoważne: `assignSequenceColors` bierze tylko kształty z katalogu, liczby w liście są pomijane.               |
+| `generate.ts:134:39`  | `&& true` (kontrola `sequenceRowProblems` w `drawRow`)           | Siatka bezpieczeństwa: ta sama walidacja działa jeszcze raz na karcie.                                          |
+| `generate.ts:148:46`  | `pick(random, n - 1 + firstOfSecondHalf)` (druga luka)           | Walidator odrzuca zbyt późną lukę, więc zmienia się tylko liczba ponowień losowania.                            |
+
+### Porównanie krótkiego i pełnego oracle
+
+Krótki oracle (5 ziaren, 30 ziaren generacji) to początek pętli pełnego (120 i 300), więc pełny uruchamia te same sprawdzenia i jeszcze więcej: nie może zabić mniej mutantów. Sprawdziłam to na tych pięciu ocalałych: pełny oracle (bez `SEQUENCE_ORACLE_SEEDS`) zabija wszystkie pięć (2 zabite, 3 timeouty), przebieg 1 min 14 s, bo sam test trwa ok. 21 s (dry run). Pięć ocalałych z krótkiego przebiegu to więc mutanty zabijane tylko rzadkimi przypadkami, które daje dopiero pełna pętla. Dla zakresów, które w krótkim przebiegu zabijają wszystko, pełny oracle nie jest potrzebny.
