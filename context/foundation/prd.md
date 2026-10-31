@@ -139,7 +139,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy rodzaj ma własną stronę z własnym adresem (labirynt: `/maze`, symetria: `/symmetry`). Kliknięcie miniatury otwiera ją.
 - Katalog mieści co najmniej 10 rodzajów i jest czytelny na telefonie (miniatury w 2 kolumnach) i na komputerze.
 - Na stronie generatora jest link „Wszystkie karty” z powrotem do katalogu.
-- Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma.
+- Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma poza stopką z linkiem „Jak to działa” (US-22).
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
 - Wybrany profil dziecka zostaje po przejściu między katalogiem a stronami generatorów.
 - Przy wybranym profilu miniatura karty, której profil już używał, pokazuje zapamiętany poziom (np. „poz. 4”, „średni”); karta, której profil jeszcze nie używał, nie ma plakietki (US-08; decyzja 2026-10-27).
