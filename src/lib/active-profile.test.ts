@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import {
   clearActiveProfile,
+  NO_PROFILE,
   readActiveProfile,
   writeActiveProfile,
   type ActiveProfileStorage,
@@ -108,3 +109,15 @@ function blockedStorage(): ActiveProfileStorage {
     },
   };
 }
+
+void describe("NO_PROFILE", () => {
+  void test("is the word stored for an explicit choice of no profile, and it reads back, unlike an empty value", () => {
+    assert.equal(NO_PROFILE, "none");
+    const storage = memoryStorage(null);
+
+    writeActiveProfile(storage, NO_PROFILE);
+
+    assert.equal(storage.items.get(KEY), "none");
+    assert.equal(readActiveProfile(storage), NO_PROFILE);
+  });
+});

@@ -335,7 +335,7 @@ Brak zmian w danych ani w kodzie produktu.
 
 - [x] 1.1 Testy przechodzą: `npm test` — c3ad524
 - [x] 1.2 Lint i typy: `npm run lint`, `npx astro check` — c3ad524
-- [x] 1.3 Każdy `npm run mutate:<zakres>` startuje i kończy się wynikiem na wąskim zakresie
+- [x] 1.3 Każdy `npm run mutate:<zakres>` startuje i kończy się wynikiem na wąskim zakresie — c3ad524
 - [x] 1.4 Szybki oracle sekwencji: czas komendy z `stryker/sequence.config.json` jest zmierzony i zapisany w `stryker-results.md` (cel: kilkanaście sekund) — c3ad524
 
 #### Manual
@@ -395,9 +395,9 @@ Brak zmian w danych ani w kodzie produktu.
 
 #### Automated
 
-- [ ] 6.1 `npm test`, `npm run lint`, `npx astro check`, prettier
-- [ ] 6.2 `npm run mutate:local-data` kończy się, wynik zapisany
+- [x] 6.1 `npm test`, `npm run lint`, `npx astro check`, prettier — 1b11ab5
+- [x] 6.2 `npm run mutate:local-data` kończy się, wynik zapisany — 1b11ab5
 
 #### Manual
 
-- [ ] 6.3 `test-plan.md` zgadza się z `stryker-results.md`
+- [x] 6.3 `test-plan.md` zgadza się z `stryker-results.md` — 1b11ab5
