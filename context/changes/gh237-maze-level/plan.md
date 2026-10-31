@@ -287,31 +287,31 @@ Migracja odbywa się przy odczycie (`parseStoredCards`), bez przepisywania danyc
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi: `npm run lint`
-- [x] 2.2 Typy przechodzą: `npx astro check`
-- [x] 2.3 Testy jednostkowe przechodzą: `npm test`
-- [x] 2.4 Build przechodzi: `npm run build`
+- [x] 2.1 Lint przechodzi: `npm run lint` — 81851cf
+- [x] 2.2 Typy przechodzą: `npx astro check` — 81851cf
+- [x] 2.3 Testy jednostkowe przechodzą: `npm test` — 81851cf
+- [x] 2.4 Build przechodzi: `npm run build` — 81851cf
 - [x] 2.5 Specyfikacje e2e dotykające profilu i labiryntu przechodzą na wolnym porcie
 - [x] 2.6 `grep -rn "barLevel" src` nie zwraca nic
 
 #### Manual
 
 - [x] 2.7 Z dawnym zapisem w `localStorage` `/maze` i katalog pokazują poziom z profilu lub z last-used
-- [x] 2.8 Zmiana poziomu z profilem pokazuje „Zapamiętane dla {imię}”, po odświeżeniu zostaje, a profil w `localStorage` ma `cards.labirynt` i nie ma `level`
-- [x] 2.9 Zmiana poziomu bez profilu zapisuje się w last-used po odświeżeniu
-- [x] 2.10 Utworzenie profilu na `/maze` ustawia Poziom 3, a na `/symmetry` nie zmienia paska symetrii i daje plakietkę „poz. 3” labiryntu
-- [x] 2.11 Przełączenie i usunięcie aktywnego profilu na `/maze` przerysowuje kartę na właściwy poziom
+- [x] 2.8 Zmiana poziomu z profilem pokazuje „Zapamiętane dla {imię}”, po odświeżeniu zostaje, a profil w `localStorage` ma `cards.labirynt` i nie ma `level` — 81851cf
+- [x] 2.9 Zmiana poziomu bez profilu zapisuje się w last-used po odświeżeniu — 81851cf
+- [x] 2.10 Utworzenie profilu na `/maze` ustawia Poziom 3, a na `/symmetry` nie zmienia paska symetrii i daje plakietkę „poz. 3” labiryntu — 81851cf
+- [x] 2.11 Przełączenie i usunięcie aktywnego profilu na `/maze` przerysowuje kartę na właściwy poziom — 81851cf
 
 ### Phase 3: Dokumenty i weryfikacja końcowa
 
 #### Automated
 
-- [ ] 3.1 Lint przechodzi: `npm run lint`
-- [ ] 3.2 Testy przechodzą: `npm test`
-- [ ] 3.3 Typy przechodzą: `npx astro check`
-- [ ] 3.4 Build przechodzi: `npm run build`
-- [ ] 3.5 Pełne Chromium e2e przechodzi na wolnym porcie
-- [ ] 3.6 Brak pozostałości `withProfileLevel|useMazeLevelMemory|barLevel` w `src`
+- [x] 3.1 Lint przechodzi: `npm run lint`
+- [x] 3.2 Testy przechodzą: `npm test`
+- [x] 3.3 Typy przechodzą: `npx astro check`
+- [x] 3.4 Build przechodzi: `npm run build`
+- [x] 3.5 Pełne Chromium e2e przechodzi na wolnym porcie
+- [x] 3.6 Brak pozostałości `withProfileLevel|useMazeLevelMemory|barLevel` w `src`
 
 #### Manual
 
