@@ -30,7 +30,7 @@ export const CARD_KINDS: readonly CardKind[] = [
     href: "/sudoku",
     thumbnail: "/thumbnails/sudoku.svg",
     description:
-      "Dziecko uzupełnia puste pola planszy tak, by żaden kształt albo cyfra nie powtórzyły się w wierszu, kolumnie i bloku. Na kartce jest plansza 4×4, 6×6 albo 9×9, a pod nią lista kształtów do użycia. Rozmiar i poziom wybierasz osobno.",
+      "Dziecko uzupełnia puste pola planszy tak, by żaden kształt albo cyfra nie powtórzyły się w wierszu, kolumnie i bloku. Na kartce jest plansza 4×4, 6×6 albo 9×9, a przy kształtach pod planszą lista figur do użycia. Rozmiar i poziom wybierasz osobno.",
   },
   {
     id: "sekwencje",
