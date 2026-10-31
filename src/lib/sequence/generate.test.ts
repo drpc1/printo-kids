@@ -646,3 +646,125 @@ function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+void describe("generateSequenceCard draws again and shuffles", () => {
+  void test("a draw that repeats the previous key is drawn again, on every level", () => {
+    for (const level of SEQUENCE_LEVELS) {
+      const first = generateSequenceCard(mulberry32(3), null, level);
+      assert.ok(first, level.id);
+      const next = generateSequenceCard(mulberry32(3), first.key, level);
+
+      assert.ok(next, level.id);
+      assert.notEqual(next.key, first.key, level.id);
+    }
+  });
+
+  void test("a random source that never changes gives no card and no crash, or a card without a repeated row", () => {
+    for (const level of SEQUENCE_LEVELS) {
+      const card = generateSequenceCard(() => 0, null, level);
+
+      if (card !== null) {
+        assert.equal(new Set(card.rows.map((row) => `${row.rule}.${row.values.join("-")}`)).size, card.rows.length);
+      }
+    }
+  });
+
+  void test("the rules of the rows come in different orders on different cards", () => {
+    for (const level of [LAT6, LAT7]) {
+      const orders = new Set<string>();
+      for (let seed = 1; seed <= 20; seed += 1) {
+        const card = generateSequenceCard(mulberry32(seed), null, level);
+        assert.ok(card);
+        orders.add(card.rows.map((row) => row.rule).join(","));
+      }
+
+      assert.ok(orders.size > 3, `${level.id}: ${orders.size} orders`);
+    }
+  });
+});
+
+void describe("sequenceRowProblems on hand-written rows", () => {
+  const abc: readonly SequenceItem[] = [KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT];
+  const up1From1: readonly SequenceItem[] = [1, 2, 3, 4, 5, 6, 7, 8];
+  const up1From13: readonly SequenceItem[] = [13, 14, 15, 16, 17, 18, 19, 20];
+
+  void test("rows with numbers at both ends of the range are fine", () => {
+    assert.deepEqual(sequenceRowProblems({ rule: "up1", values: up1From1, gaps: [3, 6] }, LAT6), []);
+    assert.deepEqual(sequenceRowProblems({ rule: "up1", values: up1From13, gaps: [3, 6] }, LAT6), []);
+  });
+
+  void test("21 is one past the range", () => {
+    const problems = sequenceRowProblems({ rule: "up1", values: [14, 15, 16, 17, 18, 19, 20, 21], gaps: [3, 6] }, LAT6);
+
+    assert.ok(problems.includes("unknown-item"), problems.join(","));
+  });
+
+  void test("a number of 0 or a fraction is an unknown item", () => {
+    const zero = sequenceRowProblems({ rule: "up1", values: [0, 1, 2, 3, 4, 5, 6, 7], gaps: [3, 6] }, LAT6);
+    const fraction = sequenceRowProblems(
+      { rule: "up1", values: [1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5], gaps: [3, 6] },
+      LAT6,
+    );
+
+    assert.ok(zero.includes("unknown-item"), zero.join(","));
+    assert.ok(fraction.includes("unknown-item"), fraction.join(","));
+  });
+
+  void test("gaps that are empty, outside the row, not whole numbers or not ascending are a gap-count problem only", () => {
+    for (const gaps of [[], [-1, 5], [3, 8], [3, 5.5], [5, 3], [5, 5]]) {
+      assert.deepEqual(
+        sequenceRowProblems({ rule: "ABC", values: abc, gaps }, LAT6),
+        ["gap-count"],
+        JSON.stringify(gaps),
+      );
+    }
+  });
+
+  void test("the last field of the row and the first field after the rule is shown may be gaps", () => {
+    const last = sequenceRowProblems({ rule: "ABC", values: abc, gaps: [3, 7] }, LAT6);
+    const early = sequenceRowProblems({ rule: "ABC", values: abc, gaps: [3, 6] }, LAT6);
+    const tooEarly = sequenceRowProblems({ rule: "ABC", values: abc, gaps: [2, 6] }, LAT6);
+
+    assert.ok(!last.includes("gap-count"), last.join(","));
+    assert.ok(!early.includes("gap-count") && !early.includes("gap-before-rule-shown"), early.join(","));
+    assert.ok(tooEarly.includes("gap-before-rule-shown"), tooEarly.join(","));
+  });
+
+  void test("a gap in the first fields is before the rule is shown but still a well formed row", () => {
+    const problems = sequenceRowProblems({ rule: "ABC", values: abc, gaps: [0, 6] }, LAT6);
+
+    assert.ok(problems.includes("gap-before-rule-shown"), problems.join(","));
+    assert.ok(!problems.includes("gap-count"), problems.join(","));
+  });
+
+  void test("visible fields that fit no reading are reported as having no answer, not as ambiguous", () => {
+    const values = [KOLO, KWADRAT, KOLO, TROJKAT, KOLO, KWADRAT, KOLO, KWADRAT];
+    const problems = sequenceRowProblems({ rule: "AB", values, gaps: [4, 6] }, LAT6);
+
+    assert.ok(problems.includes("no-answer"), problems.join(","));
+    assert.ok(!problems.includes("ambiguous"), problems.join(","));
+  });
+
+  void test("at 5 lat a second gap is allowed from the middle of the row up to the one before the last field", () => {
+    const row: SequenceItem[] = [KOLO, KWADRAT, TROJKAT, KOLO, KWADRAT, TROJKAT, KOLO];
+    const outside = sequenceRowProblems({ rule: "ABC", values: row, gaps: [3, 6] }, LAT5);
+    const inside = sequenceRowProblems({ rule: "ABC", values: row, gaps: [4, 6] }, LAT5);
+    const late = sequenceRowProblems({ rule: "ABC", values: row, gaps: [5, 6] }, LAT5);
+
+    assert.ok(outside.includes("second-gap-outside-second-half"), outside.join(","));
+    assert.ok(!inside.includes("second-gap-outside-second-half"), inside.join(","));
+    assert.ok(!late.includes("second-gap-outside-second-half"), late.join(","));
+  });
+});
+
+void describe("sequenceCardProblems passes the problems of its rows on", () => {
+  void test("a row of the wrong length or with a broken rule shows up in the card problems", () => {
+    const card = generateSequenceCard(mulberry32(1), null, LAT5);
+    assert.ok(card);
+    const short = { ...card.rows[0], values: card.rows[0].values.slice(1) };
+
+    const problems = sequenceCardProblems({ ...card, rows: [short, ...card.rows.slice(1)] }, LAT5);
+
+    assert.ok(problems.includes("wrong-length"), problems.join(","));
+  });
+});
