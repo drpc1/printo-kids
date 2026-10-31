@@ -106,5 +106,5 @@ Zmiana kolejności w jednym miejscu, aktualizacja testu i opisu w PRD.
 
 #### Manual
 
-- [x] 1.4 Na stronach symetrii, nonogramu i dyktanda lista „Kategoria” (pasek i okno) pokazuje kolejność alfabetyczną z „Wszystkie” na górze
+- [x] 1.4 Na stronach symetrii, nonogramu i dyktanda lista „Kategoria” (pasek i okno) pokazuje kolejność alfabetyczną z „Wszystkie” na górze — e8e4ff2
 - [x] 1.5 Wybór kategorii i jej zapamiętanie w profilu działają jak przedtem — e8e4ff2
