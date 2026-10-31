@@ -188,8 +188,11 @@ test.describe("profiles", () => {
 
     await page.reload();
     await expect(page.getByRole("button", { name: "Poziom: 2" })).toBeVisible();
-    const profiles = (await stored(page, PROFILES_KEY)) as { profiles: { level: string }[] };
-    expect(profiles.profiles[0].level).toBe("lat4");
+    const profiles = (await stored(page, PROFILES_KEY)) as {
+      profiles: { level?: string; cards?: { labirynt?: { level: string } } }[];
+    };
+    expect(profiles.profiles[0].cards?.labirynt?.level).toBe("lat4");
+    expect(profiles.profiles[0]).not.toHaveProperty("level");
   });
 
   test("a new profile starts with the bar of the page it is created on", async ({ page }) => {

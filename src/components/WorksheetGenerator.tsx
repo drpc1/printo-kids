@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoiceRows } from "@/components/ProfileCorner";
-import { useMazeLevelMemory } from "@/hooks/useCardSettings";
+import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
+import type { LabiryntSettings } from "@/lib/card-settings";
 import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
 import {
@@ -32,11 +33,11 @@ const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
 
 export default function WorksheetGenerator() {
   const visit = useChildProfileVisit({ onApply: applyProfileBar });
-  const { profiles, activeId, ask, waitingForChild, visitStart, corner } = visit;
-  const mazeLevelMemory = useMazeLevelMemory(visit);
+  const { profiles, activeId, ask, waitingForChild, visitStart } = visit;
+  const memory = useCardSettings("labirynt", visit, handleProfileSwitch);
+  const level = memory.settings.level;
   const [character, setCharacter] = useState(visitStart.character);
   const [ownImageHref, setOwnImageHref] = useState(visitStart.ownImageHref ?? null);
-  const [level, setLevel] = useState(visitStart.level);
   const favorite = useFavoriteCharacter(visit, { character, ownImageHref });
   const [generateFailed, setGenerateFailed] = useState(false);
   const [maze, setMaze] = useState<Maze | null>(null);
@@ -58,11 +59,14 @@ export default function WorksheetGenerator() {
     setSheetShown(true);
   }
 
-  function applyLevel(next: LevelId): void {
-    if (next === level) {
+  function handleProfileSwitch(next: LabiryntSettings, previous: LabiryntSettings): void {
+    redrawForLevel(next.level, previous.level);
+  }
+
+  function redrawForLevel(next: LevelId, previous: LevelId): void {
+    if (next === previous) {
       return;
     }
-    setLevel(next);
     if (!sheetShown) {
       setGenerateFailed(false);
       return;
@@ -83,20 +87,18 @@ export default function WorksheetGenerator() {
       setOwnImageHref(null);
     }
     setCharacter(id);
-    recordBarCharacter(localStorage, activeId, id, level);
+    recordBarCharacter(localStorage, activeId, id);
   }
 
   function handleOwnImage(href: string): void {
     setCharacter(OWN_IMAGE_ID);
     setOwnImageHref(href);
-    recordBarCharacter(localStorage, activeId, OWN_IMAGE_ID, level);
+    recordBarCharacter(localStorage, activeId, OWN_IMAGE_ID);
   }
 
   function handleLevelSelect(id: LevelId): void {
-    applyLevel(id);
-    if (!mazeLevelMemory.remember(id)) {
-      recordBarCharacter(localStorage, null, character, id);
-    }
+    const previous = level;
+    redrawForLevel(memory.remember({ level: id }).level, previous);
   }
 
   function applyProfileBar(bar: ProfileBar): void {
@@ -106,7 +108,6 @@ export default function WorksheetGenerator() {
     } else if (bar.character !== OWN_IMAGE_ID) {
       setOwnImageHref(null);
     }
-    applyLevel(bar.level);
   }
 
   const sheetLevel = levelById(level);
@@ -120,9 +121,8 @@ export default function WorksheetGenerator() {
       ask={ask}
       waitingForChild={waitingForChild}
       barCharacter={character}
-      barLevel={level}
-      corner={corner}
-      note={mazeLevelMemory.note ?? favorite.note}
+      corner={memory.corner}
+      note={memory.note ?? favorite.note}
       sheetShown={sheetShown}
       generateFailed={generateFailed}
       failedText={GENERATE_FAILED_TEXT}

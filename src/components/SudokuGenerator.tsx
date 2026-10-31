@@ -34,7 +34,7 @@ import { cn } from "@/lib/utils";
  * Changing a setting while a card is shown generates a new card for the new settings; the Kolory switch (shapes only) redraws the same card in crayon colors and never generates a new one.
  */
 export default function SudokuGenerator() {
-  const { visit, bar, favorite, barLevel } = useCardPage();
+  const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [sizeOpen, setSizeOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
@@ -147,7 +147,6 @@ export default function SudokuGenerator() {
       ask={ask}
       waitingForChild={waitingForChild}
       barCharacter={bar.character}
-      barLevel={barLevel}
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}

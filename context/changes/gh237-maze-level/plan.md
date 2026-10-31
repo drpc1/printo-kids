@@ -276,31 +276,31 @@ Migracja odbywa się przy odczycie (`parseStoredCards`), bez przepisywania danyc
 
 #### Automated
 
-- [x] 1.1 Nowe testy migracji padły przed zmianą kodu (czerwone), a po zmianie przechodzą: `npm test`
-- [x] 1.2 Lint plików `src/lib` przechodzi: `npx eslint src/lib`
+- [x] 1.1 Nowe testy migracji padły przed zmianą kodu (czerwone), a po zmianie przechodzą: `npm test` — e66a235
+- [x] 1.2 Lint plików `src/lib` przechodzi: `npx eslint src/lib` — e66a235
 
 #### Manual
 
-- [x] 1.3 Przegląd diffu `src/lib`: nigdzie w `lib` nie zostało pole `level` profilu ani last-used poza kodem odczytu dawnego kształtu
+- [x] 1.3 Przegląd diffu `src/lib`: nigdzie w `lib` nie zostało pole `level` profilu ani last-used poza kodem odczytu dawnego kształtu — e66a235
 
 ### Phase 2: Hooki i komponenty
 
 #### Automated
 
-- [ ] 2.1 Lint przechodzi: `npm run lint`
-- [ ] 2.2 Typy przechodzą: `npx astro check`
-- [ ] 2.3 Testy jednostkowe przechodzą: `npm test`
-- [ ] 2.4 Build przechodzi: `npm run build`
-- [ ] 2.5 Specyfikacje e2e dotykające profilu i labiryntu przechodzą na wolnym porcie
-- [ ] 2.6 `grep -rn "barLevel" src` nie zwraca nic
+- [x] 2.1 Lint przechodzi: `npm run lint`
+- [x] 2.2 Typy przechodzą: `npx astro check`
+- [x] 2.3 Testy jednostkowe przechodzą: `npm test`
+- [x] 2.4 Build przechodzi: `npm run build`
+- [x] 2.5 Specyfikacje e2e dotykające profilu i labiryntu przechodzą na wolnym porcie
+- [x] 2.6 `grep -rn "barLevel" src` nie zwraca nic
 
 #### Manual
 
-- [ ] 2.7 Z dawnym zapisem w `localStorage` `/maze` i katalog pokazują poziom z profilu lub z last-used
-- [ ] 2.8 Zmiana poziomu z profilem pokazuje „Zapamiętane dla {imię}”, po odświeżeniu zostaje, a profil w `localStorage` ma `cards.labirynt` i nie ma `level`
-- [ ] 2.9 Zmiana poziomu bez profilu zapisuje się w last-used po odświeżeniu
-- [ ] 2.10 Utworzenie profilu na `/maze` ustawia Poziom 3, a na `/symmetry` nie zmienia paska symetrii i daje plakietkę „poz. 3” labiryntu
-- [ ] 2.11 Przełączenie i usunięcie aktywnego profilu na `/maze` przerysowuje kartę na właściwy poziom
+- [x] 2.7 Z dawnym zapisem w `localStorage` `/maze` i katalog pokazują poziom z profilu lub z last-used
+- [x] 2.8 Zmiana poziomu z profilem pokazuje „Zapamiętane dla {imię}”, po odświeżeniu zostaje, a profil w `localStorage` ma `cards.labirynt` i nie ma `level`
+- [x] 2.9 Zmiana poziomu bez profilu zapisuje się w last-used po odświeżeniu
+- [x] 2.10 Utworzenie profilu na `/maze` ustawia Poziom 3, a na `/symmetry` nie zmienia paska symetrii i daje plakietkę „poz. 3” labiryntu
+- [x] 2.11 Przełączenie i usunięcie aktywnego profilu na `/maze` przerysowuje kartę na właściwy poziom
 
 ### Phase 3: Dokumenty i weryfikacja końcowa
 

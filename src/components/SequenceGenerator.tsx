@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
  * level changed.
  */
 export default function SequenceGenerator() {
-  const { visit, bar, favorite, barLevel } = useCardPage();
+  const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
   const [card, setCard] = useState<SequenceCard | null>(null);
@@ -99,7 +99,6 @@ export default function SequenceGenerator() {
       ask={ask}
       waitingForChild={waitingForChild}
       barCharacter={bar.character}
-      barLevel={barLevel}
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}
