@@ -211,29 +211,29 @@ Statyczna strona bez JS; brak wpływu na czas generowania.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Typy przechodzą: `npx astro check`
-- [x] 1.3 Build przechodzi: `npm run build`
-- [x] 1.4 Smoke przechodzi na działającym serwerze: `npm run smoke`
+- [x] 1.1 Lint przechodzi: `npm run lint` — 7f9a940
+- [x] 1.2 Typy przechodzą: `npx astro check` — 7f9a940
+- [x] 1.3 Build przechodzi: `npm run build` — 7f9a940
+- [x] 1.4 Smoke przechodzi na działającym serwerze: `npm run smoke` — 7f9a940
 
 #### Manual
 
-- [x] 1.5 Strona czyta się w minutę, nie używa wieku jako nazwy poziomu i prowadzi z powrotem do katalogu
-- [x] 1.6 Wygląd poprawny na telefonie (360 px) i na komputerze
+- [x] 1.5 Strona czyta się w minutę, nie używa wieku jako nazwy poziomu i prowadzi z powrotem do katalogu — 7f9a940
+- [x] 1.6 Wygląd poprawny na telefonie (360 px) i na komputerze — 7f9a940
 
 ### Phase 2: Stopka z linkiem
 
 #### Automated
 
-- [ ] 2.1 Lint i typy: `npm run lint` oraz `npx astro check`
-- [ ] 2.2 Testy jednostkowe: `npm test`
-- [ ] 2.3 Istniejące e2e układu i druku zielone: `E2E_PORT=<wolny port> npx playwright test --project=chromium --project=phone-360`
+- [x] 2.1 Lint i typy: `npm run lint` oraz `npx astro check`
+- [x] 2.2 Testy jednostkowe: `npm test`
+- [x] 2.3 Istniejące e2e układu i druku zielone: `E2E_PORT=<wolny port> npx playwright test --project=chromium --project=phone-360`
 
 #### Manual
 
-- [ ] 2.4 Stopka widoczna na `/` i na każdej z sześciu stron generatorów
-- [ ] 2.5 Podgląd wydruku A4 pokazuje tylko kartę, bez stopki, na jednej stronie z marginesem 10 mm
-- [ ] 2.6 Na telefonie stopka nie nachodzi na „Generuj"/„Drukuj"
+- [x] 2.4 Stopka widoczna na `/` i na każdej z sześciu stron generatorów
+- [x] 2.5 Podgląd wydruku A4 pokazuje tylko kartę, bez stopki, na jednej stronie z marginesem 10 mm
+- [x] 2.6 Na telefonie stopka nie nachodzi na „Generuj"/„Drukuj"
 
 ### Phase 3: Test zgodności treści z UI i zamknięcie
 
