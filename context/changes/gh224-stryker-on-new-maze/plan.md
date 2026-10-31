@@ -225,26 +225,26 @@ Pełny baseline: ok. 15 s na mutanta przy 4 procesach, rząd godziny lub więcej
 
 #### Automated
 
-- [x] 1.1 `npm run mutate:maze -- --dryRunOnly` przechodzi (testy bazowe zielone pod `MUTATION_RUN=1`)
-- [x] 1.2 Testy przechodzą: `npm test`
-- [x] 1.3 Lint przechodzi: `npm run lint`
-- [x] 1.4 Brak rootowego pliku: `test ! -f stryker.config.json`
-- [x] 1.6 Czas `npm test` na czystym stanie zapisany w `reviews/stryker-results.md` przed zmianą testów
+- [x] 1.1 `npm run mutate:maze -- --dryRunOnly` przechodzi (testy bazowe zielone pod `MUTATION_RUN=1`) — 6dda780
+- [x] 1.2 Testy przechodzą: `npm test` — 6dda780
+- [x] 1.3 Lint przechodzi: `npm run lint` — 6dda780
+- [x] 1.4 Brak rootowego pliku: `test ! -f stryker.config.json` — 6dda780
+- [x] 1.6 Czas `npm test` na czystym stanie zapisany w `reviews/stryker-results.md` przed zmianą testów — 6dda780
 
 #### Manual
 
-- [x] 1.5 `stryker/maze.config.json` wygląda jak pozostałe konfiguracje zakresów
+- [x] 1.5 `stryker/maze.config.json` wygląda jak pozostałe konfiguracje zakresów — 6dda780
 
 ### Phase 2: Baseline „przed”
 
 #### Automated
 
-- [ ] 2.1 Przebieg kończy się bez błędu: `npm run mutate:maze`
-- [ ] 2.2 Raport zawiera wiersz przed dla każdego z pięciu modułów
+- [x] 2.1 Przebieg kończy się bez błędu: `npm run mutate:maze`
+- [x] 2.2 Raport zawiera wiersz przed dla każdego z pięciu modułów
 
 #### Manual
 
-- [ ] 2.3 Wynik „przed” jest zapisany przed pierwszą zmianą w testach
+- [x] 2.3 Wynik „przed” jest zapisany przed pierwszą zmianą w testach
 
 ### Phase 3: Triage `maze/generate.ts` i `child-profiles.ts`
 
