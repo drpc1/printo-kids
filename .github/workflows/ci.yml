@@ -29,7 +29,8 @@ jobs:
             echo "app=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          app="$(git diff -z -M --name-status "$base" "$head" | node scripts/context-only-diff.mjs)"
+          git show "$base:scripts/context-only-diff.mjs" > "$RUNNER_TEMP/context-only-diff.mjs"
+          app="$(git diff -z -M --name-status "$base" "$head" | node "$RUNNER_TEMP/context-only-diff.mjs")"
           echo "app=$app" >> "$GITHUB_OUTPUT"
 
   ci:
