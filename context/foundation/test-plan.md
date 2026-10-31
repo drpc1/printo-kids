@@ -1,6 +1,6 @@
 ---
 project: PrintoKids
-checked: 2026-11-03
+checked: 2026-10-31
 status: active
 ---
 
@@ -80,7 +80,7 @@ Kolejność bierze się z wpływu i sparzenia, zgodnie z wywiadem P3. Faza 1 ma 
 
 Astro 7 SSR, wyspy React, TypeScript, Tailwind, Cloudflare Workers. Node 22.14.0. Produkt nie ma kont, płatności, AI ani zadań w tle. Dane labiryntu, profili i ustawień kart zostają na urządzeniu.
 
-Baza testów: **zbudowana**. `npm test` (około 750 testów, stan 2026-11-03) uruchamia pliki wyliczone w skrypcie `test` w `package.json`: labirynt (`src/lib/maze/`), układ i znaczniki kartki (`src/lib/sheet/`), zapis lokalny (`last-used`, `active-profile`, `child-profiles`, `card-settings`, `card-summary`, `catalog-badges`, `own-image`, `own-image-store`) oraz generatory i układy kart (`src/lib/symmetry/`, `sequence/`, `sudoku/`, `nonogram/`, `dictation/`, `object-categories`) i dwa skrypty (`scripts/agent-hooks.test.mjs`, `scripts/site-icons.test.mjs`). Nowy plik testu trzeba dopisać do tego skryptu. Nie ma Vitest ani Jest, a Stryker działa selektywnie (`stryker.config.json`, wąskie `--mutate plik:start-end`; patrz §5). Playwright jest w `tests/e2e/`: `seed`, `phone-layout`, `level-bar`, `dialog-close`, `card-settings`, `catalog`, `profile-summary`, `own-image`, `character-speaks`, `favorite-character`, `symmetry-colors`, `sudoku-colors`, `sudoku-levels`. Działa lokalnie (`E2E_PORT=4399`, bo `reuseExistingServer` łączy się z serwerem na zajętym porcie) i w bramce CI (job `e2e` w `ci.yml`, projekty Chromium `chromium`, `phone-360`, `pixel-7`, `tablet-768`); ręczny workflow `e2e-phone.yml` uruchamia wszystkie projekty, także iPhone (WebKit). CI odpala `npm test`, `npm run lint`, `npx astro check`, build, smoke strony produktu i e2e.
+Baza testów: **zbudowana**. `npm test` (około 750 testów, stan 2026-10-31) uruchamia pliki wyliczone w skrypcie `test` w `package.json`: labirynt (`src/lib/maze/`), układ i znaczniki kartki (`src/lib/sheet/`), zapis lokalny (`last-used`, `active-profile`, `child-profiles`, `card-settings`, `card-summary`, `catalog-badges`, `own-image`, `own-image-store`) oraz generatory i układy kart (`src/lib/symmetry/`, `sequence/`, `sudoku/`, `nonogram/`, `dictation/`, `object-categories`) i dwa skrypty (`scripts/agent-hooks.test.mjs`, `scripts/site-icons.test.mjs`). Nowy plik testu trzeba dopisać do tego skryptu. Nie ma Vitest ani Jest, a Stryker działa selektywnie (`stryker.config.json`, wąskie `--mutate plik:start-end`; patrz §5). Playwright jest w `tests/e2e/`: `seed`, `phone-layout`, `level-bar`, `dialog-close`, `card-settings`, `catalog`, `profile-summary`, `own-image`, `character-speaks`, `favorite-character`, `symmetry-colors`, `sudoku-colors`, `sudoku-levels`. Działa lokalnie (`E2E_PORT=4399`, bo `reuseExistingServer` łączy się z serwerem na zajętym porcie) i w bramce CI (job `e2e` w `ci.yml`, projekty Chromium `chromium`, `phone-360`, `pixel-7`, `tablet-768`); ręczny workflow `e2e-phone.yml` uruchamia wszystkie projekty, także iPhone (WebKit). CI odpala `npm test`, `npm run lint`, `npx astro check`, build, smoke strony produktu i e2e.
 
 **Stack grounding tools (current session):**
 
@@ -91,7 +91,7 @@ Baza testów: **zbudowana**. `npm test` (około 750 testów, stan 2026-11-03) ur
 
 ## §5 Co jest już sprawdzone
 
-`npm test` ma około 750 testów (stan 2026-11-03; 114 w stanie z 2026-10-21). Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
+`npm test` ma około 750 testów (stan 2026-10-31; 114 w stanie z 2026-10-21). Opisują istniejący zestaw. Nie są dowodem jednej strony w Chrome ani dowodem, że profil dziecka zostaje na urządzeniu.
 
 Dla każdego z sześciu poziomów kilka ustalonych ziaren daje siatkę tego poziomu, otwarte ściany wejścia i wyjścia, jedną drogę i osiągalność każdej komórki. Na 200 ziarnach mediana drogi 4 lat jest większa niż 3 lat, a 6 lat niż 5 lat; to kolejność, nie próg. Żaden poziom nie powtarza jednej drogi na ośmiu ziarnach. To samo ziarno daje te same ściany. Generator nie woła `Math.random`. Te sprawdzenia nie dowodzą odmowy kartki przy zero ścieżkach.
 
@@ -117,7 +117,7 @@ Smoke w osobnym jobie CI (`scripts/smoke.mjs`) sprawdza, że strona produktu si�
 
 ## §5a Mutacje Strykera: karty i dane lokalne
 
-Zmiana `critical-paths-mutation-testing` (2026-10-27 do 2026-11-03) uruchomiła Strykera osobno na każdym zakresie i dopisała testy z luk (decyzja: Faza 0 z raportu tylko dla pozycji 1–3, reszta przez Strykera). Każdy zakres ma plik `stryker/<zakres>.config.json` i skrypt `npm run mutate:<zakres>`; wąski przebieg: `npm run mutate:<zakres> -- --mutate "plik:start-end"`. Stryker pod `MUTATION_RUN=1` wyłącza budżety czasu, a sekwencje dostają krótszy oracle (`SEQUENCE_ORACLE_SEEDS=5`); `npm test` ma pełne budżety i 120 ziaren. Wyniki, decyzje dla każdego ocalałego mutanta i instrukcja powtórzenia: `context/changes/critical-paths-mutation-testing/reviews/stryker-results.md`.
+Zmiana `critical-paths-mutation-testing` (2026-10-27 do 2026-10-31) uruchomiła Strykera osobno na każdym zakresie i dopisała testy z luk (decyzja: Faza 0 z raportu tylko dla pozycji 1–3, reszta przez Strykera). Każdy zakres ma plik `stryker/<zakres>.config.json` i skrypt `npm run mutate:<zakres>`; wąski przebieg: `npm run mutate:<zakres> -- --mutate "plik:start-end"`. Stryker pod `MUTATION_RUN=1` wyłącza budżety czasu, a sekwencje dostają krótszy oracle (`SEQUENCE_ORACLE_SEEDS=5`); `npm test` ma pełne budżety i 120 ziaren. Wyniki, decyzje dla każdego ocalałego mutanta i instrukcja powtórzenia: `context/changes/critical-paths-mutation-testing/reviews/stryker-results.md`.
 
 | Zakres                                                                        | Ryzyko | Mutanty | Wynik przed | Wynik po | Ocalałe przed → po |
 | ----------------------------------------------------------------------------- | ------ | ------- | ----------- | -------- | ------------------ |
