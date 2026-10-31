@@ -1,7 +1,7 @@
 ---
 change_id: gh234-profile-on-homepage
 title: Profil klikalny na stronie głównej (GitHub 234)
-status: implemented
+status: impl_reviewed
 created: 2026-10-31
 updated: 2026-10-31
 archived_at: null
