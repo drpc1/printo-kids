@@ -1,10 +1,10 @@
 ---
 change_id: gh167-favourite-character
 title: Gh167 favourite character
-status: impl_reviewed
+status: archived
 created: 2026-10-29
 updated: 2026-10-31
-archived_at: null
+archived_at: 2026-10-31T11:05:25Z
 ---
 
 ## Notes
