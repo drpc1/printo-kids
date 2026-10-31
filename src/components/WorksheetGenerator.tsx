@@ -4,7 +4,7 @@ import { CardPage } from "@/components/CardPage";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
-import { LevelChoiceRows } from "@/components/ProfileCorner";
+import { LevelChoiceRows } from "@/components/LevelChoiceRows";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
