@@ -1,10 +1,10 @@
 ---
 change_id: gh214-phone-settings-rows
 title: Czerwone testy phone-settings-rows na phone-360 (GitHub 214)
-status: preparing
+status: archived
 created: 2026-10-31
 updated: 2026-10-31
-archived_at: null
+archived_at: 2026-10-31T08:38:19Z
 ---
 
 ## Notes
