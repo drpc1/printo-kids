@@ -100,11 +100,11 @@ Zmiana kolejności w jednym miejscu, aktualizacja testu i opisu w PRD.
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
+- [x] 1.1 Testy przechodzą: `npm test` — e8e4ff2
+- [x] 1.2 Lint przechodzi: `npm run lint` — e8e4ff2
+- [x] 1.3 Typy przechodzą: `npx astro check` — e8e4ff2
 
 #### Manual
 
 - [x] 1.4 Na stronach symetrii, nonogramu i dyktanda lista „Kategoria” (pasek i okno) pokazuje kolejność alfabetyczną z „Wszystkie” na górze
-- [x] 1.5 Wybór kategorii i jej zapamiętanie w profilu działają jak przedtem
+- [x] 1.5 Wybór kategorii i jej zapamiętanie w profilu działają jak przedtem — e8e4ff2
