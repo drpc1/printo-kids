@@ -27,7 +27,7 @@ export function SudokuSymbolsChoice({
             onSelect(option.id);
           }}
           className={cn(
-            "text-muted-foreground hover:text-foreground h-auto px-2 py-1 text-base font-normal max-sm:px-3",
+            "text-muted-foreground hover:text-foreground h-auto px-3 py-1 text-base font-normal",
             symbols === option.id && "bg-muted text-foreground",
           )}
         >

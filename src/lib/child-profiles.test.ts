@@ -137,6 +137,24 @@ void describe("readChildProfiles", () => {
   });
 });
 
+void describe("a stored list with malformed entries", () => {
+  void test("drops each malformed entry and keeps the valid profiles", () => {
+    const valid: ChildProfile = { id: "ok", name: "Zosia", character: "rakieta", level: "lat5" };
+    const entries: unknown[] = [
+      null,
+      5,
+      "text",
+      [],
+      { name: "Bez id", character: "rakieta", level: "lat5" },
+      { id: 5, name: "Numer", character: "rakieta", level: "lat5" },
+      { id: "n", name: 5, character: "rakieta", level: "lat5" },
+      { id: "c", name: "Postac", character: 7, level: "lat5" },
+      valid,
+    ];
+    assertStoredRead(JSON.stringify({ profiles: entries }), [valid]);
+  });
+});
+
 void describe("profileNameError", () => {
   void test('" Zosia " against an empty list is valid', () => {
     assert.equal(profileNameError(" Zosia ", []), null);
