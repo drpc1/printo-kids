@@ -1,10 +1,10 @@
 ---
 change_id: gh209-maze-level-list-iphone-overflow
 title: Lista poziomów labiryntu przepełnia dialog na iPhone 13
-status: impl_reviewed
+status: archived
 created: 2026-10-31
 updated: 2026-10-31
-archived_at: null
+archived_at: 2026-10-31T14:49:06Z
 ---
 
 ## Notes
