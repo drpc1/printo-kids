@@ -43,7 +43,7 @@ export function useChildProfileVisit({ onApply }: { onApply: (bar: ProfileBar) =
   visitStart: ProfileBar;
   /** The card settings the visit opened with (see `useCardSettings`). */
   visitCards: CardSettingsMap;
-  /** Replaces the profile list after a write that did not go through the corner (card settings, maze level). */
+  /** Replaces the profile list after a write that did not go through the corner (card settings). */
   replaceProfiles: (next: ChildProfile[]) => void;
   corner: ProfileCornerHandlers;
 } {
