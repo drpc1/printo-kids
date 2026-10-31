@@ -3,7 +3,7 @@ import { OBJECT_CATEGORY_CHOICES, type ObjectCategoryChoiceId } from "@/lib/symm
 
 /**
  * The "Kategoria: …" button of the pages that draw an object from the template catalog (symmetry, nonogram,
- * dictation) and the dialog listing "Wszystkie" and the five categories. The parent picks exactly one; the choice
+ * dictation) and the dialog listing "Wszystkie" and the six categories. The parent picks exactly one; the choice
  * counts at the next Generuj and lives in the page state.
  */
 export function CategoryChoice({
