@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { Buffer } from "node:buffer";
 import { spawnSync } from "node:child_process";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { requiresAppGate } from "./context-only-diff.mjs";
@@ -65,4 +67,54 @@ test("cli prints true or false and exits non-zero on a truncated record", () => 
     encoding: "utf8",
   });
   assert.notEqual(broken.status, 0);
+});
+
+function git(cwd, ...args) {
+  const result = spawnSync("git", args, { cwd, encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+  return result.stdout;
+}
+
+function write(root, file, text) {
+  const target = path.join(root, file);
+  mkdirSync(path.dirname(target), { recursive: true });
+  writeFileSync(target, text);
+}
+
+test("a PR behind main that changes only context/ does not run the gate (GitHub 249)", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "context-only-range-"));
+  try {
+    git(root, "init", "-q", "-b", "main");
+    git(root, "config", "user.name", "test");
+    git(root, "config", "user.email", "test@example.com");
+    git(root, "config", "commit.gpgsign", "false");
+    write(root, "src/a.ts", "a\n");
+    write(root, "context/note.md", "1\n");
+    git(root, "add", "-A");
+    git(root, "commit", "-q", "-m", "base");
+
+    git(root, "checkout", "-q", "-b", "pr");
+    write(root, "context/note.md", "2\n");
+    git(root, "commit", "-q", "-am", "context only");
+    const head = git(root, "rev-parse", "HEAD").trim();
+
+    git(root, "checkout", "-q", "main");
+    write(root, "src/a.ts", "b\n");
+    git(root, "commit", "-q", "-am", "main moves src");
+    const base = git(root, "rev-parse", "HEAD").trim();
+
+    // Two endpoints see main's later src/ change as a reverted PR change.
+    const twoEnds = git(root, "diff", "-z", "-M", "--name-status", base, head);
+    const fromMergeBase = git(root, "diff", "-z", "-M", "--name-status", `${base}...${head}`);
+    assert.equal(requiresAppGate(twoEnds), true);
+    assert.equal(requiresAppGate(fromMergeBase), false);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("ci.yml diffs pull requests from the merge-base", () => {
+  const workflow = readFileSync(path.join(import.meta.dirname, "..", ".github", "workflows", "ci.yml"), "utf8");
+  assert.match(workflow, /range="\$base\.\.\.\$head"/);
+  assert.match(workflow, /--name-status\s+"\$range"/);
 });
