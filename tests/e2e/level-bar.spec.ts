@@ -129,6 +129,6 @@ test("a maze level row shows its name, what changes and the typical age", async 
 
   await page.getByRole("button", { name: /^Poziom:/ }).click();
   const row = page.getByRole("dialog").getByRole("button", { name: /^Poziom 3\b/ });
-  await expect(row).toContainText("węższe alejki, krótka droga");
+  await expect(row).toContainText("węższe alejki, dłuższa kręta droga");
   await expect(row).toContainText("zwykle ok. 5 lat");
 });
