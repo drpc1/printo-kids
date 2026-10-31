@@ -395,9 +395,9 @@ Brak zmian w danych ani w kodzie produktu.
 
 #### Automated
 
-- [x] 6.1 `npm test`, `npm run lint`, `npx astro check`, prettier
-- [x] 6.2 `npm run mutate:local-data` kończy się, wynik zapisany
+- [x] 6.1 `npm test`, `npm run lint`, `npx astro check`, prettier — 1b11ab5
+- [x] 6.2 `npm run mutate:local-data` kończy się, wynik zapisany — 1b11ab5
 
 #### Manual
 
-- [x] 6.3 `test-plan.md` zgadza się z `stryker-results.md`
+- [x] 6.3 `test-plan.md` zgadza się z `stryker-results.md` — 1b11ab5
