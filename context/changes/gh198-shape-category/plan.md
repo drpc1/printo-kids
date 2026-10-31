@@ -244,24 +244,24 @@ Generowanie ma zostać poniżej 5 s; trudny nonogram sprawdza wszystkie warianty
 
 #### Automated
 
-- [x] 2.1 Wszystkie testy przechodzą: `npm test`
-- [x] 2.2 Typy i lint przechodzą: `npx astro check`, `npm run lint`
-- [x] 2.3 Co najmniej 4 figury w każdym rozmiarze
+- [x] 2.1 Wszystkie testy przechodzą: `npm test` — 8391874
+- [x] 2.2 Typy i lint przechodzą: `npx astro check`, `npm run lint` — 8391874
+- [x] 2.3 Co najmniej 4 figury w każdym rozmiarze — 8391874
 
 #### Manual
 
-- [x] 2.4 Kilkanaście razy Generuj w „Kształty” na każdej karcie daje różne karty
-- [x] 2.5 Nonogram trudny i dyktando trudne mieszczą się na A4 i da się je rozwiązać
+- [x] 2.4 Kilkanaście razy Generuj w „Kształty” na każdej karcie daje różne karty — 8391874
+- [x] 2.5 Nonogram trudny i dyktando trudne mieszczą się na A4 i da się je rozwiązać — 8391874
 
 ### Phase 3: Zasięg poza szablonami i PRD
 
 #### Automated
 
-- [ ] 3.1 Pełny pakiet: `npm run lint`, `npm test`, `npx astro check`, `npm run build`
-- [ ] 3.2 Testy profilu i podsumowania przechodzą z kategorią `ksztalty`
+- [x] 3.1 Pełny pakiet: `npm run lint`, `npm test`, `npx astro check`, `npm run build`
+- [x] 3.2 Testy profilu i podsumowania przechodzą z kategorią `ksztalty`
 
 #### Manual
 
-- [ ] 3.3 Wybór „Kształty” zapamiętuje się w profilu i widać go w podsumowaniu
-- [ ] 3.4 Karty trzech rodzajów drukują się jako jedna strona A4 z marginesem 10 mm
-- [ ] 3.5 Widok telefonu (360 px) pokazuje cały pasek „Kategoria” bez ucięcia
+- [x] 3.3 Wybór „Kształty” zapamiętuje się w profilu i widać go w podsumowaniu
+- [x] 3.4 Karty trzech rodzajów drukują się jako jedna strona A4 z marginesem 10 mm
+- [x] 3.5 Widok telefonu (360 px) pokazuje cały pasek „Kategoria” bez ucięcia

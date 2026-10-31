@@ -62,6 +62,11 @@ void describe("cardSummaries", () => {
     assert.equal(byId(summaries, "dyktando").badge, null);
   });
 
+  void test("the Kształty category shows its label in the detail", () => {
+    const summaries = cardSummaries(profile("lat6", { nonogram: { level: "trudny", category: "ksztalty" } }));
+    assert.equal(byId(summaries, "nonogram").detail, "trudny · Kształty");
+  });
+
   void test("the symmetry colors appear only when they are on", () => {
     const off = byId(
       cardSummaries(profile("lat5", { symetria: { level: "lat5", colors: false, category: "wszystkie" } })),
