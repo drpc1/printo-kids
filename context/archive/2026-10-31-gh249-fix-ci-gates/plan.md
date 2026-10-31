@@ -111,11 +111,11 @@ Brak; `fetch-depth: 0` już jest, `...` nie dodaje kosztu.
 
 #### Automated
 
-- [x] 1.1 Testy bramki przechodzą: `node --test scripts/context-only-diff.test.mjs`
-- [x] 1.2 Cały zestaw przechodzi: `npm test`
-- [x] 1.3 Test zawodzi na dawnym `ci.yml` (cofnięcie zmiany `range` w kroku diff daje czerwony test)
-- [x] 1.4 Lint przechodzi: `npm run lint`
-- [x] 1.5 Format przechodzi: `npx prettier --check .github/workflows/ci.yml scripts/context-only-diff.test.mjs`
+- [x] 1.1 Testy bramki przechodzą: `node --test scripts/context-only-diff.test.mjs` — 434945a
+- [x] 1.2 Cały zestaw przechodzi: `npm test` — 434945a
+- [x] 1.3 Test zawodzi na dawnym `ci.yml` (cofnięcie zmiany `range` w kroku diff daje czerwony test) — 434945a
+- [x] 1.4 Lint przechodzi: `npm run lint` — 434945a
+- [x] 1.5 Format przechodzi: `npx prettier --check .github/workflows/ci.yml scripts/context-only-diff.test.mjs` — 434945a
 
 #### Manual
 
