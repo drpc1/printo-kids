@@ -126,6 +126,6 @@ Dane profilu i ostatnio użyta postać zostają bez zmian. Nie ma migracji.
 
 #### Manual
 
-- [ ] 1.3 W edycji profilu lista postaci ma jeden widoczny tytuł „Ulubiona postać” i nie pokazuje obok „Wybierz postać”
-- [ ] 1.4 Lista przy „Dodaj profil” i lista na pasku karty nie pokazują „Ulubiona postać”
-- [ ] 1.5 Na telefonie ostatni wiersz listy z edycji da się dosunąć przewijaniem
+- [x] 1.3 W edycji profilu lista postaci ma jeden widoczny tytuł „Ulubiona postać” i nie pokazuje obok „Wybierz postać” — ad96ab4
+- [x] 1.4 Lista przy „Dodaj profil” i lista na pasku karty nie pokazują „Ulubiona postać” — ad96ab4
+- [x] 1.5 Na telefonie ostatni wiersz listy z edycji da się dosunąć przewijaniem — ad96ab4
