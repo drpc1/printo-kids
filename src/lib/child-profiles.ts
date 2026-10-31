@@ -1,6 +1,5 @@
 import { NO_PROFILE } from "./active-profile.ts";
-import { parseCardSettings, type CardSettingsMap } from "./card-settings.ts";
-import { DEFAULT_LEVEL_ID, isLevelId, type LevelId } from "./maze/levels.ts";
+import { parseStoredCards, type CardSettingsMap } from "./card-settings.ts";
 import { OWN_IMAGE_ID } from "./sheet/character.ts";
 import { isOwnImageDataUrl } from "./sheet/own-image-store.ts";
 
@@ -16,9 +15,8 @@ export interface ChildProfile {
   id: string;
   name: string;
   character: string;
-  level: LevelId;
   image?: string;
-  /** Bar settings of the cards other than the maze. Absent until the profile used one. */
+  /** Bar settings of every card, the maze level included. Absent until the profile used one. */
   cards?: CardSettingsMap;
 }
 
@@ -73,13 +71,11 @@ export function writeChildProfiles(storage: ChildProfileStorage, profiles: reado
 
 export interface BarChoice {
   character: string;
-  level: LevelId;
 }
 
 export interface OpeningVisit {
   activeId: string | null;
   character: string;
-  level: LevelId;
   ask: boolean;
 }
 
@@ -87,11 +83,10 @@ export function withFavorite(
   profiles: readonly ChildProfile[],
   id: string,
   character: string,
-  level: LevelId,
   allowed: readonly string[],
   imageHref?: string | null,
 ): ChildProfile[] | null {
-  if (!allowed.includes(character) || !isLevelId(level) || !profiles.some((profile) => profile.id === id)) {
+  if (!allowed.includes(character) || !profiles.some((profile) => profile.id === id)) {
     return null;
   }
   if (character === OWN_IMAGE_ID && !isOwnImageDataUrl(imageHref)) {
@@ -104,19 +99,10 @@ export function withFavorite(
     }
     const cards = cardsOf(profile);
     if (character === OWN_IMAGE_ID && isOwnImageDataUrl(imageHref)) {
-      return { id: profile.id, name: profile.name, character, level, image: imageHref, ...cards };
+      return { id: profile.id, name: profile.name, character, image: imageHref, ...cards };
     }
-    return { id: profile.id, name: profile.name, character, level, ...cards };
+    return { id: profile.id, name: profile.name, character, ...cards };
   });
-}
-
-/** The profile with only its maze level changed. The character, the own image and the card settings stay. */
-export function withProfileLevel(profiles: readonly ChildProfile[], id: string, level: LevelId): ChildProfile[] | null {
-  if (!isLevelId(level) || !profiles.some((profile) => profile.id === id)) {
-    return null;
-  }
-
-  return profiles.map((profile) => (profile.id === id ? { ...profile, level } : profile));
 }
 
 /** The profile with the settings of the cards replaced. Everything else stays. */
@@ -141,7 +127,6 @@ export function profileToCreate(
   id: string,
   name: string,
   character: string,
-  level: LevelId,
   imageHref: string | null,
   cards?: CardSettingsMap,
 ): ChildProfile | null {
@@ -150,12 +135,12 @@ export function profileToCreate(
     if (!isOwnImageDataUrl(imageHref)) {
       return null;
     }
-    return { id, name, character, level, image: imageHref, ...withCards };
+    return { id, name, character, image: imageHref, ...withCards };
   }
   if (character.startsWith("data:")) {
     return null;
   }
-  return { id, name, character, level, ...withCards };
+  return { id, name, character, ...withCards };
 }
 
 /**
@@ -181,22 +166,21 @@ export function openingVisit(
 ): OpeningVisit {
   const remembered = stored === null ? undefined : profiles.find((profile) => profile.id === stored);
   if (remembered !== undefined) {
-    return { activeId: remembered.id, character: remembered.character, level: remembered.level, ask: false };
+    return { activeId: remembered.id, character: remembered.character, ask: false };
   }
 
   if (stored === NO_PROFILE) {
-    return { activeId: null, character: lastUsed.character, level: lastUsed.level, ask: false };
+    return { activeId: null, character: lastUsed.character, ask: false };
   }
 
   const only = profiles.length === 1 ? profiles[0] : undefined;
   if (only !== undefined) {
-    return { activeId: only.id, character: only.character, level: only.level, ask: false };
+    return { activeId: only.id, character: only.character, ask: false };
   }
 
   return {
     activeId: null,
     character: lastUsed.character,
-    level: lastUsed.level,
     ask: profiles.length >= 2,
   };
 }
@@ -218,7 +202,6 @@ export function visitAfterDelete(
       profiles: [...profiles],
       activeId,
       character: bar.character,
-      level: bar.level,
       ask: activeId === null && profiles.length >= 2,
     };
   }
@@ -229,7 +212,6 @@ export function visitAfterDelete(
       profiles: remaining,
       activeId,
       character: bar.character,
-      level: bar.level,
       ask: false,
     };
   }
@@ -295,18 +277,18 @@ function acceptEntry(entry: unknown, allowed: readonly string[], kept: readonly 
     return null;
   }
 
-  const level = isLevelId(entry.level) ? entry.level : DEFAULT_LEVEL_ID;
   const image = isOwnImageDataUrl(entry.image) ? entry.image : undefined;
   const keptName = name.trim();
-  const cards = entry.cards === undefined ? {} : { cards: parseCardSettings(entry.cards) };
+  const parsedCards = parseStoredCards(entry);
+  const cards = entry.cards === undefined && Object.keys(parsedCards).length === 0 ? {} : { cards: parsedCards };
 
   if (character === OWN_IMAGE_ID && image === undefined) {
-    return { id, name: keptName, character: "none", level, ...cards };
+    return { id, name: keptName, character: "none", ...cards };
   }
   if (image === undefined) {
-    return { id, name: keptName, character, level, ...cards };
+    return { id, name: keptName, character, ...cards };
   }
-  return { id, name: keptName, character, level, image, ...cards };
+  return { id, name: keptName, character, image, ...cards };
 }
 
 function codePointLength(value: string): number {

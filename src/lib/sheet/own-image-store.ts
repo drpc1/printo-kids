@@ -1,5 +1,4 @@
 import { writeLastUsed, type LastUsedStorage } from "../last-used.ts";
-import type { LevelId } from "../maze/levels.ts";
 import { OWN_IMAGE_ID } from "./character.ts";
 
 export const OWN_IMAGE_KEY = "printo-kids:own-image";
@@ -84,17 +83,12 @@ export function drawnVisitCharacter(
 }
 
 /** Remember a bar pick the way Kot is remembered. The device copy stays either way. */
-export function recordBarCharacter(
-  storage: LastUsedStorage,
-  activeProfileId: string | null,
-  character: string,
-  level: LevelId,
-): void {
+export function recordBarCharacter(storage: LastUsedStorage, activeProfileId: string | null, character: string): void {
   if (activeProfileId !== null) {
     return;
   }
 
-  writeLastUsed(storage, { character, level });
+  writeLastUsed(storage, { character });
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
