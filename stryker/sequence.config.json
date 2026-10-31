@@ -6,7 +6,7 @@
   "coverageAnalysis": "off",
   "concurrency": 4,
   "commandRunner": {
-    "command": "node scripts/with-env.mjs MUTATION_RUN=1 SEQUENCE_ORACLE_SEEDS=5 -- node --experimental-strip-types --test src/lib/sequence/generate.test.ts src/lib/sequence/levels.test.ts"
+    "command": "node scripts/with-env.mjs MUTATION_RUN=1 SEQUENCE_ORACLE_SEEDS=5 -- node --experimental-strip-types --test src/lib/sequence/generate.test.ts src/lib/sequence/rules.test.ts src/lib/sequence/levels.test.ts src/lib/sequence/colors.test.ts"
   },
-  "mutate": ["src/lib/sequence/rules.ts", "src/lib/sequence/generate.ts:137-238"]
+  "mutate": ["src/lib/sequence/rules.ts", "src/lib/sequence/generate.ts:51-276", "src/lib/sequence/colors.ts"]
 }

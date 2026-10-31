@@ -73,3 +73,11 @@ function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+void describe("sequenceShapeInk for a shape without a crayon", () => {
+  void test("falls back to ink when colors are on but the shape has no crayon", () => {
+    assert.equal(sequenceShapeInk("kolo", true, {}), "var(--foreground)");
+    assert.equal(sequenceShapeInk("kolo", true, { kwadrat: "red" }), "var(--foreground)");
+    assert.equal(sequenceShapeInk("kolo", true, { kolo: "red" }), "var(--symmetry-red)");
+  });
+});

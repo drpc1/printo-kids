@@ -381,6 +381,8 @@ Brak zmian w danych ani w kodzie produktu.
 
 ### Phase 5: Sekwencje i symetria: Stryker
 
+> Stan: sekwencje zrobione (`mutate:sequence` 81,37% -> 99,20%, porównanie krótkiego i pełnego oracle w `stryker-results.md`); symetria czeka na osobny PR, więc kroki 5.1-5.4 zostają otwarte.
+
 #### Automated
 
 - [ ] 5.1 `npm test`, `npm run lint`, `npx astro check`
