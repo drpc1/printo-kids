@@ -193,8 +193,8 @@ Ochrony gałęzi nie ruszamy. Nic w danych aplikacji się nie migruje. Pull requ
 
 #### Manual
 
-- [ ] 1.2 Pull request, który zmienia `.github/workflows/ci.yml`, nadal uruchamia joby `ci`, `smoke` i `e2e`.
-- [ ] 1.3 Pull request złożony wyłącznie z plików pod `context/` pokazuje te trzy joby jako pominięte, a merge nie jest zablokowany ich brakiem.
+- [x] 1.2 Pull request, który zmienia `.github/workflows/ci.yml`, nadal uruchamia joby `ci`, `smoke` i `e2e`. — 6d0f3b1
+- [x] 1.3 Pull request złożony wyłącznie z plików pod `context/` pokazuje te trzy joby jako pominięte, a merge nie jest zablokowany ich brakiem. — 5d43e3b
 
 ### Phase 2: Opis
 
