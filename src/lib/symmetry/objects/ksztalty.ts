@@ -7,9 +7,10 @@ import type {
 } from "../template-format.ts";
 
 // Kształty. Geometric figures sampled on the half grid from a formula per figure: a hand-drawn letter grid would be
-// 24 near-identical drawings, and the formula keeps the three sizes the same figure. The figures keep their own
-// proportions (a circle is as tall as it is wide), so they fill a band of the grid and not its whole height. Half sizes:
-// 4 by 12 (column 3 touches the axis), 6 by 15 (column 5), 9 by 24 (column 8).
+// 24 near-identical drawings, and the formula keeps the three sizes the same figure. The exceptions are drawn by hand
+// (see DRAWN). The figures keep their own proportions (a circle is as tall as it is wide), so they fill a band of the
+// grid and not its whole height. Half sizes: 4 by 12 (column 3 touches the axis), 6 by 15 (column 5), 9 by 24
+// (column 8).
 
 /** The inside test for a cell center: `dx` is the distance from the axis in cells, `y` the distance from the top. */
 type Inside = (dx: number, y: number) => boolean;
