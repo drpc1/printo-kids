@@ -1,7 +1,7 @@
 ---
 change_id: gh237-maze-level
 title: Poziom labiryntu w profilu przechodzi do cards.labirynt (GitHub 237)
-status: implementing
+status: implemented
 created: 2026-10-31
 updated: 2026-10-31
 archived_at: null

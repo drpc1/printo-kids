@@ -306,14 +306,14 @@ Migracja odbywa się przy odczycie (`parseStoredCards`), bez przepisywania danyc
 
 #### Automated
 
-- [x] 3.1 Lint przechodzi: `npm run lint`
-- [x] 3.2 Testy przechodzą: `npm test`
-- [x] 3.3 Typy przechodzą: `npx astro check`
-- [x] 3.4 Build przechodzi: `npm run build`
-- [x] 3.5 Pełne Chromium e2e przechodzi na wolnym porcie
-- [x] 3.6 Brak pozostałości `withProfileLevel|useMazeLevelMemory|barLevel` w `src`
+- [x] 3.1 Lint przechodzi: `npm run lint` — 0e2c2cd
+- [x] 3.2 Testy przechodzą: `npm test` — 0e2c2cd
+- [x] 3.3 Typy przechodzą: `npx astro check` — 0e2c2cd
+- [x] 3.4 Build przechodzi: `npm run build` — 0e2c2cd
+- [x] 3.5 Pełne Chromium e2e przechodzi na wolnym porcie — 0e2c2cd
+- [x] 3.6 Brak pozostałości `withProfileLevel|useMazeLevelMemory|barLevel` w `src` — 0e2c2cd
 
 #### Manual
 
-- [ ] 3.7 `AGENTS.md` opisuje nowy kształt i nie sprzeciwia się kodowi
-- [ ] 3.8 Wąski przebieg Strykera na migracji, ocalałe mutanty przejrzane po jednym
+- [x] 3.7 `AGENTS.md` opisuje nowy kształt i nie sprzeciwia się kodowi — 0e2c2cd
+- [x] 3.8 Wąski przebieg Strykera na migracji, ocalałe mutanty przejrzane po jednym — 0e2c2cd
