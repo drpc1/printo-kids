@@ -1,4 +1,4 @@
-// Smoke test: the product pages (/ card catalog, /maze maze generator, /symmetry symmetry generator, /sequences sequence generator, /sudoku sudoku generator, /nonogram nonogram generator, /dictation graphic dictation generator) are served, the old Polish card paths redirect, and the starter account routes are gone.
+// Smoke test: the product pages (/ card catalog, /maze maze generator, /symmetry symmetry generator, /sequences sequence generator, /sudoku sudoku generator, /nonogram nonogram generator, /dictation graphic dictation generator, /how-it-works how it works page) are served, the old Polish card paths redirect, and the starter account routes are gone.
 // Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
@@ -66,6 +66,12 @@ const steps = [
     () => request("/dictation"),
     (actual) => actual.status === 200 && actual.body.includes(DICTATION_SENTENCE),
     `200 and ${DICTATION_SENTENCE}`,
+  ],
+  [
+    "jak to działa renders its heading",
+    () => request("/how-it-works"),
+    (actual) => actual.status === 200 && actual.body.includes("Jak to działa"),
+    "200 and Jak to działa",
   ],
   [
     "labirynt redirects to /maze",
