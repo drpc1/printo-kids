@@ -28,6 +28,14 @@ void describe("cardTitle", () => {
   });
 });
 
+void describe("card descriptions", () => {
+  void test("every card kind has a non-empty description for the how-it-works page", () => {
+    for (const kind of CARD_KINDS) {
+      assert.ok(kind.description.trim().length > 0, `${kind.id} has no description`);
+    }
+  });
+});
+
 void describe("cardPageTitle", () => {
   void test("prefixes the card title with the product name", () => {
     assert.equal(cardPageTitle("labirynt"), "PrintoKids - Labirynt");
