@@ -4,6 +4,8 @@
 
 ## Overview
 
+> Addendum 2026-10-31 (faza 3): obowiązująca wartość to `108vh`, nie `116vh`. Brave iOS dokłada nagłówek strony i przy `116vh` (oraz `112vh`) drukował 2 strony; `104vh` i `108vh` dają 1 stronę. Dalsze wzmianki o `116vh` w tym planie i w `plan-brief.md` opisują stan z fazy 1. Szczegóły: `manual-checks.md`, `change.md`.
+
 Na iPhonie karta drukuje się dużo mniejsza niż kartka (labirynt ok. 140 mm szerokości na A4, ok. 35 mm białego pasa z boków, ok. 75 mm pod „Meta”). Przyczyną nie jest suma marginesów, tylko reguła druku `max-height: 100vh`: w druku iOS `100vh` to ok. 82 % obszaru druku. Dodajemy wariant dla druku na telefonie, który podnosi ten limit do `116vh`. Wydruk z komputera go nie dostaje i zostaje bez zmian. Issue: drpc1/printo-kids#38.
 
 ## Current State Analysis
