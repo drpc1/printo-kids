@@ -3,6 +3,10 @@ import { describe, mock, test } from "node:test";
 import { countPaths, generateCandidate, generateMaze, mazeForSheet, scoreMaze, type Maze } from "./generate.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, levelById, type LevelId, type MazePoint } from "./levels.ts";
 
+// Mutation runs (stryker/*.config.json) set MUTATION_RUN=1: instrumented code is several times slower, so a wall-clock
+// budget would kill mutants for the wrong reason. npm test keeps every time budget.
+const MUTATION_RUN = process.env.MUTATION_RUN === "1";
+
 void describe("LEVELS", () => {
   void test("lists six levels with the sheet grid, entrance, exit columns, and algorithm", () => {
     assert.equal(DEFAULT_LEVEL_ID, "lat5");
@@ -193,7 +197,7 @@ void describe("generateMaze", () => {
     for (let seed = 0; seed < 20; seed += 1) {
       generateMaze("nastolatek", mulberry32(seed));
     }
-    assert.ok((performance.now() - started) / 20 < 500);
+    assert.ok(MUTATION_RUN || (performance.now() - started) / 20 < 500);
   });
 
   void test("no level repeats one fixed route", () => {
