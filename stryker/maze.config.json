@@ -1,0 +1,18 @@
+{
+  "$schema": "../node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress"],
+  "testRunner": "command",
+  "coverageAnalysis": "off",
+  "concurrency": 4,
+  "commandRunner": {
+    "command": "node scripts/with-env.mjs MUTATION_RUN=1 -- node --experimental-strip-types --test src/lib/maze/generate.test.ts src/lib/sheet/layout.test.ts src/lib/last-used.test.ts src/lib/child-profiles.test.ts src/lib/sheet/character.test.ts"
+  },
+  "mutate": [
+    "src/lib/maze/generate.ts",
+    "src/lib/sheet/layout.ts",
+    "src/lib/last-used.ts",
+    "src/lib/child-profiles.ts",
+    "src/lib/sheet/character.ts"
+  ]
+}
