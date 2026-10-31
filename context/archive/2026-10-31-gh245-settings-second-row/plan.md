@@ -121,5 +121,5 @@ Brak.
 #### Manual
 
 - [x] 1.5 Na komputerze (okno ok. 700 px) po Generuj na sudoku, nonogramie i dyktandzie druga linia zaczyna się tam, gdzie „Postać” — 52b7e4f
-- [x] 1.6 Telefon (360 px) wygląda jak dotąd
+- [x] 1.6 Telefon (360 px) wygląda jak dotąd — 52b7e4f
 - [x] 1.7 Szeroki ekran (jedna linia) wygląda poprawnie, po Generuj (przed Generuj wiersz jest wyśrodkowany z założenia) — 52b7e4f
