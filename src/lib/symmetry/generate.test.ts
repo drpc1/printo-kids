@@ -508,3 +508,239 @@ function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+void describe("generateSymmetryCard edges", () => {
+  void test("a category with no objects gives no card", () => {
+    for (const level of SYMMETRY_LEVELS) {
+      assert.equal(
+        generateSymmetryCard(() => 0.5, null, level, "nie-ma-takiej" as never),
+        null,
+        level.id,
+      );
+    }
+  });
+
+  void test("a draw that repeats the previous key is drawn again, on every level", () => {
+    for (const level of SYMMETRY_LEVELS) {
+      const first = generateSymmetryCard(mulberry32(3), null, level);
+      assert.ok(first, level.id);
+      const next = generateSymmetryCard(mulberry32(3), first.key, level);
+
+      assert.ok(next, level.id);
+      assert.notEqual(next.key, first.key, level.id);
+    }
+  });
+
+  void test("a card has a vertical axis and a key of level, object, variants and row offset", () => {
+    const rocket = symmetryTemplatesFor("lat5")[0];
+    const card = composeSymmetryCard(rocket, [1, 0, 0], 3, LAT5);
+
+    assert.equal(card.axis, "vertical");
+    assert.equal(card.key, `lat5:${rocket.id}:1-0-0:3`);
+  });
+
+  void test("a variant index outside the part names the object and the index", () => {
+    const rocket = symmetryTemplatesFor("lat5")[0];
+
+    assert.throws(() => composeSymmetryCard(rocket, [99, 0, 0], 0, LAT5), /rakieta.*no variant 99/);
+  });
+
+  void test("the errors of a template that does not fit say how big it is and how big the grid is", () => {
+    const wide = (height: number, width: number): SymmetryTemplate => ({
+      id: "wieza",
+      holeColor: "blue",
+      categories: ["budowle"],
+      width,
+      height,
+      base: [{ col: 5, row: 0, color: "black" }],
+      parts: [],
+    });
+
+    assert.throws(() => symmetryRowOffsets(wide(17, 6), LAT5), /wieza is 17 rows tall, the lat5 grid has 16/);
+    assert.throws(() => symmetryRowOffsets(wide(10, 7), LAT5), /wieza is 7 columns wide, the lat5 half grid has 6/);
+  });
+});
+
+void describe("hints for a template with few axis cells", () => {
+  const axisTemplate = (axisRows: readonly number[]): SymmetryTemplate => ({
+    id: "slup",
+    holeColor: null,
+    categories: ["budowle"],
+    width: 4,
+    height: 8,
+    base: [
+      ...axisRows.map((row) => ({ col: 3, row, color: "red" as const })),
+      { col: 1, row: 0, color: "red" as const },
+    ],
+    parts: [],
+  });
+
+  void test("fewer axis cells than hints: every axis cell is a hint, in order from the top, off-axis cells are not", () => {
+    const card = composeSymmetryCard(axisTemplate([5, 1]), [], 0, LAT4);
+
+    assert.deepEqual(card.hints, [
+      { col: 4, row: 1, color: "red" },
+      { col: 4, row: 5, color: "red" },
+    ]);
+  });
+
+  void test("more axis cells than hints: three are spread down the axis from top to bottom", () => {
+    const card = composeSymmetryCard(axisTemplate([4, 0, 3, 1, 2]), [], 0, LAT4);
+
+    assert.deepEqual(
+      card.hints.map((hint) => hint.row),
+      [0, 2, 4],
+    );
+  });
+
+  void test("as many axis cells as hints: all of them", () => {
+    const card = composeSymmetryCard(axisTemplate([2, 0, 1]), [], 0, LAT4);
+
+    assert.deepEqual(
+      card.hints.map((hint) => hint.row),
+      [0, 1, 2],
+    );
+  });
+});
+
+/** The empty cells of the pattern half that the whole silhouette closes in, found by growing the outside inwards. */
+function enclosedCells(card: SymmetryCard): { col: number; row: number }[] {
+  const filled = new Set<string>();
+  for (const cell of card.cells) {
+    filled.add(`${cell.col},${cell.row}`);
+    filled.add(`${card.columns - 1 - cell.col},${cell.row}`);
+  }
+  const outside = new Set<string>();
+  for (let row = 0; row < card.rows; row += 1) {
+    for (let col = 0; col < card.columns; col += 1) {
+      const onEdge = row === 0 || col === 0 || row === card.rows - 1 || col === card.columns - 1;
+      if (onEdge && !filled.has(`${col},${row}`)) outside.add(`${col},${row}`);
+    }
+  }
+  for (let grew = true; grew;) {
+    grew = false;
+    for (let row = 0; row < card.rows; row += 1) {
+      for (let col = 0; col < card.columns; col += 1) {
+        const place = `${col},${row}`;
+        if (filled.has(place) || outside.has(place)) continue;
+        const next = [`${col - 1},${row}`, `${col + 1},${row}`, `${col},${row - 1}`, `${col},${row + 1}`];
+        if (next.some((neighbour) => outside.has(neighbour))) {
+          outside.add(place);
+          grew = true;
+        }
+      }
+    }
+  }
+  const holes: { col: number; row: number }[] = [];
+  for (let row = 0; row < card.rows; row += 1) {
+    for (let col = 0; col < card.columns / 2; col += 1) {
+      if (!filled.has(`${col},${row}`) && !outside.has(`${col},${row}`)) holes.push({ col, row });
+    }
+  }
+  return holes;
+}
+
+void describe("details against an independent flood fill", () => {
+  void test("every object, variant set and offset closes in exactly the cells an independent fill finds", () => {
+    let withHoles = 0;
+    for (const level of LEVELS_WITH_TEMPLATES) {
+      for (const template of symmetryTemplatesFor(level.id)) {
+        const offsets = [0, symmetryRowOffsets(template, level) - 1];
+        for (const variants of variantSets(template)) {
+          for (const rowOffset of offsets) {
+            const card = composeSymmetryCard(template, variants, rowOffset, level);
+            const expected = template.holeColor === null ? [] : enclosedCells(card);
+            if (expected.length > 0) withHoles += 1;
+
+            assert.deepEqual(
+              card.details.map(({ col, row }) => ({ col, row })),
+              expected,
+              card.key,
+            );
+          }
+        }
+      }
+    }
+
+    assert.ok(withHoles > 20, `${withHoles} cards with holes`);
+  });
+
+  void test("a hand-drawn ring encloses its centre and a hook open at the side does not", () => {
+    const ring = cardWith([
+      { col: 3, row: 3, color: "red" },
+      { col: 4, row: 3, color: "red" },
+      { col: 5, row: 3, color: "red" },
+      { col: 3, row: 4, color: "red" },
+      { col: 3, row: 5, color: "red" },
+      { col: 4, row: 5, color: "red" },
+      { col: 5, row: 5, color: "red" },
+      { col: 5, row: 4, color: "red" },
+    ]);
+
+    assert.deepEqual(enclosedCells(ring), [{ col: 4, row: 4 }]);
+    assert.deepEqual(
+      enclosedCells(cardWith([...ring.cells.filter((cell) => !(cell.col === 3 && cell.row === 4))])),
+      [],
+    );
+  });
+});
+
+void describe("details of a chamber that opens onto the axis", () => {
+  void test("a room reached only by going left from the open axis is outside, not a hole", () => {
+    // Walls: top row 2 and bottom row 6 (columns 1 to 4), left column 1 (rows 2 to 6). The room is columns 2 to 4,
+    // rows 3 to 5, and it opens east onto column 5, which touches the axis and is empty all the way down.
+    const wall = (cols: readonly number[], rows: readonly number[]): SymmetryCell[] =>
+      rows.flatMap((row) => cols.map((col) => ({ col, row, color: "black" as const })));
+    const template: SymmetryTemplate = {
+      id: "komnata",
+      holeColor: "blue",
+      categories: ["budowle"],
+      width: 6,
+      height: 8,
+      base: [...wall([1, 2, 3, 4], [2, 6]), ...wall([1], [3, 4, 5])],
+      parts: [],
+    };
+
+    assert.deepEqual(composeSymmetryCard(template, [], 0, LAT5).details, []);
+  });
+
+  void test("closing the room with a wall on the axis side makes the same room a hole", () => {
+    const template: SymmetryTemplate = {
+      id: "komnata",
+      holeColor: "blue",
+      categories: ["budowle"],
+      width: 6,
+      height: 8,
+      base: [
+        ...[1, 2, 3, 4, 5].flatMap((col) => [2, 6].map((row) => ({ col, row, color: "black" as const }))),
+        ...[3, 4, 5].flatMap((row) => [1, 5].map((col) => ({ col, row, color: "black" as const }))),
+      ],
+      parts: [],
+    };
+    const holes = composeSymmetryCard(template, [], 0, LAT5).details;
+
+    assert.equal(holes.length, 9);
+    assert.deepEqual(holes[0], { col: 2, row: 3, color: "blue" });
+  });
+});
+
+void describe("details at the edges of the grid", () => {
+  const base = cardWith([{ col: 5, row: 2, color: "red" }]);
+  const withDetail = (col: number, row: number): readonly string[] =>
+    symmetryCardProblems({ ...base, details: [{ col, row, color: "blue" }] });
+
+  void test("the first column and the first row are inside the grid", () => {
+    assert.deepEqual(withDetail(0, 3), []);
+    assert.deepEqual(withDetail(4, 0), []);
+    assert.deepEqual(withDetail(4, 15), []);
+  });
+
+  void test("a column or row just outside the grid, or between grid lines, is outside the grid", () => {
+    assert.deepEqual(withDetail(-1, 3), ["outside-grid"]);
+    assert.deepEqual(withDetail(12, 3), ["outside-grid"]);
+    assert.deepEqual(withDetail(4, -1), ["outside-grid"]);
+    assert.deepEqual(withDetail(4, 16), ["outside-grid"]);
+    assert.deepEqual(withDetail(1.5, 3), ["outside-grid"]);
+    assert.deepEqual(withDetail(4, 2.5), ["outside-grid"]);
+  });
+});
