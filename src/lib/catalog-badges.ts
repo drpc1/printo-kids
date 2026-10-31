@@ -4,6 +4,9 @@ import { openingVisit, readChildProfiles, type ChildProfileStorage } from "./chi
 import { readLastUsed } from "./last-used.ts";
 import { ALLOWED_CHARACTER_IDS } from "./sheet/character.ts";
 
+/** Sent on the window by the catalog's profile corner after the profile or the chosen child changed in this tab. */
+export const PROFILE_CHANGED_EVENT = "printokids:profile-changed";
+
 export interface CatalogBadges {
   /** The profile whose settings the catalog shows; null when no profile is chosen. */
   profileName: string | null;

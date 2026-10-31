@@ -3,7 +3,6 @@ import { cardsInCatalogOrder } from "@/lib/cards";
 ---
 
 <div class="flex w-full flex-col gap-4">
-  <p data-profile-caption class="min-h-6 text-center text-base text-muted-foreground"></p>
   <ul class="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
     {cardsInCatalogOrder().map((kind) => (
       <li>
@@ -35,7 +34,7 @@ import { cardsInCatalogOrder } from "@/lib/cards";
 </div>
 
 <script>
-  import { catalogBadges } from "@/lib/catalog-badges";
+  import { catalogBadges, PROFILE_CHANGED_EVENT } from "@/lib/catalog-badges";
 
   // The catalog is rendered on the server and the profile lives in the browser, so the badges arrive after load.
   function showBadges(): void {
@@ -46,10 +45,6 @@ import { cardsInCatalogOrder } from "@/lib/cards";
       return;
     }
 
-    const caption = document.querySelector<HTMLElement>("[data-profile-caption]");
-    if (caption !== null) {
-      caption.textContent = shown.profileName === null ? "" : `Profil: ${shown.profileName}`;
-    }
     for (const slot of document.querySelectorAll<HTMLElement>("[data-badge-for]")) {
       const text = shown.badges[slot.dataset.badgeFor ?? ""];
       slot.textContent = text ?? "";
@@ -71,4 +66,6 @@ import { cardsInCatalogOrder } from "@/lib/cards";
   // A page restored from the browser cache and a profile changed in another tab both need a fresh read.
   window.addEventListener("pageshow", showBadges);
   window.addEventListener("storage", showBadges);
+  // The profile corner of this page changes the profile in this tab, where no storage event fires.
+  window.addEventListener(PROFILE_CHANGED_EVENT, showBadges);
 </script>
