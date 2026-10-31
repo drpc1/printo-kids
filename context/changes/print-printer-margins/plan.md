@@ -214,10 +214,10 @@ Brak danych do migracji.
 
 #### Automated
 
-- [x] 3.1 Pełny zestaw: `npm run lint && npm test && npx astro check`
+- [x] 3.1 Pełny zestaw: `npm run lint && npm test && npx astro check` — 284eab0
 
 #### Manual
 
-- [x] 3.2 iPhone Safari, Chrome i Brave: labirynt Poziom 3 i Poziom 6 drukują się na jednej stronie, ok. 16 % większe niż przed zmianą, znak postaci widoczny.
-- [x] 3.3 Co najmniej jedna karta inna niż labirynt (np. symetria) drukuje się na iPhonie na jednej stronie.
-- [x] 3.4 Komputer (Chrome): wydruk identyczny z dzisiejszym, jedna strona A4, margines 10 mm.
+- [x] 3.2 iPhone Safari, Chrome i Brave: labirynt Poziom 3 i Poziom 6 drukują się na jednej stronie, ok. 16 % większe niż przed zmianą, znak postaci widoczny. — 284eab0
+- [x] 3.3 Co najmniej jedna karta inna niż labirynt (np. symetria) drukuje się na iPhonie na jednej stronie. — 284eab0
+- [x] 3.4 Komputer (Chrome): wydruk identyczny z dzisiejszym, jedna strona A4, margines 10 mm. — 284eab0
