@@ -23,5 +23,5 @@
 - layout spec: `tests/e2e/phone-layout.spec.ts`; `seed.spec.ts` runs on every project
 - local run: `E2E_PORT=4398 npx playwright test` (port 4321 is often taken by another dev server and `reuseExistingServer` would test that server)
 - WebKit: Playwright 1.64 WebKit crashes at launch on the Windows dev machine (exit 0xC0EA0002), so `iphone-13` is skipped on Windows unless `E2E_WEBKIT=1`
-- CI: job `e2e` in `.github/workflows/ci.yml` runs on push and pull request to `main` (Ubuntu, Chromium projects `chromium`, `phone-360`, `pixel-7`, `tablet-768`) and uploads `playwright-report` on failure; the on-demand workflow `.github/workflows/e2e-phone.yml` (`workflow_dispatch`) runs all five projects, including `iphone-13` (WebKit)
+- CI: job `e2e` in `.github/workflows/ci.yml` runs on push and pull request to `main` (Ubuntu, Chromium projects `chromium`, `phone-360`, `pixel-7`, `tablet-768`) and uploads `playwright-report` on failure; the on-demand workflow `.github/workflows/e2e-phone.yml` (`workflow_dispatch`) runs all five projects, including `iphone-13` (WebKit). Gdy każda ścieżka leży w `context/`, joby `ci`, `smoke` i `e2e` są pominięte i liczą się jako sukces, a podgląd nie powstaje. Ścieżka spoza katalogu, któraś strona rename albo błąd liczenia uruchamia wszystkie trzy.
 - updated: 2026-10-15
