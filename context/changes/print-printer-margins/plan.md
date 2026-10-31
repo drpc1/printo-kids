@@ -189,26 +189,26 @@ Brak danych do migracji.
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy przechodzą: `npx astro check`
-- [x] 1.4 Build przechodzi: `npm run build`
+- [x] 1.1 Testy przechodzą: `npm test` — 258b413
+- [x] 1.2 Lint przechodzi: `npm run lint` — 258b413
+- [x] 1.3 Typy przechodzą: `npx astro check` — 258b413
+- [x] 1.4 Build przechodzi: `npm run build` — 258b413
 
 #### Manual
 
-- [x] 1.5 Próba na iPhonie (Safari): podgląd druku labiryntu pokazuje jedną stronę i labirynt ok. 162 mm szerokości (jak wariant `116vh` z eksperymentu); wynik zapisany w `change.md`.
-- [x] 1.6 Na komputerze podgląd druku wygląda jak przed zmianą (karta 210×297 mm, bez przycięć).
+- [x] 1.5 Próba na iPhonie (Safari): podgląd druku labiryntu pokazuje jedną stronę i labirynt ok. 162 mm szerokości (jak wariant `116vh` z eksperymentu); wynik zapisany w `change.md`. — 258b413
+- [x] 1.6 Na komputerze podgląd druku wygląda jak przed zmianą (karta 210×297 mm, bez przycięć). — 258b413
 
 ### Phase 2: Test Playwright dla druku na komputerze i telefonie
 
 #### Automated
 
-- [ ] 2.1 Spec przechodzi na Chromium: `E2E_PORT=4399 npx playwright test tests/e2e/print-margins.spec.ts --project=chromium`
-- [ ] 2.2 Test kontraktowy dalej przechodzi: `npm test`
+- [x] 2.1 Spec przechodzi na Chromium: `E2E_PORT=4399 npx playwright test tests/e2e/print-margins.spec.ts --project=chromium`
+- [x] 2.2 Test kontraktowy dalej przechodzi: `npm test`
 
 #### Manual
 
-- [ ] 2.3 Notka w `change.md` zawiera pomiary z iPhone'a (obszar druku, `100vh`, warianty `100vh` / `116vh` / `122vh` / bez limitu).
+- [x] 2.3 Notka w `change.md` zawiera pomiary z iPhone'a (obszar druku, `100vh`, warianty `100vh` / `116vh` / `122vh` / bez limitu).
 
 ### Phase 3: Ręczny druk na iPhonie i kontrola komputera
 
