@@ -1,10 +1,10 @@
 ---
 change_id: print-printer-margins
 title: Wydruk z iPhone'a bez podwójnego marginesu
-status: impl_reviewed
+status: archived
 created: 2026-10-16
 updated: 2026-10-31
-archived_at: null
+archived_at: 2026-10-31T22:32:56Z
 ---
 
 ## Notes
