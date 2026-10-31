@@ -53,6 +53,20 @@ test("a generator page has the footer link and the page states the rules of leve
   await expect(body).toContainText("przy zdaniu polecenia");
 });
 
+test("the page describes every card kind in catalog order", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/how-it-works");
+
+  await expect(page.getByRole("heading", { level: 2, name: "Rodzaje kart" })).toBeVisible();
+  const titles = ["Dyktando graficzne", "Labirynt", "Nonogram", "Sekwencje", "Sudoku", "Symetria"];
+  await expect(page.getByRole("heading", { level: 3 })).toHaveText(titles);
+  for (const title of titles) {
+    const heading = page.getByRole("heading", { level: 3, name: title });
+    await expect(heading.getByRole("link", { name: title })).toHaveAttribute("href", /^\/[a-z]+$/);
+    await expect(heading.locator("xpath=following-sibling::p[1]")).not.toBeEmpty();
+  }
+});
+
 test("the page words for the favorite are the ones the character list shows", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await seedProfile(page);
