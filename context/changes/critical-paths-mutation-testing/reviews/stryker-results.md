@@ -166,3 +166,35 @@ Wg pliku po: `rules.ts` 100% (0 ocalałych), `colors.ts` 100%, `generate.ts` 98,
 ### Porównanie krótkiego i pełnego oracle
 
 Krótki oracle (5 ziaren, 30 ziaren generacji) to początek pętli pełnego (120 i 300), więc pełny uruchamia te same sprawdzenia i jeszcze więcej: nie może zabić mniej mutantów. Sprawdziłam to na tych pięciu ocalałych: pełny oracle (bez `SEQUENCE_ORACLE_SEEDS`) zabija wszystkie pięć (2 zabite, 3 timeouty), przebieg 1 min 14 s, bo sam test trwa ok. 21 s (dry run). Pięć ocalałych z krótkiego przebiegu to więc mutanty zabijane tylko rzadkimi przypadkami, które daje dopiero pełna pętla. Dla zakresów, które w krótkim przebiegu zabijają wszystko, pełny oracle nie jest potrzebny.
+
+## Faza 5b: symetria (2026-11-03)
+
+Kod symetrii zmienił się od planu (kategoria, kształty), więc zakresy to `symmetry/generate.ts:49-300` (stary zakres 75-300 pomijał `generateSymmetryCard`) i `symmetry/colors.ts`; `colors.test.ts` dołączony do komendy testów w `stryker/symmetry.config.json`. `npm run mutate:symmetry`, 366 mutantów.
+
+| Przebieg               | Mutanty | Zabite | Timeouty | Ocalałe | Wynik  | Czas   |
+| ---------------------- | ------- | ------ | -------- | ------- | ------ | ------ |
+| przed (testy z `main`) | 366     | 300    | 21       | 45      | 87,70% | 17 min |
+| po testach z luk       | 366     | 323    | 22       | 11      | 96,99% | 22 min |
+
+Wg pliku po: `colors.ts` 100%, `generate.ts` 96,91% (11 ocalałych).
+
+### Nowe testy (`generate.test.ts`)
+
+- Kategoria bez obiektów daje `null`; powtórzony klucz losuje ponownie na każdym poziomie; karta ma oś pionową i klucz `poziom:obiekt:warianty:przesunięcie`.
+- Indeks wariantu poza częścią rzuca błąd z nazwą obiektu i indeksem; błędy zbyt dużego szablonu podają jego rozmiar i rozmiar siatki.
+- Podpowiedzi dla szablonu z małą liczbą komórek na osi: mniej komórek niż podpowiedzi (wszystkie, od góry, bez komórek poza osią), więcej (trzy rozłożone od góry do dołu) i dokładnie tyle samo.
+- Szczeliny w sylwetce (`details`) porównane z niezależnym wypełnianiem od zewnątrz dla każdego obiektu, wariantu i przesunięcia (na początku i na końcu); do tego dwa ręczne szablony: komora otwarta na oś (żeby wejść do niej, trzeba iść w lewo, więc nie jest szczeliną) oraz ta sama komora zamknięta ścianą przy osi (jest szczeliną).
+- Szczegóły na brzegach siatki: kolumna i wiersz 0 poprawne, kolumna 12, wiersz 16, ujemne i ułamkowe poza siatką.
+- Break-check (zepsuj, test czerwienieje, przywróć), 14 miejsc: brak szablonów, powtórzony klucz, brak wariantu, oś, łączenie klucza, sortowanie i filtr podpowiedzi, zawsze `spread`, brak ruchu w lewo przy wypełnianiu (wymagało dopisania komory ręcznej, bo katalog tego nie wymaga), granice wiersza wypełniania, cztery granice szczegółów.
+
+### Ocalałe mutanty po fazie 5b
+
+| Linia                 | Mutant                                                 | Decyzja                                                                                                                                 |
+| --------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate.ts:59`      | `attempt <= MAX_ATTEMPTS`                              | Kosmetyczny: 21 zamiast 20 prób losowania.                                                                                              |
+| `generate.ts:64`      | `&& true` (kontrola `symmetryCardProblems`)            | Siatka bezpieczeństwa: generator składa kartę z szablonu, który ma osobne testy poprawności, więc nie ma wejścia, które by to pokazało. |
+| `generate.ts:120` (2) | `hintCount === 0` zawsze fałsz                         | Równoważny: `spread(onAxis, 0)` też daje pustą listę.                                                                                   |
+| `generate.ts:125`     | `<` zamiast `<=` przy wyborze podpowiedzi              | Równoważny: przy tylu samych komórkach co podpowiedzi `spread` zwraca te same komórki w tej samej kolejności.                           |
+| `generate.ts:155`     | `reached` bez początkowego 0                           | Równoważny: wypełnianie i tak zaczyna od indeksu 0, a róg ramki dodaje się przez sąsiadów ramki.                                        |
+| `generate.ts:167` (4) | granice ramki wypełniania (`true`, `\|\|`, `<= width`) | Równoważne: ramka wokół siatki jest cała pusta i połączona, więc wyjście za jej brzeg wpada na kolejny wiersz ramki.                    |
+| `generate.ts:299`     | `Math.min(count + 1, ...)`                             | Równoważny: `Math.random()` jest mniejsze od 1, więc indeks nigdy nie wychodzi poza tablicę.                                            |
