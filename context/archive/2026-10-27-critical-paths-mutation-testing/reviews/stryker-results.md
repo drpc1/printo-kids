@@ -136,7 +136,7 @@ Wg pliku po: `generate.ts` 96,10% (3 ocalałe), `simple.ts` 96,74% (3), `solve.t
 
 W przebiegu „po” ocalało 11 mutantów (tabela wyżej bez wierszy `solve.ts:13` i `:30`). Te dwa nie ocalały: Stryker policzył je jako timeout, a ręczne sprawdzenie pokazało, że są równoważne, więc decyzja zostaje w tabeli dla porządku.
 
-## Faza 5a: sekwencje (2026-11-02)
+## Faza 5a: sekwencje (2026-10-31)
 
 Symetria zostaje na osobny PR (katalog kształtów w symetrii jeszcze się zmienia). Kod sekwencji zmienił się od planu (kolory kształtów, usunięta reguła `groups`), więc zakresy to: `sequence/rules.ts` (cały), `sequence/generate.ts:51-276`, `sequence/colors.ts` (cały). `npm run mutate:sequence`, 628 mutantów, z krótkim oracle (`SEQUENCE_ORACLE_SEEDS=5`). Komenda testów w `stryker/sequence.config.json` dostała `rules.test.ts` i `colors.test.ts`.
 
@@ -167,7 +167,7 @@ Wg pliku po: `rules.ts` 100% (0 ocalałych), `colors.ts` 100%, `generate.ts` 98,
 
 Krótki oracle (5 ziaren, 30 ziaren generacji) to początek pętli pełnego (120 i 300), więc pełny uruchamia te same sprawdzenia i jeszcze więcej: nie może zabić mniej mutantów. Sprawdziłam to na tych pięciu ocalałych: pełny oracle (bez `SEQUENCE_ORACLE_SEEDS`) zabija wszystkie pięć (2 zabite, 3 timeouty), przebieg 1 min 14 s, bo sam test trwa ok. 21 s (dry run). Pięć ocalałych z krótkiego przebiegu to więc mutanty zabijane tylko rzadkimi przypadkami, które daje dopiero pełna pętla. Dla zakresów, które w krótkim przebiegu zabijają wszystko, pełny oracle nie jest potrzebny.
 
-## Faza 5b: symetria (2026-11-03)
+## Faza 5b: symetria (2026-10-31)
 
 Kod symetrii zmienił się od planu (kategoria, kształty), więc zakresy to `symmetry/generate.ts:49-300` (stary zakres 75-300 pomijał `generateSymmetryCard`) i `symmetry/colors.ts`; `colors.test.ts` dołączony do komendy testów w `stryker/symmetry.config.json`. `npm run mutate:symmetry`, 366 mutantów.
 
@@ -199,7 +199,7 @@ Wg pliku po: `colors.ts` 100%, `generate.ts` 96,91% (11 ocalałych).
 | `generate.ts:167` (4) | granice ramki wypełniania (`true`, `\|\|`, `<= width`) | Równoważne: ramka wokół siatki jest cała pusta i połączona, więc wyjście za jej brzeg wpada na kolejny wiersz ramki.                    |
 | `generate.ts:299`     | `Math.min(count + 1, ...)`                             | Równoważny: `Math.random()` jest mniejsze od 1, więc indeks nigdy nie wychodzi poza tablicę.                                            |
 
-## Faza 6: dane lokalne (2026-11-03)
+## Faza 6: dane lokalne (2026-10-31)
 
 Zakres: `card-settings.ts`, `active-profile.ts`, `sheet/own-image-store.ts`, `sheet/speech.ts` (całe pliki), `npm run mutate:local-data`, 283 mutanty, ok. 4 min na przebieg.
 
