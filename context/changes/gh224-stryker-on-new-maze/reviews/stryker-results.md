@@ -184,3 +184,34 @@ Nowe testy: pięć w `generate.test.ts` (blok „mutation gaps in the maze core�
 | 323:\* (reszta)        | Warianty `isRecord` dla napisów, liczb, tablic | Równoważny: wpis nie-obiektowy i tak nie ma pól `id`/`profiles`, więc jest odrzucany tą samą drogą.                                                                                                                                                           |
 
 Do sprawdzenia w Fazie 4 wąskim przebiegiem Strykera: czy dopisane testy zabiły wymienione mutanty (wynik „po”).
+
+## Decyzje (Faza 4): `sheet/character.ts`, `last-used.ts`, `sheet/layout.ts`
+
+- **`layout.ts`:** 0 ocalałych z 49, nic do decyzji.
+- **`character.ts` (15 ocalałych):** linie 81–82 (`characterRow` nie znajduje postaci z katalogu, więc pasek pokazuje „Brak”): asercja, każdy id z katalogu ma własny wiersz z właściwą etykietą. Break-check: `option.id === id` → `true`, test czerwony. Linia 99 (`OWN_IMAGE_LABEL`): asercja, etykieta to „Własne zdjęcie”. Break-check: etykieta zamieniona na `""`, test czerwony. Linie 86–87 (szukanie wiersza „Brak”): równoważny, bo zapasowy `noneChoice` jest tym samym obiektem co wiersz „Brak” w katalogu.
+- **`last-used.ts` (19 ocalałych):** wszystkie równoważne, bez nowych testów. Pusty zapis (24, 66), brak rekordu (86, 95), nie-tekstowa postać (31, 91) i pusty `catch` (68) kończą się tą samą wartością domyślną, bo `JSON.parse` na pustym lub nie-obiektowym zapisie rzuca albo daje wartość, którą późniejsze sprawdzenia odrzucają. Linia 103 (`isRecord`): wpis nie-obiektowy nie ma pól `character`, `level` ani `cards`.
+
+## Wynik „po”
+
+Wąskie przebiegi na zmienionym kodzie, 2026-10-31. `layout.ts` i `last-used.ts` bez zmian testów, więc zostaje wynik „przed”.
+
+| Zakres                                  | Mutanty | Ocalałe przed → po   | Wynik przed → po |
+| --------------------------------------- | ------- | -------------------- | ---------------- |
+| `sheet/character.ts` (cały plik)        | 70      | 15 → 8               | 78,57% → 88,57%  |
+| `child-profiles.ts` (cały plik)         | 345     | 23 → 11              | 93,33% → 96,81%  |
+| `maze/generate.ts` linie 45–52 i 78–130 | 117     | 18 → 8               | 84,87% → 93,16%  |
+| `maze/generate.ts` linie 136–190        | 80      | 4 → 6                | 95,06% → 92,50%  |
+| Razem w przebiegach „po” (197 mutantów) | 197     | 22 → 14 (`generate`) | 89,00% → 92,89%  |
+
+Łącznie dla pięciu modułów (975 mutantów): 93 → ok. 66 ocalałych, 90,46% → ok. 93,23%. Wartość „po” jest złożona z przebiegów wąskich (ocalałe poza ponownie mierzonym zakresem `generate.ts` i `last-used.ts` liczone jak w „przed”), a nie z jednego pełnego przebiegu.
+
+Ocalałe po przebiegach:
+
+- **`generate.ts` 45–52, 78–130 (8):** same strażniki zewnętrznych ścian w `countPaths` (linie 97, 100, 103): równoważne dla wyniku generatora, jak w tabeli Fazy 3. Mutanty z linii 48, 51, 107 i 116 zostały zabite.
+- **`generate.ts` 136–190 (6):** `142:*` to strażnik wschodniej krawędzi w `openNeighbors`, równoważny jak zachodni (148); w „przed” trafił do `Timeout`, bo zakończenie przez timeout zależy od obciążenia maszyny. 148 i 169: bez zmian (równoważne). Mutant z linii 180 (odnoga w bok) został zabity.
+- **`child-profiles.ts` (11):** linie 28, 33, 182 i 249: równoważne (decyzje z Fazy 3).
+- **`character.ts` (8):** linie 86–87: równoważne.
+
+Uwaga o `Timeout`: Stryker liczy mutanta zakończonego przez timeout jako wykrytego. W `generate.ts` było ich 135 z 435; część to prawdziwe pętle nieskończone w generatorze, ale część zależy od obciążenia maszyny (linia 142), więc wynik procentowy jest zawyżony i nie wolno go porównywać między przebiegami co do punktu procentowego.
+
+Przebieg z dwoma osobnymi `--mutate` nadpisuje pierwszy zakres. Kilka zakresów jednego pliku podaje się jednym argumentem po przecinku: `--mutate "src/lib/maze/generate.ts:45-52,src/lib/maze/generate.ts:78-130"`.

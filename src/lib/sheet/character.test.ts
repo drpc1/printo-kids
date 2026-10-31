@@ -11,6 +11,7 @@ import {
   characterContentRight,
   characterRow,
   characterSheetSrc,
+  OWN_IMAGE_LABEL,
 } from "./character.ts";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
@@ -89,6 +90,18 @@ void describe("character catalog", () => {
 function readRepoFile(relativePath: string): string {
   return readFileSync(path.join(repoRoot, relativePath), "utf8");
 }
+
+void describe("the label the bar shows", () => {
+  void test("every catalog id has its own row, so the bar names the chosen character", () => {
+    for (const entry of catalog) {
+      assert.equal(characterRow(entry.id).label, entry.label, entry.id);
+    }
+  });
+
+  void test("a parent photo is labelled Własne zdjęcie", () => {
+    assert.equal(OWN_IMAGE_LABEL, "Własne zdjęcie");
+  });
+});
 
 void describe("characterChoice", () => {
   void test("keeps a catalog id and turns anything else into none", () => {
