@@ -169,28 +169,28 @@ Wyspa `client:only` dochodzi do strony głównej; to jeden komponent React bez d
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Typy przechodzą: `npx astro check`
-- [x] 1.3 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.4 Build przechodzi: `npm run build`
+- [x] 1.1 Lint przechodzi: `npm run lint` — 0a68ab5
+- [x] 1.2 Typy przechodzą: `npx astro check` — 0a68ab5
+- [x] 1.3 Testy jednostkowe przechodzą: `npm test` — 0a68ab5
+- [x] 1.4 Build przechodzi: `npm run build` — 0a68ab5
 
 #### Manual
 
-- [x] 1.5 Na `/` w rogu jest imię aktywnego profilu albo „Profil”; klik otwiera okno z wyborem, dodaniem, edycją, usunięciem i „Bez profilu”
-- [x] 1.6 Po wyborze, dodaniu, usunięciu i „Bez profilu” plakietki na miniaturach zmieniają się bez przeładowania
-- [x] 1.7 Przy dwóch profilach i żadnym wybranym okno nie otwiera się samo
-- [x] 1.8 Na telefonie 360 px róg nie zasłania nagłówka ani miniatur
+- [x] 1.5 Na `/` w rogu jest imię aktywnego profilu albo „Profil”; klik otwiera okno z wyborem, dodaniem, edycją, usunięciem i „Bez profilu” — 0a68ab5
+- [x] 1.6 Po wyborze, dodaniu, usunięciu i „Bez profilu” plakietki na miniaturach zmieniają się bez przeładowania — 0a68ab5
+- [x] 1.7 Przy dwóch profilach i żadnym wybranym okno nie otwiera się samo — 0a68ab5
+- [x] 1.8 Na telefonie 360 px róg nie zasłania nagłówka ani miniatur — 0a68ab5
 
 ### Phase 2: Testy i dokumentacja
 
 #### Automated
 
-- [ ] 2.1 Lint przechodzi: `npm run lint`
-- [ ] 2.2 Testy jednostkowe przechodzą: `npm test`
-- [ ] 2.3 E2E katalogu przechodzą: `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts --project=chromium --project=phone-360`
-- [ ] 2.4 Build przechodzi: `npm run build`
+- [x] 2.1 Lint przechodzi: `npm run lint`
+- [x] 2.2 Testy jednostkowe przechodzą: `npm test`
+- [x] 2.3 E2E katalogu przechodzą: `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts --project=chromium --project=phone-360`
+- [x] 2.4 Build przechodzi: `npm run build`
 
 #### Manual
 
-- [ ] 2.5 Wydruk strony kart generatora nie zmienił się (róg ma `print:hidden`); katalog nie jest drukowany
-- [ ] 2.6 PRD czyta się spójnie z US-08 (zapamiętany poziom na miniaturze)
+- [x] 2.5 Wydruk strony kart generatora nie zmienił się (róg ma `print:hidden`); katalog nie jest drukowany
+- [x] 2.6 PRD czyta się spójnie z US-08 (zapamiętany poziom na miniaturze)

@@ -299,7 +299,7 @@ test("the catalog shows the remembered level on the cards the chosen profile use
   await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
   await page.goto("/");
 
-  await expect(page.getByText("Profil: Ania")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Ania", exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Labirynt, poz. 4" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Symetria, poz. 3" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Sudoku, 6×6 · średni" })).toBeVisible();
@@ -316,7 +316,7 @@ test("the catalog stays plain with several profiles and none chosen, and with no
   await seedProfiles(page, [ANIA, ZOSIA], null);
   await page.goto("/");
   await expect(page.getByRole("link", { name: "Labirynt", exact: true })).toBeVisible();
-  await expect(page.getByText(/^Profil: /)).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Profil", exact: true })).toBeVisible();
   await expect(page.locator("[data-badge-for]:not([hidden])")).toHaveCount(0);
 
   await page.evaluate((key) => {
@@ -325,6 +325,96 @@ test("the catalog stays plain with several profiles and none chosen, and with no
   await page.reload();
   await expect(page.getByRole("link", { name: "Labirynt", exact: true })).toBeVisible();
   await expect(page.locator("[data-badge-for]:not([hidden])")).toHaveCount(0);
+});
+
+test("the profile corner on the catalog does not open by itself with several profiles and none chosen", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], null);
+  await page.goto("/");
+
+  await expect(page.getByRole("button", { name: "Profil", exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+});
+
+test("choosing, clearing and deleting a profile on the catalog updates the corner and the badges at once", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], null);
+  await page.goto("/");
+
+  const dialog = page.getByRole("dialog");
+  await page.getByRole("button", { name: "Profil", exact: true }).click();
+  await dialog.getByRole("button", { name: "Ania", exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("button", { name: "Ania", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Labirynt, poz. 4" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Ania", exact: true }).click();
+  await dialog.getByRole("button", { name: "Zosia", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Labirynt, poz. 1" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Symetria", exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "Zosia", exact: true }).click();
+  await dialog.getByRole("button", { name: "Bez profilu" }).click();
+  await expect(page.getByRole("button", { name: "Profil", exact: true })).toBeVisible();
+  await expect(page.locator("[data-badge-for]:not([hidden])")).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Profil", exact: true }).click();
+  await dialog.getByRole("button", { name: "Usuń Ania" }).click();
+  await dialog.getByRole("button", { name: "Usuń", exact: true }).click();
+  await expect(dialog.getByRole("button", { name: "Ania", exact: true })).toHaveCount(0);
+  await dialog.getByRole("button", { name: "Zosia", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Labirynt, poz. 1" })).toBeVisible();
+});
+
+test("a profile added on the catalog is chosen, and stays chosen on a card page", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], null);
+  await page.goto("/");
+
+  const dialog = page.getByRole("dialog");
+  await page.getByRole("button", { name: "Profil", exact: true }).click();
+  await dialog.getByRole("button", { name: "Dodaj profil" }).click();
+  await dialog.getByLabel("Imię:").fill("Ola");
+  await dialog.getByRole("button", { name: "Utwórz" }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("button", { name: "Ola", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Labirynt, poz. 3" })).toBeVisible();
+
+  await page.getByRole("link", { name: "Labirynt, poz. 3" }).click();
+  await expect(page).toHaveURL(/\/maze$/);
+  await expect(page.getByRole("button", { name: "Ola", exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+});
+
+test("the profile corner on the catalog edits the favorite character", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], ZOSIA.id);
+  await page.goto("/");
+
+  const dialog = page.getByRole("dialog");
+  await page.getByRole("button", { name: "Zosia", exact: true }).click();
+  await dialog.getByRole("button", { name: "Edytuj Zosia" }).click();
+  await dialog.getByRole("button", { name: /^Postać:/ }).click();
+  await dialog.getByRole("button", { name: "Pies" }).click();
+  await expect(dialog.getByRole("button", { name: "Postać: Pies" })).toBeVisible();
+});
+
+test("on a phone the profile corner and the catalog heading do not overlap", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "phone-360", "phone layout");
+  await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
+  await page.goto("/");
+
+  const corner = await page.getByRole("button", { name: "Ania", exact: true }).boundingBox();
+  const heading = await page.getByRole("heading", { level: 1 }).boundingBox();
+  expect(corner).not.toBeNull();
+  expect(heading).not.toBeNull();
+  expect(corner?.y !== undefined && heading?.y !== undefined && corner.y + corner.height <= heading.y).toBe(true);
 });
 
 test("a level changed on a card page shows on the catalog after going back", async ({ page }, testInfo) => {
