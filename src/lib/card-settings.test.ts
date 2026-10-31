@@ -43,6 +43,9 @@ void describe("parseCardSettings", () => {
     assert.deepEqual(parseCardSettings({ symetria: { level: "lat9", colors: true, category: "kosmos" } }), {
       symetria: { level: "lat5", colors: true, category: "kosmos" },
     });
+    assert.deepEqual(parseCardSettings({ dyktando: { level: "lat7", category: "ksztalty" } }), {
+      dyktando: { level: "lat7", category: "ksztalty" },
+    });
     assert.deepEqual(parseCardSettings({ symetria: { level: "lat7", colors: "tak", category: 3 } }), {
       symetria: { level: "lat7", colors: false, category: "wszystkie" },
     });

@@ -76,6 +76,19 @@ void describe("template catalog", () => {
     }
   });
 
+  void test("Kształty has the same figures in every size and the circle is as tall as it is wide", () => {
+    const idsOf = (levelId: SymmetryLevelId): string[] =>
+      symmetryTemplatesFor(levelId, "ksztalty")
+        .map((template) => template.id)
+        .sort();
+
+    for (const { levelId, width } of SIZES) {
+      assert.deepEqual(idsOf(levelId), idsOf("lat4"), levelId);
+      const circle = symmetryTemplatesFor(levelId, "ksztalty").find((template) => template.id === "kolo");
+      assert.equal(circle?.height, 2 * width, levelId);
+    }
+  });
+
   void test("4 lat templates are 4 wide, 5 and 6 lat ones 6 wide, 7 lat ones at most 9 wide", () => {
     for (const { levelId, width } of SIZES) {
       for (const template of symmetryTemplatesFor(levelId)) {
