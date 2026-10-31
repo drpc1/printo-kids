@@ -152,3 +152,21 @@ void describe("withCardSettings and cardSettingsOf", () => {
     });
   });
 });
+
+void describe("the symbols of a sudoku card", () => {
+  void test("only shapes and digits are accepted; any other value falls back to shapes", () => {
+    const read = (symbols: unknown): unknown =>
+      (
+        parseCardSettings({ sudoku: { size: 6, level: "sredni", symbols, colors: false } }).sudoku as {
+          symbols: unknown;
+        }
+      ).symbols;
+
+    assert.equal(read("digits"), "digits");
+    assert.equal(read("shapes"), "shapes");
+    assert.equal(read("hexagons"), "shapes");
+    assert.equal(read(""), "shapes");
+    assert.equal(read(6), "shapes");
+    assert.equal(read(null), "shapes");
+  });
+});

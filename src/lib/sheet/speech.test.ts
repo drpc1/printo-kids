@@ -164,3 +164,72 @@ void describe("fitCellSize", () => {
     assert.equal(fitCellSize({ nominal: 8, rows: 10, fixedHeight: 400, innerHeight: INNER_HEIGHT }), 0);
   });
 });
+
+void describe("instruction lines and widths on the edge", () => {
+  void test("spaces around and between sentences leave no empty line and no space in a line", () => {
+    assert.deepEqual(instructionLines("Ala ma kota. "), ["Ala ma kota."]);
+    assert.deepEqual(instructionLines("Co?  Uzupełnij!   Gotowe."), ["Co?", "Uzupełnij!", "Gotowe."]);
+    assert.deepEqual(instructionLines(""), []);
+  });
+
+  void test("the width of a line is its letters times the size times the average letter width", () => {
+    assert.ok(Math.abs(estimatedTextWidth("abcd", 10) - 4 * 10 * 0.52) < 1e-9);
+    assert.ok(Math.abs(estimatedTextWidth("abcd", 5) - 4 * 5 * 0.52) < 1e-9);
+    assert.equal(estimatedTextWidth("", 10), 0);
+  });
+});
+
+void describe("the speech band in numbers", () => {
+  const near = (actual: number, expected: number, label: string): void => {
+    assert.ok(Math.abs(actual - expected) < 1e-9, `${label}: ${actual} is not ${expected}`);
+  };
+  const input = { pageWidth: 210, inset: 10, top: 20, contentLeft: 0.1, contentRight: 0.1 };
+
+  void test("two sentences: every number of the band, worked out by hand for a 26 mm character with 10% margins", () => {
+    const band = layoutSpeechBand({ ...input, lines: ["A.", "B."] });
+
+    near(band.height, 26, "height");
+    near(band.character.x, 7.4, "character x");
+    near(band.character.y, 20, "character y");
+    near(band.character.width, 26, "character width");
+    near(band.bubble.x, 34.8, "bubble x");
+    near(band.bubble.y, 22, "bubble y");
+    near(band.bubble.width, 165.2, "bubble width");
+    near(band.bubble.height, 22, "bubble height");
+    near(band.bubble.radius, 5, "bubble radius");
+    near(band.tail.tipX, 30.8, "tail tip x");
+    near(band.tail.tipY, 34, "tail tip y");
+    near(band.tail.baseX, 34.8, "tail base x");
+    near(band.tail.baseTopY, 29.5, "tail base top");
+    near(band.tail.baseBottomY, 36.5, "tail base bottom");
+    near(band.text.x, 117.4, "text x");
+    near(band.text.size, 6.2, "text size");
+    near(band.text.ys[0], 29.125, "first line y");
+    near(band.text.ys[1], 36.875, "second line y");
+    near(band.text.maxWidth, 157.2, "text max width");
+  });
+
+  void test("one sentence: the larger size and a single line on the middle of the band", () => {
+    const band = layoutSpeechBand({ ...input, lines: ["A."] });
+
+    near(band.text.size, 7.5, "text size");
+    assert.equal(band.text.ys.length, 1);
+    near(band.text.ys[0], 33, "line y");
+  });
+
+  void test("three sentences are spread evenly around the middle", () => {
+    const band = layoutSpeechBand({ ...input, lines: ["A.", "B.", "C."] });
+    const pitch = 6.2 * 1.25;
+
+    near(band.text.ys[0], 33 - pitch, "first");
+    near(band.text.ys[1], 33, "second");
+    near(band.text.ys[2], 33 + pitch, "third");
+  });
+});
+
+void describe("fitCellSize on the edge of a step", () => {
+  void test("a block that fits exactly in a whole tenth of a millimetre keeps that size", () => {
+    assert.equal(fitCellSize({ nominal: 8, rows: 10, fixedHeight: 25, innerHeight: 100 }), 7.5);
+    assert.equal(fitCellSize({ nominal: 8, rows: 10, fixedHeight: 25.04, innerHeight: 100 }), 7.4);
+  });
+});
