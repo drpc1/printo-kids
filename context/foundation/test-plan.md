@@ -117,16 +117,17 @@ Smoke w osobnym jobie CI (`scripts/smoke.mjs`) sprawdza, że strona produktu si�
 
 ## §5a Mutacje Strykera: karty i dane lokalne
 
-Zmiana `critical-paths-mutation-testing` (2026-10-27 do 2026-10-31) uruchomiła Strykera osobno na każdym zakresie i dopisała testy z luk (decyzja: Faza 0 z raportu tylko dla pozycji 1–3, reszta przez Strykera). Każdy zakres ma plik `stryker/<zakres>.config.json` i skrypt `npm run mutate:<zakres>`; wąski przebieg: `npm run mutate:<zakres> -- --mutate "plik:start-end"`. Stryker pod `MUTATION_RUN=1` wyłącza budżety czasu, a sekwencje dostają krótszy oracle (`SEQUENCE_ORACLE_SEEDS=5`); `npm test` ma pełne budżety i 120 ziaren. Wyniki, decyzje dla każdego ocalałego mutanta i instrukcja powtórzenia: `context/changes/critical-paths-mutation-testing/reviews/stryker-results.md`.
+Zmiana `critical-paths-mutation-testing` (2026-10-27 do 2026-10-31) uruchomiła Strykera osobno na każdym zakresie i dopisała testy z luk (decyzja: Faza 0 z raportu tylko dla pozycji 1–3, reszta przez Strykera). Każdy zakres ma plik `stryker/<zakres>.config.json` i skrypt `npm run mutate:<zakres>`; wąski przebieg: `npm run mutate:<zakres> -- --mutate "plik:start-end"`. Stryker pod `MUTATION_RUN=1` wyłącza budżety czasu, a sekwencje dostają krótszy oracle (`SEQUENCE_ORACLE_SEEDS=5`); `npm test` ma pełne budżety i 120 ziaren. Wyniki, decyzje dla każdego ocalałego mutanta i instrukcja powtórzenia: `context/changes/critical-paths-mutation-testing/reviews/stryker-results.md`; dla labiryntu i profili (zakres `maze`, `npm run mutate:maze`, wynik „po” z przebiegów wąskich, nie jednego pełnego): `context/changes/gh224-stryker-on-new-maze/reviews/stryker-results.md`.
 
-| Zakres                                                                        | Ryzyko | Mutanty | Wynik przed | Wynik po | Ocalałe przed → po |
-| ----------------------------------------------------------------------------- | ------ | ------- | ----------- | -------- | ------------------ |
-| dyktando (`dictation`)                                                        | 9      | 327     | 93,9%       | 96,0%    | 20 → 13            |
-| sudoku (`generate.ts`)                                                        | 9      | 237     | 89,45%      | 97,47%   | 25 → 6             |
-| nonogram (`solve`, `generate`, `simple`)                                      | 9      | 410     | 91,22%      | 97,32%   | 36 → 11            |
-| sekwencje (`rules`, `generate`, `colors`)                                     | 8      | 628     | 81,37%      | 99,20%   | 117 → 5            |
-| symetria (`generate`, `colors`)                                               | 7      | 366     | 87,70%      | 96,99%   | 45 → 11            |
-| dane lokalne (`card-settings`, `active-profile`, `own-image-store`, `speech`) | 5      | 283     | 82,33%      | 93,64%   | 50 → 18            |
+| Zakres                                                                                                 | Ryzyko | Mutanty | Wynik przed | Wynik po | Ocalałe przed → po |
+| ------------------------------------------------------------------------------------------------------ | ------ | ------- | ----------- | -------- | ------------------ |
+| dyktando (`dictation`)                                                                                 | 9      | 327     | 93,9%       | 96,0%    | 20 → 13            |
+| sudoku (`generate.ts`)                                                                                 | 9      | 237     | 89,45%      | 97,47%   | 25 → 6             |
+| nonogram (`solve`, `generate`, `simple`)                                                               | 9      | 410     | 91,22%      | 97,32%   | 36 → 11            |
+| sekwencje (`rules`, `generate`, `colors`)                                                              | 8      | 628     | 81,37%      | 99,20%   | 117 → 5            |
+| symetria (`generate`, `colors`)                                                                        | 7      | 366     | 87,70%      | 96,99%   | 45 → 11            |
+| dane lokalne (`card-settings`, `active-profile`, `own-image-store`, `speech`)                          | 5      | 283     | 82,33%      | 93,64%   | 50 → 18            |
+| labirynt i profile (`maze/generate`, `sheet/layout`, `last-used`, `child-profiles`, `sheet/character`) | 1, 5   | 975     | 90,46%      | 93,23%   | 93 → 66            |
 
 Luki zamknięte, każda z break-checkiem (zepsuty kod produkcyjny czerwieni test):
 
