@@ -1,8 +1,11 @@
 import { cn } from "@/lib/utils";
 
-/** Button classes that stack a row's lines in a left-aligned column and let them wrap; only for rows with a description. */
+/**
+ * Button classes that stack a row's lines in a left-aligned column and let them wrap; only for rows with a description.
+ * `py-1.5` is tighter than the dialog row's `py-2.5` so six three-line rows fit an iPhone 13 without scrolling (GitHub #209).
+ */
 export function levelRowClass(description: string | undefined): string {
-  return cn(description !== undefined && "h-auto flex-col items-start gap-0.5 text-left whitespace-normal");
+  return cn(description !== undefined && "h-auto flex-col items-start gap-0.5 py-1.5 text-left whitespace-normal");
 }
 
 /** Content of a level list row: the name, then the description and the typical age in a smaller muted style. */
