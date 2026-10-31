@@ -264,12 +264,12 @@ Pełny baseline: ok. 15 s na mutanta przy 4 procesach, rząd godziny lub więcej
 
 #### Automated
 
-- [x] 4.1 Testy: `npm test`
-- [x] 4.2 Lint: `npm run lint`
-- [x] 4.3 Typy: `npx astro check`
-- [x] 4.4 Format: `npm run format`
+- [x] 4.1 Testy: `npm test` — decc961
+- [x] 4.2 Lint: `npm run lint` — decc961
+- [x] 4.3 Typy: `npx astro check` — decc961
+- [x] 4.4 Format: `npm run format` — decc961
 
 #### Manual
 
-- [x] 4.5 Raport ma wynik przed i po dla wybranych modułów
-- [x] 4.6 Tabela §5a ma nowy wiersz
+- [x] 4.5 Raport ma wynik przed i po dla wybranych modułów — decc961
+- [x] 4.6 Tabela §5a ma nowy wiersz — decc961
