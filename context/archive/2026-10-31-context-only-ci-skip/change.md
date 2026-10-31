@@ -1,10 +1,10 @@
 ---
 change_id: context-only-ci-skip
 title: Pomiń ci, smoke i e2e, gdy pull request zmienia tylko context
-status: impl_reviewed
+status: archived
 created: 2026-10-31
 updated: 2026-10-31
-archived_at: null
+archived_at: 2026-10-31T11:36:16Z
 ---
 
 ## Notes
