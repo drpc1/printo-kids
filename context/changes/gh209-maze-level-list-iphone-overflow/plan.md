@@ -111,11 +111,11 @@ Brak.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Typy przechodzą: `npx astro check`
-- [x] 1.3 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.4 Test układu telefonu przechodzi w Chromium (pixel-7, phone-360)
-- [x] 1.5 Test przechodzi na iphone-13 (lokalnie z E2E_WEBKIT=1 albo workflow e2e-phone)
+- [x] 1.1 Lint przechodzi: `npm run lint` — f612d38
+- [x] 1.2 Typy przechodzą: `npx astro check` — f612d38
+- [x] 1.3 Testy jednostkowe przechodzą: `npm test` — f612d38
+- [x] 1.4 Test układu telefonu przechodzi w Chromium (pixel-7, phone-360) — f612d38
+- [x] 1.5 Test przechodzi na iphone-13 (lokalnie z E2E_WEBKIT=1 albo workflow e2e-phone) — f612d38
 
 #### Manual
 
