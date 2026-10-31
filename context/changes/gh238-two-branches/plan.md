@@ -268,28 +268,28 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 #### Automated
 
-- [x] 1.1 Gałąź prod istnieje na GitHubie
-- [x] 1.2 prod wskazuje wdrożony commit
+- [x] 1.1 Gałąź prod istnieje na GitHubie — 36cf4c0
+- [x] 1.2 prod wskazuje wdrożony commit — 36cf4c0
 
 #### Manual
 
-- [x] 1.3 Worker printo-kids ma w panelu Cloudflare branch prod jako produkcyjny
-- [x] 1.4 Próbny build z prod kończy się sukcesem i produkcja otwiera / i /maze
+- [x] 1.3 Worker printo-kids ma w panelu Cloudflare branch prod jako produkcyjny — 36cf4c0
+- [x] 1.4 Próbny build z prod kończy się sukcesem i produkcja otwiera / i /maze — 36cf4c0
 
 ### Phase 2: Środowisko staging w kodzie
 
 #### Automated
 
-- [ ] 2.1 Lint przechodzi
-- [ ] 2.2 Testy przechodzą
-- [ ] 2.3 Kontrola typów przechodzi
-- [ ] 2.4 Build produkcyjny daje nazwę Workera printo-kids
-- [ ] 2.5 Build stagingu daje nazwę printo-kids-staging i poprawne assets
+- [x] 2.1 Lint przechodzi
+- [x] 2.2 Testy przechodzą
+- [x] 2.3 Kontrola typów przechodzi
+- [x] 2.4 Build produkcyjny daje nazwę Workera printo-kids
+- [x] 2.5 Build stagingu daje nazwę printo-kids-staging i poprawne assets
 
 #### Manual
 
-- [ ] 2.6 Staging w preview zwraca x-robots-tag noindex
-- [ ] 2.7 Build bez CLOUDFLARE_ENV nie zwraca nagłówka
+- [x] 2.6 Staging w preview zwraca x-robots-tag noindex
+- [x] 2.7 Build bez CLOUDFLARE_ENV nie zwraca nagłówka
 
 ### Phase 3: CI, szablon PR wydania i dokumentacja
 
