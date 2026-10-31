@@ -1,10 +1,10 @@
 ---
 change_id: gh233-how-does-it-work
 title: Opisy generatorów w części „Jak to działa” na stronie głównej
-status: implemented
+status: archived
 created: 2026-10-31
 updated: 2026-10-31
-archived_at: null
+archived_at: 2026-10-31T16:44:14Z
 ---
 
 ## Notes
