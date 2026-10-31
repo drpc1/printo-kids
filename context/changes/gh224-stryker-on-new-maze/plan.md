@@ -239,26 +239,26 @@ Pełny baseline: ok. 15 s na mutanta przy 4 procesach, rząd godziny lub więcej
 
 #### Automated
 
-- [x] 2.1 Przebieg kończy się bez błędu: `npm run mutate:maze`
-- [x] 2.2 Raport zawiera wiersz przed dla każdego z pięciu modułów
+- [x] 2.1 Przebieg kończy się bez błędu: `npm run mutate:maze` — 8eef2e5
+- [x] 2.2 Raport zawiera wiersz przed dla każdego z pięciu modułów — 8eef2e5
 
 #### Manual
 
-- [x] 2.3 Wynik „przed” jest zapisany przed pierwszą zmianą w testach
+- [x] 2.3 Wynik „przed” jest zapisany przed pierwszą zmianą w testach — 8eef2e5
 
 ### Phase 3: Triage `maze/generate.ts` i `child-profiles.ts`
 
 #### Automated
 
-- [ ] 3.1 Testy przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Typy: `npx astro check`
-- [ ] 3.4 Każdy ocalały mutant z obu modułów ma wpis decyzji w raporcie
+- [x] 3.1 Testy przechodzą: `npm test`
+- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.3 Typy: `npx astro check`
+- [x] 3.4 Każdy ocalały mutant z obu modułów ma wpis decyzji w raporcie
 
 #### Manual
 
-- [ ] 3.5 Przegląd decyzji „równoważny/kosmetyczny” — zdania uzasadnienia mają sens
-- [ ] 3.6 Czas `npm test` rośnie o kilka sekund co najwyżej (porównanie z wartością sprzed zmiany)
+- [x] 3.5 Przegląd decyzji „równoważny/kosmetyczny” — zdania uzasadnienia mają sens
+- [x] 3.6 Czas `npm test` rośnie o kilka sekund co najwyżej (porównanie z wartością sprzed zmiany)
 
 ### Phase 4: Reszta, wynik „po” i dokumentacja
 
