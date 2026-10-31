@@ -80,7 +80,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Labirynt nie przekracza wąskich marginesów strony.
 - Istnieje dokładnie jedna prawidłowa ścieżka prowadząca od startu do mety.
 - Na Poziomach 1–5 przy starcie znajduje się wybrana postać, na środku wejścia. Na Poziomie 6 wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”.
-- Na Poziomach 1–5 start jest na środku górnej krawędzi, a napis „Meta” na środku dolnej. Poziom 6 ma start i metę w narożnikach.
+- Na Poziomach 1–5 start jest na środku górnej krawędzi, a napis „Meta” stoi pod wyjściem w losowej kolumnie dolnej krawędzi, co najmniej 2 kolumny od środka (decyzja 2026-10-30, GitHub 114). Poziom 6 ma start i metę w narożnikach.
+- Każdy poziom ma inną szerokość alejki. Karta jest najlepszą z kilku wylosowanych według liczby głębokich odnóg przy drodze i drogi, która nie trzyma się środka kartki.
 
 ### US-02: Rodzic wskazuje własny obrazek, który zostaje w przeglądarce i staje przy starcie
 
@@ -514,24 +515,24 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom wyznaczają szerokość alejki i sposób losowania labiryntu.
 
-Rodzic wybiera jeden z sześciu numerowanych poziomów (Poziom 1–6) oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Dwa poziomy mogą dzielić szerokość alejki i różnić się sposobem losowania. Każde Generuj daje nowy labirynt.
+Rodzic wybiera jeden z sześciu numerowanych poziomów (Poziom 1–6) oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Każdy poziom ma inną szerokość alejki. Każde Generuj daje nowy labirynt.
 
-| Poziom   | Dawna nazwa | Alejka      | Siatka | Losowanie                         | Droga do mety (typowo) |
-| -------- | ----------- | ----------- | ------ | --------------------------------- | ---------------------- |
-| Poziom 1 | 3 lata      | około 21 mm | 9×11   | krótka droga, dużo krótkich odnóg | około 21 komórek       |
-| Poziom 2 | 4 lata      | około 21 mm | 9×11   | długa, kręta droga                | około 41 komórek       |
-| Poziom 3 | 5 lat       | około 15 mm | 13×16  | krótka droga, dużo krótkich odnóg | około 32 komórek       |
-| Poziom 4 | 6 lat       | około 15 mm | 13×16  | długa, kręta droga                | około 80 komórek       |
-| Poziom 5 | 7–8 lat     | około 11 mm | 17×21  | długa, kręta droga                | około 130 komórek      |
-| Poziom 6 | nastolatek  | około 7 mm  | 27×33  | długa, kręta droga                | około 300 komórek      |
+| Poziom   | Dawna nazwa | Alejka       | Siatka | Losowanie                         | Droga do mety (typowo) |
+| -------- | ----------- | ------------ | ------ | --------------------------------- | ---------------------- |
+| Poziom 1 | 3 lata      | około 21 mm  | 9×11   | krótka droga, dużo krótkich odnóg | około 23 komórki       |
+| Poziom 2 | 4 lata      | około 17 mm  | 11×13  | kręta droga                       | około 47 komórek       |
+| Poziom 3 | 5 lat       | około 15 mm  | 13×16  | dłuższa, kręta droga              | około 74 komórki       |
+| Poziom 4 | 6 lat       | około 13 mm  | 15×18  | długa, kręta droga                | około 100 komórek      |
+| Poziom 5 | 7–8 lat     | około 10 mm  | 19×23  | długa, kręta droga                | około 160 komórek      |
+| Poziom 6 | nastolatek  | około 6,6 mm | 29×35  | długa, kręta droga                | około 390 komórek      |
 
 Kolumna „Dawna nazwa” w tej i kolejnych tabelach łączy poziom z dotychczasową etykietą i z zapisanymi danymi; nie jest nazwą poziomu ani etykietą na pasku, ale jest źródłem dopisku o typowym wieku pod opisem w liście poziomów labiryntu, symetrii, sekwencji i dyktanda (Open Questions 12, decyzja 2026-10-26).
 
 Droga do mety nie jest progiem. To typowa długość dla siatki i sposobu losowania; pojedyncza karta może być krótsza albo dłuższa.
 
-Na Poziomach 1–5 start jest na środku górnej krawędzi, napis „Meta” na środku dolnej, a znak postaci zostaje na środku wejścia. Na Poziomie 6 start i meta są w narożnikach; wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
+Na Poziomach 1–5 start jest na środku górnej krawędzi, a znak postaci zostaje na środku wejścia. Wyjście jest w dolnym wierszu, w losowej kolumnie co najmniej 2 kolumny od środka, a napis „Meta” stoi pod nim. Na Poziomie 6 start i meta są w narożnikach; wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
 
-Krótki poziom przy tej samej alejce losuje się sposobem, który daje krótszą drogę i więcej krótkich odnóg, żeby krótka droga nie była zagadką ukrytą wśród pułapek. Dłuższy poziom losuje długą, krętą drogę z mniejszą liczbą rozgałęzień.
+Poziom 1 losuje się sposobem, który daje krótszą drogę i więcej krótkich odnóg, żeby krótka droga nie była zagadką ukrytą wśród pułapek. Poziomy 2–6 losują krętą drogę zaczynając od losowej komórki, więc odnogi są równo rozłożone między startem a metą. Generator losuje 20 labiryntów i bierze ten, który ma najwięcej głębokich odnóg przy drodze (ślepy fragment co najmniej 5 komórek) i najmniej drogi w środkowej trzeciej szerokości kartki. Dzięki temu nie trafia się karta z prawie prostą drogą w dół przy środku (GitHub 114, testy na 4-latku i 6-latku 2026-10-30).
 
 Wynikiem jest karta A4. Labirynt zajmuje większą część strony, zachowuje margines co najmniej 10 mm i spełnia reguły wybranego poziomu.
 

@@ -11,6 +11,8 @@ export interface Maze {
   width: number;
   height: number;
   cells: MazeCell[][];
+  entrance: MazePoint;
+  exit: MazePoint;
 }
 
 interface WallEdge {
@@ -19,17 +21,58 @@ interface WallEdge {
   direction: "east" | "south";
 }
 
+/** A branch off the route counts as deep when its dead-end part is at least this many cells long. */
+const DEEP_BRANCH_CELLS = 5;
+const CANDIDATES_PER_SHEET = 20;
+const DEEP_BRANCH_WEIGHT = 3;
+const CENTER_WEIGHT = 10;
+
 export function generateMaze(levelId: LevelId, random: () => number): Maze {
+  let best = generateCandidate(levelId, random);
+  let bestScore = scoreMaze(best);
+  for (let attempt = 1; attempt < CANDIDATES_PER_SHEET; attempt += 1) {
+    const candidate = generateCandidate(levelId, random);
+    const score = scoreMaze(candidate);
+    if (score > bestScore) {
+      best = candidate;
+      bestScore = score;
+    }
+  }
+  return best;
+}
+
+/** One random maze of the level, with its exit drawn from the level's exit columns. */
+export function generateCandidate(levelId: LevelId, random: () => number): Maze {
   const level = levelById(levelId);
   const cells = createCells(level.rows, level.columns);
   if (level.algorithm === "kruskal") {
     carveKruskal(cells, level.rows, level.columns, random);
   } else {
-    carveBacktracker(cells, level.rows, level.columns, level.entrance, random);
+    const start = { row: Math.floor(random() * level.rows), col: Math.floor(random() * level.columns) };
+    carveBacktracker(cells, level.rows, level.columns, start, random);
   }
+  const exit = { row: level.rows - 1, col: level.exitColumns[Math.floor(random() * level.exitColumns.length)] };
   cells[level.entrance.row][level.entrance.col].north = false;
-  cells[level.exit.row][level.exit.col].south = false;
-  return { width: level.columns, height: level.rows, cells };
+  cells[exit.row][exit.col].south = false;
+  return { width: level.columns, height: level.rows, cells, entrance: level.entrance, exit };
+}
+
+/** Higher is harder: more deep branches next to the route, and a route that leaves the middle of the page. */
+export function scoreMaze(maze: Maze): number {
+  const route = routeBetween(maze, maze.entrance, maze.exit);
+  const onRoute = new Set(route.map(pointKey));
+  let deepBranches = 0;
+  for (const point of route) {
+    for (const side of openNeighbors(maze, point)) {
+      if (!onRoute.has(pointKey(side)) && branchDepth(maze, point, side) >= DEEP_BRANCH_CELLS) {
+        deepBranches += 1;
+      }
+    }
+  }
+  const centerLow = maze.width / 3 - 0.5;
+  const centerHigh = (2 * maze.width) / 3 - 0.5;
+  const central = route.filter((point) => point.col >= centerLow && point.col <= centerHigh).length;
+  return DEEP_BRANCH_WEIGHT * deepBranches - CENTER_WEIGHT * (central / route.length);
 }
 
 export function countPaths(maze: Maze, entrance: MazePoint, exit: MazePoint): number {
@@ -73,10 +116,73 @@ export function mazeForSheet(candidate: Maze, levelId: LevelId): Maze | null {
   if (candidate.width !== level.columns || candidate.height !== level.rows) {
     return null;
   }
-  if (countPaths(candidate, level.entrance, level.exit) !== 1) {
+  const { entrance, exit } = candidate;
+  if (entrance.row !== level.entrance.row || entrance.col !== level.entrance.col) {
+    return null;
+  }
+  if (exit.row !== level.rows - 1 || !level.exitColumns.includes(exit.col)) {
+    return null;
+  }
+  if (countPaths(candidate, entrance, exit) !== 1) {
     return null;
   }
   return candidate;
+}
+
+function pointKey(point: MazePoint): string {
+  return `${point.row},${point.col}`;
+}
+
+function openNeighbors(maze: Maze, point: MazePoint): MazePoint[] {
+  const cell = maze.cells[point.row][point.col];
+  const neighbors: MazePoint[] = [];
+  if (!cell.north && point.row > 0) {
+    neighbors.push({ row: point.row - 1, col: point.col });
+  }
+  if (!cell.east && point.col < maze.width - 1) {
+    neighbors.push({ row: point.row, col: point.col + 1 });
+  }
+  if (!cell.south && point.row < maze.height - 1) {
+    neighbors.push({ row: point.row + 1, col: point.col });
+  }
+  if (!cell.west && point.col > 0) {
+    neighbors.push({ row: point.row, col: point.col - 1 });
+  }
+  return neighbors;
+}
+
+function routeBetween(maze: Maze, from: MazePoint, to: MazePoint): MazePoint[] {
+  const parent = new Map<string, MazePoint | null>([[pointKey(from), null]]);
+  const queue: MazePoint[] = [from];
+  for (const current of queue) {
+    for (const next of openNeighbors(maze, current)) {
+      if (!parent.has(pointKey(next))) {
+        parent.set(pointKey(next), current);
+        queue.push(next);
+      }
+    }
+  }
+  const route: MazePoint[] = [];
+  for (let cursor: MazePoint | null | undefined = to; cursor; cursor = parent.get(pointKey(cursor))) {
+    route.push(cursor);
+  }
+  return route.reverse();
+}
+
+/** The number of cells on the longest way into the dead-end part that starts at `side`, as seen from `from`. */
+function branchDepth(maze: Maze, from: MazePoint, side: MazePoint): number {
+  let deepest = 0;
+  const stack: { point: MazePoint; previous: MazePoint; depth: number }[] = [{ point: side, previous: from, depth: 1 }];
+  for (let item = stack.pop(); item !== undefined; item = stack.pop()) {
+    const { point, previous, depth } = item;
+    deepest = Math.max(deepest, depth);
+    for (const next of openNeighbors(maze, point)) {
+      if (next.row !== previous.row || next.col !== previous.col) {
+        stack.push({ point: next, previous: point, depth: depth + 1 });
+      }
+    }
+  }
+  return deepest;
 }
 
 function carveKruskal(cells: MazeCell[][], rows: number, columns: number, random: () => number): void {
