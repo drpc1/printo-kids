@@ -185,12 +185,12 @@ Wyspa `client:only` dochodzi do strony głównej; to jeden komponent React bez d
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi: `npm run lint`
-- [x] 2.2 Testy jednostkowe przechodzą: `npm test`
-- [x] 2.3 E2E katalogu przechodzą: `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts --project=chromium --project=phone-360`
-- [x] 2.4 Build przechodzi: `npm run build`
+- [x] 2.1 Lint przechodzi: `npm run lint` — 38a1722
+- [x] 2.2 Testy jednostkowe przechodzą: `npm test` — 38a1722
+- [x] 2.3 E2E katalogu przechodzą: `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts --project=chromium --project=phone-360` — 38a1722
+- [x] 2.4 Build przechodzi: `npm run build` — 38a1722
 
 #### Manual
 
-- [x] 2.5 Wydruk strony kart generatora nie zmienił się (róg ma `print:hidden`); katalog nie jest drukowany
-- [x] 2.6 PRD czyta się spójnie z US-08 (zapamiętany poziom na miniaturze)
+- [x] 2.5 Wydruk strony kart generatora nie zmienił się (róg ma `print:hidden`); katalog nie jest drukowany — 38a1722
+- [x] 2.6 PRD czyta się spójnie z US-08 (zapamiętany poziom na miniaturze) — 38a1722
