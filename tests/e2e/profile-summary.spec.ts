@@ -67,11 +67,14 @@ test("a new profile asks for the name and the character only and starts at the d
   await dialog.getByRole("button", { name: "Utwórz" }).click();
 
   await expect(page.getByRole("button", { name: "Poziom: 3" })).toBeVisible();
-  const levels = await page.evaluate((key) => {
-    const stored = JSON.parse(localStorage.getItem(key) ?? "null") as { profiles: { level: string }[] } | null;
-    return stored?.profiles.map((profile) => profile.level) ?? null;
+  const created = await page.evaluate((key) => {
+    const stored = JSON.parse(localStorage.getItem(key) ?? "null") as {
+      profiles: { level?: string; cards?: { labirynt?: unknown } }[];
+    } | null;
+    return stored?.profiles.map((profile) => ({ level: profile.level, maze: profile.cards?.labirynt })) ?? null;
   }, PROFILES_KEY);
-  expect(levels).toEqual(["lat5"]);
+  // The maze starts a new profile at its default level: nothing is stored until the bar changes.
+  expect(created).toEqual([{ level: undefined, maze: undefined }]);
 });
 
 test("the edit window shows the rule and a read-only summary of every card", async ({ page }, testInfo) => {
@@ -119,11 +122,12 @@ test("a pick in the favorite list is saved at once and keeps the card settings",
 
   const stored = await page.evaluate((key) => {
     const raw = JSON.parse(localStorage.getItem(key) ?? "null") as {
-      profiles: { character: string; level: string; cards?: unknown }[];
+      profiles: { character: string; level?: string; cards?: unknown }[];
     } | null;
     return raw?.profiles[0];
   }, PROFILES_KEY);
-  expect(stored).toMatchObject({ character: "pies", level: "lat6", cards: ANIA.cards });
+  expect(stored).toMatchObject({ character: "pies", cards: { ...ANIA.cards, labirynt: { level: "lat6" } } });
+  expect(stored).not.toHaveProperty("level");
 });
 
 test("the list opened from edit shows a visible Ulubiona postać heading", async ({ page }, testInfo) => {

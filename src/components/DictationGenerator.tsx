@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
  * with a card shown draws a new card when the level or the category changed.
  */
 export default function DictationGenerator() {
-  const { visit, bar, favorite, barLevel } = useCardPage();
+  const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
@@ -111,7 +111,6 @@ export default function DictationGenerator() {
       ask={ask}
       waitingForChild={waitingForChild}
       barCharacter={bar.character}
-      barLevel={barLevel}
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}

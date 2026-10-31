@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { ProfileBar } from "@/hooks/useChildProfileVisit";
-import type { LevelId } from "@/lib/maze/levels";
 import {
   characterRow,
   characterSheetSrc,
@@ -13,13 +12,9 @@ import { readOwnImage, recordBarCharacter } from "@/lib/sheet/own-image-store";
 /**
  * The "Postać" bar of a card page other than the maze: the chosen character, its own image, and the writes that
  * follow a pick. It starts from the visit's bar (the profile's favorite or the last used) and, like the maze page,
- * remembers a pick as the last used character only when no profile is active. `barLevel` is the maze level the
- * visit carries; it is written back unchanged so the last-used row keeps it.
+ * remembers a pick as the last used character only when no profile is active.
  */
-export function useBarCharacter(
-  visit: { activeId: string | null; visitStart: ProfileBar },
-  barLevel: LevelId,
-): {
+export function useBarCharacter(visit: { activeId: string | null; visitStart: ProfileBar }): {
   character: SheetCharacterId;
   ownImageHref: string | null;
   /** The file the sheet draws, or null for "Bez postaci" and for an own image with nothing to draw. */
@@ -52,13 +47,13 @@ export function useBarCharacter(
       setOwnImageHref(null);
     }
     setCharacter(id);
-    recordBarCharacter(localStorage, visit.activeId, id, barLevel);
+    recordBarCharacter(localStorage, visit.activeId, id);
   }
 
   function setOwnImage(href: string): void {
     setCharacter(OWN_IMAGE_ID);
     setOwnImageHref(href);
-    recordBarCharacter(localStorage, visit.activeId, OWN_IMAGE_ID, barLevel);
+    recordBarCharacter(localStorage, visit.activeId, OWN_IMAGE_ID);
   }
 
   function applyBar(bar: ProfileBar): void {

@@ -1,4 +1,5 @@
 import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } from "./dictation/levels.ts";
+import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
 import { DEFAULT_SEQUENCE_LEVEL_ID, SEQUENCE_LEVELS, type SequenceLevelId } from "./sequence/levels.ts";
 import {
@@ -18,7 +19,11 @@ import {
   type ObjectCategoryChoiceId,
 } from "./symmetry/templates.ts";
 
-/** The bar settings the profile and the device remember for each card kind except the maze (its level stays in `level`). */
+/** The bar settings the profile and the device remember for each card kind. */
+export interface LabiryntSettings {
+  level: LevelId;
+}
+
 export interface SymmetrySettings {
   level: SymmetryLevelId;
   colors: boolean;
@@ -45,6 +50,7 @@ export interface DictationSettings {
 }
 
 export interface CardSettingsMap {
+  labirynt?: LabiryntSettings;
   symetria?: SymmetrySettings;
   sekwencje?: SequenceSettings;
   sudoku?: SudokuCardSettings;
@@ -54,7 +60,14 @@ export interface CardSettingsMap {
 
 export type CardSettingsId = keyof CardSettingsMap;
 
-export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = ["symetria", "sekwencje", "sudoku", "nonogram", "dyktando"];
+export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
+  "labirynt",
+  "symetria",
+  "sekwencje",
+  "sudoku",
+  "nonogram",
+  "dyktando",
+];
 
 /** The settings of one card. */
 export type CardSettingsOf<K extends CardSettingsId> = NonNullable<CardSettingsMap[K]>;
@@ -62,6 +75,7 @@ export type CardSettingsOf<K extends CardSettingsId> = NonNullable<CardSettingsM
 type Defaults = { [K in CardSettingsId]-?: NonNullable<CardSettingsMap[K]> };
 
 const DEFAULTS: Defaults = {
+  labirynt: { level: DEFAULT_LEVEL_ID },
   symetria: { level: DEFAULT_SYMMETRY_LEVEL_ID, colors: false, category: DEFAULT_OBJECT_CATEGORY_ID },
   sekwencje: { level: DEFAULT_SEQUENCE_LEVEL_ID, colors: false },
   sudoku: { ...DEFAULT_SUDOKU_SETTINGS, colors: false },
@@ -108,6 +122,36 @@ export function parseCardSettings(raw: unknown): CardSettingsMap {
   return map;
 }
 
+/**
+ * Reads the `cards` field of a stored record together with the maze level it used to carry in a top-level `level`
+ * (profiles and last-used parameters before the maze joined `cards`). The maze level is the stored `cards.labirynt`
+ * level when it is valid, otherwise a valid legacy `level`, otherwise the default. A record that has neither a
+ * maze card nor a valid legacy level gets no maze entry, so the page starts from its default.
+ */
+export function parseStoredCards(record: unknown): CardSettingsMap {
+  if (!isRecord(record)) {
+    return {};
+  }
+
+  const map = parseCardSettings(record.cards);
+  const legacy = record.level;
+  if (!isMazeLevel(legacy)) {
+    return map;
+  }
+
+  const stored = isRecord(record.cards) ? record.cards.labirynt : undefined;
+  const storedLevel = isRecord(stored) ? stored.level : undefined;
+  if (isMazeLevel(storedLevel)) {
+    return map;
+  }
+
+  return { ...map, labirynt: { level: legacy } };
+}
+
+function isMazeLevel(value: unknown): value is LevelId {
+  return typeof value === "string" && LEVELS.some((level) => level.id === value);
+}
+
 function parseCard<K extends CardSettingsId>(cardId: K, stored: Record<string, unknown>): CardSettingsOf<K> {
   const defaults = defaultCardSettings(cardId);
   const parsed: Record<string, unknown> = {};
@@ -138,6 +182,8 @@ function fieldValue(cardId: CardSettingsId, field: string, value: unknown, fallb
 /** The ids a card's `level` field may hold. */
 function levelIds(cardId: CardSettingsId): readonly string[] {
   switch (cardId) {
+    case "labirynt":
+      return LEVELS.map((level) => level.id);
     case "symetria":
       return SYMMETRY_LEVELS.map((level) => level.id);
     case "sekwencje":

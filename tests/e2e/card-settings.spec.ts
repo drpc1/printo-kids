@@ -188,8 +188,11 @@ test.describe("profiles", () => {
 
     await page.reload();
     await expect(page.getByRole("button", { name: "Poziom: 2" })).toBeVisible();
-    const profiles = (await stored(page, PROFILES_KEY)) as { profiles: { level: string }[] };
-    expect(profiles.profiles[0].level).toBe("lat4");
+    const profiles = (await stored(page, PROFILES_KEY)) as {
+      profiles: { level?: string; cards?: { labirynt?: { level: string } } }[];
+    };
+    expect(profiles.profiles[0].cards?.labirynt?.level).toBe("lat4");
+    expect(profiles.profiles[0]).not.toHaveProperty("level");
   });
 
   test("a new profile starts with the bar of the page it is created on", async ({ page }) => {
@@ -230,7 +233,51 @@ test.describe("profiles", () => {
     await expect(page.getByRole("img", { name: "Nonogram" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Poziom: średni" })).toBeEnabled();
   });
+
+  test("switching the profile with a maze on screen redraws it at the new profile's level", async ({ page }) => {
+    const ania = { id: "profile-ania", name: "Ania", character: "none", cards: { labirynt: { level: "lat6" } } };
+    const zosia = { id: "profile-zosia", name: "Zosia", character: "none", cards: { labirynt: { level: "lat3" } } };
+    await seedAndOpen(page, "/maze", {
+      [PROFILES_KEY]: JSON.stringify({ profiles: [ania, zosia] }),
+      [ACTIVE_KEY]: ania.id,
+    });
+    await expect(page.getByRole("button", { name: "Poziom: 4" })).toBeVisible();
+    await page.getByRole("button", { name: "Generuj" }).click();
+    await expect(page.getByRole("img", { name: "Labirynt" })).toBeVisible();
+    expect(await mazeColumns(page)).toBe(15);
+
+    await page.getByRole("button", { name: "Ania", exact: true }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Zosia", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Poziom: 1" })).toBeVisible();
+    await expect(page.getByRole("img", { name: "Labirynt" })).toBeVisible();
+    expect(await mazeColumns(page)).toBe(9);
+  });
+
+  test("creating a profile with a maze on screen puts the maze back at the default level", async ({ page }) => {
+    const ania = { id: "profile-ania", name: "Ania", character: "none", cards: { labirynt: { level: "lat6" } } };
+    await seedAndOpen(page, "/maze", profileSeed(ania));
+    await expect(page.getByRole("button", { name: "Poziom: 4" })).toBeVisible();
+    await page.getByRole("button", { name: "Generuj" }).click();
+    await expect(page.getByRole("img", { name: "Labirynt" })).toBeVisible();
+    expect(await mazeColumns(page)).toBe(15);
+
+    await page.getByRole("button", { name: "Ania", exact: true }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Dodaj profil" }).click();
+    await page.getByRole("dialog").getByLabel("Imię").fill("Zosia");
+    await page.getByRole("dialog").getByRole("button", { name: "Utwórz" }).click();
+
+    await expect(page.getByRole("button", { name: "Poziom: 3" })).toBeVisible();
+    expect(await mazeColumns(page)).toBe(13);
+  });
 });
+
+async function mazeColumns(page: Page): Promise<number> {
+  const xs = await page
+    .getByRole("img", { name: "Labirynt" })
+    .locator("line")
+    .evaluateAll((lines) => lines.flatMap((line) => [line.getAttribute("x1"), line.getAttribute("x2")]));
+  return new Set(xs.map((x) => Number(x).toFixed(3))).size - 1;
+}
 
 interface Box {
   x: number;

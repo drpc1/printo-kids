@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import type { ProfileCornerHandlers } from "@/hooks/useChildProfileVisit";
 import type { CardSettingsMap } from "@/lib/card-settings";
 import type { ChildProfile } from "@/lib/child-profiles";
-import type { LevelId } from "@/lib/maze/levels";
 import type { SheetCharacterId } from "@/lib/sheet/character";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +25,6 @@ export function CardPage({
   ask,
   waitingForChild,
   barCharacter,
-  barLevel,
   corner,
   newProfileCards,
   note,
@@ -43,9 +41,8 @@ export function CardPage({
   ask: boolean;
   waitingForChild: boolean;
   barCharacter: SheetCharacterId;
-  barLevel: LevelId;
   corner: ProfileCornerHandlers;
-  /** Omit when a new profile has no card settings to start with (the maze keeps its level in the profile). */
+  /** Omit when a new profile has no card settings to start with (the maze starts a new profile at its default level). */
   newProfileCards?: CardSettingsMap;
   note: string | null;
   sheetShown: boolean;
@@ -109,7 +106,6 @@ export function CardPage({
         profiles={profiles}
         activeId={activeId}
         barCharacter={barCharacter}
-        barLevel={barLevel}
         ask={ask}
         onCreated={corner.onCreated}
         onChoose={corner.onChoose}

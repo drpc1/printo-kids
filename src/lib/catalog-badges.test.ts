@@ -9,13 +9,13 @@ const ANIA = {
   id: "profile-ania",
   name: "Ania",
   character: "kot",
-  level: "lat6",
   cards: {
+    labirynt: { level: "lat6" },
     nonogram: { level: "sredni", category: "zwierzeta" },
     sudoku: { size: 6, level: "sredni", symbols: "shapes", colors: false },
   },
 };
-const ZOSIA = { id: "profile-zosia", name: "Zosia", character: "none", level: "lat3" };
+const ZOSIA = { id: "profile-zosia", name: "Zosia", character: "none", cards: { labirynt: { level: "lat3" } } };
 
 function storage(profiles: unknown[], active?: string) {
   const data = new Map<string, string>();
@@ -38,6 +38,13 @@ void describe("catalogBadges", () => {
     assert.deepEqual(result.badges, { labirynt: "poz. 4", sudoku: "6×6 · średni", nonogram: "średni" });
   });
 
+  void test("a legacy profile with a top-level level shows it as the maze badge", () => {
+    const legacy = { id: "profile-stary", name: "Stary", character: "none", level: "lat6" };
+    const result = catalogBadges(storage([legacy]));
+    assert.equal(result.profileName, "Stary");
+    assert.deepEqual(result.badges, { labirynt: "poz. 4" });
+  });
+
   void test("the only profile counts as chosen without a stored choice", () => {
     const result = catalogBadges(storage([ZOSIA]));
     assert.equal(result.profileName, "Zosia");
@@ -55,7 +62,7 @@ void describe("catalogBadges", () => {
   });
 
   void test("a profile made on the catalog shows its name and only the default maze level", () => {
-    const fresh = { id: "profile-nowy", name: "Nowy", character: "none", level: "lat5" };
+    const fresh = { id: "profile-nowy", name: "Nowy", character: "none" };
     const result = catalogBadges(storage([ANIA, fresh], fresh.id));
     assert.equal(result.profileName, "Nowy");
     assert.deepEqual(result.badges, { labirynt: "poz. 3" });
