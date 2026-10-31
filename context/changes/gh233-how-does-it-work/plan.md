@@ -173,28 +173,28 @@ PRD opisuje nową zawartość strony.
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Typy przechodzą: `npx astro check`
-- [x] 1.3 Lint przechodzi: `npm run lint`
+- [x] 1.1 Testy przechodzą: `npm test` — bef363d
+- [x] 1.2 Typy przechodzą: `npx astro check` — bef363d
+- [x] 1.3 Lint przechodzi: `npm run lint` — bef363d
 
 #### Manual
 
-- [x] 1.4 Sześć opisów jest zgodnych z PRD i nie zdradza rozwiązań nonogramu ani dyktanda
+- [x] 1.4 Sześć opisów jest zgodnych z PRD i nie zdradza rozwiązań nonogramu ani dyktanda — bef363d
 
 ### Phase 2: Sekcja „Rodzaje kart” na stronie „Jak to działa”
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Build przechodzi: `npm run build`
-- [ ] 2.3 Typy przechodzą: `npx astro check`
-- [ ] 2.4 Lint przechodzi: `npm run lint`
-- [ ] 2.5 E2E strony przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Build przechodzi: `npm run build`
+- [x] 2.3 Typy przechodzą: `npx astro check`
+- [x] 2.4 Lint przechodzi: `npm run lint`
+- [x] 2.5 E2E strony przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium`
 
 #### Manual
 
-- [ ] 2.6 Strona czyta się w minutę na telefonie 360 px i na komputerze
-- [ ] 2.7 Linki w opisach prowadzą do właściwych generatorów, a „Wszystkie karty” wraca do katalogu
+- [x] 2.6 Strona czyta się w minutę na telefonie 360 px i na komputerze
+- [x] 2.7 Linki w opisach prowadzą do właściwych generatorów, a „Wszystkie karty” wraca do katalogu
 
 ### Phase 3: Kryterium w PRD
 

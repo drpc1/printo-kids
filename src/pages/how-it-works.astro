@@ -1,10 +1,12 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { cardsInCatalogOrder } from "@/lib/cards";
 
+const cards = cardsInCatalogOrder();
 const sections = [
   {
     heading: "Poziomy",
-    text: "Poziom wybierasz na pasku każdej karty. Karty z trzema poziomami mają łatwy, średni i trudny, karty z większą liczbą poziomów mają numery (Poziom 1, 2, 3…). Przy każdym poziomie jest krótki opis tego, co się zmienia. Poziomy nie oceniają dziecka: przy niektórych kartach widać tylko typowy wiek jako wskazówkę na pierwszy wybór, a numery i nazwy nie są porównywalne między kartami.",
+    text: "Poziom wybierasz na pasku każdej karty. Karty z trzema poziomami mają łatwy, średni i trudny, karty z większą liczbą poziomów mają numery (Poziom 1, 2, 3…). Przy każdym poziomie jest krótki opis tego, co się zmienia. Poziomy nie oceniają dziecka: przy labiryncie, symetrii, sekwencjach i dyktandzie widać tylko typowy wiek jako wskazówkę na pierwszy wybór (sudoku i nonogram wieku nie mają), a numery i nazwy nie są porównywalne między kartami.",
   },
   {
     heading: "Profil dziecka",
@@ -35,6 +37,22 @@ const sections = [
         Wszystkie karty
       </a>
       <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Jak to działa</h1>
+      <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-semibold tracking-tight">Rodzaje kart</h2>
+        {cards.map((card) => (
+          <div class="flex flex-col gap-1">
+            <h3 class="text-xl font-semibold tracking-tight">
+              <a
+                href={card.href}
+                class="focus-visible:border-ring focus-visible:ring-ring/50 inline-flex min-h-11 items-center rounded-md underline underline-offset-4 outline-none focus-visible:ring-[3px]"
+              >
+                {card.title}
+              </a>
+            </h3>
+            <p class="text-lg leading-relaxed text-muted-foreground">{card.description}</p>
+          </div>
+        ))}
+      </section>
       {sections.map((section) => (
         <section class="flex flex-col gap-2">
           <h2 class="text-2xl font-semibold tracking-tight">{section.heading}</h2>
