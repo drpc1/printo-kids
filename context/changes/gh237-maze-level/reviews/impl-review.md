@@ -48,7 +48,7 @@
   - Tradeoff: Jeden test e2e więcej (kilkanaście sekund w CI).
   - Confidence: MED — nie sprawdzałem, czy labirynt daje się łatwo zidentyfikować po poziomie w DOM.
   - Blind spot: Stabilność selektorów karty labiryntu.
-- **Decision**: PENDING
+- **Decision**: FIXED (dwa testy e2e dla /maze w card-settings.spec.ts: przełączenie profilu i utworzenie profilu z kartą na ekranie; break-check czerwony)
 
 ### F3 — Commit Fazy 1 sam w sobie nie przechodzi typecheck
 
