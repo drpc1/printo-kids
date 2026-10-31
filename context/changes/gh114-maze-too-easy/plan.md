@@ -325,11 +325,11 @@ Identyfikatory poziomów (`lat3` … `nastolatek`) się nie zmieniają, więc pr
 
 #### Automated
 
-- [x] 3.1 `npx prettier --check context/foundation/prd.md` przechodzi
+- [x] 3.1 `npx prettier --check context/foundation/prd.md` przechodzi — 6bf682f
 
 #### Manual
 
-- [x] 3.2 Wydruk próbny kilku kart z każdego poziomu: droga nie biegnie prosto w dół, są dłuższe ślepe uliczki i rozgałęzienia, a karty jednego poziomu mają podobną trudność
-- [x] 3.3 Pierwsza karta po wejściu na `/maze` bez profilu (domyślny Poziom 3) nie zniechęca dziecka, które dziś robi Poziomy 1–3
-- [x] 3.4 Próba z 4-latkiem: Poziomy 1–2 przechodzi, a Poziom 3 wymaga wyraźnie więcej uwagi niż dziś
-- [x] 3.5 Próba z 6-latkiem: Poziomy 5–6 wymagają wyraźnie więcej uwagi niż dziś
+- [x] 3.2 Wydruk próbny kilku kart z każdego poziomu: droga nie biegnie prosto w dół, są dłuższe ślepe uliczki i rozgałęzienia, a karty jednego poziomu mają podobną trudność — 6bf682f
+- [x] 3.3 Pierwsza karta po wejściu na `/maze` bez profilu (domyślny Poziom 3) nie zniechęca dziecka, które dziś robi Poziomy 1–3 — 6bf682f
+- [x] 3.4 Próba z 4-latkiem: Poziomy 1–2 przechodzi, a Poziom 3 wymaga wyraźnie więcej uwagi niż dziś — 6bf682f
+- [x] 3.5 Próba z 6-latkiem: Poziomy 5–6 wymagają wyraźnie więcej uwagi niż dziś — 6bf682f
