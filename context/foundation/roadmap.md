@@ -39,14 +39,14 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                    | Outcome (user can …)                                                                                                                                                               | Prerequisites    | PRD refs                                            | Status      |
-| ---- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------------- | ----------- |
-| S-27 | level-labels-without-age     | Rodzic wybiera Poziom 1…N w labiryncie, symetrii i sekwencjach oraz łatwy / średni / trudny w dyktandzie, a każdy poziom na liście ma pół zdania o tym, co zmienia                 | —                | FR-001, FR-016, FR-020, FR-027, US-07, US-11, US-18 | done        |
-| S-28 | card-settings-memory         | Rodzic wraca na stronę dowolnej karty i ma na pasku ustawienia, które ostatnio wybrał dla tej karty: w aktywnym profilu (zapis od razu, „Zapamiętane dla {imię}”) albo bez profilu | —                | US-08, FR-017, FR-006                               | done        |
-| S-29 | profile-window-summary       | Rodzic tworzy profil z samym imieniem i postacią, widzi w oknie profilu podsumowanie ustawień kart tylko do odczytu, a w katalogu plakietki z poziomem przy miniaturach            | S-28             | FR-007, FR-017, US-05, US-08                        | done        |
-| S-30 | character-speaks-instruction | Rodzic wybiera postać na pasku każdej karty, a na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie postać w kolorze stoi przy poleceniu i mówi je w dymku                    | —                | US-21, FR-030, US-03                                | done        |
-| S-31 | favorite-character-explicit  | Rodzic przy aktywnym profilu zmienia postać tylko na tę wizytę albo jednym wyborem „Ustaw jako ulubioną”; bez profilu ostatnia postać jest wspólna dla wszystkich kart             | S-28, S-30       | FR-009, US-03, US-08, US-22                         | done        |
-| S-32 | s32-how-does-it-work         | Rodzic otwiera ze stopki krótką stronę „Jak to działa” z zasadą poziomów, profilu i postaci                                                                                        | S-27, S-29, S-31 | US-22, FR-031                                       | in-progress |
+| ID   | Change ID                    | Outcome (user can …)                                                                                                                                                               | Prerequisites    | PRD refs                                            | Status |
+| ---- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------------- | ------ |
+| S-27 | level-labels-without-age     | Rodzic wybiera Poziom 1…N w labiryncie, symetrii i sekwencjach oraz łatwy / średni / trudny w dyktandzie, a każdy poziom na liście ma pół zdania o tym, co zmienia                 | —                | FR-001, FR-016, FR-020, FR-027, US-07, US-11, US-18 | done   |
+| S-28 | card-settings-memory         | Rodzic wraca na stronę dowolnej karty i ma na pasku ustawienia, które ostatnio wybrał dla tej karty: w aktywnym profilu (zapis od razu, „Zapamiętane dla {imię}”) albo bez profilu | —                | US-08, FR-017, FR-006                               | done   |
+| S-29 | profile-window-summary       | Rodzic tworzy profil z samym imieniem i postacią, widzi w oknie profilu podsumowanie ustawień kart tylko do odczytu, a w katalogu plakietki z poziomem przy miniaturach            | S-28             | FR-007, FR-017, US-05, US-08                        | done   |
+| S-30 | character-speaks-instruction | Rodzic wybiera postać na pasku każdej karty, a na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie postać w kolorze stoi przy poleceniu i mówi je w dymku                    | —                | US-21, FR-030, US-03                                | done   |
+| S-31 | favorite-character-explicit  | Rodzic przy aktywnym profilu zmienia postać tylko na tę wizytę albo jednym wyborem „Ustaw jako ulubioną”; bez profilu ostatnia postać jest wspólna dla wszystkich kart             | S-28, S-30       | FR-009, US-03, US-08, US-22                         | done   |
+| S-32 | s32-how-does-it-work         | Rodzic otwiera ze stopki krótką stronę „Jak to działa” z zasadą poziomów, profilu i postaci                                                                                        | S-27, S-29, S-31 | US-22, FR-031                                       | done   |
 
 ## Streams
 
@@ -153,7 +153,7 @@ Brak. Zapis na urządzeniu już istnieje (Baseline: Data), a każda karta ma pas
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Strona opisuje zachowanie z trzech wcześniejszych kawałków; pisana wcześniej rozjedzie się z tym, co rodzic widzi. Pozostałe podpowiedzi z US-22 wchodzą razem ze swoimi kawałkami (opis poziomu w S-27, „Zapamiętane dla” w S-28, zdanie w oknie profilu w S-29, „Tylko na tę kartę” w S-31).
-- **Status:** in-progress
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -243,3 +243,4 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-30: Rodzic widzi pasek „Postać” na stronie każdej karty. Na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie wybrana postać (z katalogu albo własny obrazek) stoi w kolorze przy zdaniu polecenia, a polecenie jest w jej dymku; przy „Bez postaci” zostaje samo polecenie. Zadanie, odpowiedź, druk na jednej stronie A4 i margines 10 mm zostają bez zmian.** — Archived 2026-10-27 → `context/archive/2026-10-27-character-speaks-instruction/`. Lesson: —.
 - **S-29: Rodzic tworzy profil, podając tylko imię i postać; okno profilu nie ma już kontrolek poziomu, pokazuje jedno zdanie o zasadzie i podsumowanie ustawień kart tylko do odczytu („Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta”), z których każda pozycja prowadzi do strony karty. W katalogu przy wybranym profilu miniatura każdej karty, której profil używał, ma plakietkę z zapamiętanym poziomem.** — Archived 2026-10-27 → `context/archive/2026-10-27-profile-window-summary/`. Lesson: —.
 - **S-31: Rodzic przy aktywnym profilu wybiera inną postać na pasku tylko na bieżącą wizytę na stronie; pod listą widzi „Tylko na tę kartę” i może jednym wyborem „Ustaw jako ulubioną {imię}” zapisać ją w profilu. Przy następnym wejściu wraca ulubiona. Bez profilu ostatnio użyta postać jest wspólna dla wszystkich kart.** — Archived 2026-10-27 → `context/archive/2026-10-27-favorite-character-explicit/`. Lesson: —.
+- **S-32: Rodzic otwiera ze stopki krótką stronę „Jak to działa” z zasadą poziomów, profilu i postaci. Strona `/how-it-works` jest statyczna, a stopka z linkiem jest na katalogu i na stronach generatorów, ukryta w druku A4. Bez samouczka i bez okna pomocy.** — Archived 2026-10-31 → `context/archive/2026-10-31-s32-how-does-it-work/`. Lesson: —.
