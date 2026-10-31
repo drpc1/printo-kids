@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-10-27
+updated: 2026-10-31
 prd_version: 5
 main_goal: low-complexity
 top_blocker: capacity
@@ -39,14 +39,14 @@ Rodzic przedszkolaka wyczerpał darmowe labirynty o właściwej skali trudności
 
 ## At a glance
 
-| ID   | Change ID                    | Outcome (user can …)                                                                                                                                                               | Prerequisites    | PRD refs                                            | Status   |
-| ---- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------------- | -------- |
-| S-27 | level-labels-without-age     | Rodzic wybiera Poziom 1…N w labiryncie, symetrii i sekwencjach oraz łatwy / średni / trudny w dyktandzie, a każdy poziom na liście ma pół zdania o tym, co zmienia                 | —                | FR-001, FR-016, FR-020, FR-027, US-07, US-11, US-18 | done     |
-| S-28 | card-settings-memory         | Rodzic wraca na stronę dowolnej karty i ma na pasku ustawienia, które ostatnio wybrał dla tej karty: w aktywnym profilu (zapis od razu, „Zapamiętane dla {imię}”) albo bez profilu | —                | US-08, FR-017, FR-006                               | done     |
-| S-29 | profile-window-summary       | Rodzic tworzy profil z samym imieniem i postacią, widzi w oknie profilu podsumowanie ustawień kart tylko do odczytu, a w katalogu plakietki z poziomem przy miniaturach            | S-28             | FR-007, FR-017, US-05, US-08                        | done     |
-| S-30 | character-speaks-instruction | Rodzic wybiera postać na pasku każdej karty, a na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie postać w kolorze stoi przy poleceniu i mówi je w dymku                    | —                | US-21, FR-030, US-03                                | done     |
-| S-31 | favorite-character-explicit  | Rodzic przy aktywnym profilu zmienia postać tylko na tę wizytę albo jednym wyborem „Ustaw jako ulubioną”; bez profilu ostatnia postać jest wspólna dla wszystkich kart             | S-28, S-30       | FR-009, US-03, US-08, US-22                         | done     |
-| S-32 | how-it-works-page            | Rodzic otwiera ze stopki krótką stronę „Jak to działa” z zasadą poziomów, profilu i postaci                                                                                        | S-27, S-29, S-31 | US-22, FR-031                                       | proposed |
+| ID   | Change ID                    | Outcome (user can …)                                                                                                                                                               | Prerequisites    | PRD refs                                            | Status      |
+| ---- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------------- | ----------- |
+| S-27 | level-labels-without-age     | Rodzic wybiera Poziom 1…N w labiryncie, symetrii i sekwencjach oraz łatwy / średni / trudny w dyktandzie, a każdy poziom na liście ma pół zdania o tym, co zmienia                 | —                | FR-001, FR-016, FR-020, FR-027, US-07, US-11, US-18 | done        |
+| S-28 | card-settings-memory         | Rodzic wraca na stronę dowolnej karty i ma na pasku ustawienia, które ostatnio wybrał dla tej karty: w aktywnym profilu (zapis od razu, „Zapamiętane dla {imię}”) albo bez profilu | —                | US-08, FR-017, FR-006                               | done        |
+| S-29 | profile-window-summary       | Rodzic tworzy profil z samym imieniem i postacią, widzi w oknie profilu podsumowanie ustawień kart tylko do odczytu, a w katalogu plakietki z poziomem przy miniaturach            | S-28             | FR-007, FR-017, US-05, US-08                        | done        |
+| S-30 | character-speaks-instruction | Rodzic wybiera postać na pasku każdej karty, a na symetrii, sekwencjach, sudoku, nonogramie i dyktandzie postać w kolorze stoi przy poleceniu i mówi je w dymku                    | —                | US-21, FR-030, US-03                                | done        |
+| S-31 | favorite-character-explicit  | Rodzic przy aktywnym profilu zmienia postać tylko na tę wizytę albo jednym wyborem „Ustaw jako ulubioną”; bez profilu ostatnia postać jest wspólna dla wszystkich kart             | S-28, S-30       | FR-009, US-03, US-08, US-22                         | done        |
+| S-32 | s32-how-does-it-work         | Rodzic otwiera ze stopki krótką stronę „Jak to działa” z zasadą poziomów, profilu i postaci                                                                                        | S-27, S-29, S-31 | US-22, FR-031                                       | in-progress |
 
 ## Streams
 
@@ -146,14 +146,14 @@ Brak. Zapis na urządzeniu już istnieje (Baseline: Data), a każda karta ma pas
 ### S-32: Strona „Jak to działa”
 
 - **Outcome:** Rodzic otwiera ze stopki krótką stronę „Jak to działa”, która tłumaczy całą zasadę: poziomy bez wieku, profil pamiętający pasek każdej karty, ulubiona postać zmieniana jawnie i postać przy poleceniu. Bez samouczka i bez okna pomocy.
-- **Change ID:** how-it-works-page
+- **Change ID:** s32-how-does-it-work
 - **PRD refs:** US-22, FR-031
 - **Prerequisites:** S-27, S-29, S-31
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Strona opisuje zachowanie z trzech wcześniejszych kawałków; pisana wcześniej rozjedzie się z tym, co rodzic widzi. Pozostałe podpowiedzi z US-22 wchodzą razem ze swoimi kawałkami (opis poziomu w S-27, „Zapamiętane dla” w S-28, zdanie w oknie profilu w S-29, „Tylko na tę kartę” w S-31).
-- **Status:** proposed
+- **Status:** in-progress
 
 ## Backlog Handoff
 
@@ -166,7 +166,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 | S-29       | profile-window-summary       | Okno profilu z podsumowaniem i plakietki w katalogu           | no                    | Czeka na S-28                                                                              |
 | S-30       | character-speaks-instruction | Postać mówi polecenie na każdej karcie                        | yes                   | Run `/10x-new character-speaks-instruction`, potem `/10x-plan`. Najpierw makieta dymka     |
 | S-31       | favorite-character-explicit  | Ulubiona postać zmienia się tylko jawnie                      | no                    | Czeka na S-28 i S-30                                                                       |
-| S-32       | how-it-works-page            | Strona „Jak to działa”                                        | no                    | Czeka na S-27, S-29 i S-31                                                                 |
+| S-32       | s32-how-does-it-work         | Strona „Jak to działa”                                        | no                    | Czeka na S-27, S-29 i S-31                                                                 |
 
 ## Open Roadmap Questions
 
