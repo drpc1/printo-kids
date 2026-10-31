@@ -1,8 +1,9 @@
 // Provenance: phone-settings-rows (issue #173), generalized to every card page by gh192-pages-sceleton (GH 192)
 // On phone-360, before and after the first card, the settings row follows two rules however many controls it holds and however
 // the text happens to wrap: the text of the first control on every line starts where the text of "Postać" does,
-// and the vertical gap between one line and the next is the same for every pair of lines. Other projects open the
-// pages and confirm the controls, then skip the boxes: from 640 px the inset and the tighter gap do not apply.
+// and the vertical gap between one line and the next is the same for every pair of lines. From 640 px (GH 245) and after the first card the
+// alignment rule holds too, checked at 700 px on chromium and tablet-768; the tighter gap is a phone rule. pixel-7
+// only opens the pages and confirms the controls.
 // Known limit: the gap rule compares gaps between lines, so it checks nothing when the row fits on one or two
 // lines (one gap equals itself). It guards the pages whose row wraps into three or more lines; the alignment rule
 // holds on every page. Pinning a pixel value for the gap would close the hole but freeze a value nobody chose.
@@ -65,7 +66,8 @@ function settingsRow(page: Page): Locator {
   return page.getByRole("button", { name: /^Postać:/ }).locator("xpath=ancestor::div[contains(@class,'flex-wrap')][1]");
 }
 
-async function expectRowRules(page: Page): Promise<void> {
+// Returns how many lines the row has. `checkGaps` adds the equal-gap rule, which only the phone has.
+async function expectRowRules(page: Page, checkGaps = true): Promise<number> {
   const row = settingsRow(page);
   const postac = page.getByRole("button", { name: /^Postać:/ });
   const items: { box: Box; element: Locator }[] = [];
@@ -99,15 +101,18 @@ async function expectRowRules(page: Page): Promise<void> {
     ).toBeLessThanOrEqual(1);
   }
 
-  const gaps: number[] = [];
-  for (let index = 1; index < lines.length; index += 1) {
-    const above = Math.max(...lines[index - 1].map((item) => bottom(item.box)));
-    const below = Math.min(...lines[index].map((item) => item.box.y));
-    gaps.push(below - above);
+  if (checkGaps) {
+    const gaps: number[] = [];
+    for (let index = 1; index < lines.length; index += 1) {
+      const above = Math.max(...lines[index - 1].map((item) => bottom(item.box)));
+      const below = Math.min(...lines[index].map((item) => item.box.y));
+      gaps.push(below - above);
+    }
+    for (const gap of gaps) {
+      expect(Math.abs(gap - gaps[0]), "gap between lines").toBeLessThanOrEqual(1);
+    }
   }
-  for (const gap of gaps) {
-    expect(Math.abs(gap - gaps[0]), "gap between lines").toBeLessThanOrEqual(1);
-  }
+  return lines.length;
 }
 
 // Every card page, with the controls its row has before the first card. Sudoku opens at 6×6 so the row holds the
@@ -132,6 +137,12 @@ const CARD_PAGES: { path: string; label: string; controls: RegExp[]; prepare?: (
 
 for (const card of CARD_PAGES) {
   test(`${card.label} settings row keeps its rules before and after the first card`, async ({ page }, testInfo) => {
+    // From sm (640 px) the alignment rule holds after the first card (GH 245); before it the row is centered. The
+    // narrower projects are the phones.
+    const wide = testInfo.project.name === "chromium" || testInfo.project.name === "tablet-768";
+    if (wide) {
+      await page.setViewportSize({ width: 700, height: 900 });
+    }
     await page.goto(card.path);
     await card.prepare?.(page);
     for (const name of card.controls) {
@@ -151,6 +162,12 @@ for (const card of CARD_PAGES) {
     }
     if (phone) {
       await expectRowRules(page);
+    } else if (wide) {
+      const lines = await expectRowRules(page, false);
+      if (card.label === "sudoku") {
+        // Sudoku 6×6 is the row that wraps at 700 px; with one line the rule would check nothing.
+        expect(lines, "lines of the sudoku settings row").toBeGreaterThan(1);
+      }
     }
   });
 }
