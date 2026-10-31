@@ -215,3 +215,5 @@ Ocalałe po przebiegach:
 Uwaga o `Timeout`: Stryker liczy mutanta zakończonego przez timeout jako wykrytego. W `generate.ts` było ich 135 z 435; część to prawdziwe pętle nieskończone w generatorze, ale część zależy od obciążenia maszyny (linia 142), więc wynik procentowy jest zawyżony i nie wolno go porównywać między przebiegami co do punktu procentowego.
 
 Przebieg z dwoma osobnymi `--mutate` nadpisuje pierwszy zakres. Kilka zakresów jednego pliku podaje się jednym argumentem po przecinku: `--mutate "src/lib/maze/generate.ts:45-52,src/lib/maze/generate.ts:78-130"`.
+
+Uwaga o `child-profiles.ts` w przebiegu „po”: Timeout wzrósł z 4 do 82 (Killed 318 → 252), bo przebieg szedł pod obciążeniem maszyny, więc procent 96,81% nie jest porównywalny z 93,33%. Porównuje się liczbę ocalałych (23 → 11). Z 12 mutantów, które przestały być ocalałe, jeden został zabity (275:7), a 9 skończyło jako Timeout (270 ×2, 283, 289, 315, 323 ×4). Mutanty 270 i 289 zabija nowy test (break-check w Fazie 3); 283, 315 i 323 zostają przy swojej decyzji (równoważny/kosmetyczny), a ich Timeout nie jest dowodem zabicia.
