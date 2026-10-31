@@ -257,11 +257,11 @@ Generowanie ma zostać poniżej 5 s; trudny nonogram sprawdza wszystkie warianty
 
 #### Automated
 
-- [x] 3.1 Pełny pakiet: `npm run lint`, `npm test`, `npx astro check`, `npm run build`
-- [x] 3.2 Testy profilu i podsumowania przechodzą z kategorią `ksztalty`
+- [x] 3.1 Pełny pakiet: `npm run lint`, `npm test`, `npx astro check`, `npm run build` — d5126c7
+- [x] 3.2 Testy profilu i podsumowania przechodzą z kategorią `ksztalty` — d5126c7
 
 #### Manual
 
-- [x] 3.3 Wybór „Kształty” zapamiętuje się w profilu i widać go w podsumowaniu
-- [x] 3.4 Karty trzech rodzajów drukują się jako jedna strona A4 z marginesem 10 mm
-- [x] 3.5 Widok telefonu (360 px) pokazuje cały pasek „Kategoria” bez ucięcia
+- [x] 3.3 Wybór „Kształty” zapamiętuje się w profilu i widać go w podsumowaniu — d5126c7
+- [x] 3.4 Karty trzech rodzajów drukują się jako jedna strona A4 z marginesem 10 mm — d5126c7
+- [x] 3.5 Widok telefonu (360 px) pokazuje cały pasek „Kategoria” bez ucięcia — d5126c7
