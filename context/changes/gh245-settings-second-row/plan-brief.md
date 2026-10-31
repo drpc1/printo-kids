@@ -12,7 +12,7 @@ Przyciski z chevronem mają efektywnie 12 px wcięcia (`has-[>svg]:px-3`). Prze�
 
 ## Desired End State
 
-Od 640 px każda linia paska zaczyna się w tym samym miejscu, przed i po Generuj. Telefon bez zmian.
+Od 640 px każda linia paska zaczyna się w tym samym miejscu po Generuj (przed Generuj wiersz jest wyśrodkowany z założenia). Telefon bez zmian.
 
 ## Key Decisions Made
 
