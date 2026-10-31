@@ -203,21 +203,21 @@ Brak danych do migracji.
 
 #### Automated
 
-- [x] 2.1 Spec przechodzi na Chromium: `E2E_PORT=4399 npx playwright test tests/e2e/print-margins.spec.ts --project=chromium`
-- [x] 2.2 Test kontraktowy dalej przechodzi: `npm test`
+- [x] 2.1 Spec przechodzi na Chromium: `E2E_PORT=4399 npx playwright test tests/e2e/print-margins.spec.ts --project=chromium` — f6464ac
+- [x] 2.2 Test kontraktowy dalej przechodzi: `npm test` — f6464ac
 
 #### Manual
 
-- [x] 2.3 Notka w `change.md` zawiera pomiary z iPhone'a (obszar druku, `100vh`, warianty `100vh` / `116vh` / `122vh` / bez limitu).
+- [x] 2.3 Notka w `change.md` zawiera pomiary z iPhone'a (obszar druku, `100vh`, warianty `100vh` / `116vh` / `122vh` / bez limitu). — f6464ac
 
 ### Phase 3: Ręczny druk na iPhonie i kontrola komputera
 
 #### Automated
 
-- [ ] 3.1 Pełny zestaw: `npm run lint && npm test && npx astro check`
+- [x] 3.1 Pełny zestaw: `npm run lint && npm test && npx astro check`
 
 #### Manual
 
-- [ ] 3.2 iPhone Safari, Chrome i Brave: labirynt Poziom 3 i Poziom 6 drukują się na jednej stronie, ok. 16 % większe niż przed zmianą, znak postaci widoczny.
-- [ ] 3.3 Co najmniej jedna karta inna niż labirynt (np. symetria) drukuje się na iPhonie na jednej stronie.
-- [ ] 3.4 Komputer (Chrome): wydruk identyczny z dzisiejszym, jedna strona A4, margines 10 mm.
+- [x] 3.2 iPhone Safari, Chrome i Brave: labirynt Poziom 3 i Poziom 6 drukują się na jednej stronie, ok. 16 % większe niż przed zmianą, znak postaci widoczny.
+- [x] 3.3 Co najmniej jedna karta inna niż labirynt (np. symetria) drukuje się na iPhonie na jednej stronie.
+- [x] 3.4 Komputer (Chrome): wydruk identyczny z dzisiejszym, jedna strona A4, margines 10 mm.
