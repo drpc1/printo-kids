@@ -1,0 +1,46 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const sections = [
+  {
+    heading: "Poziomy",
+    text: "Poziom wybierasz na pasku każdej karty. Karty z trzema poziomami mają łatwy, średni i trudny, karty z większą liczbą poziomów mają numery (Poziom 1, 2, 3…). Przy każdym poziomie jest krótki opis tego, co się zmienia. Poziomy nie oceniają dziecka: przy niektórych kartach widać tylko typowy wiek jako wskazówkę na pierwszy wybór, a numery i nazwy nie są porównywalne między kartami.",
+  },
+  {
+    heading: "Profil dziecka",
+    text: "Profil to imię i ulubiona postać. Profil sam zapamiętuje ustawienia każdej karty z paska (poziom, kolory, kategorię i inne), więc przy następnej wizycie pasek jest taki, jak dziecko ostatnio go zostawiło. Każda zmiana zapisuje się od razu, bez przycisku „Zapisz”. Bez profilu urządzenie pamięta ostatnie ustawienia osobno dla każdej karty. Drukowanie nie wymaga profilu.",
+  },
+  {
+    heading: "Ulubiona postać",
+    text: "Ulubiona postać zmienia się tylko wtedy, gdy zrobisz to jawnie: w oknie profilu albo wyborem „Ustaw jako ulubioną” pod listą postaci na pasku. Inna postać wybrana na pasku działa tylko do końca wizyty na tej stronie, a przy następnym wejściu wraca ulubiona.",
+  },
+  {
+    heading: "Postać na karcie",
+    text: "Na labiryncie postać stoi przy starcie. Na pozostałych kartach stoi przy zdaniu polecenia i „mówi” je w dymku. Postać jest ozdobą: nie zmienia zadania, odpowiedzi ani trudności i drukuje się w kolorze.",
+  },
+  {
+    heading: "Twoje dane",
+    text: "Profile, ustawienia kart i własny obrazek zostają w przeglądarce na tym urządzeniu. Aplikacja nie ma kont i nie wysyła ich na serwer.",
+  },
+];
+---
+
+<Layout title="PrintoKids - Jak to działa" lang="pl">
+  <main class="min-h-dvh bg-background px-6 py-12 text-foreground">
+    <div class="mx-auto flex w-full max-w-2xl flex-col gap-8">
+      <a
+        href="/"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 inline-flex min-h-11 w-fit items-center rounded-md text-base font-medium text-foreground underline underline-offset-4 outline-none focus-visible:ring-[3px]"
+      >
+        Wszystkie karty
+      </a>
+      <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Jak to działa</h1>
+      {sections.map((section) => (
+        <section class="flex flex-col gap-2">
+          <h2 class="text-2xl font-semibold tracking-tight">{section.heading}</h2>
+          <p class="text-lg leading-relaxed text-muted-foreground">{section.text}</p>
+        </section>
+      ))}
+    </div>
+  </main>
+</Layout>

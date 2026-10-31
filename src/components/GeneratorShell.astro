@@ -1,4 +1,6 @@
 ---
+import SiteFooter from "@/components/SiteFooter.astro";
+
 interface Props {
   heading: string;
   description: string;
@@ -40,6 +42,8 @@ const { heading, description } = Astro.props;
     <p class="text-lg leading-relaxed text-muted-foreground sm:text-xl">{description}</p>
 
     <slot />
+
+    <SiteFooter />
   </div>
 </main>
 
