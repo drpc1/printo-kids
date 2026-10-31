@@ -185,24 +185,24 @@ PRD opisuje nową zawartość strony.
 
 #### Automated
 
-- [x] 2.1 Testy przechodzą: `npm test`
-- [x] 2.2 Build przechodzi: `npm run build`
-- [x] 2.3 Typy przechodzą: `npx astro check`
-- [x] 2.4 Lint przechodzi: `npm run lint`
-- [x] 2.5 E2E strony przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium`
+- [x] 2.1 Testy przechodzą: `npm test` — 6b4dfa8
+- [x] 2.2 Build przechodzi: `npm run build` — 6b4dfa8
+- [x] 2.3 Typy przechodzą: `npx astro check` — 6b4dfa8
+- [x] 2.4 Lint przechodzi: `npm run lint` — 6b4dfa8
+- [x] 2.5 E2E strony przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium` — 6b4dfa8
 
 #### Manual
 
-- [x] 2.6 Strona czyta się w minutę na telefonie 360 px i na komputerze
-- [x] 2.7 Linki w opisach prowadzą do właściwych generatorów, a „Wszystkie karty” wraca do katalogu
+- [x] 2.6 Strona czyta się w minutę na telefonie 360 px i na komputerze — 6b4dfa8
+- [x] 2.7 Linki w opisach prowadzą do właściwych generatorów, a „Wszystkie karty” wraca do katalogu — 6b4dfa8
 
 ### Phase 3: Kryterium w PRD
 
 #### Automated
 
-- [ ] 3.1 Wpis jest w PRD: `grep -c "GitHub 233" context/foundation/prd.md` zwraca co najmniej 1
-- [ ] 3.2 Formatowanie przechodzi: `npx prettier --check context/foundation/prd.md`
+- [x] 3.1 Wpis jest w PRD: `grep -c "GitHub 233" context/foundation/prd.md` zwraca co najmniej 1
+- [x] 3.2 Formatowanie przechodzi: `npx prettier --check context/foundation/prd.md`
 
 #### Manual
 
-- [ ] 3.3 Brzmienie kryterium zatwierdza użytkownik
+- [x] 3.3 Brzmienie kryterium zatwierdza użytkownik
