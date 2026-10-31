@@ -308,28 +308,28 @@ Identyfikatory poziomów (`lat3` … `nastolatek`) się nie zmieniają, więc pr
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi
-- [x] 2.2 `npm run lint` przechodzi
-- [x] 2.3 `npx astro check` przechodzi
-- [x] 2.4 `npm run build` przechodzi
+- [x] 2.1 `npm test` przechodzi — 1875e7d
+- [x] 2.2 `npm run lint` przechodzi — 1875e7d
+- [x] 2.3 `npx astro check` przechodzi — 1875e7d
+- [x] 2.4 `npm run build` przechodzi — 1875e7d
 - [ ] 2.5 Playwright na projektach Chromium (`chromium`, `phone-360`, `pixel-7`, `tablet-768`) przechodzi
 
 #### Manual
 
-- [x] 2.6 Na `/maze` każdy poziom generuje kartę z metą poza środkiem (Poziomy 1–5) i z postacią na środku wejścia
-- [x] 2.7 Podgląd wydruku w Chrome każdego poziomu to jedna strona A4, a ściany i ramka zachowują margines 10 mm
-- [x] 2.8 Na telefonie (np. `phone-360`) Generuj i Drukuj nie nachodzą na siebie, a karta mieści się na A4
-- [x] 2.9 Miniatura w katalogu na `/` pokazuje nowy labirynt
+- [x] 2.6 Na `/maze` każdy poziom generuje kartę z metą poza środkiem (Poziomy 1–5) i z postacią na środku wejścia — 1875e7d
+- [x] 2.7 Podgląd wydruku w Chrome każdego poziomu to jedna strona A4, a ściany i ramka zachowują margines 10 mm — 1875e7d
+- [x] 2.8 Na telefonie (np. `phone-360`) Generuj i Drukuj nie nachodzą na siebie, a karta mieści się na A4 — 1875e7d
+- [x] 2.9 Miniatura w katalogu na `/` pokazuje nowy labirynt — 1875e7d
 
 ### Phase 3: PRD i wydruk próbny
 
 #### Automated
 
-- [ ] 3.1 `npx prettier --check context/foundation/prd.md` przechodzi
+- [x] 3.1 `npx prettier --check context/foundation/prd.md` przechodzi
 
 #### Manual
 
-- [ ] 3.2 Wydruk próbny kilku kart z każdego poziomu: droga nie biegnie prosto w dół, są dłuższe ślepe uliczki i rozgałęzienia, a karty jednego poziomu mają podobną trudność
-- [ ] 3.3 Pierwsza karta po wejściu na `/maze` bez profilu (domyślny Poziom 3) nie zniechęca dziecka, które dziś robi Poziomy 1–3
-- [ ] 3.4 Próba z 4-latkiem: Poziomy 1–2 przechodzi, a Poziom 3 wymaga wyraźnie więcej uwagi niż dziś
-- [ ] 3.5 Próba z 6-latkiem: Poziomy 5–6 wymagają wyraźnie więcej uwagi niż dziś
+- [x] 3.2 Wydruk próbny kilku kart z każdego poziomu: droga nie biegnie prosto w dół, są dłuższe ślepe uliczki i rozgałęzienia, a karty jednego poziomu mają podobną trudność
+- [x] 3.3 Pierwsza karta po wejściu na `/maze` bez profilu (domyślny Poziom 3) nie zniechęca dziecka, które dziś robi Poziomy 1–3
+- [x] 3.4 Próba z 4-latkiem: Poziomy 1–2 przechodzi, a Poziom 3 wymaga wyraźnie więcej uwagi niż dziś
+- [x] 3.5 Próba z 6-latkiem: Poziomy 5–6 wymagają wyraźnie więcej uwagi niż dziś
