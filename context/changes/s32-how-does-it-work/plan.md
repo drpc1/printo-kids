@@ -104,6 +104,8 @@ Stopka z linkiem „Jak to działa" na katalogu i na stronach generatorów, niew
 
 **Contract**: W druku `#worksheet-home` nadal zawiera wyłącznie SVG karty; na telefonie stopka leży pod kartą i nie zasłania „Generuj"/„Drukuj". `main` jest wyśrodkowany (`justify-center`), więc stopka dostaje `mt-auto` i odstęp `pt-8`, żeby przed pierwszym Generuj nie wisiała pośrodku ekranu, tylko przy dolnej krawędzi.
 
+**Implementation note (impl-review F1)**: Zamiast `mt-auto` i `pt-8` stopka jest ostatnim dzieckiem istniejącego bloku `max-w-xl` z `pt-4`. `mt-auto` w wyśrodkowanym `main` (`justify-center`) przesunąłby treść do góry przed pierwszym Generuj, a PRD wymaga układu „jak dziś”.
+
 #### 3. Kontrakt druku
 
 **File**: `src/lib/sheet/print-contract.test.ts`
