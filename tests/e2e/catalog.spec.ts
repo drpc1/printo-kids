@@ -12,7 +12,8 @@ test("the catalog lists cards in alphabetical order when no profile is saved", a
   // A saved profile rewrites each link's accessible name to "title, badge", so this visit stays unseeded.
   await page.goto("/");
 
-  const links = page.getByRole("link");
+  // The card list only: the footer link to "Jak to działa" is not a card.
+  const links = page.getByRole("list").getByRole("link");
   const order = ["Dyktando graficzne", "Labirynt", "Nonogram", "Sekwencje", "Sudoku", "Symetria"];
   await expect(links).toHaveCount(order.length);
   for (const [index, name] of order.entries()) {

@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
 const WORKSHEET_HOME = "src/components/GeneratorShell.astro";
+const SITE_FOOTER = "src/components/SiteFooter.astro";
 const MAZE_PAGE = "src/pages/maze.astro";
 const WORKSHEET_GENERATOR = "src/components/WorksheetGenerator.tsx";
 const CHARACTER_CHOICE_CONTROL = "src/components/CharacterChoiceControl.tsx";
@@ -90,6 +91,12 @@ void describe("print contract", () => {
     assert.deepEqual(classNamesContaining(readRepoFile(CHARACTER_CHOICE_CONTROL), "print:hidden"), [
       "max-h-[calc(100dvh-2rem)] print:hidden",
     ]);
+  });
+
+  void test("the footer link to the how-it-works page stays out of the print", () => {
+    assert.match(readRepoFile(SITE_FOOTER), /<footer\s+class="[^"]*\bprint:hidden\b[^"]*"/);
+    // The shell renders it inside #worksheet-home, so the print rules above reach the footer's link too.
+    assert.match(readRepoFile(WORKSHEET_HOME), /<SiteFooter\s*\/>/);
   });
 
   void test("the card page shell hides its controls in print", () => {
