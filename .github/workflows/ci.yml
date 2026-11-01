@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, prod]
   pull_request:
-    branches: [main]
+    branches: [main, prod]
 
 jobs:
   changes:
@@ -51,6 +51,10 @@ jobs:
       - run: npm test
       - run: npx astro check
       - run: npm run build
+      - name: Build staging and check the Worker name
+        run: |
+          CLOUDFLARE_ENV=staging npm run build
+          node -e 'process.exit(require("./dist/server/wrangler.json").name === "printo-kids-staging" ? 0 : 1)'
 
   smoke:
     needs: changes
