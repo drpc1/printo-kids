@@ -118,6 +118,6 @@ Wdrożenie na produkcję idzie zwykłym wydaniem `main` → `prod` (zob. AGENTS.
 
 #### Manual
 
-- [ ] 1.5 Lokalnie (`npm run dev`) w źródle strony nie ma `beacon.min.js`
-- [ ] 1.6 Po wdrożeniu `printo-kids` jedna wizyta na `printo-kids.printokids.workers.dev` pojawia się w Observability → Web analytics
-- [ ] 1.7 Wejście na `printo-kids-staging` nie pojawia się w Web analytics, a w źródle strony nie ma skryptu
+- [x] 1.5 Lokalnie (`npm run dev`) w źródle strony nie ma `beacon.min.js`
+- [x] 1.6 Po wdrożeniu `printo-kids` jedna wizyta na `printo-kids.printokids.workers.dev` pojawia się w Observability → Web analytics
+- [x] 1.7 Wejście na `printo-kids-staging` nie pojawia się w Web analytics, a w źródle strony nie ma skryptu
