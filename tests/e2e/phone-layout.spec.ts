@@ -516,34 +516,41 @@ test("the maze level list fits the screen with all six rows and no scrolling", a
   }
 });
 
+// The widest badges: the cards of this profile, plus the maze, whose level comes from the profile's old `level` field.
+// A new card needs no row here; the profile only has to stay the widest case, not list every card.
+const SEEDED_CARDS = {
+  symetria: { level: "lat6", colors: true, category: "wszystkie" },
+  sekwencje: { level: "lat6" },
+  sudoku: { size: 9, level: "trudny", symbols: "shapes", colors: false },
+  nonogram: { level: "sredni", category: "zwierzeta" },
+  dyktando: { level: "lat7", category: "wszystkie" },
+};
+
 test("the catalog badges stay inside their tile and the screen and do not cover a card name", async ({ page }) => {
-  await page.addInitScript((key) => {
-    if (localStorage.getItem(key) === null) {
-      localStorage.setItem(
-        key,
-        JSON.stringify({
-          profiles: [
-            {
-              id: "profile-ania",
-              name: "Ania",
-              character: "kot",
-              level: "lat6",
-              cards: {
-                symetria: { level: "lat6", colors: true, category: "wszystkie" },
-                sekwencje: { level: "lat6" },
-                sudoku: { size: 9, level: "trudny", symbols: "shapes", colors: false },
-                nonogram: { level: "sredni", category: "zwierzeta" },
-                dyktando: { level: "lat7", category: "wszystkie" },
+  await page.addInitScript(
+    ({ key, cards }) => {
+      if (localStorage.getItem(key) === null) {
+        localStorage.setItem(
+          key,
+          JSON.stringify({
+            profiles: [
+              {
+                id: "profile-ania",
+                name: "Ania",
+                character: "kot",
+                level: "lat6",
+                cards,
               },
-            },
-          ],
-        }),
-      );
-    }
-  }, PROFILES_KEY);
+            ],
+          }),
+        );
+      }
+    },
+    { key: PROFILES_KEY, cards: SEEDED_CARDS },
+  );
   await page.goto("/");
   const slots = page.locator("[data-badge-for]:not([hidden])");
-  await expect(slots).toHaveCount(6);
+  await expect(slots).toHaveCount(Object.keys(SEEDED_CARDS).length + 1);
   const heightWith = await page.evaluate(() => document.documentElement.scrollHeight);
 
   const width = viewportWidth(page);

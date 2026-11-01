@@ -1,7 +1,7 @@
 ---
 change_id: coins-who-has-more
 title: S-33 Karta „Kto ma więcej?” z poziomami
-status: planned
+status: implementing
 created: 2026-11-01
 updated: 2026-11-01
 archived_at: null

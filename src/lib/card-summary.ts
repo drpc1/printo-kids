@@ -24,7 +24,7 @@ export interface CardSummary {
 
 const UNUSED_DETAIL = "domyślne";
 
-/** The six cards of a profile in the order of CARD_KINDS. */
+/** Every card of a profile in the order of CARD_KINDS. */
 export function cardSummaries(profile: ChildProfile): CardSummary[] {
   return CARD_KINDS.map((kind) => {
     const parts = summaryParts(kind.id, profile);

@@ -55,10 +55,14 @@ test("a generator page has the footer link and the page states the rules of leve
 
 test("the page describes every card kind in catalog order", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/");
+  const titles = await page
+    .locator("a[data-card-title]")
+    .evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute("data-card-title") ?? ""));
+  expect(titles.length).toBeGreaterThan(0);
   await page.goto("/how-it-works");
 
   await expect(page.getByRole("heading", { level: 2, name: "Rodzaje kart" })).toBeVisible();
-  const titles = ["Dyktando graficzne", "Labirynt", "Nonogram", "Sekwencje", "Sudoku", "Symetria"];
   await expect(page.getByRole("heading", { level: 3 })).toHaveText(titles);
   for (const title of titles) {
     const heading = page.getByRole("heading", { level: 3, name: title });

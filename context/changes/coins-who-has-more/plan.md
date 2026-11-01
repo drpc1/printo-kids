@@ -14,7 +14,8 @@ Liczba kart wpisana na sztywno (stan 2026-11-01), pełna lista po przeglądzie k
 - `src/lib/card-summary.ts:27` (komentarz „six cards”) i `src/lib/card-summary.test.ts:21` (tytuł testu)
 - `src/lib/cards.test.ts:9-14` (kolejność tytułów i tytuł ostatniej karty) — **brakuje w issue**
 - `tests/e2e/phone-layout.spec.ts:546` (`toHaveCount(6)` plakietek; seed ma 5 kart plus labirynt)
-- `tests/e2e/catalog.spec.ts:17` (kolejność kart) i `:471` (lista stron i tytułów)
+- `tests/e2e/catalog.spec.ts:17` (kolejność kart), `:471` (lista stron i tytułów) i komentarz `:2-3` (trzy miniatury)
+- `tests/e2e/how-it-works.spec.ts:61` (tablica sześciu tytułów, `toHaveText(titles)`) — **brakuje w issue**
 - `scripts/smoke.mjs` (jeden krok na stronę)
 
 Frame: `frame.md` (pewność MEDIUM). Potwierdza jedną zmianę z kartą, ale makieta wymaga wydruku użytkownika, a lista miejsc z liczbą kart była niepełna.
@@ -42,7 +43,7 @@ Na `/money` rodzic wybiera poziom, klika Generuj i dostaje kartę A4: polecenie 
 
 ## Implementation Approach
 
-Pięć faz. Faza 1 (testy z liczbą z katalogu) jest mechaniczna i nie zależy od makiety, więc wchodzi pierwsza i może być scalona osobno. Faza 2 to makieta z ręczną bramką: użytkownik drukuje ją i potwierdza czytelność monety i banknotu oraz wartości startowe (liczba sztuk w kupce, rozmiary). Fazy 3–4 zaczynają się dopiero po bramce. Faza 5 aktualizuje PRD zgodnie z decyzjami.
+Pięć faz. Faza 1 (testy z liczbą z katalogu) jest mechaniczna i nie zależy od makiety, więc wchodzi pierwsza i może być scalona osobno. Faza 2 to makieta z ręczną bramką: użytkownik drukuje ją i potwierdza czytelność monety i banknotu oraz wartości startowe (liczba sztuk w kupce, rozmiary). Fazy 3–4 zaczynają się dopiero po bramce. Faza 5 aktualizuje PRD zgodnie z decyzjami; decyzje zapadły już przed fazą 2, więc fazę 5 można wykonać zaraz po bramce, żeby PRD nie było nieaktualne podczas implementacji.
 
 Decyzje z rozmowy (2026-11-01):
 
@@ -74,9 +75,9 @@ Zamiana wpisanej liczby sześciu kart na wartości z katalogu, w każdym miejscu
 
 #### 2. Testy e2e
 
-**File**: `tests/e2e/catalog.spec.ts`, `tests/e2e/phone-layout.spec.ts`
+**File**: `tests/e2e/catalog.spec.ts`, `tests/e2e/phone-layout.spec.ts`, `tests/e2e/how-it-works.spec.ts`
 
-**Intent**: Kolejność i lista stron biorą karty z katalogu (`a[data-card-title]`: tytuł i adres), a każda strona jest sprawdzana pętlą po nich. W `phone-layout` oczekiwana liczba plakietek wynika ze stałej seedu (liczba kart w seedzie plus labirynt), a seed zostaje listą najszerszych plakietek, nie wszystkich kart; komentarz mówi to wprost.
+**Intent**: Kolejność i lista stron biorą karty z katalogu (`a[data-card-title]`: tytuł i adres), a każda strona jest sprawdzana pętlą po nich. Kolejność z DOM jest porównywana z tytułami z tego samego DOM posortowanymi `localeCompare(…, "pl")`, nie z własną kopią. `how-it-works.spec.ts` bierze tytuły z katalogu na `/`. Komentarze o trzech miniaturach (`catalog.spec.ts:2-3`) mówią „karty katalogu”. Dodatkowo przegląd `card-settings.spec.ts` (tabela kart ok. linii 50): jeśli wylicza karty na sztywno, też z katalogu. W `phone-layout` oczekiwana liczba plakietek wynika ze stałej seedu (liczba kart w seedzie plus labirynt), a seed zostaje listą najszerszych plakietek, nie wszystkich kart; komentarz mówi to wprost.
 
 **Contract**: Literał `6` i tablice tytułów znikają; nowa karta nie wymaga edycji obu plików.
 
@@ -95,8 +96,9 @@ Zamiana wpisanej liczby sześciu kart na wartości z katalogu, w każdym miejscu
 - Testy jednostkowe przechodzą: `npm test`
 - Lint przechodzi: `npm run lint`
 - Sprawdzenie typów przechodzi: `npx astro check`
-- Żaden z plików z listy nie zawiera już wpisanej liczby sześciu kart: `rg -n "length, 6|toHaveCount\(6\)|six cards" src tests scripts` nie zwraca nic
+- Żaden z plików z listy nie zawiera już wpisanej liczby sześciu kart ani tablicy tytułów: `rg -n "IDS.length, 6|toHaveCount\(6\)|six cards|\"Dyktando graficzne\", \"Labirynt\"" src tests scripts` nie zwraca nic
 - E2E katalogu i plakietek przechodzi: `npx playwright test tests/e2e/catalog.spec.ts tests/e2e/phone-layout.spec.ts --project=chromium`
+- E2E stron opisu przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium`
 
 #### Manual Verification:
 
@@ -118,9 +120,9 @@ Rysunek karty z prawdziwych stałych i prawdziwego układu, do wydruku na A4 prz
 
 **File**: `src/lib/money/sheet.ts`, `src/lib/money/layout.ts`
 
-**Intent**: Stałe rysunku w mm (strona, margines 10 mm, polecenie, wysokość rzędu, moneta: koło o stałej średnicy z grubą liczbą, banknot: prostokąt o stałym rozmiarze z grubą liczbą i wewnętrzną ramką, pole „=”, odstępy) oraz funkcja układu kupki w polu rzędu (zawijanie w wierszach, wysokość kupki). Czyta je strona i skrypt makiety i miniatury.
+**Intent**: Stałe rysunku w mm (strona, margines 10 mm, polecenie, wysokość rzędu, moneta: koło o stałej średnicy z grubą liczbą, banknot: prostokąt o stałym rozmiarze z grubą liczbą i wewnętrzną ramką, pole na znak, odstępy) oraz funkcja układu kupki w polu rzędu (zawijanie w wierszach, wysokość kupki). Do tego `MAX_PIECES` na poziom (wartości startowe: łatwy 5, średni 8, trudny 10; potwierdza wydruk), żeby bramka sprawdzała największą kupkę, jaką faza 3 może wylosować. Czyta je strona, `levels.ts` (faza 3) i skrypty makiety i miniatury.
 
-**Contract**: `layoutPile(items, width)` zwraca pozycje i wysokość kupki; wszystkie monety mają tę samą wielkość, wszystkie banknoty tę samą (wielkość nie zdradza wartości); kupka mieści się w polu rzędu na każdym poziomie.
+**Contract**: `layoutPile(items, width)` zwraca pozycje i wysokość kupki; wszystkie monety mają tę samą wielkość, wszystkie banknoty tę samą (wielkość nie zdradza wartości); kupka o `MAX_PIECES` sztukach (ręcznie wpisana najgorsza kupka poziomu) mieści się w polu rzędu na każdym poziomie. Pole na znak ma co najmniej 12×12 mm (do potwierdzenia wydrukiem).
 
 #### 2. Skrypt makiety
 
@@ -149,7 +151,8 @@ Rysunek karty z prawdziwych stałych i prawdziwego układu, do wydruku na A4 prz
 #### Manual Verification:
 
 - Użytkownik drukuje trzy pliki na A4 w 100% i potwierdza, że nominał monety i banknotu jest czytelny na czarnym druku
-- Użytkownik potwierdza (albo poprawia) wartości startowe: liczba sztuk w kupce, rozmiar monety i banknotu, wysokość rzędu, pole na znak dość duże do wpisania „<”, „>” lub „=”
+- Użytkownik potwierdza (albo poprawia) wartości startowe: `MAX_PIECES` na poziom, rozmiar monety i banknotu, wysokość rzędu, pole na znak (co najmniej 12×12 mm) dość duże do wpisania „<”, „>” lub „=”
+- Bramka to wydruk z komputera na A4 w 100%; Safari, Chrome iOS i Brave iOS są mierzone osobno w fazie 4
 - Użytkownik zapisuje decyzję: idziemy dalej / zmieniamy rysunek / karta odpada
 
 **Implementation Note**: Po fazie 2 zatrzymaj się. Bez potwierdzenia wydruku nie zaczynaj fazy 3. Jeśli rysunek wymaga zmiany, popraw `sheet.ts` i `layout.ts` w tej fazie.
@@ -168,7 +171,7 @@ Czysta logika bez UI: poziomy, kupki, wartość, reguły rzędu i karty, generat
 
 **File**: `src/lib/money/levels.ts`
 
-**Intent**: `MONEY_LEVELS` (`latwy`, `sredni`, `trudny`) z etykietą, `barLabel`, opisem (pół zdania o tym, co się zmienia, bez wieku), nominałami, limitem sumy kupki, zakresem sztuk, liczbą rzędów (5) i liczbą rzędów „myli” (łatwy 0, średni dokładnie 2, trudny co najmniej 3). Domyślny `sredni`; `moneyLevelById`.
+**Intent**: `MONEY_LEVELS` (`latwy`, `sredni`, `trudny`) z etykietą, `barLabel`, opisem (pół zdania o tym, co się zmienia, bez wieku), nominałami, limitem sumy kupki, zakresem sztuk (górna granica to `MAX_PIECES` z `sheet.ts`), liczbą rzędów (5) i liczbą rzędów „myli” (łatwy 0, średni dokładnie 2, trudny co najmniej 3). Domyślny `sredni`; `moneyLevelById`.
 
 **Contract**: Kształt jak `NonogramSize` (`src/lib/nonogram/sizes.ts`): `id`, `label`, `barLabel`, `description`; brak `typicalAge`.
 
@@ -193,7 +196,9 @@ interface MoneyCard {
 }
 ```
 
-`key` nazywa wszystkie rzędy; dwie karty z jednym `key` pokazują to samo. Łatwy: oba boki jeden nominał, 1–5 sztuk, suma do 10 zł, więcej sztuk to większa wartość, remis to równa liczba sztuk.
+`key` nazywa wszystkie rzędy; dwie karty z jednym `key` pokazują to samo. Łatwy: w rzędzie oba boki mają jeden nominał (nominał może się zmieniać między rzędami), 1–5 sztuk, suma do 10 zł, więcej sztuk to większa wartość, remis to równa liczba sztuk; pula różnych par bez remisu to 21, więc 5 rzędów bez powtórzeń jest wykonalne.
+
+Definicje, bez dwuznaczności: rząd „myli” tylko gdy kupka z ściśle mniejszą liczbą sztuk ma ściśle większą wartość. Równa liczba sztuk przy różnej wartości oraz remis przy różnej liczbie sztuk nie „mylą”. Odpowiedź `left` znaczy, że lewa kupka jest większa, czyli dziecko wpisuje „>” (kupka po lewej większa od prawej); `right` to „<”; `equal` to „=”. Każda kupka ma od 1 do `MAX_PIECES` sztuk.
 
 #### 3. Testy
 
@@ -210,6 +215,7 @@ interface MoneyCard {
 - Testy poziomów, reguł i generatora przechodzą: `node --experimental-strip-types --test src/lib/money/levels.test.ts src/lib/money/rules.test.ts src/lib/money/generate.test.ts`
 - Całość przechodzi: `npm test`
 - Lint i typy przechodzą: `npm run lint` i `npx astro check`
+- Skrypt makiety bierze rzędy z prawdziwego generatora (zamiast ręcznego zestawu z fazy 2): `node --experimental-strip-types scripts/money-mockup.mjs`
 
 #### Manual Verification:
 
@@ -257,7 +263,7 @@ Karta widoczna dla rodzica: strona `/money`, wpis w katalogu, pamięć ustawień
 
 **Intent**: Kontrakt druku: SVG 210×297 mm z overflow hidden, strona pod `/money`, wspólna powłoka. E2E: Generuj pokazuje pięć rzędów po dwie kupki i puste pole na znak, zmiana poziomu generuje nową kartę, profil pamięta poziom i plakietka katalogu go pokazuje, postać stoi przy poleceniu, Generuj i Drukuj nie nachodzą na siebie na telefonie, karta mieści się na A4 z marginesem 10 mm. Wiersze dla `/money` tam, gdzie testy wyliczają strony kart.
 
-**Contract**: Nowa strona dochodzi do sprawdzianu HTTP przez krok generyczny z fazy 1. Skrypt makiety przechodzi na prawdziwy generator.
+**Contract**: Nowa strona dochodzi do sprawdzianu HTTP przez krok generyczny z fazy 1. `card-settings.test.ts` dostaje przypadki dla `pieniadze`: nieznany poziom wraca do domyślnego, brak karty zostaje brakiem, zapisany `latwy` się wczytuje; `tests/e2e/card-settings.spec.ts` dostaje wiersz `pieniadze` tam, gdzie wylicza karty.
 
 ### Success Criteria:
 
@@ -290,7 +296,7 @@ PRD ma opisywać to, co zbudowano: trzy decyzje z rozmowy odbiegają od tekstu.
 
 **File**: `context/foundation/prd.md`
 
-**Intent**: US-23, Business Logic „Karta „Kto ma więcej?”” i FR-033: łatwy poziom = sumy do 10 zł, tylko monety, 1–5 sztuk; odpowiedź wpisywana jako „<”, „>” lub „=” w polu między kupkami (zamiast zakreślania kupki); remis zero lub jeden rząd; średni dokładnie 2 z 5 rzędów „myli”, trudny co najmniej 3 z 5. Open Questions 14: zapisać ustalenie o prawach (uproszczone rysunki, które nie uchodzą za prawdziwy pieniądz) i to, co potwierdził wydruk.
+**Intent**: Success Criteria (punkt o karcie „Kto ma więcej?”), US-23 (w tym AC o zakreślaniu), US-24, Business Logic „Karta „Kto ma więcej?”” (polecenie, tabela poziomów, remis, „zakreśla”), FR-033 i FR-034: łatwy poziom = sumy do 10 zł, tylko monety, 1–5 sztuk; odpowiedź wpisywana jako „<”, „>” lub „=” w polu między kupkami (zamiast zakreślania kupki); remis zero lub jeden rząd; średni dokładnie 2 z 5 rzędów „myli”, trudny co najmniej 3 z 5. Open Questions 14: zapisać ustalenie o prawach (uproszczone rysunki, które nie uchodzą za prawdziwy pieniądz) i to, co potwierdził wydruk.
 
 **Contract**: Zmieniają się tylko te zdania; numeracja US i FR zostaje.
 
@@ -299,6 +305,7 @@ PRD ma opisywać to, co zbudowano: trzy decyzje z rozmowy odbiegają od tekstu.
 #### Automated Verification:
 
 - Formatowanie przechodzi: `npx prettier --check context/foundation/prd.md`
+- Żadne zdanie o tej karcie nie każe już zakreślać kupki: `rg -n "zakreśl" context/foundation/prd.md` pokazuje tylko inne karty
 
 #### Manual Verification:
 
@@ -347,15 +354,16 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 
 #### Automated
 
-- [ ] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 1.2 Lint przechodzi: `npm run lint`
-- [ ] 1.3 Sprawdzenie typów przechodzi: `npx astro check`
-- [ ] 1.4 Żaden z plików z listy nie zawiera już wpisanej liczby sześciu kart
-- [ ] 1.5 E2E katalogu i plakietek przechodzi
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
+- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check`
+- [x] 1.4 Żaden z plików z listy nie zawiera już wpisanej liczby sześciu kart
+- [x] 1.5 E2E katalogu i plakietek przechodzi
+- [x] 1.6 E2E stron opisu przechodzi
 
 #### Manual
 
-- [ ] 1.6 Przegląd diffu: żaden test nie stracił sprawdzanego zachowania
+- [x] 1.7 Przegląd diffu: żaden test nie stracił sprawdzanego zachowania
 
 ### Phase 2: Makieta monety, banknotu i kupki (bramka)
 
@@ -378,10 +386,11 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 - [ ] 3.1 Testy poziomów, reguł i generatora przechodzą
 - [ ] 3.2 Całość przechodzi: `npm test`
 - [ ] 3.3 Lint i typy przechodzą
+- [ ] 3.4 Skrypt makiety bierze rzędy z prawdziwego generatora
 
 #### Manual
 
-- [ ] 3.4 Przegląd 10 kart z każdego poziomu
+- [ ] 3.5 Przegląd 10 kart z każdego poziomu
 
 ### Phase 4: Strona, katalog, profil, miniatura i testy e2e
 
@@ -403,7 +412,8 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 #### Automated
 
 - [ ] 5.1 Formatowanie PRD przechodzi
+- [ ] 5.2 Żadne zdanie o tej karcie nie każe już zakreślać kupki
 
 #### Manual
 
-- [ ] 5.2 Użytkownik potwierdza zmiany w PRD
+- [ ] 5.3 Użytkownik potwierdza zmiany w PRD
