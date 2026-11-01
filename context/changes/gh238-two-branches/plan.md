@@ -100,6 +100,12 @@ Produkcja przestaje zależeć od `main`, zanim cokolwiek zmieni się na `main`.
 
 **Contract**: Funkcja `robotsHeader(environment: string | undefined): string | undefined` w `src/lib/robots.ts` zwraca wartość nagłówka tylko dla `"staging"`. Middleware odczytuje `ENVIRONMENT` z konfiguracji Workera (sposób zgodny z adapterem 14, np. `cloudflare:workers`) i nie psuje `astro dev`/`astro preview`, gdzie zmiennej może nie być.
 
+#### Addendum (po implementacji)
+
+**File**: `src/cloudflare-workers.d.ts` (nowy)
+
+**Intent**: Deklaracja typu modułu `cloudflare:workers` (`env: Record<string, unknown>`), bo `astro check` nie znajdował modułu, a pakiet `@cloudflare/workers-types` nie jest zainstalowany.
+
 #### 3. Test
 
 **File**: `src/lib/robots.test.ts` (nowy), `package.json` (dopisać plik do skryptu `test`)
@@ -295,8 +301,8 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 #### Automated
 
-- [x] 3.1 Lint i prettier przechodzą
-- [x] 3.2 Testy przechodzą
+- [x] 3.1 Lint i prettier przechodzą — b2e1838
+- [x] 3.2 Testy przechodzą — b2e1838
 - [ ] 3.3 PR do main ma zielone ci, smoke i e2e
 
 #### Manual
