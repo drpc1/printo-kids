@@ -354,30 +354,30 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check`
-- [x] 1.4 Żaden z plików z listy nie zawiera już wpisanej liczby sześciu kart
-- [x] 1.5 E2E katalogu i plakietek przechodzi
-- [x] 1.6 E2E stron opisu przechodzi
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — fd11071
+- [x] 1.2 Lint przechodzi: `npm run lint` — fd11071
+- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check` — fd11071
+- [x] 1.4 Żaden z plików z listy nie zawiera już wpisanej liczby sześciu kart — fd11071
+- [x] 1.5 E2E katalogu i plakietek przechodzi — fd11071
+- [x] 1.6 E2E stron opisu przechodzi — fd11071
 
 #### Manual
 
-- [x] 1.7 Przegląd diffu: żaden test nie stracił sprawdzanego zachowania
+- [x] 1.7 Przegląd diffu: żaden test nie stracił sprawdzanego zachowania — fd11071
 
 ### Phase 2: Makieta monety, banknotu i kupki (bramka)
 
 #### Automated
 
-- [ ] 2.1 Test układu przechodzi
-- [ ] 2.2 Makieta powstaje
-- [ ] 2.3 Lint i typy przechodzą
+- [x] 2.1 Test układu przechodzi
+- [x] 2.2 Makieta powstaje
+- [x] 2.3 Lint i typy przechodzą
 
 #### Manual
 
-- [ ] 2.4 Użytkownik drukuje trzy pliki i potwierdza czytelność nominału na czarnym druku
-- [ ] 2.5 Użytkownik potwierdza lub poprawia wartości startowe rysunku
-- [ ] 2.6 Użytkownik zapisuje decyzję: idziemy dalej / zmieniamy rysunek / karta odpada
+- [x] 2.4 Użytkownik drukuje trzy pliki i potwierdza czytelność nominału na czarnym druku
+- [x] 2.5 Użytkownik potwierdza lub poprawia wartości startowe rysunku
+- [x] 2.6 Użytkownik zapisuje decyzję: idziemy dalej / zmieniamy rysunek / karta odpada
 
 ### Phase 3: Poziomy i generator z regułami
 
