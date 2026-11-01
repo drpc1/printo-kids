@@ -303,7 +303,7 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 - [x] 3.1 Lint i prettier przechodzą — 0187efc
 - [x] 3.2 Testy przechodzą — 0187efc
-- [ ] 3.3 PR do main ma zielone ci, smoke i e2e
+- [x] 3.3 PR do main ma zielone ci, smoke i e2e
 
 #### Manual
 
@@ -314,13 +314,13 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 #### Automated
 
-- [ ] 4.1 Ruleset prod istnieje i jest aktywny
+- [x] 4.1 Ruleset prod istnieje i jest aktywny
 
 #### Manual
 
-- [ ] 4.2 Staging odpowiada z nagłówkiem x-robots-tag
-- [ ] 4.3 Bezpośredni push do prod jest odrzucony
-- [ ] 4.4 Panel Cloudflare: printo-kids z prod, printo-kids-staging z main
+- [x] 4.2 Staging odpowiada z nagłówkiem x-robots-tag
+- [x] 4.3 Bezpośredni push do prod jest odrzucony
+- [x] 4.4 Panel Cloudflare: printo-kids z prod, printo-kids-staging z main
 
 ### Phase 5: Weryfikacja końcowa
 
