@@ -396,24 +396,24 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 
 #### Automated
 
-- [x] 4.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 4.2 Lint, typy i build przechodzą
-- [x] 4.3 E2E na wszystkich projektach Chromium przechodzą
-- [x] 4.4 Sprawdzian HTTP przechodzi
+- [x] 4.1 Testy jednostkowe przechodzą: `npm test` — 518602f
+- [x] 4.2 Lint, typy i build przechodzą — 518602f
+- [x] 4.3 E2E na wszystkich projektach Chromium przechodzą — 518602f
+- [x] 4.4 Sprawdzian HTTP przechodzi — 518602f
 
 #### Manual
 
-- [x] 4.5 Karta w przeglądarce: polecenie z postacią, pięć rzędów, kupki czytelne
-- [x] 4.6 Wydruk na jednej stronie A4 w Safari, Chrome iOS i Brave iOS osobno
-- [x] 4.7 Katalog: miniatura, plakietka po wyborze profilu, okno profilu
+- [x] 4.5 Karta w przeglądarce: polecenie z postacią, pięć rzędów, kupki czytelne — 518602f
+- [x] 4.6 Wydruk na jednej stronie A4 w Safari, Chrome iOS i Brave iOS osobno — 518602f
+- [x] 4.7 Katalog: miniatura, plakietka po wyborze profilu, okno profilu — 518602f
 
 ### Phase 5: PRD zgodne z decyzjami
 
 #### Automated
 
-- [ ] 5.1 Formatowanie PRD przechodzi
-- [ ] 5.2 Żadne zdanie o tej karcie nie każe już zakreślać kupki
+- [x] 5.1 Formatowanie PRD przechodzi
+- [x] 5.2 Żadne zdanie o tej karcie nie każe już zakreślać kupki
 
 #### Manual
 
-- [ ] 5.3 Użytkownik potwierdza zmiany w PRD
+- [x] 5.3 Użytkownik potwierdza zmiany w PRD
