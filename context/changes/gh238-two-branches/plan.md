@@ -303,12 +303,12 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 - [x] 3.1 Lint i prettier przechodzą — 0187efc
 - [x] 3.2 Testy przechodzą — 0187efc
-- [x] 3.3 PR do main ma zielone ci, smoke i e2e
+- [x] 3.3 PR do main ma zielone ci, smoke i e2e — 9bf6650
 
 #### Manual
 
-- [ ] 3.4 Szablon wydania otwiera się przez template=release.md
-- [ ] 3.5 Opis w AGENTS.md zgadza się z faktycznymi ustawieniami
+- [x] 3.4 Szablon wydania otwiera się przez template=release.md — 9bf6650
+- [x] 3.5 Opis w AGENTS.md zgadza się z faktycznymi ustawieniami — 9bf6650
 
 ### Phase 4: Ochrona prod i Worker stagingu
 
@@ -326,8 +326,8 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 #### Manual
 
-- [ ] 5.1 Merge do main zmienia tylko staging
-- [ ] 5.2 Merge main do prod zmienia produkcję i powstaje tag
-- [ ] 5.3 Push do prod jest zablokowany, a PR bez zielonego CI nie da się zmergować
-- [ ] 5.4 Produkcja nie ma nagłówka x-robots-tag, staging ma
-- [ ] 5.5 localStorage stagingu i produkcji są rozdzielone
+- [x] 5.1 Merge do main zmienia tylko staging — f20d86a
+- [x] 5.2 Merge main do prod zmienia produkcję i powstaje tag — f20d86a
+- [x] 5.3 Push do prod jest zablokowany, a PR bez zielonego CI nie da się zmergować — f20d86a
+- [x] 5.4 Produkcja nie ma nagłówka x-robots-tag, staging ma — f20d86a
+- [x] 5.5 localStorage stagingu i produkcji są rozdzielone — f20d86a
