@@ -111,10 +111,10 @@ Wdrożenie na produkcję idzie zwykłym wydaniem `main` → `prod` (zob. AGENTS.
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test` — ce6c7f4
-- [x] 1.2 Lint przechodzi: `npm run lint` — ce6c7f4
-- [x] 1.3 Typy przechodzą: `npx astro check` — ce6c7f4
-- [x] 1.4 Build przechodzi: `npm run build` — ce6c7f4
+- [x] 1.1 Testy przechodzą: `npm test` — 236f51c
+- [x] 1.2 Lint przechodzi: `npm run lint` — 236f51c
+- [x] 1.3 Typy przechodzą: `npx astro check` — 236f51c
+- [x] 1.4 Build przechodzi: `npm run build` — 236f51c
 
 #### Manual
 
