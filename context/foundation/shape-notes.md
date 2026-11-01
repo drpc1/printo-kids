@@ -1,196 +1,151 @@
 ---
 project: PrintoKids
-context_type: greenfield
-created: 2026-09-16
-updated: 2026-09-18
+context_type: brownfield
+created: 2026-11-01
+updated: 2026-11-01
 product_type: web-app
 target_scale:
   users: small
 timeline_budget:
-  mvp_weeks: 6
+  delivery_weeks: TBD
   hard_deadline: null
   after_hours_only: true
 checkpoint:
   current_phase: 8
   phases_completed: [1, 2, 3, 4, 5, 6, 7]
+  frs_drafted: 8
+  quality_check_status: warned
   gray_areas_resolved:
     - topic: context type
-      decision: greenfield
-    - topic: pain category
-      decision: missing capability (cannot produce a new worksheet at the right difficulty once the matching free library is exhausted) plus workflow friction (searching and downloading from many sites)
-    - topic: primary persona scope
-      decision: primary persona is a preschooler's parent, including the builder; "many parents" is a direction, not an MVP requirement
-    - topic: insight
-      decision: not decided — recorded as open question
-    - topic: access model
-      decision: no login in the first version; preferences and optional child profiles remain local to the device
-    - topic: role separation
-      decision: single local parent user; no roles and no child accounts
-    - topic: worksheet persistence
-      decision: generated worksheets are not saved; their lifecycle ends after printing
-    - topic: child profiles
-      decision: optional named profiles store default difficulty and favorite character; one-child use does not require creating a profile
-    - topic: ready maze behavior
-      decision: ready mazes are immutable and lead directly to preview and print
-    - topic: difficulty selection
-      decision: parent manually selects one of several described difficulty levels
-    - topic: print layout
-      decision: one maze per A4 page
-    - topic: first working milestone
-      decision: generate a solvable maze at a manually selected difficulty, preview it, and print one A4 page
-    - topic: MVP timeline
-      decision: six weeks of after-hours work accepted as the planning budget
-    - topic: secondary outcome
-      decision: parent can choose the child's favorite character for the maze
-    - topic: guardrails
-      decision: printing never requires a child profile; generation completes within five seconds
-    - topic: FR challenge resolutions
-      decision: keep all must-have requirements with the recorded clarifications; keep the ready-card library as nice-to-have outside MVP
-    - topic: difficulty model
-      decision: three levels (easy, medium, hard); difficulty increases through branches, dead ends, and turns while passage size stays constant
-    - topic: print boundary
-      decision: one A4 page with at least 10 mm margin on every side
-    - topic: browser support
-      decision: current desktop versions of Chrome, Edge, Firefox, and Safari
-    - topic: local data retention
-      decision: profiles and last-used parameters persist across visits until explicitly removed or browser data is cleared
-    - topic: product framing
-      decision: web app for the builder and a handful of users; six weeks after-hours with no hard deadline
-    - topic: scale challenge
-      decision: at 100x usage the maze rule remains unchanged, but a broader catalog of characters and variants would be needed
-    - topic: MVP non-goals
-      decision: no other worksheet types, no LLM, no parent accounts or cross-device sync, no generated-card archive, and no ready-card library
-  frs_drafted: 11
-  quality_check_status: accepted
+      decision: brownfield (git history, lockfile, src/); poprzedni zapis greenfield z 2026-09-16 zarchiwizowany w context/foundation/archive/shape-notes-2026-11-01-0900.md
+    - topic: milestone
+      decision: M-5, cztery nowe rodzaje kart naraz (wyjątek od zasady „po jednym kamieniu”, na prośbę użytkowniczki, jak drugi i trzeci kamień kart)
+    - topic: karta z pieniędzmi
+      decision: nazwa „Kto ma więcej?”; wiek 6–8 lat; nominały 1/2/5/10/20 zł, bez groszy; remis akceptowalny jako odpowiedź „tyle samo”
+    - topic: „Który nie pasuje” reguły
+      decision: kształt i kolor, kategoria obiektu, rozmiar albo liczba (sekwencja AB/AAB poza zakresem startu)
+    - topic: kopiowanie rysunku
+      decision: cały obiekt z katalogu szablonów, czarna sylwetka, bez osi i bez odbicia
+    - topic: szlaczki
+      decision: dwa tryby jako poziomy — kropki do prowadzenia (jedna odpowiedź) na niższych poziomach, wzór do kontynuowania na wyższych
+    - topic: umowa kart z M-4
+      decision: wszystkie cztery dziedziczą poziomy bez wieku, pamięć paska w profilu i postać w dymku przy poleceniu
 ---
+
+# Shape notes — M-5: cztery nowe rodzaje kart
+
+## Current System
+
+PrintoKids ma sześć rodzajów kart: labirynt, symetria, sekwencje, sudoku, nonogram i dyktando graficzne. Każdy ma własną stronę generatora (`/maze`, `/symmetry`, …), katalog z miniaturami na stronie głównej, profil dziecka pamiętający pasek każdej karty, postać w dymku przy poleceniu (poza labiryntem) i druk na jednej stronie A4. Obiekty z jednego katalogu 34 szablonów zasilają symetrię, nonogram i dyktando; kształty i kolory kredek z sudoku zasilają sekwencje. M-4 zamknięty 2026-11-01 (poziomy bez wieku, pamięć profilu, postać na każdej karcie, strona „Jak to działa”). PRD v5.
 
 ## Seed idea
 
-Strona do algorytmicznego (nie LLM) generowania kart pracy dla przedszkolaków. Na start: labirynty z poziomem trudności, podgląd i wydruk A4, konto rodzica, profil dziecka, zapis i ponowne otwarcie karty do druku. Do rozstrzygnięcia: czy poziom wynika z wieku, czy rodzic wybiera go ręcznie.
+Cztery nowe rodzaje kart w jednym kamieniu (M-5): porównywarka pieniędzy „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki.
 
 ## Vision & Problem Statement
 
-Rodzic przedszkolaka ściągnął już wszystkie darmowe labirynty z internetu, które odpowiadały skalą trudności, a dziecku wciąż mało. Inne karty, które znajduje, są za łatwe albo za trudne; dalsze szukanie i ściąganie z wielu stron nie daje nowej karty na właściwym poziomie.
-
-Brakuje sposobu na wygenerowanie nowej karty na właściwym poziomie, gdy skończy się dopasowana gotowa biblioteka. Osobny wgląd — czemu gotowe paczki tego nie rozwiązują poza skończoną biblioteką — nie został jeszcze ustalony.
-
-Przy 100 razy większej liczbie rodziców reguła generowania i trudności pozostaje bez zmian, ale produkt potrzebowałby szerszego katalogu postaci i wariantów.
+Rodzic ma sześć rodzajów kart, ale dziecko 4–8 lat potrzebuje też umiejętności, których te karty nie ćwiczą: porównywania wartości pieniędzy, wykrywania reguły i odstępstwa, przerysowywania wzoru na kratce oraz prowadzenia ręki po liniach przed pisaniem. Kolejne karty dają nowe umiejętności na właściwym poziomie, gdy dopasowana biblioteka darmowych kart się skończy. Brak: insightu, czemu gotowe paczki PDF tego nie robią (Open Questions z PRD 1).
 
 ## User & Persona
 
-Primary persona: rodzic dziecka w wieku przedszkolnym, w tym twórca produktu. Sięga po produkt, gdy dziecko chce kolejną kartę, a dopasowany darmowy zestaw labiryntów jest już wyczerpany.
+Ta sama osoba co dotąd: rodzic dziecka w wieku przedszkolnym i wczesnoszkolnym, w tym twórca produktu. „Kto ma więcej?” celuje w dzieci 6–8 lat; pozostałe karty w przedszkolaków i młodszych uczniów.
 
-### Secondary persona
+## Access Control
 
-Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji.
+Bez zmian — jeden lokalny użytkownik-rodzic, bez logowania, profile i ustawienia na urządzeniu. Brak zmian planowanych.
 
 ## Success Criteria
 
 ### Primary
 
-- Rodzic może ręcznie wybrać poziom, wygenerować rozwiązywalny labirynt, zobaczyć jego podgląd i wydrukować go jako jedną stronę A4.
+- Rodzic może wygenerować każdą z czterech nowych kart (Kto ma więcej?, Który nie pasuje, Skopiuj rysunek na kratce, Szlaczki), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 
 ### Secondary
 
-- Rodzic może wybrać ulubioną postać dziecka do labiryntu.
+- Rodzic może wybrać poziom każdej nowej karty bez nazw wieku, a profil sam zapamiętuje ustawienia paska.
+- Na każdej nowej karcie wybrana postać w kolorze stoi przy poleceniu (US-21).
+- Katalog ma miniatury i plakietki z poziomem dla czterech nowych kart, czyli dziesięć rodzajów razem.
 
 ### Guardrails
 
-- Drukowanie nie wymaga utworzenia profilu dziecka.
-- Wygenerowanie labiryntu trwa nie dłużej niż 5 sekund.
+- Zostają bez zmian: generowanie do 5 sekund, margines 10 mm, czarny druk, brak profilu nie blokuje druku, Generuj i Drukuj nie nachodzą na siebie na telefonie.
+- Sześć istniejących kart działa dokładnie tak jak dotąd; wspólny CardPage, useCardPage i pamięć paska nie psują się.
+- Aplikacja nie ocenia rysunku dziecka na żadnej karcie.
 
 ## Timeline acknowledgment
 
-Acknowledged on 2026-09-16: 6-week MVP requires sustained dedication; user accepted.
+delivery_weeks: TBD — cztery karty naraz to zakres większy niż typowy kamień; ustala się przy planowaniu pierwszej z nich. Acknowledged on 2026-11-01: zakres czterech kart naraz użytkowniczka wybrała świadomie.
 
-## User Stories
+## Constraints & Preserved Behavior
 
-### US-01: Rodzic generuje labirynt do wydruku
-
-- **Given** rodzic może wybrać postać i poziom trudności labiryntu
-- **When** wybierze te parametry i uruchomi generowanie
-- **Then** otrzymuje gotowy do wydruku labirynt A4 o wybranym poziomie trudności i z wybraną postacią
-
-#### Acceptance Criteria
-
-- Labirynt zajmuje większą część strony A4.
-- Labirynt nie przekracza wąskich marginesów strony.
-- Istnieje dokładnie jedna prawidłowa ścieżka prowadząca od startu do mety.
-- Przy starcie znajduje się wybrana postać.
-- Przy końcu labiryntu znajduje się napis „Meta”.
+- Sześć istniejących kart i ich testy (`npm test`, Playwright, smoke) zostają bez zmian.
+- Katalog szablonów (34 obiekty), kształty z sudoku i kolory kredek są współdzielone; nowe karty ich nie psują ani nie przestawiają.
+- Zapisane profile i ostatnie parametry wczytują się bez migracji; nowe karty dokładają swoje ustawienia w tabeli „Profil i zapamiętane ustawienia”.
+- Wygląd pieniędzy: bez kopiowania wzorów NBP; moneta i banknot to stylizowane koło i prostokąt z nominałem (do potwierdzenia, prawa do wyglądu).
 
 ## Functional Requirements
 
-### Generator i druk
+### Kto ma więcej? (pieniądze)
 
-- FR-001: Rodzic może wybrać jeden z dostarczonych poziomów trudności. Priority: must-have
-  > Socrates: Counter-argument considered: nazwy poziomów mogą wprowadzać w błąd bez mierzalnych reguł. Resolution: kept; reguły poziomów muszą zostać zdefiniowane przed walidacją wymagania.
-- FR-002: Rodzic może wybrać postać z dostarczonego zestawu. Priority: must-have
-  > Socrates: Counter-argument considered: przygotowanie i prawa do postaci mogą opóźnić podstawowy przepływ. Resolution: kept; źródło postaci i prawa pozostają otwartym pytaniem.
-- FR-003: Rodzic może wygenerować strukturalnie poprawny labirynt zgodny z wybranymi parametrami. Priority: must-have
-  > Socrates: Counter-argument considered: poprawność i trudność mogą być niemożliwe do potwierdzenia bez ludzkiego oka. Resolution: kept; połączenie start–meta, unikalność rozwiązania, zakręty, długość i punkty wyboru mają być sprawdzalne według jawnych reguł.
-- FR-004: Rodzic może zobaczyć kartę A4 przed uruchomieniem standardowego drukowania. Priority: must-have
-  > Socrates: Counter-argument considered: osobny podgląd może dublować standardowe okno drukowania. Resolution: revised; karta ma być widoczna przed drukiem, ale nie wymaga osobnego dodatkowego ekranu.
-- FR-005: Rodzic może wydrukować kartę jako jedną stronę A4. Priority: must-have
-  > Socrates: Counter-argument considered: przeglądarki i drukarki różnie stosują marginesy oraz skalowanie. Resolution: kept; obsługiwane środowiska i mierzalne granice wydruku wymagają doprecyzowania.
-- FR-006: Rodzic bez profilu dziecka otrzymuje jako widoczne, edytowalne wartości domyślne ostatnio użyte parametry. Priority: must-have
-  > Socrates: Counter-argument considered: wspólne urządzenie może podstawić ustawienia innego dziecka. Resolution: revised; wartości są zawsze widoczne i można je zmienić przed generowaniem.
+- FR-033: Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (1, 2, 5, 10, 20 zł, bez groszy) i zakreśla większą, mniejszą albo „tyle samo”; zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have. Change: new
+  > Socrates: Counter-argument considered: remis psuje jedną sprawdzalną odpowiedź. Resolution: remis akceptowalny; „tyle samo” jest dopuszczoną odpowiedzią, a generator wylicza wartość każdej kupki i wie, które porównanie jest poprawne.
+- FR-034: Rodzic może wybrać poziom karty „Kto ma więcej?” (liczba sztuk jednego nominału, różne nominały, liczba sztuk myli). Priority: must-have. Change: new
 
-### Profile dzieci
+### Który nie pasuje
 
-- FR-007: Rodzic może utworzyć opcjonalny lokalny profil dziecka z domyślną trudnością i postacią. Priority: must-have
-  > Socrates: Counter-argument considered: profile nie są potrzebne do podstawowej wartości i zwiększają zakres MVP. Resolution: kept; korzystanie z profilu pozostaje opcjonalne, ale możliwość zarządzania profilami należy do MVP.
-- FR-008: Rodzic może wyświetlić i wybrać zapisany profil dziecka, gdy istnieje rzeczywisty wybór profilu. Priority: must-have
-  > Socrates: Counter-argument considered: selektor jest zbędny dla rodzica jednego dziecka. Resolution: revised; wybór profilu nie jest pokazywany, gdy nie ma rzeczywistego wyboru.
-- FR-009: Rodzic może jawnie zapisać zmienione ustawienia profilu dziecka. Priority: must-have
-  > Socrates: Counter-argument considered: jednorazowa zmiana parametrów karty nie powinna przypadkiem zmieniać profilu. Resolution: revised; profil zmienia się wyłącznie po wyraźnym zapisie.
-- FR-010: Rodzic może usunąć profil dziecka po potwierdzeniu operacji. Priority: must-have
-  > Socrates: Counter-argument considered: przypadkowe usunięcie lokalnego profilu może być nieodwracalne. Resolution: revised; usunięcie wymaga potwierdzenia.
+- FR-035: Rodzic może wygenerować kartę „Który nie pasuje”, na której w każdym rzędzie jeden obrazek łamie jawną regułę (kształt albo kolor, kategoria obiektu, rozmiar albo liczba), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have. Change: new
+  > Socrates: Counter-argument considered: dwie reguły mogą wskazać inny obrazek. Resolution: kept; generator sprawdza wszystkie reguły naraz, jak w sekwencjach, i nie pokazuje rzędu, w którym pasuje inna odpowiedź.
+- FR-036: Rodzic może wybrać poziom karty „Który nie pasuje” (rodzaj reguły, liczba obrazków w rzędzie, liczba rzędów). Priority: must-have. Change: new
 
-### Gotowe karty
+### Skopiuj rysunek na kratce
 
-- FR-011: Rodzic może wybrać gotowy labirynt z biblioteki, zobaczyć podgląd i wydrukować go na A4. Priority: nice-to-have
-  > Socrates: Counter-argument considered: przygotowanie i utrzymywanie przykładów zabiera czas podstawowym funkcjom. Resolution: kept as nice-to-have outside MVP.
+- FR-037: Rodzic może wygenerować kartę „Skopiuj rysunek na kratce”, na której dziecko przerysowuje czarną sylwetkę obiektu z katalogu szablonów z jednej kratki do pustej, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have. Change: new
+  > Socrates: Counter-argument considered: dwie kratki obok siebie nie mieszczą się na pionowym A4 z marginesem 10 mm. Resolution: kept; układ (kratki obok siebie albo jedna nad drugą) i rozmiar kratki wynikają z poziomu i muszą mieścić się w 10 mm marginesu; rozstrzyga makieta.
+- FR-038: Rodzic może wybrać poziom karty „Skopiuj rysunek na kratce” (rozmiar kratki, katalog obiektów) i kategorię obiektów. Priority: must-have. Change: new
+
+### Szlaczki
+
+- FR-039: Rodzic może wygenerować kartę ze szlaczkami: na niższych poziomach dziecko łączy kropki wzdłuż wzoru (jedna ścieżka), na wyższych kontynuuje pokazany wzór w pustych wierszach; zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have. Change: new
+  > Socrates: Counter-argument considered: dwa tryby w jednej karcie mieszają różne umiejętności. Resolution: kept; opis poziomu mówi wprost, który tryb to jest (kropki albo wzór), a poziom jest jedynym wyborem na pasku.
+- FR-040: Rodzic może wybrać poziom szlaczków (Poziom 1…N: kropki, potem wzór do kontynuowania; wzorzec i grubość). Priority: must-have. Change: new
+
+### Wspólne (dziedziczone z M-4, bez nowych FR)
+
+- FR-014 (katalog z miniaturami), FR-017 (pamięć paska w profilu), FR-030 (postać mówi polecenie), FR-031 (podpowiedzi) obowiązują dla czterech nowych kart tak jak dla sześciu istniejących. Change: preserved.
+
+## User Stories
+
+Do wygenerowania przy `/10x-prd` z FR-033…FR-040: dla każdej karty jedna historyjka generowania i jedna wyboru poziomu, w kształcie US-06/US-07. Nie dopisuję ich tutaj, żeby nie wymyślać treści użytkowniczki; szczegóły (zdania poleceń, układy, tabele poziomów) ustala PRD z użytkowniczką.
 
 ## Non-Functional Requirements
 
-- Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
-- Karta mieści się na jednej stronie A4 i zachowuje margines co najmniej 10 mm z każdej strony.
-- Generowanie, podgląd i druk działają w aktualnych desktopowych wersjach Chrome, Edge, Firefox i Safari.
-- Lokalne profile dzieci i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
-- Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
-- Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
+- Nowe karty spełniają te same granice co sześć istniejących: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Postać przy poleceniu jest jedynym elementem drukowanym w kolorze (US-21).
+- Sześć istniejących kart zachowuje wygląd i wyniki sprzed zmiany.
 
 ## Business Logic
 
-Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom trudności zwiększa przez liczbę rozgałęzień, ślepych uliczek i zakrętów, zachowując stały, czytelny rozmiar przejść na A4.
-
-Rodzic wybiera jeden z trzech poziomów — łatwy, średni albo trudny — oraz postać z dostarczonego zestawu.
-
-Wynikiem jest karta A4 z wybraną postacią przy starcie i napisem „Meta” przy końcu. Labirynt zajmuje większą część strony, zachowuje margines co najmniej 10 mm i spełnia reguły wybranego poziomu; dokładne progi złożoności poziomów pozostają do ustalenia.
-
-## Access Control
-
-Jeden lokalny użytkownik-rodzic; bez logowania i bez podziału na role. Ustawienia pozostają na urządzeniu.
-
-Rodzic może korzystać z generatora bez tworzenia profilu dziecka. Opcjonalne nazwane profile dzieci przechowują domyślną trudność i ulubioną postać, aby skrócić kolejne generowanie. Dzieci nie mają kont ani dostępu do aplikacji.
-
-Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
+Aplikacja zawsze tworzy kartę, której zadanie ma jawną regułę wyznaczającą poprawną odpowiedź albo wzór, więc rodzic nie wymyśla zadań sam. Dla pieniędzy odpowiedzią jest wartość kupki; dla „Który nie pasuje” odstępstwo od jawnej reguły; dla kopiowania i szlaczków wzór, który dziecko powtarza, bez oceny rysunku przez aplikację. Szczegóły, tabele poziomów i listy reguł powstają przy PRD v6.
 
 ## Non-Goals
 
-- MVP nie generuje sudoku, kart kodowania ani innych typów zadań — skupia się wyłącznie na labiryntach.
-- MVP nie używa LLM do generowania ani oceniania labiryntów — rezultat podlega jawnym regułom algorytmicznym.
-- MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
-- MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
-- MVP nie dostarcza biblioteki gotowych kart — FR-011 pozostaje możliwym rozszerzeniem poza MVP.
+- Pieniądze zostają przy nominałach 1/2/5/10/20 zł; grosze, reszta, ceny i „Ułóż dokładnie tę kwotę” poza zakresem M-5 (ostatnia czeka na regułę z jednym układem).
+- Aplikacja nie ocenia rysunku dziecka (szlaczki, kopiowanie).
+- Sekwencja AB/AAB jako reguła „Który nie pasuje” poza zakresem startu.
+- Postacie z katalogu jako treść zadania, kolorowanki i działania na liczbach z dopiskiem waluty zostają poza zakresem (jak w PRD Po MVP).
+
+## Forward: technical-roadmap
+
+- Pieniądze: nominały jako stylizowane koło/prostokąt z liczbą, bez kopiowania wzorów NBP.
+- Współdzielone: katalog 34 obiektów szablonów (kopiowanie), kształty z sudoku i kolory kredek (Który nie pasuje).
 
 ## Open Questions
 
-1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — TBD by user. Block: no (pain and missing capability are captured; the second vision paragraph is incomplete until this lands).
-2. **Jakie mierzalne właściwości określają każdy poziom trudności?** — Owner: user. Block: yes for validating that the generated maze matches the selected level.
-3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature.
+1. **Jak pokazać monetę i banknot na czarnym druku, żeby dziecko odróżniło nominał?** — Owner: user. Block: nie, rozstrzyga makieta.
+2. **Jakie są poziomy czterech kart (tabele, jak w PRD Business Logic)?** — Owner: user. Block: tak dla PRD v6.
+3. **Jak długo trwa M-5 (delivery_weeks)?** — Owner: user. Block: nie.
 
 ## Quality cross-check
 
-Accepted on 2026-09-18. Access control, business logic, project artifact, timeline acknowledgment, and non-goals are present. Preserved behavior is not applicable to this greenfield project. Remaining domain uncertainties are recorded under Open Questions.
+- Timeline: `delivery_weeks` nie jest ustalone (TBD) — roadmapa będzie sekwencjonować bez dat, ale PRD v6 powinien je podać albo zapisać jawnie jako otwarte.
+- User Stories nie są jeszcze napisane — powstają w `/10x-prd` z FR-033…FR-040 razem z tabelami poziomów.
