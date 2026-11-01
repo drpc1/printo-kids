@@ -42,3 +42,10 @@ reports/mutation/
 # Claude Code: local settings and the skills junction to .cursor/skills
 .claude/settings.local.json
 .claude/skills
+
+# Materiał kursu 10x: zostaje na dysku, nie wraca do repo (CI to sprawdza)
+.cursor/skills/10x-*
+.cursor/rules/10x-course.mdc
+.cursor/prompts/
+.10x-cli.json
+.cursor/.10x-cli-manifest.json

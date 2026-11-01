@@ -41,6 +41,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Reject 10x course files
+        run: |
+          files="$(git ls-files ".cursor/skills/10x-*" .cursor/rules/10x-course.mdc .cursor/prompts .10x-cli.json .cursor/.10x-cli-manifest.json)"
+          if [ -n "$files" ]; then
+            echo "Course files must not be tracked:"
+            echo "$files"
+            exit 1
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
