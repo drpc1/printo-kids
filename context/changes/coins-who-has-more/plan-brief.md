@@ -22,7 +22,7 @@ Na `/money` rodzic wybiera poziom (łatwy / średni / trudny), generuje kartę A
 | Zakres        | Jedna zmiana: karta plus testy z katalogu                                                           | Zgodne z issue i konwencją                  | Frame  |
 | Id i adres    | `pieniadze`, `/money`, tytuł „Kto ma więcej?”                                                       | Wzorzec innych kart                         | Plan   |
 | Remis         | Zero lub jeden rząd na karcie                                                                       | Decyzja użytkownika                         | Plan   |
-| Poziom łatwy  | Sumy do 10 zł, tylko monety, 1–5 sztuk                                                              | Dziecko 6 lat bez dodawania                 | Plan   |
+| Poziom łatwy  | Sumy do 10 zł, tylko monety 1, 2, 5 zł mieszane, 1–5 sztuk, bez mylących rzędów                     | Małe kupki dla dziecka 6 lat                | Plan   |
 | Poziom średni | Monety 1/2/5 zł, suma do 20 zł, dokładnie 2 z 5 rzędów „myli”                                       | Stopniowanie do trudnego                    | Plan   |
 | Poziom trudny | 1–20 zł z banknotami, suma do 50 zł, co najmniej 3 z 5 „myli”                                       | PRD                                         | Plan   |
 | Zaznaczanie   | Wpisuje „<”, „>” lub „=” między kupkami; polecenie „Gdzie jest więcej pieniędzy? Wskaż <, > lub =.” | Decyzja użytkownika, odchylenie od PRD      | Plan   |

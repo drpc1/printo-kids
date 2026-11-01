@@ -49,11 +49,11 @@ Decyzje z rozmowy (2026-11-01):
 
 - Id `pieniadze`, strona `/money`, tytuł „Kto ma więcej?”, w katalogu alfabetycznie między „Dyktando graficzne” a „Labirynt”. Poziomy `latwy` / `sredni` / `trudny`, domyślnie `sredni`. Ustawienia: tylko `level`.
 - Poziomy (wartości startowe, potwierdza wydruk):
-  - łatwy: jeden nominał (1, 2 albo 5 zł) w obu kupkach rzędu, tylko monety, suma kupki do 10 zł, od 1 do 5 sztuk; więcej sztuk to więcej pieniędzy;
+  - łatwy: monety 1, 2 i 5 zł mieszane (decyzja użytkowniczki 2026-11-01: nie jeden nominał w rzędzie), suma kupki do 10 zł, od 1 do 5 sztuk; żaden rząd „nie myli” (kupka z mniejszą liczbą sztuk nie jest warta więcej);
   - średni: monety 1, 2, 5 zł mieszane, suma kupki do 20 zł; dokładnie 2 z 5 rzędów „myli”;
   - trudny: 1, 2, 5, 10, 20 zł mieszane (monety i banknoty), suma kupki do 50 zł; co najmniej 3 z 5 rzędów „myli”.
 - „Myli” = kupka z mniejszą liczbą sztuk ma większą wartość.
-- Remis: na karcie zero lub jeden rząd z równymi kupkami; poza nim kupki różnią się wartością. Na łatwym remis oznacza równą liczbę sztuk.
+- Remis: na karcie zero lub jeden rząd z równymi kupkami; poza nim kupki różnią się wartością. Remis to kupki o równej wartości i różnym składzie (dwie identyczne kupki nie są remisem na żadnym poziomie).
 - Zaznaczanie: dziecko wpisuje w polu między kupkami „<”, „>” (która kupka jest większa) lub „=” (równe); polecenie nie każe zakreślać, ale zakreślenie kupki też jest czytelną odpowiedzią; odpowiedź rzędu zostaje jedna: lewa, prawa albo równe. To odchylenie od PRD (zakreślanie kupki i „tyle samo”), więc faza 5 poprawia PRD.
 - Jeden rząd nie powtarza się na karcie (para kupek, także z zamienionymi stronami), a kolejna karta ma inny `key` niż poprzednia.
 
@@ -196,7 +196,7 @@ interface MoneyCard {
 }
 ```
 
-`key` nazywa wszystkie rzędy; dwie karty z jednym `key` pokazują to samo. Łatwy: w rzędzie oba boki mają jeden nominał (nominał może się zmieniać między rzędami), 1–5 sztuk, suma do 10 zł, więcej sztuk to większa wartość, remis to równa liczba sztuk; pula różnych par bez remisu to 21, więc 5 rzędów bez powtórzeń jest wykonalne.
+`key` nazywa wszystkie rzędy; dwie karty z jednym `key` pokazują to samo. Łatwy: monety 1, 2 i 5 zł mieszane w kupce, 1–5 sztuk, suma do 10 zł, żaden rząd nie myli.
 
 Definicje, bez dwuznaczności: rząd „myli” tylko gdy kupka z ściśle mniejszą liczbą sztuk ma ściśle większą wartość. Równa liczba sztuk przy różnej wartości oraz remis przy różnej liczbie sztuk nie „mylą”. Odpowiedź `left` znaczy, że lewa kupka jest większa, czyli dziecko wpisuje „>” (kupka po lewej większa od prawej); `right` to „<”; `equal` to „=”. Każda kupka ma od 1 do `MAX_PIECES` sztuk.
 
@@ -219,7 +219,7 @@ Definicje, bez dwuznaczności: rząd „myli” tylko gdy kupka z ściśle mniej
 
 #### Manual Verification:
 
-- Przegląd 10 kart z każdego poziomu (wydruk skryptu makiety z kilkoma ziarnami) pokazuje, że łatwy nie wymaga dodawania, a średni i trudny mają mylące rzędy
+- Przegląd 10 kart z każdego poziomu (wydruk skryptu makiety z kilkoma ziarnami) pokazuje, że łatwy ma małe kupki bez mylących rzędów, a średni i trudny mają mylące rzędy
 
 **Implementation Note**: Po fazie 3 zatrzymaj się na potwierdzenie.
 
@@ -317,7 +317,7 @@ PRD ma opisywać to, co zbudowano: trzy decyzje z rozmowy odbiegają od tekstu.
 
 ### Unit Tests:
 
-- Wartość kupki, liczba sztuk, „myli”, remis; granice sum; łatwy bez dodawania
+- Wartość kupki, liczba sztuk, „myli”, remis; granice sum; łatwy bez mylących rzędów
 - Generator na wielu ziarnach: reguły poziomu, odpowiedź zgodna z niezależnym przeliczeniem, inny `key` niż poprzednia karta, `null` obsłużone
 
 ### Integration Tests:
@@ -328,7 +328,7 @@ PRD ma opisywać to, co zbudowano: trzy decyzje z rozmowy odbiegają od tekstu.
 
 1. Wydruk makiety na A4 w 100% (faza 2)
 2. Wydruk wygenerowanej karty w Safari, Chrome iOS i Brave iOS (faza 4)
-3. Dziecko 6 lat na poziomie łatwym: czy radzi sobie bez dodawania (Open Questions 14)
+3. Dziecko 6 lat na poziomie łatwym: czy radzi sobie z małymi kupkami mieszanych monet (Open Questions 14)
 
 ## Performance Considerations
 
@@ -369,28 +369,28 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 
 #### Automated
 
-- [x] 2.1 Test układu przechodzi
-- [x] 2.2 Makieta powstaje
-- [x] 2.3 Lint i typy przechodzą
+- [x] 2.1 Test układu przechodzi — d4d8e6b
+- [x] 2.2 Makieta powstaje — d4d8e6b
+- [x] 2.3 Lint i typy przechodzą — d4d8e6b
 
 #### Manual
 
-- [x] 2.4 Użytkownik drukuje trzy pliki i potwierdza czytelność nominału na czarnym druku
-- [x] 2.5 Użytkownik potwierdza lub poprawia wartości startowe rysunku
-- [x] 2.6 Użytkownik zapisuje decyzję: idziemy dalej / zmieniamy rysunek / karta odpada
+- [x] 2.4 Użytkownik drukuje trzy pliki i potwierdza czytelność nominału na czarnym druku — d4d8e6b
+- [x] 2.5 Użytkownik potwierdza lub poprawia wartości startowe rysunku — d4d8e6b
+- [x] 2.6 Użytkownik zapisuje decyzję: idziemy dalej / zmieniamy rysunek / karta odpada — d4d8e6b
 
 ### Phase 3: Poziomy i generator z regułami
 
 #### Automated
 
-- [ ] 3.1 Testy poziomów, reguł i generatora przechodzą
-- [ ] 3.2 Całość przechodzi: `npm test`
-- [ ] 3.3 Lint i typy przechodzą
-- [ ] 3.4 Skrypt makiety bierze rzędy z prawdziwego generatora
+- [x] 3.1 Testy poziomów, reguł i generatora przechodzą
+- [x] 3.2 Całość przechodzi: `npm test`
+- [x] 3.3 Lint i typy przechodzą
+- [x] 3.4 Skrypt makiety bierze rzędy z prawdziwego generatora
 
 #### Manual
 
-- [ ] 3.5 Przegląd 10 kart z każdego poziomu
+- [x] 3.5 Przegląd 10 kart z każdego poziomu
 
 ### Phase 4: Strona, katalog, profil, miniatura i testy e2e
 

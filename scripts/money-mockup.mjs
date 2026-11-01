@@ -1,85 +1,42 @@
 // Writes print-ready mockups of the "Kto ma więcej?" card to context/changes/coins-who-has-more/: one A4 sheet per level
-// (łatwy, średni, trudny), five rows of two piles with an empty square between them. The rows are hand-written
-// examples, not generator output (the generator comes in phase 3); the last row of each sheet is the fullest pile the
-// level can hold. Drawn from the same constants and layout as the page will use. Print each file on A4 at 100%, in
-// black and white, to judge: is the number on every coin and note readable, is the square big enough to write <, > or =,
-// do the fullest piles fit their frame?
+// (łatwy, średni, trudny), five rows of two piles with an empty square between them. The rows are real cards from the
+// generator (fixed seed), drawn from the same constants and layout as the page. Print each file on A4 at 100%, in black
+// and white, to judge: is the number on every coin and note readable, is the square big enough to write <, > or =.
 // Run: node --experimental-strip-types scripts/money-mockup.mjs
 // The dashed rectangle in the band marks where the character and the speech bubble will stand.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { generateMoneyCard } from "../src/lib/money/generate.ts";
+import { MONEY_LEVELS } from "../src/lib/money/levels.ts";
 import { layoutMoneySheet, layoutPile } from "../src/lib/money/layout.ts";
 import { MONEY_SHEET } from "../src/lib/money/sheet.ts";
 
 const OUTPUT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "../context/changes/coins-who-has-more");
 const FONT = 'font-family="Arial, Helvetica, sans-serif"';
 
-const LEVELS = {
-  latwy: [
-    [
-      [1, 1, 1],
-      [1, 1],
-    ],
-    [
-      [2, 2],
-      [2, 2, 2, 2],
-    ],
-    [[5], [5, 5]],
-    [
-      [1, 1, 1, 1],
-      [1, 1, 1, 1],
-    ],
-    [
-      [1, 1, 1, 1, 1],
-      [1, 1, 1, 1],
-    ],
-  ],
-  sredni: [
-    [
-      [5, 5, 2],
-      [2, 2, 2, 2, 2, 1],
-    ],
-    [
-      [1, 1, 1, 1, 1, 1],
-      [5, 2],
-    ],
-    [
-      [2, 2, 2],
-      [5, 1],
-    ],
-    [
-      [5, 5, 5],
-      [2, 2, 2, 2, 2, 2, 2],
-    ],
-    [
-      [1, 1, 1, 1, 1, 1, 1, 2],
-      [5, 5, 2, 2, 2],
-    ],
-  ],
-  trudny: [
-    [
-      [20, 5],
-      [10, 10, 5],
-    ],
-    [
-      [10, 2, 2],
-      [5, 5, 5, 1, 1, 1, 1, 1],
-    ],
-    [
-      [20, 20, 5],
-      [10, 10, 10, 5, 5],
-    ],
-    [
-      [10, 5, 5, 2],
-      [20, 2, 1],
-    ],
-    [
-      [10, 10, 10, 10, 1, 1, 1, 1, 1, 1],
-      [20, 20, 5, 5],
-    ],
-  ],
-};
+const SEEDS = { latwy: 11, sredni: 22, trudny: 33 };
+
+function mulberry32(seed) {
+  let a = seed;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Real cards from the generator, one per level (fixed seed).
+const LEVELS = Object.fromEntries(
+  MONEY_LEVELS.map((level) => {
+    const card = generateMoneyCard(mulberry32(SEEDS[level.id]), null, level);
+    if (card === null) {
+      throw new Error(`No ${level.id} card for seed ${SEEDS[level.id]}`);
+    }
+    return [level.id, card.rows.map((row) => [row.left, row.right])];
+  }),
+);
 
 const escape = (text) => text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
