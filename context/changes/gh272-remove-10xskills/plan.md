@@ -164,6 +164,7 @@ git filter-branch --index-filter \
 **Intent**: Pliki kursu na dysku są ignorowane, a CI odrzuca drzewo, które je zawiera (np. PR ze starej gałęzi).
 
 **Contract**:
+
 - `.gitignore`: sekcja obok `.claude/skills` z listą ścieżek.
 - `ci.yml`, job `ci`: krok przed `npm ci`, który kończy się błędem, gdy `git ls-files` zwraca którąkolwiek ścieżkę z listy.
 - Commit `chore(gh272): ignoruj pliki kursu 10x i odrzucaj je w CI`. Tylko na `main`; na `prod` trafi przy następnym wydaniu.
@@ -351,32 +352,32 @@ Każdy worktree i lokalne gałęzie przechodzą na nową historię. Pliki kursu 
 
 #### Manual
 
-- [ ] 2.6 Użytkowniczka przegląda podsumowanie i zgadza się na publikację
+- [x] 2.6 Użytkowniczka przegląda podsumowanie i zgadza się na publikację
 
 ### Phase 3: Publikacja na origin
 
 #### Automated
 
-- [ ] 3.1 Świeży klon origin: `git log --all -- <ścieżki kursu>` zwraca pusto
-- [ ] 3.2 `git ls-remote origin` pokazuje tylko `HEAD`, `main`, `prod`, `v2026.11.01` i `refs/pull/*`
-- [ ] 3.3 Oba rulesety mają `enforcement: active` i konfigurację równą zapisanej
-- [ ] 3.4 CI na nowym `main` i `prod` zielone
+- [x] 3.1 Świeży klon origin: `git log --all -- <ścieżki kursu>` zwraca pusto
+- [x] 3.2 `git ls-remote origin` pokazuje tylko `HEAD`, `main`, `prod`, `v2026.11.01` i `refs/pull/*`
+- [x] 3.3 Oba rulesety mają `enforcement: active` i konfigurację równą zapisanej
+- [x] 3.4 CI na nowym `main` i `prod` zielone — `ci`, `smoke`, `e2e` success; job `changes` czerwony tylko raz (stary SHA po force-pushu, zamierzone)
 
 #### Manual
 
-- [ ] 3.5 Staging i produkcja zdeployowały się z nowych SHA i działają
-- [ ] 3.6 Na github.com repo nie pokazuje `.cursor/skills/10x-*`, a wyszukiwanie „10x-course” nic nie zwraca
+- [x] 3.5 Staging i produkcja zdeployowały się z nowych SHA i działają
+- [x] 3.6 Na github.com repo nie pokazuje `.cursor/skills/10x-*`, a wyszukiwanie „10x-course” nic nie zwraca
 
 ### Phase 4: Porządki lokalne
 
 #### Automated
 
-- [ ] 4.1 W żadnym worktree `git ls-files <ścieżki kursu>` nie zwraca nic, a pliki są na dysku
-- [ ] 4.2 `git status` w każdym worktree nie pokazuje plików kursu
-- [ ] 4.3 Żadna lokalna gałąź nie zawiera starych commitów (`git branch --contains 7926d49` pusto)
-- [ ] 4.4 S-33 po rebase: testy przechodzą, te same 8 commitów, baza to nowy `main`
+- [x] 4.1 W żadnym worktree `git ls-files <ścieżki kursu>` nie zwraca nic, a pliki są na dysku
+- [x] 4.2 `git status` w każdym worktree nie pokazuje plików kursu
+- [x] 4.3 Żadna lokalna gałąź nie zawiera starych commitów (`git branch --contains 7926d49` pusto)
+- [x] 4.4 S-33 po rebase: testy przechodzą, te same 8 commitów, baza to nowy `main`
 
 #### Manual
 
-- [ ] 4.5 Cursor i Claude Code nadal widzą skille 10x w tym repo
-- [ ] 4.6 Użytkowniczka potwierdza, że niczego nie brakuje w S-33 i innych worktree
+- [x] 4.5 Cursor i Claude Code nadal widzą skille 10x w tym repo
+- [x] 4.6 Użytkowniczka potwierdza, że niczego nie brakuje w S-33 i innych worktree
