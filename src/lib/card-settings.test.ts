@@ -9,6 +9,7 @@ import {
   withCardSettings,
   type CardSettingsMap,
 } from "./card-settings.ts";
+import { CARD_KINDS } from "./cards.ts";
 
 void describe("defaultCardSettings", () => {
   void test("every card has the defaults its page starts from today", () => {
@@ -18,7 +19,21 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("sudoku"), { size: 4, level: "latwy", symbols: "shapes", colors: false });
     assert.deepEqual(defaultCardSettings("nonogram"), { level: "sredni", category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("dyktando"), { level: "lat6", category: "wszystkie" });
-    assert.equal(CARD_SETTINGS_IDS.length, 6);
+    assert.deepEqual(defaultCardSettings("pieniadze"), { level: "sredni" });
+  });
+
+  void test("the money card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy" } }), { pieniadze: { level: "latwy" } });
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "lat5" } }), { pieniadze: { level: "sredni" } });
+    assert.deepEqual(parseCardSettings({ pieniadze: "x" }), {});
+    assert.deepEqual(parseCardSettings({}), {});
+  });
+
+  void test("the settings ids are the catalog ids and each has defaults", () => {
+    assert.deepEqual([...CARD_SETTINGS_IDS].sort(), CARD_KINDS.map((kind) => kind.id).sort());
+    for (const id of CARD_SETTINGS_IDS) {
+      assert.notEqual(defaultCardSettings(id), undefined, id);
+    }
   });
 
   void test("a default is a copy, so changing it does not change the next default", () => {

@@ -97,6 +97,23 @@ const steps = [
     (actual) => actual.status === 301 && locationPath(actual.location) === "/dictation",
     "301 and Location path /dictation",
   ],
+  [
+    "every catalog card page is served with its worksheet sentence",
+    async () => {
+      const home = await request("/");
+      const hrefs = [...home.body.matchAll(/<a[^>]*data-card-title[^>]*>/g)]
+        .map((tag) => /href="([^"]+)"/.exec(tag[0])?.[1])
+        .filter((href) => href !== undefined);
+      const results = [];
+      for (const href of hrefs) {
+        const page = await request(href);
+        results.push({ href, ok: page.status === 200 && page.body.includes("i wydrukuj") });
+      }
+      return { status: results.length, results };
+    },
+    (actual) => actual.results.length > 0 && actual.results.every((result) => result.ok),
+    'at least one catalog card, each answering 200 with "i wydrukuj"',
+  ],
   ["signin is not served", () => request("/auth/signin"), (actual) => actual.status === 404, "404"],
   ["signup is not served", () => request("/auth/signup"), (actual) => actual.status === 404, "404"],
   ["confirm-email is not served", () => request("/auth/confirm-email"), (actual) => actual.status === 404, "404"],

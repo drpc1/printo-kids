@@ -1,5 +1,5 @@
 // Provenance: card-catalog-home (phase 3); symmetry-first-printable (phase 4, US-05); sequences-first-printable (phase 3); picture-sudoku-first-printable (US-12); catalog-alpha-order (phase 2)
-// Protects the card catalog on /: the Labirynt, Symetria and Sekwencje thumbnails open their generators, Symetria
+// Protects the card catalog on /: the card thumbnails open their generators, Symetria
 // and Sekwencje show their card after Generuj and lead back with "Wszystkie karty", and the chosen child profile stays
 // chosen across the round trip catalog -> generator -> catalog -> generator on both pages.
 // The flow is the same on every screen size, so it runs on desktop Chromium only.
@@ -14,7 +14,12 @@ test("the catalog lists cards in alphabetical order when no profile is saved", a
 
   // The card list only: the footer link to "Jak to działa" is not a card.
   const links = page.getByRole("list").getByRole("link");
-  const order = ["Dyktando graficzne", "Labirynt", "Nonogram", "Sekwencje", "Sudoku", "Symetria"];
+  const shown = await page
+    .locator("a[data-card-title]")
+    .evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute("data-card-title") ?? ""));
+  expect(shown.length).toBeGreaterThan(0);
+  const order = [...shown].sort((a, b) => a.localeCompare(b, "pl"));
+  expect(shown).toEqual(order);
   await expect(links).toHaveCount(order.length);
   for (const [index, name] of order.entries()) {
     await expect(links.nth(index)).toHaveAccessibleName(name);
@@ -464,14 +469,12 @@ test("the catalog is titled PrintoKids; each generator page has the card name as
   await page.goto("/");
   await expect(page).toHaveTitle("PrintoKids");
 
-  const pages = [
-    ["/maze", "Labirynt"],
-    ["/symmetry", "Symetria"],
-    ["/sudoku", "Sudoku"],
-    ["/sequences", "Sekwencje"],
-    ["/nonogram", "Nonogram"],
-    ["/dictation", "Dyktando graficzne"],
-  ];
+  const pages = await page
+    .locator("a[data-card-title]")
+    .evaluateAll((anchors) =>
+      anchors.map((anchor) => [anchor.getAttribute("href") ?? "", anchor.getAttribute("data-card-title") ?? ""]),
+    );
+  expect(pages.length).toBeGreaterThan(0);
   for (const [path, title] of pages) {
     await page.goto(path);
     await expect(page).toHaveTitle(`PrintoKids - ${title}`);

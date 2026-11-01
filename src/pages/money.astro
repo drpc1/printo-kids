@@ -1,0 +1,15 @@
+---
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import MoneyGenerator from "@/components/MoneyGenerator";
+import Layout from "@/layouts/Layout.astro";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
+---
+
+<Layout title={cardPageTitle("pieniadze")} lang="pl">
+  <GeneratorShell
+    heading={cardTitle("pieniadze")}
+    description="Wygeneruj kartę „Kto ma więcej?” i wydrukuj ją na kartce A4."
+  >
+    <MoneyGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>

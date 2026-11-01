@@ -8,10 +8,9 @@ void describe("cardsInCatalogOrder", () => {
 
     assert.deepEqual(
       ordered.map((kind) => kind.title),
-      ["Dyktando graficzne", "Labirynt", "Nonogram", "Sekwencje", "Sudoku", "Symetria"],
+      CARD_KINDS.map((kind) => kind.title).sort((a, b) => a.localeCompare(b, "pl")),
     );
     assert.equal(CARD_KINDS[0].title, "Labirynt");
-    assert.equal(CARD_KINDS[CARD_KINDS.length - 1].title, "Dyktando graficzne");
     assert.notEqual(ordered, CARD_KINDS);
   });
 });
