@@ -37,6 +37,8 @@ export const MONEY_SHEET = {
   noteInnerStroke: 0.3,
   noteFontSize: 6,
   fontWeight: 700,
+  /** Font size of the instruction when no character stands in the band (one line). */
+  plainInstructionSize: 7,
   /** The instruction, one entry per line of the speech bubble. */
   instructionLines: ["Gdzie jest więcej pieniędzy?", "Wskaż <, > lub =."],
 } as const;

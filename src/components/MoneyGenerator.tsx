@@ -13,7 +13,6 @@ import { MONEY_SHEET } from "@/lib/money/sheet";
 import { cn } from "@/lib/utils";
 
 const INSTRUCTION_TEXT = MONEY_SHEET.instructionLines.join(" ");
-const PLAIN_INSTRUCTION_SIZE = 7;
 
 /**
  * The "Kto ma więcej?" card page: Generuj, the character and level buttons, the card, Drukuj, and the shared profile
@@ -161,7 +160,7 @@ function MoneySheet({
           y={sheet.band.y + sheet.band.height / 2}
           fill="var(--foreground)"
           fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={PLAIN_INSTRUCTION_SIZE}
+          fontSize={MONEY_SHEET.plainInstructionSize}
           textAnchor="middle"
           dominantBaseline="middle"
         >

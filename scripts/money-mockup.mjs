@@ -89,7 +89,7 @@ for (const [level, rows] of Object.entries(LEVELS)) {
   MONEY_SHEET.instructionLines.forEach((text, index) => {
     const y = band.y + band.height / 2 + (index - 0.5) * 8;
     parts.push(
-      `<text x="${MONEY_SHEET.pageWidth / 2}" y="${y}" text-anchor="middle" dominant-baseline="central" ${FONT} font-size="7.5" fill="#000">${escape(text)}</text>`,
+      `<text x="${MONEY_SHEET.pageWidth / 2}" y="${y}" text-anchor="middle" dominant-baseline="central" ${FONT} font-size="${MONEY_SHEET.plainInstructionSize}" fill="#000">${escape(text)}</text>`,
     );
   });
   rows.forEach(([left, right], index) => {

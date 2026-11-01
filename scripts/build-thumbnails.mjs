@@ -465,7 +465,7 @@ const moneyLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MONEY.pageWidth} ${MONEY.pageHeight}" width="${MONEY.pageWidth}" height="${MONEY.pageHeight}">`,
   `<rect width="${MONEY.pageWidth}" height="${MONEY.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${MONEY.pageWidth - 0.5}" height="${MONEY.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(MONEY.pageWidth / 2)}" y="${num(moneySheet.band.y + moneySheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle" dominant-baseline="middle">${MONEY.instructionLines.join(" ").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</text>`,
+  `<text x="${num(MONEY.pageWidth / 2)}" y="${num(moneySheet.band.y + moneySheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${MONEY.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${MONEY.instructionLines.join(" ").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</text>`,
 ];
 const moneyFont = `font-family="ui-sans-serif, system-ui, sans-serif" font-weight="${MONEY.fontWeight}" text-anchor="middle" dominant-baseline="central" fill="#000"`;
 moneyCard.rows.forEach((row, rowIndex) => {
