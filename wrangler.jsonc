@@ -12,4 +12,12 @@
   "observability": {
     "enabled": true,
   },
+  "env": {
+    "staging": {
+      "name": "printo-kids-staging",
+      "vars": {
+        "ENVIRONMENT": "staging",
+      },
+    },
+  },
 }
