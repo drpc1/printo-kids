@@ -65,6 +65,11 @@ const CARDS: CardCase[] = [
       { bar: "Kategoria", option: "Jedzenie", shown: "Jedzenie" },
     ],
   },
+  {
+    id: "pieniadze",
+    path: "/money",
+    changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
+  },
 ];
 
 function barButton(page: Page, bar: string): Locator {

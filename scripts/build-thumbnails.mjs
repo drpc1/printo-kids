@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram and dictation cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation and money cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -29,6 +29,10 @@ import { generateDictationCard } from "../src/lib/dictation/generate.ts";
 import { layoutDictationSheet } from "../src/lib/dictation/layout.ts";
 import { DICTATION_LEVEL_LAT6 } from "../src/lib/dictation/levels.ts";
 import { DICTATION_SHEET, formatDictationCommand } from "../src/lib/dictation/sheet.ts";
+import { generateMoneyCard } from "../src/lib/money/generate.ts";
+import { layoutMoneySheet, layoutPile } from "../src/lib/money/layout.ts";
+import { DEFAULT_MONEY_LEVEL_ID, moneyLevelById } from "../src/lib/money/levels.ts";
+import { MONEY_SHEET } from "../src/lib/money/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -433,3 +437,73 @@ dictationLines.push(
 const dictationOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/dyktando.svg");
 writeFileSync(dictationOutFile, dictationLines.join("\n"));
 console.log(`Wrote ${dictationOutFile} (${dictationCard.key}, ${dictationCard.commands.length} commands)`);
+
+// Money card: the same elements MoneySheet draws (src/components/MoneyGenerator.tsx), in literal black, with the shared
+// drawing constants from src/lib/money/sheet.ts. The band holds the plain instruction (no character).
+const MONEY_SEED = 20261101;
+const MONEY = MONEY_SHEET;
+
+const moneyCard = generateMoneyCard(mulberry32(MONEY_SEED), null, moneyLevelById(DEFAULT_MONEY_LEVEL_ID));
+if (moneyCard === null) {
+  throw new Error(`Seed ${MONEY_SEED} did not produce a valid money card`);
+}
+
+const moneySheet = layoutMoneySheet({
+  pageWidth: MONEY.pageWidth,
+  pageHeight: MONEY.pageHeight,
+  inset: MONEY.inset,
+  rowCount: moneyCard.rows.length,
+  bandHeight: MONEY.bandHeight,
+  bandGap: MONEY.bandGap,
+  rowGap: MONEY.rowGap,
+  signSize: MONEY.signSize,
+  signGap: MONEY.signGap,
+  pilePadding: MONEY.pilePadding,
+});
+
+const moneyLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MONEY.pageWidth} ${MONEY.pageHeight}" width="${MONEY.pageWidth}" height="${MONEY.pageHeight}">`,
+  `<rect width="${MONEY.pageWidth}" height="${MONEY.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${MONEY.pageWidth - 0.5}" height="${MONEY.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(MONEY.pageWidth / 2)}" y="${num(moneySheet.band.y + moneySheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle" dominant-baseline="middle">${MONEY.instructionLines.join(" ").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</text>`,
+];
+const moneyFont = `font-family="ui-sans-serif, system-ui, sans-serif" font-weight="${MONEY.fontWeight}" text-anchor="middle" dominant-baseline="central" fill="#000"`;
+moneyCard.rows.forEach((row, rowIndex) => {
+  const rowLayout = moneySheet.rows[rowIndex];
+  for (const [values, area] of [
+    [row.left, rowLayout.left],
+    [row.right, rowLayout.right],
+  ]) {
+    moneyLines.push(
+      `<rect x="${num(area.x)}" y="${num(area.y)}" width="${num(area.width)}" height="${num(area.height)}" rx="${MONEY.pileFrameRadius}" fill="none" stroke="#000" stroke-width="${MONEY.pileFrameStroke}"/>`,
+    );
+    const laid = layoutPile(values, area.innerWidth);
+    const left = area.x + MONEY.pilePadding;
+    const top = area.y + MONEY.pilePadding + (area.innerHeight - laid.height) / 2;
+    for (const piece of laid.pieces) {
+      const x = left + piece.x;
+      const y = top + piece.y;
+      if (piece.kind === "coin") {
+        moneyLines.push(
+          `<circle cx="${num(x + piece.width / 2)}" cy="${num(y + piece.height / 2)}" r="${num(piece.width / 2 - MONEY.coinStroke / 2)}" fill="#fff" stroke="#000" stroke-width="${MONEY.coinStroke}"/>`,
+          `<text x="${num(x + piece.width / 2)}" y="${num(y + piece.height / 2)}" font-size="${MONEY.coinFontSize}" ${moneyFont}>${piece.value}</text>`,
+        );
+      } else {
+        const inner = MONEY.noteInnerInset;
+        moneyLines.push(
+          `<rect x="${num(x)}" y="${num(y)}" width="${piece.width}" height="${piece.height}" rx="1" fill="#fff" stroke="#000" stroke-width="${MONEY.noteStroke}"/>`,
+          `<rect x="${num(x + inner)}" y="${num(y + inner)}" width="${piece.width - 2 * inner}" height="${piece.height - 2 * inner}" rx="0.6" fill="none" stroke="#000" stroke-width="${MONEY.noteInnerStroke}"/>`,
+          `<text x="${num(x + piece.width / 2)}" y="${num(y + piece.height / 2)}" font-size="${MONEY.noteFontSize}" ${moneyFont}>${piece.value}</text>`,
+        );
+      }
+    }
+  }
+  moneyLines.push(
+    `<rect x="${num(rowLayout.sign.x)}" y="${num(rowLayout.sign.y)}" width="${rowLayout.sign.size}" height="${rowLayout.sign.size}" rx="2" fill="none" stroke="#000" stroke-width="${MONEY.signStroke}"/>`,
+  );
+});
+moneyLines.push("</svg>", "");
+
+const moneyOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/pieniadze.svg");
+writeFileSync(moneyOutFile, moneyLines.join("\n"));
+console.log(`Wrote ${moneyOutFile} (${moneyCard.key.length} key chars)`);

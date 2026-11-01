@@ -23,6 +23,7 @@ const ANIA = {
     symetria: { level: "lat6", colors: true, category: "wszystkie" },
     sudoku: { size: 6, level: "sredni", symbols: "shapes", colors: false },
     nonogram: { level: "sredni", category: "zwierzeta" },
+    pieniadze: { level: "latwy" },
   },
 };
 
@@ -93,6 +94,7 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Sekwencje\s+domyślne/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Nonogram\s+średni · Zwierzęta/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Dyktando graficzne\s+domyślne/ })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Kto ma więcej\?\s+łatwy/ })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
   await expect(dialog.getByRole("button", { name: "Anuluj" })).toHaveCount(0);
 });

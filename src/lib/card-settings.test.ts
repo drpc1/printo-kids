@@ -19,6 +19,14 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("sudoku"), { size: 4, level: "latwy", symbols: "shapes", colors: false });
     assert.deepEqual(defaultCardSettings("nonogram"), { level: "sredni", category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("dyktando"), { level: "lat6", category: "wszystkie" });
+    assert.deepEqual(defaultCardSettings("pieniadze"), { level: "sredni" });
+  });
+
+  void test("the money card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy" } }), { pieniadze: { level: "latwy" } });
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "lat5" } }), { pieniadze: { level: "sredni" } });
+    assert.deepEqual(parseCardSettings({ pieniadze: "x" }), {});
+    assert.deepEqual(parseCardSettings({}), {});
   });
 
   void test("the settings ids are the catalog ids and each has defaults", () => {

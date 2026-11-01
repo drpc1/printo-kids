@@ -56,6 +56,14 @@ export const CARD_KINDS: readonly CardKind[] = [
     description:
       "Dziecko rysuje po liniach kratki według strzałek i liczb kratek, a na końcu odkrywa obrys obiektu. Na kartce jest pusta kratka z kropką startu i lista poleceń, na przykład „3 →”. Karta nie zdradza, co się narysuje.",
   },
+  {
+    id: "pieniadze",
+    title: "Kto ma więcej?",
+    href: "/money",
+    thumbnail: "/thumbnails/pieniadze.svg",
+    description:
+      "Dziecko porównuje, w której z dwóch kupek monet i banknotów jest więcej pieniędzy, i wpisuje między nimi „<”, „>” albo „=”. Na kartce jest pięć rzędów po dwie kupki z pustym polem pośrodku, a nominał to liczba na każdej monecie i banknocie. Poziom zmienia nominały, wielkość sum i to, czy liczba sztuk myli.",
+  },
 ];
 
 export function cardsInCatalogOrder(): CardKind[] {

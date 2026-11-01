@@ -383,29 +383,29 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 
 #### Automated
 
-- [x] 3.1 Testy poziomów, reguł i generatora przechodzą
-- [x] 3.2 Całość przechodzi: `npm test`
-- [x] 3.3 Lint i typy przechodzą
-- [x] 3.4 Skrypt makiety bierze rzędy z prawdziwego generatora
+- [x] 3.1 Testy poziomów, reguł i generatora przechodzą — 20825d7
+- [x] 3.2 Całość przechodzi: `npm test` — 20825d7
+- [x] 3.3 Lint i typy przechodzą — 20825d7
+- [x] 3.4 Skrypt makiety bierze rzędy z prawdziwego generatora — 20825d7
 
 #### Manual
 
-- [x] 3.5 Przegląd 10 kart z każdego poziomu
+- [x] 3.5 Przegląd 10 kart z każdego poziomu — 20825d7
 
 ### Phase 4: Strona, katalog, profil, miniatura i testy e2e
 
 #### Automated
 
-- [ ] 4.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 4.2 Lint, typy i build przechodzą
-- [ ] 4.3 E2E na wszystkich projektach Chromium przechodzą
-- [ ] 4.4 Sprawdzian HTTP przechodzi
+- [x] 4.1 Testy jednostkowe przechodzą: `npm test`
+- [x] 4.2 Lint, typy i build przechodzą
+- [x] 4.3 E2E na wszystkich projektach Chromium przechodzą
+- [x] 4.4 Sprawdzian HTTP przechodzi
 
 #### Manual
 
-- [ ] 4.5 Karta w przeglądarce: polecenie z postacią, pięć rzędów, kupki czytelne
-- [ ] 4.6 Wydruk na jednej stronie A4 w Safari, Chrome iOS i Brave iOS osobno
-- [ ] 4.7 Katalog: miniatura, plakietka po wyborze profilu, okno profilu
+- [x] 4.5 Karta w przeglądarce: polecenie z postacią, pięć rzędów, kupki czytelne
+- [x] 4.6 Wydruk na jednej stronie A4 w Safari, Chrome iOS i Brave iOS osobno
+- [x] 4.7 Katalog: miniatura, plakietka po wyborze profilu, okno profilu
 
 ### Phase 5: PRD zgodne z decyzjami
 

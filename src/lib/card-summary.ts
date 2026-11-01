@@ -3,6 +3,7 @@ import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import { dictationLevelById } from "./dictation/levels.ts";
 import { levelById } from "./maze/levels.ts";
+import { moneyLevelById } from "./money/levels.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
 import { sequenceLevelById } from "./sequence/levels.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
@@ -92,6 +93,14 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
       }
       const level = dictationLevelById(settings.level);
       return { badge: badgeOf(level), level: level.label, extras: [categoryLabel(settings.category)] };
+    }
+    case "pieniadze": {
+      const settings = cards.pieniadze;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = moneyLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: [] };
     }
     default:
       return null;

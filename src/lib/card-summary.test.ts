@@ -93,6 +93,19 @@ void describe("cardSummaries", () => {
     assert.equal(on.detail, "Poziom 2 · kolory");
   });
 
+  void test("the money card shows its named level and is unused until the profile chose one", () => {
+    const fresh = cardSummaries(profile("lat5"));
+    assert.equal(byId(fresh, "pieniadze").used, false);
+    assert.equal(byId(fresh, "pieniadze").badge, null);
+    assert.equal(byId(fresh, "pieniadze").title, "Kto ma więcej?");
+    assert.equal(byId(fresh, "pieniadze").href, "/money");
+
+    const chosen = byId(cardSummaries(profile("lat5", { pieniadze: { level: "latwy" } })), "pieniadze");
+    assert.equal(chosen.used, true);
+    assert.equal(chosen.badge, "łatwy");
+    assert.equal(chosen.detail, "łatwy");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
