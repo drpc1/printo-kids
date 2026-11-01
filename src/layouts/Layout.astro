@@ -1,4 +1,6 @@
 ---
+import { env } from "cloudflare:workers";
+import { webAnalyticsBeacon } from "@/lib/analytics";
 import "../styles/global.css";
 
 interface Props {
@@ -7,6 +9,10 @@ interface Props {
 }
 
 const { title = "PrintoKids", lang = "en" } = Astro.props;
+const beacon = webAnalyticsBeacon(
+  Astro.url.hostname,
+  typeof env.ENVIRONMENT === "string" ? env.ENVIRONMENT : undefined,
+);
 ---
 
 <!doctype html>
@@ -21,6 +27,7 @@ const { title = "PrintoKids", lang = "en" } = Astro.props;
   </head>
   <body>
     <slot />
+    {beacon && <script is:inline type="module" src={beacon.src} data-cf-beacon={beacon.data}></script>}
   </body>
 </html>
 
