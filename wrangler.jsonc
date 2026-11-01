@@ -12,4 +12,14 @@
   "observability": {
     "enabled": true,
   },
+  // Staging is built from main with CLOUDFLARE_ENV=staging (one build per environment).
+  // Production (no CLOUDFLARE_ENV) is built from prod.
+  "env": {
+    "staging": {
+      "name": "printo-kids-staging",
+      "vars": {
+        "ENVIRONMENT": "staging",
+      },
+    },
+  },
 }
