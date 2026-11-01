@@ -354,66 +354,66 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — fd11071
-- [x] 1.2 Lint przechodzi: `npm run lint` — fd11071
-- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check` — fd11071
-- [x] 1.4 Żaden z plików z listy nie zawiera już wpisanej liczby sześciu kart — fd11071
-- [x] 1.5 E2E katalogu i plakietek przechodzi — fd11071
-- [x] 1.6 E2E stron opisu przechodzi — fd11071
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — 138cc82
+- [x] 1.2 Lint przechodzi: `npm run lint` — 138cc82
+- [x] 1.3 Sprawdzenie typów przechodzi: `npx astro check` — 138cc82
+- [x] 1.4 Żaden z plików z listy nie zawiera już wpisanej liczby sześciu kart — 138cc82
+- [x] 1.5 E2E katalogu i plakietek przechodzi — 138cc82
+- [x] 1.6 E2E stron opisu przechodzi — 138cc82
 
 #### Manual
 
-- [x] 1.7 Przegląd diffu: żaden test nie stracił sprawdzanego zachowania — fd11071
+- [x] 1.7 Przegląd diffu: żaden test nie stracił sprawdzanego zachowania — 138cc82
 
 ### Phase 2: Makieta monety, banknotu i kupki (bramka)
 
 #### Automated
 
-- [x] 2.1 Test układu przechodzi — d4d8e6b
-- [x] 2.2 Makieta powstaje — d4d8e6b
-- [x] 2.3 Lint i typy przechodzą — d4d8e6b
+- [x] 2.1 Test układu przechodzi — 8b78545
+- [x] 2.2 Makieta powstaje — 8b78545
+- [x] 2.3 Lint i typy przechodzą — 8b78545
 
 #### Manual
 
-- [x] 2.4 Użytkownik drukuje trzy pliki i potwierdza czytelność nominału na czarnym druku — d4d8e6b
-- [x] 2.5 Użytkownik potwierdza lub poprawia wartości startowe rysunku — d4d8e6b
-- [x] 2.6 Użytkownik zapisuje decyzję: idziemy dalej / zmieniamy rysunek / karta odpada — d4d8e6b
+- [x] 2.4 Użytkownik drukuje trzy pliki i potwierdza czytelność nominału na czarnym druku — 8b78545
+- [x] 2.5 Użytkownik potwierdza lub poprawia wartości startowe rysunku — 8b78545
+- [x] 2.6 Użytkownik zapisuje decyzję: idziemy dalej / zmieniamy rysunek / karta odpada — 8b78545
 
 ### Phase 3: Poziomy i generator z regułami
 
 #### Automated
 
-- [x] 3.1 Testy poziomów, reguł i generatora przechodzą — 20825d7
-- [x] 3.2 Całość przechodzi: `npm test` — 20825d7
-- [x] 3.3 Lint i typy przechodzą — 20825d7
-- [x] 3.4 Skrypt makiety bierze rzędy z prawdziwego generatora — 20825d7
+- [x] 3.1 Testy poziomów, reguł i generatora przechodzą — 2a204da
+- [x] 3.2 Całość przechodzi: `npm test` — 2a204da
+- [x] 3.3 Lint i typy przechodzą — 2a204da
+- [x] 3.4 Skrypt makiety bierze rzędy z prawdziwego generatora — 2a204da
 
 #### Manual
 
-- [x] 3.5 Przegląd 10 kart z każdego poziomu — 20825d7
+- [x] 3.5 Przegląd 10 kart z każdego poziomu — 2a204da
 
 ### Phase 4: Strona, katalog, profil, miniatura i testy e2e
 
 #### Automated
 
-- [x] 4.1 Testy jednostkowe przechodzą: `npm test` — 518602f
-- [x] 4.2 Lint, typy i build przechodzą — 518602f
-- [x] 4.3 E2E na wszystkich projektach Chromium przechodzą — 518602f
-- [x] 4.4 Sprawdzian HTTP przechodzi — 518602f
+- [x] 4.1 Testy jednostkowe przechodzą: `npm test` — bb77f5a
+- [x] 4.2 Lint, typy i build przechodzą — bb77f5a
+- [x] 4.3 E2E na wszystkich projektach Chromium przechodzą — bb77f5a
+- [x] 4.4 Sprawdzian HTTP przechodzi — bb77f5a
 
 #### Manual
 
-- [x] 4.5 Karta w przeglądarce: polecenie z postacią, pięć rzędów, kupki czytelne — 518602f
-- [x] 4.6 Wydruk na jednej stronie A4 w Safari, Chrome iOS i Brave iOS osobno — 518602f
-- [x] 4.7 Katalog: miniatura, plakietka po wyborze profilu, okno profilu — 518602f
+- [x] 4.5 Karta w przeglądarce: polecenie z postacią, pięć rzędów, kupki czytelne — bb77f5a
+- [x] 4.6 Wydruk na jednej stronie A4 w Safari, Chrome iOS i Brave iOS osobno — bb77f5a
+- [x] 4.7 Katalog: miniatura, plakietka po wyborze profilu, okno profilu — bb77f5a
 
 ### Phase 5: PRD zgodne z decyzjami
 
 #### Automated
 
-- [x] 5.1 Formatowanie PRD przechodzi — e2ada17
-- [x] 5.2 Żadne zdanie o tej karcie nie każe już zakreślać kupki — e2ada17
+- [x] 5.1 Formatowanie PRD przechodzi — e457a14
+- [x] 5.2 Żadne zdanie o tej karcie nie każe już zakreślać kupki — e457a14
 
 #### Manual
 
-- [x] 5.3 Użytkownik potwierdza zmiany w PRD — e2ada17
+- [x] 5.3 Użytkownik potwierdza zmiany w PRD — e457a14
