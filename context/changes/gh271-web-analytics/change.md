@@ -1,7 +1,7 @@
 ---
 change_id: gh271-web-analytics
 title: Licznik Web Analytics na stronie produkcyjnej
-status: implementing
+status: impl_reviewed
 created: 2026-11-01
 updated: 2026-11-01
 archived_at: null
