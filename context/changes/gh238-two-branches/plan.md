@@ -280,23 +280,23 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi
-- [x] 2.2 Testy przechodzą
-- [x] 2.3 Kontrola typów przechodzi
-- [x] 2.4 Build produkcyjny daje nazwę Workera printo-kids
-- [x] 2.5 Build stagingu daje nazwę printo-kids-staging i poprawne assets
+- [x] 2.1 Lint przechodzi — 574e379
+- [x] 2.2 Testy przechodzą — 574e379
+- [x] 2.3 Kontrola typów przechodzi — 574e379
+- [x] 2.4 Build produkcyjny daje nazwę Workera printo-kids — 574e379
+- [x] 2.5 Build stagingu daje nazwę printo-kids-staging i poprawne assets — 574e379
 
 #### Manual
 
-- [x] 2.6 Staging w preview zwraca x-robots-tag noindex
-- [x] 2.7 Build bez CLOUDFLARE_ENV nie zwraca nagłówka
+- [x] 2.6 Staging w preview zwraca x-robots-tag noindex — 574e379
+- [x] 2.7 Build bez CLOUDFLARE_ENV nie zwraca nagłówka — 574e379
 
 ### Phase 3: CI, szablon PR wydania i dokumentacja
 
 #### Automated
 
-- [ ] 3.1 Lint i prettier przechodzą
-- [ ] 3.2 Testy przechodzą
+- [x] 3.1 Lint i prettier przechodzą
+- [x] 3.2 Testy przechodzą
 - [ ] 3.3 PR do main ma zielone ci, smoke i e2e
 
 #### Manual
