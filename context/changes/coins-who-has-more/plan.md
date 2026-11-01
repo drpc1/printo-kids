@@ -411,9 +411,9 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 
 #### Automated
 
-- [x] 5.1 Formatowanie PRD przechodzi
-- [x] 5.2 Żadne zdanie o tej karcie nie każe już zakreślać kupki
+- [x] 5.1 Formatowanie PRD przechodzi — e2ada17
+- [x] 5.2 Żadne zdanie o tej karcie nie każe już zakreślać kupki — e2ada17
 
 #### Manual
 
-- [x] 5.3 Użytkownik potwierdza zmiany w PRD
+- [x] 5.3 Użytkownik potwierdza zmiany w PRD — e2ada17
