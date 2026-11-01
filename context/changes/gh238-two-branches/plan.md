@@ -274,35 +274,35 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 #### Automated
 
-- [x] 1.1 Gałąź prod istnieje na GitHubie — 36cf4c0
-- [x] 1.2 prod wskazuje wdrożony commit — 36cf4c0
+- [x] 1.1 Gałąź prod istnieje na GitHubie — 9986bc5
+- [x] 1.2 prod wskazuje wdrożony commit — 9986bc5
 
 #### Manual
 
-- [x] 1.3 Worker printo-kids ma w panelu Cloudflare branch prod jako produkcyjny — 36cf4c0
-- [x] 1.4 Próbny build z prod kończy się sukcesem i produkcja otwiera / i /maze — 36cf4c0
+- [x] 1.3 Worker printo-kids ma w panelu Cloudflare branch prod jako produkcyjny — 9986bc5
+- [x] 1.4 Próbny build z prod kończy się sukcesem i produkcja otwiera / i /maze — 9986bc5
 
 ### Phase 2: Środowisko staging w kodzie
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi — 574e379
-- [x] 2.2 Testy przechodzą — 574e379
-- [x] 2.3 Kontrola typów przechodzi — 574e379
-- [x] 2.4 Build produkcyjny daje nazwę Workera printo-kids — 574e379
-- [x] 2.5 Build stagingu daje nazwę printo-kids-staging i poprawne assets — 574e379
+- [x] 2.1 Lint przechodzi — 9577cc8
+- [x] 2.2 Testy przechodzą — 9577cc8
+- [x] 2.3 Kontrola typów przechodzi — 9577cc8
+- [x] 2.4 Build produkcyjny daje nazwę Workera printo-kids — 9577cc8
+- [x] 2.5 Build stagingu daje nazwę printo-kids-staging i poprawne assets — 9577cc8
 
 #### Manual
 
-- [x] 2.6 Staging w preview zwraca x-robots-tag noindex — 574e379
-- [x] 2.7 Build bez CLOUDFLARE_ENV nie zwraca nagłówka — 574e379
+- [x] 2.6 Staging w preview zwraca x-robots-tag noindex — 9577cc8
+- [x] 2.7 Build bez CLOUDFLARE_ENV nie zwraca nagłówka — 9577cc8
 
 ### Phase 3: CI, szablon PR wydania i dokumentacja
 
 #### Automated
 
-- [x] 3.1 Lint i prettier przechodzą — b2e1838
-- [x] 3.2 Testy przechodzą — b2e1838
+- [x] 3.1 Lint i prettier przechodzą — 0187efc
+- [x] 3.2 Testy przechodzą — 0187efc
 - [ ] 3.3 PR do main ma zielone ci, smoke i e2e
 
 #### Manual
