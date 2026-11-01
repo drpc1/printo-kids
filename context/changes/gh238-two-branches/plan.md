@@ -314,13 +314,13 @@ Sprawdzenie warunków „gotowe, gdy” z issue na żywym układzie.
 
 #### Automated
 
-- [x] 4.1 Ruleset prod istnieje i jest aktywny
+- [x] 4.1 Ruleset prod istnieje i jest aktywny — f63cf8b
 
 #### Manual
 
-- [x] 4.2 Staging odpowiada z nagłówkiem x-robots-tag
-- [x] 4.3 Bezpośredni push do prod jest odrzucony
-- [x] 4.4 Panel Cloudflare: printo-kids z prod, printo-kids-staging z main
+- [x] 4.2 Staging odpowiada z nagłówkiem x-robots-tag — f63cf8b
+- [x] 4.3 Bezpośredni push do prod jest odrzucony — f63cf8b
+- [x] 4.4 Panel Cloudflare: printo-kids z prod, printo-kids-staging z main — f63cf8b
 
 ### Phase 5: Weryfikacja końcowa
 
