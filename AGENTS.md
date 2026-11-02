@@ -19,6 +19,7 @@ Run from the repo root on Node 22.14.0 (@.nvmrc). Scripts: @package.json.
 - `npm run build` / `npm run preview` — production SSR build and preview
 - `npm test` — Node's built-in test runner (`node --test`) on the files named in the `test` script (@package.json)
 - `npm run smoke` — HTTP check of the product page against a running server (`BASE_URL`, default `http://localhost:4321`)
+- `npm run depcruise` — dependency rules for `src` and `tests` (@.dependency-cruiser.cjs). `depcruise:html`, `depcruise:graph`, `depcruise:graph:archi` and `depcruise:focus` write reports; the HTML files stay untracked.
 
 Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --write` on `*.{json,css,md}`.
 
@@ -40,7 +41,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 
 ## Tests and CI
 
-`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the HTTP check of the product page, not that suite. Push and pull request to `main` and `prod` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (the build does not need Supabase secrets), a separate job `smoke` runs that HTTP check, and a job `e2e` runs Playwright on the Chromium projects (`chromium`, `phone-360`, `pixel-7`, `tablet-768`; WebKit `iphone-13` stays in the on-demand `e2e-phone.yml`). All three jobs fail the run when red. When every changed path is under `context/`, jobs `ci`, `smoke`, and `e2e` are skipped and count as success. A path outside `context/`, either side of a rename, or a failure while counting paths runs all three. Locally, `playwright.config.ts` reuses whatever already listens on port 4321 (`reuseExistingServer`), so a dev server from another checkout is tested instead of this code; set `E2E_PORT` to a free port to build and serve the current tree. Commit-message convention is unset.
+`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the HTTP check of the product page, not that suite. Push and pull request to `main` and `prod` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm run depcruise`, `npm test`, `npx astro check`, and `npm run build` (the build does not need Supabase secrets), a separate job `smoke` runs that HTTP check, and a job `e2e` runs Playwright on the Chromium projects (`chromium`, `phone-360`, `pixel-7`, `tablet-768`; WebKit `iphone-13` stays in the on-demand `e2e-phone.yml`). All three jobs fail the run when red. When every changed path is under `context/`, jobs `ci`, `smoke`, and `e2e` are skipped and count as success. A path outside `context/`, either side of a rename, or a failure while counting paths runs all three. Locally, `playwright.config.ts` reuses whatever already listens on port 4321 (`reuseExistingServer`), so a dev server from another checkout is tested instead of this code; set `E2E_PORT` to a free port to build and serve the current tree. Commit-message convention is unset.
 
 ## UI
 
