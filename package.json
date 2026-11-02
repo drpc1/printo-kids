@@ -19,7 +19,14 @@
     "mutate:sequence": "stryker run stryker/sequence.config.json",
     "mutate:symmetry": "stryker run stryker/symmetry.config.json",
     "mutate:local-data": "stryker run stryker/local-data.config.json",
-    "thumbnails": "node --experimental-strip-types scripts/build-thumbnails.mjs"
+    "thumbnails": "node --experimental-strip-types scripts/build-thumbnails.mjs",
+    "depcruise": "dependency-cruiser src tests",
+    "depcruise:graph": "dependency-cruiser src --include-only '^(src)' --output-type dot-webpage > dependency-graph.html",
+    "depcruise:graph:dev": "dependency-cruiser src --include-only '^(src)' --prefix vscode://file/$(pwd)/ --output-type dot-webpage | browser",
+    "depcruise:graph:archi": "dependency-cruiser src --include-only '^(src)' --output-type archi | dot -T svg | depcruise-wrap-stream-in-html > high-level-dependency-graph.html",
+    "depcruise:html": "dependency-cruiser src tests --progress --output-type err-html --output-to dependency-violation-report.html",
+    "depcruise:text": "dependency-cruiser src tests --progress --output-type text",
+    "depcruise:focus": "dependency-cruiser src tests --progress --output-type text --focus"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -48,6 +55,7 @@
     "@playwright/test": "^1.64.0",
     "@stryker-mutator/core": "^10.0.0",
     "@types/node": "^22.20.4",
+    "dependency-cruiser": "^18.7.1",
     "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.1.0",

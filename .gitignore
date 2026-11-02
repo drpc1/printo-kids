@@ -39,6 +39,11 @@ playwright/.cache/
 .stryker-tmp
 reports/mutation/
 
+# dependency-cruiser HTML reports from the local graph scripts
+dependency-graph.html
+dependency-violation-report.html
+high-level-dependency-graph.html
+
 # Claude Code: local settings and the skills junction to .cursor/skills
 .claude/settings.local.json
 .claude/skills
