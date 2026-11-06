@@ -75,23 +75,34 @@ function mazeProblems(maze: Maze, settings: LabiryntSettings): CardProblem[] {
       }
     }
   }
+  const inGrid = (point: { row: number; col: number }): boolean =>
+    point.row >= 0 && point.row < rows && point.col >= 0 && point.col < columns;
+  if (!inGrid(entrance) || !inGrid(exit)) {
+    // The route checks would walk off the grid; the position codes above already name the defect.
+    return orderedProblems(found);
+  }
   const paths = countPaths(maze, entrance, exit);
   if (paths === 0) add("no-route", "no route from the entrance to the exit");
   if (paths > 1) add("several-routes", "more than one route from the entrance to the exit");
   if (reachableCount(maze) !== rows * columns)
     add("unreachable-cells", "some cells cannot be reached from the entrance");
-  const order = [
-    "entrance-position",
-    "entrance-sealed",
-    "exit-position",
-    "exit-sealed",
-    "outer-wall-open",
-    "wall-mismatch",
-    "no-route",
-    "several-routes",
-    "unreachable-cells",
-  ];
-  return order.filter((code) => found.has(code)).map((code) => ({ code, detail: found.get(code) ?? "" }));
+  return orderedProblems(found);
+}
+
+const ORDER = [
+  "entrance-position",
+  "entrance-sealed",
+  "exit-position",
+  "exit-sealed",
+  "outer-wall-open",
+  "wall-mismatch",
+  "no-route",
+  "several-routes",
+  "unreachable-cells",
+];
+
+function orderedProblems(found: Map<string, string>): CardProblem[] {
+  return ORDER.filter((code) => found.has(code)).map((code) => ({ code, detail: found.get(code) ?? "" }));
 }
 
 function wallsKey(maze: Maze): string {

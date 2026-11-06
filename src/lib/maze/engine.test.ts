@@ -191,6 +191,15 @@ void describe("mazeSpec: illegal cards, by code", () => {
     assert.ok(codes(row).includes("entrance-position"));
   });
 
+  void test("an entrance or exit outside the grid is reported by position and does not crash the route checks", () => {
+    const entrance = base();
+    entrance.entrance = { row: 99, col: 99 };
+    const exit = base();
+    exit.exit = { row: 99, col: 0 };
+    assert.ok(codes(entrance).includes("entrance-position"));
+    assert.ok(codes(exit).includes("exit-position"));
+  });
+
   void test("N3 a closed north wall of the entrance is entrance-sealed", () => {
     const maze = base();
     maze.cells[maze.entrance.row][maze.entrance.col].north = true;
