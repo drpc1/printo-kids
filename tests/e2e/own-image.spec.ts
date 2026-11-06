@@ -29,7 +29,7 @@ async function sheetHref(page: Page): Promise<string | null> {
 async function pickFile(page: Page, name: string, mimeType: string, buffer: Buffer): Promise<void> {
   const dialog = page.getByRole("dialog");
   const chooser = page.waitForEvent("filechooser");
-  await dialog.getByRole("button", { name: "Własne zdjęcie", exact: true }).click();
+  await dialog.getByRole("button", { name: "Własny obrazek", exact: true }).click();
   await (await chooser).setFiles({ name, mimeType, buffer });
 }
 

@@ -246,7 +246,7 @@ test("an own image picked in the favorite list is the favorite after a reload", 
   const dialog = await openEdit(page, "Ania");
   await dialog.getByRole("button", { name: /^Postać:/ }).click();
   const chooser = page.waitForEvent("filechooser");
-  await dialog.getByRole("button", { name: "Własne zdjęcie", exact: true }).click();
+  await dialog.getByRole("button", { name: "Własny obrazek", exact: true }).click();
   await (
     await chooser
   ).setFiles({
@@ -257,7 +257,7 @@ test("an own image picked in the favorite list is the favorite after a reload", 
       "base64",
     ),
   });
-  await expect(dialog.getByRole("button", { name: "Postać: Własne zdjęcie" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Postać: Własny obrazek" })).toBeVisible();
 
   const stored = await page.evaluate((key) => {
     const raw = JSON.parse(localStorage.getItem(key) ?? "null") as {
@@ -269,7 +269,7 @@ test("an own image picked in the favorite list is the favorite after a reload", 
   expect(stored?.image?.startsWith("data:image/")).toBe(true);
 
   await page.reload();
-  await expect(page.getByRole("button", { name: "Postać: Własne zdjęcie" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Postać: Własny obrazek" })).toBeVisible();
 });
 
 test("the edit window keeps the character row reachable and the summary inside it", async ({ page }) => {

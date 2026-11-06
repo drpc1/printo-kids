@@ -98,8 +98,8 @@ void describe("the label the bar shows", () => {
     }
   });
 
-  void test("a parent photo is labelled Własne zdjęcie", () => {
-    assert.equal(OWN_IMAGE_LABEL, "Własne zdjęcie");
+  void test("a parent photo is labelled Własny obrazek", () => {
+    assert.equal(OWN_IMAGE_LABEL, "Własny obrazek");
   });
 });
 
