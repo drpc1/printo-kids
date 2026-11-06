@@ -685,12 +685,12 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [ ] 4.1 `npm test` zielone; w `card-engines.test.ts` brak `todo` labiryntu
-- [ ] 4.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
-- [ ] 4.3 `grep -rn "mazeForSheet" src scripts` nie zwraca trafień
-- [ ] 4.4 `npm run thumbnails` nie zmienia `public/thumbnails/labirynt.svg`
-- [ ] 4.5 e2e Chromium dla stron labiryntu z `E2E_PORT` zielone
-- [ ] 4.8 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
+- [x] 4.1 `npm test` zielone; w `card-engines.test.ts` brak `todo` labiryntu
+- [x] 4.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
+- [x] 4.3 `grep -rn "mazeForSheet" src scripts` nie zwraca trafień
+- [x] 4.4 `npm run thumbnails` nie zmienia `public/thumbnails/labirynt.svg`
+- [x] 4.5 e2e Chromium dla stron labiryntu z `E2E_PORT` zielone
+- [x] 4.8 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
 
 #### Manual
 

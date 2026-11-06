@@ -4,7 +4,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { generateMaze, mazeForSheet } from "../src/lib/maze/generate.ts";
+import { mazeEngine } from "../src/lib/maze/engine.ts";
 import { levelById } from "../src/lib/maze/levels.ts";
 import { layoutSheet } from "../src/lib/sheet/layout.ts";
 import { collectWalls } from "../src/lib/sheet/walls.ts";
@@ -59,10 +59,7 @@ function num(value) {
 }
 
 const level = levelById(LEVEL_ID);
-const maze = mazeForSheet(generateMaze(LEVEL_ID, mulberry32(SEED)), LEVEL_ID);
-if (maze === null) {
-  throw new Error(`Seed ${SEED} did not produce a solvable ${LEVEL_ID} maze`);
-}
+const maze = mazeEngine.generate({ level: LEVEL_ID }, mulberry32(SEED), null).card;
 
 const sheet = layoutSheet({
   pageWidth: PAGE_WIDTH,

@@ -9,7 +9,8 @@ import { useCardSettings } from "@/hooks/useCardSettings";
 import { useChildProfileVisit, type ProfileBar } from "@/hooks/useChildProfileVisit";
 import { useFavoriteCharacter } from "@/hooks/useFavoriteCharacter";
 import type { LabiryntSettings } from "@/lib/card-settings";
-import { generateMaze, mazeForSheet, type Maze } from "@/lib/maze/generate";
+import { mazeEngine, mazeSpec } from "@/lib/maze/engine";
+import type { Maze } from "@/lib/maze/generate";
 import { levelById, type Level, type LevelId } from "@/lib/maze/levels";
 import {
   characterContentLeft,
@@ -21,6 +22,14 @@ import {
 } from "@/lib/sheet/character";
 import { layoutSheet } from "@/lib/sheet/layout";
 import { readOwnImage, recordBarCharacter } from "@/lib/sheet/own-image-store";
+import {
+  applySettings,
+  failureReason,
+  generateSheet,
+  markPrinted,
+  sheetView,
+  type SheetState,
+} from "@/lib/sheet-state";
 import { collectWalls } from "@/lib/sheet/walls";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +38,6 @@ const PAGE_HEIGHT = 297;
 const INSET = 10;
 const CHARACTER_MARK_SIZE = 30;
 const SHEET_LABEL_SIZE = 7;
-const GENERATE_FAILED_TEXT = "Nie udało się ułożyć tego poziomu.";
 
 export default function WorksheetGenerator() {
   const visit = useChildProfileVisit({ onApply: applyProfileBar });
@@ -39,9 +47,7 @@ export default function WorksheetGenerator() {
   const [character, setCharacter] = useState(visitStart.character);
   const [ownImageHref, setOwnImageHref] = useState(visitStart.ownImageHref ?? null);
   const favorite = useFavoriteCharacter(visit, { character, ownImageHref });
-  const [generateFailed, setGenerateFailed] = useState(false);
-  const [maze, setMaze] = useState<Maze | null>(null);
-  const [sheetShown, setSheetShown] = useState(false);
+  const [sheet, setSheet] = useState<SheetState<Maze>>({ kind: "idle", failure: null });
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
   const catalogChoice = characterRow(character === OWN_IMAGE_ID ? "none" : character);
@@ -49,31 +55,11 @@ export default function WorksheetGenerator() {
   const barThumb = character === OWN_IMAGE_ID ? ownImageHref : catalogChoice.src;
 
   function handleGenerate(): void {
-    const next = mazeForSheet(generateMaze(level, Math.random), level);
-    if (next === null) {
-      setGenerateFailed(true);
-      return;
-    }
-    setGenerateFailed(false);
-    setMaze(next);
-    setSheetShown(true);
+    setSheet(generateSheet(sheet, mazeEngine, { level }, Math.random));
   }
 
-  function handleProfileSwitch(next: LabiryntSettings, previous: LabiryntSettings): void {
-    redrawForLevel(next.level, previous.level);
-  }
-
-  function redrawForLevel(next: LevelId, previous: LevelId): void {
-    if (next === previous) {
-      return;
-    }
-    if (!sheetShown) {
-      setGenerateFailed(false);
-      return;
-    }
-    const redrawn = mazeForSheet(generateMaze(next, Math.random), next);
-    setMaze(redrawn);
-    setGenerateFailed(redrawn === null);
+  function handleProfileSwitch(next: LabiryntSettings): void {
+    setSheet(applySettings(sheet, mazeEngine, next, Math.random));
   }
 
   function handleCharacterSelect(id: SheetCharacterId): void {
@@ -97,8 +83,7 @@ export default function WorksheetGenerator() {
   }
 
   function handleLevelSelect(id: LevelId): void {
-    const previous = level;
-    redrawForLevel(memory.remember({ level: id }).level, previous);
+    setSheet(applySettings(sheet, mazeEngine, memory.remember({ level: id }), Math.random));
   }
 
   function applyProfileBar(bar: ProfileBar): void {
@@ -111,6 +96,7 @@ export default function WorksheetGenerator() {
   }
 
   const sheetLevel = levelById(level);
+  const view = sheetView(sheet, mazeSpec.contentKey(memory.settings));
   const levelControl = (
     <LevelChoiceControl level={sheetLevel} open={levelOpen} onOpenChange={setLevelOpen} onSelect={handleLevelSelect} />
   );
@@ -123,11 +109,16 @@ export default function WorksheetGenerator() {
       barCharacter={character}
       corner={memory.corner}
       note={memory.note ?? favorite.note}
-      sheetShown={sheetShown}
-      generateFailed={generateFailed}
-      failedText={GENERATE_FAILED_TEXT}
+      sheetShown={view.kind !== "idle"}
+      generateFailed={view.failure !== null}
+      failedText={view.failure === null ? undefined : failureReason(view.failure, { levelLabel: sheetLevel.label })}
       onGenerate={handleGenerate}
-      printDisabled={maze === null}
+      printDisabled={view.kind !== "showing"}
+      printedBefore={view.printed}
+      onRegenerate={handleGenerate}
+      onPrinted={() => {
+        setSheet(markPrinted);
+      }}
       controls={
         <>
           <CharacterChoiceControl
@@ -144,8 +135,8 @@ export default function WorksheetGenerator() {
         </>
       }
       sheet={
-        maze !== null ? (
-          <MazeSheet maze={maze} characterId={character} level={sheetLevel} ownImageHref={ownImageHref} />
+        view.verified !== null ? (
+          <MazeSheet maze={view.verified.card} characterId={character} level={sheetLevel} ownImageHref={ownImageHref} />
         ) : null
       }
     />
