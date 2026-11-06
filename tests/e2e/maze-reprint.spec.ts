@@ -18,6 +18,7 @@ async function open(page: Page): Promise<void> {
 }
 
 async function walls(page: Page): Promise<string> {
+  await expect(page.getByRole("img", { name: "Labirynt" })).toBeVisible();
   return page.getByRole("img", { name: "Labirynt" }).locator("g").innerHTML();
 }
 
@@ -38,11 +39,11 @@ test("the first Drukuj prints without asking, the second asks and offers a new c
   page,
 }) => {
   await open(page);
-  await page.getByRole("button", { name: "Drukuj" }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await expect.poll(() => printCalls(page)).toBe(1);
   await expect(page.getByText("Ta karta była już drukowana")).toHaveCount(0);
 
-  await page.getByRole("button", { name: "Drukuj" }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await expect(page.getByText("Ta karta była już drukowana")).toBeVisible();
   expect(await printCalls(page)).toBe(1);
   await expect(page.getByRole("button", { name: "Nowa karta i drukuj" })).toBeVisible();
@@ -52,8 +53,8 @@ test("the first Drukuj prints without asking, the second asks and offers a new c
 test("Drukuj tę samą prints the card unchanged", async ({ page }) => {
   await open(page);
   const before = await walls(page);
-  await page.getByRole("button", { name: "Drukuj" }).click();
-  await page.getByRole("button", { name: "Drukuj" }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await page.getByRole("button", { name: "Drukuj tę samą" }).click();
   await expect.poll(() => printCalls(page)).toBe(2);
   expect(await walls(page)).toBe(before);
@@ -62,23 +63,23 @@ test("Drukuj tę samą prints the card unchanged", async ({ page }) => {
 test("Nowa karta i drukuj draws another maze and prints it once", async ({ page }) => {
   await open(page);
   const before = await walls(page);
-  await page.getByRole("button", { name: "Drukuj" }).click();
-  await page.getByRole("button", { name: "Drukuj" }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await page.getByRole("button", { name: "Nowa karta i drukuj" }).click();
   await expect.poll(() => printCalls(page)).toBe(2);
   expect(await walls(page)).not.toBe(before);
   // The new card is a fresh one: its first print happened above, so Drukuj asks again only now.
-  await page.getByRole("button", { name: "Drukuj" }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await expect(page.getByText("Ta karta była już drukowana")).toBeVisible();
 });
 
 test("a level change draws a new card and clears the printed mark", async ({ page }) => {
   await open(page);
-  await page.getByRole("button", { name: "Drukuj" }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await page.getByRole("button", { name: /^Poziom:/ }).click();
   await page.getByRole("button", { name: /Poziom 1/ }).click();
   await expect(page.getByRole("button", { name: "Poziom: 1" })).toBeVisible();
-  await page.getByRole("button", { name: "Drukuj" }).click();
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await expect(page.getByText("Ta karta była już drukowana")).toHaveCount(0);
   await expect.poll(() => printCalls(page)).toBe(2);
 });
