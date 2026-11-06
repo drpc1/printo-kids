@@ -51,6 +51,7 @@ export class CardExhausted extends Error {
   }
 }
 
+// Freezes plain data (objects and arrays), which is all a card is today; a Map or Set inside a card would stay mutable.
 function deepFreeze<T>(value: T): Readonly<T> {
   if (typeof value === "object" && value !== null && !Object.isFrozen(value)) {
     for (const child of Object.values(value)) {
@@ -91,7 +92,7 @@ export class VerifiedCard<C> {
     if (problems.length > 0) {
       return { ok: false, problems };
     }
-    return { ok: true, card: VerifiedCard.require(spec, card, settings) };
+    return { ok: true, card: new VerifiedCard(spec.kind, deepFreeze(structuredClone(card)), spec.keyOf(card)) };
   }
 }
 
