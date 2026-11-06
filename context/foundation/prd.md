@@ -144,7 +144,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy rodzaj ma własną stronę z własnym adresem (labirynt: `/maze`, symetria: `/symmetry`). Kliknięcie miniatury otwiera ją.
 - Katalog mieści co najmniej 10 rodzajów i jest czytelny na telefonie (miniatury w 2 kolumnach) i na komputerze. Od M-5 ma dziesięć: każda z czterech nowych kart (US-23, US-25, US-27, US-29) ma własną miniaturę pokazującą z grubsza, jak wygląda wygenerowana karta, i nazwę.
 - Na stronie generatora jest link „Wszystkie karty” z powrotem do katalogu.
-- Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma poza stopką z linkiem „Jak to działa” (US-22).
+- Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma poza stopką z linkami „Jak to działa” i „Podziel się opinią” (US-22).
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
 - Wybrany profil dziecka zostaje po przejściu między katalogiem a stronami generatorów.
 - Profil w rogu strony głównej jest klikalny tak samo jak na stronach generatorów: wybór, dodanie, edycja, usunięcie i „Bez profilu”; miniatury od razu pokazują zapamiętany poziom wybranego profilu. Okno profilu nie otwiera się samo, także gdy są co najmniej dwa profile i żaden nie jest wybrany (decyzja 2026-10-31, GitHub 234).
@@ -412,6 +412,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia; przy labiryncie, symetrii, sekwencjach i dyktandzie (kartach z dawną nazwą wiekową) ma też pod opisem typowy wiek z kolumny „Dawna nazwa”. Wiersz ma więc trzy linie, np. „Poziom 3” / „mniejsza kratka, bez podpowiedzi” / „zwykle ok. 6 lat”; sudoku i nonogram mają dwie linie („łatwy” / „znaczki przy wierszach, duża kratka”), bez wieku (decyzja 2026-10-26).
 - Okno profilu ma jedno zdanie: ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
 - W stopce jest link do krótkiej strony „Jak to działa” z całą zasadą profilu, poziomów i postaci. Strona wymienia wszystkie rodzaje kart z krótkim opisem i opisuje poziomy każdej z nich, także czterech kart z M-5 („Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce”, szlaczki; US-23–US-30).
+- W stopce obok „Jak to działa” jest link „Podziel się opinią” do anonimowego, zewnętrznego formularza (Google Forms), otwierany w nowej karcie. Formularz wypełnia się dobrowolnie poza aplikacją; aplikacja nie wysyła do niego żadnych danych z urządzenia. Stopka z oboma linkami nie drukuje się (decyzja 2026-11-06, GitHub 292).
 - Nie ma samouczka przy pierwszym wejściu ani okna pomocy, które trzeba zamknąć, żeby korzystać ze strony.
 
 ### US-23: Rodzic generuje kartę „Kto ma więcej?” do druku
@@ -645,7 +646,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karta „Który nie pasuje” z włączonymi kolorami drukuje obrazki w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
-- Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia.
+- Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia. Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
 
 ## Business Logic
