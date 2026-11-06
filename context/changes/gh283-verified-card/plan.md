@@ -702,10 +702,10 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [x] 5.1 `npm test` zielone; brak `todo` pieniędzy w `card-engines.test.ts`
-- [x] 5.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
-- [x] 5.3 e2e `money.spec.ts` i `card-settings.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [x] 5.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
+- [x] 5.1 `npm test` zielone; brak `todo` pieniędzy w `card-engines.test.ts` — 0b99207
+- [x] 5.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone — 0b99207
+- [x] 5.3 e2e `money.spec.ts` i `card-settings.spec.ts` (Chromium, `E2E_PORT`) zielone — 0b99207
+- [x] 5.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone — 0b99207
 
 #### Manual
 
