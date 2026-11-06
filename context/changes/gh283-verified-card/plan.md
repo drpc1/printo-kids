@@ -30,7 +30,7 @@ Za D02 §3 (diagnoza I-1), sprawdzone w kodzie w tej sesji:
 ## Desired End State
 
 - `src/lib/card-contract.ts` z `CardProblem`, `CardSpec`, `VerifiedCard`, `CardInvariantError`, `CardExhausted`, `CardEngine`.
-- `src/lib/sheet-state.ts` z `SheetState<C>`, czystymi przejściami i `failureReason`. Karta w `showing` pamięta klucz treści, dla którego powstała (`contentKey`), i znacznik `printed`. Jedno przejście `applySettings` po każdej zmianie ustawień (pasek, profil) układa nową kartę, gdy klucz treści się różni (I-9). `printed` ustawia zdarzenie `beforeprint` (także Ctrl+P), kasuje go każda nowa karta.
+- `src/lib/sheet-state.ts` z `SheetState<C>`, czystymi przejściami i `failureReason`. Karta w `showing` pamięta klucz treści, dla którego powstała (`contentKey`), i znacznik `printed`. Jedno przejście `applySettings` po każdej zmianie ustawień (pasek, profil) układa nową kartę, gdy klucz treści się różni (I-9). `printed` ustawia `CardPage` przed każdym `window.print()` i w `beforeprint` (Ctrl+P), kasuje go każda nowa karta.
 - Każdy rodzaj w `CardSpec.contentKey(settings)` mówi, które jego ustawienia są treścią; skutek każdego ustawienia jest zgodny z tabelą „Ustawienie → skutek dla karty (I-9)” niżej i pilnowany testem.
 - Drukuj na karcie z `printed` otwiera okno „Ta karta była już drukowana” z „Nowa karta i drukuj” (główny) i „Drukuj tę samą”; okno żyje w `CardPage`, jedno dla wszystkich kart.
 - PRD US-20 i US-22 mówią o I-9 i ostrzeżeniu (faza 3); zdania dyktanda o kategorii i przełączniku (faza 10).
@@ -81,7 +81,7 @@ Tryb pracy:
 2. Test spec rodzaju w jego `generate.test.ts` albo nowym `engine.test.ts` (dopisanym do skryptu `test`).
 3. `src/lib/card-engines.test.ts`: adapter rodzaju zastąpiony silnikiem; jego wpisy `todo` zamknięte.
 4. `<karta>Spec.contentKey(settings)` zgodny z tabelą I-9 niżej, z testem: zmiana każdego ustawienia „treść” zmienia klucz, zmiana każdego ustawienia „ozdoba” go nie zmienia.
-5. Komponent `*Generator.tsx`: jedna wartość stanu `SheetState<C>` zamiast pary `card` + `generateFailed`; Generuj woła `generateSheet`, a każda zmiana ustawień (pasek, profil) woła `applySettings` w handlerze i ustawia gotową wartość (`setSheet(next)`, nie updater). Dzisiejsze osobne ścieżki „poziom generuje od razu” znikają w `applySettings`. Widok liczy `sheetView(state, contentKey z paska)`; `CardPage` dostaje `sheetShown = view.kind !== "idle"`, `printDisabled = view.kind !== "showing"`, `generateFailed = failure !== null`, `failedText = failureReason(...)`, `printedBefore = view.printed` i `onRegenerate` (ten sam handler co Generuj). Arkusz renderuje się tylko w `showing`.
+5. Komponent `*Generator.tsx`: jedna wartość stanu `SheetState<C>` zamiast pary `card` + `generateFailed`; Generuj woła `generateSheet`, a każda zmiana ustawień (pasek, profil) woła `applySettings` w handlerze i ustawia gotową wartość (`setSheet(next)`, nie updater). Dzisiejsze osobne ścieżki „poziom generuje od razu” znikają w `applySettings`. Widok liczy `sheetView(state, contentKey z paska)`; `CardPage` dostaje `sheetShown = view.kind !== "idle"`, `printDisabled = view.kind !== "showing"`, `generateFailed = failure !== null`, `failedText = failureReason(...)`, `printedBefore = view.printed`, `onRegenerate` (ten sam handler co Generuj) i `onPrinted` (`setSheet(markPrinted)`). Arkusz renderuje się tylko w `showing`. Handler zmiany ustawień zostawia dzisiejszą blokadę `waitingForChild` (np. `SymmetryGenerator.tsx:59`): gdy jest aktywna, zapisuje ustawienie, ale nie woła `applySettings`.
 6. e2e strony rodzaju na wolnym porcie (z `window.print` podmienionym w `addInitScript` na licznik): zmiana postaci zostawia tę samą kartę; drugi Drukuj tej samej karty otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę i drukuje; „Drukuj tę samą” drukuje bez zmiany karty; na rodzajach z kategorią zmiana kategorii od razu daje nową kartę.
 
 ### Ustawienie → skutek dla karty (I-9)
@@ -298,9 +298,9 @@ Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieuda
 
 #### 3a. Ostrzeżenie przy ponownym druku
 
-**File**: `src/components/CardPage.tsx`, `src/hooks/useCardPage.ts`, nowy `src/components/ReprintDialog.tsx` (z `src/components/ui/dialog.tsx`)
+**File**: `src/components/CardPage.tsx` (Drukuj w `handlePrint`, `CardPage.tsx:85`), nowy `src/components/ReprintDialog.tsx` (z `src/components/ui/dialog.tsx`)
 
-**Intent**: Jedno okno dla wszystkich kart. `CardPage` dostaje opcjonalne `printedBefore` i `onRegenerate`; Drukuj przy `printedBefore` otwiera okno zamiast `window.print()`. „Nowa karta i drukuj” (główny) woła `onRegenerate`, a druk rusza po renderze nowej karty i tylko gdy nowa karta jest w `showing`; „Drukuj tę samą” woła `window.print()`. Listener `beforeprint` (w hooku strony) woła `markPrinted`. Strony jeszcze nie przeniesione nie podają `printedBefore`, więc działają jak dziś.
+**Intent**: Jedno okno dla wszystkich kart. `CardPage` dostaje opcjonalne `printedBefore`, `onRegenerate` i `onPrinted`; Drukuj przy `printedBefore` otwiera okno zamiast `window.print()`. Każde wywołanie druku z `CardPage` (Drukuj bez okna, „Drukuj tę samą”, „Nowa karta i drukuj”) woła `onPrinted()` tuż przed `window.print()`, a `CardPage` rejestruje też listener `beforeprint` → `onPrinted` dla Ctrl+P i menu przeglądarki; komponent rodzaju podaje `onPrinted = () => setSheet(markPrinted)`, które jest idempotentne. Dzięki temu e2e z podmienionym `window.print` widzi znacznik bez zdarzeń przeglądarki, a labirynt (bez `useCardPage`) działa tak samo jak reszta. „Nowa karta i drukuj” (główny) woła `onRegenerate`, a druk rusza po renderze nowej karty i tylko gdy nowa karta jest w `showing`. Strony jeszcze nie przeniesione nie podają `printedBefore` ani `onPrinted`, więc działają jak dziś.
 
 **Contract**: teksty okna ustala implementacja w granicach PRD US-22 (faza 3); przyciski z `src/components/ui/button.tsx`; okno i jego przyciski `print:hidden`.
 
