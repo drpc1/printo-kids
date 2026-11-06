@@ -379,7 +379,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Na pasku strony jest wybór „Kategoria”: Wszystkie, a po nim kategorie alfabetycznie po polskich nazwach (Domy i budowle, Jedzenie, Kosmos i maszyny, Kształty, Przyroda, Zwierzęta); nowa kategoria wpada w swoje miejsce alfabetu. Domyślnie „Wszystkie” (decyzja 2026-10-31, GitHub 211).
 - Można wybrać dokładnie jedną kategorię. „Wszystkie” to też kategoria, a nie zaznaczenie kilku; kilku kategorii naraz nie da się zaznaczyć.
-- Wybrana kategoria obowiązuje przy następnym Generuj, jak każde ustawienie generatora, i nie zmienia działania poziomu, rozmiaru ani kolorów.
+- Zmiana kategorii przy pokazanej karcie od razu układa nową kartę z wybranej kategorii, jak zmiana poziomu; bez pokazanej karty kategoria obowiązuje przy następnym Generuj. Kategoria nie zmienia działania poziomu, rozmiaru ani kolorów (decyzja 2026-11-06, GitHub 283).
 - Każde Generuj w kategorii daje inny obiekt albo inny wariant niż poprzednia karta, na każdym poziomie i rozmiarze.
 - Profil i ostatnie parametry pamiętają kategorię osobno dla każdej karty, jak poziom (US-08). Wybór na jednej stronie nie zmienia drugiej.
 - Pasek z kategorią zostaje używalny na telefonie: Generuj i Drukuj nie nachodzą na siebie (US-04).
@@ -413,6 +413,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Okno profilu ma jedno zdanie: ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
 - W stopce jest link do krótkiej strony „Jak to działa” z całą zasadą profilu, poziomów i postaci. Strona wymienia wszystkie rodzaje kart z krótkim opisem i opisuje poziomy każdej z nich, także czterech kart z M-5 („Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce”, szlaczki; US-23–US-30).
 - W stopce obok „Jak to działa” jest link „Podziel się opinią” do anonimowego, zewnętrznego formularza (Google Forms), otwierany w nowej karcie. Formularz wypełnia się dobrowolnie poza aplikacją; aplikacja nie wysyła do niego żadnych danych z urządzenia. Stopka z oboma linkami nie drukuje się (decyzja 2026-11-06, GitHub 292).
+- Gdy Generuj albo nowa karta po zmianie ustawienia się nie udały, w miejscu karty jest krótka przyczyna (np. brak kolejnych różnych kart w kategorii), pasek ustawień zostaje, a Drukuj jest wyłączone (decyzja 2026-11-06, GitHub 283).
+- Drukuj na karcie, która już była drukowana, pyta „Ta karta była już drukowana” z wyborem „Nowa karta i drukuj” i „Drukuj tę samą”. Zmiana postaci, kolorów i „Pokaż rozwiązanie” nie układa nowej karty (decyzja 2026-11-06, GitHub 283).
 - Nie ma samouczka przy pierwszym wejściu ani okna pomocy, które trzeba zamknąć, żeby korzystać ze strony.
 
 ### US-23: Rodzic generuje kartę „Kto ma więcej?” do druku
