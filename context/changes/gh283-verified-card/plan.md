@@ -35,7 +35,7 @@ Za D02 §3 (diagnoza I-1), sprawdzone w kodzie w tej sesji:
 - Drukuj na karcie z `printed` otwiera okno „Ta karta była już drukowana” z „Nowa karta i drukuj” (główny) i „Drukuj tę samą”; okno żyje w `CardPage`, jedno dla wszystkich kart.
 - PRD US-20 i US-22 mówią o I-9 i ostrzeżeniu (faza 3); zdania dyktanda o kategorii i przełączniku (faza 10).
 - Siedem silników (`src/lib/<karta>/engine.ts`), każdy ze `spec` i `knownBad`; `src/lib/card-engines.ts` z `CARD_ENGINES` typowanym mapą po `CardKindId`, bez `any`.
-- Siedem komponentów dostaje karty wyłącznie przez `CARD_ENGINES` i trzyma stan w `SheetState`; nieudane Generuj albo zmiana poziomu przy pokazanej karcie przechodzi w `unavailable` (Drukuj wyłączone, widoczna przyczyna).
+- Siedem komponentów dostaje karty wyłącznie przez `CARD_ENGINES` i trzyma stan w `SheetState`; nieudana nowa karta (Generuj albo zmiana ustawienia treści: poziomu, kategorii, rozmiaru i „Kształty / Cyfry” sudoku) przy pokazanej karcie przechodzi w `unavailable` (Drukuj wyłączone, widoczna przyczyna).
 - `CARD_KINDS` jest `as const satisfies readonly CardKind[]`; dopisanie rodzaju bez silnika nie kompiluje się (`npx astro check`).
 - Reguła depcruise `cards-only-through-engines` broni importu `src/lib/<karta>/generate.ts` z `src/components|hooks|pages`.
 - Usunięte: `mazeForSheet`, publiczny eksport `generateMaze` (zostaje funkcją wewnętrzną modułu albo silnika), regex `character.test.ts:78`.

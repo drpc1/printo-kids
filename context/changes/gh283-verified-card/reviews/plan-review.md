@@ -42,7 +42,7 @@
 - **Location**: Desired End State, punkt o siedmiu komponentach
 - **Detail**: Punkt mówi „nieudane Generuj albo zmiana poziomu”. Po nowym I-9 ten sam skutek ma też nieudana nowa karta po zmianie kategorii albo rozmiaru i „Kształty / Cyfry” w sudoku. Taka nieudana karta to rzadki przypadek: `CardExhausted` (np. wąska kategoria bez innej karty na tym poziomie) albo `CardInvariantError`.
 - **Fix**: zamienić na „nieudana nowa karta (Generuj albo zmiana ustawienia treści)”.
-- **Decision**: PENDING — właścicielka poprosiła o wyjaśnienie
+- **Decision**: FIXED
 
 ### F3 — `applySettings` nie zna dzisiejszej blokady `waitingForChild`
 
