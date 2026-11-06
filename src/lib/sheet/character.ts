@@ -96,7 +96,7 @@ export type CharacterChoice = (typeof CHARACTER_CHOICES)[number]["id"];
 /** A parent photo. It is allowed on a profile and in last-used, and it is not a catalog file. */
 export const OWN_IMAGE_ID = "wlasne" as const;
 
-export const OWN_IMAGE_LABEL = "Własne zdjęcie";
+export const OWN_IMAGE_LABEL = "Własny obrazek";
 
 export type SheetCharacterId = CharacterChoice | typeof OWN_IMAGE_ID;
 

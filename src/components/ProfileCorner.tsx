@@ -49,7 +49,7 @@ const FILE_ERROR_TEXT = {
   type: "Wybierz plik JPEG, PNG albo WebP.",
   decode: "Nie da się otworzyć tego pliku.",
 } as const;
-const STORE_ERROR_TEXT = "Nie udało się zachować zdjęcia.";
+const STORE_ERROR_TEXT = "Nie udało się zachować obrazka.";
 
 type ProfilePanel = "menu" | "form" | "delete" | "edit" | "favorite-list" | "draft-list";
 
