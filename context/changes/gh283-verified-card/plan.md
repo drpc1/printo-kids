@@ -2,7 +2,7 @@
 
 ## Overview
 
-Wprowadzamy jeden kontrakt dla wszystkich rodzajów kart: karta pokazana w UI ma typ `VerifiedCard<C>`, którego nie da się zbudować bez funkcji sprawdzającej rodzaju (`CardSpec.problems`), a rejestr `CARD_ENGINES` wymaga od każdego rodzaju silnika (`CardEngine`). Do tego jeden stan strony `SheetState` z przyczyną niepowodzenia: nieudane Generuj wyłącza kartę i pokazuje rodzicowi, dlaczego (D02 §7, odpowiedzi nr 2 i 5). Ten sam stan pilnuje drugiego niezmiennika, **I-9: karta na ekranie odpowiada ustawieniom na pasku albo jest wyłączona** (decyzja właścicielki 2026-11-06, opcja B: wydrukowała tę samą kartę dwa razy z inną postacią i dziecko dostało dwa takie same zadania). Zakres to fazy 0–3 i 3b z `context/domain/02-invariant-aggregate-refactor.md` (D02). Fazy D02 4 (definicja gotowości S-34..S-36), 5 (Stryker) i 6 (dokumenty) zostają poza tą zmianą.
+Wprowadzamy jeden kontrakt dla wszystkich rodzajów kart: karta pokazana w UI ma typ `VerifiedCard<C>`, którego nie da się zbudować bez funkcji sprawdzającej rodzaju (`CardSpec.problems`), a rejestr `CARD_ENGINES` wymaga od każdego rodzaju silnika (`CardEngine`). Do tego jeden stan strony `SheetState` z przyczyną niepowodzenia: nieudane Generuj wyłącza kartę i pokazuje rodzicowi, dlaczego (D02 §7, odpowiedzi nr 2 i 5). Ten sam stan pilnuje drugiego niezmiennika, **I-9: zadanie na ekranie odpowiada ustawieniom treści na pasku** (poziom, rozmiar i „Kształty / Cyfry” sudoku, kategoria): każda ich zmiana przy pokazanej karcie od razu układa nową kartę. Postać, kolory i „Pokaż rozwiązanie” to ozdoby i zostawiają tę samą kartę. Do tego **ostrzeżenie przy ponownym druku tej samej karty** z wyborem „Nowa karta i drukuj” / „Drukuj tę samą” (decyzje właścicielki 2026-11-06: wydrukowała tę samą kartę dwa razy z inną postacią i dziecko dostało dwa takie same zadania; wyłączanie karty po zmianie postaci odrzuciła, bo przeszkadza przy przeglądaniu postaci przed drukiem). Zakres to fazy 0–3 i 3b z `context/domain/02-invariant-aggregate-refactor.md` (D02). Fazy D02 4 (definicja gotowości S-34..S-36), 5 (Stryker) i 6 (dokumenty) zostają poza tą zmianą.
 
 GitHub #283. Karty S-34..S-36 (#265–#267) czekają na fazy 1–2 tego planu (kontrakt i SheetState), a w pełni na fazę 11 (rejestr wymuszony typem).
 
@@ -23,15 +23,17 @@ Za D02 §3 (diagnoza I-1), sprawdzone w kodzie w tej sesji:
 - `SudokuGenerator.tsx:12` importuje wartość `sudokuBlock` z `sudoku/generate.ts`.
 - Test `sheet/character.test.ts:78` pinuje regexem tekst `generateMaze(level, Math.random)` w komponencie.
 - PRD:341 i PRD:815 (dyktando) mówią „Nieudane Generuj zostawia przełącznik i poprzednią kartę”; decyzja 7.2 z D02 to zmienia.
-- I-9 jest dziś łamane w dwóch miejscach. (1) Zmiana kategorii na pasku symetrii, nonogramu i dyktanda tylko zapisuje ustawienie (`SymmetryGenerator.tsx:97-99`, `NonogramGenerator.tsx:103-104`, `DictationGenerator.tsx:98-99`), więc stara karta zostaje drukowalna z nowym napisem na pasku; zmiana profilu z inną kategorią już generuje nową kartę (`SymmetryGenerator.tsx:64-67`). (2) Zmiana postaci (`useBarCharacter.select`, `setOwnImage`, `applyBar`: `src/hooks/useBarCharacter.ts:39-66`; w labiryncie `WorksheetGenerator.tsx:79-97`) podmienia postać na tej samej karcie. Poziom, a w sudoku rozmiar, poziom i „Kształty / Cyfry”, już generują nową kartę od razu (np. `SudokuGenerator.tsx:61-68`).
-- PRD US-21 (PRD:398) mówi „Postać jest ozdobą”, a US-20 (PRD:381): „Wybrana kategoria obowiązuje przy następnym Generuj”; żadne nie mówi, co się dzieje z pokazaną kartą.
+- I-9 jest dziś łamane w jednym miejscu: zmiana kategorii na pasku symetrii, nonogramu i dyktanda tylko zapisuje ustawienie (`SymmetryGenerator.tsx:97-99`, `NonogramGenerator.tsx:103-104`, `DictationGenerator.tsx:98-99`), więc stara karta zostaje drukowalna z nowym napisem na pasku; zmiana profilu z inną kategorią już generuje nową kartę (`SymmetryGenerator.tsx:64-67`). Poziom, a w sudoku rozmiar, poziom i „Kształty / Cyfry”, już generują nową kartę od razu (np. `SudokuGenerator.tsx:61-68`).
+- Zmiana postaci (`useBarCharacter.select`, `setOwnImage`, `applyBar`: `src/hooks/useBarCharacter.ts:39-66`; w labiryncie `WorksheetGenerator.tsx:79-97`) podmienia postać na tej samej karcie i tak zostaje. Nic dziś nie ostrzega, że ta sama karta idzie do druku drugi raz; Drukuj woła `window.print()` w jednym miejscu (`CardPage.tsx:86`), a `src/components/ui/dialog.tsx` już jest.
+- PRD US-20 (PRD:382): „Wybrana kategoria obowiązuje przy następnym Generuj”; US-17 i reguły dyktanda (PRD:341, PRD:815): „Sama zmiana kategorii go nie wyłącza” (przełącznik rozwiązania). Oba zdania przeczą I-9.
 
 ## Desired End State
 
 - `src/lib/card-contract.ts` z `CardProblem`, `CardSpec`, `VerifiedCard`, `CardInvariantError`, `CardExhausted`, `CardEngine`.
-- `src/lib/sheet-state.ts` z `SheetState<C>`, czystymi przejściami i `failureReason`. Karta w `showing` pamięta odcisk ustawień, dla których powstała (treść + postać); gdy odcisk z paska się różni, widok jest `stale` („nieaktualna”): bez arkusza, bez druku, z podpowiedzią, że trzeba kliknąć Generuj (I-9).
+- `src/lib/sheet-state.ts` z `SheetState<C>`, czystymi przejściami i `failureReason`. Karta w `showing` pamięta klucz treści, dla którego powstała (`contentKey`), i znacznik `printed`. Jedno przejście `applySettings` po każdej zmianie ustawień (pasek, profil) układa nową kartę, gdy klucz treści się różni (I-9). `printed` ustawia zdarzenie `beforeprint` (także Ctrl+P), kasuje go każda nowa karta.
 - Każdy rodzaj w `CardSpec.contentKey(settings)` mówi, które jego ustawienia są treścią; skutek każdego ustawienia jest zgodny z tabelą „Ustawienie → skutek dla karty (I-9)” niżej i pilnowany testem.
-- PRD US-20, US-21 i US-22 mówią o I-9 (faza 3).
+- Drukuj na karcie z `printed` otwiera okno „Ta karta była już drukowana” z „Nowa karta i drukuj” (główny) i „Drukuj tę samą”; okno żyje w `CardPage`, jedno dla wszystkich kart.
+- PRD US-20 i US-22 mówią o I-9 i ostrzeżeniu (faza 3); zdania dyktanda o kategorii i przełączniku (faza 10).
 - Siedem silników (`src/lib/<karta>/engine.ts`), każdy ze `spec` i `knownBad`; `src/lib/card-engines.ts` z `CARD_ENGINES` typowanym mapą po `CardKindId`, bez `any`.
 - Siedem komponentów dostaje karty wyłącznie przez `CARD_ENGINES` i trzyma stan w `SheetState`; nieudane Generuj albo zmiana poziomu przy pokazanej karcie przechodzi w `unavailable` (Drukuj wyłączone, widoczna przyczyna).
 - `CARD_KINDS` jest `as const satisfies readonly CardKind[]`; dopisanie rodzaju bez silnika nie kompiluje się (`npx astro check`).
@@ -44,8 +46,9 @@ Za D02 §3 (diagnoza I-1), sprawdzone w kodzie w tej sesji:
 - Typowanie rejestru bez `any`: `CardSettingsOf<K>` już daje ustawienia rodzaju (`card-settings.ts:78`); brakuje tylko mapy typów kart (`CardTypeMap`) obok `CARD_ENGINES` (rozstrzyga D02 §9, punkt 3).
 - `node --experimental-strip-types` (skrypt `test`) przyjmuje tylko składnię TS, którą da się wymazać. Szkic D02 4.3 używa właściwości parametrów konstruktora (`constructor(readonly kind…)`), których strip-types nie obsługuje: pola trzeba zadeklarować jawnie i przypisać w ciele konstruktora. Prywatność konstruktora `VerifiedCard` (`private constructor`) jest wymazywalna i działa tylko w `astro check`, więc test C9 (`@ts-expect-error`) sprawdza `astro check`, nie runner.
 - Dyktando ma własny tryb (katalog): silnik nie ma pętli prób, `CardExhausted` niesie liczbę kart w katalogu po odfiltrowaniu `previousKey`.
-- `printDisabled` wyłącza tylko przycisk Drukuj; druk z przeglądarki (Ctrl+P, menu) drukuje to, co jest w DOM. Stan bez druku (`unavailable`, `stale`) musi więc nie renderować arkusza, a nie tylko wyłączać przycisk.
-- I-9 liczony z odcisku, a nie ze zdarzeń: każda ścieżka, która zmienia treść albo postać bez nowej karty (pasek, zmiana profilu, „Ustaw jako ulubioną” z inną postacią, własny obrazek), daje `stale` sama, bez pilnowania każdego handlera.
+- `printDisabled` wyłącza tylko przycisk Drukuj; druk z przeglądarki (Ctrl+P, menu) drukuje to, co jest w DOM. Stan bez druku (`unavailable`) musi więc nie renderować arkusza, a nie tylko wyłączać przycisk. Z tego samego powodu ostrzeżenie przy ponownym druku działa tylko na przycisku: `beforeprint` nie da się przerwać, więc Ctrl+P na drukowanej karcie drukuje bez pytania, ale ustawia `printed`, więc następny Drukuj już ostrzeże.
+- I-9 liczony z klucza treści, a nie z rodzaju zdarzenia: każda ścieżka zmiany ustawień (pasek, zmiana profilu) idzie przez `applySettings`, które porównuje `contentKey`. Ścieżki zmiany postaci (pasek, „Ustaw jako ulubioną”, własny obrazek) nie dotykają `SheetState`. Bezpiecznik: `sheetView` przy różnym kluczu (handler, który ominął `applySettings`) nie renderuje arkusza i loguje `console.error`; rodzic tego stanu nie powinien zobaczyć, test N17 go pilnuje.
+- Nie wiemy, czy rodzic wydrukował, czy anulował okno druku; `printed` znaczy „okno druku było otwarte”. Fałszywe ostrzeżenie po anulowaniu kosztuje jedno kliknięcie.
 - Brak e2e dla tekstu niepowodzenia (`grep "Nie udało" tests/e2e` = 0); zmiana zachowania po nieudanym Generuj nie łamie istniejących e2e, ale też nic jej dziś nie pilnuje w przeglądarce.
 
 ## What We're NOT Doing
@@ -56,7 +59,9 @@ Za D02 §3 (diagnoza I-1), sprawdzone w kodzie w tej sesji:
 - Szlaczki: kontrakt wymaga `problems`, ale nie mówi, co sprawdza (D02 §7.1). Brak „trybu bez sprawdzalnej odpowiedzi”.
 - Gwarancja I-2 („nowa karta przy każdym Generuj”) dla labiryntu: dziś jej nie ma i nie dochodzi; silnik labiryntu ignoruje `previousKey`.
 - Osobny tekst przyczyny dla każdego kodu `CardInvariantError`: rodzic dostaje jeden tekst „błąd aplikacji” z kodem (patrz faza 3).
-- Nowa karta od razu po zmianie kategorii albo postaci: obie dają `stale` i czekają na Generuj (decyzja planu w ramach opcji B; poziom i ustawienia treści sudoku generują od razu jak dziś).
+- Stan „nieaktualna” (karta wyłączona do Generuj po zmianie postaci albo kategorii): rozważony i odrzucony 2026-11-06. Postać zmienia się na żywo na tej samej karcie, kategoria układa nową kartę od razu jak poziom.
+- Ostrzeżenie przy Ctrl+P / druku z menu przeglądarki: nie da się go przerwać z `beforeprint`.
+- Pamiętanie `printed` po odświeżeniu strony: karty nie są przechowywane (PRD, Access Control), więc znacznik żyje tylko w stanie strony.
 - Dopisanie I-9 do D02 i słownika: osobna zmiana dokumentów (faza D02 6).
 - D01 R-1…R-14 poza R-9 i R-10.
 - Wspólne stałe A4 (D01 A10), przeniesienie katalogu szablonów (D01 #3).
@@ -76,37 +81,39 @@ Tryb pracy:
 2. Test spec rodzaju w jego `generate.test.ts` albo nowym `engine.test.ts` (dopisanym do skryptu `test`).
 3. `src/lib/card-engines.test.ts`: adapter rodzaju zastąpiony silnikiem; jego wpisy `todo` zamknięte.
 4. `<karta>Spec.contentKey(settings)` zgodny z tabelą I-9 niżej, z testem: zmiana każdego ustawienia „treść” zmienia klucz, zmiana każdego ustawienia „ozdoba” go nie zmienia.
-5. Komponent `*Generator.tsx`: jedna wartość stanu `SheetState<C>` zamiast pary `card` + `generateFailed`; Generuj, zmiana ustawień „nowa karta od razu” i zmiana profilu wołają silnik w handlerze i ustawiają gotową wartość (`setSheet(next)`, nie updater). Widok liczy `sheetView(state, odcisk z paska)`; `CardPage` dostaje `sheetShown = view.kind !== "idle"`, `printDisabled = view.kind !== "showing"`, `generateFailed = failure !== null`, `failedText = failureReason(...)`, a w `stale` podpowiedź „nieaktualna”. Arkusz renderuje się tylko w `showing`.
-6. e2e strony rodzaju na wolnym porcie, w tym jeden test I-9: zmiana postaci przy pokazanej karcie wyłącza Drukuj i ukrywa arkusz, a Generuj go przywraca.
+5. Komponent `*Generator.tsx`: jedna wartość stanu `SheetState<C>` zamiast pary `card` + `generateFailed`; Generuj woła `generateSheet`, a każda zmiana ustawień (pasek, profil) woła `applySettings` w handlerze i ustawia gotową wartość (`setSheet(next)`, nie updater). Dzisiejsze osobne ścieżki „poziom generuje od razu” znikają w `applySettings`. Widok liczy `sheetView(state, contentKey z paska)`; `CardPage` dostaje `sheetShown = view.kind !== "idle"`, `printDisabled = view.kind !== "showing"`, `generateFailed = failure !== null`, `failedText = failureReason(...)`, `printedBefore = view.printed` i `onRegenerate` (ten sam handler co Generuj). Arkusz renderuje się tylko w `showing`.
+6. e2e strony rodzaju na wolnym porcie (z `window.print` podmienionym w `addInitScript` na licznik): zmiana postaci zostawia tę samą kartę; drugi Drukuj tej samej karty otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę i drukuje; „Drukuj tę samą” drukuje bez zmiany karty; na rodzajach z kategorią zmiana kategorii od razu daje nową kartę.
 
 ### Ustawienie → skutek dla karty (I-9)
 
-Rodzaje ustawień (opcja B): **treść** zmienia zadanie albo wydruk, więc karta przestaje odpowiadać paskowi; **ozdoba** zostawia tę samą kartę; **postać** jest na wydruku, więc działa jak treść. „Nowa od razu” zachowuje dzisiejsze zachowanie tam, gdzie już jest; „nieaktualna” to `stale` do następnego Generuj. Nieudana nowa karta od razu → `unavailable` z przyczyną (decyzja 7.2). Zmiana profilu porównuje cały odcisk: jeśli różni się treść, która dziś generuje od razu, generuje od razu (jak dziś); jeśli różni się tylko kategoria albo postać, karta jest nieaktualna. „Ustaw jako ulubioną” nie zmienia pokazanej postaci, więc nie zmienia karty.
+Dwa rodzaje ustawień (decyzja 2026-11-06): **treść** zmienia zadanie, więc jej zmiana przy pokazanej karcie od razu układa nową kartę; **ozdoba** zostawia tę samą kartę. Postać jest ozdobą (US-21): zmienia się na pokazanej karcie. Nieudana nowa karta → `unavailable` z przyczyną (decyzja 7.2). Zmiana treści bez pokazanej karty (`idle`) nie generuje, jak dziś. Zmiana profilu idzie przez to samo `applySettings`: inny klucz treści → nowa karta, inna tylko postać → ta sama karta. Ostrzeżenie przy ponownym druku jest niezależne od tabeli: dotyczy każdej karty z `printed`, bez względu na to, co zmieniono.
 
 | Karta     | Ustawienie                          | Rodzaj               | Skutek przy pokazanej karcie                                        | Dziś                                          |
 | --------- | ----------------------------------- | -------------------- | ------------------------------------------------------------------- | --------------------------------------------- |
 | Labirynt  | poziom                              | treść                | nowa od razu                                                        | nowa od razu (`WorksheetGenerator.tsx:66-77`) |
-| Labirynt  | postać (w tym własny obrazek)       | postać               | nieaktualna                                                         | ta sama karta, inna postać                    |
+| Labirynt  | postać (w tym własny obrazek)       | ozdoba               | ta sama karta, inna postać                                          | ta sama karta, inna postać                    |
 | Symetria  | poziom                              | treść                | nowa od razu                                                        | nowa od razu                                  |
-| Symetria  | kategoria                           | treść                | nieaktualna                                                         | ta sama karta, nowy napis na pasku            |
+| Symetria  | kategoria                           | treść                | **nowa od razu**                                                    | ta sama karta, nowy napis na pasku            |
 | Symetria  | kolory                              | ozdoba               | ta sama karta (US-09)                                               | ta sama karta                                 |
-| Symetria  | postać                              | postać               | nieaktualna                                                         | ta sama karta, inna postać                    |
+| Symetria  | postać                              | ozdoba               | ta sama karta, inna postać                                          | ta sama karta, inna postać                    |
 | Sekwencje | poziom                              | treść                | nowa od razu                                                        | nowa od razu                                  |
 | Sekwencje | kolory                              | ozdoba               | ta sama karta (kredki losowane przy Generuj, PRD „Karta sekwencji”) | ta sama karta                                 |
-| Sekwencje | postać                              | postać               | nieaktualna                                                         | ta sama karta, inna postać                    |
+| Sekwencje | postać                              | ozdoba               | ta sama karta, inna postać                                          | ta sama karta, inna postać                    |
 | Sudoku    | rozmiar, poziom, „Kształty / Cyfry” | treść                | nowa od razu                                                        | nowa od razu (`SudokuGenerator.tsx:61-68`)    |
 | Sudoku    | kolory                              | ozdoba               | ta sama karta (US-14)                                               | ta sama karta                                 |
-| Sudoku    | postać                              | postać               | nieaktualna                                                         | ta sama karta, inna postać                    |
+| Sudoku    | postać                              | ozdoba               | ta sama karta, inna postać                                          | ta sama karta, inna postać                    |
 | Nonogram  | poziom                              | treść                | nowa od razu, „Pokaż rozwiązanie” wyłączone (US-16)                 | nowa od razu                                  |
-| Nonogram  | kategoria                           | treść                | nieaktualna                                                         | ta sama karta, nowy napis na pasku            |
+| Nonogram  | kategoria                           | treść                | **nowa od razu, „Pokaż rozwiązanie” wyłączone**                     | ta sama karta, nowy napis na pasku            |
 | Nonogram  | „Pokaż rozwiązanie”                 | ozdoba (tylko ekran) | ta sama karta (US-15)                                               | ta sama karta                                 |
-| Nonogram  | postać                              | postać               | nieaktualna                                                         | ta sama karta, inna postać                    |
+| Nonogram  | postać                              | ozdoba               | ta sama karta, inna postać                                          | ta sama karta, inna postać                    |
 | Dyktando  | poziom                              | treść                | nowa od razu, „Pokaż rozwiązanie” wyłączone (US-17)                 | nowa od razu                                  |
-| Dyktando  | kategoria                           | treść                | nieaktualna; przełącznik rozwiązania zostaje (PRD:341)              | ta sama karta, nowy napis na pasku            |
+| Dyktando  | kategoria                           | treść                | **nowa od razu, „Pokaż rozwiązanie” wyłączone** (zmienia PRD:341)   | ta sama karta, nowy napis na pasku            |
 | Dyktando  | „Pokaż rozwiązanie”                 | ozdoba (tylko ekran) | ta sama karta (US-17)                                               | ta sama karta                                 |
-| Dyktando  | postać                              | postać               | nieaktualna                                                         | ta sama karta, inna postać                    |
+| Dyktando  | postać                              | ozdoba               | ta sama karta, inna postać                                          | ta sama karta, inna postać                    |
 | Pieniądze | poziom                              | treść                | nowa od razu                                                        | nowa od razu                                  |
-| Pieniądze | postać                              | postać               | nieaktualna                                                         | ta sama karta, inna postać                    |
+| Pieniądze | postać                              | ozdoba               | ta sama karta, inna postać                                          | ta sama karta, inna postać                    |
+
+Pogrubione wiersze to jedyna zmiana zachowania z I-9; poza nimi dochodzi ostrzeżenie przy ponownym druku i `unavailable` po nieudanej nowej karcie (7.2).
 
 Kolejne karty (S-34..S-36) dopisują swoje wiersze przez `contentKey` w swoim spec; ta tabela przechodzi do dokumentów w fazie D02 6.
 
@@ -114,7 +121,7 @@ Kolejne karty (S-34..S-36) dopisują swoje wiersze przez `contentKey` w swoim sp
 
 **Strip-types.** Klasy kontraktu (`VerifiedCard`, `CardInvariantError`, `CardExhausted`) bez właściwości parametrów konstruktora, `enum` i `namespace`; inaczej `npm test` padnie na składni, choć `astro check` przejdzie.
 
-**State sequencing.** W `unavailable` i `stale` arkusz się nie renderuje (także dla Ctrl+P), a pasek ustawień zostaje (`sheetShown` = true). `stale` zatrzymuje kartę w stanie tylko po to, żeby następne Generuj znało `previousKey` (I-2). Odcisk do porównania liczy się z bieżących ustawień i postaci w tym samym renderze, w którym silnik dostaje te ustawienia; inaczej świeża karta mignie jako `stale`. Każdy komponent musi rysować arkusz tylko w `showing`; dziś labirynt robi to przez `maze === null` (`WorksheetGenerator.tsx:130`), pozostałe zakładają kartę zawsze, gdy `sheetShown`. Przełącznik „Pokaż rozwiązanie” (nonogram, dyktando) w `unavailable` jest bez znaczenia; udane Generuj i tak go wyłącza, jak dziś.
+**State sequencing.** W `unavailable` arkusz się nie renderuje (także dla Ctrl+P), a pasek ustawień zostaje (`sheetShown` = true). Zmiana ustawień zapisuje ustawienie i woła `applySettings` w tym samym handlerze, z nowymi ustawieniami (nie z odczytu stanu po renderze); inaczej bezpiecznik `sheetView` mignie przez jeden render. „Nowa karta i drukuj” musi drukować dopiero nową kartę: `window.print()` po zatwierdzeniu renderu (`flushSync` albo efekt na znaczniku „drukuj po renderze”), a przy nieudanej nowej karcie (`unavailable`) nie drukuje wcale. Listener `beforeprint` ustawia `printed` tylko w `showing`. Każdy komponent musi rysować arkusz tylko w `showing`; dziś labirynt robi to przez `maze === null` (`WorksheetGenerator.tsx:130`), pozostałe zakładają kartę zawsze, gdy `sheetShown`. Przełącznik „Pokaż rozwiązanie” (nonogram, dyktando) w `unavailable` jest bez znaczenia; udane Generuj i tak go wyłącza, jak dziś.
 
 **Strict mode.** Silnik zużywa losowość, więc nie wolno go wołać w updaterze `setState` (React woła updatery dwa razy w dev). Silnik w handlerze, potem `setSheet(next)`.
 
@@ -213,7 +220,7 @@ Typy i klasy kontraktu z testami C1–C9 (D02 6.1) oraz bramka kosztu kopii i za
 
 ### Overview
 
-Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieudane Generuj wyłącza kartę z przyczyną (7.2, 7.5) i karta na ekranie odpowiada paskowi albo jest nieaktualna (I-9). Do tego zmiany PRD, które I-9 wprowadza. Tryb: `/10x-tdd` (stan, przyczyna), `/10x-implement` (PRD).
+Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieudane Generuj wyłącza kartę z przyczyną (7.2, 7.5) i zadanie na ekranie odpowiada ustawieniom treści na pasku (I-9), plus znacznik `printed` dla ostrzeżenia przy ponownym druku. Do tego zmiany PRD, które I-9 i ostrzeżenie wprowadzają. Okno ostrzeżenia w `CardPage` wchodzi w fazie 4 z pierwszym rodzajem, który je zasila. Tryb: `/10x-tdd` (stan, przyczyna), `/10x-implement` (PRD).
 
 ### Changes Required:
 
@@ -221,9 +228,9 @@ Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieuda
 
 **File**: `src/lib/sheet-state.ts` (nowy)
 
-**Intent**: `SheetState<C>` (`idle` z `failure | null`, `showing` z `VerifiedCard` i odciskiem, dla którego karta powstała, `unavailable` z `failure`) i jedna funkcja przejścia, która woła silnik i łapie wyłącznie `CardExhausted` i `CardInvariantError`; każdy inny błąd leci dalej. Przy `CardInvariantError` `console.error` z kodem (dla twórcy). Widok `sheetView(state, odcisk)` zwraca `stale`, gdy `showing` ma inny odcisk niż bieżący pasek (I-9); `stale` nie jest osobnym stanem zapisanym, tylko wynikiem porównania, więc żadna ścieżka zmiany ustawień nie może go ominąć.
+**Intent**: `SheetState<C>` (`idle` z `failure | null`, `showing` z `VerifiedCard`, kluczem treści, dla którego karta powstała, i `printed`, `unavailable` z `failure` i kluczem treści ostatniej próby) i funkcja przejścia, która woła silnik i łapie wyłącznie `CardExhausted` i `CardInvariantError`; każdy inny błąd leci dalej. Przy `CardInvariantError` `console.error` z kodem (dla twórcy). `applySettings` to jedyna droga zmiany ustawień przy pokazanej karcie: ten sam klucz treści → stan bez zmian (ozdoby), inny → `generateSheet` (I-9). `markPrinted` ustawia `printed` w `showing`. Widok `sheetView(state, contentKey)`: przy `showing` z innym kluczem (handler ominął `applySettings`) zwraca `unavailable` bez przyczyny dla rodzica i loguje `console.error` — bezpiecznik, nie stan UX.
 
-**Contract**: `SheetFingerprint = { content: string; character: string; ownImageHref: string | null }`, gdzie `content = spec.contentKey(settings)`. `generateSheet(state, engine, settings, fingerprint, random): SheetState<C>`; `previousKey` bierze z karty w `showing` (także gdy widok jest `stale`, żeby Generuj dało inną kartę, I-2). `sheetView(state, fingerprint): { kind: "idle" | "showing" | "stale" | "unavailable"; … }`. Typ `CardFailure = CardExhausted | CardInvariantError`.
+**Contract**: `generateSheet(state, engine, settings, random): SheetState<C>`; `previousKey` bierze z karty w `showing` (I-2). `applySettings(state, engine, settings, random): SheetState<C>`: w `idle` zwraca `idle` z wyczyszczonym `failure` (jak dziś); w `showing` i `unavailable` porównuje `engine.spec.contentKey(settings)` z zapisanym kluczem. `markPrinted(state): SheetState<C>`. `sheetView(state, contentKey): { kind: "idle" | "showing" | "unavailable"; printed: boolean; … }`. Typ `CardFailure = CardExhausted | CardInvariantError`.
 
 #### 2. Przyczyna dla rodzica
 
@@ -237,13 +244,13 @@ Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieuda
 
 **File**: `src/lib/sheet-state.test.ts` (nowy, dopisany do skryptu `test`)
 
-**Intent**: N16 (przejścia: `showing` + porażka → `unavailable`; `idle` + porażka → `idle` z `failure`; `unavailable` + sukces → `showing`; `TypeError` z silnika → wyjątek leci, stan bez zmiany; `previousKey` brany z `showing`) i N15 w wersji ogólnej (oba rodzaje porażki dają niepusty tekst; tekst `CardInvariantError` zawiera kod; tekst `CardExhausted` zawiera kategorię, gdy jest). Nowy N17 (I-9): `showing` + ten sam odcisk → `showing`; inna treść → `stale`; inna postać albo inny `ownImageHref` → `stale`; `stale` + udane Generuj → `showing` z nowym odciskiem i innym `key`; `stale` + nieudane Generuj → `unavailable`; `idle` i `unavailable` nie zależą od odcisku.
+**Intent**: N16 (przejścia: `showing` + porażka → `unavailable`; `idle` + porażka → `idle` z `failure`; `unavailable` + sukces → `showing`; `TypeError` z silnika → wyjątek leci, stan bez zmiany; `previousKey` brany z `showing`) i N15 w wersji ogólnej (oba rodzaje porażki dają niepusty tekst; tekst `CardInvariantError` zawiera kod; tekst `CardExhausted` zawiera kategorię, gdy jest). Nowy N17 (I-9 i druk): `applySettings` w `showing` z tym samym kluczem treści → ten sam obiekt stanu (ta sama karta, `printed` zachowane); z innym kluczem → nowa karta z innym `key` i `printed = false`; z innym kluczem i porażką → `unavailable`; w `unavailable` z innym kluczem → nowa próba; w `idle` → `idle` bez generowania. `markPrinted` w `showing` → `printed = true`, w `idle` i `unavailable` bez zmian; udane `generateSheet` po `markPrinted` → `printed = false`. `sheetView` z kluczem innym niż w `showing` → `unavailable` i `console.error`.
 
-#### 4. PRD dla I-9
+#### 4. PRD dla I-9 i ostrzeżenia
 
-**File**: `context/foundation/prd.md` (US-20 PRD:381, US-21 PRD:398, US-22 PRD:402-414)
+**File**: `context/foundation/prd.md` (US-20 PRD:382, US-22 PRD:402-414)
 
-**Intent**: Zapisać regułę I-9 tam, gdzie rodzic ją spotyka, w tym samym PR co stan, który ją definiuje (bez osobnego PR dokumentów). US-21: postać nie zmienia zadania, odpowiedzi ani trudności, ale jest na wydruku, więc zmiana postaci przy pokazanej karcie wyłącza ją do następnego Generuj (decyzja 2026-11-06). US-20: zmiana kategorii przy pokazanej karcie wyłącza ją do następnego Generuj. US-22: nowe kryterium: gdy karta przestaje odpowiadać paskowi albo Generuj się nie udało, w miejscu karty jest krótka podpowiedź (co się stało, że trzeba kliknąć Generuj), a Drukuj jest wyłączone. US-08 bez zmian (dotyczy zapamiętywania, nie pokazanej karty). PRD zmienia się przed kodem kart (fazy 4–10); do końca fazy 10 część stron jeszcze go nie spełnia, co jest zapisane w opisie PR.
+**Intent**: Zapisać reguły tam, gdzie rodzic je spotyka, w tym samym PR co stan, który je definiuje (bez osobnego PR dokumentów). US-20: zdanie „Wybrana kategoria obowiązuje przy następnym Generuj, jak każde ustawienie generatora” zastąpione: zmiana kategorii przy pokazanej karcie od razu układa nową kartę, jak zmiana poziomu. US-22: dwa nowe kryteria: (1) gdy Generuj albo nowa karta po zmianie ustawienia się nie udały, w miejscu karty jest krótka przyczyna, a Drukuj jest wyłączone; (2) Drukuj na karcie, która już była drukowana, pyta „Ta karta była już drukowana” z wyborem „Nowa karta i drukuj” i „Drukuj tę samą”; zmiana postaci, kolorów i „Pokaż rozwiązanie” nie robi nowej karty. US-21 i US-08 bez zmian (postać zostaje ozdobą). Zdania dyktanda (PRD:341, PRD:815) zmieniają się w fazie 10 razem z jego kodem. PRD zmienia się przed kodem kart (fazy 4–10); do końca fazy 10 część stron jeszcze go nie spełnia, co jest zapisane w opisie PR.
 
 ### Success Criteria:
 
@@ -251,11 +258,11 @@ Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieuda
 
 - `npm test` zielone, w tym N15 i N16
 - `npm run lint` i `npx astro check` zielone
-- `npm test` zielone, w tym N17 (I-9)
+- `npm test` zielone, w tym N17 (I-9 i `printed`)
 
 #### Manual Verification:
 
-- Właścicielka zatwierdziła brzmienie zmian US-20, US-21 i US-22
+- Właścicielka zatwierdziła brzmienie zmian US-20 i US-22
 
 ---
 
@@ -289,6 +296,14 @@ Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieuda
 
 **Contract**: Zachowanie po zmianie poziomu bez pokazanej karty bez zmian (stan `idle`, kasuje przyczynę). Po nieudanym Generuj przy pokazanej karcie: `unavailable`, Drukuj wyłączone, przyczyna widoczna.
 
+#### 3a. Ostrzeżenie przy ponownym druku
+
+**File**: `src/components/CardPage.tsx`, `src/hooks/useCardPage.ts`, nowy `src/components/ReprintDialog.tsx` (z `src/components/ui/dialog.tsx`)
+
+**Intent**: Jedno okno dla wszystkich kart. `CardPage` dostaje opcjonalne `printedBefore` i `onRegenerate`; Drukuj przy `printedBefore` otwiera okno zamiast `window.print()`. „Nowa karta i drukuj” (główny) woła `onRegenerate`, a druk rusza po renderze nowej karty i tylko gdy nowa karta jest w `showing`; „Drukuj tę samą” woła `window.print()`. Listener `beforeprint` (w hooku strony) woła `markPrinted`. Strony jeszcze nie przeniesione nie podają `printedBefore`, więc działają jak dziś.
+
+**Contract**: teksty okna ustala implementacja w granicach PRD US-22 (faza 3); przyciski z `src/components/ui/button.tsx`; okno i jego przyciski `print:hidden`.
+
 #### 4. Testy treści i skrypt
 
 **File**: `src/lib/sheet/character.test.ts:78`, `src/lib/sheet/walls.test.ts:3`, `:46`, `scripts/build-thumbnails.mjs:62-65`
@@ -306,12 +321,13 @@ Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieuda
 - `grep -rn "mazeForSheet" src scripts` nie zwraca trafień
 - `npm run thumbnails` nie zmienia `public/thumbnails/labirynt.svg` (`git diff --exit-code public/thumbnails`)
 - e2e Chromium dla stron labiryntu (`npx playwright test --project=chromium` z `E2E_PORT` na wolnym porcie) zielone
-- I-9: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci przy pokazanej karcie ukrywa arkusz i wyłącza Drukuj, Generuj przywraca) zielone
+- I-9 i druk: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci zostawia tę samą kartę; drugi Drukuj otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę; „Drukuj tę samą” jej nie zmienia) zielone
 
 #### Manual Verification:
 
 - `/maze`: Generuj na każdym poziomie daje kartę jak przed zmianą (bez różnic wizualnych), druk A4 bez zmian
 - Wymuszona porażka (np. tymczasowo w devtools albo przez zły poziom w `localStorage`) pokazuje przyczynę i wyłącza Drukuj
+- Ostrzeżenie w prawdziwym oknie druku Chromium: Drukuj → anuluj → Drukuj pokazuje okno; Ctrl+P na drukowanej karcie drukuje bez pytania, a następny Drukuj ostrzega; „Nowa karta i drukuj” pokazuje w podglądzie druku nową kartę; okno ostrzeżenia na telefonie (375 px) mieści oba przyciski
 
 **Implementation Note**: Po zielonej automatyce zatrzymać się na ręczne sprawdzenie `/maze`.
 
@@ -340,7 +356,7 @@ Wzorzec migracji dla „Kto ma więcej?”. Tryb: spec i silnik `/10x-tdd`, komp
 - `npm test` zielone; brak `todo` pieniędzy w `card-engines.test.ts`
 - `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - e2e `tests/e2e/money.spec.ts` i `card-settings.spec.ts` (Chromium, `E2E_PORT`) zielone
-- I-9: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci przy pokazanej karcie ukrywa arkusz i wyłącza Drukuj, Generuj przywraca) zielone
+- I-9 i druk: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci zostawia tę samą kartę; drugi Drukuj otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę; „Drukuj tę samą” jej nie zmienia) zielone
 
 #### Manual Verification:
 
@@ -371,12 +387,12 @@ Wzorzec migracji dla symetrii. Tryb: spec i silnik `/10x-tdd`, komponent `/10x-i
 - `npm test` zielone; brak `todo` symetrii; test czasu symetrii (nowy w teście zbiorczym) zielony
 - `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - e2e `symmetry-colors.spec.ts`, `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
-- I-9: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci przy pokazanej karcie ukrywa arkusz i wyłącza Drukuj, Generuj przywraca) zielone
+- I-9 i druk: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci zostawia tę samą kartę; drugi Drukuj otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę; „Drukuj tę samą” jej nie zmienia) zielone
 
 #### Manual Verification:
 
 - `/symmetry`: Generuj w kilku kategoriach i poziomach, przełącznik kolorów zostawia tę samą kartę
-- `/symmetry`: zmiana kategorii przy pokazanej karcie daje kartę nieaktualną (bez arkusza, bez Drukuj), Generuj daje kartę z nowej kategorii
+- `/symmetry`: zmiana kategorii przy pokazanej karcie od razu daje kartę z nowej kategorii; wąska kategoria bez innej karty pokazuje przyczynę
 
 ---
 
@@ -403,7 +419,7 @@ Wzorzec migracji dla sekwencji. Tryb: spec i silnik `/10x-tdd`, komponent `/10x-
 - `npm test` zielone; brak `todo` sekwencji
 - `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - e2e `sequence-colors.spec.ts`, `card-settings.spec.ts` (Chromium, `E2E_PORT`) zielone
-- I-9: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci przy pokazanej karcie ukrywa arkusz i wyłącza Drukuj, Generuj przywraca) zielone
+- I-9 i druk: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci zostawia tę samą kartę; drugi Drukuj otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę; „Drukuj tę samą” jej nie zmienia) zielone
 
 #### Manual Verification:
 
@@ -441,7 +457,7 @@ Wzorzec migracji dla sudoku plus wyniesienie `sudokuBlock`, żeby komponent nie 
 - `grep -n "sudoku/generate" src/components/SudokuGenerator.tsx` zwraca tylko importy typów
 - `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - e2e `sudoku-*.spec.ts` (Chromium, `E2E_PORT`) zielone
-- I-9: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci przy pokazanej karcie ukrywa arkusz i wyłącza Drukuj, Generuj przywraca) zielone
+- I-9 i druk: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci zostawia tę samą kartę; drugi Drukuj otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę; „Drukuj tę samą” jej nie zmienia) zielone
 
 #### Manual Verification:
 
@@ -463,7 +479,7 @@ Wzorzec migracji dla nonogramu z unią dwóch typów kart i rozstrzygnięciem A5
 
 **Intent**: `nonogramSpec.problems` rozgałęzia się po rodzaju karty: łatwa → `simpleNonogramProblems`, klasyczna → `nonogramCardProblems`. Jeśli właścicielka po fazie 1 zdecydowała dodać sprawdzenie jednoznaczności łatwego poziomu (A5), dochodzi tu jako nowy kod i jego `knownBad`; jeśli nie, `todo` A5 zamienia się w test dokumentujący „jednoznaczność z konstrukcji” i znika z listy `todo`.
 
-**Contract**: settings = `CardSettingsOf<"nonogram">`; typ karty `NonogramCard | SimpleNonogramCard`. „Pokaż rozwiązanie” zostaje stanem komponentu poza `SheetState` i wyłącza się przy udanym Generuj jak dziś.
+**Contract**: settings = `CardSettingsOf<"nonogram">`; typ karty `NonogramCard | SimpleNonogramCard`. „Pokaż rozwiązanie” zostaje stanem komponentu poza `SheetState` i wyłącza się przy każdej nowej karcie (Generuj, poziom, a teraz też kategoria).
 
 ### Success Criteria:
 
@@ -472,12 +488,12 @@ Wzorzec migracji dla nonogramu z unią dwóch typów kart i rozstrzygnięciem A5
 - `npm test` zielone; brak `todo` nonogramu
 - `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - e2e `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
-- I-9: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci przy pokazanej karcie ukrywa arkusz i wyłącza Drukuj, Generuj przywraca) zielone
+- I-9 i druk: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci zostawia tę samą kartę; drugi Drukuj otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę; „Drukuj tę samą” jej nie zmienia) zielone
 
 #### Manual Verification:
 
 - `/nonogram`: trzy poziomy, kategorie, „Pokaż rozwiązanie” działa jak przed zmianą
-- `/nonogram`: zmiana kategorii przy pokazanej karcie daje kartę nieaktualną, Generuj daje kartę z nowej kategorii
+- `/nonogram`: zmiana kategorii przy pokazanej karcie od razu daje kartę z nowej kategorii i wyłącza „Pokaż rozwiązanie”
 
 ---
 
@@ -495,13 +511,13 @@ Silnik dla trybu katalogowego, rozstrzygnięcie R-9 z fazy 1 i poprawka dwóch z
 
 **Intent**: `dictationSpec` owija `dictationCardProblems` i, jeśli właścicielka tak zdecydowała (R-9), sprawdza punkt startu w lewym górnym rogu sylwetki nowym kodem z `knownBad`. Silnik bierze kartę z katalogu jak dziś; brak innego obrysu → `CardExhausted` z liczbą kart katalogu. `maxCommands` zostaje filtrem katalogu.
 
-**Contract**: settings = `CardSettingsOf<"dyktando">`. Udane Generuj i zmiana poziomu, która układa nową kartę, wyłączają „Pokaż rozwiązanie” jak dziś; nieudane Generuj przechodzi w `unavailable`.
+**Contract**: settings = `CardSettingsOf<"dyktando">`. Każda nowa karta (Generuj, poziom, kategoria) wyłącza „Pokaż rozwiązanie”; nieudana nowa karta przechodzi w `unavailable`.
 
 #### 2. PRD
 
 **File**: `context/foundation/prd.md:341`, `:815`
 
-**Intent**: Zdanie „Nieudane Generuj zostawia przełącznik i poprzednią kartę.” zastąpione zdaniem zgodnym z decyzją 7.2 (nieudane Generuj wyłącza kartę i pokazuje przyczynę). Jeśli R-9 rozstrzygnięto usunięciem reguły, w tym samym PR wypada zdanie o punkcie startu z PRD:794.
+**Intent**: Zdania „Sama zmiana kategorii go nie wyłącza. Nieudane Generuj zostawia przełącznik i poprzednią kartę.” zastąpione zdaniami zgodnymi z I-9 i decyzją 7.2: zmiana kategorii układa nową kartę i wyłącza przełącznik jak zmiana poziomu; nieudane Generuj wyłącza kartę i pokazuje przyczynę. Jeśli R-9 rozstrzygnięto usunięciem reguły, w tym samym PR wypada zdanie o punkcie startu z PRD:794.
 
 ### Success Criteria:
 
@@ -510,13 +526,13 @@ Silnik dla trybu katalogowego, rozstrzygnięcie R-9 z fazy 1 i poprawka dwóch z
 - `npm test` zielone; brak `todo` dyktanda; test czasu dyktanda (z budową katalogu) zielony
 - `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - e2e `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
-- `grep -n "Nieudane Generuj zostawia" context/foundation/prd.md` nie zwraca trafień
-- I-9: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci przy pokazanej karcie ukrywa arkusz i wyłącza Drukuj, Generuj przywraca) zielone
+- `grep -nE "Nieudane Generuj zostawia|Sama zmiana kategorii go nie wyłącza" context/foundation/prd.md` nie zwraca trafień
+- I-9 i druk: test `contentKey` rodzaju zgodny z tabelą „Ustawienie → skutek” i e2e (zmiana postaci zostawia tę samą kartę; drugi Drukuj otwiera ostrzeżenie; „Nowa karta i drukuj” daje inną kartę; „Drukuj tę samą” jej nie zmienia) zielone
 
 #### Manual Verification:
 
 - `/dictation`: trzy poziomy, kategorie, „Pokaż rozwiązanie” jak dotąd; nieudane Generuj w wąskiej kategorii pokazuje przyczynę
-- `/dictation`: zmiana kategorii przy pokazanej karcie daje kartę nieaktualną, Generuj daje kartę z nowej kategorii
+- `/dictation`: zmiana kategorii przy pokazanej karcie od razu daje kartę z nowej kategorii i wyłącza „Pokaż rozwiązanie”
 
 ---
 
@@ -590,7 +606,7 @@ export const CARD_ENGINES = { … } satisfies {
 ### Unit Tests:
 
 - Kontrakt: C1–C9 i bramka kosztu (faza 2).
-- Stan i przyczyna: N15, N16 i N17 (I-9) (faza 3).
+- Stan i przyczyna: N15, N16 i N17 (I-9, `printed`) (faza 3).
 - I-9 per rodzaj: `contentKey` zgodny z tabelą „Ustawienie → skutek” (fazy 4–10), zbiorczo w fazie 11.
 - Labirynt: L1–L6, N1–N14, kolejność kodów (faza 4).
 - Każdy rodzaj: `knownBad` odrzucane z oczekiwanym kodem; spec zgodny z dzisiejszymi `*Problems`.
@@ -616,7 +632,7 @@ export const CARD_ENGINES = { … } satisfies {
 ## Migration Notes
 
 - Dane zapisane (`localStorage`: profile, ustawienia kart, ostatnie parametry, id poziomów) bez zmian (D02 §8, wiersz „Bez zmiany”).
-- Zmiana zachowania widoczna dla rodzica: po nieudanym Generuj albo zmianie poziomu przy pokazanej karcie karta znika z druku i widać przyczynę. Wchodzi rodzaj po rodzaju (fazy 4–10). Druga zmiana widoczna (I-9): zmiana postaci, a na symetrii, nonogramie i dyktandzie także kategorii, przy pokazanej karcie robi ją nieaktualną do następnego Generuj. PRD opisuje to od fazy 3; między fazą 3 a 10 strony, których rodzaj jeszcze nie przeszedł migracji, zachowują się po staremu.
+- Zmiana zachowania widoczna dla rodzica: po nieudanym Generuj albo zmianie poziomu przy pokazanej karcie karta znika z druku i widać przyczynę. Wchodzi rodzaj po rodzaju (fazy 4–10). Druga zmiana widoczna (I-9): na symetrii, nonogramie i dyktandzie zmiana kategorii przy pokazanej karcie od razu układa nową kartę (jak poziom). Trzecia: Drukuj na już drukowanej karcie pyta, czy wygenerować nową. Postać, kolory i „Pokaż rozwiązanie” działają jak dziś. PRD opisuje to od fazy 3; między fazą 3 a 10 strony, których rodzaj jeszcze nie przeszedł migracji, zachowują się po staremu.
 - Rollback: każda faza to jeden PR; revert PR rodzaju przywraca jego dzisiejszy komponent i generator. Fazy 1–3 nie zmieniają zachowania.
 
 ## References
@@ -659,11 +675,11 @@ export const CARD_ENGINES = { … } satisfies {
 
 - [ ] 3.1 `npm test` zielone, w tym N15 i N16
 - [ ] 3.2 `npm run lint` i `npx astro check` zielone
-- [ ] 3.3 `npm test` zielone, w tym N17 (I-9)
+- [ ] 3.3 `npm test` zielone, w tym N17 (I-9 i `printed`)
 
 #### Manual
 
-- [ ] 3.4 Właścicielka zatwierdziła brzmienie zmian US-20, US-21 i US-22
+- [ ] 3.4 Właścicielka zatwierdziła brzmienie zmian US-20 i US-22
 
 ### Phase 4: Labirynt pionowo
 
@@ -674,12 +690,13 @@ export const CARD_ENGINES = { … } satisfies {
 - [ ] 4.3 `grep -rn "mazeForSheet" src scripts` nie zwraca trafień
 - [ ] 4.4 `npm run thumbnails` nie zmienia `public/thumbnails/labirynt.svg`
 - [ ] 4.5 e2e Chromium dla stron labiryntu z `E2E_PORT` zielone
-- [ ] 4.8 I-9: test `contentKey` i e2e zmiany postaci zielone
+- [ ] 4.8 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
 
 #### Manual
 
 - [ ] 4.6 `/maze`: Generuj na każdym poziomie i druk A4 bez różnic wizualnych
 - [ ] 4.7 Wymuszona porażka pokazuje przyczynę i wyłącza Drukuj
+- [ ] 4.9 Ostrzeżenie przy ponownym druku w prawdziwym oknie druku i na telefonie
 
 ### Phase 5: Pieniądze pionowo
 
@@ -688,7 +705,7 @@ export const CARD_ENGINES = { … } satisfies {
 - [ ] 5.1 `npm test` zielone; brak `todo` pieniędzy w `card-engines.test.ts`
 - [ ] 5.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - [ ] 5.3 e2e `money.spec.ts` i `card-settings.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 5.5 I-9: test `contentKey` i e2e zmiany postaci zielone
+- [ ] 5.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
 
 #### Manual
 
@@ -701,12 +718,12 @@ export const CARD_ENGINES = { … } satisfies {
 - [ ] 6.1 `npm test` zielone; brak `todo` symetrii; test czasu symetrii zielony
 - [ ] 6.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - [ ] 6.3 e2e `symmetry-colors.spec.ts`, `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 6.5 I-9: test `contentKey` i e2e zmiany postaci zielone
+- [ ] 6.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
 
 #### Manual
 
 - [ ] 6.4 `/symmetry`: Generuj w kilku kategoriach i poziomach, kolory zostawiają tę samą kartę
-- [ ] 6.6 `/symmetry`: zmiana kategorii daje kartę nieaktualną, Generuj ją przywraca
+- [ ] 6.6 `/symmetry`: zmiana kategorii od razu daje kartę z nowej kategorii
 
 ### Phase 7: Sekwencje pionowo
 
@@ -715,7 +732,7 @@ export const CARD_ENGINES = { … } satisfies {
 - [ ] 7.1 `npm test` zielone; brak `todo` sekwencji
 - [ ] 7.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - [ ] 7.3 e2e `sequence-colors.spec.ts`, `card-settings.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 7.5 I-9: test `contentKey` i e2e zmiany postaci zielone
+- [ ] 7.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
 
 #### Manual
 
@@ -729,7 +746,7 @@ export const CARD_ENGINES = { … } satisfies {
 - [ ] 8.2 `SudokuGenerator.tsx` importuje z `sudoku/generate` tylko typy
 - [ ] 8.3 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - [ ] 8.4 e2e `sudoku-*.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 8.6 I-9: test `contentKey` i e2e zmiany postaci zielone
+- [ ] 8.6 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
 
 #### Manual
 
@@ -742,12 +759,12 @@ export const CARD_ENGINES = { … } satisfies {
 - [ ] 9.1 `npm test` zielone; brak `todo` nonogramu
 - [ ] 9.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - [ ] 9.3 e2e `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 9.5 I-9: test `contentKey` i e2e zmiany postaci zielone
+- [ ] 9.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
 
 #### Manual
 
 - [ ] 9.4 `/nonogram`: trzy poziomy, kategorie, „Pokaż rozwiązanie” jak przed zmianą
-- [ ] 9.6 `/nonogram`: zmiana kategorii daje kartę nieaktualną, Generuj ją przywraca
+- [ ] 9.6 `/nonogram`: zmiana kategorii od razu daje kartę z nowej kategorii
 
 ### Phase 10: Dyktando pionowo
 
@@ -757,12 +774,12 @@ export const CARD_ENGINES = { … } satisfies {
 - [ ] 10.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
 - [ ] 10.3 e2e `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
 - [ ] 10.4 PRD nie zawiera zdania „Nieudane Generuj zostawia”
-- [ ] 10.6 I-9: test `contentKey` i e2e zmiany postaci zielone
+- [ ] 10.6 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
 
 #### Manual
 
 - [ ] 10.5 `/dictation`: poziomy, kategorie, „Pokaż rozwiązanie”; nieudane Generuj pokazuje przyczynę
-- [ ] 10.7 `/dictation`: zmiana kategorii daje kartę nieaktualną, Generuj ją przywraca
+- [ ] 10.7 `/dictation`: zmiana kategorii od razu daje kartę z nowej kategorii
 
 ### Phase 11: Rejestr wymuszony typem i domknięcie
 
