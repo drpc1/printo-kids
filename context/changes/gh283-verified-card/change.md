@@ -1,7 +1,7 @@
 ---
 change_id: gh283-verified-card
 title: VerifiedCard, wspólny strażnik niezmiennika „karta ma sprawdzalną odpowiedź”
-status: new
+status: planned
 created: 2026-11-06
 updated: 2026-11-06
 archived_at: null
