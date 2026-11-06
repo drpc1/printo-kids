@@ -673,9 +673,9 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [ ] 3.1 `npm test` zielone, w tym N15 i N16
-- [ ] 3.2 `npm run lint` i `npx astro check` zielone
-- [ ] 3.3 `npm test` zielone, w tym N17 (I-9 i `printed`)
+- [x] 3.1 `npm test` zielone, w tym N15 i N16
+- [x] 3.2 `npm run lint` i `npx astro check` zielone
+- [x] 3.3 `npm test` zielone, w tym N17 (I-9 i `printed`)
 
 #### Manual
 
