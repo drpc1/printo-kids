@@ -69,6 +69,21 @@ interface Adapter<S, C> {
 
 function describeAdapter<S, C>(adapter: Adapter<S, C>): void {
   void describe(`card engine inventory: ${adapter.kind}`, () => {
+    // First on purpose: a generator that builds a catalog lazily (the dictation) pays for it in its first call, so the cold call counts.
+    void test("a card comes out in under 5 s, cold and on average, for every setting", () => {
+      for (const settings of adapter.settingsList) {
+        const started = performance.now();
+        adapter.generate(settings, mulberry32(SEEDS[0]), null);
+        const cold = performance.now() - started;
+        assert.ok(cold < TIME_BUDGET_MS, `${adapter.label(settings)}: ${Math.round(cold)} ms for the first card`);
+        for (const seed of SEEDS.slice(1)) {
+          adapter.generate(settings, mulberry32(seed), null);
+        }
+        const mean = (performance.now() - started) / SEEDS.length;
+        assert.ok(mean < TIME_BUDGET_MS, `${adapter.label(settings)}: ${Math.round(mean)} ms per card`);
+      }
+    });
+
     void test("generated cards are legal for every setting", () => {
       for (const settings of adapter.settingsList) {
         for (const seed of SEEDS) {
@@ -95,17 +110,6 @@ function describeAdapter<S, C>(adapter: Adapter<S, C>): void {
           assert.notEqual(key, previousKey, `${adapter.label(settings)} step ${step}: key repeated`);
           previousKey = key;
         }
-      }
-    });
-
-    void test("a card comes out in under 5 s on average, for every setting", () => {
-      for (const settings of adapter.settingsList) {
-        const started = performance.now();
-        for (const seed of SEEDS) {
-          adapter.generate(settings, mulberry32(seed), null);
-        }
-        const mean = (performance.now() - started) / SEEDS.length;
-        assert.ok(mean < TIME_BUDGET_MS, `${adapter.label(settings)}: ${Math.round(mean)} ms per card`);
       }
     });
 

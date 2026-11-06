@@ -4,7 +4,7 @@
 
 ## Wynik w skrócie
 
-- Legalność (5 ziaren na każde ustawienie, wszystkie 7 rodzajów), różnorodność (`previousKey`, łańcuch 4 kart) i czas (średnio < 5 s na ustawienie; cały test czasu każdego rodzaju trwa poniżej pół sekundy) przechodzą bez znalezisk. Czas domyka D01 R-10 dla symetrii i dyktanda. Uwaga: katalog dyktanda buduje się leniwie przy pierwszym użyciu, więc w tym pliku jego koszt (ok. 1,8 s na wszystkie ustawienia) wpada w test legalności, który idzie pierwszy; pomiar czasu dyktanda z budową katalogu przejmuje faza 10.
+- Legalność (5 ziaren na każde ustawienie, wszystkie 7 rodzajów), różnorodność (`previousKey`, łańcuch 4 kart) i czas (średnio < 5 s na ustawienie; cały test czasu każdego rodzaju trwa poniżej pół sekundy) przechodzą bez znalezisk. Czas domyka D01 R-10 dla symetrii i dyktanda. Test czasu idzie pierwszy w każdym rodzaju i liczy też zimne pierwsze wywołanie, więc leniwa budowa katalogu dyktanda (ok. 1,8 s na wszystkie ustawienia) jest w pomiarze.
 - Różnorodność nie dotyczy labiryntu: generator nie używa `previousKey` (plan: poza zakresem).
 - Wszystkie 14 znalezisk to **luki strażnika**, żadne nie jest defektem generatora: karta z generatora jest zawsze poprawna, a strażnik przepuszcza też karty z wadą. Test pilnuje, że każdy mutant naprawdę przechodzi dzisiejszy strażnik (`problems` zwraca `[]`), więc `todo` nie pada z innej przyczyny.
 - Dla labiryntu dzisiejszy strażnik to `mazeForSheet`, który mówi tylko tak/nie. W teście jego odpowiedź to zastępczy kod `gate-rejected`; kody `expectedCode` pochodzą z D02 4.8. Te same mutanty odrzuca lokalny sprawdzacz referencyjny w teście (dowód, że przypadki są poprawne), a ten sprawdzacz potwierdza też legalność kart z generatora.
