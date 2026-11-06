@@ -659,7 +659,7 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [ ] 1.5 Właścicielka przejrzała `phase0-findings.md` i rozstrzygnęła R-9 oraz łatwy nonogram (A5)
+- [x] 1.5 Właścicielka przejrzała `phase0-findings.md` i rozstrzygnęła R-9 oraz łatwy nonogram (A5) — R-9: opcja B, A5: opcja A (decyzja 2026-11-06)
 
 ### Phase 2: Kontrakt card-contract.ts
 

@@ -44,14 +44,14 @@ Review wykonana inline (bez subagentów) na diffie `main..HEAD`: w `src/` jest t
 - **Fix**: Dopisać wariant w teście `mazeSpec` w fazie 4 (tam kod `unreachable-cells` powstaje).
 - **Decision**: PENDING
 
-### F3 — Kody docelowe niektórych todo są propozycją
+### F3 — Kody docelowe todo A5 są propozycją
 
 - **Severity**: 💡 OBSERVATION
 - **Impact**: 🏃 LOW — quick decision; fix is obvious and narrowly scoped
 - **Dimension**: Success Criteria
-- **Location**: src/lib/card-engines.test.ts (A5-a, A5-b, R-9)
-- **Detail**: `expectedCode` dla R-9 (`start-not-top-left`) i A5 (`runs-mismatch` dla krótkiego wiersza i rozbitych znaczków) nie istnieje dziś w żadnej unii `*Problem`; nazwy ustali faza 9 i 10, po rozstrzygnięciu właścicielki. Zapisane w pliku znalezisk.
-- **Fix**: Potwierdzić albo zmienić nazwy kodów w fazach 9 i 10 razem z testem i plikiem znalezisk.
+- **Location**: src/lib/card-engines.test.ts (A5-a, A5-b)
+- **Detail**: `expectedCode` dla A5 (`runs-mismatch` dla krótkiego wiersza i rozbitych znaczków) nie istnieje dziś w żadnej unii `*Problem`; nazwy ustali faza 9. R-9 rozstrzygnięty opcją B (2026-11-06), przypadek usunięty. Zapisane w pliku znalezisk.
+- **Fix**: Potwierdzić albo zmienić nazwy kodów w fazie 9 razem z testem i plikiem znalezisk.
 - **Decision**: PENDING
 
 ## Uwaga procesowa

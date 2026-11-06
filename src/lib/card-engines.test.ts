@@ -614,12 +614,6 @@ const dictationAdapter: Adapter<DictationCardSettings, DictationCard> = {
     open.commands = open.commands.slice(0, -1);
     const shifted = clone(base);
     shifted.start = { col: shifted.start.col + 1, row: shifted.start.row };
-    // R-9: the same outline walked from the next vertex. The set of walked edges is unchanged, so the guard says yes.
-    const [first, ...rest] = clone(base).commands;
-    const step = { right: [1, 0], left: [-1, 0], down: [0, 1], up: [0, -1] }[first.direction];
-    const moved = clone(base);
-    moved.commands = [...rest, first];
-    moved.start = { col: moved.start.col + step[0] * first.length, row: moved.start.row + step[1] * first.length };
     return [
       { name: "commands that do not return to the start", card: open, settings, expectedCode: "not-closed" },
       {
@@ -627,13 +621,6 @@ const dictationAdapter: Adapter<DictationCardSettings, DictationCard> = {
         card: shifted,
         settings,
         expectedCode: "not-the-outline",
-      },
-      {
-        name: "R-9 the start is not the top-left of the silhouette",
-        card: moved,
-        settings,
-        expectedCode: "start-not-top-left",
-        todo: "R-9",
       },
     ];
   },
@@ -695,15 +682,11 @@ void describe("card engine inventory: coverage", () => {
     }
   });
 
-  void test("the todo probes of the nonogram and the dictation pass today's guard too", () => {
+  void test("the todo probes of the easy nonogram pass today's guard too", () => {
     const easy = nonogramAdapter.knownBad().filter((bad) => bad.todo !== undefined);
-    const start = dictationAdapter.knownBad().filter((bad) => bad.todo !== undefined);
-    assert.equal(easy.length + start.length, 3);
+    assert.equal(easy.length, 2);
     for (const bad of easy) {
       assert.deepEqual(nonogramAdapter.problems(bad.card, bad.settings), [], bad.name);
-    }
-    for (const bad of start) {
-      assert.deepEqual(dictationAdapter.problems(bad.card, bad.settings), [], bad.name);
     }
   });
 
