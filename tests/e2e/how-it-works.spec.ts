@@ -91,8 +91,14 @@ test("the footer link is not printed", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await page.goto("/maze");
   const link = page.getByRole("link", { name: "Jak to działa", exact: true });
+  const feedback = page.getByRole("link", { name: /^Podziel się opinią/ });
   await expect(link).toBeVisible();
+  await expect(feedback).toBeVisible();
+  // GitHub 292: the anonymous form opens outside the app, in a new tab.
+  await expect(feedback).toHaveAttribute("href", /^https:\/\/forms\.gle\//);
+  await expect(feedback).toHaveAttribute("target", "_blank");
 
   await page.emulateMedia({ media: "print" });
   await expect(link).toBeHidden();
+  await expect(feedback).toBeHidden();
 });
