@@ -665,8 +665,8 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [x] 2.1 `npm test` zielone, w tym C1–C8 i bramka kosztu
-- [x] 2.2 `npx astro check` zielone, a usunięcie `@ts-expect-error` przy C9 daje błąd kompilacji
+- [x] 2.1 `npm test` zielone, w tym C1–C8 i bramka kosztu — 25f712e
+- [x] 2.2 `npx astro check` zielone, a usunięcie `@ts-expect-error` przy C9 daje błąd kompilacji — 25f712e
 - [x] 2.3 `npm run lint` zielone
 
 ### Phase 3: SheetState i przyczyna niepowodzenia
