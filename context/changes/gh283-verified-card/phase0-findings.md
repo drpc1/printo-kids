@@ -52,3 +52,7 @@ PRD mówi, że rozwiązanie łatwego poziomu jest jedno „z samej konstrukcji�
 - Opcja B: uznać „jednoznaczność z konstrukcji” za wystarczającą; przypadki A5-a i A5-b zamieniają się w test dokumentujący tę zasadę i znikają z `todo`.
 
 **Rozstrzygnięcie (2026-11-06): właścicielka nie ma zdania i zostawiła wybór mnie; przyjmuję opcję A.** Dwa sprawdzenia trafiają do `nonogramSpec.problems` w fazie 9, przypadki A5-a i A5-b zostają jako `todo` do tego czasu.
+
+### Bramka kosztu `require` (faza 2, 2026-11-06)
+
+Pomiar `VerifiedCard.require` (`structuredClone` + rekurencyjne zamrożenie, `problems` puste) na największych dzisiejszych kartach, mediana z 9 przebiegów: labirynt Poziom 6 ok. 1,7 ms, dyktando trudne ok. 0,4 ms, nonogram trudny ok. 0,05 ms, sudoku 9×9 trudny ok. 0,04 ms. Budżet to 20 ms, więc **kopię i zamrożenie zostawiamy** (C6 pozostaje „zmiana wejściowej karty po `require` nie zmienia `verified.card`"). Silniki z faz 4–10 mogą wołać `require` na każdym zwycięzcy bez przechodzenia na `check`; test bramki w `card-contract.test.ts` pilnuje budżetu.
