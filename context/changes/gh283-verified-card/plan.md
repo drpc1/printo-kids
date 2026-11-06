@@ -652,10 +652,10 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [ ] 1.1 `npm test` zielone (przypadki znalezisk jako `todo`, nie jako błędy)
-- [ ] 1.2 `src/lib/card-engines.test.ts` jest na liście skryptu `test` (strażnik `test-script.test.ts` zielony)
-- [ ] 1.3 `npm run lint` i `npx astro check` zielone
-- [ ] 1.4 `git diff --stat main` nie dotyka plików produkcyjnych w `src/` poza `src/lib/card-engines.test.ts`
+- [x] 1.1 `npm test` zielone (przypadki znalezisk jako `todo`, nie jako błędy) — 0a3d77a
+- [x] 1.2 `src/lib/card-engines.test.ts` jest na liście skryptu `test` (strażnik `test-script.test.ts` zielony) — 0a3d77a
+- [x] 1.3 `npm run lint` i `npx astro check` zielone — 0a3d77a
+- [x] 1.4 `git diff --stat main` nie dotyka plików produkcyjnych w `src/` poza `src/lib/card-engines.test.ts` — 0a3d77a
 
 #### Manual
 
