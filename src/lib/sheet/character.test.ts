@@ -75,7 +75,6 @@ void describe("character catalog", () => {
     const generator = readRepoFile("src/components/WorksheetGenerator.tsx");
 
     assert.equal(generator.includes("characterSheetSrc("), true);
-    assert.match(generator, /generateMaze\(level, Math\.random\)/);
 
     for (const row of CHARACTER_CHOICES) {
       if (row.src === null) {

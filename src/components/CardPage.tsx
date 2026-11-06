@@ -1,7 +1,8 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Printer } from "lucide-react";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { ProfileCorner } from "@/components/ProfileCorner";
+import { ReprintDialog } from "@/components/ReprintDialog";
 import { RememberedNote } from "@/components/RememberedNote";
 import { Button } from "@/components/ui/button";
 import type { ProfileCornerHandlers } from "@/hooks/useChildProfileVisit";
@@ -35,6 +36,9 @@ export function CardPage({
   generateFailed,
   failedText = DEFAULT_FAILED_TEXT,
   printDisabled = false,
+  printedBefore = false,
+  onRegenerate,
+  onPrinted,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
@@ -53,7 +57,20 @@ export function CardPage({
   failedText?: string;
   /** True while the shown bar has no card to print (the maze after a level change it could not lay out). */
   printDisabled?: boolean;
+  /** True while the shown card was already sent to print: Drukuj then asks before printing it again. */
+  printedBefore?: boolean;
+  /** What Generuj does; "Nowa karta i drukuj" calls it and prints once the new card is shown. */
+  onRegenerate?: () => void;
+  /** Called right before every print (button, dialog, Ctrl+P) so the page can mark the card printed. Idempotent. */
+  onPrinted?: () => void;
 }) {
+  const [reprintOpen, setReprintOpen] = useState(false);
+  const printAfterRender = useRef(false);
+  const onPrintedRef = useRef(onPrinted);
+  useEffect(() => {
+    onPrintedRef.current = onPrinted;
+  });
+
   useEffect(() => {
     const main = document.getElementById("worksheet-home");
     if (main === null) {
@@ -82,8 +99,53 @@ export function CardPage({
     onGenerate();
   }
 
-  function handlePrint(): void {
+  // Ctrl+P and the browser menu print what is on the page; they cannot be interrupted, but they mark the card printed.
+  useEffect(() => {
+    const mark = (): void => onPrintedRef.current?.();
+    window.addEventListener("beforeprint", mark);
+    return () => {
+      window.removeEventListener("beforeprint", mark);
+    };
+  }, []);
+
+  // "Nowa karta i drukuj": print only after the new card is on the page (it is not printed any more, or it is not
+  // showing), and not at all when it could not be laid out.
+  useEffect(() => {
+    if (!printAfterRender.current || (printedBefore && !printDisabled)) {
+      return;
+    }
+    printAfterRender.current = false;
+    if (!printDisabled) {
+      onPrintedRef.current?.();
+      window.print();
+    }
+  }, [printedBefore, printDisabled]);
+
+  function printNow(): void {
+    onPrintedRef.current?.();
     window.print();
+  }
+
+  function handlePrint(): void {
+    if (printedBefore) {
+      setReprintOpen(true);
+      return;
+    }
+    printNow();
+  }
+
+  function handlePrintSame(): void {
+    setReprintOpen(false);
+    printNow();
+  }
+
+  function handlePrintNew(): void {
+    setReprintOpen(false);
+    if (waitingForChild || onRegenerate === undefined) {
+      return;
+    }
+    printAfterRender.current = true;
+    onRegenerate();
   }
 
   // One row for every card, before and after the first card. A phone wraps it into lines that start at the left edge
@@ -146,6 +208,12 @@ export function CardPage({
         </div>
       )}
       {sheet}
+      <ReprintDialog
+        open={reprintOpen}
+        onOpenChange={setReprintOpen}
+        onNewCard={handlePrintNew}
+        onSameCard={handlePrintSame}
+      />
     </div>
   );
 }

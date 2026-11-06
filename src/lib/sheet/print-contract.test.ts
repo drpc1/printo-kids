@@ -93,7 +93,7 @@ void describe("print contract", () => {
     assert.deepEqual(classNamesContaining(generator, "print:hidden"), ["max-h-[calc(100dvh-2rem)] print:hidden"]);
     assertCardPageShell(generator);
     // A level change the maze cannot lay out leaves the bar without a card; Drukuj must stay off then.
-    assert.match(generator, /printDisabled=\{maze === null\}/);
+    assert.match(generator, /printDisabled={view.kind !== "showing"}/);
     assert.deepEqual(classNamesContaining(readRepoFile(CARD_PAGE), "print:hidden"), [
       "flex w-full flex-col gap-3 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",

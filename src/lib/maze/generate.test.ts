@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, mock, test } from "node:test";
-import { countPaths, generateCandidate, generateMaze, mazeForSheet, scoreMaze, type Maze } from "./generate.ts";
+import { countPaths, generateCandidate, generateMaze, scoreMaze, type Maze } from "./generate.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, levelById, type LevelId, type MazePoint } from "./levels.ts";
 
 // Mutation runs (stryker/*.config.json) set MUTATION_RUN=1: instrumented code is several times slower, so a wall-clock
@@ -286,70 +286,6 @@ void describe("countPaths", () => {
   });
 });
 
-void describe("mazeForSheet", () => {
-  void test("returns null for a fully walled 13 by 16 grid", () => {
-    const maze = cloneMaze(generateMaze(DEFAULT_LEVEL_ID, mulberry32(1)));
-    for (const row of maze.cells) {
-      for (const cell of row) {
-        cell.north = true;
-        cell.east = true;
-        cell.south = true;
-        cell.west = true;
-      }
-    }
-    assert.equal(countPaths(maze, maze.entrance, maze.exit), 0);
-    assert.equal(mazeForSheet(maze, DEFAULT_LEVEL_ID), null);
-  });
-
-  void test("returns null when path counting stops at 2", () => {
-    const maze = fullyOpen(generateMaze(DEFAULT_LEVEL_ID, mulberry32(1)));
-    assert.equal(countPaths(maze, maze.entrance, maze.exit), 2);
-    assert.equal(mazeForSheet(maze, DEFAULT_LEVEL_ID), null);
-  });
-
-  void test("returns null when the maze grid is not the level grid", () => {
-    const maze = generateMaze("lat5", mulberry32(1));
-    assert.equal(countPaths(maze, maze.entrance, maze.exit), 1);
-    assert.equal(mazeForSheet(maze, "lat3"), null);
-  });
-
-  void test("returns null when the exit is not in one of the level's exit columns", () => {
-    const level = levelById("lat5");
-    const maze = cloneMaze(generateMaze("lat5", mulberry32(1)));
-    const wrong = level.entrance.col;
-    assert.ok(!level.exitColumns.includes(wrong));
-    maze.cells[maze.exit.row][maze.exit.col].south = true;
-    maze.exit = { row: maze.height - 1, col: wrong };
-    maze.cells[maze.exit.row][maze.exit.col].south = false;
-    assert.equal(mazeForSheet(maze, "lat5"), null);
-  });
-
-  void test("returns null when the exit is not in the bottom row", () => {
-    const maze = cloneMaze(generateMaze("lat5", mulberry32(1)));
-    maze.exit = { row: maze.height - 2, col: maze.exit.col };
-    assert.equal(mazeForSheet(maze, "lat5"), null);
-  });
-
-  void test("returns null when the entrance is not in the level's entrance row", () => {
-    const maze = cloneMaze(generateMaze("lat5", mulberry32(1)));
-    maze.entrance = { row: 1, col: maze.entrance.col };
-    assert.equal(mazeForSheet(maze, "lat5"), null);
-  });
-
-  void test("returns null when the entrance is not the level's entrance", () => {
-    const maze = cloneMaze(generateMaze("lat5", mulberry32(1)));
-    maze.entrance = { row: 0, col: maze.entrance.col + 1 };
-    assert.equal(mazeForSheet(maze, "lat5"), null);
-  });
-
-  void test("returns the same maze when one path exists", () => {
-    for (const level of LEVELS) {
-      const maze = generateMaze(level.id, mulberry32(1));
-      assert.equal(mazeForSheet(maze, level.id), maze, level.id);
-    }
-  });
-});
-
 const SAMPLE_SEEDS = 100;
 void describe("mutation gaps in the maze core", () => {
   void test("Poziom 1 draws the short Kruskal route, not a winding one", () => {
@@ -371,13 +307,6 @@ void describe("mutation gaps in the maze core", () => {
   void test("two routes that share a cell after they split are both counted", () => {
     const maze = diamondWithTail();
     assert.equal(countPaths(maze, maze.entrance, maze.exit), 2);
-  });
-
-  void test("a candidate of the wrong width or the wrong height is not a sheet", () => {
-    const maze = generateMaze("lat5", mulberry32(1));
-    assert.equal(mazeForSheet(maze, "lat5"), maze);
-    assert.equal(mazeForSheet({ ...maze, width: maze.width + 1 }, "lat5"), null);
-    assert.equal(mazeForSheet({ ...maze, height: maze.height + 1 }, "lat5"), null);
   });
 
   void test("a dead end that turns sideways still counts as deep", () => {

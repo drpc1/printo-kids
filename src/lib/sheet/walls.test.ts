@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { generateMaze, type Maze, type MazeCell } from "../maze/generate.ts";
+import { mazeEngine } from "../maze/engine.ts";
+import type { Maze, MazeCell } from "../maze/generate.ts";
 import { collectWalls } from "./walls.ts";
 
 const closed: MazeCell = { north: true, east: true, south: true, west: true };
@@ -43,7 +44,7 @@ void describe("collectWalls", () => {
   });
 
   void test("a generated maze has unique walls that stay inside the maze frame", () => {
-    const maze = generateMaze("lat5", () => 0.5);
+    const maze = mazeEngine.generate({ level: "lat5" }, () => 0.5, null).card;
     const size = 7;
     const walls = collectWalls(maze, 3, 4, size);
     const lines = geometry(walls);
