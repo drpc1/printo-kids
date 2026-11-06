@@ -5,32 +5,35 @@
 
 ## What & Why
 
-Każda karta obiecuje jedną sprawdzalną odpowiedź (PRD, „Po MVP”), ale siedem generatorów pilnuje tego osobno, z różnymi sygnaturami, a labirynt robi to w komponencie i przepuszcza 5 znanych wadliwych stanów (sonda D02). Wprowadzamy jeden kontrakt: karta w UI to `VerifiedCard`, której nie da się zbudować bez sprawdzenia rodzaju, a rejestr `CARD_ENGINES` nie kompiluje się bez silnika każdego rodzaju. S-34..S-36 urodzą się w tym kontrakcie.
+Każda karta obiecuje jedną sprawdzalną odpowiedź (PRD, „Po MVP”), ale siedem generatorów pilnuje tego osobno, z różnymi sygnaturami, a labirynt robi to w komponencie i przepuszcza 5 znanych wadliwych stanów (sonda D02). Wprowadzamy jeden kontrakt: karta w UI to `VerifiedCard`, której nie da się zbudować bez sprawdzenia rodzaju, a rejestr `CARD_ENGINES` nie kompiluje się bez silnika każdego rodzaju. S-34..S-36 urodzą się w tym kontrakcie. Ten sam stan strony pilnuje drugiego niezmiennika, I-9 (decyzja właścicielki 2026-11-06): karta na ekranie odpowiada ustawieniom na pasku albo jest wyłączona, bo wydruk tej samej karty z inną postacią dał dziecku dwa takie same zadania.
 
 ## Starting Point
 
-Generatory zwracają `Karta | null`. Siedem komponentów trzyma własne flagi `generateFailed` i pokazuje jeden tekst bez przyczyny. `CARD_KINDS` ma `id: string`, a ustawienia rodzajów są już typowane w `CardSettingsMap` (`card-settings.ts:57`). Nieudane Generuj zostawia dziś starą kartę drukowalną.
+Generatory zwracają `Karta | null`. Siedem komponentów trzyma własne flagi `generateFailed` i pokazuje jeden tekst bez przyczyny. `CARD_KINDS` ma `id: string`, a ustawienia rodzajów są już typowane w `CardSettingsMap` (`card-settings.ts:57`). Nieudane Generuj zostawia dziś starą kartę drukowalną, a zmiana kategorii albo postaci zostawia starą kartę z nowym napisem lub nową postacią (I-9 łamane).
 
 ## Desired End State
 
-Każda strona karty dostaje karty wyłącznie z `CARD_ENGINES` i trzyma stan w `SheetState` (`idle` / `showing` / `unavailable`). Nieudane Generuj albo zmiana poziomu przy pokazanej karcie wyłącza druk i pokazuje rodzicowi krótką przyczynę. Labirynt sprawdza 10 kodów, w tym osiągalność wszystkich komórek. Dopisanie rodzaju bez silnika łamie `astro check`, a import surowego generatora z UI łamie `depcruise`.
+Każda strona karty dostaje karty wyłącznie z `CARD_ENGINES` i trzyma stan w `SheetState` (`idle` / `showing` / `unavailable`). Nieudane Generuj albo zmiana poziomu przy pokazanej karcie wyłącza druk i pokazuje rodzicowi krótką przyczynę. Zmiana kategorii albo postaci przy pokazanej karcie robi ją nieaktualną (bez arkusza i druku) do następnego Generuj; poziom generuje od razu jak dziś, kolory i „Pokaż rozwiązanie” zostawiają tę samą kartę. Labirynt sprawdza 10 kodów, w tym osiągalność wszystkich komórek. Dopisanie rodzaju bez silnika łamie `astro check`, a import surowego generatora z UI łamie `depcruise`.
 
 ## Key Decisions Made
 
-| Decision                                | Choice                                                                                                               | Why (1 sentence)                                                                            | Source          |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------- |
-| Zakres                                  | Fazy D02 0–3 i 3b; D02 4–6 osobno, poza dwoma zdaniami PRD o dyktandzie                                              | Zdania PRD:341 i :815 przeczą decyzji 7.2, więc nie mogą czekać                             | Research / Plan |
-| Nieudane Generuj                        | Wyłącza kartę (`unavailable`) i pokazuje przyczynę                                                                   | Decyzje właścicielki 7.2 i 7.5                                                              | Research        |
-| Osiągalność komórek labiryntu           | Reguła produktu, kod `unreachable-cells`                                                                             | Decyzja właścicielki 7.4                                                                    | Research        |
-| Szlaczki, R-9, A5                       | Kontrakt neutralny; R-9 i A5 rozstrzyga właścicielka po fazie 1                                                      | Decyzje 7.1 i 7.3                                                                           | Research        |
-| Faza 3b (`SheetState`)                  | Włączona, przed migracją komponentów                                                                                 | Zmianę zachowania pisze się raz i testuje bez Reacta, zamiast w 7 komponentach (delegowane) | Plan            |
-| Podział na PR-y                         | Pionowo: kontrakt → stan → labirynt → 6 rodzajów → rejestr; jeden PR na fazę                                         | Każdy PR zostawia działający produkt, bez martwego kodu (delegowane)                        | Plan            |
-| Czerwone testy fazy 0                   | `todo` + `phase0-findings.md`; test „brak `todo`” w fazie 11                                                         | CI na `main` zielone, a znaleziska nie giną (delegowane)                                    | Plan            |
-| Typowanie rejestru                      | Typ mapowany `CardEngine<CardSettingsOf<K>, CardTypeMap[K]>`, bez `any`                                              | `CardSettingsOf` już istnieje                                                               | Plan            |
-| Kopia i zamrożenie                      | `structuredClone` + głębokie zamrożenie, bramka < 20 ms na największej karcie; inaczej zamrożenie bez kopii          | Koszt nie był mierzony (D02 §9)                                                             | Plan            |
-| Druga kontrola w silnikach próbkujących | `require` na wyniku; gdy wyjdzie poza budżet czasu, pętla na `check`                                                 | Zachowuje generatory bez zmian, chyba że koszt zabroni (sudoku 9×9)                         | Plan            |
-| Strict mode                             | Silnik w handlerze, `setSheet(gotowa wartość)`                                                                       | Updater wołany dwa razy zużywałby losowość                                                  | Plan            |
-| Tekst przyczyny                         | `CardExhausted`: tekst per rodzaj z poziomem i kategorią; `CardInvariantError`: jeden tekst „błąd aplikacji” z kodem | Wystarcza do decyzji 7.5 bez tabeli tekstów dla każdego kodu                                | Plan            |
+| Decision                                | Choice                                                                                                                                          | Why (1 sentence)                                                                            | Source                 |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------- |
+| Zakres                                  | Fazy D02 0–3 i 3b; D02 4–6 osobno, poza dwoma zdaniami PRD o dyktandzie                                                                         | Zdania PRD:341 i :815 przeczą decyzji 7.2, więc nie mogą czekać                             | Research / Plan        |
+| Nieudane Generuj                        | Wyłącza kartę (`unavailable`) i pokazuje przyczynę                                                                                              | Decyzje właścicielki 7.2 i 7.5                                                              | Research               |
+| Osiągalność komórek labiryntu           | Reguła produktu, kod `unreachable-cells`                                                                                                        | Decyzja właścicielki 7.4                                                                    | Research               |
+| Szlaczki, R-9, A5                       | Kontrakt neutralny; R-9 i A5 rozstrzyga właścicielka po fazie 1                                                                                 | Decyzje 7.1 i 7.3                                                                           | Research               |
+| Faza 3b (`SheetState`)                  | Włączona, przed migracją komponentów                                                                                                            | Zmianę zachowania pisze się raz i testuje bez Reacta, zamiast w 7 komponentach (delegowane) | Plan                   |
+| Podział na PR-y                         | Pionowo: kontrakt → stan → labirynt → 6 rodzajów → rejestr; jeden PR na fazę                                                                    | Każdy PR zostawia działający produkt, bez martwego kodu (delegowane)                        | Plan                   |
+| Czerwone testy fazy 0                   | `todo` + `phase0-findings.md`; test „brak `todo`” w fazie 11                                                                                    | CI na `main` zielone, a znaleziska nie giną (delegowane)                                    | Plan                   |
+| Typowanie rejestru                      | Typ mapowany `CardEngine<CardSettingsOf<K>, CardTypeMap[K]>`, bez `any`                                                                         | `CardSettingsOf` już istnieje                                                               | Plan                   |
+| Kopia i zamrożenie                      | `structuredClone` + głębokie zamrożenie, bramka < 20 ms na największej karcie; inaczej zamrożenie bez kopii                                     | Koszt nie był mierzony (D02 §9)                                                             | Plan                   |
+| Druga kontrola w silnikach próbkujących | `require` na wyniku; gdy wyjdzie poza budżet czasu, pętla na `check`                                                                            | Zachowuje generatory bez zmian, chyba że koszt zabroni (sudoku 9×9)                         | Plan                   |
+| Strict mode                             | Silnik w handlerze, `setSheet(gotowa wartość)`                                                                                                  | Updater wołany dwa razy zużywałby losowość                                                  | Plan                   |
+| I-9: karta odpowiada paskowi            | Odcisk ustawień „treść” (`CardSpec.contentKey`) + postać w `showing`; różnica → widok `stale`; tabela „ustawienie → skutek” dla 7 kart w planie | Liczone z odcisku, więc żadna ścieżka (pasek, profil, własny obrazek) go nie omija          | Owner (opcja B) / Plan |
+| Kategoria i postać                      | Karta nieaktualna do Generuj, nie nowa od razu; poziom i treść sudoku generują od razu jak dziś                                                 | Najmniej zmian w PRD (US-20 „obowiązuje przy następnym Generuj” zostaje prawdą)             | Plan                   |
+| PRD dla I-9                             | US-20, US-21, US-22 w PR fazy 3, bez osobnego PR; US-08 bez zmian                                                                               | Reguła wchodzi razem ze stanem, który ją definiuje                                          | Plan                   |
+| Tekst przyczyny                         | `CardExhausted`: tekst per rodzaj z poziomem i kategorią; `CardInvariantError`: jeden tekst „błąd aplikacji” z kodem                            | Wystarcza do decyzji 7.5 bez tabeli tekstów dla każdego kodu                                | Plan                   |
 
 ## Scope
 
@@ -44,6 +47,7 @@ Każda strona karty dostaje karty wyłącznie z `CARD_ENGINES` i trzyma stan w `
 - skrypt miniatur
 - test zbiorczy `card-engines.test.ts`
 - dwa zdania PRD o dyktandzie
+- I-9: `contentKey` w każdym spec, widok `stale`, zmiany PRD US-20, US-21, US-22
 
 **Out of scope:**
 
@@ -65,7 +69,7 @@ Autor rodzaju pisze `CardSpec` (`problems`, `keyOf`, `knownBad`) i `CardEngine`,
 | ---------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------- |
 | 1. Inwentaryzacja                                                | Test zbiorczy + `knownBad` 7 kart, `todo` i plik znalezisk  | Znalezisk może być więcej niż R-9/A5                          |
 | 2. Kontrakt                                                      | `card-contract.ts`, C1–C9, bramka kosztu                    | Strip-types nie przyjmuje właściwości parametrów konstruktora |
-| 3. SheetState                                                    | Przejścia N16, przyczyna N15                                | Brzmienie tekstów dla rodzica                                 |
+| 3. SheetState                                                    | Przejścia N16, przyczyna N15, I-9 (N17), PRD US-20/21/22    | Brzmienie tekstów dla rodzica                                 |
 | 4. Labirynt                                                      | `mazeSpec` (10 kodów), silnik, komponent, miniatury         | Miniatura musi zostać bajt w bajt                             |
 | 5–10. Pieniądze, symetria, sekwencje, sudoku, nonogram, dyktando | Silnik + komponent na `SheetState` per rodzaj               | Koszt drugiej kontroli (sudoku 9×9); tryb katalogowy dyktanda |
 | 11. Rejestr i domknięcie                                         | `CARD_KINDS as const`, `CARD_ENGINES`, depcruise, pełne e2e | Zgodność `CardKindId` i `CardSettingsId`                      |
@@ -83,10 +87,12 @@ Autor rodzaju pisze `CardSpec` (`problems`, `keyOf`, `knownBad`) i `CardEngine`,
 - Faza 1 może znaleźć luki poza R-9 i A5. Każda dostaje wiersz w `phase0-findings.md` i fazę, która ją zamyka.
 - R-9 (start dyktanda) i A5 (łatwy nonogram) zależą od decyzji właścicielki po fazie 1. Plan ma oba warianty w fazach 9 i 10.
 - Zmiany zachowania po nieudanym Generuj nie pilnuje dziś żadne e2e. Pilnują jej testy N16 i ręczne sprawdzenie.
+- Między fazą 3 a 10 PRD opisuje I-9, a strony jeszcze nie przeniesione działają po staremu.
 - Do fazy 11 nic nie wymusza, że nowa karta dostanie silnik. S-34..S-36 powinny wejść po fazie 11 albo same dopisać silnik.
 
 ## Success Criteria (Summary)
 
 - Każda karta pokazana rodzicowi przeszła sprawdzenie swojego rodzaju. Wadliwa karta albo wyczerpane próby dają przyczynę zamiast starej karty do druku.
 - Nowy rodzaj karty nie wejdzie do katalogu bez silnika i `knownBad` (kompilator i depcruise).
-- Zachowanie i wygląd kart poza przypadkiem niepowodzenia są bez zmian (e2e, miniatury, ręczny przegląd).
+- Rodzic nie wydrukuje karty, która nie odpowiada paskowi (inna postać albo kategoria niż na karcie).
+- Zachowanie i wygląd kart poza przypadkiem niepowodzenia i I-9 są bez zmian (e2e, miniatury, ręczny przegląd).
