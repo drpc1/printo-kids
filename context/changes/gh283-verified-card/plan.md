@@ -785,11 +785,11 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [ ] 11.1 `npm test`, `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
-- [ ] 11.2 `npm run smoke` na zbudowanym podglądzie zielone
-- [ ] 11.3 Pełne e2e Chromium z `E2E_PORT` zielone
-- [ ] 11.4 Rodzaj w `CARD_KINDS` bez silnika daje błąd `npx astro check`
-- [ ] 11.5 Import `generateSymmetryCard` w komponencie daje błąd `npm run depcruise`
+- [x] 11.1 `npm test`, `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone (1fda051)
+- [x] 11.2 `npm run smoke` na zbudowanym podglądzie zielone (1fda051)
+- [x] 11.3 Pełne e2e Chromium z `E2E_PORT` zielone (1fda051)
+- [x] 11.4 Rodzaj w `CARD_KINDS` bez silnika daje błąd `npx astro check` (1fda051)
+- [x] 11.5 Import `generateSymmetryCard` w komponencie daje błąd `npm run depcruise` (1fda051)
 
 #### Manual
 
