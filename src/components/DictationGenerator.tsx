@@ -8,11 +8,21 @@ import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { DictationSettings } from "@/lib/card-settings";
-import { generateDictationCard, type DictationCard } from "@/lib/dictation/generate";
+import { dictationEngine, dictationSpec } from "@/lib/dictation/engine";
+import type { DictationCard } from "@/lib/dictation/generate";
 import { dictationCellSize, layoutDictationSheet } from "@/lib/dictation/layout";
-import { DICTATION_LEVELS, dictationLevelById, type DictationLevelId } from "@/lib/dictation/levels";
+import { DICTATION_LEVELS, dictationLevelById } from "@/lib/dictation/levels";
 import { walkCommands } from "@/lib/dictation/outline";
 import { DICTATION_SHEET, formatDictationCommand } from "@/lib/dictation/sheet";
+import {
+  applySettings,
+  failureReason,
+  generateSheet,
+  markPrinted,
+  sheetView,
+  type SheetState,
+} from "@/lib/sheet-state";
+import { OBJECT_CATEGORY_CHOICES } from "@/lib/symmetry/templates";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -20,52 +30,37 @@ import { cn } from "@/lib/utils";
  * The graphic dictation page: Generuj, the level and category buttons, the card, Drukuj, and the shared profile corner.
  * It has no colors; the chosen character stands by the instruction on the card and says it. The level and the category come from `useCardSettings` (the active
  * profile's, or the device's) and every change is remembered at once, the solution switch is not. The page never
- * touches the maze's last-used parameters; it only keeps the bar values the profile corner shows. A profile switch
- * with a card shown draws a new card when the level or the category changed.
+ * touches the maze's last-used parameters; it only keeps the bar values the profile corner shows. The card is a `SheetState`: a
+ * level or category change, and a profile switch that changed them, draws a new card for the new bar.
  */
 export default function DictationGenerator() {
   const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [showSolution, setShowSolution] = useState(false);
-  const [card, setCard] = useState<DictationCard | null>(null);
-  const [generateFailed, setGenerateFailed] = useState(false);
+  const [solutionFor, setSolutionFor] = useState<string | null>(null);
+  const [sheet, setSheet] = useState<SheetState<DictationCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("dyktando", visit, handleProfileSwitch);
   const { level: levelId, category: categoryId } = memory.settings;
-  const sheetShown = card !== null;
-
-  function generateFor(settings: DictationSettings): void {
-    const next = generateDictationCard(
-      Math.random,
-      card?.key ?? null,
-      dictationLevelById(settings.level),
-      settings.category,
-    );
-    if (next === null) {
-      setGenerateFailed(true);
-      return;
-    }
-    setGenerateFailed(false);
-    setShowSolution(false);
-    setCard(next);
-  }
+  const view = sheetView(sheet, dictationSpec.contentKey(memory.settings));
+  const card = view.verified?.card ?? null;
+  // Tied to the card it was turned on for, so every new card (Generuj, level, category, "Nowa karta") starts with it off.
+  const showSolution = card !== null && solutionFor === card.key;
 
   function handleGenerate(): void {
-    generateFor(memory.settings);
+    setSheet(generateSheet(sheet, dictationEngine, memory.settings, Math.random));
   }
 
-  function handleLevelSelect(id: DictationLevelId): void {
-    const next = memory.remember({ level: id });
-    if (card !== null && !waitingForChild) {
-      generateFor(next);
+  function handleSettingChange(change: Partial<DictationSettings>): void {
+    if (waitingForChild) {
+      return;
     }
+    const next = memory.remember(change);
+    setSheet(applySettings(sheet, dictationEngine, next, Math.random));
   }
 
-  function handleProfileSwitch(next: DictationSettings, previous: DictationSettings): void {
-    if (card !== null && (next.level !== previous.level || next.category !== previous.category)) {
-      generateFor(next);
-    }
+  function handleProfileSwitch(next: DictationSettings): void {
+    setSheet(applySettings(sheet, dictationEngine, next, Math.random));
   }
 
   const characterControl = (
@@ -86,7 +81,9 @@ export default function DictationGenerator() {
       levels={DICTATION_LEVELS}
       open={levelOpen}
       onOpenChange={setLevelOpen}
-      onSelect={handleLevelSelect}
+      onSelect={(level) => {
+        handleSettingChange({ level });
+      }}
       disabled={waitingForChild}
     />
   );
@@ -96,13 +93,19 @@ export default function DictationGenerator() {
       open={categoryOpen}
       onOpenChange={setCategoryOpen}
       onSelect={(category) => {
-        memory.remember({ category });
+        handleSettingChange({ category });
       }}
       disabled={waitingForChild}
     />
   );
   const solutionControl = (
-    <SettingToggle label="Pokaż rozwiązanie" checked={showSolution} onCheckedChange={setShowSolution} />
+    <SettingToggle
+      label="Pokaż rozwiązanie"
+      checked={showSolution}
+      onCheckedChange={(next) => {
+        setSolutionFor(next && card !== null ? card.key : null);
+      }}
+    />
   );
   return (
     <CardPage
@@ -114,15 +117,29 @@ export default function DictationGenerator() {
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}
-      sheetShown={sheetShown}
-      generateFailed={generateFailed}
+      sheetShown={view.kind !== "idle"}
+      generateFailed={view.failure !== null}
+      failedText={
+        view.failure === null
+          ? undefined
+          : failureReason(view.failure, {
+              levelLabel: dictationLevelById(levelId).label,
+              categoryLabel: OBJECT_CATEGORY_CHOICES.find((choice) => choice.id === categoryId)?.label,
+            })
+      }
       onGenerate={handleGenerate}
+      printDisabled={view.kind !== "showing"}
+      printedBefore={view.printed}
+      onRegenerate={handleGenerate}
+      onPrinted={() => {
+        setSheet(markPrinted);
+      }}
       controls={
         <>
           {characterControl}
           {levelControl}
           {categoryControl}
-          {sheetShown ? solutionControl : null}
+          {card !== null ? solutionControl : null}
         </>
       }
       sheet={
@@ -202,6 +219,7 @@ function DictationSheet({
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
       aria-label="Dyktando graficzne"
+      data-card-key={card.key}
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {characterSrc !== null ? (

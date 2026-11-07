@@ -7,8 +7,9 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { CardExhausted } from "./card-contract.ts";
 import type { CardSettingsOf, DictationSettings, NonogramSettings, SudokuCardSettings } from "./card-settings.ts";
-import { DICTATION_LEVELS, dictationLevelById } from "./dictation/levels.ts";
-import { dictationCardProblems, generateDictationCard, type DictationCard } from "./dictation/generate.ts";
+import { dictationEngine, dictationSpec } from "./dictation/engine.ts";
+import type { DictationCard } from "./dictation/generate.ts";
+import { DICTATION_LEVELS } from "./dictation/levels.ts";
 import { mazeEngine, mazeSpec } from "./maze/engine.ts";
 import type { Maze } from "./maze/generate.ts";
 import { LEVELS } from "./maze/levels.ts";
@@ -127,18 +128,6 @@ function describeAdapter<S, C>(adapter: Adapter<S, C>): void {
       }
     });
   });
-}
-
-function generated<S, C>(adapter: Pick<Adapter<S, C>, "generate">, settings: S, seed: number): C {
-  const card = adapter.generate(settings, mulberry32(seed), null);
-  if (card === null) {
-    throw new Error(`no card for seed ${seed}`);
-  }
-  return card;
-}
-
-function clone<T>(value: T): T {
-  return structuredClone(value);
 }
 
 // ---------------------------------------------------------------- maze
@@ -273,29 +262,19 @@ const dictationAdapter: Adapter<DictationCardSettings, DictationCard> = {
     CATEGORIES.map((category): DictationCardSettings => ({ level: level.id, category })),
   ),
   label: (settings) => `${settings.level}/${settings.category}`,
-  generate: (settings, random, previousKey) =>
-    generateDictationCard(random, previousKey, dictationLevelById(settings.level), settings.category),
-  problems: (card) => dictationCardProblems(card),
-  keyOf: (card) => card.key,
+  generate: (settings, random, previousKey) => {
+    try {
+      return dictationEngine.generate(settings, random, previousKey).card;
+    } catch (error) {
+      if (error instanceof CardExhausted) return null;
+      throw error;
+    }
+  },
+  problems: (card, settings) => dictationSpec.problems(card, settings).map((problem) => problem.code),
+  keyOf: (card) => dictationSpec.keyOf(card),
   usesPreviousKey: true,
   mayExhaust: (settings) => settings.category !== "wszystkie",
-  knownBad: () => {
-    const settings: DictationCardSettings = { level: "lat6", category: "wszystkie" };
-    const base = generated(dictationAdapter, settings, 3);
-    const open = clone(base);
-    open.commands = open.commands.slice(0, -1);
-    const shifted = clone(base);
-    shifted.start = { col: shifted.start.col + 1, row: shifted.start.row };
-    return [
-      { name: "commands that do not return to the start", card: open, settings, expectedCode: "not-closed" },
-      {
-        name: "a start that moves the whole walk off the outline",
-        card: shifted,
-        settings,
-        expectedCode: "not-the-outline",
-      },
-    ];
-  },
+  knownBad: () => dictationSpec.knownBad,
 };
 
 // ---------------------------------------------------------------- money
