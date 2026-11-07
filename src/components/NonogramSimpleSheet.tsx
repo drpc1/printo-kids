@@ -59,6 +59,7 @@ export function NonogramSimpleSheet({
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
       aria-label="Nonogram ze znaczkami"
+      data-card-key={card.key}
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {characterSrc !== null ? (

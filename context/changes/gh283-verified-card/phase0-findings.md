@@ -56,3 +56,8 @@ PRD mówi, że rozwiązanie łatwego poziomu jest jedno „z samej konstrukcji�
 ### Bramka kosztu `require` (faza 2, 2026-11-06)
 
 Pomiar `VerifiedCard.require` (`structuredClone` + rekurencyjne zamrożenie, `problems` puste) na największych dzisiejszych kartach, mediana z 9 przebiegów: labirynt Poziom 6 ok. 1,7 ms, dyktando trudne ok. 0,4 ms, nonogram trudny ok. 0,05 ms, sudoku 9×9 trudny ok. 0,04 ms. Budżet to 20 ms, więc **kopię i zamrożenie zostawiamy** (C6 pozostaje „zmiana wejściowej karty po `require` nie zmienia `verified.card`"). Silniki z faz 4–10 mogą wołać `require` na każdym zwycięzcy bez przechodzenia na `check`; test bramki w `card-contract.test.ts` pilnuje budżetu.
+
+## Faza 9 (nonogram)
+
+- `VerifiedCard.require` liczy solver drugi raz na klasycznej karcie; trudny poziom: ≈10 ms na kartę (5 kart w teście), w budżecie, więc silnik zostaje przy `require`.
+- A5 zamknięte: `simpleNonogramProblems` odrzuca zbyt krótki wiersz i sąsiednie znaczki jednego tonu (`runs-mismatch`); oba `todo` zniknęły.
