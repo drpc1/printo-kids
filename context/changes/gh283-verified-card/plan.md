@@ -742,11 +742,11 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [ ] 8.1 `npm test` zielone; brak `todo` sudoku; czas 9×9 trudnego w budżecie
-- [ ] 8.2 `SudokuGenerator.tsx` importuje z `sudoku/generate` tylko typy
-- [ ] 8.3 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
-- [ ] 8.4 e2e `sudoku-*.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 8.6 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
+- [x] 8.1 `npm test` zielone; brak `todo` sudoku; czas 9×9 trudnego w budżecie (52fd26e)
+- [x] 8.2 `SudokuGenerator.tsx` importuje z `sudoku/generate` tylko typy (52fd26e)
+- [x] 8.3 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone (52fd26e)
+- [x] 8.4 e2e `sudoku-*.spec.ts` (Chromium, `E2E_PORT`) zielone (52fd26e)
+- [x] 8.6 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone (52fd26e)
 
 #### Manual
 
