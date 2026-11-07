@@ -31,7 +31,7 @@ export function ReprintDialog({
           <DialogTitle>Ta karta była już drukowana</DialogTitle>
           <DialogDescription>Dziecko dostanie to samo zadanie drugi raz. Ułożyć nową kartę?</DialogDescription>
         </DialogHeader>
-        <DialogFooter className={cn("mt-4 print:hidden")}>
+        <DialogFooter className={cn("translate-y-3 print:hidden")}>
           <Button type="button" variant="outline" onClick={onSameCard} className={cn("print:hidden")}>
             Drukuj tę samą
           </Button>
