@@ -694,7 +694,7 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [ ] 4.6 `/maze`: Generuj na każdym poziomie i druk A4 bez różnic wizualnych
+- [x] 4.6 `/maze`: Generuj na każdym poziomie i druk A4 bez różnic wizualnych
 - [ ] 4.7 Wymuszona porażka pokazuje przyczynę i wyłącza Drukuj
 - [ ] 4.9 Ostrzeżenie przy ponownym druku w prawdziwym oknie druku i na telefonie
 
@@ -709,7 +709,7 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [ ] 5.4 Strona „Kto ma więcej?”: Generuj na trzech poziomach i druk bez zmian wizualnych
+- [x] 5.4 Strona „Kto ma więcej?”: Generuj na trzech poziomach i druk bez zmian wizualnych
 
 ### Phase 6: Symetria pionowo
 
