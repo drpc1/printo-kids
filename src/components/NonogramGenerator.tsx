@@ -9,66 +9,61 @@ import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { NonogramSettings } from "@/lib/card-settings";
-import { generateNonogramCard, type NonogramCard } from "@/lib/nonogram/generate";
+import { nonogramEngine, nonogramSpec } from "@/lib/nonogram/engine";
+import type { NonogramCard } from "@/lib/nonogram/generate";
 import { blockLines, layoutNonogramSheet, longestClues } from "@/lib/nonogram/layout";
 import { NONOGRAM_SHEET } from "@/lib/nonogram/sheet";
-import { NONOGRAM_SIZES, nonogramSizeById, type NonogramSizeId } from "@/lib/nonogram/sizes";
+import { NONOGRAM_SIZES, nonogramSizeById } from "@/lib/nonogram/sizes";
+import {
+  applySettings,
+  failureReason,
+  generateSheet,
+  markPrinted,
+  sheetView,
+  type SheetState,
+} from "@/lib/sheet-state";
 import type { SimpleNonogramCard } from "@/lib/nonogram/simple";
+import { OBJECT_CATEGORY_CHOICES } from "@/lib/symmetry/templates";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 /**
  * The nonogram page: Generuj, the card, Drukuj, the level and category choices, the solution switch, and the shared
- * profile corner. It has no colors; the chosen character stands by the instruction on the card and says it. The level and the category come from `useCardSettings` (the
- * active profile's, or the device's) and every change is remembered at once, the solution switch is not. Changing the
- * level with a card shown draws a new card at that level, and so does a profile switch that changed the level or the
- * category. Switching the solution on redraws the same card; it never generates a
- * new one, and the page never shows the name of the hidden object.
+ * profile corner. It has no colors; the chosen character stands by the instruction on the card and says it. The level
+ * and the category come from `useCardSettings` (the active profile's, or the device's) and every change is remembered at
+ * once, the solution switch is not. The card is a `SheetState`: changing the level or the category with a card shown
+ * draws a new card for the new bar, and so does a profile switch that changed them. The solution switch is tied to the
+ * card it was turned on for, so every new card (Generuj, level, category, "Nowa karta") starts with it off; switching
+ * it on redraws the same card, and the page never shows the name of the hidden object.
  */
 export default function NonogramGenerator() {
   const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
-  const [showSolution, setShowSolution] = useState(false);
+  const [solutionFor, setSolutionFor] = useState<string | null>(null);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
-  const [card, setCard] = useState<NonogramCard | SimpleNonogramCard | null>(null);
-  const [generateFailed, setGenerateFailed] = useState(false);
+  const [sheet, setSheet] = useState<SheetState<NonogramCard | SimpleNonogramCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("nonogram", visit, handleProfileSwitch);
   const { level: sizeId, category: categoryId } = memory.settings;
-  const sheetShown = card !== null;
-
-  function generateFor(settings: NonogramSettings): void {
-    const next = generateNonogramCard(
-      Math.random,
-      card?.key ?? null,
-      nonogramSizeById(settings.level),
-      settings.category,
-    );
-    if (next === null) {
-      setGenerateFailed(true);
-      return;
-    }
-    setGenerateFailed(false);
-    // A new card starts the way the child sees it; the parent turns the solution on again to check it.
-    setShowSolution(false);
-    setCard(next);
-  }
+  const view = sheetView(sheet, nonogramSpec.contentKey(memory.settings));
+  const card = view.verified?.card ?? null;
+  // A new card starts the way the child sees it; the parent turns the solution on again to check it.
+  const showSolution = card !== null && solutionFor === card.key;
 
   function handleGenerate(): void {
-    generateFor(memory.settings);
+    setSheet(generateSheet(sheet, nonogramEngine, memory.settings, Math.random));
   }
 
-  function handleSizeSelect(id: NonogramSizeId): void {
-    const next = memory.remember({ level: id });
-    if (sheetShown) {
-      generateFor(next);
+  function handleSettingChange(change: Partial<NonogramSettings>): void {
+    if (waitingForChild) {
+      return;
     }
+    const next = memory.remember(change);
+    setSheet(applySettings(sheet, nonogramEngine, next, Math.random));
   }
 
-  function handleProfileSwitch(next: NonogramSettings, previous: NonogramSettings): void {
-    if (card !== null && (next.level !== previous.level || next.category !== previous.category)) {
-      generateFor(next);
-    }
+  function handleProfileSwitch(next: NonogramSettings): void {
+    setSheet(applySettings(sheet, nonogramEngine, next, Math.random));
   }
 
   const characterControl = (
@@ -91,7 +86,9 @@ export default function NonogramGenerator() {
       value={sizeId}
       open={sizeOpen}
       onOpenChange={setSizeOpen}
-      onSelect={handleSizeSelect}
+      onSelect={(level) => {
+        handleSettingChange({ level });
+      }}
       disabled={waitingForChild}
     />
   );
@@ -101,13 +98,19 @@ export default function NonogramGenerator() {
       open={categoryOpen}
       onOpenChange={setCategoryOpen}
       onSelect={(category) => {
-        memory.remember({ category });
+        handleSettingChange({ category });
       }}
       disabled={waitingForChild}
     />
   );
   const solutionControl = (
-    <SettingToggle label="Pokaż rozwiązanie" checked={showSolution} onCheckedChange={setShowSolution} />
+    <SettingToggle
+      label="Pokaż rozwiązanie"
+      checked={showSolution}
+      onCheckedChange={(next) => {
+        setSolutionFor(next && card !== null ? card.key : null);
+      }}
+    />
   );
   return (
     <CardPage
@@ -119,15 +122,29 @@ export default function NonogramGenerator() {
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}
-      sheetShown={sheetShown}
-      generateFailed={generateFailed}
+      sheetShown={view.kind !== "idle"}
+      generateFailed={view.failure !== null}
+      failedText={
+        view.failure === null
+          ? undefined
+          : failureReason(view.failure, {
+              levelLabel: nonogramSizeById(sizeId).label,
+              categoryLabel: OBJECT_CATEGORY_CHOICES.find((choice) => choice.id === categoryId)?.label,
+            })
+      }
       onGenerate={handleGenerate}
+      printDisabled={view.kind !== "showing"}
+      printedBefore={view.printed}
+      onRegenerate={handleGenerate}
+      onPrinted={() => {
+        setSheet(markPrinted);
+      }}
       controls={
         <>
           {characterControl}
           {sizeControl}
           {categoryControl}
-          {sheetShown ? solutionControl : null}
+          {card !== null ? solutionControl : null}
         </>
       }
       sheet={
@@ -197,6 +214,7 @@ function NonogramSheet({
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
       aria-label="Nonogram"
+      data-card-key={card.key}
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {characterSrc !== null ? (

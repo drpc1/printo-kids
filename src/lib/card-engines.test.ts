@@ -15,9 +15,8 @@ import { LEVELS } from "./maze/levels.ts";
 import { moneyEngine, moneySpec } from "./money/engine.ts";
 import { MONEY_LEVELS } from "./money/levels.ts";
 import type { MoneyCard } from "./money/rules.ts";
-import { generateNonogramCard, nonogramCardProblems, type NonogramCard } from "./nonogram/generate.ts";
-import { simpleNonogramProblems, type SimpleNonogramCard } from "./nonogram/simple.ts";
-import { NONOGRAM_SIZES, nonogramSizeById } from "./nonogram/sizes.ts";
+import { nonogramEngine, nonogramSpec, type AnyNonogramCard } from "./nonogram/engine.ts";
+import { NONOGRAM_SIZES } from "./nonogram/sizes.ts";
 import { sequenceEngine, sequenceSpec } from "./sequence/engine.ts";
 import type { SequenceCard } from "./sequence/generate.ts";
 import { SEQUENCE_LEVELS } from "./sequence/levels.ts";
@@ -243,73 +242,25 @@ const sudokuAdapter: Adapter<SudokuCardSettings, SudokuCard> = {
 
 // ---------------------------------------------------------------- nonogram
 
-type AnyNonogramCard = NonogramCard | SimpleNonogramCard;
-
 const nonogramAdapter: Adapter<NonogramSettings, AnyNonogramCard> = {
   kind: "nonogram",
   settingsList: NONOGRAM_SIZES.flatMap((size) =>
     CATEGORIES.map((category): NonogramSettings => ({ level: size.id, category })),
   ),
   label: (settings) => `${settings.level}/${settings.category}`,
-  generate: (settings, random, previousKey) =>
-    generateNonogramCard(random, previousKey, nonogramSizeById(settings.level), settings.category),
-  problems: (card) => (card.kind === "znaczki" ? simpleNonogramProblems(card) : nonogramCardProblems(card)),
-  keyOf: (card) => card.key,
+  generate: (settings, random, previousKey) => {
+    try {
+      return nonogramEngine.generate(settings, random, previousKey).card;
+    } catch (error) {
+      if (error instanceof CardExhausted) return null;
+      throw error;
+    }
+  },
+  problems: (card, settings) => nonogramSpec.problems(card, settings).map((problem) => problem.code),
+  keyOf: (card) => nonogramSpec.keyOf(card),
   usesPreviousKey: true,
   mayExhaust: (settings) => settings.category !== "wszystkie",
-  knownBad: () => {
-    const classic: NonogramSettings = { level: "sredni", category: "wszystkie" };
-    const easy: NonogramSettings = { level: "latwy", category: "wszystkie" };
-    const base = generated(nonogramAdapter, classic, 3);
-    const baseEasy = generated(nonogramAdapter, easy, 3);
-    if (base.kind !== "liczby" || baseEasy.kind !== "znaczki") {
-      throw new Error("fixture: wrong nonogram kinds");
-    }
-    const flipped = clone(base);
-    flipped.solution[0][0] = !flipped.solution[0][0];
-    const blank = clone(base);
-    blank.solution = blank.solution.map((row) => row.map(() => false));
-    // A5: today's guard checks the chips only against the tones, not against the row length or the chip shape.
-    const shortRow = clone(baseEasy);
-    shortRow.tones = shortRow.tones.map((row, index) => (index === 0 ? row.slice(0, -1) : row));
-    shortRow.runs = shortRow.tones.map((row) => {
-      const runs: SimpleNonogramCard["runs"][number] = [];
-      for (const tone of row) {
-        const last = runs[runs.length - 1] as SimpleNonogramCard["runs"][number][number] | undefined;
-        if (last?.tone === tone) last.count += 1;
-        else runs.push({ tone, count: 1 });
-      }
-      return runs;
-    });
-    const splitChips = clone(baseEasy);
-    const rowWithRun = splitChips.runs.findIndex((row) => row.some((run) => run.count >= 2));
-    const target = splitChips.runs[rowWithRun];
-    const at = target.findIndex((run) => run.count >= 2);
-    target.splice(at, 1, { tone: target[at].tone, count: 1 }, { tone: target[at].tone, count: target[at].count - 1 });
-    return [
-      {
-        name: "a flipped cell: clues no longer match the picture",
-        card: flipped,
-        settings: classic,
-        expectedCode: "clue-mismatch",
-      },
-      { name: "a picture without filled cells", card: blank, settings: classic, expectedCode: "no-filled-cell" },
-      {
-        name: "A5 easy: a row shorter than the grid is not rejected",
-        card: shortRow,
-        settings: easy,
-        expectedCode: "runs-mismatch",
-        todo: "A5-a",
-      },
-      {
-        name: "A5 easy: two chips of one tone in a row are not rejected",
-        card: splitChips,
-        settings: easy,
-        expectedCode: "runs-mismatch",
-        todo: "A5-b",
-      },
-    ];
-  },
+  knownBad: () => nonogramSpec.knownBad,
 };
 
 // ---------------------------------------------------------------- dictation
@@ -383,12 +334,10 @@ void describe("card engine inventory: coverage", () => {
     assert.ok(mazeAdapter.knownBad().length >= 11);
   });
 
-  void test("the todo probes of the easy nonogram pass today's guard too", () => {
-    const easy = nonogramAdapter.knownBad().filter((bad) => bad.todo !== undefined);
+  void test("the easy nonogram has no todo: its spec rejects a short row and split chips (phase 9)", () => {
+    const easy = nonogramAdapter.knownBad().filter((bad) => bad.settings.level === "latwy");
     assert.equal(easy.length, 2);
-    for (const bad of easy) {
-      assert.deepEqual(nonogramAdapter.problems(bad.card, bad.settings), [], bad.name);
-    }
+    assert.ok(nonogramAdapter.knownBad().every((bad) => bad.todo === undefined));
   });
 
   void test("all seven card kinds have an adapter", () => {

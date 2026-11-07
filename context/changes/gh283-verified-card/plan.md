@@ -756,10 +756,10 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [ ] 9.1 `npm test` zielone; brak `todo` nonogramu
-- [ ] 9.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
-- [ ] 9.3 e2e `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 9.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
+- [x] 9.1 `npm test` zielone; brak `todo` nonogramu (d0d2cf4)
+- [x] 9.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone (d0d2cf4)
+- [x] 9.3 e2e `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone (d0d2cf4)
+- [x] 9.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone (d0d2cf4)
 
 #### Manual
 
