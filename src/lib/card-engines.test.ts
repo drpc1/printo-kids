@@ -18,8 +18,9 @@ import type { MoneyCard } from "./money/rules.ts";
 import { generateNonogramCard, nonogramCardProblems, type NonogramCard } from "./nonogram/generate.ts";
 import { simpleNonogramProblems, type SimpleNonogramCard } from "./nonogram/simple.ts";
 import { NONOGRAM_SIZES, nonogramSizeById } from "./nonogram/sizes.ts";
-import { generateSequenceCard, sequenceCardProblems, type SequenceCard } from "./sequence/generate.ts";
-import { SEQUENCE_LEVELS, sequenceLevelById } from "./sequence/levels.ts";
+import { sequenceEngine, sequenceSpec } from "./sequence/engine.ts";
+import type { SequenceCard } from "./sequence/generate.ts";
+import { SEQUENCE_LEVELS } from "./sequence/levels.ts";
 import { generateSudokuCard, sudokuCardProblems, type SudokuCard } from "./sudoku/generate.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
 import { symmetryEngine, symmetrySpec } from "./symmetry/engine.ts";
@@ -189,30 +190,19 @@ const sequenceAdapter: Adapter<SequenceSettings, SequenceCard> = {
   kind: "sekwencje",
   settingsList: SEQUENCE_LEVELS.map((level): SequenceSettings => ({ level: level.id, colors: false })),
   label: (settings) => settings.level,
-  generate: (settings, random, previousKey) =>
-    generateSequenceCard(random, previousKey, sequenceLevelById(settings.level)),
-  problems: (card, settings) => sequenceCardProblems(card, sequenceLevelById(settings.level)),
-  keyOf: (card) => card.key,
+  generate: (settings, random, previousKey) => {
+    try {
+      return sequenceEngine.generate(settings, random, previousKey).card;
+    } catch (error) {
+      if (error instanceof CardExhausted) return null;
+      throw error;
+    }
+  },
+  problems: (card, settings) => sequenceSpec.problems(card, settings).map((problem) => problem.code),
+  keyOf: (card) => sequenceSpec.keyOf(card),
   usesPreviousKey: true,
   mayExhaust: () => false,
-  knownBad: () => {
-    const settings: SequenceSettings = { level: "lat5", colors: false };
-    const base = generated(sequenceAdapter, settings, 3);
-    const duplicated = clone(base);
-    duplicated.rows = [duplicated.rows[0], duplicated.rows[0], ...duplicated.rows.slice(2)];
-    const unknown = clone(base);
-    unknown.rows = [
-      { ...unknown.rows[0], values: ["?" as never, ...unknown.rows[0].values.slice(1)] },
-      ...unknown.rows.slice(1),
-    ];
-    const noGaps = clone(base);
-    noGaps.rows = [{ ...noGaps.rows[0], gaps: [] }, ...noGaps.rows.slice(1)];
-    return [
-      { name: "the same row twice", card: duplicated, settings, expectedCode: "duplicate-row" },
-      { name: "an item that is no shape or number", card: unknown, settings, expectedCode: "unknown-item" },
-      { name: "a row without gaps", card: noGaps, settings, expectedCode: "gap-count" },
-    ];
-  },
+  knownBad: () => sequenceSpec.knownBad,
 };
 
 // ---------------------------------------------------------------- sudoku

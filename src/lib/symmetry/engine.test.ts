@@ -46,6 +46,15 @@ void describe("symmetryEngine", () => {
       (error: unknown) => error instanceof CardExhausted && error.kind === "symetria" && error.attempts > 0,
     );
   });
+
+  void test("a category without templates for the level is CardExhausted with no attempts (gh283 phase 6, F2)", () => {
+    // The catalog has no empty category today, so the test names one the catalog does not know: the filter finds nothing.
+    const settings = { level: "lat4", colors: false, category: "bez-szablonow" as never } as const;
+    assert.throws(
+      () => symmetryEngine.generate(settings, mulberry32(1), null),
+      (error: unknown) => error instanceof CardExhausted && error.kind === "symetria" && error.attempts === 0,
+    );
+  });
 });
 
 void describe("symmetrySpec", () => {

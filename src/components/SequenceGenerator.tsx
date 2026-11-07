@@ -7,8 +7,17 @@ import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { SequenceSettings } from "@/lib/card-settings";
+import {
+  applySettings,
+  failureReason,
+  generateSheet,
+  markPrinted,
+  sheetView,
+  type SheetState,
+} from "@/lib/sheet-state";
 import { sequenceShapeInk } from "@/lib/sequence/colors";
-import { generateSequenceCard, type SequenceCard } from "@/lib/sequence/generate";
+import { sequenceEngine, sequenceSpec } from "@/lib/sequence/engine";
+import type { SequenceCard } from "@/lib/sequence/generate";
 import { layoutSequenceSheet } from "@/lib/sequence/layout";
 import { SEQUENCE_LEVELS, sequenceLevelById, type SequenceLevelId } from "@/lib/sequence/levels";
 import { SEQUENCE_SHEET } from "@/lib/sequence/sheet";
@@ -21,44 +30,32 @@ import { cn } from "@/lib/utils";
  * profile corner. The chosen character stands by the instruction on the card and says it. The level and colors come
  * from `useCardSettings` (the active profile's, or the device's) and every change is remembered at once; the page never
  * touches the maze's last-used parameters, it only keeps the bar values the profile corner shows. Switching colors
- * redraws the same card; it never generates a new one. A profile switch with a card shown draws a new card when the
- * level changed.
+ * redraws the same card; it never generates a new one. The page keeps one `SheetState`: a level change (bar or profile
+ * switch) with a card shown draws a new card, a failed draw switches the card off with its reason, and Drukuj on a card
+ * that was already printed asks first.
  */
 export default function SequenceGenerator() {
   const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
-  const [card, setCard] = useState<SequenceCard | null>(null);
-  const [generateFailed, setGenerateFailed] = useState(false);
+  const [sheet, setSheet] = useState<SheetState<SequenceCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("sekwencje", visit, handleProfileSwitch);
   const { level: levelId, colors } = memory.settings;
-  const sheetShown = card !== null;
-
-  function generateFor(id: SequenceLevelId): void {
-    const next = generateSequenceCard(Math.random, card?.key ?? null, sequenceLevelById(id));
-    if (next === null) {
-      setGenerateFailed(true);
-      return;
-    }
-    setGenerateFailed(false);
-    setCard(next);
-  }
+  const view = sheetView(sheet, sequenceSpec.contentKey(memory.settings));
 
   function handleGenerate(): void {
-    generateFor(levelId);
+    setSheet(generateSheet(sheet, sequenceEngine, memory.settings, Math.random));
   }
 
   function handleLevelSelect(id: SequenceLevelId): void {
-    memory.remember({ level: id });
-    if (card !== null && !waitingForChild) {
-      generateFor(id);
+    const next = memory.remember({ level: id });
+    if (!waitingForChild) {
+      setSheet(applySettings(sheet, sequenceEngine, next, Math.random));
     }
   }
 
-  function handleProfileSwitch(next: SequenceSettings, previous: SequenceSettings): void {
-    if (card !== null && next.level !== previous.level) {
-      generateFor(next.level);
-    }
+  function handleProfileSwitch(next: SequenceSettings): void {
+    setSheet(applySettings(sheet, sequenceEngine, next, Math.random));
   }
 
   const characterControl = (
@@ -102,9 +99,20 @@ export default function SequenceGenerator() {
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}
-      sheetShown={sheetShown}
-      generateFailed={generateFailed}
+      sheetShown={view.kind !== "idle"}
+      generateFailed={view.failure !== null}
+      failedText={
+        view.failure === null
+          ? undefined
+          : failureReason(view.failure, { levelLabel: sequenceLevelById(levelId).label })
+      }
       onGenerate={handleGenerate}
+      printDisabled={view.kind !== "showing"}
+      printedBefore={view.printed}
+      onRegenerate={handleGenerate}
+      onPrinted={() => {
+        setSheet(markPrinted);
+      }}
       controls={
         <>
           {characterControl}
@@ -114,8 +122,13 @@ export default function SequenceGenerator() {
       }
       sheet={
         <>
-          {card !== null ? (
-            <SequenceSheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+          {view.verified !== null ? (
+            <SequenceSheet
+              card={view.verified.card}
+              colors={colors}
+              characterId={bar.character}
+              characterSrc={bar.characterSrc}
+            />
           ) : null}
         </>
       }
@@ -157,6 +170,7 @@ function SequenceSheet({
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
       aria-label="Sekwencje"
+      data-card-key={card.key}
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {characterSrc !== null ? (
