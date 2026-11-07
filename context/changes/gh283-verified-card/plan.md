@@ -793,5 +793,5 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [ ] 11.6 Siedem stron kart: Generuj, zmiana poziomu i druk A4 bez różnic wizualnych
-- [ ] 11.7 Na telefonie komunikat przyczyny nie zasłania Generuj ani Drukuj
+- [x] 11.6 Siedem stron kart: Generuj, zmiana poziomu i druk A4 bez różnic wizualnych
+- [x] 11.7 Na telefonie komunikat przyczyny nie zasłania Generuj ani Drukuj
