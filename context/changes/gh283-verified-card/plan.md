@@ -695,7 +695,7 @@ export const CARD_ENGINES = { … } satisfies {
 #### Manual
 
 - [x] 4.6 `/maze`: Generuj na każdym poziomie i druk A4 bez różnic wizualnych
-- [ ] 4.7 Wymuszona porażka pokazuje przyczynę i wyłącza Drukuj
+- [x] 4.7 Wymuszona porażka pokazuje przyczynę i wyłącza Drukuj — pominięte ręcznie (2026-11-07): labirynt nie zawodzi w praktyce, a `localStorage` nie wymusza porażki (zły poziom wraca do domyślnego); ścieżkę pokrywają testy `sheet-state`, komunikat sprawdza 11.7
 - [ ] 4.9 Ostrzeżenie przy ponownym druku w prawdziwym oknie druku i na telefonie
 
 ### Phase 5: Pieniądze pionowo
@@ -722,8 +722,8 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [ ] 6.4 `/symmetry`: Generuj w kilku kategoriach i poziomach, kolory zostawiają tę samą kartę
-- [ ] 6.6 `/symmetry`: zmiana kategorii od razu daje kartę z nowej kategorii
+- [x] 6.4 `/symmetry`: Generuj w kilku kategoriach i poziomach, kolory zostawiają tę samą kartę — Brave na komputerze, 2026-11-07
+- [x] 6.6 `/symmetry`: zmiana kategorii od razu daje kartę z nowej kategorii — Brave na komputerze, 2026-11-07
 
 ### Phase 7: Sekwencje pionowo
 
