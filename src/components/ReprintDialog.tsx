@@ -26,9 +26,11 @@ export function ReprintDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn("pb-3 print:hidden")}>
+      <DialogContent
+        className={cn("pb-3 print:hidden")}
+        header={<DialogTitle>Ta karta była już drukowana</DialogTitle>}
+      >
         <DialogHeader>
-          <DialogTitle>Ta karta była już drukowana</DialogTitle>
           <DialogDescription>Dziecko dostanie to samo zadanie drugi raz. Ułożyć nową kartę?</DialogDescription>
         </DialogHeader>
         <DialogFooter className={cn("mt-3 print:hidden")}>
