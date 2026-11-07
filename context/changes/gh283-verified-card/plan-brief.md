@@ -13,7 +13,7 @@ Generatory zwracają `Karta | null`. Siedem komponentów trzyma własne flagi `g
 
 ## Desired End State
 
-Każda strona karty dostaje karty wyłącznie z `CARD_ENGINES` i trzyma stan w `SheetState` (`idle` / `showing` / `unavailable`). Nieudane Generuj albo zmiana poziomu przy pokazanej karcie wyłącza druk i pokazuje rodzicowi krótką przyczynę. Poziom, rozmiar sudoku i kategoria przy pokazanej karcie od razu układają nową kartę; postać, kolory i „Pokaż rozwiązanie” zostawiają tę samą. Drukuj na karcie, która już była drukowana, pyta: „Nowa karta i drukuj” albo „Drukuj tę samą”. Labirynt sprawdza 10 kodów, w tym osiągalność wszystkich komórek. Dopisanie rodzaju bez silnika łamie `astro check`, a import surowego generatora z UI łamie `depcruise`.
+Każda strona karty dostaje karty wyłącznie z `CARD_ENGINES` i trzyma stan w `SheetState` (`idle` / `showing` / `unavailable`). Nieudane Generuj albo zmiana poziomu przy pokazanej karcie wyłącza druk i pokazuje rodzicowi krótką przyczynę. Poziom, rozmiar sudoku i kategoria przy pokazanej karcie od razu układają nową kartę; postać, kolory i „Pokaż rozwiązanie” zostawiają tę samą. Drukuj na karcie, która już była drukowana, pyta: „Nowa karta” albo „Drukuj tę samą”. Labirynt sprawdza 10 kodów, w tym osiągalność wszystkich komórek. Dopisanie rodzaju bez silnika łamie `astro check`, a import surowego generatora z UI łamie `depcruise`.
 
 ## Key Decisions Made
 
@@ -33,7 +33,7 @@ Każda strona karty dostaje karty wyłącznie z `CARD_ENGINES` i trzyma stan w `
 | I-9: zadanie odpowiada paskowi          | `CardSpec.contentKey` + `applySettings`: inny klucz treści → nowa karta od razu; tabela „ustawienie → skutek” dla 7 kart w planie | Jedna reguła dla rodzica: co zmienia zadanie, daje nową kartę; reszta zostawia tę samą         | Owner (2026-11-06) |
 | Kategoria                               | Nowa karta od razu, jak poziom (zamiast „nieaktualna do Generuj”)                                                                 | Spójne z poziomem; wygodne przeglądanie kategorii                                              | Owner (2026-11-06) |
 | Postać                                  | Ozdoba, zmienia się na pokazanej karcie jak dziś                                                                                  | Rodzic przegląda postacie przed drukiem; znikająca karta przeszkadzała                         | Owner (2026-11-06) |
-| Ponowny druk                            | `printed` z `beforeprint`; Drukuj na drukowanej karcie → okno „Nowa karta i drukuj” / „Drukuj tę samą”; Ctrl+P bez okna           | Łapie pomyłkę „zapomniałam przegenerować” tam, gdzie się zdarza, bez blokowania celowego druku | Owner (2026-11-06) |
+| Ponowny druk                            | `printed` z `beforeprint`; Drukuj na drukowanej karcie → okno „Nowa karta” / „Drukuj tę samą”; Ctrl+P bez okna                    | Łapie pomyłkę „zapomniałam przegenerować” tam, gdzie się zdarza, bez blokowania celowego druku | Owner (2026-11-06) |
 | PRD                                     | US-20, US-22 w PR fazy 3; zdania dyktanda PRD:341/815 w fazie 10; US-08, US-21 bez zmian                                          | Reguła wchodzi razem ze stanem, który ją definiuje                                             | Plan               |
 | Tekst przyczyny                         | `CardExhausted`: tekst per rodzaj z poziomem i kategorią; `CardInvariantError`: jeden tekst „błąd aplikacji” z kodem              | Wystarcza do decyzji 7.5 bez tabeli tekstów dla każdego kodu                                   | Plan               |
 

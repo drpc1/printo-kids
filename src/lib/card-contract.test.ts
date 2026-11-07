@@ -8,6 +8,7 @@ import {
   CardInvariantError,
   VerifiedCard,
   type CardEngine,
+  type CardKindId,
   type CardProblem,
   type CardSpec,
 } from "./card-contract.ts";
@@ -17,6 +18,9 @@ import { generateMaze } from "./maze/generate.ts";
 import { generateNonogramCard } from "./nonogram/generate.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
 import { generateSudokuCard } from "./sudoku/generate.ts";
+
+/** A kind that is not in the catalog: the contract works for any id the registry will ever have. */
+const TOY = "toy" as CardKindId;
 
 // Mutation runs (stryker/*.config.json) set MUTATION_RUN=1: instrumented code is several times slower, so a wall-clock
 // budget would kill mutants for the wrong reason. npm test keeps every time budget.
@@ -32,7 +36,7 @@ interface ToySettings {
 }
 
 const toySpec: CardSpec<ToySettings, ToyCard> = {
-  kind: "toy",
+  kind: TOY,
   problems: (card, settings) => {
     const problems: CardProblem[] = [];
     if (card.id > settings.limit) problems.push({ code: "id-too-big", detail: `id ${card.id} > ${settings.limit}` });
@@ -50,7 +54,7 @@ const settings: ToySettings = { limit: 5 };
 void describe("VerifiedCard", () => {
   void test("C1 require of a legal card returns it with the kind and the key", () => {
     const verified = VerifiedCard.require(toySpec, legal(), settings);
-    assert.equal(verified.kind, "toy");
+    assert.equal(verified.kind, TOY);
     assert.equal(verified.key, "toy-1");
     assert.deepEqual(verified.card, legal());
   });
@@ -62,7 +66,7 @@ void describe("VerifiedCard", () => {
       (error: unknown) => {
         assert.ok(error instanceof CardInvariantError);
         assert.equal(error.name, "CardInvariantError");
-        assert.equal(error.kind, "toy");
+        assert.equal(error.kind, TOY);
         assert.deepEqual(
           error.problems.map((problem) => problem.code),
           ["id-too-big", "no-cells"],
@@ -115,7 +119,7 @@ void describe("VerifiedCard", () => {
     // The constructor is private: removing the directive below must fail `npx astro check`. Never called.
     const forge = (): void => {
       // @ts-expect-error private constructor
-      new VerifiedCard("toy", legal(), "toy-1");
+      new VerifiedCard(TOY, legal(), "toy-1");
     };
     assert.equal(typeof forge, "function");
   });
@@ -146,7 +150,7 @@ void describe("CardEngine modes", () => {
       (error: unknown) => {
         assert.ok(error instanceof CardExhausted);
         assert.equal(error.name, "CardExhausted");
-        assert.equal(error.kind, "toy");
+        assert.equal(error.kind, TOY);
         assert.equal(error.attempts, 7);
         assert.ok(!(error instanceof CardInvariantError));
         return true;
@@ -190,7 +194,7 @@ void describe("VerifiedCard.require cost on the biggest cards", () => {
   function gate(name: string, card: unknown): void {
     void test(`${name}: median under ${BUDGET_MS} ms`, () => {
       const spec: CardSpec<null, unknown> = {
-        kind: name,
+        kind: name as CardKindId,
         problems: () => [],
         keyOf: () => name,
         contentKey: () => name,
