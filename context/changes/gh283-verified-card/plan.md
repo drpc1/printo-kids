@@ -750,7 +750,7 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [ ] 8.5 `/sudoku`: wszystkie rozmiary i poziomy, kształty i cyfry, kolory bez nowej planszy
+- [x] 8.5 `/sudoku`: wszystkie rozmiary i poziomy, kształty i cyfry, kolory bez nowej planszy — Brave na komputerze, 2026-11-07
 
 ### Phase 9: Nonogram pionowo
 
