@@ -59,13 +59,12 @@ export function CardPage({
   printDisabled?: boolean;
   /** True while the shown card was already sent to print: Drukuj then asks before printing it again. */
   printedBefore?: boolean;
-  /** What Generuj does; "Nowa karta i drukuj" calls it and prints once the new card is shown. */
+  /** What Generuj does; "Nowa karta" in the reprint dialog calls it. It does not print: the next Drukuj does. */
   onRegenerate?: () => void;
   /** Called right before every print (button, dialog, Ctrl+P) so the page can mark the card printed. Idempotent. */
   onPrinted?: () => void;
 }) {
   const [reprintOpen, setReprintOpen] = useState(false);
-  const printAfterRender = useRef(false);
   const onPrintedRef = useRef(onPrinted);
   useEffect(() => {
     onPrintedRef.current = onPrinted;
@@ -108,19 +107,9 @@ export function CardPage({
     };
   }, []);
 
-  // "Nowa karta i drukuj": print only after the new card is on the page (it is not printed any more, or it is not
-  // showing), and not at all when it could not be laid out.
-  useEffect(() => {
-    if (!printAfterRender.current || (printedBefore && !printDisabled)) {
-      return;
-    }
-    printAfterRender.current = false;
-    if (!printDisabled) {
-      onPrintedRef.current?.();
-      window.print();
-    }
-  }, [printedBefore, printDisabled]);
-
+  // Every window.print() runs synchronously inside the click that asked for it. Safari (iOS and macOS) blocks a print
+  // called outside a user gesture ("Automatyczne drukowanie w witrynie zostało zablokowane"), so nothing here prints
+  // from an effect or after a render. Marking the card first is a plain state update and does not end the gesture.
   function printNow(): void {
     onPrintedRef.current?.();
     window.print();
@@ -139,12 +128,13 @@ export function CardPage({
     printNow();
   }
 
-  function handlePrintNew(): void {
+  // "Nowa karta" lays out a new card and closes the dialog without printing. The new card is not printed yet, so the
+  // next Drukuj prints it at once, inside its own click.
+  function handleNewCard(): void {
     setReprintOpen(false);
     if (waitingForChild || onRegenerate === undefined) {
       return;
     }
-    printAfterRender.current = true;
     onRegenerate();
   }
 
@@ -211,7 +201,7 @@ export function CardPage({
       <ReprintDialog
         open={reprintOpen}
         onOpenChange={setReprintOpen}
-        onNewCard={handlePrintNew}
+        onNewCard={handleNewCard}
         onSameCard={handlePrintSame}
       />
     </div>

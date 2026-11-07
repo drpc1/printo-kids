@@ -1,7 +1,7 @@
 // Provenance: gh283-verified-card (phase 6; PRD US-20, US-22, I-9)
 // Protects the symmetry page's rules from the SheetState: a character change or the colors switch keeps the same card,
 // a category or level change draws a new one, and Drukuj on a card that was already printed asks "Ta karta była już
-// drukowana" first ("Nowa karta i drukuj" draws another card and prints it, "Drukuj tę samą" prints it as it is).
+// drukowana" first ("Nowa karta" draws another card and the next Drukuj prints it, "Drukuj tę samą" prints it as it is).
 // window.print is a counter here, so the real print dialog is not covered; the trial print in the plan does that.
 import { expect, test, type Page } from "@playwright/test";
 
@@ -53,16 +53,23 @@ test("the second Drukuj on one card asks first; Drukuj tę samą prints it uncha
   expect(await cardKey(page)).toBe(before);
 });
 
-test("Nowa karta i drukuj draws another card and prints it once", async ({ page }) => {
+test("Nowa karta draws another card without printing; the next Drukuj prints it at once", async ({ page }) => {
   await open(page);
   const before = await cardKey(page);
   await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await page.getByRole("button", { name: "Drukuj", exact: true }).click();
-  await page.getByRole("button", { name: "Nowa karta i drukuj" }).click();
+  await page.getByRole("button", { name: "Nowa karta", exact: true }).click();
+  await expect(page.getByText("Ta karta była już drukowana")).toHaveCount(0);
+  await expect.poll(() => cardKey(page)).not.toBe(before);
+  // Safari blocks a print that does not come straight from a click, so "Nowa karta" only lays out the card.
+  expect(await printCalls(page)).toBe(1);
+  // The new card was not printed yet: Drukuj prints it without asking, and only the Drukuj after that asks again.
+  await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await expect.poll(() => printCalls(page)).toBe(2);
-  expect(await cardKey(page)).not.toBe(before);
+  await expect(page.getByText("Ta karta była już drukowana")).toHaveCount(0);
   await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await expect(page.getByText("Ta karta była już drukowana")).toBeVisible();
+  expect(await printCalls(page)).toBe(2);
 });
 
 test("a category change draws a card of the new category and clears the printed mark", async ({ page }) => {
