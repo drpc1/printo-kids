@@ -715,10 +715,10 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [ ] 6.1 `npm test` zielone; brak `todo` symetrii; test czasu symetrii zielony
-- [ ] 6.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
-- [ ] 6.3 e2e `symmetry-colors.spec.ts`, `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 6.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
+- [x] 6.1 `npm test` zielone; brak `todo` symetrii; test czasu symetrii zielony — 19b8c74
+- [x] 6.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone — 19b8c74
+- [x] 6.3 e2e `symmetry-colors.spec.ts`, `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone — 19b8c74
+- [x] 6.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone — 19b8c74
 
 #### Manual
 

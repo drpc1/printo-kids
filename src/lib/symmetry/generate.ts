@@ -41,7 +41,7 @@ export type SymmetryProblem =
   | "hint-count-mismatch";
 
 /** Draws again at most this many times before giving up, so a single possible card cannot loop forever. */
-const MAX_ATTEMPTS = 20;
+export const MAX_ATTEMPTS = 20;
 
 /**
  * A valid card of the level, from the objects of the category, whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. The key includes the row offset, so the same picture one row lower counts as a new card.
