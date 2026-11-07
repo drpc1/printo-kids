@@ -763,18 +763,18 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [ ] 9.4 `/nonogram`: trzy poziomy, kategorie, „Pokaż rozwiązanie” jak przed zmianą
-- [ ] 9.6 `/nonogram`: zmiana kategorii od razu daje kartę z nowej kategorii
+- [x] 9.4 `/nonogram`: trzy poziomy, kategorie, „Pokaż rozwiązanie” jak przed zmianą
+- [x] 9.6 `/nonogram`: zmiana kategorii od razu daje kartę z nowej kategorii
 
 ### Phase 10: Dyktando pionowo
 
 #### Automated
 
-- [ ] 10.1 `npm test` zielone; brak `todo` dyktanda; test czasu dyktanda zielony
-- [ ] 10.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
-- [ ] 10.3 e2e `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 10.4 PRD nie zawiera zdania „Nieudane Generuj zostawia”
-- [ ] 10.6 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
+- [x] 10.1 `npm test` zielone; brak `todo` dyktanda; test czasu dyktanda zielony (f7977d4)
+- [x] 10.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone (f7977d4)
+- [x] 10.3 e2e `card-settings.spec.ts`, `level-bar.spec.ts` (Chromium, `E2E_PORT`) zielone (f7977d4)
+- [x] 10.4 PRD nie zawiera zdania „Nieudane Generuj zostawia” (f7977d4)
+- [x] 10.6 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone (f7977d4)
 
 #### Manual
 

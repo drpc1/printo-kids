@@ -61,3 +61,8 @@ Pomiar `VerifiedCard.require` (`structuredClone` + rekurencyjne zamrożenie, `pr
 
 - `VerifiedCard.require` liczy solver drugi raz na klasycznej karcie; trudny poziom: ≈10 ms na kartę (5 kart w teście), w budżecie, więc silnik zostaje przy `require`.
 - A5 zamknięte: `simpleNonogramProblems` odrzuca zbyt krótki wiersz i sąsiednie znaczki jednego tonu (`runs-mismatch`); oba `todo` zniknęły.
+
+## Faza 10 (dyktando)
+
+- R-9 (opcja B) wykonane: PRD bez zdania o lewym górnym rogu, spec nie sprawdza startu.
+- Zimne wywołanie silnika dla trzech poziomów (budowa katalogów) mieści się w teście < 15 s.
