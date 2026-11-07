@@ -36,7 +36,7 @@ export function ReprintDialog({
             Drukuj tę samą
           </Button>
           <Button type="button" onClick={onNewCard} className={cn("print:hidden")}>
-            Nowa karta i drukuj
+            Nowa karta
           </Button>
         </DialogFooter>
       </DialogContent>
