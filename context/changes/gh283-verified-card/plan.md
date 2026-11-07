@@ -729,10 +729,10 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Automated
 
-- [ ] 7.1 `npm test` zielone; brak `todo` sekwencji
-- [ ] 7.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone
-- [ ] 7.3 e2e `sequence-colors.spec.ts`, `card-settings.spec.ts` (Chromium, `E2E_PORT`) zielone
-- [ ] 7.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone
+- [x] 7.1 `npm test` zielone; brak `todo` sekwencji (1e5b7c7)
+- [x] 7.2 `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` zielone (1e5b7c7)
+- [x] 7.3 e2e `sequence-colors.spec.ts`, `card-settings.spec.ts` (Chromium, `E2E_PORT`) zielone (1e5b7c7)
+- [x] 7.5 I-9 i druk: test `contentKey` i e2e (postać, ostrzeżenie przy ponownym druku) zielone (1e5b7c7)
 
 #### Manual
 
