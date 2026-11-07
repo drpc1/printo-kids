@@ -22,8 +22,9 @@ import { generateSequenceCard, sequenceCardProblems, type SequenceCard } from ".
 import { SEQUENCE_LEVELS, sequenceLevelById } from "./sequence/levels.ts";
 import { generateSudokuCard, sudokuCardProblems, type SudokuCard } from "./sudoku/generate.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
-import { generateSymmetryCard, mirrorAnswer, symmetryCardProblems, type SymmetryCard } from "./symmetry/generate.ts";
-import { SYMMETRY_LEVELS, symmetryLevelById } from "./symmetry/levels.ts";
+import { symmetryEngine, symmetrySpec } from "./symmetry/engine.ts";
+import type { SymmetryCard } from "./symmetry/generate.ts";
+import { SYMMETRY_LEVELS } from "./symmetry/levels.ts";
 import { OBJECT_CATEGORY_CHOICES, type ObjectCategoryChoiceId } from "./symmetry/templates.ts";
 
 function mulberry32(seed: number): () => number {
@@ -165,36 +166,19 @@ const symmetryAdapter: Adapter<SymmetrySettings, SymmetryCard> = {
     CATEGORIES.map((category): SymmetrySettings => ({ level: level.id, colors: false, category })),
   ),
   label: (settings) => `${settings.level}/${settings.category}`,
-  generate: (settings, random, previousKey) =>
-    generateSymmetryCard(random, previousKey, symmetryLevelById(settings.level), settings.category),
-  problems: (card) => symmetryCardProblems(card),
-  keyOf: (card) => card.key,
+  generate: (settings, random, previousKey) => {
+    try {
+      return symmetryEngine.generate(settings, random, previousKey).card;
+    } catch (error) {
+      if (error instanceof CardExhausted) return null;
+      throw error;
+    }
+  },
+  problems: (card, settings) => symmetrySpec.problems(card, settings).map((problem) => problem.code),
+  keyOf: (card) => symmetrySpec.keyOf(card),
   usesPreviousKey: true,
   mayExhaust: (settings) => settings.category !== "wszystkie",
-  knownBad: () => {
-    const settings: SymmetrySettings = { level: "lat4", colors: false, category: "wszystkie" };
-    const base = generated(symmetryAdapter, settings, 3);
-    const answer = mirrorAnswer(base);
-    const wrongHint = {
-      ...base.hints[0],
-      color: base.hints[0].color === "red" ? "blue" : "red",
-    } as SymmetryCard["hints"][number];
-    return [
-      { name: "no filled cell", card: { ...clone(base), cells: [] }, settings, expectedCode: "no-filled-cell" },
-      {
-        name: "hints reveal the whole answer",
-        card: { ...clone(base), hints: [...answer] },
-        settings,
-        expectedCode: "hints-reveal-all",
-      },
-      {
-        name: "a hint outside the answer",
-        card: { ...clone(base), hints: [wrongHint, ...base.hints.slice(1)] },
-        settings,
-        expectedCode: "hint-not-in-answer",
-      },
-    ];
-  },
+  knownBad: () => symmetrySpec.knownBad,
 };
 
 // ---------------------------------------------------------------- sequences

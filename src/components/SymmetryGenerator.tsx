@@ -8,8 +8,18 @@ import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { SymmetrySettings } from "@/lib/card-settings";
+import {
+  applySettings,
+  failureReason,
+  generateSheet,
+  markPrinted,
+  sheetView,
+  type SheetState,
+} from "@/lib/sheet-state";
 import { symmetryDrawnCells } from "@/lib/symmetry/colors";
-import { generateSymmetryCard, type SymmetryCard } from "@/lib/symmetry/generate";
+import { symmetryEngine, symmetrySpec } from "@/lib/symmetry/engine";
+import type { SymmetryCard } from "@/lib/symmetry/generate";
+import { OBJECT_CATEGORY_CHOICES, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
 import { SYMMETRY_LEVELS, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
@@ -21,50 +31,40 @@ import { cn } from "@/lib/utils";
  * shared profile corner. The chosen character stands by the instruction on the card and says it. The level, category and colors come from `useCardSettings`: the
  * active profile's (or the device's), and every change is remembered at once. The page never touches the maze's
  * last-used parameters; it only keeps the bar values the profile corner shows. Switching colors redraws the same
- * card; it never generates a new one. A profile switch with a card shown draws a new card when the level or the
- * category changed.
+ * card; it never generates a new one. The page keeps one `SheetState`: a level or category change (bar or profile
+ * switch) with a card shown draws a new card, a failed draw switches the card off with its reason, and Drukuj on a card
+ * that was already printed asks first.
  */
 export default function SymmetryGenerator() {
   const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [card, setCard] = useState<SymmetryCard | null>(null);
-  const [generateFailed, setGenerateFailed] = useState(false);
+  const [sheet, setSheet] = useState<SheetState<SymmetryCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("symetria", visit, handleProfileSwitch);
   const { level: levelId, category: categoryId, colors } = memory.settings;
-  const sheetShown = card !== null;
-
-  function generateFor(settings: SymmetrySettings): void {
-    const next = generateSymmetryCard(
-      Math.random,
-      card?.key ?? null,
-      symmetryLevelById(settings.level),
-      settings.category,
-    );
-    if (next === null) {
-      setGenerateFailed(true);
-      return;
-    }
-    setGenerateFailed(false);
-    setCard(next);
-  }
+  const view = sheetView(sheet, symmetrySpec.contentKey(memory.settings));
 
   function handleGenerate(): void {
-    generateFor(memory.settings);
+    setSheet(generateSheet(sheet, symmetryEngine, memory.settings, Math.random));
   }
 
   function handleLevelSelect(id: SymmetryLevelId): void {
     const next = memory.remember({ level: id });
-    if (card !== null && !waitingForChild) {
-      generateFor(next);
+    if (!waitingForChild) {
+      setSheet(applySettings(sheet, symmetryEngine, next, Math.random));
     }
   }
 
-  function handleProfileSwitch(next: SymmetrySettings, previous: SymmetrySettings): void {
-    if (card !== null && (next.level !== previous.level || next.category !== previous.category)) {
-      generateFor(next);
+  function handleCategorySelect(category: ObjectCategoryChoiceId): void {
+    const next = memory.remember({ category });
+    if (!waitingForChild) {
+      setSheet(applySettings(sheet, symmetryEngine, next, Math.random));
     }
+  }
+
+  function handleProfileSwitch(next: SymmetrySettings): void {
+    setSheet(applySettings(sheet, symmetryEngine, next, Math.random));
   }
 
   const characterControl = (
@@ -94,9 +94,7 @@ export default function SymmetryGenerator() {
       categoryId={categoryId}
       open={categoryOpen}
       onOpenChange={setCategoryOpen}
-      onSelect={(category) => {
-        memory.remember({ category });
-      }}
+      onSelect={handleCategorySelect}
       disabled={waitingForChild}
     />
   );
@@ -119,9 +117,23 @@ export default function SymmetryGenerator() {
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}
-      sheetShown={sheetShown}
-      generateFailed={generateFailed}
+      sheetShown={view.kind !== "idle"}
+      generateFailed={view.failure !== null}
+      failedText={
+        view.failure === null
+          ? undefined
+          : failureReason(view.failure, {
+              levelLabel: symmetryLevelById(levelId).label,
+              categoryLabel: OBJECT_CATEGORY_CHOICES.find((choice) => choice.id === categoryId)?.label,
+            })
+      }
       onGenerate={handleGenerate}
+      printDisabled={view.kind !== "showing"}
+      printedBefore={view.printed}
+      onRegenerate={handleGenerate}
+      onPrinted={() => {
+        setSheet(markPrinted);
+      }}
       controls={
         <>
           {characterControl}
@@ -132,8 +144,13 @@ export default function SymmetryGenerator() {
       }
       sheet={
         <>
-          {card !== null ? (
-            <SymmetrySheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+          {view.verified !== null ? (
+            <SymmetrySheet
+              card={view.verified.card}
+              colors={colors}
+              characterId={bar.character}
+              characterSrc={bar.characterSrc}
+            />
           ) : null}
         </>
       }
@@ -177,6 +194,7 @@ function SymmetrySheet({
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
       aria-label="Symetria"
+      data-card-key={card.key}
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {characterSrc !== null ? (
