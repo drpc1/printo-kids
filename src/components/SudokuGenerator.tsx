@@ -6,10 +6,20 @@ import { SettingToggle } from "@/components/SettingToggle";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { SudokuCardSettings } from "@/lib/card-settings";
+import {
+  applySettings,
+  failureReason,
+  generateSheet,
+  markPrinted,
+  sheetView,
+  type SheetState,
+} from "@/lib/sheet-state";
 import { SudokuChoice } from "@/components/SudokuChoice";
 import { SudokuSymbolsChoice } from "@/components/SudokuSymbolsChoice";
 import { sudokuShapeInk } from "@/lib/sudoku/colors";
-import { generateSudokuCard, sudokuBlock, type SudokuCard } from "@/lib/sudoku/generate";
+import { sudokuBlock } from "@/lib/sudoku/block";
+import { sudokuEngine, sudokuSpec } from "@/lib/sudoku/engine";
+import type { SudokuCard } from "@/lib/sudoku/generate";
 import { layoutSudokuSheet, sudokuDigitBaselineY } from "@/lib/sudoku/layout";
 import { layoutSudokuShapeList } from "@/lib/sudoku/shape-list";
 import {
@@ -38,24 +48,13 @@ export default function SudokuGenerator() {
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [sizeOpen, setSizeOpen] = useState(false);
   const [levelOpen, setLevelOpen] = useState(false);
-  const [card, setCard] = useState<SudokuCard | null>(null);
-  const [generateFailed, setGenerateFailed] = useState(false);
+  const [sheet, setSheet] = useState<SheetState<SudokuCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("sudoku", visit, handleProfileSwitch);
   const { colors, ...settings } = memory.settings;
-  const sheetShown = card !== null;
-
-  function generateFor(next: SudokuSettings): void {
-    const nextCard = generateSudokuCard(Math.random, card?.key ?? null, next);
-    if (nextCard === null) {
-      setGenerateFailed(true);
-      return;
-    }
-    setGenerateFailed(false);
-    setCard(nextCard);
-  }
+  const view = sheetView(sheet, sudokuSpec.contentKey(memory.settings));
 
   function handleGenerate(): void {
-    generateFor(settings);
+    setSheet(generateSheet(sheet, sudokuEngine, memory.settings, Math.random));
   }
 
   function handleSettingChange(change: Partial<SudokuSettings>): void {
@@ -63,18 +62,11 @@ export default function SudokuGenerator() {
       return;
     }
     const next = memory.remember(change);
-    if (card !== null) {
-      generateFor(next);
-    }
+    setSheet(applySettings(sheet, sudokuEngine, next, Math.random));
   }
 
-  function handleProfileSwitch(next: SudokuCardSettings, previous: SudokuCardSettings): void {
-    if (
-      card !== null &&
-      (next.size !== previous.size || next.level !== previous.level || next.symbols !== previous.symbols)
-    ) {
-      generateFor(next);
-    }
+  function handleProfileSwitch(next: SudokuCardSettings): void {
+    setSheet(applySettings(sheet, sudokuEngine, next, Math.random));
   }
 
   // The level rows say how many cells are empty for the current size.
@@ -150,14 +142,34 @@ export default function SudokuGenerator() {
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}
-      sheetShown={sheetShown}
-      generateFailed={generateFailed}
+      sheetShown={view.kind !== "idle"}
+      generateFailed={view.failure !== null}
+      failedText={
+        view.failure === null
+          ? undefined
+          : failureReason(view.failure, {
+              levelLabel: sudokuHasLevels(settings.size)
+                ? (SUDOKU_LEVELS.find((option) => option.id === settings.level)?.label ?? settings.level)
+                : `${settings.size}×${settings.size}`,
+            })
+      }
       onGenerate={handleGenerate}
+      printDisabled={view.kind !== "showing"}
+      printedBefore={view.printed}
+      onRegenerate={handleGenerate}
+      onPrinted={() => {
+        setSheet(markPrinted);
+      }}
       controls={<>{settingsControls}</>}
       sheet={
         <>
-          {card !== null ? (
-            <SudokuSheet card={card} colors={colors} characterId={bar.character} characterSrc={bar.characterSrc} />
+          {view.verified !== null ? (
+            <SudokuSheet
+              card={view.verified.card}
+              colors={colors}
+              characterId={bar.character}
+              characterSrc={bar.characterSrc}
+            />
           ) : null}
         </>
       }
@@ -210,6 +222,7 @@ function SudokuSheet({
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
       aria-label="Sudoku"
+      data-card-key={card.key}
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {characterSrc !== null ? (

@@ -21,7 +21,8 @@ import { NONOGRAM_SIZES, nonogramSizeById } from "./nonogram/sizes.ts";
 import { sequenceEngine, sequenceSpec } from "./sequence/engine.ts";
 import type { SequenceCard } from "./sequence/generate.ts";
 import { SEQUENCE_LEVELS } from "./sequence/levels.ts";
-import { generateSudokuCard, sudokuCardProblems, type SudokuCard } from "./sudoku/generate.ts";
+import { sudokuEngine, sudokuSpec } from "./sudoku/engine.ts";
+import type { SudokuCard } from "./sudoku/generate.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
 import { symmetryEngine, symmetrySpec } from "./symmetry/engine.ts";
 import type { SymmetryCard } from "./symmetry/generate.ts";
@@ -225,41 +226,19 @@ const sudokuAdapter: Adapter<SudokuCardSettings, SudokuCard> = {
   kind: "sudoku",
   settingsList: sudokuSettingsList(),
   label: (settings) => `${settings.size}x${settings.size}/${settings.level}/${settings.symbols}`,
-  generate: (settings, random, previousKey) => generateSudokuCard(random, previousKey, settings),
-  problems: (card) => sudokuCardProblems(card),
-  keyOf: (card) => card.key,
+  generate: (settings, random, previousKey) => {
+    try {
+      return sudokuEngine.generate(settings, random, previousKey).card;
+    } catch (error) {
+      if (error instanceof CardExhausted) return null;
+      throw error;
+    }
+  },
+  problems: (card, settings) => sudokuSpec.problems(card, settings).map((problem) => problem.code),
+  keyOf: (card) => sudokuSpec.keyOf(card),
   usesPreviousKey: true,
   mayExhaust: () => false,
-  knownBad: () => {
-    const six: SudokuCardSettings = { size: 6, level: "latwy", symbols: "shapes", colors: false };
-    const four: SudokuCardSettings = { size: 4, level: "latwy", symbols: "shapes", colors: false };
-    const base6 = generated(sudokuAdapter, six, 3);
-    const base4 = generated(sudokuAdapter, four, 3);
-    const brokenSolution = clone(base6);
-    const [first, ...otherRows] = brokenSolution.solution;
-    brokenSolution.solution = [[first[1], first[0], ...first.slice(2)], ...otherRows];
-    const manyBlanks = clone(base6);
-    manyBlanks.givens = manyBlanks.givens.map((row) => row.map(() => null));
-    const twoBlanksInRow = clone(base4);
-    twoBlanksInRow.givens = twoBlanksInRow.givens.map((row, index) =>
-      index === 0 ? row.map((value, col) => (col < 2 ? null : value)) : row,
-    );
-    return [
-      {
-        name: "a solution that breaks the sudoku rule",
-        card: brokenSolution,
-        settings: six,
-        expectedCode: "invalid-solution",
-      },
-      { name: "an empty board has no unique solution", card: manyBlanks, settings: six, expectedCode: "not-unique" },
-      {
-        name: "4x4 with two blanks in a row",
-        card: twoBlanksInRow,
-        settings: four,
-        expectedCode: "blank-count-per-row",
-      },
-    ];
-  },
+  knownBad: () => sudokuSpec.knownBad,
 };
 
 // ---------------------------------------------------------------- nonogram

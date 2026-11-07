@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { sudokuBlock } from "./block.ts";
 import {
   carveSudoku,
   countSudokuSolutions,
   fullSudoku,
   generateSudokuCard,
   generateSudokuPuzzle,
-  sudokuBlock,
   sudokuCardProblems,
   type SudokuCard,
   type SudokuGrid,

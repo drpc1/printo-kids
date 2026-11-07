@@ -7,6 +7,7 @@ import {
   type SudokuSize,
   type SudokuSymbols,
 } from "./levels.ts";
+import { sudokuBlock } from "./block.ts";
 import { SUDOKU_SHAPES, SUDOKU_SHAPES_4, type SudokuShapeId } from "./shapes.ts";
 
 export type { SudokuSize };
@@ -41,14 +42,7 @@ export type SudokuProblem =
 /** Draws a new full board and carves it again at most this many times before giving up. */
 const MAX_PUZZLE_ATTEMPTS = 50;
 /** Draws a card again at most this many times when its key repeats the previous card. */
-const MAX_ATTEMPTS = 20;
-
-/** Rows and columns of cells in one block: 2×2, 2×3 (2 rows, 3 columns) or 3×3. */
-export function sudokuBlock(size: SudokuSize): { rows: number; columns: number } {
-  if (size === 4) return { rows: 2, columns: 2 };
-  if (size === 6) return { rows: 2, columns: 3 };
-  return { rows: 3, columns: 3 };
-}
+export const MAX_ATTEMPTS = 20;
 
 function pick(random: () => number, count: number): number {
   return Math.floor(random() * count);
