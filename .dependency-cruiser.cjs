@@ -126,6 +126,21 @@ module.exports = {
       }
     },
 
+    {
+      name: 'cards-only-through-engines',
+      comment:
+        "gh283: a page builds its card through the engine (CARD_ENGINES / <kind>/engine.ts), which checks it, " +
+        "never through the raw generator. Importing the card type from generate.ts is fine.",
+      severity: 'error',
+      from: {
+        path: '^src/(components|hooks|pages)/'
+      },
+      to: {
+        path: '^src/lib/(maze|symmetry|sequence|sudoku|nonogram|dictation|money)/generate[.]ts$',
+        dependencyTypesNot: ['type-only']
+      }
+    },
+
     // rules you might want to tweak for your specific situation:
     {
       name: 'not-to-test',

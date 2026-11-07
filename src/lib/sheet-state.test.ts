@@ -2,8 +2,17 @@
 // SheetState tests (gh283, phase 3): N16 transitions, N15 failure reasons, N17 content-key rule (I-9) and `printed`.
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { CardExhausted, CardInvariantError, VerifiedCard, type CardEngine, type CardSpec } from "./card-contract.ts";
+import {
+  CardExhausted,
+  CardInvariantError,
+  VerifiedCard,
+  type CardEngine,
+  type CardKindId,
+  type CardSpec,
+} from "./card-contract.ts";
 import { applySettings, failureReason, generateSheet, markPrinted, sheetView, type SheetState } from "./sheet-state.ts";
+
+const TOY = "toy" as CardKindId;
 
 interface ToyCard {
   serial: number;
@@ -15,7 +24,7 @@ interface ToySettings {
 }
 
 const toySpec: CardSpec<ToySettings, ToyCard> = {
-  kind: "toy",
+  kind: TOY,
   problems: () => [],
   keyOf: (card) => `card-${card.serial}`,
   contentKey: (settings) => `level-${settings.level}`,
@@ -37,8 +46,8 @@ function toyEngine(): {
     generate(_settings, _random, previousKey) {
       probe.calls += 1;
       probe.previous = previousKey;
-      if (probe.outcome === "exhausted") throw new CardExhausted("toy", 3);
-      if (probe.outcome === "invariant") throw new CardInvariantError("toy", [{ code: "broken", detail: "x" }]);
+      if (probe.outcome === "exhausted") throw new CardExhausted(TOY, 3);
+      if (probe.outcome === "invariant") throw new CardInvariantError(TOY, [{ code: "broken", detail: "x" }]);
       if (probe.outcome === "type-error") throw new TypeError("bug");
       return VerifiedCard.require(toySpec, { serial: probe.calls }, _settings);
     },
@@ -185,7 +194,7 @@ void describe("applySettings and printed (N17, I-9)", () => {
 
 void describe("failureReason (N15)", () => {
   void test("an invariant error names the code and says it is an app error", () => {
-    const text = failureReason(new CardInvariantError("toy", [{ code: "entrance-sealed", detail: "x" }]), {
+    const text = failureReason(new CardInvariantError(TOY, [{ code: "entrance-sealed", detail: "x" }]), {
       levelLabel: "Poziom 3",
     });
     assert.match(text, /entrance-sealed/);
@@ -193,9 +202,9 @@ void describe("failureReason (N15)", () => {
   });
 
   void test("an exhausted card names the level, and the category when the kind has one", () => {
-    const plain = failureReason(new CardExhausted("toy", 3), { levelLabel: "Poziom 3" });
+    const plain = failureReason(new CardExhausted(TOY, 3), { levelLabel: "Poziom 3" });
     assert.match(plain, /Poziom 3/);
-    const withCategory = failureReason(new CardExhausted("toy", 3), {
+    const withCategory = failureReason(new CardExhausted(TOY, 3), {
       levelLabel: "łatwy",
       categoryLabel: "Zwierzęta",
     });

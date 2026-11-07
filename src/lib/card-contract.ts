@@ -2,8 +2,9 @@
 // `check`; only a card with no problems becomes a `VerifiedCard`, frozen all the way down and copied from the candidate.
 // No parameter properties, enums or namespaces here: `node --experimental-strip-types` runs this file as is.
 
-/** Until phase 11 narrows it to the ids in `CARD_KINDS`. */
-export type CardKindId = string;
+import type { CardKindId } from "./cards.ts";
+
+export type { CardKindId };
 
 export interface CardProblem {
   /** Stable identifier, e.g. "entrance-sealed". */

@@ -7,7 +7,7 @@ export interface CardKind {
   description: string;
 }
 
-export const CARD_KINDS: readonly CardKind[] = [
+export const CARD_KINDS = [
   {
     id: "labirynt",
     title: "Labirynt",
@@ -64,10 +64,13 @@ export const CARD_KINDS: readonly CardKind[] = [
     description:
       "Dziecko porównuje, w której z dwóch kupek monet i banknotów jest więcej pieniędzy, i wpisuje między nimi „<”, „>” albo „=”. Na kartce jest pięć rzędów po dwie kupki z pustym polem pośrodku, a nominał to liczba na każdej monecie i banknocie. Poziom zmienia nominały, wielkość sum i to, czy liczba sztuk myli.",
   },
-];
+] as const satisfies readonly CardKind[];
+
+/** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */
+export type CardKindId = (typeof CARD_KINDS)[number]["id"];
 
 export function cardsInCatalogOrder(): CardKind[] {
-  return [...CARD_KINDS].sort((left, right) => left.title.localeCompare(right.title, "pl"));
+  return ([...CARD_KINDS] as CardKind[]).sort((left, right) => left.title.localeCompare(right.title, "pl"));
 }
 
 export function cardTitle(id: CardKind["id"]): string {
