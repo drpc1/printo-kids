@@ -14,7 +14,7 @@ import {
 
 export type { MoneyCard, MoneyRow } from "./rules.ts";
 
-const MAX_ATTEMPTS = 200;
+export const MAX_ATTEMPTS = 200;
 const MAX_ROW_ATTEMPTS = 300;
 
 type RowKind = "misleading" | "tie" | "plain";

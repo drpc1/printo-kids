@@ -5,15 +5,16 @@
 // context/changes/gh283-verified-card/phase0-findings.md; its assertion is the one the future engine keeps.
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { CardExhausted } from "./card-contract.ts";
 import type { CardSettingsOf, DictationSettings, NonogramSettings, SudokuCardSettings } from "./card-settings.ts";
 import { DICTATION_LEVELS, dictationLevelById } from "./dictation/levels.ts";
 import { dictationCardProblems, generateDictationCard, type DictationCard } from "./dictation/generate.ts";
 import { mazeEngine, mazeSpec } from "./maze/engine.ts";
 import type { Maze } from "./maze/generate.ts";
 import { LEVELS } from "./maze/levels.ts";
-import { generateMoneyCard } from "./money/generate.ts";
-import { MONEY_LEVELS, moneyLevelById } from "./money/levels.ts";
-import { moneyCardProblems, type MoneyCard } from "./money/rules.ts";
+import { moneyEngine, moneySpec } from "./money/engine.ts";
+import { MONEY_LEVELS } from "./money/levels.ts";
+import type { MoneyCard } from "./money/rules.ts";
 import { generateNonogramCard, nonogramCardProblems, type NonogramCard } from "./nonogram/generate.ts";
 import { simpleNonogramProblems, type SimpleNonogramCard } from "./nonogram/simple.ts";
 import { NONOGRAM_SIZES, nonogramSizeById } from "./nonogram/sizes.ts";
@@ -401,33 +402,19 @@ const moneyAdapter: Adapter<MoneySettings, MoneyCard> = {
   kind: "pieniadze",
   settingsList: MONEY_LEVELS.map((level): MoneySettings => ({ level: level.id })),
   label: (settings) => settings.level,
-  generate: (settings, random, previousKey) => generateMoneyCard(random, previousKey, moneyLevelById(settings.level)),
-  problems: (card, settings) => moneyCardProblems(card, moneyLevelById(settings.level)),
-  keyOf: (card) => card.key,
+  generate: (settings, random, previousKey) => {
+    try {
+      return moneyEngine.generate(settings, random, previousKey).card;
+    } catch (error) {
+      if (error instanceof CardExhausted) return null;
+      throw error;
+    }
+  },
+  problems: (card, settings) => moneySpec.problems(card, settings).map((problem) => problem.code),
+  keyOf: (card) => moneySpec.keyOf(card),
   usesPreviousKey: true,
   mayExhaust: () => false,
-  knownBad: () => {
-    const settings: MoneySettings = { level: "sredni" };
-    const base = generated(moneyAdapter, settings, 3);
-    const twoTies = clone(base);
-    twoTies.rows = [
-      { left: [5], right: [2, 2, 1], answer: "equal" },
-      { left: [2, 1], right: [1, 1, 1], answer: "equal" },
-      ...twoTies.rows.slice(2),
-    ];
-    const wrongAnswer = clone(base);
-    wrongAnswer.rows = [
-      { ...wrongAnswer.rows[0], answer: wrongAnswer.rows[0].answer === "left" ? "right" : "left" },
-      ...wrongAnswer.rows.slice(1),
-    ];
-    const repeated = clone(base);
-    repeated.rows = [repeated.rows[0], repeated.rows[0], ...repeated.rows.slice(2)];
-    return [
-      { name: "two tie rows on one card", card: twoTies, settings, expectedCode: "tie-rows" },
-      { name: "a wrong answer in a row", card: wrongAnswer, settings, expectedCode: "answer" },
-      { name: "the same row twice", card: repeated, settings, expectedCode: "duplicate-row" },
-    ];
-  },
+  knownBad: () => moneySpec.knownBad,
 };
 
 describeAdapter(mazeAdapter);

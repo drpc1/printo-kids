@@ -6,10 +6,19 @@ import { CardPage } from "@/components/CardPage";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { MoneySettings } from "@/lib/card-settings";
-import { generateMoneyCard, type MoneyCard } from "@/lib/money/generate";
+import { moneyEngine, moneySpec } from "@/lib/money/engine";
+import type { MoneyCard } from "@/lib/money/generate";
 import { layoutMoneySheet, layoutPile, type MoneyPileArea } from "@/lib/money/layout";
 import { MONEY_LEVELS, moneyLevelById, type MoneyLevelId } from "@/lib/money/levels";
 import { MONEY_SHEET } from "@/lib/money/sheet";
+import {
+  applySettings,
+  failureReason,
+  generateSheet,
+  markPrinted,
+  sheetView,
+  type SheetState,
+} from "@/lib/sheet-state";
 import { cn } from "@/lib/utils";
 
 const INSTRUCTION_TEXT = MONEY_SHEET.instructionLines.join(" ");
@@ -20,43 +29,31 @@ const INSTRUCTION_TEXT = MONEY_SHEET.instructionLines.join(" ");
  * `useCardSettings` (the active profile's, or the device's) and every change is remembered at once; the page never
  * touches the maze's last-used parameters, it only keeps the bar values the profile corner shows. The card is black
  * and has no answer on it: between the two piles of a row there is an empty square for the child's "<", ">" or "=".
- * A profile switch with a card shown draws a new card when the level changed.
+ * The page keeps one `SheetState`: a level change (bar or profile switch) with a card shown draws a new card, a failed
+ * draw switches the card off with its reason, and Drukuj on a card that was already printed asks first.
  */
 export default function MoneyGenerator() {
   const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
-  const [card, setCard] = useState<MoneyCard | null>(null);
-  const [generateFailed, setGenerateFailed] = useState(false);
+  const [sheet, setSheet] = useState<SheetState<MoneyCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("pieniadze", visit, handleProfileSwitch);
   const { level: levelId } = memory.settings;
-  const sheetShown = card !== null;
-
-  function generateFor(id: MoneyLevelId): void {
-    const next = generateMoneyCard(Math.random, card?.key ?? null, moneyLevelById(id));
-    if (next === null) {
-      setGenerateFailed(true);
-      return;
-    }
-    setGenerateFailed(false);
-    setCard(next);
-  }
+  const view = sheetView(sheet, moneySpec.contentKey(memory.settings));
 
   function handleGenerate(): void {
-    generateFor(levelId);
+    setSheet(generateSheet(sheet, moneyEngine, { level: levelId }, Math.random));
   }
 
   function handleLevelSelect(id: MoneyLevelId): void {
-    memory.remember({ level: id });
-    if (card !== null && !waitingForChild) {
-      generateFor(id);
+    const next = memory.remember({ level: id });
+    if (!waitingForChild) {
+      setSheet(applySettings(sheet, moneyEngine, next, Math.random));
     }
   }
 
-  function handleProfileSwitch(next: MoneySettings, previous: MoneySettings): void {
-    if (card !== null && next.level !== previous.level) {
-      generateFor(next.level);
-    }
+  function handleProfileSwitch(next: MoneySettings): void {
+    setSheet(applySettings(sheet, moneyEngine, next, Math.random));
   }
 
   const characterControl = (
@@ -92,9 +89,18 @@ export default function MoneyGenerator() {
       corner={memory.corner}
       newProfileCards={memory.newProfileCards}
       note={memory.note ?? favorite.note}
-      sheetShown={sheetShown}
-      generateFailed={generateFailed}
+      sheetShown={view.kind !== "idle"}
+      generateFailed={view.failure !== null}
+      failedText={
+        view.failure === null ? undefined : failureReason(view.failure, { levelLabel: moneyLevelById(levelId).label })
+      }
       onGenerate={handleGenerate}
+      printDisabled={view.kind !== "showing"}
+      printedBefore={view.printed}
+      onRegenerate={handleGenerate}
+      onPrinted={() => {
+        setSheet(markPrinted);
+      }}
       controls={
         <>
           {characterControl}
@@ -103,8 +109,8 @@ export default function MoneyGenerator() {
       }
       sheet={
         <>
-          {card !== null ? (
-            <MoneySheet card={card} characterId={bar.character} characterSrc={bar.characterSrc} />
+          {view.verified !== null ? (
+            <MoneySheet card={view.verified.card} characterId={bar.character} characterSrc={bar.characterSrc} />
           ) : null}
         </>
       }
