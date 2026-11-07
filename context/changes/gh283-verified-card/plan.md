@@ -679,7 +679,7 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [ ] 3.4 Właścicielka zatwierdziła brzmienie zmian US-20 i US-22
+- [x] 3.4 Właścicielka zatwierdziła brzmienie zmian US-20 i US-22
 
 ### Phase 4: Labirynt pionowo
 
