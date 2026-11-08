@@ -36,7 +36,7 @@ Weryfikacja: npm test 1062 pass / 0 fail; lint, depcruise, astro check zielone. 
   - Tradeoff: Nowa ścieżka błędu odczytu i testy.
   - Confidence: MED — zależy od tego, czy takie błędy zdarzają się w praktyce.
   - Blind spot: Nie sprawdzono, jak faza 3 woła tworzenie.
-- **Decision**: PENDING
+- **Decision**: SKIPPED (odłożone do fazy 3: przy przepinaniu tworzenia rozstrzygnąć obsługę błędu odczytu)
 
 ### F2 — Wyjątek w transform raportowany jako write-failed
 
@@ -46,4 +46,4 @@ Weryfikacja: npm test 1062 pass / 0 fail; lint, depcruise, astro check zielone. 
 - **Location**: src/lib/child-profiles.ts (catch w updateProfiles)
 - **Detail**: Plan opisuje `write-failed` jako `false` z zapisu albo wyjątek storage. Wyjątek z `transform` (błąd programisty) też dostaje `write-failed`, co mogłoby wprowadzić w błąd komunikat w fazie 4.
 - **Fix**: Zostawić (funkcja nie rzuca, a ten przypadek nie powinien wystąpić) albo zwracać `unavailable`.
-- **Decision**: PENDING
+- **Decision**: ACCEPTED (zostaje, błąd programisty, funkcja nie rzuca)
