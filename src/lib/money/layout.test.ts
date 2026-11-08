@@ -45,7 +45,7 @@ void describe("layoutPile", () => {
     assert.equal(coins.length, 3);
     assert.equal(notes.length, 2);
     assert.ok(coins.every((piece) => piece.width === 11 && piece.height === 11));
-    assert.ok(notes.every((piece) => piece.width === 18 && piece.height === 10));
+    assert.ok(notes.every((piece) => piece.width === 18 && piece.height === 9));
   });
 
   void test("notes come first, largest value first, then the coins", () => {

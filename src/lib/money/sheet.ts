@@ -1,7 +1,8 @@
 /**
  * How the "Kto ma więcej?" card is drawn, in page units (mm on an A4 sheet). The page component, the catalog
  * thumbnail script and the mockup script all read these, so none of them can drift from the printed card.
- * Coins and notes are simplified drawings (a circle and a rectangle with the value as a bold number); they do not copy
+ * Coins and notes are simplified drawings (a circle and a rectangle with the value as a bold number) or, with colors on,
+ * stylised pictures of the same size (a note is 18 × 9 mm, like the pictures); they do not copy
  * the real ones, and every coin is the same size and every note the same size, so size never gives the value away.
  */
 export const MONEY_SHEET = {
@@ -30,7 +31,7 @@ export const MONEY_SHEET = {
   coinStroke: 0.8,
   coinFontSize: 5.6,
   noteWidth: 18,
-  noteHeight: 10,
+  noteHeight: 9,
   noteStroke: 0.6,
   /** Space between a note's outer edge and its inner frame. */
   noteInnerInset: 1,
