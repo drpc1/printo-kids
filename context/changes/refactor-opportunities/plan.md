@@ -280,6 +280,7 @@ Brak migracji: format danych w `printo-kids:child-profiles` i `printo-kids:last-
 - Źródło długu: `context/changes/profile-settings-flow/research.md`
 - Świeży odczyt jako decyzja nośna: `context/archive/2026-10-26-card-settings-memory/plan.md:80, :120`
 - Wzorzec testu nakładania: `tests/e2e/card-settings.spec.ts`
+- Issue: [#284](https://github.com/drpc1/printo-kids/issues/284) (fazy 2–4); faza 1 wywodzi się z [#280](https://github.com/drpc1/printo-kids/issues/280) (zamknięte). PR z implementacją: `Closes #284`.
 
 ## Progress
 
