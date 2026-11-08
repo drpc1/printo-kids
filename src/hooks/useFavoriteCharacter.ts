@@ -1,6 +1,6 @@
 import type { useChildProfileVisit } from "@/hooks/useChildProfileVisit";
 import { useRememberNote } from "@/hooks/useCardSettings";
-import { favoriteDiffers, readChildProfiles, withFavorite, writeChildProfiles } from "@/lib/child-profiles";
+import { favoriteDiffers, updateProfiles, withFavorite } from "@/lib/child-profiles";
 import { ALLOWED_CHARACTER_IDS, OWN_IMAGE_ID, type SheetCharacterId } from "@/lib/sheet/character";
 
 export interface FavoriteOffer {
@@ -27,18 +27,15 @@ export function useFavoriteCharacter(
     if (active === null) {
       return false;
     }
-    // Read just before writing, so a change made on another open page is not overwritten with a stale list.
-    const stored = readChildProfiles(localStorage, ALLOWED_CHARACTER_IDS);
-    const current = stored.find((profile) => profile.id === active.id);
-    if (current === undefined) {
-      return false;
-    }
     const href = bar.character === OWN_IMAGE_ID ? bar.ownImageHref : null;
-    const next = withFavorite(stored, current.id, bar.character, ALLOWED_CHARACTER_IDS, href);
-    if (next === null || !writeChildProfiles(localStorage, next)) {
+    // The list is read afresh, so a change made on another open page is not overwritten with a stale list.
+    const saved = updateProfiles(localStorage, ALLOWED_CHARACTER_IDS, (stored) =>
+      withFavorite(stored, active.id, bar.character, ALLOWED_CHARACTER_IDS, href),
+    );
+    if (!saved.ok) {
       return false;
     }
-    visit.replaceProfiles(next);
+    visit.replaceProfiles(saved.profiles);
     show(active.name);
     return true;
   }

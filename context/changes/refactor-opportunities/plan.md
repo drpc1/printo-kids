@@ -309,18 +309,18 @@ Brak migracji: format danych w `printo-kids:child-profiles` i `printo-kids:last-
 
 #### Automated
 
-- [ ] 3.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Zależności bez naruszeń: `npm run depcruise`
-- [ ] 3.4 Typy przechodzą: `npx astro check`
-- [ ] 3.5 e2e profilu i ustawień kart przechodzi na wolnym porcie: `E2E_PORT=4399 npx playwright test card-settings profile-summary favorite-character --project=chromium`
-- [ ] 3.6 Build przechodzi: `npm run build`
+- [x] 3.1 Testy jednostkowe przechodzą: `npm test`
+- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.3 Zależności bez naruszeń: `npm run depcruise`
+- [x] 3.4 Typy przechodzą: `npx astro check`
+- [x] 3.5 e2e profilu i ustawień kart przechodzi na wolnym porcie: `E2E_PORT=4399 npx playwright test card-settings profile-summary favorite-character --project=chromium`
+- [x] 3.6 Build przechodzi: `npm run build`
 
 #### Manual
 
-- [ ] 3.7 e2e dwóch zakładek jest czerwony na kodzie sprzed przepięcia i zielony po nim (oba uruchomienia opisane w raporcie fazy)
-- [ ] 3.8 Usuwanie i tworzenie profilu, zmiana ulubionej z okna i spod listy postaci działają jak wcześniej
-- [ ] 3.9 W drugiej zakładce dodany profil przetrwa usunięcie innego profilu w pierwszej
+- [x] 3.7 e2e dwóch zakładek jest czerwony na kodzie sprzed przepięcia i zielony po nim (oba uruchomienia opisane w raporcie fazy)
+- [x] 3.8 Usuwanie i tworzenie profilu, zmiana ulubionej z okna i spod listy postaci działają jak wcześniej
+- [x] 3.9 W drugiej zakładce dodany profil przetrwa usunięcie innego profilu w pierwszej
 
 ### Phase 4: Komunikat o porażce zapisu na pasku
 

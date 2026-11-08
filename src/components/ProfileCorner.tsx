@@ -8,11 +8,10 @@ import {
   barAfterFavoriteSave,
   profileNameError,
   profileToCreate,
-  readChildProfiles,
   sortProfiles,
+  updateProfiles,
   visitAfterDelete,
   withFavorite,
-  writeChildProfiles,
   type ChildProfile,
   type VisitAfterDelete,
 } from "@/lib/child-profiles";
@@ -175,21 +174,20 @@ export function ProfileCorner({
     if (deleteLock.current || pendingDelete === null) {
       return;
     }
-    const next = visitAfterDelete(
-      profiles,
-      pendingDelete.id,
-      activeId,
-      { character: barCharacter },
-      readLastUsed(localStorage, ALLOWED_CHARACTER_IDS),
-      readActiveProfile(localStorage),
-    );
+    const deletedId = pendingDelete.id;
+    const lastUsed = readLastUsed(localStorage, ALLOWED_CHARACTER_IDS);
+    const storedActive = readActiveProfile(localStorage);
+    const after = (list: readonly ChildProfile[]): VisitAfterDelete =>
+      visitAfterDelete(list, deletedId, activeId, { character: barCharacter }, lastUsed, storedActive);
     deleteLock.current = true;
-    const saved = writeChildProfiles(localStorage, next.profiles);
-    if (!saved) {
+    // The list is read afresh, so a profile added on another open page is not wiped by this delete.
+    const saved = updateProfiles(localStorage, ALLOWED_CHARACTER_IDS, (stored) => after(stored).profiles);
+    if (!saved.ok) {
       deleteLock.current = false;
       setDeleteError(SAVE_ERROR_TEXT);
       return;
     }
+    const next = after(saved.before);
     setDeleteError(null);
     setPendingDelete(null);
     if (next.activeId !== activeId) {
@@ -240,25 +238,28 @@ export function ProfileCorner({
       return;
     }
     setPanel("edit");
-    // Read just before writing, so a change made on another open page is not overwritten with a stale list.
-    const stored = readChildProfiles(localStorage, ALLOWED_CHARACTER_IDS);
-    const current = stored.find((profile) => profile.id === activeProfile.id);
-    if (current === undefined) {
+    const unchanged = (current: ChildProfile): boolean =>
+      id === current.character && (id !== OWN_IMAGE_ID || imageHref === (current.image ?? null));
+    // The list is read afresh, so a change made on another open page is not overwritten with a stale list.
+    const saved = updateProfiles(localStorage, ALLOWED_CHARACTER_IDS, (stored) => {
+      const current = stored.find((profile) => profile.id === activeProfile.id);
+      if (current === undefined) {
+        return null;
+      }
+      return unchanged(current) ? stored : withFavorite(stored, current.id, id, ALLOWED_CHARACTER_IDS, imageHref);
+    });
+    if (!saved.ok) {
       setFavoriteError(SAVE_ERROR_TEXT);
+      return;
+    }
+    const current = saved.before.find((profile) => profile.id === activeProfile.id);
+    if (current === undefined || unchanged(current)) {
       return;
     }
     const previousFavorite = current.character;
-    if (id === previousFavorite && (id !== OWN_IMAGE_ID || imageHref === (current.image ?? null))) {
-      return;
-    }
-    const nextProfiles = withFavorite(stored, current.id, id, ALLOWED_CHARACTER_IDS, imageHref);
-    if (nextProfiles === null || !writeChildProfiles(localStorage, nextProfiles)) {
-      setFavoriteError(SAVE_ERROR_TEXT);
-      return;
-    }
     const nextCharacter = barAfterFavoriteSave(barCharacter, previousFavorite, id);
     const sheetHref = nextCharacter !== OWN_IMAGE_ID ? null : id === OWN_IMAGE_ID ? imageHref : undefined;
-    onFavoriteSaved(nextProfiles, nextCharacter, sheetHref);
+    onFavoriteSaved(saved.profiles, nextCharacter, sheetHref);
   }
 
   function handleCancel(): void {
@@ -297,8 +298,16 @@ export function ProfileCorner({
       return;
     }
     createLock.current = true;
-    const saved = writeChildProfiles(localStorage, [...profiles, profile]);
-    if (!saved) {
+    // The list is read afresh, so a profile added on another open page is not wiped by this one.
+    const saved = updateProfiles(localStorage, ALLOWED_CHARACTER_IDS, (stored) =>
+      profileNameError(
+        profile.name,
+        stored.map((existing) => existing.name),
+      ) === null
+        ? [...stored, profile]
+        : null,
+    );
+    if (!saved.ok) {
       createLock.current = false;
       setFormError(SAVE_ERROR_TEXT);
       return;

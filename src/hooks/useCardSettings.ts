@@ -7,7 +7,7 @@ import {
   type CardSettingsMap,
   type CardSettingsOf,
 } from "@/lib/card-settings";
-import { readChildProfiles, withProfileCards, writeChildProfiles } from "@/lib/child-profiles";
+import { updateProfiles, withProfileCards } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsedCards } from "@/lib/last-used";
 import { ALLOWED_CHARACTER_IDS } from "@/lib/sheet/character";
 
@@ -76,14 +76,16 @@ export function useCardSettings<K extends CardSettingsId>(
       return;
     }
 
-    const stored = readChildProfiles(localStorage, ALLOWED_CHARACTER_IDS);
-    const current = stored.find((profile) => profile.id === visit.activeId);
-    if (current === undefined) {
-      return;
-    }
-    const nextProfiles = withProfileCards(stored, current.id, withCardSettings(current.cards ?? {}, cardId, next));
-    if (nextProfiles !== null && writeChildProfiles(localStorage, nextProfiles)) {
-      visit.replaceProfiles(nextProfiles);
+    const activeId = visit.activeId;
+    const saved = updateProfiles(localStorage, ALLOWED_CHARACTER_IDS, (stored) => {
+      const current = stored.find((profile) => profile.id === activeId);
+      return current === undefined
+        ? null
+        : withProfileCards(stored, current.id, withCardSettings(current.cards ?? {}, cardId, next));
+    });
+    // A failed write is shown on the bar in phase 4; until then it stays silent, as before.
+    if (saved.ok) {
+      visit.replaceProfiles(saved.profiles);
       show(name);
     }
   }
