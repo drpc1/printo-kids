@@ -42,7 +42,7 @@ export default function MoneyGenerator() {
   const view = sheetView(sheet, moneySpec.contentKey(memory.settings));
 
   function handleGenerate(): void {
-    setSheet(generateSheet(sheet, moneyEngine, { level: levelId }, Math.random));
+    setSheet(generateSheet(sheet, moneyEngine, memory.settings, Math.random));
   }
 
   function handleLevelSelect(id: MoneyLevelId): void {

@@ -28,7 +28,7 @@ function seeded(seed: number): () => number {
 }
 
 function knownBad(): readonly Bad[] {
-  const settings: MoneySettings = { level: "sredni" };
+  const settings: MoneySettings = { level: "sredni", colors: false };
   const base = generateMoneyCard(seeded(3), null, moneyLevelById(settings.level));
   if (base === null) {
     throw new Error("moneySpec.knownBad: no fixture card for seed 3");
