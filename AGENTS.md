@@ -4,7 +4,7 @@ PrintoKids is an Astro 7 SSR app (React 19 islands, TypeScript, Tailwind 4, Clou
 
 ## Hard rules
 
-- MVP has no accounts, payments, AI, or backend jobs. Keep maze and optional child-profile data on-device.
+- MVP has no accounts, payments, AI, or backend jobs. Keep maze and optional child-profile data on-device: profiles and card settings are never sent anywhere. The one third party is Cloudflare Web Analytics, a page-view counter loaded on production only (@src/lib/analytics.ts); the browser sends it page-view data such as the page URL and IP, and the app passes it no profile or settings data. Do not add other third-party scripts.
 - Never commit `.env` or `.dev.vars`.
 - Merge Tailwind classes with `cn()` from `@/lib/utils` (@src/lib/utils.ts). Do not concatenate class strings.
 - Do not add Next.js `'use client'` (or similar) directives. `astro/no-set-html-directive` is an ESLint error (@eslint.config.js).
