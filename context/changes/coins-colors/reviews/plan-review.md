@@ -32,7 +32,7 @@ Paths 9/9 ✓ (MoneyGenerator, sheet, engine, card-settings, card-summary, card-
 - **Location**: Desired End State, 4. punkt
 - **Detail**: Punkt mówi „bez zabezpieczeń, godeł, portretów”, ale obrazki użytkowniczki mają orła i profil władcy. Wszystkie kryteria mogłyby przejść, a stan końcowy łamałby własne zdanie planu.
 - **Fix**: Zamienić na „stylizowane obrazki użytkowniczki; bez zabezpieczeń i dokładnych wzorów NBP; nie uchodzą za prawdziwy pieniądz”.
-- **Decision**: PENDING
+- **Decision**: FIXED
 
 ### F2 — Tokeny `--money-*` i `colors.ts` z nazwami tokenów nie mają sensu przy obrazkach
 
@@ -51,7 +51,7 @@ Paths 9/9 ✓ (MoneyGenerator, sheet, engine, card-settings, card-summary, card-
   - Tradeoff: Brak testu na brakujący plik.
   - Confidence: MED — pliki są ręcznie wycięte.
   - Blind spot: Literówka w nazwie wychodzi dopiero w przeglądarce.
-- **Decision**: PENDING
+- **Decision**: FIXED
 
 ### F3 — Progress i faza 1 opisują nieistniejący skrypt makiety
 
@@ -61,7 +61,7 @@ Paths 9/9 ✓ (MoneyGenerator, sheet, engine, card-settings, card-summary, card-
 - **Location**: Progress 1.1, 1.2; Status w nagłówku; `scripts/money-colors-mockup.mjs`
 - **Detail**: 1.1 jest odhaczone i wskazuje skrypt, który plan sam uznaje za odpadły, a plik wciąż jest w git. Status mówi o „makiecie”, a 1.2 o „ocenie makiety”.
 - **Fix**: Usunąć skrypt (`git rm`), 1.1 zamienić na „obrazki w `public/money/`”, 1.2 na „użytkowniczka potwierdza obrazki na wydruku w rozmiarze karty”, poprawić status.
-- **Decision**: PENDING
+- **Decision**: FIXED
 
 ### F4 — Proporcje i rozmiary obrazków nie pasują do stałych karty
 
@@ -80,7 +80,7 @@ Paths 9/9 ✓ (MoneyGenerator, sheet, engine, card-settings, card-summary, card-
   - Tradeoff: Banknot mniejszy o ok. 10%, liczby mniejsze.
   - Confidence: HIGH.
   - Blind spot: Czytelność pionowej liczby na 16 mm szerokości.
-- **Decision**: PENDING
+- **Decision**: FIXED
 
 ### F5 — Obrazki rastrowe: ładowanie przed drukiem i rozmiar plików
 
@@ -90,4 +90,4 @@ Paths 9/9 ✓ (MoneyGenerator, sheet, engine, card-settings, card-summary, card-
 - **Location**: Faza 3, rysowanie i testy
 - **Detail**: Druk zaraz po przełączeniu „Kolory” może ruszyć, zanim `<image>` się załaduje (postacie już tak działają w `SpeechBand.tsx`, więc jest wzór). W `public/money/` leży 15 PNG (ok. 2 MB), z czego 10 niewykorzystanych, wdrażanych na produkcję. Rastry zwiększają ciężar karty.
 - **Fix**: Dodać do e2e sprawdzenie, że obrazki są załadowane przed Drukuj (jak dla postaci), zważyć PNG (np. kwantyzacja) przed wdrożeniem, a niewykorzystane zostawić świadomie.
-- **Decision**: PENDING
+- **Decision**: FIXED
