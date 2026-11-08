@@ -108,7 +108,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Katalog to jedenaście postaci: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka. Wiersz „Bez postaci” zostaje.
+- Katalog to jedenaście postaci: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka. Wiersz „Brak” (bez postaci) zostaje.
 - Ta sama lista jest przy pasku „Postać” na stronie każdej karty, przy tworzeniu profilu i przy zapisie ulubionej postaci.
 - Wygląd dodawania profilu i zapisu ulubionej postaci może się zmienić, żeby zmieścić pełną listę.
 - Przy niższej rozdzielczości pełna lista jest widoczna, a nie ucięta.
@@ -147,7 +147,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma poza stopką z linkami „Jak to działa” i „Podziel się opinią” (US-22).
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
 - Wybrany profil dziecka zostaje po przejściu między katalogiem a stronami generatorów.
-- Profil w rogu strony głównej jest klikalny tak samo jak na stronach generatorów: wybór, dodanie, edycja, usunięcie i „Bez profilu”; miniatury od razu pokazują zapamiętany poziom wybranego profilu. Okno profilu nie otwiera się samo, także gdy są co najmniej dwa profile i żaden nie jest wybrany (decyzja 2026-10-31, GitHub 234).
+- Profil w rogu strony głównej jest klikalny tak samo jak na stronach generatorów: wybór, dodanie, edycja, usunięcie i „Bez profilu”; miniatury od razu pokazują zapamiętany poziom wybranego profilu. Okno profilu nie otwiera się samo, także gdy są co najmniej dwa profile i żaden nie jest wybrany (decyzja 2026-10-31, GitHub 234). Zdanie dotyczy katalogu; na stronie generatora, gdy są co najmniej dwa profile i żaden nie jest zapamiętany, okno wyboru profilu otwiera się celowo przy pierwszym wejściu (`openingVisit`).
 - Przy wybranym profilu miniatura karty, której profil już używał, pokazuje zapamiętany poziom (np. „poz. 4”, „średni”); karta, której profil jeszcze nie używał, nie ma plakietki (US-08; decyzja 2026-10-27).
 - Druk nadal nie wymaga profilu dziecka.
 - Pasek „Postać” jest na stronie każdego rodzaju karty. Na labiryncie postać stoi przy starcie, na pozostałych kartach przy poleceniu (US-21; decyzja 2026-10-26, wcześniej pasek był tylko przy labiryncie).
@@ -229,7 +229,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Karta ma kilka ciągów, jeden pod drugim. Każdy ciąg to rząd pól, w którym część pól jest wypełniona, a część pusta. Nad ciągami jest jedno zdanie polecenia.
-- Elementy to proste kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Ciąg może mieszać jedno i drugie, zgodnie z poziomem (US-11).
+- Elementy to proste kształty (koło, kwadrat, trójkąt, gwiazdka, serce, krzyżyk, ukośna strzałka; trzy ostatnie doszły w GitHub 112) i liczby. Ciąg może mieszać jedno i drugie, zgodnie z poziomem (US-11).
 - Każdy ciąg ma dokładnie jedną odpowiedź: do pustego pola pasuje wyłącznie jedna reguła z jawnej listy reguł, a pole ma wtedy jedną wartość. Aplikacja potrafi ją wyliczyć i sprawdzić. Karta, w której do pustego pola pasują dwie reguły dające różne odpowiedzi, nie jest pokazana.
 - Każde Generuj daje nową kartę: inne reguły albo inne elementy niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez odpowiedzi na kartce; postać przy poleceniu drukuje się w kolorze (US-21).
@@ -394,7 +394,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Postać to ten sam kolorowy obrazek co na labiryncie, z tego samego katalogu, także własny obrazek rodzica (US-02).
 - Postać drukuje się zawsze w kolorze, niezależnie od przełącznika kolorów karty (decyzja 2026-10-26). Na drukarce czarno-białej schodzi do odcieni szarości.
-- Przy „Bez postaci” karta ma samo zdanie polecenia, bez dymka.
+- Przy wyborze „Brak” karta ma samo zdanie polecenia, bez dymka.
 - Postać jest ozdobą: nie zmienia zadania, odpowiedzi ani trudności. Pola zadania (kratka symetrii, ciągi, plansza sudoku, kratka nonogramu i dyktanda) nie używają postaci.
 - Postać i dymek mieszczą się w obszarze karty nad zadaniem; zadanie nadal zajmuje większą część strony, a karta jest jedną stroną A4 z marginesem 10 mm.
 - Na labiryncie postać zostaje przy starcie jak w US-01; labirynt nie dostaje dymka.
@@ -614,7 +614,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 ### Postać na kartach i podpowiedzi
 
 - FR-030: Na każdej karcie poza labiryntem wybrana postać stoi przy zdaniu polecenia i „mówi” je w dymku; drukuje się zawsze w kolorze. Priority: must-have
-  > Socrates: Counter-argument considered: kolorowa postać łamie umowę czarnego druku, a pasek „Postać” wraca na strony, które go celowo nie miały. Resolution: kept (2026-10-26); postać jest ozdobą, nie częścią zadania, więc nie zmienia odpowiedzi; drukuje się w kolorze jak na labiryncie i na czarno-białej drukarce schodzi do szarości. Ulubiona postać z profilu dostaje sens na każdej karcie, a „Bez postaci” zostaje.
+  > Socrates: Counter-argument considered: kolorowa postać łamie umowę czarnego druku, a pasek „Postać” wraca na strony, które go celowo nie miały. Resolution: kept (2026-10-26); postać jest ozdobą, nie częścią zadania, więc nie zmienia odpowiedzi; drukuje się w kolorze jak na labiryncie i na czarno-białej drukarce schodzi do szarości. Ulubiona postać z profilu dostaje sens na każdej karcie, a „Brak” zostaje.
 - FR-031: Rodzic widzi krótkie podpowiedzi w miejscu wyboru (komunikat o zapamiętaniu, „Tylko na tę kartę”, opis poziomu, zdanie w oknie profilu) i może otworzyć stronę „Jak to działa”. Priority: must-have
   > Socrates: Counter-argument considered: podpowiedzi to łatka na zbyt złożony model ustawień. Resolution: kept; zasada jest prosta (karta pamięta pasek, postać zmienia się jawnie), a podpowiedź pokazuje ją dokładnie wtedy, gdy rodzic coś zmienia. Jeśli wydruk próbny pokaże, że podpowiedzi nie wystarczają, poprawiamy model, a nie dokładamy samouczek.
 - FR-032: Rodzic może w oknie profilu przywrócić domyślne ustawienia wszystkich kart („Zacznij od nowa”); imię i ulubiona postać zostają. Priority: nice-to-have
@@ -650,7 +650,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karty „Który nie pasuje” i „Kto ma więcej?” z włączonymi kolorami drukują obrazki w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
-- Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia. Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
+- Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
 
 ## Business Logic
@@ -705,7 +705,7 @@ Wynikiem jest karta A4. Kratka zajmuje większą część strony, zachowuje marg
 
 Aplikacja zawsze tworzy kartę, w której każdy ciąg ma dokładnie jedną odpowiedź. Poziom wyznaczają długość ciągu, rodzaj reguł i liczba pustych pól. Rodzic wybiera jeden z czterech numerowanych poziomów (Poziom 1–4). Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia na górze i ciągami jeden pod drugim; każdy ciąg to rząd pól, część pól jest wypełniona, część pusta.
 
-Elementy to cztery kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Reguły pochodzą z jawnej listy: powtarzanie wzoru (AB, ABC, AAB, ABB), liczby rosnące o 1 lub o 2, liczby malejące o 1 i mieszanie: kształt na przemian z liczbą rosnącą. Ciąg dla pustego pola jest poprawny, gdy z całej listy reguł pasuje do niego dokładnie jedna odpowiedź. Karta, której którykolwiek ciąg nie spełnia tego, nie jest pokazana.
+Elementy to siedem kształtów (koło, kwadrat, trójkąt, gwiazdka, serce, krzyżyk, ukośna strzałka; trzy ostatnie doszły w GitHub 112) i liczby. Reguły pochodzą z jawnej listy: powtarzanie wzoru (AB, ABC, AAB, ABB), liczby rosnące o 1 lub o 2, liczby malejące o 1 i mieszanie: kształt na przemian z liczbą rosnącą. Ciąg dla pustego pola jest poprawny, gdy z całej listy reguł pasuje do niego dokładnie jedna odpowiedź. Karta, której którykolwiek ciąg nie spełnia tego, nie jest pokazana.
 
 | Poziom   | Dawna nazwa | Długość ciągu | Reguły                                         | Puste pola w ciągu | Liczba ciągów |
 | -------- | ----------- | ------------- | ---------------------------------------------- | ------------------ | ------------- |
@@ -918,7 +918,7 @@ Zasady:
 
 ### Postać na kartach
 
-Na labiryncie postać stoi przy starcie. Na pozostałych kartach stoi przy zdaniu polecenia nad zadaniem, a polecenie jest w jej dymku. Postać to ten sam kolorowy obrazek z katalogu albo własny obrazek rodzica i drukuje się zawsze w kolorze. Przy „Bez postaci” zostaje samo polecenie. Postać nie wpływa na zadanie, odpowiedź ani poziom; obiekty w symetrii, nonogramie i dyktandzie dalej pochodzą z katalogu szablonów.
+Na labiryncie postać stoi przy starcie. Na pozostałych kartach stoi przy zdaniu polecenia nad zadaniem, a polecenie jest w jej dymku. Postać to ten sam kolorowy obrazek z katalogu albo własny obrazek rodzica i drukuje się zawsze w kolorze. Przy wyborze „Brak” zostaje samo polecenie. Postać nie wpływa na zadanie, odpowiedź ani poziom; obiekty w symetrii, nonogramie i dyktandzie dalej pochodzą z katalogu szablonów.
 
 Postać jako treść zadania (np. połowa sylwetki w symetrii, obrazek odkrywany w nonogramie albo dyktandzie) wymaga obrysów postaci na kratce i zostaje poza zakresem (Po MVP).
 
