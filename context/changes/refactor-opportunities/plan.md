@@ -290,11 +290,11 @@ Brak migracji: format danych w `printo-kids:child-profiles` i `printo-kids:last-
 
 #### Automated
 
-- [x] 1.1 Wszystkie testy jednostkowe przechodzą: `npm test` — d5e758d
-- [x] 1.2 Lint przechodzi: `npm run lint` — d5e758d
-- [x] 1.3 Zależności bez naruszeń: `npm run depcruise` — d5e758d
-- [x] 1.4 Typy przechodzą: `npx astro check` — d5e758d
-- [x] 1.5 Build przechodzi: `npm run build` — d5e758d
+- [x] 1.1 Wszystkie testy jednostkowe przechodzą: `npm test` — a17f4a3
+- [x] 1.2 Lint przechodzi: `npm run lint` — a17f4a3
+- [x] 1.3 Zależności bez naruszeń: `npm run depcruise` — a17f4a3
+- [x] 1.4 Typy przechodzą: `npx astro check` — a17f4a3
+- [x] 1.5 Build przechodzi: `npm run build` — a17f4a3
 
 ### Phase 2: `updateProfiles` w `lib`
 
