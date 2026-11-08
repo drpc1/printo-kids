@@ -256,11 +256,11 @@ Zapisane profile i ostatnie parametry bez `currency` wczytują się jako `pln` (
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint: `npm run lint`
-- [x] 1.3 Typy: `npx astro check`
-- [x] 1.4 Zależności: `npm run depcruise`
-- [x] 1.7 E2E karty: `E2E_PORT=4399 npx playwright test tests/e2e/money.spec.ts --project=chromium`
+- [x] 1.1 Testy przechodzą: `npm test` — 2e97c95
+- [x] 1.2 Lint: `npm run lint` — 2e97c95
+- [x] 1.3 Typy: `npx astro check` — 2e97c95
+- [x] 1.4 Zależności: `npm run depcruise` — 2e97c95
+- [x] 1.7 E2E karty: `E2E_PORT=4399 npx playwright test tests/e2e/money.spec.ts --project=chromium` — 2e97c95
 
 #### Manual
 
