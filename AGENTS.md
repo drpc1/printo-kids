@@ -26,6 +26,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 ## Structure and conventions
 
 - `src/pages/` routes and `src/pages/api/` endpoints; `src/layouts/` Astro layouts; `src/components/` Astro + React; `src/components/ui/` shadcn new-york (@components.json); `src/lib/` helpers.
+- Name things in the domain language before you write code, tests or copy: term, meaning, name in code and how not to name it are in @context/domain/glossary.md.
 - Import with `@/*` → `./src/*` (@tsconfig.json). Use Astro for static content and layout; React only when interactivity is required. Add shadcn pieces with `npx shadcn@latest add [name]`.
 - API routes export uppercase `GET` / `POST`. Put shared DTOs in `src/types.ts`. Extract React hooks to `src/hooks/` (`@/hooks` in @components.json).
 - A card generator page is a React island on `CardPage` (@src/components/CardPage.tsx) and `useCardPage` (@src/hooks/useCardPage.ts): it passes its settings controls, its sheet and what Generuj does, and does not copy the profile corner, the bar, Generuj or Drukuj. Its rules, layout in millimetres and SVG stay in its own module. The maze is a card like the others: its level lives in `cards.labirynt` of `CardSettingsMap` and the page reads it through `useCardSettings`. A stored top-level `level` (older profiles and last-used parameters) is read once into `cards.labirynt` by `parseStoredCards` and is not written again.
