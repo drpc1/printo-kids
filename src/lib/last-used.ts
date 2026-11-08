@@ -34,8 +34,8 @@ export function readLastUsed(storage: LastUsedStorage, allowed: readonly string[
   }
 }
 
-/** Writes the character. The stored card settings stay as they are, and a legacy `level` moves into them. */
-export function writeLastUsed(storage: LastUsedStorage, lastUsed: Pick<LastUsed, "character">): void {
+/** Writes the character and returns whether the write succeeded. The stored card settings stay as they are, a legacy `level` moves into them and unknown fields are dropped. */
+export function writeLastUsed(storage: LastUsedStorage, lastUsed: Pick<LastUsed, "character">): boolean {
   try {
     const cards = storedCards(storage);
     const character = { character: lastUsed.character };
@@ -43,12 +43,14 @@ export function writeLastUsed(storage: LastUsedStorage, lastUsed: Pick<LastUsed,
       LAST_USED_KEY,
       JSON.stringify(Object.keys(cards).length === 0 ? character : { ...character, cards }),
     );
+    return true;
   } catch {
     // A blocked store must not surface to the caller.
+    return false;
   }
 }
 
-/** Writes the card settings. The stored character stays as it is, and a legacy `level` is dropped. */
+/** Writes the card settings and returns whether the write succeeded. The stored character and unknown fields stay as they are, and a legacy `level` is dropped. */
 export function writeLastUsedCards(storage: LastUsedStorage, cards: CardSettingsMap): boolean {
   try {
     const stored = storedRecord(storage);
