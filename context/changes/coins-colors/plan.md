@@ -46,7 +46,7 @@ Użytkowniczka ocenia wygląd 1, 2, 5, 10 i 20 zł, zanim cokolwiek wejdzie do k
 #### 1. Skrypt makiety
 
 **File**: `scripts/money-colors-mockup.mjs` (gotowy), wynik `context/changes/coins-colors/mockup-kolory.svg`
-**Intent**: Pięć nominałów powiększonych 4×, w rozmiarze wydruku i próbny rząd z dwiema kupkami i polem na znak, z tych samych stałych co strona. Propozycja (wersja 2, bardziej realistyczna): monety z gradientem, ryflowanym brzegiem i wypukłym środkiem (1 zł srebrna, 2 zł złota, 5 zł pierścień złoty i środek srebrny); banknoty z gradientem, falistymi liniami, małymi liczbami w rogach i pustym owalem zamiast portretu (10 zł czerwonawy, 20 zł zielony), bez godeł i zabezpieczeń.
+**Intent**: Pięć nominałów powiększonych 4×, w rozmiarze wydruku i próbny rząd z dwiema kupkami i polem na znak, z tych samych stałych co strona. Propozycja (wersja 2, bardziej realistyczna): monety z gradientem, ryflowanym brzegiem i wypukłym środkiem (1 zł srebrna, 2 zł złota, 5 zł pierścień złoty i środek srebrny); banknoty z gradientem, falistymi liniami, małymi liczbami w rogach i pustym owalem zamiast portretu (10 zł czerwonawy, 20 zł zielony), bez zabezpieczeń; v3: na monetach mały orzełek (własny rysunek, bez korony i tarczy), na banknotach kreskówkowy król w owalu zamiast pustego owalu. To zmienia dotychczasową granicę „bez godeł” (PRD Open Questions 14), więc wymaga potwierdzenia użytkowniczki i zmiany sformułowania w PRD (faza 4).
 
 ### Success Criteria:
 

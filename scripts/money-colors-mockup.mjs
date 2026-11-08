@@ -35,6 +35,17 @@ function defs() {
   return `<defs>${[...coins, ...notes].join("")}</defs>`;
 }
 
+// Own cartoon drawings, not copies of any real coin or note: a plain eagle (no crown, no shield) and a cartoon king.
+function eagle(cx, cy, size, fill, opacity) {
+  const wing = (m) =>
+    `<path d="M ${m * 0.15} -0.1 L ${m * 0.5} -0.8 L ${m * 0.5} -0.3 L ${m * 0.85} -0.6 L ${m * 0.68} -0.1 L ${m * 0.98} -0.2 L ${m * 0.6} 0.35 L ${m * 0.15} 0.3 Z"/>`;
+  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})" fill="${fill}" fill-opacity="${opacity}">${wing(1)}${wing(-1)}<ellipse cx="0" cy="0.05" rx="0.2" ry="0.38"/><circle cx="0" cy="-0.5" r="0.15"/><path d="M 0.1 -0.52 L 0.28 -0.46 L 0.1 -0.42 Z"/><path d="M -0.18 0.38 L 0.18 0.38 L 0.3 0.75 L 0 0.62 L -0.3 0.75 Z"/></g>`;
+}
+
+function king(cx, cy, size) {
+  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})"><circle cx="0" cy="0.15" r="0.38" fill="#f3d4b5" stroke="#5a3a1e" stroke-width="0.05"/><path d="M -0.38 -0.1 L -0.4 -0.6 L -0.2 -0.35 L 0 -0.72 L 0.2 -0.35 L 0.4 -0.6 L 0.38 -0.1 Z" fill="#e0b64a" stroke="#8e6a1c" stroke-width="0.05"/><circle cx="-0.14" cy="0.08" r="0.045" fill="#222"/><circle cx="0.14" cy="0.08" r="0.045" fill="#222"/><path d="M -0.3 0.28 Q 0 0.62 0.3 0.28 Q 0.15 0.4 0 0.36 Q -0.15 0.4 -0.3 0.28 Z" fill="#9a9a9a"/></g>`;
+}
+
 function coin(value, cx, cy, d) {
   const r = d / 2;
   const sw = d * 0.05;
@@ -43,7 +54,8 @@ function coin(value, cx, cy, d) {
 <circle cx="${cx}" cy="${cy}" r="${r - d * 0.045}" fill="none" stroke="${INK}" stroke-opacity="0.45" stroke-width="${d * 0.05}" stroke-dasharray="${d * 0.012} ${d * 0.035}"/>
 <circle cx="${cx}" cy="${cy}" r="${inner}" fill="url(#face${value})" stroke="${INK}" stroke-opacity="0.7" stroke-width="${sw * 0.5}"/>
 <path d="M ${cx - inner * 0.75} ${cy - inner * 0.35} A ${inner * 0.85} ${inner * 0.85} 0 0 1 ${cx + inner * 0.2} ${cy - inner * 0.82}" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="${d * 0.03}" stroke-linecap="round"/>
-<text x="${cx}" y="${cy}" ${FONT} font-size="${d * 0.46}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value}</text></g>`;
+${eagle(cx, cy - d * 0.15, inner * 1.15, INK, 0.55)}
+<text x="${cx}" y="${cy + d * 0.17}" ${FONT} font-size="${d * 0.34}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value}</text></g>`;
 }
 
 function note(value, x, y, w, h) {
@@ -65,6 +77,7 @@ function note(value, x, y, w, h) {
 <rect x="${x + inset}" y="${y + inset}" width="${w - 2 * inset}" height="${h - 2 * inset}" rx="${h * 0.06}" fill="none" stroke="${n.border}" stroke-width="${sw * 0.5}"/>
 ${waves}
 <ellipse cx="${x + w * 0.24}" cy="${y + h / 2}" rx="${w * 0.11}" ry="${h * 0.3}" fill="#fff" fill-opacity="0.35" stroke="${n.border}" stroke-opacity="0.6" stroke-width="${sw * 0.5}"/>
+${king(x + w * 0.24, y + h / 2, h * 0.52)}
 <text x="${x + w * 0.62}" y="${y + h / 2}" ${FONT} font-size="${h * 0.58}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value}</text>
 <text x="${x + inset * 1.5}" y="${y + inset * 2}" ${corner}>${value}</text>
 <text x="${x + w - inset * 1.5}" y="${y + h - inset * 2}" ${corner} text-anchor="end">${value}</text></g>`;
