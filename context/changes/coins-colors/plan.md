@@ -192,10 +192,10 @@ Brak migracji: `colors` brakujące w zapisanym profilu czyta się jako `false`.
 
 #### Automated
 
-- [x] 3.1 `npm test` przechodzi
-- [x] 3.2 `npm run lint` i `npx astro check` przechodzą
-- [x] 3.3 `npm run depcruise` i `npm run build` przechodzą
-- [x] 3.4 E2E kart (Chromium i telefon) przechodzi
+- [x] 3.1 `npm test` przechodzi — 14eedea
+- [x] 3.2 `npm run lint` i `npx astro check` przechodzą — 14eedea
+- [x] 3.3 `npm run depcruise` i `npm run build` przechodzą — 14eedea
+- [x] 3.4 E2E kart (Chromium i telefon) przechodzi — 14eedea
 
 #### Manual
 
@@ -206,7 +206,7 @@ Brak migracji: `colors` brakujące w zapisanym profilu czyta się jako `false`.
 
 #### Automated
 
-- [ ] 4.1 `npx prettier --check context/foundation/prd.md` przechodzi
+- [x] 4.1 `npx prettier --check context/foundation/prd.md` przechodzi
 
 #### Manual
 
