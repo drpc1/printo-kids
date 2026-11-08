@@ -37,6 +37,10 @@ export const MONEY_SHEET = {
   noteInnerInset: 1,
   noteInnerStroke: 0.3,
   noteFontSize: 6,
+  /** Font size of the euro or dollar sign in the black drawing (złoty pieces carry no sign). */
+  currencySymbolFontSize: 3.4,
+  /** A coin's value moves up by this much to make room for the sign under it. */
+  coinValueLift: 1.2,
   fontWeight: 700,
   /** Font size of the instruction when no character stands in the band (one line). */
   plainInstructionSize: 7,
