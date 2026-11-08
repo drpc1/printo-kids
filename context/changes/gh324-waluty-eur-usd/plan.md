@@ -271,8 +271,8 @@ Zapisane profile i ostatnie parametry bez `currency` wczytują się jako `pln` (
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint i typy: `npm run lint`, `npx astro check`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint i typy: `npm run lint`, `npx astro check`
 
 #### Manual
 
