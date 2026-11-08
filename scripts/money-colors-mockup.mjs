@@ -43,9 +43,12 @@ function eagle(cx, cy, size, fill) {
   return `<g transform="translate(${cx} ${cy}) scale(${size / 2})" fill="${fill}">${wing(1)}${wing(-1)}<ellipse cx="0" cy="0.05" rx="0.22" ry="0.4"/><circle cx="0.02" cy="-0.5" r="0.15"/><path d="M 0.12 -0.54 L 0.3 -0.47 L 0.12 -0.42 Z"/><path d="M -0.16 -0.62 L -0.16 -0.84 L -0.08 -0.74 L 0 -0.9 L 0.08 -0.74 L 0.16 -0.84 L 0.16 -0.62 Z"/><path d="M -0.2 0.4 L 0.2 0.4 L 0.3 0.8 L 0 0.7 L -0.3 0.8 Z"/></g>`;
 }
 
-// A simple crowned ruler, facing front.
-function king(cx, cy, size) {
-  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})"><path d="M -0.55 0.95 Q -0.5 0.55 0 0.5 Q 0.5 0.55 0.55 0.95 Z" fill="#7a2f2f"/><circle cx="0" cy="0.1" r="0.38" fill="#f3d4b5" stroke="#5a3a1e" stroke-width="0.04"/><path d="M -0.38 -0.1 L -0.42 -0.62 L -0.2 -0.38 L 0 -0.78 L 0.2 -0.38 L 0.42 -0.62 L 0.38 -0.1 Z" fill="#d9ae3d" stroke="#8e6a1c" stroke-width="0.04"/><circle cx="-0.14" cy="0.04" r="0.04" fill="#222"/><circle cx="0.14" cy="0.04" r="0.04" fill="#222"/></g>`;
+// A simple ruler bust, facing front: a bearded ruler in a round cap (10 zł) or a crowned bearded one (20 zł).
+function king(cx, cy, size, crowned) {
+  const hat = crowned
+    ? '<path d="M -0.38 -0.1 L -0.42 -0.62 L -0.2 -0.38 L 0 -0.78 L 0.2 -0.38 L 0.42 -0.62 L 0.38 -0.1 Z" fill="#d9ae3d" stroke="#8e6a1c" stroke-width="0.04"/>'
+    : '<path d="M -0.38 -0.08 Q -0.4 -0.6 0 -0.62 Q 0.4 -0.6 0.38 -0.08 Z" fill="#6b4a2b" stroke="#3a2614" stroke-width="0.04"/>';
+  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})"><path d="M -0.55 0.95 Q -0.5 0.55 0 0.5 Q 0.5 0.55 0.55 0.95 Z" fill="#7a2f2f"/><circle cx="0" cy="0.1" r="0.38" fill="#f3d4b5" stroke="#5a3a1e" stroke-width="0.04"/>${hat}<circle cx="-0.14" cy="0.04" r="0.04" fill="#222"/><circle cx="0.14" cy="0.04" r="0.04" fill="#222"/><path d="M -0.32 0.2 Q 0 0.72 0.32 0.2 Q 0.16 0.34 0 0.3 Q -0.16 0.34 -0.32 0.2 Z" fill="#8a8a8a"/></g>`;
 }
 
 function coin(value, cx, cy, d) {
@@ -67,9 +70,10 @@ function note(value, x, y, w, h) {
   return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h * 0.08}" fill="${n.field}" stroke="${n.border}" stroke-width="${sw}"/>
 <rect x="${x + inset}" y="${y + inset}" width="${w - 2 * inset}" height="${h - 2 * inset}" rx="${h * 0.05}" fill="none" stroke="${n.border}" stroke-width="${sw * 0.5}"/>
 <circle cx="${px}" cy="${y + h / 2}" r="${h * 0.33}" fill="${n.panel}" stroke="${n.border}" stroke-width="${sw * 0.6}"/>
-${king(px, y + h * 0.52, h * 0.52)}
+${king(px, y + h * 0.46, h * 0.46, value === 20)}
+<text x="${px}" y="${y + h * 0.88}" ${FONT} font-size="${h * 0.085}" font-weight="700" fill="${n.border}" text-anchor="middle" dominant-baseline="central">${value === 20 ? "BOLESŁAW CHROBRY" : "MIESZKO I"}</text>
 <text x="${x + w * 0.1}" y="${y + h * 0.5}" ${FONT} font-size="${h * 0.58}" font-weight="700" fill="${INK}" dominant-baseline="central">${value}</text>
-<text x="${x + w * 0.1}" y="${y + h * 0.84}" ${FONT} font-size="${h * 0.13}" font-weight="700" fill="${n.border}" dominant-baseline="central">ZŁOTYCH</text></g>`;
+<text x="${x + w * 0.1}" y="${y + h * 0.84}" ${FONT} font-size="${h * 0.13}" font-weight="700" fill="${n.border}" dominant-baseline="central">ZŁ</text></g>`;
 }
 
 const parts = [];
