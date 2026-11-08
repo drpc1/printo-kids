@@ -60,7 +60,7 @@ test("Generuj draws five rows of two piles with an empty square between them", a
   for (const values of piles) {
     expect(values.length).toBeGreaterThan(0);
     for (const value of values) {
-      expect(["1", "2", "5", "10", "20"]).toContain(value);
+      expect(["1", "2", "5", "10", "20", "50", "100"]).toContain(value);
     }
   }
 });

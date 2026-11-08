@@ -14,16 +14,16 @@ import {
   type MoneyRow,
 } from "./rules.ts";
 
-const EASY = moneyLevelById("latwy");
-const MEDIUM = moneyLevelById("sredni");
-const HARD = moneyLevelById("trudny");
+const EASY = moneyLevelById("latwy", "pln");
+const MEDIUM = moneyLevelById("sredni", "pln");
+const HARD = moneyLevelById("trudny", "pln");
 
 function row(left: number[], right: number[]): MoneyRow {
   return { left, right, answer: compareRow(left, right) };
 }
 
 function card(levelId: MoneyCard["levelId"], rows: MoneyRow[]): MoneyCard {
-  return { levelId, rows, key: rows.map(rowKey).join(";") };
+  return { levelId, currency: "pln", rows, key: rows.map(rowKey).join(";") };
 }
 
 void describe("pileValue and pieceCount", () => {
@@ -86,8 +86,17 @@ void describe("moneyRowProblems", () => {
   void test("the sum on the limit passes, one over fails", () => {
     assert.deepEqual(moneyRowProblems(row([5, 5], [5]), EASY), []);
     assert.ok(moneyRowProblems(row([5, 5, 5], [5]), EASY).includes("pile-sum"));
-    assert.deepEqual(moneyRowProblems(row([20, 20, 10], [1]), HARD), []);
-    assert.ok(moneyRowProblems(row([20, 20, 10, 1], [1]), HARD).includes("pile-sum"));
+    assert.deepEqual(moneyRowProblems(row([100, 50, 50], [1]), HARD), []);
+    assert.ok(moneyRowProblems(row([100, 50, 50, 1], [1]), HARD).includes("pile-sum"));
+  });
+
+  void test("notes are limited per pile: 4 pass, 5 fail; coins are not counted", () => {
+    assert.deepEqual(moneyRowProblems(row([10, 10, 10, 10, 1, 1, 1, 1, 1, 1], [1]), HARD), []);
+    assert.ok(moneyRowProblems(row([10, 10, 10, 10, 10], [1]), HARD).includes("note-count"));
+    assert.deepEqual(moneyRowProblems(row([5, 5, 5, 5, 5, 5, 5], [1]), HARD), []);
+    // In euro and dollars the 5 is a note, so the limit counts it.
+    const euro = moneyLevelById("trudny", "eur");
+    assert.ok(moneyRowProblems(row([5, 5, 5, 5, 5], [1]), euro).includes("note-count"));
   });
 
   void test("pile size runs from 1 to the level's maximum", () => {
@@ -101,6 +110,7 @@ void describe("moneyRowProblems", () => {
     assert.ok(moneyRowProblems(row([10], [5]), MEDIUM).includes("nominal"));
     assert.deepEqual(moneyRowProblems(row([10], [5]), HARD), []);
     assert.ok(moneyRowProblems(row([3], [1]), HARD).includes("nominal"));
+    assert.ok(moneyRowProblems(row([2], [1]), moneyLevelById("trudny", "usd")).includes("nominal"));
   });
 
   void test("the first level mixes the coins 1, 2 and 5 zł in a pile, up to 10 zł and 5 pieces", () => {

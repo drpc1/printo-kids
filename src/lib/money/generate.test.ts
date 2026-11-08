@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { generateMoneyCard } from "./generate.ts";
 import { layoutMoneySheet, layoutPile } from "./layout.ts";
-import { MONEY_LEVELS, moneyLevelById, type MoneyLevel } from "./levels.ts";
+import { MONEY_CURRENCY_IDS } from "./currencies.ts";
+import { moneyLevelById, moneyLevels, type MoneyLevel } from "./levels.ts";
 import { moneyCardProblems } from "./rules.ts";
 import { MONEY_SHEET } from "./sheet.ts";
 
@@ -15,6 +16,9 @@ function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+/** Every level of every currency. */
+const ALL_LEVELS: readonly MoneyLevel[] = MONEY_CURRENCY_IDS.flatMap((currency) => moneyLevels(currency));
 
 const SEEDS = Array.from({ length: 60 }, (_, index) => index + 1);
 
@@ -36,11 +40,12 @@ function cards(level: MoneyLevel) {
 }
 
 void describe("generateMoneyCard", () => {
-  for (const level of MONEY_LEVELS) {
-    void describe(level.id, () => {
+  for (const level of ALL_LEVELS) {
+    void describe(`${level.currency} ${level.id}`, () => {
       void test("every card keeps the rules of its level", () => {
         for (const card of cards(level)) {
           assert.equal(card.levelId, level.id);
+          assert.equal(card.currency, level.currency);
           assert.equal(card.rows.length, 5);
           assert.deepEqual(moneyCardProblems(card, level), [], card.key);
         }
@@ -94,7 +99,10 @@ void describe("generateMoneyCard", () => {
         for (const card of cards(level)) {
           for (const row of card.rows) {
             for (const pile of [row.left, row.right]) {
-              assert.ok(layoutPile(pile, area.innerWidth).height <= area.innerHeight, `${card.key} ${pile.join("+")}`);
+              assert.ok(
+                layoutPile(pile, area.innerWidth, level.currency).height <= area.innerHeight,
+                `${card.key} ${pile.join("+")}`,
+              );
             }
           }
         }
@@ -121,7 +129,7 @@ void describe("generateMoneyCard", () => {
 
   void test("łatwy: coins 1, 2 and 5 zł mixed, never misleading, and different nominals show up in one pile", () => {
     let mixedPiles = 0;
-    for (const card of cards(moneyLevelById("latwy"))) {
+    for (const card of cards(moneyLevelById("latwy", "pln"))) {
       for (const row of card.rows) {
         for (const pile of [row.left, row.right]) {
           assert.ok(
@@ -144,7 +152,7 @@ void describe("generateMoneyCard", () => {
   });
 
   void test("średni: exactly 2 of 5 rows have the pile with fewer pieces worth more", () => {
-    for (const card of cards(moneyLevelById("sredni"))) {
+    for (const card of cards(moneyLevelById("sredni", "pln"))) {
       const misleading = card.rows.filter((row) => {
         const fewer = row.left.length - row.right.length;
         const more = total(row.left) - total(row.right);
@@ -156,7 +164,7 @@ void describe("generateMoneyCard", () => {
 
   void test("trudny: at least 3 of 5 rows mislead, and notes show up across cards", () => {
     let withNotes = 0;
-    for (const card of cards(moneyLevelById("trudny"))) {
+    for (const card of cards(moneyLevelById("trudny", "pln"))) {
       const misleading = card.rows.filter((row) => {
         const fewer = row.left.length - row.right.length;
         const more = total(row.left) - total(row.right);
@@ -171,15 +179,15 @@ void describe("generateMoneyCard", () => {
   });
 
   void test("cards differ: 60 seeds give many different keys on every level", () => {
-    for (const level of MONEY_LEVELS) {
+    for (const level of ALL_LEVELS) {
       const keys = new Set(cards(level).map((card) => card.key));
-      assert.ok(keys.size > 50, `${level.id}: ${keys.size} keys`);
+      assert.ok(keys.size > 50, `${level.currency} ${level.id}: ${keys.size} keys`);
     }
   });
 
   void test("returns null when no card can meet the rules", () => {
     // Piles of one piece with one nominal can never mislead, so a level that needs misleading rows has none.
-    const impossible: MoneyLevel = { ...moneyLevelById("sredni"), maxPieces: 1, nominals: [5] };
+    const impossible: MoneyLevel = { ...moneyLevelById("sredni", "pln"), maxPieces: 1, nominals: [5] };
     assert.equal(generateMoneyCard(mulberry32(1), null, impossible), null);
   });
 });

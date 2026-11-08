@@ -10,7 +10,7 @@ import { moneyCardProblems } from "./rules.ts";
 type Bad = CardSpec<MoneySettings, MoneyCard>["knownBad"][number];
 
 function moneyProblems(card: MoneyCard, settings: MoneySettings): readonly CardProblem[] {
-  return moneyCardProblems(card, moneyLevelById(settings.level)).map((code) => ({
+  return moneyCardProblems(card, moneyLevelById(settings.level, settings.currency)).map((code) => ({
     code,
     detail: `money card rule "${code}" is broken`,
   }));
@@ -28,8 +28,8 @@ function seeded(seed: number): () => number {
 }
 
 function knownBad(): readonly Bad[] {
-  const settings: MoneySettings = { level: "sredni", colors: false };
-  const base = generateMoneyCard(seeded(3), null, moneyLevelById(settings.level));
+  const settings: MoneySettings = { level: "sredni", currency: "pln", colors: false };
+  const base = generateMoneyCard(seeded(3), null, moneyLevelById(settings.level, settings.currency));
   if (base === null) {
     throw new Error("moneySpec.knownBad: no fixture card for seed 3");
   }
@@ -46,7 +46,14 @@ function knownBad(): readonly Bad[] {
     rows: [{ ...base.rows[0], answer: base.rows[0].answer === "left" ? "right" : "left" }, ...base.rows.slice(1)],
   };
   const repeated: MoneyCard = { ...base, rows: [base.rows[0], base.rows[0], ...base.rows.slice(2)] };
+  const hardSettings: MoneySettings = { level: "trudny", currency: "pln", colors: false };
+  const fiveNotes: MoneyCard = {
+    ...base,
+    levelId: "trudny",
+    rows: [{ left: [10, 10, 10, 10, 10], right: [1], answer: "left" }, ...base.rows.slice(1)],
+  };
   return [
+    { name: "five notes in one pile", card: fiveNotes, settings: hardSettings, expectedCode: "note-count" },
     { name: "two tie rows on one card", card: twoTies, settings, expectedCode: "tie-rows" },
     { name: "a wrong answer in a row", card: wrongAnswer, settings, expectedCode: "answer" },
     { name: "the same row twice", card: repeated, settings, expectedCode: "duplicate-row" },
@@ -59,7 +66,7 @@ export const moneySpec: CardSpec<MoneySettings, MoneyCard> = {
   kind: "pieniadze",
   problems: moneyProblems,
   keyOf: (card) => card.key,
-  contentKey: (settings) => settings.level,
+  contentKey: (settings) => `${settings.currency}:${settings.level}`,
   // Built on first use: the fixtures draw cards, which import time should not pay for.
   get knownBad() {
     knownBadCache ??= knownBad();
@@ -70,7 +77,7 @@ export const moneySpec: CardSpec<MoneySettings, MoneyCard> = {
 export const moneyEngine: CardEngine<MoneySettings, MoneyCard> = {
   spec: moneySpec,
   generate(settings, random, previousKey) {
-    const card = generateMoneyCard(random, previousKey, moneyLevelById(settings.level));
+    const card = generateMoneyCard(random, previousKey, moneyLevelById(settings.level, settings.currency));
     if (card === null) {
       throw new CardExhausted(moneySpec.kind, MAX_ATTEMPTS);
     }

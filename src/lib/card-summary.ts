@@ -3,6 +3,7 @@ import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import { dictationLevelById } from "./dictation/levels.ts";
 import { levelById } from "./maze/levels.ts";
+import { moneyCurrencyById } from "./money/currencies.ts";
 import { moneyLevelById } from "./money/levels.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
 import { sequenceLevelById } from "./sequence/levels.ts";
@@ -99,8 +100,13 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
       if (settings === undefined) {
         return null;
       }
-      const level = moneyLevelById(settings.level);
-      return { badge: badgeOf(level), level: level.label, extras: settings.colors ? ["kolory"] : [] };
+      const level = moneyLevelById(settings.level, settings.currency);
+      const currency = settings.currency === "pln" ? [] : [moneyCurrencyById(settings.currency).symbol];
+      return {
+        badge: badgeOf(level),
+        level: level.label,
+        extras: [...currency, ...(settings.colors ? ["kolory"] : [])],
+      };
     }
     default:
       return null;

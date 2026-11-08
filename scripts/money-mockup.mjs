@@ -8,7 +8,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { generateMoneyCard } from "../src/lib/money/generate.ts";
-import { MONEY_LEVELS } from "../src/lib/money/levels.ts";
+import { moneyLevels } from "../src/lib/money/levels.ts";
 import { layoutMoneySheet, layoutPile } from "../src/lib/money/layout.ts";
 import { MONEY_SHEET } from "../src/lib/money/sheet.ts";
 
@@ -29,7 +29,7 @@ function mulberry32(seed) {
 
 // Real cards from the generator, one per level (fixed seed).
 const LEVELS = Object.fromEntries(
-  MONEY_LEVELS.map((level) => {
+  moneyLevels("pln").map((level) => {
     const card = generateMoneyCard(mulberry32(SEEDS[level.id]), null, level);
     if (card === null) {
       throw new Error(`No ${level.id} card for seed ${SEEDS[level.id]}`);
@@ -58,7 +58,7 @@ function piece(kind, value, x, y, width, height) {
 
 function pile(values, area) {
   const frame = `<rect x="${area.x}" y="${area.y}" width="${area.width}" height="${area.height}" rx="${MONEY_SHEET.pileFrameRadius}" fill="none" stroke="#000" stroke-width="${MONEY_SHEET.pileFrameStroke}"/>`;
-  const laid = layoutPile(values, area.innerWidth);
+  const laid = layoutPile(values, area.innerWidth, "pln");
   const left = area.x + MONEY_SHEET.pilePadding;
   const top = area.y + MONEY_SHEET.pilePadding + (area.innerHeight - laid.height) / 2;
   const pieces = laid.pieces.map((p) => piece(p.kind, p.value, left + p.x, top + p.y, p.width, p.height));

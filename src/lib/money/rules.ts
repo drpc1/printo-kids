@@ -1,3 +1,4 @@
+import { pieceKind, type MoneyCurrencyId } from "./currencies.ts";
 import type { MoneyLevel, MoneyLevelId } from "./levels.ts";
 
 /** Which pile is worth more, or that they are worth the same. `left` is written as ">" and `right` as "<". */
@@ -11,6 +12,7 @@ export interface MoneyRow {
 
 export interface MoneyCard {
   levelId: MoneyLevelId;
+  currency: MoneyCurrencyId;
   rows: readonly MoneyRow[];
   /** Names all rows; two cards with one key show the same thing. */
   key: string;
@@ -25,6 +27,17 @@ export function pileValue(pile: readonly number[]): number {
 
 export function pieceCount(pile: readonly number[]): number {
   return pile.length;
+}
+
+/** How many notes (not coins) a pile has in `currency`. A value the currency does not have counts as no note. */
+export function noteCount(pile: readonly number[], currency: MoneyCurrencyId): number {
+  return pile.filter((value) => {
+    try {
+      return pieceKind(value, currency) === "note";
+    } catch {
+      return false;
+    }
+  }).length;
 }
 
 export function compareRow(left: readonly number[], right: readonly number[]): MoneyAnswer {
@@ -54,7 +67,7 @@ export function pairKey(row: Pick<MoneyRow, "left" | "right">): string {
   return [pileKey(row.left), pileKey(row.right)].sort().join("|");
 }
 
-export type MoneyRowProblem = "pile-size" | "nominal" | "pile-sum" | "answer" | "identical-piles";
+export type MoneyRowProblem = "pile-size" | "nominal" | "pile-sum" | "note-count" | "answer" | "identical-piles";
 
 export type MoneyCardProblem = MoneyRowProblem | "row-count" | "tie-rows" | "misleading-count" | "duplicate-row";
 
@@ -71,6 +84,9 @@ export function moneyRowProblems(row: MoneyRow, level: MoneyLevel): readonly Mon
     }
     if (pileValue(pile) > level.maxSum) {
       problems.add("pile-sum");
+    }
+    if (noteCount(pile, level.currency) > level.maxNotes) {
+      problems.add("note-count");
     }
   }
   if (row.answer !== compareRow(row.left, row.right)) {
