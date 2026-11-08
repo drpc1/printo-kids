@@ -52,6 +52,7 @@ function coin(value, cx, cy, d) {
   const inner = r * 0.7;
   return `<g><circle cx="${cx}" cy="${cy}" r="${r - sw / 2}" fill="url(#rim${value})" stroke="${INK}" stroke-width="${sw}"/>
 <circle cx="${cx}" cy="${cy}" r="${r - d * 0.045}" fill="none" stroke="${INK}" stroke-opacity="0.45" stroke-width="${d * 0.05}" stroke-dasharray="${d * 0.012} ${d * 0.035}"/>
+<circle cx="${cx}" cy="${cy}" r="${r * 0.8}" fill="none" stroke="${INK}" stroke-opacity="0.35" stroke-width="${d * 0.03}" stroke-dasharray="${d * 0.004} ${d * 0.04}" stroke-linecap="round"/>
 <circle cx="${cx}" cy="${cy}" r="${inner}" fill="url(#face${value})" stroke="${INK}" stroke-opacity="0.7" stroke-width="${sw * 0.5}"/>
 <path d="M ${cx - inner * 0.75} ${cy - inner * 0.35} A ${inner * 0.85} ${inner * 0.85} 0 0 1 ${cx + inner * 0.2} ${cy - inner * 0.82}" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="${d * 0.03}" stroke-linecap="round"/>
 ${eagle(cx, cy - d * 0.15, inner * 1.15, INK, 0.55)}
@@ -72,10 +73,18 @@ function note(value, x, y, w, h) {
       return `<path d="${d}" fill="none" stroke="${n.line}" stroke-opacity="0.45" stroke-width="${sw * 0.5}"/>`;
     })
     .join("");
+  const rosette = [0.34, 0.26, 0.18, 0.1]
+    .map(
+      (f) =>
+        `<circle cx="${x + w * 0.86}" cy="${y + h * 0.5}" r="${h * f}" fill="none" stroke="${n.line}" stroke-opacity="0.5" stroke-width="${sw * 0.4}" stroke-dasharray="${f > 0.2 ? "" : h * 0.03 + " " + h * 0.03}"/>`,
+    )
+    .join("");
+  const small = `${FONT} font-size="${h * 0.08}" fill="${n.border}" fill-opacity="0.85" text-anchor="middle" dominant-baseline="central"`;
+  const extra = `${rosette}<text x="${x + w * 0.6}" y="${y + h * 0.2}" ${small} letter-spacing="${h * 0.01}">BANKNOT EDUKACYJNY</text><text x="${x + w * 0.5}" y="${y + h * 0.88}" ${small} font-weight="700" letter-spacing="${h * 0.02}">AB 0000000</text>`;
   const corner = `${FONT} font-size="${h * 0.17}" font-weight="700" fill="${n.border}" dominant-baseline="central"`;
   return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h * 0.1}" fill="url(#note${value})" stroke="${n.border}" stroke-width="${sw}"/>
 <rect x="${x + inset}" y="${y + inset}" width="${w - 2 * inset}" height="${h - 2 * inset}" rx="${h * 0.06}" fill="none" stroke="${n.border}" stroke-width="${sw * 0.5}"/>
-${waves}
+${waves}${extra}
 <ellipse cx="${x + w * 0.24}" cy="${y + h / 2}" rx="${w * 0.11}" ry="${h * 0.3}" fill="#fff" fill-opacity="0.35" stroke="${n.border}" stroke-opacity="0.6" stroke-width="${sw * 0.5}"/>
 ${king(x + w * 0.24, y + h / 2, h * 0.52)}
 <text x="${x + w * 0.62}" y="${y + h / 2}" ${FONT} font-size="${h * 0.58}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value}</text>
