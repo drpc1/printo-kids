@@ -69,6 +69,34 @@ export function writeChildProfiles(storage: ChildProfileStorage, profiles: reado
   }
 }
 
+export type UpdateResult =
+  | { ok: true; before: ChildProfile[]; profiles: ChildProfile[] }
+  | { ok: false; reason: "unavailable" | "write-failed" };
+
+/**
+ * Reads the stored profiles afresh, applies `transform` and writes the result. `transform` returns null when the change
+ * cannot be applied (the profile is gone, the name is taken). `before` is the list `transform` received. Never throws.
+ */
+export function updateProfiles(
+  storage: ChildProfileStorage,
+  allowed: readonly string[],
+  transform: (stored: ChildProfile[]) => ChildProfile[] | null,
+): UpdateResult {
+  try {
+    const before = readChildProfiles(storage, allowed);
+    const profiles = transform(before);
+    if (profiles === null) {
+      return { ok: false, reason: "unavailable" };
+    }
+
+    return writeChildProfiles(storage, profiles)
+      ? { ok: true, before, profiles }
+      : { ok: false, reason: "write-failed" };
+  } catch {
+    return { ok: false, reason: "write-failed" };
+  }
+}
+
 export interface BarChoice {
   character: string;
 }
