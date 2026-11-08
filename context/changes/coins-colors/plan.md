@@ -35,7 +35,7 @@ Szczegóły i anchory: `research.md` w tym folderze.
 
 Wzorzec sekwencji: pole `colors` w ustawieniach, `SettingToggle`, `remember` bez `applySettings`. Kolor to czysty moduł `src/lib/money/colors.ts` (nominał → nazwy tokenów), tokeny `--money-*` w `global.css`, rysowanie w `Pile` zależne od `colors`. Wygląd rozstrzyga makieta przed fazą 3.
 
-## Faza 1: Makieta kolorowych monet i banknotów (bramka)
+## Faza 1: Obrazek użytkowniczki jako wzór (bramka)
 
 ### Overview
 
@@ -43,20 +43,20 @@ Użytkowniczka ocenia wygląd 1, 2, 5, 10 i 20 zł, zanim cokolwiek wejdzie do k
 
 ### Changes Required:
 
-#### 1. Skrypt makiety
+#### 1. Obrazek użytkowniczki zamiast makiety
 
-**File**: `scripts/money-colors-mockup.mjs` (gotowy), wynik `context/changes/coins-colors/mockup-kolory.svg`
-**Intent**: Pięć nominałów powiększonych 4×, w rozmiarze wydruku i próbny rząd z dwiema kupkami i polem na znak, z tych samych stałych co strona. Propozycja (v6, styl Montessori: realistyczne kolory i proporcje, uproszczone kształty, płaskie wypełnienia, bez drobnych detali): monety srebrna 1 zł, złota 2 zł i 5 zł ze złotym pierścieniem i srebrnym środkiem, na każdej uproszczony orzełek w koronie i nominał „N zł”; banknoty 10 zł czerwono-różowy i 20 zł pomarańczowo-brązowy, z dużą liczbą, napisem „ZŁOTYCH” i uproszczonym królem w kółku. Uproszczone godło i wzór są dopuszczone przez użytkowniczkę (2026-11-08); zabezpieczeń nie ma i nie będzie, a banknot nie kopiuje wzorów NBP. To zmienia dotychczasowe „bez godeł” w PRD Open Questions 14 i wymaga zmiany sformułowania w PRD (faza 4).
+**File**: `context/changes/coins-colors/wzor-uzytkowniczki.jpg` (bez zmian; skrypt makiety `scripts/money-colors-mockup.mjs` odpada)
+**Intent**: Wygląd to obrazek, który użytkowniczka sama przygotowała innym AI (2026-11-08, zdecydowała: „użyj tych, niczego nie przepisuj”). Nie przerysowujemy go. Z obrazka bierzemy tylko 1, 2 i 5 zł (monety: wieniec, 1 zł srebrna, 2 zł złota ze srebrnym środkiem, 5 zł srebrna ze złotym środkiem) oraz 10 zł (brązowy) i 20 zł (różowy) (banknoty: pionowa liczba, orzeł, profil władcy w kółku, „Zł”); pozostałe nominały i grosze są poza kartą. Obrazek jest stylizowany i nie ma zabezpieczeń; autorstwo i prawa do niego ma użytkowniczka. To zmienia dotychczasowe „bez godeł” w PRD Open Questions 14 (faza 4). Do ustalenia z użytkowniczką: oddzielne pliki każdego nominału z przezroczystym tłem (najlepiej SVG, bo karta drukuje się wektorowo; PNG co najmniej 600 px), bo z jednego JPG z beżowym tłem nie wytniemy czysto pięciu elementów.
 
 ### Success Criteria:
 
 #### Automated Verification:
 
-- Skrypt działa: `node --experimental-strip-types scripts/money-colors-mockup.mjs`
+- Plik obrazka jest w `context/changes/coins-colors/`; użytkowniczka dostarczyła osobne pliki pięciu nominałów (przezroczyste tło)
 
 #### Manual Verification:
 
-- Użytkowniczka drukuje makietę na A4 w 100%, w kolorze i w czerni z bielą, i potwierdza: liczba czytelna na każdym tle, wygląd wyraźnie rysunkowy (nie udaje prawdziwych pieniędzy), kolory do zatwierdzenia albo poprawek.
+- Użytkowniczka drukuje obrazki w rozmiarze karty (moneta 11 mm, banknot 18×10 mm), w kolorze i w czerni z bielą, i potwierdza: liczba czytelna na każdym tle, wygląd wyraźnie rysunkowy (nie udaje prawdziwych pieniędzy), kolory do zatwierdzenia albo poprawek.
 
 ## Faza 2: Ustawienie `colors` w profilu, plakietkach i teście kontraktu
 
@@ -174,7 +174,7 @@ Brak migracji: `colors` brakujące w zapisanym profilu czyta się jako `false`.
 
 > Convention: `- [ ]` pending, `- [x]` done. Append ` — <commit sha>` when a step lands. Do not rename step titles.
 
-### Phase 1: Makieta kolorowych monet i banknotów (bramka)
+### Phase 1: Obrazek użytkowniczki jako wzór (bramka)
 
 #### Automated
 
