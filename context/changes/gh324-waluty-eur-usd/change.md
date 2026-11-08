@@ -16,3 +16,4 @@ GitHub drpc1/printo-kids#324. Makiety: `context/ideas/waluty/makieta-eur.jpg`, `
 1. Waluta: ustawienie paska `currency`, pamiętane w profilu (nie osobna karta).
 2. Nominały: bez centów/groszy. USD łatwy: moneta 1 $ + banknot 5 $ (wyjątek od „łatwy tylko monety” dla USD). 50 € w trudnym: nierozstrzygnięte.
 3. Obrazki USD: użytkowniczka sprawdzi prawo sama; obrazki zostają jak w makiecie do czasu jej potwierdzenia.
+4. Centów/groszy na razie nie dodajemy. Poziom trudny może mieć nominały większe niż 20 (np. 50, 100; PLN, EUR i USD). Konkretne zestawy i sumy do ustalenia w planie.
