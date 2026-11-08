@@ -1,7 +1,8 @@
 // Writes a mockup of the colored coins and notes of the "Kto ma więcej?" card to context/changes/coins-colors/:
 // the five nominals (1, 2, 5, 10, 20 zł) enlarged and at print size, and a sample row of two piles. Colors here are
-// literals because this is a mockup; the page will take them from theme tokens. Print at 100% in color and in black and
-// white to judge: is the number readable on every fill, and is it clearly a drawing, not real money.
+// literals because this is a mockup; the page will take them from theme tokens. Style: Montessori, realistic but
+// simplified: true-to-life colors and proportions, flat fills, few clear shapes, no fine detail. Our own drawings, no
+// security features, no copy of any real design (PRD Open Questions 14).
 // Run: node scripts/money-colors-mockup.mjs
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -12,91 +13,70 @@ const OUT = resolve(dirname(fileURLToPath(import.meta.url)), "../context/changes
 const FONT = 'font-family="Arial, Helvetica, sans-serif"';
 const INK = "#1a1a1a";
 
-// Coins: rim and face as light-to-dark gradients, a reeded edge and a raised inner ring.
-// Notes: a gradient field, soft wavy lines, a plain oval where a portrait would be (left empty on purpose), the value
-// large in the middle and small in two corners. No emblem, no portrait, no security features: it must not pass for money.
+// Coins: silver, gold, and a two-tone coin (gold ring, silver middle), like the real ones.
 const COINS = {
-  1: { rim: ["#c9ced3", "#7d848b"], face: ["#eef0f2", "#b4bac0"] },
-  2: { rim: ["#e0b64a", "#8e6a1c"], face: ["#f6dc86", "#cfa43a"] },
-  5: { rim: ["#e0b64a", "#8e6a1c"], face: ["#eef0f2", "#b4bac0"] },
+  1: { rim: "#c3c8cd", face: "#c3c8cd", edge: "#7d848b", eagle: "#8a9199" },
+  2: { rim: "#d9ae3d", face: "#d9ae3d", edge: "#8e6a1c", eagle: "#a87f1d" },
+  5: { rim: "#d9ae3d", face: "#c3c8cd", edge: "#8e6a1c", eagle: "#8a9199" },
 };
+// Notes: 10 zł red-pink, 20 zł orange-brown, like the real ones.
 const NOTES = {
-  10: { a: "#f8d9d1", b: "#e79a8c", line: "#c5574a", border: "#a63a30" },
-  20: { a: "#dcecd2", b: "#a6cf92", line: "#5f9a4a", border: "#437a31" },
+  10: { field: "#f1b9ae", border: "#a8362c", panel: "#f8d8d0" },
+  20: { field: "#f0c88a", border: "#a85f16", panel: "#f8e2bd" },
 };
 
-function defs() {
-  const grad = (id, [light, dark]) =>
-    `<radialGradient id="${id}" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="${light}"/><stop offset="1" stop-color="${dark}"/></radialGradient>`;
-  const lin = (id, n) =>
-    `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${n.a}"/><stop offset="1" stop-color="${n.b}"/></linearGradient>`;
-  const coins = Object.entries(COINS).map(([v, c]) => grad(`rim${v}`, c.rim) + grad(`face${v}`, c.face));
-  const notes = Object.entries(NOTES).map(([v, n]) => lin(`note${v}`, n));
-  return `<defs>${[...coins, ...notes].join("")}</defs>`;
+// A simplified crowned eagle: wings, body, head with a beak, a three-point crown, a short tail.
+function eagle(cx, cy, size, fill) {
+  const wing = (m) => {
+    const pts = [
+      [0.12, -0.1],
+      [0.5, -0.6],
+      [0.52, -0.3],
+      [0.95, -0.45],
+      [0.75, 0.05],
+      [0.95, 0.3],
+      [0.5, 0.25],
+      [0.15, 0.35],
+    ];
+    return `<polygon points="${pts.map(([x, y]) => `${m * x},${y}`).join(" ")}"/>`;
+  };
+  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})" fill="${fill}">${wing(1)}${wing(-1)}<ellipse cx="0" cy="0.05" rx="0.22" ry="0.4"/><circle cx="0.02" cy="-0.5" r="0.15"/><path d="M 0.12 -0.54 L 0.3 -0.47 L 0.12 -0.42 Z"/><path d="M -0.16 -0.62 L -0.16 -0.84 L -0.08 -0.74 L 0 -0.9 L 0.08 -0.74 L 0.16 -0.84 L 0.16 -0.62 Z"/><path d="M -0.2 0.4 L 0.2 0.4 L 0.3 0.8 L 0 0.7 L -0.3 0.8 Z"/></g>`;
 }
 
-// Own cartoon drawings, not copies of any real coin or note: a simplified crowned eagle silhouette (no shield, no fine detail) and a cartoon king.
-function eagle(cx, cy, size, fill, opacity) {
-  const wing = (m) =>
-    `<path d="M ${m * 0.15} -0.1 L ${m * 0.5} -0.8 L ${m * 0.5} -0.3 L ${m * 0.85} -0.6 L ${m * 0.68} -0.1 L ${m * 0.98} -0.2 L ${m * 0.6} 0.35 L ${m * 0.15} 0.3 Z"/>`;
-  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})" fill="${fill}" fill-opacity="${opacity}">${wing(1)}${wing(-1)}<ellipse cx="0" cy="0.05" rx="0.2" ry="0.38"/><circle cx="0" cy="-0.5" r="0.15"/><path d="M 0.1 -0.52 L 0.28 -0.46 L 0.1 -0.42 Z"/><path d="M -0.17 -0.62 L -0.17 -0.86 L -0.08 -0.75 L 0 -0.92 L 0.08 -0.75 L 0.17 -0.86 L 0.17 -0.62 Z"/><path d="M -0.18 0.38 L 0.18 0.38 L 0.3 0.75 L 0 0.62 L -0.3 0.75 Z"/></g>`;
-}
-
+// A simple crowned ruler, facing front.
 function king(cx, cy, size) {
-  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})"><circle cx="0" cy="0.15" r="0.38" fill="#f3d4b5" stroke="#5a3a1e" stroke-width="0.05"/><path d="M -0.38 -0.1 L -0.4 -0.6 L -0.2 -0.35 L 0 -0.72 L 0.2 -0.35 L 0.4 -0.6 L 0.38 -0.1 Z" fill="#e0b64a" stroke="#8e6a1c" stroke-width="0.05"/><circle cx="-0.14" cy="0.08" r="0.045" fill="#222"/><circle cx="0.14" cy="0.08" r="0.045" fill="#222"/><path d="M -0.3 0.28 Q 0 0.62 0.3 0.28 Q 0.15 0.4 0 0.36 Q -0.15 0.4 -0.3 0.28 Z" fill="#9a9a9a"/></g>`;
+  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})"><path d="M -0.55 0.95 Q -0.5 0.55 0 0.5 Q 0.5 0.55 0.55 0.95 Z" fill="#7a2f2f"/><circle cx="0" cy="0.1" r="0.38" fill="#f3d4b5" stroke="#5a3a1e" stroke-width="0.04"/><path d="M -0.38 -0.1 L -0.42 -0.62 L -0.2 -0.38 L 0 -0.78 L 0.2 -0.38 L 0.42 -0.62 L 0.38 -0.1 Z" fill="#d9ae3d" stroke="#8e6a1c" stroke-width="0.04"/><circle cx="-0.14" cy="0.04" r="0.04" fill="#222"/><circle cx="0.14" cy="0.04" r="0.04" fill="#222"/></g>`;
 }
 
 function coin(value, cx, cy, d) {
+  const c = COINS[value];
   const r = d / 2;
   const sw = d * 0.05;
-  const inner = r * 0.7;
-  return `<g><circle cx="${cx}" cy="${cy}" r="${r - sw / 2}" fill="url(#rim${value})" stroke="${INK}" stroke-width="${sw}"/>
-<circle cx="${cx}" cy="${cy}" r="${r - d * 0.045}" fill="none" stroke="${INK}" stroke-opacity="0.45" stroke-width="${d * 0.05}" stroke-dasharray="${d * 0.012} ${d * 0.035}"/>
-<circle cx="${cx}" cy="${cy}" r="${r * 0.8}" fill="none" stroke="${INK}" stroke-opacity="0.35" stroke-width="${d * 0.03}" stroke-dasharray="${d * 0.004} ${d * 0.04}" stroke-linecap="round"/>
-<circle cx="${cx}" cy="${cy}" r="${inner}" fill="url(#face${value})" stroke="${INK}" stroke-opacity="0.7" stroke-width="${sw * 0.5}"/>
-<path d="M ${cx - inner * 0.75} ${cy - inner * 0.35} A ${inner * 0.85} ${inner * 0.85} 0 0 1 ${cx + inner * 0.2} ${cy - inner * 0.82}" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="${d * 0.03}" stroke-linecap="round"/>
-${eagle(cx, cy - d * 0.15, inner * 1.15, INK, 0.55)}
-<text x="${cx}" y="${cy + d * 0.17}" ${FONT} font-size="${d * 0.34}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value}</text></g>`;
+  const inner = r * 0.74;
+  return `<g><circle cx="${cx}" cy="${cy}" r="${r - sw / 2}" fill="${c.rim}" stroke="${c.edge}" stroke-width="${sw}"/>
+<circle cx="${cx}" cy="${cy}" r="${inner}" fill="${c.face}" stroke="${c.edge}" stroke-width="${sw * 0.6}"/>
+${eagle(cx, cy - d * 0.1, inner * 1.5, c.eagle)}
+<text x="${cx}" y="${cy + d * 0.26}" ${FONT} font-size="${d * 0.3}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value} zł</text></g>`;
 }
 
 function note(value, x, y, w, h) {
   const n = NOTES[value];
   const sw = h * 0.05;
-  const inset = h * 0.09;
-  const waves = [0.28, 0.5, 0.72]
-    .map((f) => {
-      const step = w / 8;
-      let d = `M ${x + inset} ${y + h * f}`;
-      for (let i = 0; i < 8; i++) {
-        d += ` q ${step / 2} ${i % 2 === 0 ? -h * 0.07 : h * 0.07} ${step} 0`;
-      }
-      return `<path d="${d}" fill="none" stroke="${n.line}" stroke-opacity="0.45" stroke-width="${sw * 0.5}"/>`;
-    })
-    .join("");
-  const rosette = [0.34, 0.26, 0.18, 0.1]
-    .map(
-      (f) =>
-        `<circle cx="${x + w * 0.86}" cy="${y + h * 0.5}" r="${h * f}" fill="none" stroke="${n.line}" stroke-opacity="0.5" stroke-width="${sw * 0.4}" stroke-dasharray="${f > 0.2 ? "" : h * 0.03 + " " + h * 0.03}"/>`,
-    )
-    .join("");
-  const small = `${FONT} font-size="${h * 0.08}" fill="${n.border}" fill-opacity="0.85" text-anchor="middle" dominant-baseline="central"`;
-  const extra = `${rosette}<text x="${x + w * 0.6}" y="${y + h * 0.2}" ${small} letter-spacing="${h * 0.01}">BANKNOT EDUKACYJNY</text><text x="${x + w * 0.5}" y="${y + h * 0.88}" ${small} font-weight="700" letter-spacing="${h * 0.02}">AB 0000000</text>`;
-  const corner = `${FONT} font-size="${h * 0.17}" font-weight="700" fill="${n.border}" dominant-baseline="central"`;
-  return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h * 0.1}" fill="url(#note${value})" stroke="${n.border}" stroke-width="${sw}"/>
-<rect x="${x + inset}" y="${y + inset}" width="${w - 2 * inset}" height="${h - 2 * inset}" rx="${h * 0.06}" fill="none" stroke="${n.border}" stroke-width="${sw * 0.5}"/>
-${waves}${extra}
-<ellipse cx="${x + w * 0.24}" cy="${y + h / 2}" rx="${w * 0.11}" ry="${h * 0.3}" fill="#fff" fill-opacity="0.35" stroke="${n.border}" stroke-opacity="0.6" stroke-width="${sw * 0.5}"/>
-${king(x + w * 0.24, y + h / 2, h * 0.52)}
-<text x="${x + w * 0.62}" y="${y + h / 2}" ${FONT} font-size="${h * 0.58}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value}</text>
-<text x="${x + inset * 1.5}" y="${y + inset * 2}" ${corner}>${value}</text>
-<text x="${x + w - inset * 1.5}" y="${y + h - inset * 2}" ${corner} text-anchor="end">${value}</text></g>`;
+  const inset = h * 0.1;
+  const px = x + w * 0.74;
+  return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h * 0.08}" fill="${n.field}" stroke="${n.border}" stroke-width="${sw}"/>
+<rect x="${x + inset}" y="${y + inset}" width="${w - 2 * inset}" height="${h - 2 * inset}" rx="${h * 0.05}" fill="none" stroke="${n.border}" stroke-width="${sw * 0.5}"/>
+<circle cx="${px}" cy="${y + h / 2}" r="${h * 0.33}" fill="${n.panel}" stroke="${n.border}" stroke-width="${sw * 0.6}"/>
+${king(px, y + h * 0.52, h * 0.52)}
+<text x="${x + w * 0.1}" y="${y + h * 0.5}" ${FONT} font-size="${h * 0.58}" font-weight="700" fill="${INK}" dominant-baseline="central">${value}</text>
+<text x="${x + w * 0.1}" y="${y + h * 0.84}" ${FONT} font-size="${h * 0.13}" font-weight="700" fill="${n.border}" dominant-baseline="central">ZŁOTYCH</text></g>`;
 }
 
 const parts = [];
 // Enlarged (x4) nominals.
 const k = 4;
-[1, 2, 5].forEach((v, i) => parts.push(coin(v, 20 + i * 50, 30, S.coinDiameter * k)));
-[10, 20].forEach((v, i) => parts.push(note(v, 25 + i * 90, 70, S.noteWidth * k, S.noteHeight * k)));
+[1, 2, 5].forEach((v, i) => parts.push(coin(v, 25 + i * 50, 30, S.coinDiameter * k)));
+[10, 20].forEach((v, i) => parts.push(note(v, 10 + i * 100, 70, S.noteWidth * k, S.noteHeight * k)));
 // Print size (x1), one row.
 parts.push(`<text x="10" y="140" ${FONT} font-size="5" fill="${INK}">Rozmiar wydruku</text>`);
 [1, 2, 5].forEach((v, i) => parts.push(coin(v, 20 + i * 13, 152, S.coinDiameter)));
@@ -115,7 +95,7 @@ parts.push(coin(5, 150, 183, S.coinDiameter));
 mkdirSync(OUT, { recursive: true });
 writeFileSync(
   resolve(OUT, "mockup-kolory.svg"),
-  `<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="210mm" viewBox="0 0 210 210"><rect width="210" height="210" fill="#fff"/>${defs()}
+  `<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="210mm" viewBox="0 0 210 210"><rect width="210" height="210" fill="#fff"/>
 ${parts.join("\n")}</svg>\n`,
 );
 console.log("written mockup-kolory.svg");
