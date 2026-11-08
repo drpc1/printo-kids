@@ -2,6 +2,7 @@ import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } f
 import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVELS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
+import type { OddOneOutLevelId } from "./odd-one-out/levels.ts";
 import { DEFAULT_SEQUENCE_LEVEL_ID, SEQUENCE_LEVELS, type SequenceLevelId } from "./sequence/levels.ts";
 import {
   DEFAULT_SUDOKU_SETTINGS,
@@ -38,6 +39,11 @@ export interface SequenceSettings {
 
 export interface MoneySettings {
   level: MoneyLevelId;
+  colors: boolean;
+}
+
+export interface OddOneOutSettings {
+  level: OddOneOutLevelId;
   colors: boolean;
 }
 
