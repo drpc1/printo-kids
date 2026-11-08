@@ -11,7 +11,7 @@ Zamieniamy wyniki eksploracji (`research.md`, K1 i pierwszy krok K2) w cztery ma
 - `useCardSettings.persist` (`useCardSettings.ts:71-89`) cicho pomija zapis, gdy profil zniknął, i ignoruje wynik `writeChildProfiles` oraz `writeLastUsedCards` (`:75`). Notatka „Zapamiętane dla” (`useRememberNote`, `RememberedNote.tsx`) ma stałą wysokość wiersza przy aktywnym profilu, więc nie przesuwa układu.
 - `writeLastUsed` (`last-used.ts:38`) zwraca `void`, zachowuje `cards` i przenosi stary `level` do `cards`, ale nie zachowuje nieznanych pól. `writeLastUsedCards` (`:52`) zachowuje wszystkie pola i kasuje `level`. Jedyny wołający `writeLastUsed` to `recordBarCharacter` (`own-image-store.ts:91`). Historia (`git log --follow`): 4 commity, żaden `fix`; plan `card-settings-memory/plan.md:80` świadomie zostawił ten podział.
 - `summaryParts` (`card-summary.ts:52-108`) ma `default: return null`, więc karta bez wpisu cicho zostaje bez odznaki. `card-summary.test.ts` mapuje `CARD_KINDS`, więc tego nie łapie.
-- `package.json:12` zawiera sklejony token `analytics.test.tssrc/lib/last-used.test.ts`; `src/lib/analytics.test.ts` istnieje, ale nie jest uruchamiany osobno.
+- `package.json:12` (skrypt `test`) wymienia `src/lib/last-used.test.ts` dwa razy. Sklejony token z `analytics.test.ts` naprawiło już #280 (`790c4c5`), a `src/lib/test-script.test.ts` pilnuje, że skrypt wymienia wszystkie istniejące testy; duplikatu nie wykrywa.
 - W repo nie ma testów hooków ani komponentów (brak jsdom/testing-library, brak `*.test.tsx`). `npm test` obejmuje tylko `src/lib` i 3 skrypty, więc logika ma zostać w czystych funkcjach `lib`; zachowanie UI sprawdza e2e.
 
 ## Desired End State
@@ -37,16 +37,17 @@ Zamieniamy wyniki eksploracji (`research.md`, K1 i pierwszy krok K2) w cztery ma
 - Reguła ESLint `no-restricted-globals` dla `localStorage` w `src/components` i `src/hooks`.
 - Widoczny komunikat o porażce zapisu `last-used` bez aktywnego profilu: wiersz notatki nie istnieje bez profilu, a nowy przesunąłby układ, więc ta porażka zostaje cicha.
 - Nowa zależność testowa (jsdom, testing-library).
+- Wspólna notatka dla `useCardSettings` i `useFavoriteCharacter` (TD-9): generatory składają `memory.note ?? favorite.note`, więc błąd zapisu ulubionej bywa niewidoczny, gdy w tym samym czasie świeci „Zapamiętane dla”. Znane ograniczenie, wąskie okno czasowe.
 
 ## Implementation Approach
 
-Fazy rosną od najtańszych i niezależnych do tych, które zmieniają zachowanie. Faza 1 jest niezależna od reszty i uruchamia pełne CI (zmiana `package.json`). Faza 2 dodaje funkcję obok starych, bez wołających. Faza 3 przepina wołających od najbardziej błędnych (`ProfileCorner` usuwanie/tworzenie) do tych, które już czytają świeżo. Faza 4 dopiero na gotowym wyniku `{ok}` dokłada widoczny komunikat. Każda faza to osobny commit. Fazy 2→3→4 zależą od siebie po kolei.
+Plan powstał 2026-11-03; od tego czasu `main` poszedł do przodu (m.in. gh283, zmiany w `CardPage.tsx`). Implementuj z nowej gałęzi od aktualnego `origin/main` i przed fazą 4 sprawdź `CardPage.tsx` i `RememberedNote.tsx`. Fazy rosną od najtańszych i niezależnych do tych, które zmieniają zachowanie. Faza 1 jest niezależna od reszty i uruchamia pełne CI (zmiana `package.json`). Faza 2 dodaje funkcję obok starych, bez wołających. Faza 3 przepina wołających od najbardziej błędnych (`ProfileCorner` usuwanie/tworzenie) do tych, które już czytają świeżo. Faza 4 dopiero na gotowym wyniku `{ok}` dokłada widoczny komunikat. Każda faza to osobny commit. Fazy 2→3→4 zależą od siebie po kolei.
 
 ## Phase 1: Skrypt testów i strażniki
 
 ### Overview
 
-Przywraca pominięty test, dodaje strażnika rejestru kart i pinuje zachowanie obu writerów `last-used`. Bez zmian zachowania aplikacji.
+Usuwa zdublowany wpis w skrypcie `test`, dodaje strażnika rejestru kart i pinuje zachowanie obu writerów `last-used`. Bez zmian zachowania aplikacji.
 
 ### Changes Required:
 
@@ -54,9 +55,9 @@ Przywraca pominięty test, dodaje strażnika rejestru kart i pinuje zachowanie o
 
 **File**: `package.json`
 
-**Intent**: Rozdzielić sklejony token, żeby `analytics.test.ts` i `last-used.test.ts` uruchamiały się jako osobne pliki; uruchomić `npm test` lokalnie przed wypchnięciem.
+**Intent**: Usunąć zdublowany wpis `src/lib/last-used.test.ts`, żeby ten plik uruchamiał się raz; uruchomić `npm test` lokalnie przed wypchnięciem.
 
-**Contract**: `scripts.test` zawiera `src/lib/analytics.test.ts` i `src/lib/last-used.test.ts` jako osobne ścieżki (bez duplikatu `last-used.test.ts`). Jeśli `analytics.test.ts` jest czerwony, wynik zgłaszamy w raporcie fazy i naprawiamy test albo kod w tym samym commicie; nie wyłączamy go.
+**Contract**: `scripts.test` zawiera `src/lib/last-used.test.ts` dokładnie raz i nadal wymienia `src/lib/analytics.test.ts` jako osobną ścieżkę. Żadnego innego pliku testowego nie dodajemy ani nie usuwamy.
 
 #### 2. Strażnik `summaryParts`
 
@@ -64,7 +65,7 @@ Przywraca pominięty test, dodaje strażnika rejestru kart i pinuje zachowanie o
 
 **Intent**: Wykryć kartę z `CARD_KINDS`, której brakuje wpisu w `summaryParts` (dziś `default: return null` ukrywa to).
 
-**Contract**: Dla każdego `id` z `CARD_KINDS` profil z zapisanymi ustawieniami tej karty daje `used: true` w `cardSummaries`. Test nie zależy od liczby kart.
+**Contract**: Dla każdego `id` z `CARD_KINDS` profil z zapisanymi ustawieniami tej karty daje `used: true` w `cardSummaries`. Ustawienia każdej karty pochodzą z mapy fixture'ów w samym teście (wartości z `DEFAULTS` w `card-settings.ts` albo jawne); `id` z `CARD_KINDS` bez fixture'a łamie test z czytelnym komunikatem, więc nowa karta wymaga wpisu w obu miejscach. Test nie zależy od liczby kart.
 
 #### 3. Writery `last-used`
 
@@ -78,15 +79,11 @@ Przywraca pominięty test, dodaje strażnika rejestru kart i pinuje zachowanie o
 
 #### Automated Verification:
 
-- Wszystkie testy jednostkowe przechodzą, w tym `analytics.test.ts`: `npm test`
+- Wszystkie testy jednostkowe przechodzą: `npm test`
 - Lint przechodzi: `npm run lint`
 - Zależności bez naruszeń: `npm run depcruise`
 - Typy przechodzą: `npx astro check`
 - Build przechodzi: `npm run build`
-
-#### Manual Verification:
-
-- Wynik uruchomienia `analytics.test.ts` jest opisany w raporcie fazy (zielony albo naprawiony, z uzasadnieniem)
 
 **Implementation Note**: Po fazie i zielonych testach automatycznych zatrzymaj się na potwierdzenie człowieka przed fazą 2. Odpowiadające pola `- [ ]` są w sekcji `## Progress`.
 
@@ -106,7 +103,7 @@ Dodaje jedną funkcję zapisu listy profili obok istniejących, bez wołających
 
 **Intent**: Złożyć „świeży odczyt → transformacja → zapis → wynik” w jednym miejscu, żeby żaden wołający nie składał tego ręcznie ani nie zapisywał listy ze stanu.
 
-**Contract**: `updateProfiles(storage, allowedCharacters, transform): UpdateResult`. `transform(stored: ChildProfile[]) => ChildProfile[] | null` jest czystą funkcją (np. wrapper na `withFavorite`, `withProfileCards`); `null` oznacza, że zmiany nie da się zastosować (profil zniknął, nazwa zajęta). `UpdateResult = { ok: true; profiles: ChildProfile[] } | { ok: false; reason: "unavailable" | "write-failed" }`; `"unavailable"` gdy `transform` zwróciło `null`, `"write-failed"` gdy `writeChildProfiles` zwróciło `false` albo storage rzucił wyjątek. Funkcja nie rzuca. Format danych na dysku bez zmian.
+**Contract**: `updateProfiles(storage, allowedCharacters, transform): UpdateResult`. `transform(stored: ChildProfile[]) => ChildProfile[] | null` jest czystą funkcją (np. wrapper na `withFavorite`, `withProfileCards`); `null` oznacza, że zmiany nie da się zastosować (profil zniknął, nazwa zajęta). `UpdateResult = { ok: true; before: ChildProfile[]; profiles: ChildProfile[] } | { ok: false; reason: "unavailable" | "write-failed" }` (`before` to świeża lista odczytana tuż przed transformacją, dla wołających, którzy z niej liczą wynik pochodny, np. `visitAfterDelete` albo wczesne wyjście w `saveFavorite`); `"unavailable"` gdy `transform` zwróciło `null`, `"write-failed"` gdy `writeChildProfiles` zwróciło `false` albo storage rzucił wyjątek. Funkcja nie rzuca. Format danych na dysku bez zmian.
 
 #### 2. Testy
 
@@ -114,7 +111,7 @@ Dodaje jedną funkcję zapisu listy profili obok istniejących, bez wołających
 
 **Intent**: Pokryć scenariusze, których UI nie da się przetestować jednostkowo.
 
-**Contract**: Na `memoryStorage`: profil znika między odczytem a zapisem (`unavailable`, dysk bez zmian); storage rzuca wyjątek przy `setItem` (`write-failed`); dwa kolejne `updateProfiles` nie gubią się nawzajem (drugi widzi wynik pierwszego); `transform` dostaje świeżą listę, nie tę z wcześniejszego odczytu.
+**Contract**: Na `memoryStorage`: profil znika między odczytem a zapisem (`unavailable`, dysk bez zmian); storage rzuca wyjątek przy `setItem` (`write-failed`); dwa kolejne `updateProfiles` nie gubią się nawzajem (drugi widzi wynik pierwszego); `transform` dostaje świeżą listę, nie tę z wcześniejszego odczytu; `before` w wyniku to ta sama lista, którą dostał `transform`.
 
 ### Success Criteria:
 
@@ -137,37 +134,37 @@ Wszystkie pięć zapisów listy profili idzie przez `updateProfiles`. Pierwsze d
 
 ### Changes Required:
 
-#### 1. Usuwanie i tworzenie profilu (naprawa TD-1)
+#### 1. e2e dwóch zakładek (najpierw, przed edycją kodu)
+
+**File**: `tests/e2e/card-settings.spec.ts` (albo `profile-summary.spec.ts`, zależnie od istniejącego helpera menu profilu)
+
+**Intent**: Test chroniący TD-1 przed regresją, napisany i uruchomiony na kodzie sprzed przepięcia, żeby dowieść, że łapie błąd.
+
+**Contract**: Dwie strony w jednym kontekście przeglądarki. Strona A ładuje się z profilem Ola. Zapis profilu Ania do `localStorage` z drugiej strony (symulacja drugiej zakładki; strony kart nie nasłuchują `storage`). Strona A usuwa Olę przez okno profilu. Po usunięciu `localStorage` nadal zawiera Anię. Kolejność w fazie: najpierw ten test i jego czerwone uruchomienie na niezmienionym `ProfileCorner.tsx` (wynik zapisujemy w raporcie fazy), dopiero potem punkty 2–4.
+
+#### 2. Usuwanie i tworzenie profilu (naprawa TD-1)
 
 **File**: `src/components/ProfileCorner.tsx`
 
 **Intent**: `confirmDelete` i `handleCreate` przestają zapisywać listę ze stanu `profiles`.
 
-**Contract**: `confirmDelete` oblicza `visitAfterDelete` na liście ze świeżego odczytu wewnątrz `transform`; profil usunięty już w innej zakładce nie jest błędem (usunięcie jest idempotentne). `handleCreate` dopisuje profil do świeżej listy; jeśli wewnątrz `transform` nazwa jest już zajęta w świeżej liście, wynik to `unavailable`, mapowany na istniejący `SAVE_ERROR_TEXT`. Blokady (`deleteLock`, `createLock`) i teksty błędów formularza zostają.
+**Contract**: `confirmDelete`: `transform` zwraca `visitAfterDelete(stored, …).profiles` na liście ze świeżego odczytu; po `ok: true` wołający liczy `visitAfterDelete(result.before, …)` z tymi samymi argumentami, żeby dostać `activeId` i resztę dla `onDeleted(next)`. Przed napisaniem kodu potwierdzić, że `visitAfterDelete` jest czysta względem swoich argumentów (wtedy oba wywołania dają ten sam wynik); jeśli nie, wynik wynosimy domknięciem z `transform`. Profil usunięty już w innej zakładce nie jest błędem (usunięcie jest idempotentne). `handleCreate` dopisuje profil do świeżej listy; jeśli wewnątrz `transform` nazwa jest już zajęta w świeżej liście, wynik to `unavailable`, mapowany na istniejący `SAVE_ERROR_TEXT`. Blokady (`deleteLock`, `createLock`) i teksty błędów formularza zostają.
 
-#### 2. Ulubiona postać
+#### 3. Ulubiona postać
 
 **File**: `src/components/ProfileCorner.tsx`, `src/hooks/useFavoriteCharacter.ts`
 
 **Intent**: `saveFavorite` i `useFavoriteCharacter.save` wołają ten sam kod zapisu zamiast dwóch kopii odczyt → `withFavorite` → zapis.
 
-**Contract**: Oba używają `updateProfiles` z `transform` opartym o `withFavorite`. Zachowanie bez zmian: `saveFavorite` dalej wychodzi bez zapisu, gdy wybór równa się obecnej ulubionej; `useFavoriteCharacter.save` dalej zwraca `boolean`.
+**Contract**: Oba używają `updateProfiles` z `transform` opartym o `withFavorite`. Zachowanie bez zmian: `saveFavorite` dalej wychodzi bez zapisu, gdy wybór równa się obecnej ulubionej (wyjście liczone na świeżej liście, `transform` zwraca wtedy tę samą listę bez zmian, a wołający rozpoznaje to po `before`); `useFavoriteCharacter.save` dalej zwraca `boolean`.
 
-#### 3. Ustawienia karty
+#### 4. Ustawienia karty
 
 **File**: `src/hooks/useCardSettings.ts`
 
 **Intent**: Ścieżka z aktywnym profilem w `persist` używa `updateProfiles` zamiast ręcznego odczytu, zapisu i cichego pominięcia.
 
 **Contract**: `transform` opiera się o `withProfileCards`. Po `ok: true` hook wywołuje `visit.replaceProfiles(profiles)` i `show(name)` jak dziś. Wynik `{ok: false}` jest tu jeszcze ignorowany (komunikat dochodzi w fazie 4). Ścieżka bez profilu (`writeLastUsedCards`) bez zmian.
-
-#### 4. e2e dwóch zakładek
-
-**File**: `tests/e2e/card-settings.spec.ts` (albo `profile-summary.spec.ts`, zależnie od istniejącego helpera menu profilu)
-
-**Intent**: Pierwszy test chroniący TD-1 przed regresją.
-
-**Contract**: Dwie strony w jednym kontekście przeglądarki. Strona A ładuje się z profilem Ola. Zapis profilu Ania do `localStorage` z drugiej strony (symulacja drugiej zakładki; strony kart nie nasłuchują `storage`). Strona A usuwa Olę przez okno profilu. Po usunięciu `localStorage` nadal zawiera Anię.
 
 ### Success Criteria:
 
@@ -182,6 +179,7 @@ Wszystkie pięć zapisów listy profili idzie przez `updateProfiles`. Pierwsze d
 
 #### Manual Verification:
 
+- e2e dwóch zakładek jest czerwony na kodzie sprzed przepięcia i zielony po nim (oba uruchomienia opisane w raporcie fazy)
 - Usuwanie i tworzenie profilu, zmiana ulubionej z okna i spod listy postaci działają jak wcześniej
 - W drugiej zakładce dodany profil przetrwa usunięcie innego profilu w pierwszej
 
@@ -291,15 +289,11 @@ Brak migracji: format danych w `printo-kids:child-profiles` i `printo-kids:last-
 
 #### Automated
 
-- [ ] 1.1 Wszystkie testy jednostkowe przechodzą, w tym `analytics.test.ts`: `npm test`
+- [ ] 1.1 Wszystkie testy jednostkowe przechodzą: `npm test`
 - [ ] 1.2 Lint przechodzi: `npm run lint`
 - [ ] 1.3 Zależności bez naruszeń: `npm run depcruise`
 - [ ] 1.4 Typy przechodzą: `npx astro check`
 - [ ] 1.5 Build przechodzi: `npm run build`
-
-#### Manual
-
-- [ ] 1.6 Wynik uruchomienia `analytics.test.ts` jest opisany w raporcie fazy (zielony albo naprawiony, z uzasadnieniem)
 
 ### Phase 2: `updateProfiles` w `lib`
 
@@ -323,8 +317,9 @@ Brak migracji: format danych w `printo-kids:child-profiles` i `printo-kids:last-
 
 #### Manual
 
-- [ ] 3.7 Usuwanie i tworzenie profilu, zmiana ulubionej z okna i spod listy postaci działają jak wcześniej
-- [ ] 3.8 W drugiej zakładce dodany profil przetrwa usunięcie innego profilu w pierwszej
+- [ ] 3.7 e2e dwóch zakładek jest czerwony na kodzie sprzed przepięcia i zielony po nim (oba uruchomienia opisane w raporcie fazy)
+- [ ] 3.8 Usuwanie i tworzenie profilu, zmiana ulubionej z okna i spod listy postaci działają jak wcześniej
+- [ ] 3.9 W drugiej zakładce dodany profil przetrwa usunięcie innego profilu w pierwszej
 
 ### Phase 4: Komunikat o porażce zapisu na pasku
 
