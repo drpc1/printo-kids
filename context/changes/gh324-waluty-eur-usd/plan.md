@@ -283,9 +283,9 @@ Zapisane profile i ostatnie parametry bez `currency` wczytują się jako `pln` (
 
 #### Automated
 
-- [x] 3.1 Testy, lint, typy, zależności: `npm test`, `npm run lint`, `npx astro check`, `npm run depcruise`
-- [x] 3.2 Build: `npm run build`
-- [x] 3.3 E2E: `E2E_PORT=4399 npx playwright test tests/e2e/money.spec.ts tests/e2e/card-settings.spec.ts --project=chromium`
+- [x] 3.1 Testy, lint, typy, zależności: `npm test`, `npm run lint`, `npx astro check`, `npm run depcruise` — d1ddcce
+- [x] 3.2 Build: `npm run build` — d1ddcce
+- [x] 3.3 E2E: `E2E_PORT=4399 npx playwright test tests/e2e/money.spec.ts tests/e2e/card-settings.spec.ts --project=chromium` — d1ddcce
 
 #### Manual
 
