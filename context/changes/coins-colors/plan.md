@@ -184,9 +184,9 @@ Brak migracji: `colors` brakujące w zapisanym profilu czyta się jako `false`.
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi
-- [x] 2.2 `npm run lint` przechodzi
-- [x] 2.3 `npx astro check` przechodzi
+- [x] 2.1 `npm test` przechodzi — 03b93f0
+- [x] 2.2 `npm run lint` przechodzi — 03b93f0
+- [x] 2.3 `npx astro check` przechodzi — 03b93f0
 
 ### Phase 3: Kolorowe monety i banknoty, przełącznik na stronie
 
