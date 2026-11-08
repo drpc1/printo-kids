@@ -6,3 +6,8 @@
 export function moneyImage(value: number, colors: boolean): string | null {
   return colors ? `/money/${value}zl.png` : null;
 }
+
+/** The pictures every level can use, in one list so the page can load them before they are drawn. */
+export function moneyImagePaths(): readonly string[] {
+  return [1, 2, 5, 10, 20].flatMap((value) => moneyImage(value, true) ?? []);
+}
