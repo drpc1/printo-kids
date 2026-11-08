@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import type { CardSettingsMap } from "./card-settings.ts";
+import { defaultCardSettings, type CardSettingsMap } from "./card-settings.ts";
 import { cardSummaries } from "./card-summary.ts";
 import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
@@ -130,5 +130,27 @@ void describe("cardSummaries", () => {
       "sudoku",
     );
     assert.equal(shapes.detail, "9×9 · łatwy · kształty · kolory");
+  });
+});
+
+/** One entry per card in CARD_KINDS. A new card needs an entry here and a branch in `summaryParts`. */
+const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
+  labirynt: { labirynt: defaultCardSettings("labirynt") },
+  symetria: { symetria: defaultCardSettings("symetria") },
+  sekwencje: { sekwencje: defaultCardSettings("sekwencje") },
+  sudoku: { sudoku: defaultCardSettings("sudoku") },
+  nonogram: { nonogram: defaultCardSettings("nonogram") },
+  dyktando: { dyktando: defaultCardSettings("dyktando") },
+  pieniadze: { pieniadze: defaultCardSettings("pieniadze") },
+};
+
+void describe("the card registry and summaryParts", () => {
+  void test("every card in CARD_KINDS is used once its settings are saved", () => {
+    for (const kind of CARD_KINDS) {
+      const saved = SAVED_SETTINGS[kind.id];
+      assert.ok(saved, `add fixture settings for "${kind.id}" to SAVED_SETTINGS`);
+      const summary = byId(cardSummaries(profile(null, saved)), kind.id);
+      assert.equal(summary.used, true, `summaryParts has no branch for "${kind.id}"`);
+    }
   });
 });
