@@ -326,15 +326,15 @@ Brak migracji: format danych w `printo-kids:child-profiles` i `printo-kids:last-
 
 #### Automated
 
-- [x] 4.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 4.2 Lint przechodzi: `npm run lint`
-- [x] 4.3 Zależności bez naruszeń: `npm run depcruise`
-- [x] 4.4 Typy przechodzą: `npx astro check`
-- [x] 4.5 Build przechodzi: `npm run build`
-- [x] 4.6 Pełny zestaw e2e na wolnym porcie przechodzi: `E2E_PORT=4399 npx playwright test`
-- [x] 4.7 Smoke przechodzi: `npm run smoke`
+- [x] 4.1 Testy jednostkowe przechodzą: `npm test` — 3199c34
+- [x] 4.2 Lint przechodzi: `npm run lint` — 3199c34
+- [x] 4.3 Zależności bez naruszeń: `npm run depcruise` — 3199c34
+- [x] 4.4 Typy przechodzą: `npx astro check` — 3199c34
+- [x] 4.5 Build przechodzi: `npm run build` — 3199c34
+- [x] 4.6 Pełny zestaw e2e na wolnym porcie przechodzi: `E2E_PORT=4399 npx playwright test` — 3199c34
+- [x] 4.7 Smoke przechodzi: `npm run smoke` — 3199c34
 
 #### Manual
 
-- [x] 4.8 Na komputerze i na telefonie komunikat błędu nie zasłania karty, Generuj ani Drukuj, i znika sam
-- [x] 4.9 Kolor komunikatu błędu jest czytelny i odróżnia się od „Zapamiętane dla”
+- [x] 4.8 Na komputerze i na telefonie komunikat błędu nie zasłania karty, Generuj ani Drukuj, i znika sam — 3199c34
+- [x] 4.9 Kolor komunikatu błędu jest czytelny i odróżnia się od „Zapamiętane dla” — 3199c34
