@@ -9,7 +9,7 @@ Zapisy listy profili dziecka w `localStorage` składa dziś ręcznie pięć miej
 
 ## Starting Point
 
-Czyste transformacje (`withFavorite`, `withProfileCards`, `visitAfterDelete`) i wstrzykiwany `Storage` już istnieją; brakuje funkcji, która składa „świeży odczyt → transformacja → zapis → wynik”. Ulubiona postać ma dwie niezależne implementacje. `package.json:12` ma sklejony token, który pomija `analytics.test.ts`. W repo nie ma testów hooków i komponentów, więc logika ma zostać w `lib`.
+Czyste transformacje (`withFavorite`, `withProfileCards`, `visitAfterDelete`) i wstrzykiwany `Storage` już istnieją; brakuje funkcji, która składa „świeży odczyt → transformacja → zapis → wynik”. Ulubiona postać ma dwie niezależne implementacje. `package.json:12` wymienia `last-used.test.ts` dwa razy (sklejony token naprawiło już #280). W repo nie ma testów hooków i komponentów, więc logika ma zostać w `lib`.
 
 ## Desired End State
 
@@ -24,7 +24,7 @@ Każda zmiana listy profili przechodzi przez `updateProfiles` i nie cofa zmian z
 | Porażka zapisu | Widoczny komunikat w wierszu notatki | Rodzic ma wiedzieć, że zmiana się nie zapisała; wiersz ma stałą wysokość, więc układ stoi. | Plan |
 | Komunikat bez profilu | Cicho | Wiersz notatki nie istnieje bez profilu, a nowy przesunąłby układ. | Plan |
 | Writery `last-used` | Tylko guard i wynik `boolean`, bez scalania | Brak commitu `fix` w historii, jeden wołający i brak nieznanych pól dziś. | Plan |
-| Literówka `package.json` | Naprawa w fazie 1, `npm test` lokalnie | Przywraca pominięty test i pozwala wpiąć strażnika. | Plan |
+| Duplikat w `package.json` | Usunięcie w fazie 1, `npm test` lokalnie | Skrypt `test` uruchamia `last-used.test.ts` raz; #280 naprawiło resztę. | Plan |
 | Lokalizacja funkcji | `updateProfiles` w `child-profiles.ts` z wynikiem `{ok, reason}` | Wystarcza istniejąca abstrakcja, a wynik z `reason` rozróżnia „zniknął” od „nie zapisano”. | Research |
 | Typ notatki | `{text, tone}`, generatory bez zmian | Siedem generatorów podaje `memory.note ?? favorite.note`, więc typ przechodzi dalej. | Research |
 
@@ -42,7 +42,7 @@ Funkcja `updateProfiles(storage, allowed, transform)` czyta świeżą listę, wy
 
 | Phase | What it delivers | Key risk |
 | --- | --- | --- |
-| 1. Skrypt testów i strażniki | Naprawiony `scripts.test`, strażnik rejestru, test writerów | `analytics.test.ts` może być czerwony po pierwszym uruchomieniu |
+| 1. Skrypt testów i strażniki | Naprawiony `scripts.test`, strażnik rejestru, test writerów | Mała zmiana skryptu `test`; strażnik `summaryParts` potrzebuje fixture’ów dla każdej karty |
 | 2. `updateProfiles` w `lib` | Funkcja z testami na `memoryStorage` | Kształt wyniku musi obsłużyć pięciu wołających |
 | 3. Przepięcie wołających | Naprawa TD-1, jedna implementacja ulubionej, e2e dwóch zakładek | Osłona UI to głównie e2e |
 | 4. Komunikat o porażce | Widoczny błąd w wierszu notatki, PRD, e2e | Nowe zachowanie UI, układ na telefonie |
@@ -52,7 +52,6 @@ Funkcja `updateProfiles(storage, allowed, transform)` czyta świeżą listę, wy
 
 ## Open Risks & Assumptions
 
-- `analytics.test.ts` nie był uruchamiany w CI; może być czerwony i wymagać osobnej naprawy.
 - Założenie: bez aktywnego profilu porażka zapisu `last-used` zostaje cicha (do zmiany tylko wraz z układem paska).
 - Nazwa zajęta w świeżej liście podczas tworzenia profilu jest mapowana na istniejący `SAVE_ERROR_TEXT`; osobny komunikat o duplikacie nie jest planowany.
 
