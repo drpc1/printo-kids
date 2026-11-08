@@ -408,6 +408,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Po zmianie ustawienia na pasku przy aktywnym profilu pojawia się krótki komunikat „Zapamiętane dla {imię}”, który znika sam i nie zasłania karty ani przycisków.
+- Gdy zapis ustawień do aktywnego profilu się nie uda (pełny lub zablokowany magazyn, profil usunięty w innej zakładce), w tym samym wierszu co „Zapamiętane dla {imię}” pojawia się krótki komunikat o błędzie („Nie udało się zapamiętać ustawień”), który znika sam i nie zasłania karty ani przycisków; bez profilu komunikatu nie ma (decyzja 2026-11-08, GitHub 284).
 - Pod listą postaci przy aktywnym profilu, gdy wybrana postać różni się od ulubionej, jest tekst „Tylko na tę kartę” i wybór „Ustaw jako ulubioną {imię}”.
 - Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia; przy labiryncie, symetrii, sekwencjach i dyktandzie (kartach z dawną nazwą wiekową) ma też pod opisem typowy wiek z kolumny „Dawna nazwa”. Wiersz ma więc trzy linie, np. „Poziom 3” / „mniejsza kratka, bez podpowiedzi” / „zwykle ok. 6 lat”; sudoku i nonogram mają dwie linie („łatwy” / „znaczki przy wierszach, duża kratka”), bez wieku (decyzja 2026-10-26).
 - Okno profilu ma jedno zdanie: ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.

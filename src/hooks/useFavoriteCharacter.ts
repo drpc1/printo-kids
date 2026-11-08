@@ -1,5 +1,5 @@
 import type { useChildProfileVisit } from "@/hooks/useChildProfileVisit";
-import { useRememberNote } from "@/hooks/useCardSettings";
+import { useRememberNote, type RememberNote } from "@/hooks/useCardSettings";
 import { favoriteDiffers, updateProfiles, withFavorite } from "@/lib/child-profiles";
 import { ALLOWED_CHARACTER_IDS, OWN_IMAGE_ID, type SheetCharacterId } from "@/lib/sheet/character";
 
@@ -16,8 +16,8 @@ export interface FavoriteOffer {
 export function useFavoriteCharacter(
   visit: ReturnType<typeof useChildProfileVisit>,
   bar: { character: SheetCharacterId; ownImageHref: string | null },
-): { offer: FavoriteOffer | null; note: string | null } {
-  const { note, show } = useRememberNote();
+): { offer: FavoriteOffer | null; note: RememberNote | null } {
+  const { note, show, showError } = useRememberNote();
   const active = visit.profiles.find((profile) => profile.id === visit.activeId) ?? null;
   if (active === null || !favoriteDiffers(active, bar.character, bar.ownImageHref)) {
     return { offer: null, note };
@@ -33,6 +33,7 @@ export function useFavoriteCharacter(
       withFavorite(stored, active.id, bar.character, ALLOWED_CHARACTER_IDS, href),
     );
     if (!saved.ok) {
+      showError();
       return false;
     }
     visit.replaceProfiles(saved.profiles);
