@@ -5,6 +5,7 @@ import { ProfileCorner } from "@/components/ProfileCorner";
 import { ReprintDialog } from "@/components/ReprintDialog";
 import { RememberedNote } from "@/components/RememberedNote";
 import { Button } from "@/components/ui/button";
+import type { RememberNote } from "@/hooks/useCardSettings";
 import type { ProfileCornerHandlers } from "@/hooks/useChildProfileVisit";
 import type { CardSettingsMap } from "@/lib/card-settings";
 import type { ChildProfile } from "@/lib/child-profiles";
@@ -48,7 +49,7 @@ export function CardPage({
   corner: ProfileCornerHandlers;
   /** Omit when a new profile has no card settings to start with (the maze starts a new profile at its default level). */
   newProfileCards?: CardSettingsMap;
-  note: string | null;
+  note: RememberNote | null;
   sheetShown: boolean;
   controls: ReactNode;
   sheet: ReactNode;

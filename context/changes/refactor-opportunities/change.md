@@ -1,7 +1,7 @@
 ---
 change_id: refactor-opportunities
 title: Które długi techniczne ustawień kart warto naprawić i w jakiej kolejności
-status: impl_reviewed
+status: implemented
 created: 2026-11-03
 updated: 2026-11-08
 archived_at: null
