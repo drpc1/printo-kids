@@ -35,11 +35,11 @@ function defs() {
   return `<defs>${[...coins, ...notes].join("")}</defs>`;
 }
 
-// Own cartoon drawings, not copies of any real coin or note: a plain eagle (no crown, no shield) and a cartoon king.
+// Own cartoon drawings, not copies of any real coin or note: a simplified crowned eagle silhouette (no shield, no fine detail) and a cartoon king.
 function eagle(cx, cy, size, fill, opacity) {
   const wing = (m) =>
     `<path d="M ${m * 0.15} -0.1 L ${m * 0.5} -0.8 L ${m * 0.5} -0.3 L ${m * 0.85} -0.6 L ${m * 0.68} -0.1 L ${m * 0.98} -0.2 L ${m * 0.6} 0.35 L ${m * 0.15} 0.3 Z"/>`;
-  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})" fill="${fill}" fill-opacity="${opacity}">${wing(1)}${wing(-1)}<ellipse cx="0" cy="0.05" rx="0.2" ry="0.38"/><circle cx="0" cy="-0.5" r="0.15"/><path d="M 0.1 -0.52 L 0.28 -0.46 L 0.1 -0.42 Z"/><path d="M -0.18 0.38 L 0.18 0.38 L 0.3 0.75 L 0 0.62 L -0.3 0.75 Z"/></g>`;
+  return `<g transform="translate(${cx} ${cy}) scale(${size / 2})" fill="${fill}" fill-opacity="${opacity}">${wing(1)}${wing(-1)}<ellipse cx="0" cy="0.05" rx="0.2" ry="0.38"/><circle cx="0" cy="-0.5" r="0.15"/><path d="M 0.1 -0.52 L 0.28 -0.46 L 0.1 -0.42 Z"/><path d="M -0.17 -0.62 L -0.17 -0.86 L -0.08 -0.75 L 0 -0.92 L 0.08 -0.75 L 0.17 -0.86 L 0.17 -0.62 Z"/><path d="M -0.18 0.38 L 0.18 0.38 L 0.3 0.75 L 0 0.62 L -0.3 0.75 Z"/></g>`;
 }
 
 function king(cx, cy, size) {
