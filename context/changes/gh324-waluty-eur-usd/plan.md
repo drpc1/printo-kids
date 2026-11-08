@@ -86,7 +86,15 @@ Wprowadza walutę do logiki karty: lista walut z rodzajem kawałka, poziomy per 
 
 **Contract**: `MoneySettings = { level; currency; colors }`; `contentKey(settings) = "${currency}:${level}"`; w `card-summary` `extras` dostaje symbol waluty przed „kolory”, tylko dla `eur`/`usd`.
 
-#### 5. Testy
+#### 5. Preload i e2e w PLN
+
+**Files**: `src/lib/money/colors.ts`, `tests/e2e/money.spec.ts`
+
+**Intent**: Poziom trudny PLN losuje teraz też 50 i 100 zł (pliki `50zl.png`, `100zl.png` już są), więc `moneyImagePaths` ma je obejmować, a asercja e2e z listą nominałów (`money.spec.ts:63`) musi je dopuszczać; inaczej CI PR-a fazy 1 jest czerwone.
+
+**Contract**: `moneyImagePaths` z `[1,2,5,10,20,50,100]` dla PLN (pełna wersja per waluta w fazie 2).
+
+#### 6. Testy
 
 **Files**: `src/lib/money/*.test.ts`, `src/lib/card-settings.test.ts`, `src/lib/card-engines.test.ts`, `src/lib/card-summary.test.ts`
 
@@ -100,6 +108,7 @@ Wprowadza walutę do logiki karty: lista walut z rodzajem kawałka, poziomy per 
 - Lint: `npm run lint`
 - Typy: `npx astro check`
 - Zależności: `npm run depcruise`
+- E2E karty: `E2E_PORT=4399 npx playwright test tests/e2e/money.spec.ts --project=chromium`
 
 #### Manual Verification:
 
@@ -251,6 +260,7 @@ Zapisane profile i ostatnie parametry bez `currency` wczytują się jako `pln` (
 - [ ] 1.2 Lint: `npm run lint`
 - [ ] 1.3 Typy: `npx astro check`
 - [ ] 1.4 Zależności: `npm run depcruise`
+- [ ] 1.7 E2E karty: `E2E_PORT=4399 npx playwright test tests/e2e/money.spec.ts --project=chromium`
 
 #### Manual
 
