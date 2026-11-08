@@ -300,10 +300,10 @@ Brak migracji: format danych w `printo-kids:child-profiles` i `printo-kids:last-
 
 #### Automated
 
-- [x] 2.1 Nowe i dotychczasowe testy przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Zależności bez naruszeń: `npm run depcruise`
-- [x] 2.4 Typy przechodzą: `npx astro check`
+- [x] 2.1 Nowe i dotychczasowe testy przechodzą: `npm test` — d015fb8
+- [x] 2.2 Lint przechodzi: `npm run lint` — d015fb8
+- [x] 2.3 Zależności bez naruszeń: `npm run depcruise` — d015fb8
+- [x] 2.4 Typy przechodzą: `npx astro check` — d015fb8
 
 ### Phase 3: Przepięcie wołających
 
