@@ -12,35 +12,62 @@ const OUT = resolve(dirname(fileURLToPath(import.meta.url)), "../context/changes
 const FONT = 'font-family="Arial, Helvetica, sans-serif"';
 const INK = "#1a1a1a";
 
-// Coins: rim (outer ring) and face (middle). Notes: field, border and a band on the left (a plain stripe, no emblem).
+// Coins: rim and face as light-to-dark gradients, a reeded edge and a raised inner ring.
+// Notes: a gradient field, soft wavy lines, a plain oval where a portrait would be (left empty on purpose), the value
+// large in the middle and small in two corners. No emblem, no portrait, no security features: it must not pass for money.
 const COINS = {
-  1: { rim: "#9aa0a6", face: "#d3d7db", text: INK },
-  2: { rim: "#b8892b", face: "#e3b84f", text: INK },
-  5: { rim: "#b8892b", face: "#d3d7db", text: INK },
+  1: { rim: ["#c9ced3", "#7d848b"], face: ["#eef0f2", "#b4bac0"] },
+  2: { rim: ["#e0b64a", "#8e6a1c"], face: ["#f6dc86", "#cfa43a"] },
+  5: { rim: ["#e0b64a", "#8e6a1c"], face: ["#eef0f2", "#b4bac0"] },
 };
 const NOTES = {
-  10: { field: "#f3c9bf", border: "#b4443a", band: "#e08a7d", text: INK },
-  20: { field: "#cfe3c4", border: "#4f8a3c", band: "#9cc88a", text: INK },
+  10: { a: "#f8d9d1", b: "#e79a8c", line: "#c5574a", border: "#a63a30" },
+  20: { a: "#dcecd2", b: "#a6cf92", line: "#5f9a4a", border: "#437a31" },
 };
 
+function defs() {
+  const grad = (id, [light, dark]) =>
+    `<radialGradient id="${id}" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="${light}"/><stop offset="1" stop-color="${dark}"/></radialGradient>`;
+  const lin = (id, n) =>
+    `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${n.a}"/><stop offset="1" stop-color="${n.b}"/></linearGradient>`;
+  const coins = Object.entries(COINS).map(([v, c]) => grad(`rim${v}`, c.rim) + grad(`face${v}`, c.face));
+  const notes = Object.entries(NOTES).map(([v, n]) => lin(`note${v}`, n));
+  return `<defs>${[...coins, ...notes].join("")}</defs>`;
+}
+
 function coin(value, cx, cy, d) {
-  const c = COINS[value];
   const r = d / 2;
-  const sw = d * 0.07;
-  const inner = r * 0.68;
-  return `<g><circle cx="${cx}" cy="${cy}" r="${r - sw / 2}" fill="${c.rim}" stroke="${INK}" stroke-width="${sw}"/>
-<circle cx="${cx}" cy="${cy}" r="${inner}" fill="${c.face}" stroke="${INK}" stroke-width="${sw * 0.4}"/>
-<text x="${cx}" y="${cy}" ${FONT} font-size="${d * 0.46}" font-weight="700" fill="${c.text}" text-anchor="middle" dominant-baseline="central">${value}</text></g>`;
+  const sw = d * 0.05;
+  const inner = r * 0.7;
+  return `<g><circle cx="${cx}" cy="${cy}" r="${r - sw / 2}" fill="url(#rim${value})" stroke="${INK}" stroke-width="${sw}"/>
+<circle cx="${cx}" cy="${cy}" r="${r - d * 0.045}" fill="none" stroke="${INK}" stroke-opacity="0.45" stroke-width="${d * 0.05}" stroke-dasharray="${d * 0.012} ${d * 0.035}"/>
+<circle cx="${cx}" cy="${cy}" r="${inner}" fill="url(#face${value})" stroke="${INK}" stroke-opacity="0.7" stroke-width="${sw * 0.5}"/>
+<path d="M ${cx - inner * 0.75} ${cy - inner * 0.35} A ${inner * 0.85} ${inner * 0.85} 0 0 1 ${cx + inner * 0.2} ${cy - inner * 0.82}" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="${d * 0.03}" stroke-linecap="round"/>
+<text x="${cx}" y="${cy}" ${FONT} font-size="${d * 0.46}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value}</text></g>`;
 }
 
 function note(value, x, y, w, h) {
   const n = NOTES[value];
-  const sw = h * 0.06;
-  const band = w * 0.2;
-  return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h * 0.1}" fill="${n.field}" stroke="${n.border}" stroke-width="${sw}"/>
-<rect x="${x + sw}" y="${y + sw}" width="${band}" height="${h - 2 * sw}" fill="${n.band}"/>
-<rect x="${x + h * 0.1}" y="${y + h * 0.1}" width="${w - h * 0.2}" height="${h - h * 0.2}" rx="${h * 0.06}" fill="none" stroke="${n.border}" stroke-width="${sw * 0.5}"/>
-<text x="${x + w * 0.6}" y="${y + h / 2}" ${FONT} font-size="${h * 0.6}" font-weight="700" fill="${n.text}" text-anchor="middle" dominant-baseline="central">${value}</text></g>`;
+  const sw = h * 0.05;
+  const inset = h * 0.09;
+  const waves = [0.28, 0.5, 0.72]
+    .map((f) => {
+      const step = w / 8;
+      let d = `M ${x + inset} ${y + h * f}`;
+      for (let i = 0; i < 8; i++) {
+        d += ` q ${step / 2} ${i % 2 === 0 ? -h * 0.07 : h * 0.07} ${step} 0`;
+      }
+      return `<path d="${d}" fill="none" stroke="${n.line}" stroke-opacity="0.45" stroke-width="${sw * 0.5}"/>`;
+    })
+    .join("");
+  const corner = `${FONT} font-size="${h * 0.17}" font-weight="700" fill="${n.border}" dominant-baseline="central"`;
+  return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h * 0.1}" fill="url(#note${value})" stroke="${n.border}" stroke-width="${sw}"/>
+<rect x="${x + inset}" y="${y + inset}" width="${w - 2 * inset}" height="${h - 2 * inset}" rx="${h * 0.06}" fill="none" stroke="${n.border}" stroke-width="${sw * 0.5}"/>
+${waves}
+<ellipse cx="${x + w * 0.24}" cy="${y + h / 2}" rx="${w * 0.11}" ry="${h * 0.3}" fill="#fff" fill-opacity="0.35" stroke="${n.border}" stroke-opacity="0.6" stroke-width="${sw * 0.5}"/>
+<text x="${x + w * 0.62}" y="${y + h / 2}" ${FONT} font-size="${h * 0.58}" font-weight="700" fill="${INK}" text-anchor="middle" dominant-baseline="central">${value}</text>
+<text x="${x + inset * 1.5}" y="${y + inset * 2}" ${corner}>${value}</text>
+<text x="${x + w - inset * 1.5}" y="${y + h - inset * 2}" ${corner} text-anchor="end">${value}</text></g>`;
 }
 
 const parts = [];
@@ -66,7 +93,7 @@ parts.push(coin(5, 150, 183, S.coinDiameter));
 mkdirSync(OUT, { recursive: true });
 writeFileSync(
   resolve(OUT, "mockup-kolory.svg"),
-  `<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="210mm" viewBox="0 0 210 210"><rect width="210" height="210" fill="#fff"/>
+  `<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="210mm" viewBox="0 0 210 210"><rect width="210" height="210" fill="#fff"/>${defs()}
 ${parts.join("\n")}</svg>\n`,
 );
 console.log("written mockup-kolory.svg");
