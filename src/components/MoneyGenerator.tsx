@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoice } from "@/components/LevelChoice";
+import { SettingToggle } from "@/components/SettingToggle";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { MoneySettings } from "@/lib/card-settings";
+import { moneyImage } from "@/lib/money/colors";
 import { moneyEngine, moneySpec } from "@/lib/money/engine";
 import type { MoneyCard } from "@/lib/money/generate";
 import { layoutMoneySheet, layoutPile, type MoneyPileArea } from "@/lib/money/layout";
@@ -28,7 +30,8 @@ const INSTRUCTION_TEXT = MONEY_SHEET.instructionLines.join(" ");
  * corner. The chosen character stands by the instruction on the card and says it. The level comes from
  * `useCardSettings` (the active profile's, or the device's) and every change is remembered at once; the page never
  * touches the maze's last-used parameters, it only keeps the bar values the profile corner shows. The card is black
- * and has no answer on it: between the two piles of a row there is an empty square for the child's "<", ">" or "=".
+ * by default; the Kolory switch draws the pieces as coloured pictures instead (same card, same layout, so it never draws
+ * a new one). The card has no answer on it: between the two piles of a row there is an empty square for the child's "<", ">" or "=".
  * The page keeps one `SheetState`: a level change (bar or profile switch) with a card shown draws a new card, a failed
  * draw switches the card off with its reason, and Drukuj on a card that was already printed asks first.
  */
@@ -38,11 +41,11 @@ export default function MoneyGenerator() {
   const [levelOpen, setLevelOpen] = useState(false);
   const [sheet, setSheet] = useState<SheetState<MoneyCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("pieniadze", visit, handleProfileSwitch);
-  const { level: levelId } = memory.settings;
+  const { level: levelId, colors } = memory.settings;
   const view = sheetView(sheet, moneySpec.contentKey(memory.settings));
 
   function handleGenerate(): void {
-    setSheet(generateSheet(sheet, moneyEngine, { level: levelId }, Math.random));
+    setSheet(generateSheet(sheet, moneyEngine, memory.settings, Math.random));
   }
 
   function handleLevelSelect(id: MoneyLevelId): void {
@@ -79,6 +82,16 @@ export default function MoneyGenerator() {
     />
   );
 
+  const colorsControl = (
+    <SettingToggle
+      label="Kolory"
+      checked={colors}
+      onCheckedChange={(next) => {
+        memory.remember({ colors: next });
+      }}
+    />
+  );
+
   return (
     <CardPage
       profiles={profiles}
@@ -105,12 +118,18 @@ export default function MoneyGenerator() {
         <>
           {characterControl}
           {levelControl}
+          {colorsControl}
         </>
       }
       sheet={
         <>
           {view.verified !== null ? (
-            <MoneySheet card={view.verified.card} characterId={bar.character} characterSrc={bar.characterSrc} />
+            <MoneySheet
+              card={view.verified.card}
+              characterId={bar.character}
+              characterSrc={bar.characterSrc}
+              colors={colors}
+            />
           ) : null}
         </>
       }
@@ -122,10 +141,12 @@ function MoneySheet({
   card,
   characterId,
   characterSrc,
+  colors,
 }: {
   card: MoneyCard;
   characterId: string;
   characterSrc: string | null;
+  colors: boolean;
 }) {
   const sheet = layoutMoneySheet({
     pageWidth: MONEY_SHEET.pageWidth,
@@ -177,8 +198,8 @@ function MoneySheet({
         const rowLayout = sheet.rows[index];
         return (
           <g key={index}>
-            <Pile values={row.left} area={rowLayout.left} />
-            <Pile values={row.right} area={rowLayout.right} />
+            <Pile values={row.left} area={rowLayout.left} colors={colors} />
+            <Pile values={row.right} area={rowLayout.right} colors={colors} />
             <rect
               data-sign
               x={rowLayout.sign.x}
@@ -197,7 +218,7 @@ function MoneySheet({
   );
 }
 
-function Pile({ values, area }: { values: readonly number[]; area: MoneyPileArea }) {
+function Pile({ values, area, colors }: { values: readonly number[]; area: MoneyPileArea; colors: boolean }) {
   const laid = layoutPile(values, area.innerWidth);
   const left = area.x + MONEY_SHEET.pilePadding;
   const top = area.y + MONEY_SHEET.pilePadding + (area.innerHeight - laid.height) / 2;
@@ -217,6 +238,22 @@ function Pile({ values, area }: { values: readonly number[]; area: MoneyPileArea
       {laid.pieces.map((piece, index) => {
         const x = left + piece.x;
         const y = top + piece.y;
+        const image = moneyImage(piece.value, colors);
+        if (image !== null) {
+          // The picture carries the value; it is scaled to the piece box, so every coin has one diameter.
+          return (
+            <image
+              key={index}
+              data-money-image
+              href={image}
+              x={x}
+              y={y}
+              width={piece.width}
+              height={piece.height}
+              preserveAspectRatio="xMidYMid meet"
+            />
+          );
+        }
         return piece.kind === "coin" ? (
           <g key={index}>
             <circle

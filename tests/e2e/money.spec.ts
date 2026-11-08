@@ -79,6 +79,42 @@ test("the sheet shows no answer: the only text besides the pieces is the instruc
   await expect(sheet.locator("rect[data-sign]")).toHaveCount(5);
 });
 
+async function imagesLoaded(sheet: Locator): Promise<void> {
+  await expect
+    .poll(() =>
+      sheet.locator("image[data-money-image]").evaluateAll((images) =>
+        images.every((image) => {
+          const probe = new Image();
+          probe.src = image.getAttribute("href") ?? "";
+          return probe.complete && probe.naturalWidth > 0;
+        }),
+      ),
+    )
+    .toBe(true);
+}
+
+test("Kolory is off by default, draws a picture per piece and keeps the same card", async ({ page }) => {
+  const sheet = await generate(page);
+  const colors = page.getByRole("switch", { name: "Kolory" });
+  await expect(colors).not.toBeChecked();
+  await expect(sheet.locator("image[data-money-image]")).toHaveCount(0);
+  const pieces = await sheet.locator("g[data-pile] text").allTextContents();
+
+  await colors.click();
+  await expect(colors).toBeChecked();
+  const images = sheet.locator("image[data-money-image]");
+  await expect(images).toHaveCount(pieces.length);
+  await imagesLoaded(sheet);
+  const hrefs = await images.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")));
+  expect(hrefs.map((href) => href?.replace(/^\/money\/(\d+)zl\.png$/, "$1"))).toEqual(pieces);
+  // The same card: the values and the order of the pieces are the ones drawn before.
+  await expect(sheet.locator("g[data-pile] text")).toHaveCount(0);
+
+  await colors.click();
+  await expect(sheet.locator("image[data-money-image]")).toHaveCount(0);
+  expect(await sheet.locator("g[data-pile] text").allTextContents()).toEqual(pieces);
+});
+
 test("choosing another level with a card shown draws a new card", async ({ page }) => {
   const sheet = await generate(page);
   const before = await sheet.innerHTML();
@@ -150,6 +186,7 @@ test("Generuj, Drukuj and the Profil corner do not cover each other and stay on 
 
   const boxes = {
     poziom: await viewportBox(page.getByRole("button", { name: /^Poziom:/ })),
+    kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
     generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
     drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
     profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),

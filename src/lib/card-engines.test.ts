@@ -223,13 +223,13 @@ const INVENTORY: Inventory = {
     decoration: [],
   },
   pieniadze: {
-    settingsList: MONEY_LEVELS.map((level) => ({ level: level.id })),
+    settingsList: MONEY_LEVELS.map((level) => ({ level: level.id, colors: false })),
     label: (settings) => settings.level,
     mayExhaust: () => false,
     usesPreviousKey: true,
-    base: { level: MONEY_LEVELS[0].id },
-    content: [{ level: MONEY_LEVELS[1].id }],
-    decoration: [],
+    base: { level: MONEY_LEVELS[0].id, colors: false },
+    content: [{ level: MONEY_LEVELS[1].id, colors: false }],
+    decoration: [{ level: MONEY_LEVELS[0].id, colors: true }],
   },
 };
 

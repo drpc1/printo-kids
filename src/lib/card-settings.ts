@@ -38,6 +38,7 @@ export interface SequenceSettings {
 
 export interface MoneySettings {
   level: MoneyLevelId;
+  colors: boolean;
 }
 
 export interface SudokuCardSettings extends SudokuSettings {
@@ -88,7 +89,7 @@ const DEFAULTS: Defaults = {
   sudoku: { ...DEFAULT_SUDOKU_SETTINGS, colors: false },
   nonogram: { level: DEFAULT_NONOGRAM_SIZE_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
   dyktando: { level: DEFAULT_DICTATION_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
-  pieniadze: { level: DEFAULT_MONEY_LEVEL_ID },
+  pieniadze: { level: DEFAULT_MONEY_LEVEL_ID, colors: false },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {

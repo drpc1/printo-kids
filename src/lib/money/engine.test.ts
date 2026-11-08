@@ -20,17 +20,17 @@ function mulberry32(seed: number): () => number {
 void describe("moneyEngine", () => {
   void test("a card for every level is verified, frozen and keyed", () => {
     for (const level of MONEY_LEVELS) {
-      const verified = moneyEngine.generate({ level: level.id }, mulberry32(3), null);
+      const verified = moneyEngine.generate({ level: level.id, colors: false }, mulberry32(3), null);
       assert.equal(verified.kind, "pieniadze");
-      assert.deepEqual(moneySpec.problems(verified.card, { level: level.id }), []);
+      assert.deepEqual(moneySpec.problems(verified.card, { level: level.id, colors: false }), []);
       assert.equal(verified.key, verified.card.key);
       assert.ok(Object.isFrozen(verified.card), level.id);
     }
   });
 
   void test("the next card differs from the previous one", () => {
-    const first = moneyEngine.generate({ level: "sredni" }, mulberry32(5), null);
-    const second = moneyEngine.generate({ level: "sredni" }, mulberry32(5), first.key);
+    const first = moneyEngine.generate({ level: "sredni", colors: false }, mulberry32(5), null);
+    const second = moneyEngine.generate({ level: "sredni", colors: false }, mulberry32(5), first.key);
     assert.notEqual(second.key, first.key);
   });
 
@@ -39,11 +39,11 @@ void describe("moneyEngine", () => {
     const same = () => 0.5;
     const only = generateMoneyCard(same, null, moneyLevelById("sredni"));
     if (only === null) {
-      assert.throws(() => moneyEngine.generate({ level: "sredni" }, same, null), CardExhausted);
+      assert.throws(() => moneyEngine.generate({ level: "sredni", colors: false }, same, null), CardExhausted);
       return;
     }
     assert.throws(
-      () => moneyEngine.generate({ level: "sredni" }, same, only.key),
+      () => moneyEngine.generate({ level: "sredni", colors: false }, same, only.key),
       (error: unknown) => error instanceof CardExhausted && error.kind === "pieniadze" && error.attempts > 0,
     );
   });
@@ -67,9 +67,15 @@ void describe("moneySpec", () => {
   });
 
   void test("the level is content, the card key is the card's own key", () => {
-    assert.notEqual(moneySpec.contentKey({ level: "latwy" }), moneySpec.contentKey({ level: "trudny" }));
-    assert.equal(moneySpec.contentKey({ level: "sredni" }), moneySpec.contentKey({ level: "sredni" }));
-    const card = moneyEngine.generate({ level: "sredni" }, mulberry32(1), null).card;
+    assert.notEqual(
+      moneySpec.contentKey({ level: "latwy", colors: false }),
+      moneySpec.contentKey({ level: "trudny", colors: false }),
+    );
+    assert.equal(
+      moneySpec.contentKey({ level: "sredni", colors: false }),
+      moneySpec.contentKey({ level: "sredni", colors: false }),
+    );
+    const card = moneyEngine.generate({ level: "sredni", colors: false }, mulberry32(1), null).card;
     assert.equal(moneySpec.keyOf(card), card.key);
   });
 });

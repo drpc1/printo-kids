@@ -69,6 +69,7 @@ const CARDS: CardCase[] = [
     id: "pieniadze",
     path: "/money",
     changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
+    colors: true,
   },
 ];
 
