@@ -210,4 +210,4 @@ Brak migracji: `colors` brakujące w zapisanym profilu czyta się jako `false`.
 
 #### Manual
 
-- [ ] 4.2 Użytkowniczka przegląda zmiany w PRD
+- [x] 4.2 Użytkowniczka przegląda zmiany w PRD
