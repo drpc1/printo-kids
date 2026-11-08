@@ -199,7 +199,7 @@ Brak migracji: `colors` brakujące w zapisanym profilu czyta się jako `false`.
 
 #### Manual
 
-- [ ] 3.5 Rozmiar PNG zważony przed wdrożeniem; 10 nieużywanych plików zostaje świadomie
+- [x] 3.5 Rozmiar PNG zważony przed wdrożeniem; 10 nieużywanych plików zostaje świadomie
 - [x] 3.6 Wydruk karty w kolorze i w czerni z bielą jest czytelny (Safari, Chrome iOS, Brave iOS)
 
 ### Phase 4: PRD

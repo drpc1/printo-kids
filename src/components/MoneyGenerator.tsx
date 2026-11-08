@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoice } from "@/components/LevelChoice";
 import { SettingToggle } from "@/components/SettingToggle";
@@ -7,7 +7,7 @@ import { CardPage } from "@/components/CardPage";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { MoneySettings } from "@/lib/card-settings";
-import { moneyImage } from "@/lib/money/colors";
+import { moneyImage, moneyImagePaths } from "@/lib/money/colors";
 import { moneyEngine, moneySpec } from "@/lib/money/engine";
 import type { MoneyCard } from "@/lib/money/generate";
 import { layoutMoneySheet, layoutPile, type MoneyPileArea } from "@/lib/money/layout";
@@ -43,6 +43,15 @@ export default function MoneyGenerator() {
   const memory = useCardSettings("pieniadze", visit, handleProfileSwitch);
   const { level: levelId, colors } = memory.settings;
   const view = sheetView(sheet, moneySpec.contentKey(memory.settings));
+
+  // Load the pictures as soon as colors are on (also on a visit that starts with them on), so Generuj and Drukuj never wait.
+  useEffect(() => {
+    if (colors) {
+      for (const path of moneyImagePaths()) {
+        new Image().src = path;
+      }
+    }
+  }, [colors]);
 
   function handleGenerate(): void {
     setSheet(generateSheet(sheet, moneyEngine, memory.settings, Math.random));
