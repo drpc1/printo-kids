@@ -178,7 +178,7 @@ Brak migracji: `colors` brakujące w zapisanym profilu czyta się jako `false`.
 
 #### Manual
 
-- [ ] 1.2 Użytkowniczka potwierdza obrazki na wydruku w rozmiarze karty, w kolorze i w czerni z bielą
+- [x] 1.2 Użytkowniczka potwierdza obrazki na wydruku w rozmiarze karty, w kolorze i w czerni z bielą
 
 ### Phase 2: Ustawienie `colors` w profilu, plakietkach i teście kontraktu
 
@@ -200,7 +200,7 @@ Brak migracji: `colors` brakujące w zapisanym profilu czyta się jako `false`.
 #### Manual
 
 - [ ] 3.5 Rozmiar PNG zważony przed wdrożeniem; 10 nieużywanych plików zostaje świadomie
-- [ ] 3.6 Wydruk karty w kolorze i w czerni z bielą jest czytelny (Safari, Chrome iOS, Brave iOS)
+- [x] 3.6 Wydruk karty w kolorze i w czerni z bielą jest czytelny (Safari, Chrome iOS, Brave iOS)
 
 ### Phase 4: PRD
 
