@@ -1,7 +1,7 @@
 ---
 change_id: coins-colors
 title: Przełącznik Kolory na karcie „Kto ma więcej?” z realistyczniejszymi monetami
-status: implemented
+status: implementing
 created: 2026-11-08
 updated: 2026-11-08
 archived_at: null
