@@ -351,7 +351,7 @@ Nowe pole `szlaczki` w `cards` profilu i ostatnich parametrów. Starsze zapisy g
 
 #### Manual
 
-- [ ] 1.4 Użytkowniczka potwierdza, że zmienione zdania PRD (P4, P3) oddają makietę
+- [x] 1.4 Użytkowniczka potwierdza, że zmienione zdania PRD (P4, P3) oddają makietę
 
 ### Phase 2: Logika karty
 
