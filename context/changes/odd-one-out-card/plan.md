@@ -354,5 +354,5 @@ Nowe pole `niepasuje` w `cards` profilu i ostatnich parametrów. Starsze zapisy 
 
 - [x] 3.8 Użytkowniczka sprawdza karty na każdym poziomie, z kolorami i bez
 - [x] 3.9 Wydruk A4 trzech kart: czytelność ikon, małych grup i rozmiaru
-- [ ] 3.10 Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS (po scaleniu, na stagingu)
+- [x] 3.10 Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS
 - [x] 3.11 Katalog pokazuje miniaturę i plakietkę, a okno profilu podsumowanie
