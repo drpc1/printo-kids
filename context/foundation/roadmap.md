@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-08
+updated: 2026-11-09
 prd_version: 6
 main_goal: low-complexity
 top_blocker: decisions
@@ -39,13 +39,13 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 
 ## At a glance
 
-| ID   | Change ID              | Outcome (user can …)                                                                                                                                                                                          | Prerequisites          | PRD refs                                                    | Status      |
-| ---- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------- | ----------- |
-| S-33 | coins-who-has-more     | Rodzic otwiera z katalogu „Kto ma więcej?”, wybiera poziom (łatwy / średni / trudny), generuje kartę A4 z kupkami monet i banknotów 1–20 zł, podgląda ją i drukuje; profil pamięta poziom                     | —                      | US-23, US-24, FR-033, FR-034, FR-014, FR-017, FR-030, US-05 | done        |
-| S-34 | odd-one-out-card       | Rodzic otwiera z katalogu „Który nie pasuje”, wybiera poziom i kolory, generuje kartę A4 z rzędami obrazków, w których jeden łamie regułę (kształt, kolor, rozmiar, liczba, kategoria), podgląda ją i drukuje | —                      | US-25, US-26, FR-035, FR-036, FR-014, FR-017, FR-030, US-05 | in-progress |
-| S-35 | copy-the-drawing-card  | Rodzic otwiera z katalogu „Skopiuj rysunek na kratce”, wybiera poziom i kategorię, generuje kartę A4 z czarną sylwetką obiektu w jednej kratce i pustą kratką obok, podgląda ją i drukuje                     | —                      | US-27, US-28, FR-037, FR-038, FR-014, FR-017, FR-030, US-05 | ready       |
-| S-36 | pattern-lines-card     | Rodzic otwiera z katalogu „Szlaczki”, wybiera poziom (1–4), generuje kartę A4 ze szlaczkami do prowadzenia po kropkach albo do kontynuowania, podgląda ją i drukuje                                           | —                      | US-29, US-30, FR-039, FR-040, FR-014, FR-017, FR-030, US-05 | ready       |
-| S-37 | how-it-works-new-cards | Rodzic otwiera „Jak to działa” i widzi poprawny opis poziomów i profilu także dla czterech nowych kart, bez nieaktualnych zdań o tym, które karty mają trzy poziomy albo wiek                                 | S-33, S-34, S-35, S-36 | US-22, FR-031                                               | proposed    |
+| ID   | Change ID              | Outcome (user can …)                                                                                                                                                                                          | Prerequisites          | PRD refs                                                    | Status   |
+| ---- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------- | -------- |
+| S-33 | coins-who-has-more     | Rodzic otwiera z katalogu „Kto ma więcej?”, wybiera poziom (łatwy / średni / trudny), generuje kartę A4 z kupkami monet i banknotów 1–20 zł, podgląda ją i drukuje; profil pamięta poziom                     | —                      | US-23, US-24, FR-033, FR-034, FR-014, FR-017, FR-030, US-05 | done     |
+| S-34 | odd-one-out-card       | Rodzic otwiera z katalogu „Który nie pasuje”, wybiera poziom i kolory, generuje kartę A4 z rzędami obrazków, w których jeden łamie regułę (kształt, kolor, rozmiar, liczba, kategoria), podgląda ją i drukuje | —                      | US-25, US-26, FR-035, FR-036, FR-014, FR-017, FR-030, US-05 | done     |
+| S-35 | copy-the-drawing-card  | Rodzic otwiera z katalogu „Skopiuj rysunek na kratce”, wybiera poziom i kategorię, generuje kartę A4 z czarną sylwetką obiektu w jednej kratce i pustą kratką obok, podgląda ją i drukuje                     | —                      | US-27, US-28, FR-037, FR-038, FR-014, FR-017, FR-030, US-05 | ready    |
+| S-36 | pattern-lines-card     | Rodzic otwiera z katalogu „Szlaczki”, wybiera poziom (1–4), generuje kartę A4 ze szlaczkami do prowadzenia po kropkach albo do kontynuowania, podgląda ją i drukuje                                           | —                      | US-29, US-30, FR-039, FR-040, FR-014, FR-017, FR-030, US-05 | ready    |
+| S-37 | how-it-works-new-cards | Rodzic otwiera „Jak to działa” i widzi poprawny opis poziomów i profilu także dla czterech nowych kart, bez nieaktualnych zdań o tym, które karty mają trzy poziomy albo wiek                                 | S-33, S-34, S-35, S-36 | US-22, FR-031                                               | proposed |
 
 ## Baseline
 
@@ -92,7 +92,7 @@ Brak. Wspólny wzorzec strony karty (`CardPage`, `useCardPage`), zapis ustawień
   - Które reguły i ile obrazków w rzędzie dają na każdym poziomie rząd bez dwuznaczności (kategoria obiektu bywa sporna dla dziecka)? Rozstrzyga makieta i test dwuznaczności przed planem. — Owner: user (wartości), team (liczba rzędów). Block: no.
   - Jak dobrać dziewięć kolorów kredek z sudoku do reguły „kolor”? — Owner: team. Block: no.
 - **Risk:** Dwuznaczność: rząd, w którym pasuje druga reguła, psuje jedną odpowiedź; trzeba sprawdzać wszystkie reguły naraz jak w sekwencjach. Najmniej nowego kodu z czterech (kształty z sudoku, obiekty z szablonów), więc najtańszy do zrównoleglenia z S-33. Nowa strona dochodzi do sprawdzianu HTTP (`scripts/smoke.mjs`), a wysokość druku mierzy się osobno w Safari, Chrome iOS i Brave iOS (lessons.md).
-- **Status:** in-progress
+- **Status:** done
 
 ### S-35: Skopiuj rysunek na kratce
 
@@ -228,3 +228,4 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-31: Rodzic przy aktywnym profilu wybiera inną postać na pasku tylko na bieżącą wizytę na stronie; pod listą widzi „Tylko na tę kartę” i może jednym wyborem „Ustaw jako ulubioną {imię}” zapisać ją w profilu. Przy następnym wejściu wraca ulubiona. Bez profilu ostatnio użyta postać jest wspólna dla wszystkich kart.** — Archived 2026-10-27 → `context/archive/2026-10-27-favorite-character-explicit/`. Lesson: —.
 - **S-32: Rodzic otwiera ze stopki krótką stronę „Jak to działa” z zasadą poziomów, profilu i postaci. Strona `/how-it-works` jest statyczna, a stopka z linkiem jest na katalogu i na stronach generatorów, ukryta w druku A4. Bez samouczka i bez okna pomocy.** — Archived 2026-10-31 → `context/archive/2026-10-31-s32-how-does-it-work/`. Lesson: —.
 - **S-33: Rodzic otwiera z katalogu „Kto ma więcej?”, wybiera poziom (łatwy / średni / trudny), uruchamia generowanie i dostaje kartę A4 z pięcioma rzędami po dwie kupki monet i banknotów (1, 2, 5, 10, 20 zł) oddzielone pustym polem, w którym dziecko wpisuje „<”, „>” albo „=”. Widzi podgląd, drukuje kartę jako jedną stronę A4 także z telefonu, profil pamięta poziom, a wybrana postać stoi przy poleceniu. Karta ma własną miniaturę i wpis w katalogu na stronie głównej. Okno profilu i plakietka na miniaturze pokazują zapamiętany poziom, a opis karty trafia do listy „Rodzaje kart” na stronie „Jak to działa”. Generator liczy wartość każdej kupki i nie pokazuje kart łamiących reguły poziomu (remis najwyżej w jednym rzędzie). Jako pierwsza z czterech kart zamienia wpisaną na sztywno liczbę sześciu kart w testach (zapis ustawień, podsumowanie profilu, plakietki na telefonie, katalog) na liczbę z katalogu, żeby S-34 do S-36 dokładały karty bez zmiany tych testów.** — Archived 2026-11-01 → `context/archive/2026-11-01-coins-who-has-more/`. Lesson: —.
+- **S-34: Rodzic otwiera z katalogu „Który nie pasuje”, wybiera poziom (łatwy / średni / trudny) i opcjonalnie włącza kolory, uruchamia generowanie i dostaje kartę A4 z 5–6 rzędami obrazków (4–6 w rzędzie), w których dokładnie jeden łamie regułę rzędu (kształt, rozmiar, liczba, kolor po włączeniu kolorów albo kategoria obiektu). Zakreśla ten jeden, podgląda i drukuje kartę; profil pamięta poziom i kolory, a postać stoi przy poleceniu. Karta ma własną miniaturę i wpis w katalogu na stronie głównej. Okno profilu i plakietka na miniaturze pokazują zapamiętany poziom, a opis karty trafia do „Jak to działa”. Generator nie pokazuje rzędu, w którym inna reguła wskazuje inny obrazek.** — Archived 2026-11-09 → `context/archive/2026-11-08-odd-one-out-card/`. Lesson: —.

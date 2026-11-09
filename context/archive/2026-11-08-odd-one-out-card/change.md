@@ -1,10 +1,10 @@
 ---
 change_id: odd-one-out-card
 title: Karta „Który nie pasuje” z poziomami i kolorami (S-34, GitHub 265)
-status: impl_reviewed
+status: archived
 created: 2026-11-08
 updated: 2026-11-09
-archived_at: null
+archived_at: 2026-11-09T11:38:59Z
 ---
 
 ## Notes
