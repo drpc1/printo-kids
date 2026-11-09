@@ -297,15 +297,15 @@ Nowe pole `kopiuj` w `cards` profilu i ostatnich parametrów. Starsze zapisy go 
 
 #### Automated
 
-- [ ] 2.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Zależności przechodzą: `npm run depcruise`
-- [ ] 2.4 Typy przechodzą: `npx astro check`
-- [ ] 2.5 Build przechodzi: `npm run build`
+- [x] 2.1 Testy jednostkowe przechodzą: `npm test` — 886b0d9
+- [x] 2.2 Lint przechodzi: `npm run lint` — 886b0d9
+- [x] 2.3 Zależności przechodzą: `npm run depcruise` — 886b0d9
+- [x] 2.4 Typy przechodzą: `npx astro check` — 886b0d9
+- [x] 2.5 Build przechodzi: `npm run build` — 886b0d9
 
 #### Manual
 
-- [ ] 2.6 Przegląd diffu: reguły sprawdzenia i układ zgodne z planem i makietą
+- [x] 2.6 Przegląd diffu: reguły sprawdzenia i układ zgodne z planem i makietą — 886b0d9
 
 ### Phase 3: Strona, katalog i profil
 
