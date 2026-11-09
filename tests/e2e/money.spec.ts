@@ -160,6 +160,16 @@ test("choosing another currency draws a new card with that currency's pieces, si
   await expect(page.getByRole("button", { name: "Waluta: $" })).toBeVisible();
   const dollarHrefs = await images.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")));
   expect(dollarHrefs.every((href) => /^\/money\/\d+usd\.png$/.test(href ?? ""))).toBe(true);
+  // The small corner digits of the dollar pictures vanish in print, so every note carries a badge with its value.
+  const badges = sheet.locator("[data-value-badge]");
+  await expect(badges).toHaveCount(dollarHrefs.length);
+  const badgeValues = await badges.locator("text").allTextContents();
+  const imageValues = dollarHrefs.map((href) => /(\d+)usd\.png$/.exec(href ?? "")?.[1]);
+  expect(badgeValues).toEqual(imageValues);
+
+  await page.getByRole("button", { name: /^Waluta:/ }).click();
+  await page.getByRole("button", { name: /^złote(?=\s|$)/ }).click();
+  await expect(sheet.locator("[data-value-badge]")).toHaveCount(0);
 });
 
 test("a profile's remembered currency is on the bar", async ({ page }, testInfo) => {

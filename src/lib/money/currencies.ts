@@ -18,7 +18,7 @@ export const DEFAULT_MONEY_CURRENCY_ID: MoneyCurrencyId = "pln";
 export const MONEY_CURRENCIES: readonly MoneyCurrency[] = [
   { id: "pln", label: "złote", barLabel: "zł", description: "monety i banknoty w złotych", symbol: "zł" },
   { id: "eur", label: "euro", barLabel: "€", description: "monety i banknoty w euro", symbol: "€" },
-  { id: "usd", label: "dolary", barLabel: "$", description: "moneta i banknoty w dolarach", symbol: "$" },
+  { id: "usd", label: "dolary", barLabel: "$", description: "banknoty w dolarach", symbol: "$" },
 ];
 
 export const MONEY_CURRENCY_IDS: readonly MoneyCurrencyId[] = MONEY_CURRENCIES.map((currency) => currency.id);
