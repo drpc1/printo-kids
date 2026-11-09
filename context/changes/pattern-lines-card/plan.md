@@ -110,7 +110,7 @@ Moduł `src/lib/pattern-lines/` bez UI i bez rejestracji w katalogu: poziomy, st
 
 **File**: `src/lib/pattern-lines/sheet.ts`
 
-**Intent**: **Jedno miejsce** dla wszystkiego, co zmieni wydruk próbny: kropki (P1 r 1,1 / rozstaw 4; P2 i część wykropkowana P3 r 0,9 / 3,5; kółko startu = r + 1,2, grubość 0,5), ścieżka pod kropkami (0,8 mm), linia wzoru (P3 1,0; P4 0,6), linie pomocnicze P3 (0,3 mm, przerywane 1,2/1,2) i blada linia dolna, liniatura (X 6,5; grubości 0,25 / 0,2; wzory przerywania), `bottomPad`, margines 10 mm, odstęp pasa 6 mm, miejsce na podpis (0, jeśli nie ma podpisu), długość rzędu (szerokość − 6), minimalny odstęp kropek jako ułamek rozstawu (0,7), minimalna przerwa kropek z różnych ramion (0,6 mm).
+**Intent**: **Jedno miejsce** dla wszystkiego, co zmieni wydruk próbny: kropki (P1 r 1,1 / rozstaw 4; P2 i część wykropkowana P3 r 0,9 / 3,5; kółko startu = r + 1,2, grubość 0,5), ścieżka pod kropkami (0,8 mm), linia wzoru (P3 1,0; P4 0,6), linie pomocnicze P3 (0,3 mm, przerywane 1,2/1,2) i blada linia dolna, liniatura (X 6,5; grubości 0,25 / 0,2; wzory przerywania), `bottomPad`, margines 10 mm, odstęp pasa 6 mm, miejsce na podpis nad pierwszym rzędem (0: karta nie ma podpisów rzędów, a makieta zostawiała tam 4 mm, więc to świadoma zmiana układu do sprawdzenia na wydruku), długość rzędu (szerokość − 6), minimalny odstęp kropek jako ułamek rozstawu (0,7), minimalna przerwa kropek z różnych ramion (0,6 mm).
 
 **Contract**: `PATTERN_LINES_SHEET` jako `as const`, każde pole z jednozdaniowym komentarzem; zero importów poza typami. Strona, test druku, skrypt miniatur i skrypt podglądu importują tylko stąd.
 
@@ -134,7 +134,7 @@ Moduł `src/lib/pattern-lines/` bez UI i bez rejestracji w katalogu: poziomy, st
 
 **File**: `src/lib/pattern-lines/card.ts`, `card.test.ts`
 
-**Intent**: Typ `PatternLinesCard { levelId; rows: PatternRow[]; key }` (`PatternRow { patternId; period; height; count }`) i `patternLinesProblems(card, level)` ze stabilnymi kodami: `row-count`, `not-in-pool`, `duplicate-pattern`, `crossing` (P1–P2), `dots-too-close`, `trace-repeats` (P3 dokładnie 2, P4 co najmniej 3), `out-of-row`, `level-mismatch`. Klucz liczy jedna funkcja `patternLinesKey` (wzór + krok i wysokość zaokrąglone do 0,1 mm, kolejność rzędów), używana przez generator i sprawdzenie.
+**Intent**: Typ `PatternLinesCard { levelId; rows: PatternRow[]; key }` (`PatternRow { patternId; period; height?; count }`, gdzie `height` istnieje tylko na P1–P3) i `patternLinesProblems(card, level)` ze stabilnymi kodami: `row-count`, `not-in-pool`, `duplicate-pattern`, `crossing` (P1–P2), `dots-too-close`, `trace-repeats` (P3 dokładnie 2, P4 co najmniej 3), `out-of-row`, `level-mismatch`. Na P4 wysokość wyznacza liniatura, więc wiersz jej nie niesie, nie wchodzi ona do klucza, a `out-of-row` porównuje skrajne punkty `rowGeometry` z pasem liniatury z `sheet.ts` (od górnej linii do bladej linii pod dolną; pas jest nierówny względem środka rzędu); na P1–P3 granicą jest `wysokość / 2`. Klucz liczy jedna funkcja `patternLinesKey` (wzór + krok, a na P1–P3 także wysokość, zaokrąglone do 0,1 mm, kolejność rzędów), używana przez generator i sprawdzenie.
 
 **Contract**: Testy z ręcznymi kartami dobrymi i złymi: powtórzony wzór, wzór spoza puli, skrzyżowanie na P2, kropki zlane (rozstaw 1 mm), P3 z 3 powtórzeniami, wzór poza rzędem.
 
@@ -142,9 +142,9 @@ Moduł `src/lib/pattern-lines/` bez UI i bez rejestracji w katalogu: poziomy, st
 
 **File**: `src/lib/pattern-lines/generate.ts`, `generate.test.ts`, `engine.ts`, `engine.test.ts`, `layout.ts`, `layout.test.ts`
 
-**Intent**: `generatePatternLinesCard(random, previousKey, level)`: tasuje kopię puli (Fisher–Yates), dla każdego rzędu losuje krok i łagodność z zakresu poziomu, liczy wysokość (jak `makeRows`: `min(maxHeight, krok / span × (fixedRatio ?? ratio × sharp))`, `line` ma 0), odrzuca kartę z kluczem `previousKey` lub z problemami (do `MAX_ATTEMPTS`, potem `null`). Silnik jak `copyDrawingEngine`: `null` → `CardExhausted`, wynik przez `VerifiedCard.require`; `contentKey = level`; `knownBad` ze `seeded` (skrzyżowanie P2, P3 z trzema powtórzeniami, powtórzony wzór). `layoutPatternLinesSheet(level, instructionBoxHeight)` zwraca pas polecenia i środki rzędów (pierwszy pod poleceniem, ostatni przy dolnym marginesie minus `bottomPad`, odstępy równe), rzuca błąd, gdy rząd wychodzi poza margines 10 mm.
+**Intent**: `generatePatternLinesCard(random, previousKey, level)`: tasuje kopię puli (Fisher–Yates), dla każdego rzędu losuje krok i łagodność z zakresu poziomu, na P1–P3 liczy wysokość (jak `makeRows`: `min(maxHeight, krok / span × (fixedRatio ?? ratio × sharp))`, `line` ma 0; na P4 tylko krok), odrzuca kartę z kluczem `previousKey` lub z problemami (do `MAX_ATTEMPTS`, potem `null`). Silnik jak `copyDrawingEngine`: `null` → `CardExhausted`, wynik przez `VerifiedCard.require`; `contentKey = level`; `knownBad` ze `seeded` (skrzyżowanie P2, P3 z trzema powtórzeniami, powtórzony wzór). `layoutPatternLinesSheet(level, instructionBoxHeight)` zwraca pas polecenia i środki rzędów (pierwszy pod poleceniem, ostatni przy dolnym marginesie minus `bottomPad`, odstępy równe), rzuca błąd, gdy rząd wychodzi poza margines 10 mm.
 
-**Contract**: Test generatora: dla każdego poziomu 200 kart poniżej 2 s, każda bez problemów, rzędy bez powtórzeń wzoru, kolejna karta ma inny `key`; ostre wzory (`pointed`, `bricks`) przechodzą sprawdzenie kropek na każdym ziarnie z 400 (jeśli nie, zawęzić zakres `ratio` albo `span` takiego wzoru w `patterns.ts`, zamiast osłabiać test). Test układu: każdy poziom mieści się w 10 mm z postacią (pas 26 mm) i bez, P1 ma o 15 mm większy dolny zapas, odstępy równe, rzędy nie zachodzą na siebie.
+**Contract**: Typ `PatternLinesSettings { level; lines }` żyje już w tej fazie w `card-settings.ts` (bez wpisu w `CardSettingsMap`), bo silnik go importuje; `CardSpec.kind` ma typ `CardKindId`, który dostaje `"szlaczki"` dopiero w fazie 3, więc w fazie 2 `kind` rzutujemy jak `TOY` w `card-contract.test.ts` (tak zrobiło S-35), a faza 3 usuwa rzutowanie. Test generatora: dla każdego poziomu 200 kart poniżej 2 s, każda bez problemów, rzędy bez powtórzeń wzoru, kolejna karta ma inny `key`; ostre wzory (`pointed`, `bricks`) przechodzą sprawdzenie kropek na każdym ziarnie z 400. Pomiar makiety: kropki z różnych ramion są w `pointed` P2 1,93 mm, `pointed` P3 2,37, `bricks` P3 2,10, a próg to `2r + 0,6` = 2,4 mm, więc bez zmian test padnie. Kolejność poprawek: (1) próg jest stałą w `sheet.ts`, nie liczbą w teście; (2) najpierw zmieniamy geometrię jednostki (szerszy kąt szczytu `pointed`, mniejsze wypustki `bricks`) i oglądamy ją na podglądzie z kroku 7; (3) wzór wypada z puli albo zmienia się zakres kroku z tabeli PRD wyłącznie za zgodą użytkowniczki. Test układu: każdy poziom mieści się w 10 mm z postacią (pas 26 mm) i bez, P1 ma o 15 mm większy dolny zapas, odstępy równe, rzędy nie zachodzą na siebie.
 
 #### 7. Podgląd
 
@@ -152,7 +152,7 @@ Moduł `src/lib/pattern-lines/` bez UI i bez rejestracji w katalogu: poziomy, st
 
 **Intent**: Skrypt (jak `mockup-v6.mts`, nie kod produktu) rysujący z prawdziwych modułów po jednej karcie na poziom (P3–P4 także z wyłączonymi liniami) do `preview-*.svg` w skali 1:1 oraz `previews.html`. Służy do zatwierdzenia kształtu kółeczek i laseczek i jako pierwszy wydruk linii przed stroną.
 
-**Contract**: `node --experimental-strip-types context/changes/pattern-lines-card/preview.mts` zapisuje SVG; importuje wyłącznie `src/lib/pattern-lines/*` (żadnych własnych stałych). Wygenerowane SVG nie są commitowane (dopisz do `.gitignore` folderu zmiany albo commituj tylko skrypt).
+**Contract**: `node --experimental-strip-types context/changes/pattern-lines-card/preview.mts` zapisuje SVG; importuje wyłącznie `src/lib/pattern-lines/*` (żadnych własnych stałych). Commitujemy tylko skrypt; `preview-*.svg` i `previews.html` trafiają do `.gitignore` w folderze zmiany.
 
 #### 8. Testy i granice
 
@@ -194,7 +194,7 @@ Karta wchodzi do produktu: rejestracja, ustawienia z „Linie”, strona, island
 
 **File**: `src/lib/cards.ts`, `src/lib/card-settings.ts`, `src/lib/card-engines.ts`, `src/lib/card-summary.ts`, `src/lib/pattern-lines/engine.ts`
 
-**Intent**: Wpis `szlaczki` w `CARD_KINDS` (tytuł „Szlaczki”, `/patterns`, miniatura, `description` w 2–3 zdaniach: dziecko prowadzi ołówek po kropkach albo kontynuuje pokazany wzór; na kartce rzędy szlaczków; poziom zmienia tryb, wzory i liczbę rzędów, na wyższych poziomach przełączasz linie pomocnicze). `PatternLinesSettings { level; lines }` w `card-settings.ts`, `szlaczki` w `CardSettingsMap`, `CARD_SETTINGS_IDS`, `DEFAULTS` (`{ level: "poziom2", lines: true }`), `levelIds`; w `fieldValue` pole boolean także dla `lines`; **bez** gałęzi w `normalizeCard` (ukryta wartość `lines` zostaje). Silnik w `CardTypeMap` i `CARD_ENGINES`; `case "szlaczki"` w `summaryParts` (`extras` „bez linii” tylko przy `lines === false` na poziomie z przełącznikiem).
+**Intent**: Wpis `szlaczki` w `CARD_KINDS` (tytuł „Szlaczki”, `/patterns`, miniatura, `description` w 2–3 zdaniach: dziecko prowadzi ołówek po kropkach albo kontynuuje pokazany wzór; na kartce rzędy szlaczków; poziom zmienia tryb, wzory i liczbę rzędów, na wyższych poziomach przełączasz linie pomocnicze). `szlaczki` w `CardSettingsMap` (typ `PatternLinesSettings` jest już z fazy 2), usunięcie rzutowania `kind` z fazy 2,, `CARD_SETTINGS_IDS`, `DEFAULTS` (`{ level: "poziom2", lines: true }`), `levelIds`; w `fieldValue` pole boolean także dla `lines`; **bez** gałęzi w `normalizeCard` (ukryta wartość `lines` zostaje). Silnik w `CardTypeMap` i `CARD_ENGINES`; `case "szlaczki"` w `summaryParts` (`extras` „bez linii” tylko przy `lines === false` na poziomie z przełącznikiem).
 
 **Contract**: Kształt jak `kopiuj` w każdym z tych plików. Tolerancyjny odczyt: nieznany poziom lub nie-boolean `lines` w magazynie → wartość domyślna pola; stary profil bez `szlaczki` startuje z domyślnymi.
 
@@ -278,7 +278,7 @@ Ręczna weryfikacja przed scaleniem (PRD Open Questions 15, frame „Confidence�
 
 **File**: `src/lib/card-settings.ts`
 
-**Intent**: Wąski przebieg tylko na liniach odczytu ustawień szlaczków (gałąź `lines` w `fieldValue`, `case "szlaczki"` w `levelIds`): `npm run mutate:local-data -- --mutate "src/lib/card-settings.ts:START-END"`. Przeżyłe mutanty przeglądamy pojedynczo; asercję dodajemy tylko, gdy mutant to widoczny błąd (zapis „Linie” zgubiony, zły poziom wczytany).
+**Intent**: Wąski przebieg tylko na liniach odczytu ustawień szlaczków (gałąź `lines` w `fieldValue`, `case "szlaczki"` w `levelIds`): `npm run mutate:local-data -- --mutate "src/lib/card-settings.ts:START-END"`; zakres linii bierzemy z diffu po fazie 3 (numery z badania są przybliżone). Przeżyłe mutanty przeglądamy pojedynczo; asercję dodajemy tylko, gdy mutant to widoczny błąd (zapis „Linie” zgubiony, zły poziom wczytany).
 
 **Contract**: Wynik (zabite / przeżyłe, decyzje) trafia do `reviews/impl-review-phase-4.md`; brak wyniku nie blokuje scalenia.
 
@@ -295,10 +295,12 @@ Ręczna weryfikacja przed scaleniem (PRD Open Questions 15, frame „Confidence�
 - Próba z dzieckiem 3–4 lata (P1): przechodzi zygzak i górki, zatrzymuje rękę w ostrym punkcie; dolny zapas 15 mm jest wygodny
 - Próba z dzieckiem 6–7 lat (P3): kropki klocków i rur nie są za ciasne; pętle i kółeczka po kropkach są zrozumiałe mimo skrzyżowań; dwa powtórzenia po kropkach wystarczają, by dziecko kontynuowało wzór
 - Próba z dzieckiem 8–10 lat (P4): spirale i „fala i pętla” przy kroku 12–14 mm nie są za ciasne
-- Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS (pomiar w każdej osobno, `lessons.md`; po scaleniu na stagingu, jeśli nie da się wcześniej)
 - Użytkowniczka potwierdza kształt kółeczek (o a) i laseczek (i) na wydruku
+- Open Questions 15 w PRD ma wynik, a wartości w PRD są zgodne z kodem
+- (opcjonalnie, nie bramka) Stryker wąsko na odczycie ustawień szlaczków w `card-settings.ts`, wynik w przeglądzie fazy 4
+- (po scaleniu na stagingu, poza bramką) Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS (pomiar w każdej osobno, `lessons.md`); ewentualna poprawka jako mały PR
 
-**Implementation Note**: Po fazie 4 użytkowniczka scala PR fazy 3. Jeśli wydruk wymusi większe zmiany (np. inna grubość linii na całej karcie), wracamy do planu zamiast łatać.
+**Implementation Note**: Po fazie 4 (bez punktu iOS, który wymaga stagingu) użytkowniczka scala PR fazy 3; punkt iOS sprawdza po scaleniu, a poprawka, jeśli będzie potrzebna, idzie małym PR-em. Jeśli wydruk wymusi większe zmiany (np. inna grubość linii na całej karcie), wracamy do planu zamiast łatać.
 
 ---
 
@@ -318,7 +320,7 @@ Ręczna weryfikacja przed scaleniem (PRD Open Questions 15, frame „Confidence�
 
 1. `/patterns`: Generuj na każdym poziomie; na P3–P4 przełączyć „Linie” (karta ta sama), zmienić poziom (nowa karta).
 2. Wydruk A4 czterech poziomów i próba z dzieckiem (faza 4).
-3. iOS: Safari, Chrome, Brave — jedna strona.
+3. Po scaleniu, na stagingu, iOS: Safari, Chrome, Brave — jedna strona.
 
 ## Performance Considerations
 
@@ -344,11 +346,12 @@ Nowe pole `szlaczki` w `cards` profilu i ostatnich parametrów. Starsze zapisy g
 #### Automated
 
 - [ ] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md context/domain/glossary.md`
-- [ ] 1.2 PRD nie ma starej wartości P4 i roadmapa nie mówi o ośmiu rzędach
+- [ ] 1.2 PRD nie ma starej wartości P4: `rg -n "0,6–1,0" context/foundation/prd.md` nie zwraca wiersza P4 tabeli szlaczków w tej postaci
+- [ ] 1.3 Roadmapa nie mówi o ośmiu rzędach: `rg -n "ośmioma rzędami" context/foundation/roadmap.md` nic nie zwraca
 
 #### Manual
 
-- [ ] 1.3 Użytkowniczka potwierdza, że zmienione zdania PRD (P4, P3) oddają makietę
+- [ ] 1.4 Użytkowniczka potwierdza, że zmienione zdania PRD (P4, P3) oddają makietę
 
 ### Phase 2: Logika karty
 
@@ -364,6 +367,7 @@ Nowe pole `szlaczki` w `cards` profilu i ostatnich parametrów. Starsze zapisy g
 
 - [ ] 2.6 Użytkowniczka zatwierdza kształt kółeczek (o a) i laseczek (i) na podglądzie
 - [ ] 2.7 Przegląd diffu: reguły sprawdzenia i układ zgodne z planem i makietą
+- [ ] 2.8 (opcjonalnie, nie bramka) Pierwszy wydruk `preview-*.svg` w 100%: kropki i szara ścieżka są widoczne; wyniki wchodzą do fazy 4
 
 ### Phase 3: Strona, katalog i profil
 
@@ -395,7 +399,7 @@ Nowe pole `szlaczki` w `cards` profilu i ostatnich parametrów. Starsze zapisy g
 - [ ] 4.4 Próba z dzieckiem 3–4 lata (P1): zygzak i górki, dolny zapas
 - [ ] 4.5 Próba z dzieckiem 6–7 lat (P3): klocki i rury, pętle i kółeczka po kropkach, dwa powtórzenia wystarczają
 - [ ] 4.6 Próba z dzieckiem 8–10 lat (P4): spirale i „fala i pętla” nie są za ciasne
-- [ ] 4.7 Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS
-- [ ] 4.8 Użytkowniczka potwierdza kształt kółeczek i laseczek na wydruku
-- [ ] 4.9 Open Questions 15 w PRD ma wynik, wartości PRD zgodne z kodem
-- [ ] 4.10 (opcjonalnie) Stryker wąsko na odczycie ustawień szlaczków w `card-settings.ts`, wynik w przeglądzie fazy 4
+- [ ] 4.7 Użytkowniczka potwierdza kształt kółeczek i laseczek na wydruku
+- [ ] 4.8 Open Questions 15 w PRD ma wynik, wartości PRD zgodne z kodem
+- [ ] 4.9 (opcjonalnie, nie bramka) Stryker wąsko na odczycie ustawień szlaczków w `card-settings.ts`, wynik w przeglądzie fazy 4
+- [ ] 4.10 (po scaleniu na stagingu, poza bramką) Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS
