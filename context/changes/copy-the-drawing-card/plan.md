@@ -286,12 +286,12 @@ Nowe pole `kopiuj` w `cards` profilu i ostatnich parametrów. Starsze zapisy go 
 
 #### Automated
 
-- [x] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
-- [x] 1.2 PRD nie zostawia otwartego układu: `rg -n "obok siebie albo jedna nad drugą" context/foundation/prd.md` nie zwraca nic w US-27 ani w Business Logic
+- [x] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md` — 546802e
+- [x] 1.2 PRD nie zostawia otwartego układu: `rg -n "obok siebie albo jedna nad drugą" context/foundation/prd.md` nie zwraca nic w US-27 ani w Business Logic — 546802e
 
 #### Manual
 
-- [x] 1.3 Użytkowniczka potwierdza, że zmienione zdania PRD oddają makietę
+- [x] 1.3 Użytkowniczka potwierdza, że zmienione zdania PRD oddają makietę — 546802e
 
 ### Phase 2: Logika karty
 
