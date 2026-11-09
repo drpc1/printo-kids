@@ -3,6 +3,8 @@
 // unknown kind is a compile error (`npx astro check`).
 import type { CardEngine, CardKindId } from "./card-contract.ts";
 import type { CardSettingsId, CardSettingsOf } from "./card-settings.ts";
+import type { CopyDrawingCard } from "./copy-drawing/card.ts";
+import { copyDrawingEngine } from "./copy-drawing/engine.ts";
 import { dictationEngine } from "./dictation/engine.ts";
 import type { DictationCard } from "./dictation/generate.ts";
 import { mazeEngine } from "./maze/engine.ts";
@@ -28,6 +30,7 @@ interface CardTypeMap {
   dyktando: DictationCard;
   pieniadze: MoneyCard;
   niepasuje: OddOneOutCard;
+  kopiuj: CopyDrawingCard;
 }
 
 // The card kinds and the settings ids are one union: a kind with settings but no engine (or the reverse) fails here.
@@ -43,4 +46,5 @@ export const CARD_ENGINES = {
   dyktando: dictationEngine,
   pieniadze: moneyEngine,
   niepasuje: oddOneOutEngine,
+  kopiuj: copyDrawingEngine,
 } satisfies { [K in CardKindId]: CardEngine<CardSettingsOf<K>, CardTypeMap[K]> };

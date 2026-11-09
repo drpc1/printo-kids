@@ -142,6 +142,22 @@ void describe("cardSummaries", () => {
     assert.equal(colored.detail, "łatwy · kolory");
   });
 
+  void test("the copy-drawing card shows its named level and category, and is unused until the profile chose one", () => {
+    const fresh = cardSummaries(profile("lat5"));
+    assert.equal(byId(fresh, "kopiuj").used, false);
+    assert.equal(byId(fresh, "kopiuj").badge, null);
+    assert.equal(byId(fresh, "kopiuj").title, "Skopiuj rysunek na kratce");
+    assert.equal(byId(fresh, "kopiuj").href, "/copy-drawing");
+
+    const chosen = byId(
+      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta" } })),
+      "kopiuj",
+    );
+    assert.equal(chosen.used, true);
+    assert.equal(chosen.badge, "trudny");
+    assert.equal(chosen.detail, "trudny · Zwierzęta");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -176,6 +192,7 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   dyktando: { dyktando: defaultCardSettings("dyktando") },
   pieniadze: { pieniadze: defaultCardSettings("pieniadze") },
   niepasuje: { niepasuje: defaultCardSettings("niepasuje") },
+  kopiuj: { kopiuj: defaultCardSettings("kopiuj") },
 };
 
 void describe("the card registry and summaryParts", () => {

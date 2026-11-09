@@ -21,6 +21,21 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("dyktando"), { level: "lat6", category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("pieniadze"), { level: "sredni", currency: "pln", colors: false });
     assert.deepEqual(defaultCardSettings("niepasuje"), { level: "sredni", colors: false });
+    assert.deepEqual(defaultCardSettings("kopiuj"), { level: "sredni", category: "wszystkie" });
+  });
+
+  void test("the copy-drawing card reads a stored level and category, drops unknown ones, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ kopiuj: { level: "trudny", category: "zwierzeta" } }), {
+      kopiuj: { level: "trudny", category: "zwierzeta" },
+    });
+    assert.deepEqual(parseCardSettings({ kopiuj: { level: "lat5", category: "nie-ma-takiej" } }), {
+      kopiuj: { level: "sredni", category: "wszystkie" },
+    });
+    assert.deepEqual(parseCardSettings({ kopiuj: { level: "latwy" } }), {
+      kopiuj: { level: "latwy", category: "wszystkie" },
+    });
+    assert.deepEqual(parseCardSettings({ kopiuj: "x" }), {});
+    assert.deepEqual(parseCardSettings({}), {});
   });
 
   void test("the odd-one-out card reads a stored level, drops an unknown one, and stays absent when never stored", () => {

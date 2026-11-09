@@ -1,4 +1,4 @@
-import type { CopyDrawingLevelId } from "./copy-drawing/levels.ts";
+import { COPY_DRAWING_LEVELS, DEFAULT_COPY_DRAWING_LEVEL_ID, type CopyDrawingLevelId } from "./copy-drawing/levels.ts";
 import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } from "./dictation/levels.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
 import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } from "./money/currencies.ts";
@@ -64,7 +64,6 @@ export interface DictationSettings {
   category: ObjectCategoryChoiceId;
 }
 
-/** Not in `CardSettingsMap` yet: phase 3 of copy-the-drawing-card registers the card (defaults, ids, parsing). */
 export interface CopyDrawingSettings {
   level: CopyDrawingLevelId;
   category: ObjectCategoryChoiceId;
@@ -79,6 +78,7 @@ export interface CardSettingsMap {
   dyktando?: DictationSettings;
   pieniadze?: MoneySettings;
   niepasuje?: OddOneOutSettings;
+  kopiuj?: CopyDrawingSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -92,6 +92,7 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "dyktando",
   "pieniadze",
   "niepasuje",
+  "kopiuj",
 ];
 
 /** The settings of one card. */
@@ -108,6 +109,7 @@ const DEFAULTS: Defaults = {
   dyktando: { level: DEFAULT_DICTATION_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
   pieniadze: { level: DEFAULT_MONEY_LEVEL_ID, currency: DEFAULT_MONEY_CURRENCY_ID, colors: false },
   niepasuje: { level: DEFAULT_ODD_ONE_OUT_LEVEL_ID, colors: false },
+  kopiuj: { level: DEFAULT_COPY_DRAWING_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -228,6 +230,8 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return MONEY_LEVEL_IDS;
     case "niepasuje":
       return ODD_ONE_OUT_LEVELS.map((level) => level.id);
+    case "kopiuj":
+      return COPY_DRAWING_LEVELS.map((level) => level.id);
   }
 }
 

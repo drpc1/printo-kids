@@ -77,6 +77,14 @@ const CARDS: CardCase[] = [
     changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
     colors: true,
   },
+  {
+    id: "kopiuj",
+    path: "/copy-drawing",
+    changes: [
+      { bar: "Poziom", option: "trudny", shown: "trudny" },
+      { bar: "Kategoria", option: "Zwierzęta", shown: "Zwierzęta" },
+    ],
+  },
 ];
 
 function barButton(page: Page, bar: string): Locator {

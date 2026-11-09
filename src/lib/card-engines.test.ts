@@ -10,6 +10,7 @@ import { CARD_ENGINES } from "./card-engines.ts";
 import { CardExhausted, type CardEngine, type CardKindId } from "./card-contract.ts";
 import type { CardSettingsOf, SudokuCardSettings } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
+import { COPY_DRAWING_LEVELS } from "./copy-drawing/levels.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
 import { LEVELS } from "./maze/levels.ts";
 import { MONEY_CURRENCY_IDS } from "./money/currencies.ts";
@@ -251,6 +252,19 @@ const INVENTORY: Inventory = {
     content: [
       { level: ODD_ONE_OUT_LEVELS[1].id, colors: false },
       { level: ODD_ONE_OUT_LEVELS[0].id, colors: true },
+    ],
+    decoration: [],
+  },
+  // No colors and no "Pokaż rozwiązanie": level and category are the whole content, and nothing is only decoration.
+  kopiuj: {
+    settingsList: COPY_DRAWING_LEVELS.flatMap((level) => CATEGORIES.map((category) => ({ level: level.id, category }))),
+    label: (settings) => `${settings.level}/${settings.category}`,
+    mayExhaust: narrowCategory,
+    usesPreviousKey: true,
+    base: { level: "sredni", category: "wszystkie" },
+    content: [
+      { level: "trudny", category: "wszystkie" },
+      { level: "sredni", category: "zwierzeta" },
     ],
     decoration: [],
   },

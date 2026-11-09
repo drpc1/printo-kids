@@ -19,6 +19,7 @@ const CARDS: CardCase[] = [
   { path: "/dictation", sheet: "Dyktando graficzne", sentence: "Rysuj po liniach kratki" },
   { path: "/money", sheet: "Kto ma więcej?", sentence: "Gdzie jest więcej pieniędzy?" },
   { path: "/odd-one-out", sheet: "Który nie pasuje", sentence: "Który nie pasuje?" },
+  { path: "/copy-drawing", sheet: "Skopiuj rysunek na kratce", sentence: "Przerysuj obrazek na pustą kratkę." },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {
