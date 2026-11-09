@@ -1,13 +1,6 @@
 // "Który nie pasuje" as a card kind: `oddOneOutSpec` wraps `oddOneOutCardProblems`, `oddOneOutEngine` wraps the sampling
 // generator. Running out of attempts is `CardExhausted`; the engine never returns null.
-import {
-  CardExhausted,
-  VerifiedCard,
-  type CardEngine,
-  type CardKindId,
-  type CardProblem,
-  type CardSpec,
-} from "../card-contract.ts";
+import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { OddOneOutSettings } from "../card-settings.ts";
 import { generateOddOneOutCard, MAX_ATTEMPTS } from "./generate.ts";
 import { oddOneOutLevelById } from "./levels.ts";
@@ -90,8 +83,7 @@ function knownBad(): readonly Bad[] {
 let knownBadCache: readonly Bad[] | undefined;
 
 export const oddOneOutSpec: CardSpec<OddOneOutSettings, OddOneOutCard> = {
-  // Phase 3 adds "niepasuje" to CARD_KINDS and drops this cast.
-  kind: "niepasuje" as CardKindId,
+  kind: "niepasuje",
   problems: oddOneOutProblems,
   keyOf: (card) => card.key,
   // Colors are part of the task here (the color rule), so they enter the key with the level.

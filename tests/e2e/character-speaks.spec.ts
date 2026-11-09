@@ -18,6 +18,7 @@ const CARDS: CardCase[] = [
   { path: "/nonogram", sheet: /^Nonogram/, sentence: "Zamaluj kratki według liczb." },
   { path: "/dictation", sheet: "Dyktando graficzne", sentence: "Rysuj po liniach kratki" },
   { path: "/money", sheet: "Kto ma więcej?", sentence: "Gdzie jest więcej pieniędzy?" },
+  { path: "/odd-one-out", sheet: "Który nie pasuje", sentence: "Który nie pasuje?" },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {

@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation and money cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money and odd-one-out cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -12,7 +12,8 @@ import { generateSymmetryCard } from "../src/lib/symmetry/generate.ts";
 import { symmetryLevelById } from "../src/lib/symmetry/levels.ts";
 import { layoutSymmetrySheet } from "../src/lib/symmetry/layout.ts";
 import { SYMMETRY_SHEET } from "../src/lib/symmetry/sheet.ts";
-import { generateSudokuCard, sudokuBlock } from "../src/lib/sudoku/generate.ts";
+import { sudokuBlock } from "../src/lib/sudoku/block.ts";
+import { generateSudokuCard } from "../src/lib/sudoku/generate.ts";
 import { layoutSudokuSheet } from "../src/lib/sudoku/layout.ts";
 import { SUDOKU_SHEET } from "../src/lib/sudoku/sheet.ts";
 import { sudokuShapePath } from "../src/lib/sudoku/shapes.ts";
@@ -33,6 +34,11 @@ import { generateMoneyCard } from "../src/lib/money/generate.ts";
 import { layoutMoneySheet, layoutPile } from "../src/lib/money/layout.ts";
 import { DEFAULT_MONEY_LEVEL_ID, moneyLevelById } from "../src/lib/money/levels.ts";
 import { MONEY_SHEET } from "../src/lib/money/sheet.ts";
+import { generateOddOneOutCard } from "../src/lib/odd-one-out/generate.ts";
+import { ICON_BOX, iconById } from "../src/lib/odd-one-out/icons.ts";
+import { groupLayout, iconSize, layoutOddOneOutSheet } from "../src/lib/odd-one-out/layout.ts";
+import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, oddOneOutLevelById } from "../src/lib/odd-one-out/levels.ts";
+import { ODD_ONE_OUT_SHEET } from "../src/lib/odd-one-out/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -504,3 +510,98 @@ moneyLines.push("</svg>", "");
 const moneyOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/pieniadze.svg");
 writeFileSync(moneyOutFile, moneyLines.join("\n"));
 console.log(`Wrote ${moneyOutFile} (${moneyCard.key.length} key chars)`);
+
+// Odd-one-out card: the same elements OddOneOutSheet draws (src/components/OddOneOutGenerator.tsx), in literal black
+// and white at the default level without colors, with the shared drawing constants from src/lib/odd-one-out/sheet.ts.
+// The band holds the plain instruction (no character).
+const ODD_SEED = 20261108;
+const ODD = ODD_ONE_OUT_SHEET;
+const oddLevel = oddOneOutLevelById(DEFAULT_ODD_ONE_OUT_LEVEL_ID);
+
+const oddCard = generateOddOneOutCard(mulberry32(ODD_SEED), null, oddLevel, false);
+if (oddCard === null) {
+  throw new Error(`Seed ${ODD_SEED} did not produce a valid odd-one-out card`);
+}
+
+const oddSheet = layoutOddOneOutSheet({
+  pageWidth: ODD.pageWidth,
+  pageHeight: ODD.pageHeight,
+  inset: ODD.inset,
+  rowCount: oddCard.rows.length,
+  itemCount: oddLevel.itemCount,
+  bandHeight: ODD.bandHeight,
+  bandGap: ODD.bandGap,
+  rowGap: ODD.rowGap,
+  slotPadding: ODD.slotPadding,
+});
+
+const ODD_TONE = { ink: "#000", paper: "#fff" };
+
+function oddFigure(figure) {
+  const color = ODD_TONE[figure.tone];
+  switch (figure.kind) {
+    case "circle":
+      return `<circle cx="${figure.cx}" cy="${figure.cy}" r="${figure.r}" fill="${color}"/>`;
+    case "ellipse": {
+      const turn = figure.rotate === undefined ? "" : ` transform="rotate(${figure.rotate} ${figure.cx} ${figure.cy})"`;
+      return `<ellipse cx="${figure.cx}" cy="${figure.cy}" rx="${figure.rx}" ry="${figure.ry}" fill="${color}"${turn}/>`;
+    }
+    case "rect": {
+      const turn =
+        figure.rotate === undefined
+          ? ""
+          : ` transform="rotate(${figure.rotate} ${figure.x + figure.width / 2} ${figure.y + figure.height / 2})"`;
+      const round = figure.rx === undefined ? "" : ` rx="${figure.rx}"`;
+      return `<rect x="${figure.x}" y="${figure.y}" width="${figure.width}" height="${figure.height}"${round} fill="${color}"${turn}/>`;
+    }
+    case "polygon":
+      return `<polygon points="${figure.points.map((point) => point.join(",")).join(" ")}" fill="${color}"/>`;
+    case "path":
+      return figure.strokeWidth === undefined
+        ? `<path d="${figure.d}" fill="${color}"/>`
+        : `<path d="${figure.d}" fill="none" stroke="${color}" stroke-width="${figure.strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    case "line":
+      return `<line x1="${figure.x1}" y1="${figure.y1}" x2="${figure.x2}" y2="${figure.y2}" stroke="${color}" stroke-width="${figure.strokeWidth}" stroke-linecap="round"/>`;
+    default:
+      throw new Error(`Unknown icon figure ${figure.kind}`);
+  }
+}
+
+const oddLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ODD.pageWidth} ${ODD.pageHeight}" width="${ODD.pageWidth}" height="${ODD.pageHeight}">`,
+  `<rect width="${ODD.pageWidth}" height="${ODD.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${ODD.pageWidth - 0.5}" height="${ODD.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(ODD.pageWidth / 2)}" y="${num(oddSheet.band.y + oddSheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${ODD.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${ODD.instructionLines.join(" ")}</text>`,
+];
+oddCard.rows.forEach((row, rowIndex) => {
+  const rowLayout = oddSheet.rows[rowIndex];
+  oddLines.push(
+    `<rect x="${num(rowLayout.x)}" y="${num(rowLayout.y)}" width="${num(rowLayout.width)}" height="${num(rowLayout.height)}" rx="${ODD.rowFrameRadius}" fill="none" stroke="#000" stroke-width="${ODD.rowFrameStroke}"/>`,
+  );
+  row.items.forEach((item, itemIndex) => {
+    const { cx, cy } = rowLayout.slots[itemIndex];
+    const scale = item.size === "small" ? oddLevel.smallRatio : 1;
+    if (item.icon !== null) {
+      const icon = iconById(item.icon);
+      const size = iconSize(oddSheet.slot, scale);
+      oddLines.push(
+        `<g transform="translate(${num(cx - size / 2)} ${num(cy - size / 2)}) scale(${num(size / ICON_BOX)})">`,
+        ...icon.figures.map(oddFigure),
+        "</g>",
+      );
+      return;
+    }
+    const group = groupLayout(item.count, oddSheet.slot, scale);
+    const strokeWidth = Math.max(ODD.shapeStrokeMin, group.unit * ODD.shapeStrokeRatio);
+    for (const point of group.points) {
+      oddLines.push(
+        `<path d="${sudokuShapePath(item.shape, cx + point.x, cy + point.y, group.unit)}" fill="#fff" stroke="#000" stroke-width="${num(strokeWidth)}" stroke-linejoin="round"/>`,
+      );
+    }
+  });
+});
+oddLines.push("</svg>", "");
+
+const oddOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/niepasuje.svg");
+writeFileSync(oddOutFile, oddLines.join("\n"));
+console.log(`Wrote ${oddOutFile} (${oddCard.key.length} key chars)`);

@@ -328,27 +328,27 @@ Nowe pole `niepasuje` w `cards` profilu i ostatnich parametrów. Starsze zapisy 
 
 #### Automated
 
-- [x] 2.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Zależności przechodzą: `npm run depcruise`
-- [x] 2.4 Typy przechodzą: `npx astro check`
-- [x] 2.5 Build przechodzi: `npm run build`
+- [x] 2.1 Testy jednostkowe przechodzą: `npm test` — b2b6cc9
+- [x] 2.2 Lint przechodzi: `npm run lint` — b2b6cc9
+- [x] 2.3 Zależności przechodzą: `npm run depcruise` — b2b6cc9
+- [x] 2.4 Typy przechodzą: `npx astro check` — b2b6cc9
+- [x] 2.5 Build przechodzi: `npm run build` — b2b6cc9
 
 #### Manual
 
-- [x] 2.6 Przegląd diffu: jednoznaczność, rozpraszacze i ikony zgodne z planem i makietą
+- [x] 2.6 Przegląd diffu: jednoznaczność, rozpraszacze i ikony zgodne z planem i makietą — b2b6cc9
 
 ### Phase 3: Strona, katalog i profil
 
 #### Automated
 
-- [ ] 3.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Zależności przechodzą: `npm run depcruise`
-- [ ] 3.4 Typy przechodzą: `npx astro check`
-- [ ] 3.5 Build przechodzi: `npm run build`
-- [ ] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie
-- [ ] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie
+- [x] 3.1 Testy jednostkowe przechodzą: `npm test`
+- [x] 3.2 Lint przechodzi: `npm run lint`
+- [x] 3.3 Zależności przechodzą: `npm run depcruise`
+- [x] 3.4 Typy przechodzą: `npx astro check`
+- [x] 3.5 Build przechodzi: `npm run build`
+- [x] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie
+- [x] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie
 
 #### Manual
 

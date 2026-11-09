@@ -64,6 +64,14 @@ export const CARD_KINDS = [
     description:
       "Dziecko porównuje, w której z dwóch kupek monet i banknotów jest więcej pieniędzy, i wpisuje między nimi „<”, „>” albo „=”. Na kartce jest pięć rzędów po dwie kupki z pustym polem pośrodku, a nominał to liczba na każdej monecie i banknocie. Poziom zmienia nominały, wielkość sum i to, czy liczba sztuk myli.",
   },
+  {
+    id: "niepasuje",
+    title: "Który nie pasuje",
+    href: "/odd-one-out",
+    thumbnail: "/thumbnails/niepasuje.svg",
+    description:
+      "Dziecko zakreśla w każdym rzędzie obrazek, który łamie regułę rzędu: ma inny kształt, rozmiar, liczbę, kolor albo rodzaj obiektu niż reszta. Na kartce jest pięć albo sześć rzędów obrazków w ramkach i w każdym jest jedna odpowiedź. Poziom zmienia liczbę obrazków, rodzaje reguł i to, ile cech mąci; kolory włączasz osobno.",
+  },
 ] as const satisfies readonly CardKind[];
 
 /** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */

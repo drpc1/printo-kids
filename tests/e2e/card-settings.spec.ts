@@ -71,6 +71,12 @@ const CARDS: CardCase[] = [
     changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
     colors: true,
   },
+  {
+    id: "niepasuje",
+    path: "/odd-one-out",
+    changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
+    colors: true,
+  },
 ];
 
 function barButton(page: Page, bar: string): Locator {

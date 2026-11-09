@@ -13,6 +13,7 @@ import { CARD_KINDS } from "./cards.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
 import { LEVELS } from "./maze/levels.ts";
 import { MONEY_LEVELS } from "./money/levels.ts";
+import { ODD_ONE_OUT_LEVELS } from "./odd-one-out/levels.ts";
 import { NONOGRAM_SIZES } from "./nonogram/sizes.ts";
 import { SEQUENCE_LEVELS } from "./sequence/levels.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
@@ -230,6 +231,22 @@ const INVENTORY: Inventory = {
     base: { level: MONEY_LEVELS[0].id, colors: false },
     content: [{ level: MONEY_LEVELS[1].id, colors: false }],
     decoration: [{ level: MONEY_LEVELS[0].id, colors: true }],
+  },
+  // Colors are part of the task here (the color rule), so they change the content, and nothing is only decoration.
+  niepasuje: {
+    settingsList: ODD_ONE_OUT_LEVELS.flatMap((level) => [
+      { level: level.id, colors: false },
+      { level: level.id, colors: true },
+    ]),
+    label: (settings) => `${settings.level}/${String(settings.colors)}`,
+    mayExhaust: () => false,
+    usesPreviousKey: true,
+    base: { level: ODD_ONE_OUT_LEVELS[0].id, colors: false },
+    content: [
+      { level: ODD_ONE_OUT_LEVELS[1].id, colors: false },
+      { level: ODD_ONE_OUT_LEVELS[0].id, colors: true },
+    ],
+    decoration: [],
   },
 };
 
