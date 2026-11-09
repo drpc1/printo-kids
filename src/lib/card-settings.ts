@@ -1,3 +1,4 @@
+import type { CopyDrawingLevelId } from "./copy-drawing/levels.ts";
 import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } from "./dictation/levels.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
 import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } from "./money/currencies.ts";
@@ -60,6 +61,12 @@ export interface NonogramSettings {
 
 export interface DictationSettings {
   level: DictationLevelId;
+  category: ObjectCategoryChoiceId;
+}
+
+/** Not in `CardSettingsMap` yet: phase 3 of copy-the-drawing-card registers the card (defaults, ids, parsing). */
+export interface CopyDrawingSettings {
+  level: CopyDrawingLevelId;
   category: ObjectCategoryChoiceId;
 }
 
