@@ -136,7 +136,7 @@ module.exports = {
         path: '^src/(components|hooks|pages)/'
       },
       to: {
-        path: '^src/lib/(maze|symmetry|sequence|sudoku|nonogram|dictation|money)/generate[.]ts$',
+        path: '^src/lib/(maze|symmetry|sequence|sudoku|nonogram|dictation|money|odd-one-out)/generate[.]ts$',
         dependencyTypesNot: ['type-only']
       }
     },

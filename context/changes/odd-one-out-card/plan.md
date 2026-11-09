@@ -317,26 +317,26 @@ Nowe pole `niepasuje` w `cards` profilu i ostatnich parametrów. Starsze zapisy 
 
 #### Automated
 
-- [x] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
-- [x] 1.2 PRD nie zawiera już sylwetek z katalogu szablonów w regule kategorii tej karty
+- [x] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md` — 2b567ad
+- [x] 1.2 PRD nie zawiera już sylwetek z katalogu szablonów w regule kategorii tej karty — 2b567ad
 
 #### Manual
 
-- [x] 1.3 Użytkowniczka potwierdza, że zmienione zdania PRD oddają makietę
+- [x] 1.3 Użytkowniczka potwierdza, że zmienione zdania PRD oddają makietę — 2b567ad
 
 ### Phase 2: Logika karty
 
 #### Automated
 
-- [ ] 2.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Zależności przechodzą: `npm run depcruise`
-- [ ] 2.4 Typy przechodzą: `npx astro check`
-- [ ] 2.5 Build przechodzi: `npm run build`
+- [x] 2.1 Testy jednostkowe przechodzą: `npm test`
+- [x] 2.2 Lint przechodzi: `npm run lint`
+- [x] 2.3 Zależności przechodzą: `npm run depcruise`
+- [x] 2.4 Typy przechodzą: `npx astro check`
+- [x] 2.5 Build przechodzi: `npm run build`
 
 #### Manual
 
-- [ ] 2.6 Przegląd diffu: jednoznaczność, rozpraszacze i ikony zgodne z planem i makietą
+- [x] 2.6 Przegląd diffu: jednoznaczność, rozpraszacze i ikony zgodne z planem i makietą
 
 ### Phase 3: Strona, katalog i profil
 
