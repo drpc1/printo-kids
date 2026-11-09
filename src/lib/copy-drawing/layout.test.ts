@@ -45,13 +45,11 @@ void describe("layoutCopyDrawingSheet", () => {
           assert.ok(Math.abs(sheet.copy.x - (sheet.source.x + sheet.source.width) - 10) < EPSILON);
         });
 
-        void test("the block is centered across the page and down the area under the instruction", () => {
+        void test("the block is centered across the page and sits right under the instruction, spare room at the bottom", () => {
           const left = sheet.source.x - 10;
           const right = 200 - (sheet.copy.x + sheet.copy.width);
           assert.ok(Math.abs(left - right) < EPSILON, `${left} vs ${right}`);
-          const above = sheet.source.y - (10 + boxHeight + 6);
-          const below = 287 - (sheet.source.y + sheet.source.height);
-          assert.ok(Math.abs(above - below) < EPSILON, `${above} vs ${below}`);
+          assert.ok(Math.abs(sheet.source.y - (10 + boxHeight + 6)) < EPSILON, `top ${sheet.source.y}`);
         });
       });
     }

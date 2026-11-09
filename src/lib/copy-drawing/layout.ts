@@ -26,8 +26,8 @@ export interface CopyDrawingSheetLayout {
 }
 
 /**
- * Places the instruction and the two grids. The block of the two grids is centered across the page and down the area
- * under the instruction, inside the 10 mm margin. `instructionBoxHeight` is the band with a character, the plain line
+ * Places the instruction and the two grids. The block of the two grids is centered across the page and sits right under the instruction (spare room stays at the bottom)
+ * inside the 10 mm margin. `instructionBoxHeight` is the band with a character, the plain line
  * height without one. Throws when the level's cell size does not fit, instead of shrinking the cell or crossing the margin.
  */
 export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHeight: number): CopyDrawingSheetLayout {
@@ -47,7 +47,7 @@ export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHe
   const width = columns * cell;
   const height = rows * cell;
   const left = sheet.inset + (innerWidth - (2 * width + sheet.gridGap)) / 2;
-  const top = areaTop + (areaBottom - areaTop - height) / 2;
+  const top = areaTop;
   const source = { x: left, y: top, width, height };
   const copy = { x: left + width + sheet.gridGap, y: top, width, height };
 
