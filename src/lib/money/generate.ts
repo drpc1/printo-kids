@@ -1,10 +1,12 @@
 import { pick, shuffle } from "../sequence/random.ts";
+import { pieceKind } from "./currencies.ts";
 import type { MoneyLevel } from "./levels.ts";
 import {
   compareRow,
   isMisleading,
   MAX_TIE_ROWS,
   moneyCardProblems,
+  noteCount,
   pairKey,
   pileValue,
   rowKey,
@@ -25,7 +27,10 @@ function drawPile(random: () => number, level: MoneyLevel): number[] {
   const pile: number[] = [];
   let sum = 0;
   while (pile.length < count) {
-    const fitting = level.nominals.filter((value) => sum + value <= level.maxSum);
+    const notes = noteCount(pile, level.currency);
+    const fitting = level.nominals.filter(
+      (value) => sum + value <= level.maxSum && (notes < level.maxNotes || pieceKind(value, level.currency) === "coin"),
+    );
     if (fitting.length === 0) {
       break;
     }
@@ -79,7 +84,7 @@ function drawMoneyCard(random: () => number, level: MoneyLevel): MoneyCard | nul
     rows.push({ ...row, answer: compareRow(row.left, row.right) });
   }
 
-  return { levelId: level.id, rows, key: rows.map(rowKey).join(";") };
+  return { levelId: level.id, currency: level.currency, rows, key: `${level.currency}:${rows.map(rowKey).join(";")}` };
 }
 
 /**

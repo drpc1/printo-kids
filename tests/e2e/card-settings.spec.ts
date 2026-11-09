@@ -323,3 +323,40 @@ test("the note under the bar does not cover Generuj or Drukuj", async ({ page })
   expect(overlaps(noteBox, await boxOf(page.getByRole("button", { name: "Generuj" })))).toBe(false);
   expect(overlaps(noteBox, await boxOf(page.getByRole("button", { name: "Drukuj" })))).toBe(false);
 });
+
+test("a failed save shows the error in the note line without moving Generuj or Drukuj, and it goes away", async ({
+  page,
+}) => {
+  await seedAndOpen(page, "/nonogram", profileSeed(OLA));
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Nonogram" })).toBeVisible();
+  const note = page.getByRole("status");
+  const before = {
+    note: await boxOf(note),
+    generate: await boxOf(page.getByRole("button", { name: "Generuj" })),
+    print: await boxOf(page.getByRole("button", { name: "Drukuj" })),
+  };
+
+  await page.evaluate((key) => {
+    const original = Storage.prototype.setItem.bind(window.localStorage);
+    Storage.prototype.setItem = function (name: string, value: string): void {
+      if (name === key) {
+        throw new Error("quota");
+      }
+      original(name, value);
+    };
+  }, PROFILES_KEY);
+  await barButton(page, "Poziom").click();
+  await page.getByRole("button", { name: /^trudny(?=\s|$)/ }).click();
+
+  await expect(note).toHaveText("Nie udało się zapamiętać ustawień");
+  const after = {
+    note: await boxOf(note),
+    generate: await boxOf(page.getByRole("button", { name: "Generuj" })),
+    print: await boxOf(page.getByRole("button", { name: "Drukuj" })),
+  };
+  expect(after).toEqual(before);
+  expect(overlaps(after.note, after.generate)).toBe(false);
+  expect(overlaps(after.note, after.print)).toBe(false);
+  await expect(note).toHaveText("");
+});

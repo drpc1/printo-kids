@@ -8,10 +8,11 @@ import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { MoneySettings } from "@/lib/card-settings";
 import { moneyImage, moneyImagePaths } from "@/lib/money/colors";
+import type { MoneyCurrencyId } from "@/lib/money/currencies";
 import { moneyEngine, moneySpec } from "@/lib/money/engine";
 import type { MoneyCard } from "@/lib/money/generate";
 import { layoutMoneySheet, layoutPile, type MoneyPileArea } from "@/lib/money/layout";
-import { MONEY_LEVELS, moneyLevelById, type MoneyLevelId } from "@/lib/money/levels";
+import { moneyLevelById, moneyLevels, type MoneyLevelId } from "@/lib/money/levels";
 import { MONEY_SHEET } from "@/lib/money/sheet";
 import {
   applySettings,
@@ -41,17 +42,17 @@ export default function MoneyGenerator() {
   const [levelOpen, setLevelOpen] = useState(false);
   const [sheet, setSheet] = useState<SheetState<MoneyCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("pieniadze", visit, handleProfileSwitch);
-  const { level: levelId, colors } = memory.settings;
+  const { level: levelId, currency, colors } = memory.settings;
   const view = sheetView(sheet, moneySpec.contentKey(memory.settings));
 
   // Load the pictures as soon as colors are on (also on a visit that starts with them on), so Generuj and Drukuj never wait.
   useEffect(() => {
     if (colors) {
-      for (const path of moneyImagePaths()) {
+      for (const path of moneyImagePaths(currency)) {
         new Image().src = path;
       }
     }
-  }, [colors]);
+  }, [colors, currency]);
 
   function handleGenerate(): void {
     setSheet(generateSheet(sheet, moneyEngine, memory.settings, Math.random));
@@ -82,8 +83,8 @@ export default function MoneyGenerator() {
   );
   const levelControl = (
     <LevelChoice
-      level={moneyLevelById(levelId)}
-      levels={MONEY_LEVELS}
+      level={moneyLevelById(levelId, currency)}
+      levels={moneyLevels(currency)}
       open={levelOpen}
       onOpenChange={setLevelOpen}
       onSelect={handleLevelSelect}
@@ -114,7 +115,9 @@ export default function MoneyGenerator() {
       sheetShown={view.kind !== "idle"}
       generateFailed={view.failure !== null}
       failedText={
-        view.failure === null ? undefined : failureReason(view.failure, { levelLabel: moneyLevelById(levelId).label })
+        view.failure === null
+          ? undefined
+          : failureReason(view.failure, { levelLabel: moneyLevelById(levelId, currency).label })
       }
       onGenerate={handleGenerate}
       printDisabled={view.kind !== "showing"}
@@ -207,8 +210,8 @@ function MoneySheet({
         const rowLayout = sheet.rows[index];
         return (
           <g key={index}>
-            <Pile values={row.left} area={rowLayout.left} colors={colors} />
-            <Pile values={row.right} area={rowLayout.right} colors={colors} />
+            <Pile values={row.left} area={rowLayout.left} colors={colors} currency={card.currency} />
+            <Pile values={row.right} area={rowLayout.right} colors={colors} currency={card.currency} />
             <rect
               data-sign
               x={rowLayout.sign.x}
@@ -227,8 +230,18 @@ function MoneySheet({
   );
 }
 
-function Pile({ values, area, colors }: { values: readonly number[]; area: MoneyPileArea; colors: boolean }) {
-  const laid = layoutPile(values, area.innerWidth);
+function Pile({
+  values,
+  area,
+  colors,
+  currency,
+}: {
+  values: readonly number[];
+  area: MoneyPileArea;
+  colors: boolean;
+  currency: MoneyCurrencyId;
+}) {
+  const laid = layoutPile(values, area.innerWidth, currency);
   const left = area.x + MONEY_SHEET.pilePadding;
   const top = area.y + MONEY_SHEET.pilePadding + (area.innerHeight - laid.height) / 2;
 
@@ -247,7 +260,7 @@ function Pile({ values, area, colors }: { values: readonly number[]; area: Money
       {laid.pieces.map((piece, index) => {
         const x = left + piece.x;
         const y = top + piece.y;
-        const image = moneyImage(piece.value, colors);
+        const image = moneyImage(piece.value, currency, colors);
         if (image !== null) {
           // The picture carries the value; it is scaled to the piece box, so every coin has one diameter.
           return (

@@ -4,7 +4,7 @@ PrintoKids is an Astro 7 SSR app (React 19 islands, TypeScript, Tailwind 4, Clou
 
 ## Hard rules
 
-- MVP has no accounts, payments, AI, or backend jobs. Keep maze and optional child-profile data on-device.
+- MVP has no accounts, payments, AI, or backend jobs. Keep maze and optional child-profile data on-device: profiles and card settings are never sent anywhere. The one third party is Cloudflare Web Analytics, a page-view counter loaded on production only (@src/lib/analytics.ts); the browser sends it page-view data such as the page URL and IP, and the app passes it no profile or settings data. Do not add other third-party scripts.
 - Never commit `.env` or `.dev.vars`.
 - Merge Tailwind classes with `cn()` from `@/lib/utils` (@src/lib/utils.ts). Do not concatenate class strings.
 - Do not add Next.js `'use client'` (or similar) directives. `astro/no-set-html-directive` is an ESLint error (@eslint.config.js).
@@ -26,6 +26,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 ## Structure and conventions
 
 - `src/pages/` routes and `src/pages/api/` endpoints; `src/layouts/` Astro layouts; `src/components/` Astro + React; `src/components/ui/` shadcn new-york (@components.json); `src/lib/` helpers.
+- Name things in the domain language before you write code, tests or copy: term, meaning, name in code and how not to name it are in @context/domain/glossary.md.
 - Import with `@/*` → `./src/*` (@tsconfig.json). Use Astro for static content and layout; React only when interactivity is required. Add shadcn pieces with `npx shadcn@latest add [name]`.
 - API routes export uppercase `GET` / `POST`. Put shared DTOs in `src/types.ts`. Extract React hooks to `src/hooks/` (`@/hooks` in @components.json).
 - A card generator page is a React island on `CardPage` (@src/components/CardPage.tsx) and `useCardPage` (@src/hooks/useCardPage.ts): it passes its settings controls, its sheet and what Generuj does, and does not copy the profile corner, the bar, Generuj or Drukuj. Its rules, layout in millimetres and SVG stay in its own module. The maze is a card like the others: its level lives in `cards.labirynt` of `CardSettingsMap` and the page reads it through `useCardSettings`. A stored top-level `level` (older profiles and last-used parameters) is read once into `cards.labirynt` by `parseStoredCards` and is not written again.

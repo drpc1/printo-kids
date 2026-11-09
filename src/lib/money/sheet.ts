@@ -50,3 +50,9 @@ export const MAX_PIECES = {
   sredni: 8,
   trudny: 10,
 } as const;
+
+/**
+ * Most notes one pile may hold: two rows of three, which with the coins of the fullest pile (six more) still fit
+ * the pile frame. Coins are smaller, so the limit is on notes only.
+ */
+export const MAX_NOTES = 4;

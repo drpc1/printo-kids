@@ -100,13 +100,30 @@ void describe("cardSummaries", () => {
     assert.equal(byId(fresh, "pieniadze").title, "Kto ma więcej?");
     assert.equal(byId(fresh, "pieniadze").href, "/money");
 
-    const chosen = byId(cardSummaries(profile("lat5", { pieniadze: { level: "latwy", colors: false } })), "pieniadze");
+    const chosen = byId(
+      cardSummaries(profile("lat5", { pieniadze: { level: "latwy", currency: "pln", colors: false } })),
+      "pieniadze",
+    );
     assert.equal(chosen.used, true);
     assert.equal(chosen.badge, "łatwy");
     assert.equal(chosen.detail, "łatwy");
 
-    const colored = byId(cardSummaries(profile("lat5", { pieniadze: { level: "latwy", colors: true } })), "pieniadze");
+    const colored = byId(
+      cardSummaries(profile("lat5", { pieniadze: { level: "latwy", currency: "pln", colors: true } })),
+      "pieniadze",
+    );
     assert.equal(colored.detail, "łatwy · kolory");
+
+    const euro = byId(
+      cardSummaries(profile("lat5", { pieniadze: { level: "sredni", currency: "eur", colors: true } })),
+      "pieniadze",
+    );
+    assert.equal(euro.detail, "średni · € · kolory");
+    const dollars = byId(
+      cardSummaries(profile("lat5", { pieniadze: { level: "sredni", currency: "usd", colors: false } })),
+      "pieniadze",
+    );
+    assert.equal(dollars.detail, "średni · $");
   });
 
   void test("the odd-one-out card shows its named level and colors, and is unused until the profile chose one", () => {
