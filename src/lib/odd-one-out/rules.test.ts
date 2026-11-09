@@ -1,9 +1,11 @@
 // The rules are checked against rows written by hand, so the test does not repeat the code under test.
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, test } from "node:test";
 import type { SudokuShapeId } from "../sudoku/shapes.ts";
 import { oddOneOutLevelById } from "./levels.ts";
 import {
+  ODD_CRAYONS,
   oddOneOutCardProblems,
   oddOneOutRowProblems,
   type OddCrayon,
@@ -246,5 +248,14 @@ void describe("oddOneOutCardProblems", () => {
     const wrong = row("shape", 0, shape("circle"), shape("circle"), shape("circle"), shape("heart"));
     const rows = [wrong, ...goodCard().rows.slice(1)];
     assert.deepEqual(oddOneOutCardProblems({ ...goodCard(), rows }, latwy, false), ["answer"]);
+  });
+});
+
+void describe("ODD_CRAYONS", () => {
+  void test("every crayon is a --symmetry-* token in global.css, so a colored shape never loses its fill", () => {
+    const css = readFileSync(new URL("../../styles/global.css", import.meta.url), "utf8");
+    for (const crayon of ODD_CRAYONS) {
+      assert.ok(css.includes(`--symmetry-${crayon}:`), `--symmetry-${crayon} is missing in global.css`);
+    }
   });
 });

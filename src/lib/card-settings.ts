@@ -3,7 +3,7 @@ import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
 import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } from "./money/currencies.ts";
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
-import type { OddOneOutLevelId } from "./odd-one-out/levels.ts";
+import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, ODD_ONE_OUT_LEVELS, type OddOneOutLevelId } from "./odd-one-out/levels.ts";
 import { DEFAULT_SEQUENCE_LEVEL_ID, SEQUENCE_LEVELS, type SequenceLevelId } from "./sequence/levels.ts";
 import {
   DEFAULT_SUDOKU_SETTINGS,
@@ -71,6 +71,7 @@ export interface CardSettingsMap {
   nonogram?: NonogramSettings;
   dyktando?: DictationSettings;
   pieniadze?: MoneySettings;
+  niepasuje?: OddOneOutSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -83,6 +84,7 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "nonogram",
   "dyktando",
   "pieniadze",
+  "niepasuje",
 ];
 
 /** The settings of one card. */
@@ -98,6 +100,7 @@ const DEFAULTS: Defaults = {
   nonogram: { level: DEFAULT_NONOGRAM_SIZE_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
   dyktando: { level: DEFAULT_DICTATION_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
   pieniadze: { level: DEFAULT_MONEY_LEVEL_ID, currency: DEFAULT_MONEY_CURRENCY_ID, colors: false },
+  niepasuje: { level: DEFAULT_ODD_ONE_OUT_LEVEL_ID, colors: false },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -216,6 +219,8 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return DICTATION_LEVELS.map((level) => level.id);
     case "pieniadze":
       return MONEY_LEVEL_IDS;
+    case "niepasuje":
+      return ODD_ONE_OUT_LEVELS.map((level) => level.id);
   }
 }
 

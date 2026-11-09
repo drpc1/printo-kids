@@ -66,7 +66,7 @@ test("the page describes every card kind in catalog order", async ({ page }, tes
   await expect(page.getByRole("heading", { level: 3 })).toHaveText(titles);
   for (const title of titles) {
     const heading = page.getByRole("heading", { level: 3, name: title });
-    await expect(heading.getByRole("link", { name: title })).toHaveAttribute("href", /^\/[a-z]+$/);
+    await expect(heading.getByRole("link", { name: title })).toHaveAttribute("href", /^\/[a-z-]+$/);
     await expect(heading.locator("xpath=following-sibling::p[1]")).not.toBeEmpty();
   }
 });
