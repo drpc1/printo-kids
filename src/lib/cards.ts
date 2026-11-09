@@ -62,7 +62,7 @@ export const CARD_KINDS = [
     href: "/money",
     thumbnail: "/thumbnails/pieniadze.svg",
     description:
-      "Dziecko porównuje, w której z dwóch kupek monet i banknotów jest więcej pieniędzy, i wpisuje między nimi „<”, „>” albo „=”. Na kartce jest pięć rzędów po dwie kupki z pustym polem pośrodku, a nominał to liczba na każdej monecie i banknocie. Poziom zmienia nominały, wielkość sum i to, czy liczba sztuk myli.",
+      "Dziecko porównuje, w której z dwóch kupek monet i banknotów jest więcej pieniędzy, i wpisuje między nimi „<”, „>” albo „=”. Na kartce jest pięć rzędów po dwie kupki z pustym polem pośrodku, a nominał to liczba na każdej monecie i banknocie. Waluta to złote, euro albo dolary, a poziom zmienia nominały, wielkość sum i to, czy liczba sztuk myli.",
   },
   {
     id: "niepasuje",

@@ -37,6 +37,10 @@ export const MONEY_SHEET = {
   noteInnerInset: 1,
   noteInnerStroke: 0.3,
   noteFontSize: 6,
+  /** Font size of the euro or dollar sign in the black drawing (złoty pieces carry no sign). */
+  currencySymbolFontSize: 3.4,
+  /** A coin's value moves up by this much to make room for the sign under it. */
+  coinValueLift: 1.2,
   fontWeight: 700,
   /** Font size of the instruction when no character stands in the band (one line). */
   plainInstructionSize: 7,
@@ -56,3 +60,6 @@ export const MAX_PIECES = {
  * the pile frame. Coins are smaller, so the limit is on notes only.
  */
 export const MAX_NOTES = 4;
+
+/** Most notes of a pile when the currency has no coins (the dollar): three rows of three notes fill the pile frame. */
+export const MAX_NOTES_WITHOUT_COINS = 9;

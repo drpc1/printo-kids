@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoice } from "@/components/LevelChoice";
+import { SudokuChoice } from "@/components/SudokuChoice";
 import { SettingToggle } from "@/components/SettingToggle";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
@@ -8,7 +9,7 @@ import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
 import type { MoneySettings } from "@/lib/card-settings";
 import { moneyImage, moneyImagePaths } from "@/lib/money/colors";
-import type { MoneyCurrencyId } from "@/lib/money/currencies";
+import { MONEY_CURRENCIES, moneyCurrencyById, type MoneyCurrencyId } from "@/lib/money/currencies";
 import { moneyEngine, moneySpec } from "@/lib/money/engine";
 import type { MoneyCard } from "@/lib/money/generate";
 import { layoutMoneySheet, layoutPile, type MoneyPileArea } from "@/lib/money/layout";
@@ -40,6 +41,7 @@ export default function MoneyGenerator() {
   const { visit, bar, favorite } = useCardPage();
   const { profiles, activeId, ask, waitingForChild } = visit;
   const [levelOpen, setLevelOpen] = useState(false);
+  const [currencyOpen, setCurrencyOpen] = useState(false);
   const [sheet, setSheet] = useState<SheetState<MoneyCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("pieniadze", visit, handleProfileSwitch);
   const { level: levelId, currency, colors } = memory.settings;
@@ -60,6 +62,14 @@ export default function MoneyGenerator() {
 
   function handleLevelSelect(id: MoneyLevelId): void {
     const next = memory.remember({ level: id });
+    if (!waitingForChild) {
+      setSheet(applySettings(sheet, moneyEngine, next, Math.random));
+    }
+  }
+
+  // The currency changes the nominals, so like a level change it draws a new card when one is shown.
+  function handleCurrencySelect(id: MoneyCurrencyId): void {
+    const next = memory.remember({ currency: id });
     if (!waitingForChild) {
       setSheet(applySettings(sheet, moneyEngine, next, Math.random));
     }
@@ -88,6 +98,19 @@ export default function MoneyGenerator() {
       open={levelOpen}
       onOpenChange={setLevelOpen}
       onSelect={handleLevelSelect}
+      disabled={waitingForChild}
+    />
+  );
+
+  const currencyControl = (
+    <SudokuChoice
+      label="Waluta"
+      dialogTitle="Waluta"
+      options={MONEY_CURRENCIES}
+      value={currency}
+      open={currencyOpen}
+      onOpenChange={setCurrencyOpen}
+      onSelect={handleCurrencySelect}
       disabled={waitingForChild}
     />
   );
@@ -129,6 +152,7 @@ export default function MoneyGenerator() {
       controls={
         <>
           {characterControl}
+          {currencyControl}
           {levelControl}
           {colorsControl}
         </>
@@ -242,6 +266,9 @@ function Pile({
   currency: MoneyCurrencyId;
 }) {
   const laid = layoutPile(values, area.innerWidth, currency);
+  // The black drawing shows the sign of the euro and the dollar (złoty pieces carry none, as before).
+  const symbol = currency === "pln" ? null : moneyCurrencyById(currency).symbol;
+  const lift = symbol === null ? 0 : MONEY_SHEET.coinValueLift;
   const left = area.x + MONEY_SHEET.pilePadding;
   const top = area.y + MONEY_SHEET.pilePadding + (area.innerHeight - laid.height) / 2;
 
@@ -264,16 +291,44 @@ function Pile({
         if (image !== null) {
           // The picture carries the value; it is scaled to the piece box, so every coin has one diameter.
           return (
-            <image
-              key={index}
-              data-money-image
-              href={image}
-              x={x}
-              y={y}
-              width={piece.width}
-              height={piece.height}
-              preserveAspectRatio="xMidYMid meet"
-            />
+            <g key={index}>
+              <image
+                data-money-image
+                href={image}
+                x={x}
+                y={y}
+                width={piece.width}
+                height={piece.height}
+                preserveAspectRatio="xMidYMid meet"
+              />
+              {currency === "usd" ? (
+                // The dollar pictures carry the value in small corner digits that vanish in print, so a badge repeats it.
+                <g data-value-badge>
+                  <rect
+                    x={x + piece.width / 2 - 5.5}
+                    y={y + piece.height / 2 - 3.4}
+                    width={11}
+                    height={6.8}
+                    rx={1.6}
+                    fill="var(--card)"
+                    stroke="var(--foreground)"
+                    strokeWidth={MONEY_SHEET.noteStroke}
+                  />
+                  <text
+                    x={x + piece.width / 2}
+                    y={y + piece.height / 2}
+                    fill="var(--foreground)"
+                    fontFamily="ui-sans-serif, system-ui, sans-serif"
+                    fontSize={5.2}
+                    fontWeight={MONEY_SHEET.fontWeight}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                  >
+                    {piece.value}
+                  </text>
+                </g>
+              ) : null}
+            </g>
           );
         }
         return piece.kind === "coin" ? (
@@ -288,7 +343,7 @@ function Pile({
             />
             <text
               x={x + piece.width / 2}
-              y={y + piece.height / 2}
+              y={y + piece.height / 2 - lift}
               fill="var(--foreground)"
               fontFamily="ui-sans-serif, system-ui, sans-serif"
               fontSize={MONEY_SHEET.coinFontSize}
@@ -298,6 +353,21 @@ function Pile({
             >
               {piece.value}
             </text>
+            {symbol !== null ? (
+              <text
+                data-currency-symbol
+                x={x + piece.width / 2}
+                y={y + piece.height - MONEY_SHEET.coinStroke - 1.8}
+                fill="var(--foreground)"
+                fontFamily="ui-sans-serif, system-ui, sans-serif"
+                fontSize={MONEY_SHEET.currencySymbolFontSize}
+                fontWeight={MONEY_SHEET.fontWeight}
+                textAnchor="middle"
+                dominantBaseline="central"
+              >
+                {symbol}
+              </text>
+            ) : null}
           </g>
         ) : (
           <g key={index}>
@@ -333,6 +403,21 @@ function Pile({
             >
               {piece.value}
             </text>
+            {symbol !== null ? (
+              <text
+                data-currency-symbol
+                x={x + piece.width - MONEY_SHEET.noteInnerInset - 1}
+                y={y + MONEY_SHEET.noteInnerInset + 1.4}
+                fill="var(--foreground)"
+                fontFamily="ui-sans-serif, system-ui, sans-serif"
+                fontSize={MONEY_SHEET.currencySymbolFontSize}
+                fontWeight={MONEY_SHEET.fontWeight}
+                textAnchor="end"
+                dominantBaseline="central"
+              >
+                {symbol}
+              </text>
+            ) : null}
           </g>
         );
       })}

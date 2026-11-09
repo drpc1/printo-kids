@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, test } from "node:test";
 import { moneyImage, moneyImagePaths } from "./colors.ts";
-import { MONEY_CURRENCY_IDS } from "./currencies.ts";
+import { MONEY_CURRENCY_IDS, pieceKind } from "./currencies.ts";
 import { moneyLevels } from "./levels.ts";
 
 /** The nominals any level of the currency can draw. */
@@ -15,11 +15,29 @@ void describe("moneyImage", () => {
     assert.deepEqual(nominalsOf("pln"), [1, 2, 5, 10, 20, 50, 100]);
   });
 
-  void test("every nominal of every złoty level has a picture in public/money", () => {
-    for (const value of nominalsOf("pln")) {
-      const path = moneyImage(value, "pln", true);
-      assert.ok(path !== null, `${value} zł`);
-      assert.ok(existsSync(new URL(`../../../public${path}`, import.meta.url)), path);
+  void test("every nominal of every level of every currency has a picture in public/money", () => {
+    for (const currency of MONEY_CURRENCY_IDS) {
+      for (const value of nominalsOf(currency)) {
+        const path = moneyImage(value, currency, true);
+        assert.ok(path !== null, `${currency} ${value}`);
+        assert.ok(existsSync(new URL(`../../../public${path}`, import.meta.url)), path);
+      }
+    }
+  });
+
+  void test("each picture is a PNG shaped like its piece: a coin is square, a note about twice as wide as high", () => {
+    for (const currency of MONEY_CURRENCY_IDS) {
+      for (const value of nominalsOf(currency)) {
+        const path = moneyImage(value, currency, true) ?? "";
+        const header = readFileSync(new URL(`../../../public${path}`, import.meta.url));
+        assert.equal(header.toString("latin1", 1, 4), "PNG", path);
+        const ratio = header.readUInt32BE(16) / header.readUInt32BE(20);
+        if (pieceKind(value, currency) === "coin") {
+          assert.ok(ratio > 0.9 && ratio < 1.1, `${path} ${ratio}`);
+        } else {
+          assert.ok(ratio > 1.8 && ratio < 2.2, `${path} ${ratio}`);
+        }
+      }
     }
   });
 

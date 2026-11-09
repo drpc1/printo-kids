@@ -127,6 +127,64 @@ test("choosing another level with a card shown draws a new card", async ({ page 
   expect(await sheet.innerHTML()).not.toBe(before);
 });
 
+test("choosing another currency draws a new card with that currency's pieces, signs and pictures", async ({ page }) => {
+  const sheet = await generate(page);
+  const before = await sheet.innerHTML();
+  await expect(page.getByRole("button", { name: "Waluta: zł" })).toBeVisible();
+  await expect(sheet.locator("[data-currency-symbol]")).toHaveCount(0);
+
+  await page.getByRole("button", { name: /^Waluta:/ }).click();
+  await page.getByRole("button", { name: /^euro(?=\s|$)/ }).click();
+  await expect(page.getByRole("button", { name: "Waluta: €" })).toBeVisible();
+  await expect(sheet).toBeVisible();
+  expect(await sheet.innerHTML()).not.toBe(before);
+
+  const pieces = await sheet.locator("g[data-pile] text:not([data-currency-symbol])").allTextContents();
+  expect(pieces.length).toBeGreaterThan(0);
+  for (const value of pieces) {
+    expect(["1", "2", "5", "10", "20", "50", "100"]).toContain(value);
+  }
+  // Every piece of the black drawing carries the sign of the euro.
+  await expect(sheet.locator("[data-currency-symbol]")).toHaveCount(pieces.length);
+  expect(await sheet.locator("[data-currency-symbol]").allTextContents()).toEqual(pieces.map(() => "€"));
+
+  await page.getByRole("switch", { name: "Kolory" }).click();
+  const images = sheet.locator("image[data-money-image]");
+  await expect(images).toHaveCount(pieces.length);
+  const hrefs = await images.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")));
+  expect(hrefs.every((href) => /^\/money\/\d+eur\.png$/.test(href ?? ""))).toBe(true);
+  await expect(sheet.locator("[data-currency-symbol]")).toHaveCount(0);
+
+  await page.getByRole("button", { name: /^Waluta:/ }).click();
+  await page.getByRole("button", { name: /^dolary(?=\s|$)/ }).click();
+  await expect(page.getByRole("button", { name: "Waluta: $" })).toBeVisible();
+  const dollarHrefs = await images.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")));
+  expect(dollarHrefs.every((href) => /^\/money\/\d+usd\.png$/.test(href ?? ""))).toBe(true);
+});
+
+test("a profile's remembered currency is on the bar", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.addInitScript(
+    ([profilesKey, activeKey]) => {
+      if (localStorage.getItem(profilesKey) === null) {
+        const profile = {
+          id: "profile-ola",
+          name: "Ola",
+          character: "none",
+          cards: { pieniadze: { level: "latwy", currency: "usd" } },
+        };
+        localStorage.setItem(profilesKey, JSON.stringify({ profiles: [profile] }));
+        localStorage.setItem(activeKey, profile.id);
+      }
+    },
+    [PROFILES_KEY, ACTIVE_KEY] as const,
+  );
+  await page.goto("/money");
+
+  await expect(page.getByRole("button", { name: "Waluta: $" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Poziom: łatwy" })).toBeVisible();
+});
+
 test("every pile and square stays inside the 10 mm margin of the A4 page", async ({ page }) => {
   const sheet = await generate(page);
 
@@ -185,6 +243,7 @@ test("Generuj, Drukuj and the Profil corner do not cover each other and stay on 
   expect(widths.scroll).toBeLessThanOrEqual(widths.inner);
 
   const boxes = {
+    waluta: await viewportBox(page.getByRole("button", { name: /^Waluta:/ })),
     poziom: await viewportBox(page.getByRole("button", { name: /^Poziom:/ })),
     kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
     generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),

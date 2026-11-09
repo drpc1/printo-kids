@@ -1,5 +1,5 @@
-import { moneyCurrencyById, pieceKind, type MoneyCurrencyId } from "./currencies.ts";
-import { MAX_NOTES, MAX_PIECES, MONEY_SHEET } from "./sheet.ts";
+import { moneyCurrencyById, pieceKind, PIECES, type MoneyCurrencyId } from "./currencies.ts";
+import { MAX_NOTES, MAX_NOTES_WITHOUT_COINS, MAX_PIECES, MONEY_SHEET } from "./sheet.ts";
 
 /** The levels of the "Kto ma więcej?" card. The card does not name its levels after an age. */
 export type MoneyLevelId = "latwy" | "sredni" | "trudny";
@@ -32,8 +32,8 @@ export interface MoneyLevel {
 export const DEFAULT_MONEY_LEVEL_ID: MoneyLevelId = "sredni";
 
 /**
- * The nominals and the largest pile of each level and currency. The easy level has coins only, except in dollars, where
- * the one coin is not enough for a card and the 5 $ note joins it. The hard level reaches 100 (notes of 50 and 100).
+ * The nominals and the largest pile of each level and currency. The easy level has coins only, except in dollars, which have
+ * notes only (1 and 5 $ on the easy level). The hard level reaches 100 (notes of 50 and 100).
  */
 const SPECS: Record<MoneyCurrencyId, Record<MoneyLevelId, { nominals: readonly number[]; maxSum: number }>> = {
   pln: {
@@ -98,7 +98,7 @@ function buildLevel(id: MoneyLevelId, currency: MoneyCurrencyId): MoneyLevel {
     nominals,
     maxSum,
     maxPieces: MAX_PIECES[id],
-    maxNotes: MAX_NOTES,
+    maxNotes: PIECES[currency].some((piece) => piece.kind === "coin") ? MAX_NOTES : MAX_NOTES_WITHOUT_COINS,
     rowCount: MONEY_SHEET.rowCount,
     misleadingMin: MISLEADING[id].min,
     misleadingMax: MISLEADING[id].max,
