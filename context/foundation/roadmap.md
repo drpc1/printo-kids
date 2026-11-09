@@ -39,13 +39,13 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 
 ## At a glance
 
-| ID   | Change ID              | Outcome (user can …)                                                                                                                                                                                          | Prerequisites          | PRD refs                                                    | Status   |
-| ---- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------- | -------- |
-| S-33 | coins-who-has-more     | Rodzic otwiera z katalogu „Kto ma więcej?”, wybiera poziom (łatwy / średni / trudny), generuje kartę A4 z kupkami monet i banknotów 1–20 zł, podgląda ją i drukuje; profil pamięta poziom                     | —                      | US-23, US-24, FR-033, FR-034, FR-014, FR-017, FR-030, US-05 | done     |
-| S-34 | odd-one-out-card       | Rodzic otwiera z katalogu „Który nie pasuje”, wybiera poziom i kolory, generuje kartę A4 z rzędami obrazków, w których jeden łamie regułę (kształt, kolor, rozmiar, liczba, kategoria), podgląda ją i drukuje | —                      | US-25, US-26, FR-035, FR-036, FR-014, FR-017, FR-030, US-05 | done     |
-| S-35 | copy-the-drawing-card  | Rodzic otwiera z katalogu „Skopiuj rysunek na kratce”, wybiera poziom i kategorię, generuje kartę A4 z czarną sylwetką obiektu w jednej kratce i pustą kratką obok, podgląda ją i drukuje                     | —                      | US-27, US-28, FR-037, FR-038, FR-014, FR-017, FR-030, US-05 | ready    |
-| S-36 | pattern-lines-card     | Rodzic otwiera z katalogu „Szlaczki”, wybiera poziom (1–4), generuje kartę A4 ze szlaczkami do prowadzenia po kropkach albo do kontynuowania, podgląda ją i drukuje                                           | —                      | US-29, US-30, FR-039, FR-040, FR-014, FR-017, FR-030, US-05 | ready    |
-| S-37 | how-it-works-new-cards | Rodzic otwiera „Jak to działa” i widzi poprawny opis poziomów i profilu także dla czterech nowych kart, bez nieaktualnych zdań o tym, które karty mają trzy poziomy albo wiek                                 | S-33, S-34, S-35, S-36 | US-22, FR-031                                               | proposed |
+| ID   | Change ID              | Outcome (user can …)                                                                                                                                                                                          | Prerequisites          | PRD refs                                                    | Status      |
+| ---- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------- | ----------- |
+| S-33 | coins-who-has-more     | Rodzic otwiera z katalogu „Kto ma więcej?”, wybiera poziom (łatwy / średni / trudny), generuje kartę A4 z kupkami monet i banknotów 1–20 zł, podgląda ją i drukuje; profil pamięta poziom                     | —                      | US-23, US-24, FR-033, FR-034, FR-014, FR-017, FR-030, US-05 | done        |
+| S-34 | odd-one-out-card       | Rodzic otwiera z katalogu „Który nie pasuje”, wybiera poziom i kolory, generuje kartę A4 z rzędami obrazków, w których jeden łamie regułę (kształt, kolor, rozmiar, liczba, kategoria), podgląda ją i drukuje | —                      | US-25, US-26, FR-035, FR-036, FR-014, FR-017, FR-030, US-05 | done        |
+| S-35 | copy-the-drawing-card  | Rodzic otwiera z katalogu „Skopiuj rysunek na kratce”, wybiera poziom i kategorię, generuje kartę A4 z czarną sylwetką obiektu w jednej kratce i pustą kratką obok, podgląda ją i drukuje                     | —                      | US-27, US-28, FR-037, FR-038, FR-014, FR-017, FR-030, US-05 | in-progress |
+| S-36 | pattern-lines-card     | Rodzic otwiera z katalogu „Szlaczki”, wybiera poziom (1–4), generuje kartę A4 ze szlaczkami do prowadzenia po kropkach albo do kontynuowania, podgląda ją i drukuje                                           | —                      | US-29, US-30, FR-039, FR-040, FR-014, FR-017, FR-030, US-05 | ready       |
+| S-37 | how-it-works-new-cards | Rodzic otwiera „Jak to działa” i widzi poprawny opis poziomów i profilu także dla czterech nowych kart, bez nieaktualnych zdań o tym, które karty mają trzy poziomy albo wiek                                 | S-33, S-34, S-35, S-36 | US-22, FR-031                                               | proposed    |
 
 ## Baseline
 
@@ -106,7 +106,7 @@ Brak. Wspólny wzorzec strony karty (`CardPage`, `useCardPage`), zapis ustawień
   - Czy dwie kratki obok siebie mieszczą się na A4 z marginesem 10 mm na każdym poziomie, i czy kratka 5 mm na trudnym jest dość duża dla dziecka? PRD Open Questions 13; rozstrzyga makieta przed planem. — Owner: user. Block: no.
   - Czy kratki dostają numery kolumn i wierszy, żeby dziecko wiedziało, od czego zacząć? PRD Open Questions 13. — Owner: user. Block: no.
 - **Risk:** Układ dwóch kratek na pionowym A4 wymusza małą kratkę na trudnym poziomie; jeśli 5 mm jest za mało, trudny zostaje przy siatce 12×15. Współdzieli katalog szablonów z symetrią, nonogramem i dyktandem, więc nie wolno przestawić ich obiektów. Nowa strona dochodzi do sprawdzianu HTTP (`scripts/smoke.mjs`), a wysokość druku mierzy się osobno w Safari, Chrome iOS i Brave iOS (lessons.md).
-- **Status:** ready
+- **Status:** in-progress
 
 ### S-36: Szlaczki
 
