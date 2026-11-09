@@ -1,6 +1,7 @@
 import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } from "./dictation/levels.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
-import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVELS, type MoneyLevelId } from "./money/levels.ts";
+import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } from "./money/currencies.ts";
+import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
 import { DEFAULT_SEQUENCE_LEVEL_ID, SEQUENCE_LEVELS, type SequenceLevelId } from "./sequence/levels.ts";
 import {
@@ -38,6 +39,7 @@ export interface SequenceSettings {
 
 export interface MoneySettings {
   level: MoneyLevelId;
+  currency: MoneyCurrencyId;
   colors: boolean;
 }
 
@@ -89,7 +91,7 @@ const DEFAULTS: Defaults = {
   sudoku: { ...DEFAULT_SUDOKU_SETTINGS, colors: false },
   nonogram: { level: DEFAULT_NONOGRAM_SIZE_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
   dyktando: { level: DEFAULT_DICTATION_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
-  pieniadze: { level: DEFAULT_MONEY_LEVEL_ID, colors: false },
+  pieniadze: { level: DEFAULT_MONEY_LEVEL_ID, currency: DEFAULT_MONEY_CURRENCY_ID, colors: false },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -178,6 +180,9 @@ function fieldValue(cardId: CardSettingsId, field: string, value: unknown, fallb
   if (field === "category") {
     return OBJECT_CATEGORY_CHOICES.some((choice) => choice.id === value) ? value : fallback;
   }
+  if (field === "currency") {
+    return MONEY_CURRENCY_IDS.includes(value as MoneyCurrencyId) ? value : fallback;
+  }
   if (field === "size") {
     return SUDOKU_SIZES.some((size) => size.id === value) ? value : fallback;
   }
@@ -204,7 +209,7 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
     case "dyktando":
       return DICTATION_LEVELS.map((level) => level.id);
     case "pieniadze":
-      return MONEY_LEVELS.map((level) => level.id);
+      return MONEY_LEVEL_IDS;
   }
 }
 

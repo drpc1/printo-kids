@@ -1,11 +1,5 @@
+import { pieceKind, type MoneyCurrencyId, type PieceKind } from "./currencies.ts";
 import { MONEY_SHEET } from "./sheet.ts";
-
-/** A coin below 10 zł, a note from 10 zł. */
-export type PieceKind = "coin" | "note";
-
-export function pieceKind(value: number): PieceKind {
-  return value >= 10 ? "note" : "coin";
-}
 
 export interface PilePiece {
   kind: PieceKind;
@@ -24,9 +18,9 @@ export interface PileLayout {
 
 /**
  * Places the pieces of one pile inside `width`: notes first, largest value first, then coins, each kind in its own
- * rows, every row centered. Throws when one piece is wider than `width`.
+ * rows, every row centered. What is a coin and what a note depends on the currency. Throws when one piece is wider than `width`.
  */
-export function layoutPile(values: readonly number[], width: number): PileLayout {
+export function layoutPile(values: readonly number[], width: number, currency: MoneyCurrencyId): PileLayout {
   const gap = MONEY_SHEET.pieceGap;
   const sizes = {
     note: { width: MONEY_SHEET.noteWidth, height: MONEY_SHEET.noteHeight },
@@ -38,7 +32,7 @@ export function layoutPile(values: readonly number[], width: number): PileLayout
 
   for (const kind of ["note", "coin"] as const) {
     const size = sizes[kind];
-    const ofKind = sorted.filter((value) => pieceKind(value) === kind);
+    const ofKind = sorted.filter((value) => pieceKind(value, currency) === kind);
     const perRow = Math.floor((width + gap) / (size.width + gap));
     if (ofKind.length > 0 && perRow < 1) {
       throw new Error(`A ${kind} of ${size.width} mm does not fit a pile ${width} mm wide`);

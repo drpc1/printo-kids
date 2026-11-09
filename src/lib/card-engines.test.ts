@@ -12,7 +12,8 @@ import type { CardSettingsOf, SudokuCardSettings } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
 import { LEVELS } from "./maze/levels.ts";
-import { MONEY_LEVELS } from "./money/levels.ts";
+import { MONEY_CURRENCY_IDS } from "./money/currencies.ts";
+import { MONEY_LEVEL_IDS } from "./money/levels.ts";
 import { NONOGRAM_SIZES } from "./nonogram/sizes.ts";
 import { SEQUENCE_LEVELS } from "./sequence/levels.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
@@ -177,7 +178,7 @@ const INVENTORY: Inventory = {
     decoration: [{ level: SYMMETRY_LEVELS[0].id, colors: true, category: "wszystkie" }],
   },
   sekwencje: {
-    settingsList: SEQUENCE_LEVELS.map((level) => ({ level: level.id, colors: false })),
+    settingsList: SEQUENCE_LEVELS.map((level) => ({ level: level.id, currency: "pln", colors: false })),
     label: (settings) => settings.level,
     mayExhaust: () => false,
     usesPreviousKey: true,
@@ -223,13 +224,18 @@ const INVENTORY: Inventory = {
     decoration: [],
   },
   pieniadze: {
-    settingsList: MONEY_LEVELS.map((level) => ({ level: level.id, colors: false })),
-    label: (settings) => settings.level,
+    settingsList: MONEY_CURRENCY_IDS.flatMap((currency) =>
+      MONEY_LEVEL_IDS.map((level) => ({ level, currency, colors: false })),
+    ),
+    label: (settings) => `${settings.currency}/${settings.level}`,
     mayExhaust: () => false,
     usesPreviousKey: true,
-    base: { level: MONEY_LEVELS[0].id, colors: false },
-    content: [{ level: MONEY_LEVELS[1].id, colors: false }],
-    decoration: [{ level: MONEY_LEVELS[0].id, colors: true }],
+    base: { level: MONEY_LEVEL_IDS[0], currency: "pln", colors: false },
+    content: [
+      { level: MONEY_LEVEL_IDS[1], currency: "pln", colors: false },
+      { level: MONEY_LEVEL_IDS[0], currency: "eur", colors: false },
+    ],
+    decoration: [{ level: MONEY_LEVEL_IDS[0], currency: "pln", colors: true }],
   },
 };
 

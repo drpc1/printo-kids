@@ -440,7 +440,7 @@ console.log(`Wrote ${dictationOutFile} (${dictationCard.key}, ${dictationCard.co
 const MONEY_SEED = 20261101;
 const MONEY = MONEY_SHEET;
 
-const moneyCard = generateMoneyCard(mulberry32(MONEY_SEED), null, moneyLevelById(DEFAULT_MONEY_LEVEL_ID));
+const moneyCard = generateMoneyCard(mulberry32(MONEY_SEED), null, moneyLevelById(DEFAULT_MONEY_LEVEL_ID, "pln"));
 if (moneyCard === null) {
   throw new Error(`Seed ${MONEY_SEED} did not produce a valid money card`);
 }
@@ -474,7 +474,7 @@ moneyCard.rows.forEach((row, rowIndex) => {
     moneyLines.push(
       `<rect x="${num(area.x)}" y="${num(area.y)}" width="${num(area.width)}" height="${num(area.height)}" rx="${MONEY.pileFrameRadius}" fill="none" stroke="#000" stroke-width="${MONEY.pileFrameStroke}"/>`,
     );
-    const laid = layoutPile(values, area.innerWidth);
+    const laid = layoutPile(values, area.innerWidth, moneyCard.currency);
     const left = area.x + MONEY.pilePadding;
     const top = area.y + MONEY.pilePadding + (area.innerHeight - laid.height) / 2;
     for (const piece of laid.pieces) {

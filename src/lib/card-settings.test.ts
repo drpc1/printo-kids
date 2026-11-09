@@ -19,23 +19,33 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("sudoku"), { size: 4, level: "latwy", symbols: "shapes", colors: false });
     assert.deepEqual(defaultCardSettings("nonogram"), { level: "sredni", category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("dyktando"), { level: "lat6", category: "wszystkie" });
-    assert.deepEqual(defaultCardSettings("pieniadze"), { level: "sredni", colors: false });
+    assert.deepEqual(defaultCardSettings("pieniadze"), { level: "sredni", currency: "pln", colors: false });
   });
 
   void test("the money card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
     assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy" } }), {
-      pieniadze: { level: "latwy", colors: false },
+      pieniadze: { level: "latwy", currency: "pln", colors: false },
     });
     assert.deepEqual(parseCardSettings({ pieniadze: { level: "lat5" } }), {
-      pieniadze: { level: "sredni", colors: false },
+      pieniadze: { level: "sredni", currency: "pln", colors: false },
     });
-    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", colors: true } }), {
-      pieniadze: { level: "latwy", colors: true },
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", currency: "pln", colors: true } }), {
+      pieniadze: { level: "latwy", currency: "pln", colors: true },
     });
     assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", colors: "tak" } }), {
-      pieniadze: { level: "latwy", colors: false },
+      pieniadze: { level: "latwy", currency: "pln", colors: false },
     });
     assert.deepEqual(parseCardSettings({ pieniadze: "x" }), {});
+  });
+
+  void test("the money card reads a stored currency, and an old profile without one gets złoty", () => {
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", currency: "usd", colors: true } }), {
+      pieniadze: { level: "latwy", currency: "usd", colors: true },
+    });
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", currency: "gbp" } }), {
+      pieniadze: { level: "latwy", currency: "pln", colors: false },
+    });
+    assert.equal(parseCardSettings({ pieniadze: { level: "trudny", colors: true } }).pieniadze?.currency, "pln");
     assert.deepEqual(parseCardSettings({}), {});
   });
 

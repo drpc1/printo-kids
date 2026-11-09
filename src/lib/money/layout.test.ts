@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { layoutMoneySheet, layoutPile, pieceKind, type MoneySheetInput } from "./layout.ts";
-import { MAX_PIECES, MONEY_SHEET } from "./sheet.ts";
+import { MONEY_CURRENCY_IDS, pieceKind, type MoneyCurrencyId } from "./currencies.ts";
+import { layoutMoneySheet, layoutPile, type MoneySheetInput } from "./layout.ts";
+import { MAX_NOTES, MAX_PIECES, MONEY_SHEET } from "./sheet.ts";
 
 const INPUT: MoneySheetInput = {
   pageWidth: MONEY_SHEET.pageWidth,
@@ -27,18 +28,40 @@ const WORST_PILES: Record<keyof typeof MAX_PIECES, number[]> = {
 };
 
 void describe("pieceKind", () => {
-  void test("1, 2 and 5 zł are coins, 10 and 20 zł are notes", () => {
-    assert.deepEqual([1, 2, 5, 10, 20].map(pieceKind), ["coin", "coin", "coin", "note", "note"]);
+  void test("1, 2 and 5 zł are coins, 10 zł and up are notes", () => {
+    assert.deepEqual(
+      [1, 2, 5, 10, 20, 50, 100].map((value) => pieceKind(value, "pln")),
+      ["coin", "coin", "coin", "note", "note", "note", "note"],
+    );
+  });
+
+  void test("1 and 2 € are coins, 5 € and up are notes", () => {
+    assert.deepEqual(
+      [1, 2, 5, 10, 100].map((value) => pieceKind(value, "eur")),
+      ["coin", "coin", "note", "note", "note"],
+    );
+  });
+
+  void test("1 $ is a coin, 5 $ and up are notes", () => {
+    assert.deepEqual(
+      [1, 5, 10, 100].map((value) => pieceKind(value, "usd")),
+      ["coin", "note", "note", "note"],
+    );
+  });
+
+  void test("a value the currency does not have throws", () => {
+    assert.throws(() => pieceKind(2, "usd"));
+    assert.throws(() => pieceKind(500, "pln"));
   });
 });
 
 void describe("layoutPile", () => {
   void test("an empty pile has no height", () => {
-    assert.deepEqual(layoutPile([], 75), { pieces: [], height: 0 });
+    assert.deepEqual(layoutPile([], 75, "pln"), { pieces: [], height: 0 });
   });
 
   void test("coins are the same size whatever their value, notes too", () => {
-    const pile = layoutPile([5, 1, 2, 20, 10], 75);
+    const pile = layoutPile([5, 1, 2, 20, 10], 75, "pln");
     const coins = pile.pieces.filter((piece) => piece.kind === "coin");
     const notes = pile.pieces.filter((piece) => piece.kind === "note");
 
@@ -49,7 +72,7 @@ void describe("layoutPile", () => {
   });
 
   void test("notes come first, largest value first, then the coins", () => {
-    const pile = layoutPile([1, 20, 5, 10], 75);
+    const pile = layoutPile([1, 20, 5, 10], 75, "pln");
 
     assert.deepEqual(
       pile.pieces.map((piece) => piece.value),
@@ -58,7 +81,7 @@ void describe("layoutPile", () => {
   });
 
   void test("a row of pieces is centered and its pieces do not overlap", () => {
-    const pile = layoutPile([5, 5, 5], 75);
+    const pile = layoutPile([5, 5, 5], 75, "pln");
     const [first, second, third] = pile.pieces;
     const rowWidth = 3 * 11 + 2 * 1.5;
 
@@ -69,7 +92,7 @@ void describe("layoutPile", () => {
 
   void test("pieces wrap into a second row when the first is full", () => {
     // 75 mm holds 6 coins of 11 mm with 1.5 mm gaps (6 × 11 + 5 × 1.5 = 73.5), so the seventh starts a new row.
-    const pile = layoutPile([1, 1, 1, 1, 1, 1, 1], 75);
+    const pile = layoutPile([1, 1, 1, 1, 1, 1, 1], 75, "pln");
     const rows = new Set(pile.pieces.map((piece) => piece.y));
 
     assert.equal(rows.size, 2);
@@ -78,7 +101,7 @@ void describe("layoutPile", () => {
   });
 
   void test("throws when a note is wider than the pile", () => {
-    assert.throws(() => layoutPile([10], 17));
+    assert.throws(() => layoutPile([10], 17, "pln"));
   });
 });
 
@@ -130,7 +153,7 @@ void describe("the fullest pile of every level", () => {
   for (const [level, values] of Object.entries(WORST_PILES)) {
     void test(`${level}: ${values.length} pieces fit the pile area`, () => {
       assert.equal(values.length, MAX_PIECES[level as keyof typeof MAX_PIECES]);
-      const pile = layoutPile(values, area.innerWidth);
+      const pile = layoutPile(values, area.innerWidth, "pln");
 
       assert.ok(pile.height <= area.innerHeight, `${pile.height} > ${area.innerHeight}`);
       for (const piece of pile.pieces) {
@@ -139,8 +162,30 @@ void describe("the fullest pile of every level", () => {
     });
   }
 
+  void test("the fullest hard pile of every currency fits: the most notes the limit allows and coins for the rest", () => {
+    const coins = { pln: 1, eur: 1, usd: 1 } satisfies Record<MoneyCurrencyId, number>;
+    for (const currency of MONEY_CURRENCY_IDS) {
+      const values = [
+        ...Array.from({ length: MAX_NOTES }, () => 100),
+        ...Array.from({ length: MAX_PIECES.trudny - MAX_NOTES }, () => coins[currency]),
+      ];
+      const pile = layoutPile(values, area.innerWidth, currency);
+
+      assert.ok(pile.height <= area.innerHeight, `${currency}: ${pile.height} > ${area.innerHeight}`);
+    }
+  });
+
+  void test("one note more than the limit would no longer fit with the most coins", () => {
+    // Why MAX_NOTES is 4: five notes make three rows of notes, and the coins of the pile need one more row.
+    const pile = layoutPile([100, 100, 100, 100, 100, 1, 1, 1, 1, 1], area.innerWidth, "pln");
+
+    assert.ok(pile.height <= area.innerHeight);
+    const worse = layoutPile([100, 100, 100, 100, 100, 100, 100, 1, 1, 1], area.innerWidth, "pln");
+    assert.ok(worse.height > area.innerHeight);
+  });
+
   void test("ten mixed coins also fit", () => {
-    const pile = layoutPile([5, 5, 5, 2, 2, 2, 1, 1, 1, 1], area.innerWidth);
+    const pile = layoutPile([5, 5, 5, 2, 2, 2, 1, 1, 1, 1], area.innerWidth, "pln");
 
     assert.ok(pile.height <= area.innerHeight);
   });
