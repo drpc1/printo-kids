@@ -342,11 +342,11 @@ Nowe pole `niepasuje` w `cards` profilu i ostatnich parametrów. Starsze zapisy 
 
 #### Automated
 
-- [x] 3.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 3.2 Lint przechodzi: `npm run lint`
-- [x] 3.3 Zależności przechodzą: `npm run depcruise`
-- [x] 3.4 Typy przechodzą: `npx astro check`
-- [x] 3.5 Build przechodzi: `npm run build`
+- [x] 3.1 Testy jednostkowe przechodzą: `npm test` — 2ecdfe2
+- [x] 3.2 Lint przechodzi: `npm run lint` — 2ecdfe2
+- [x] 3.3 Zależności przechodzą: `npm run depcruise` — 2ecdfe2
+- [x] 3.4 Typy przechodzą: `npx astro check` — 2ecdfe2
+- [x] 3.5 Build przechodzi: `npm run build` — 2ecdfe2
 - [x] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie
 - [x] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie
 
