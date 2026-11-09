@@ -291,16 +291,44 @@ function Pile({
         if (image !== null) {
           // The picture carries the value; it is scaled to the piece box, so every coin has one diameter.
           return (
-            <image
-              key={index}
-              data-money-image
-              href={image}
-              x={x}
-              y={y}
-              width={piece.width}
-              height={piece.height}
-              preserveAspectRatio="xMidYMid meet"
-            />
+            <g key={index}>
+              <image
+                data-money-image
+                href={image}
+                x={x}
+                y={y}
+                width={piece.width}
+                height={piece.height}
+                preserveAspectRatio="xMidYMid meet"
+              />
+              {currency === "usd" ? (
+                // The dollar pictures carry the value in small corner digits that vanish in print, so a badge repeats it.
+                <g data-value-badge>
+                  <rect
+                    x={x + piece.width / 2 - 5.5}
+                    y={y + piece.height / 2 - 3.4}
+                    width={11}
+                    height={6.8}
+                    rx={1.6}
+                    fill="var(--card)"
+                    stroke="var(--foreground)"
+                    strokeWidth={MONEY_SHEET.noteStroke}
+                  />
+                  <text
+                    x={x + piece.width / 2}
+                    y={y + piece.height / 2}
+                    fill="var(--foreground)"
+                    fontFamily="ui-sans-serif, system-ui, sans-serif"
+                    fontSize={5.2}
+                    fontWeight={MONEY_SHEET.fontWeight}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                  >
+                    {piece.value}
+                  </text>
+                </g>
+              ) : null}
+            </g>
           );
         }
         return piece.kind === "coin" ? (
