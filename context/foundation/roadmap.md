@@ -44,7 +44,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-33 | coins-who-has-more     | Rodzic otwiera z katalogu „Kto ma więcej?”, wybiera poziom (łatwy / średni / trudny), generuje kartę A4 z kupkami monet i banknotów 1–20 zł, podgląda ją i drukuje; profil pamięta poziom                     | —                      | US-23, US-24, FR-033, FR-034, FR-014, FR-017, FR-030, US-05 | done        |
 | S-34 | odd-one-out-card       | Rodzic otwiera z katalogu „Który nie pasuje”, wybiera poziom i kolory, generuje kartę A4 z rzędami obrazków, w których jeden łamie regułę (kształt, kolor, rozmiar, liczba, kategoria), podgląda ją i drukuje | —                      | US-25, US-26, FR-035, FR-036, FR-014, FR-017, FR-030, US-05 | done        |
 | S-35 | copy-the-drawing-card  | Rodzic otwiera z katalogu „Skopiuj rysunek na kratce”, wybiera poziom i kategorię, generuje kartę A4 z czarną sylwetką obiektu w jednej kratce i pustą kratką obok, podgląda ją i drukuje                     | —                      | US-27, US-28, FR-037, FR-038, FR-014, FR-017, FR-030, US-05 | in-progress |
-| S-36 | pattern-lines-card     | Rodzic otwiera z katalogu „Szlaczki”, wybiera poziom (1–4), generuje kartę A4 ze szlaczkami do prowadzenia po kropkach albo do kontynuowania, podgląda ją i drukuje                                           | —                      | US-29, US-30, FR-039, FR-040, FR-014, FR-017, FR-030, US-05 | ready       |
+| S-36 | pattern-lines-card     | Rodzic otwiera z katalogu „Szlaczki”, wybiera poziom (1–4), generuje kartę A4 ze szlaczkami do prowadzenia po kropkach albo do kontynuowania, podgląda ją i drukuje                                           | —                      | US-29, US-30, FR-039, FR-040, FR-014, FR-017, FR-030, US-05 | in-progress |
 | S-37 | how-it-works-new-cards | Rodzic otwiera „Jak to działa” i widzi poprawny opis poziomów i profilu także dla czterech nowych kart, bez nieaktualnych zdań o tym, które karty mają trzy poziomy albo wiek                                 | S-33, S-34, S-35, S-36 | US-22, FR-031                                               | proposed    |
 
 ## Baseline
@@ -110,17 +110,17 @@ Brak. Wspólny wzorzec strony karty (`CardPage`, `useCardPage`), zapis ustawień
 
 ### S-36: Szlaczki
 
-- **Outcome:** Rodzic otwiera z katalogu „Szlaczki”, wybiera poziom (Poziom 1–4), uruchamia generowanie i dostaje kartę A4 z ośmioma rzędami szlaczków: na Poziomach 1–2 dziecko prowadzi ołówek po kropkach, na Poziomach 3–4 kontynuuje pokazany początek wzoru. Rodzic podgląda i drukuje kartę; profil pamięta poziom, a postać stoi przy poleceniu. Karta ma własną miniaturę i wpis w katalogu na stronie głównej. Okno profilu i plakietka na miniaturze pokazują zapamiętany poziom, a opis karty trafia do „Jak to działa”. Aplikacja nie ocenia rysunku dziecka.
+- **Outcome:** Rodzic otwiera z katalogu „Szlaczki”, wybiera poziom (Poziom 1–4), uruchamia generowanie i dostaje kartę A4 z 4–7 rzędami szlaczków (liczba zależy od poziomu): na Poziomach 1–2 dziecko prowadzi ołówek po kropkach, na Poziomie 3 po dwóch powtórzeniach po kropkach rysuje dalej samo, na Poziomie 4 kontynuuje wzór narysowany linią w liniaturze. Rodzic podgląda i drukuje kartę; profil pamięta poziom, a postać stoi przy poleceniu. Karta ma własną miniaturę i wpis w katalogu na stronie głównej. Okno profilu i plakietka na miniaturze pokazują zapamiętany poziom, a opis karty trafia do „Jak to działa”. Aplikacja nie ocenia rysunku dziecka.
 - **Change ID:** pattern-lines-card
 - **PRD refs:** US-29, US-30, FR-039, FR-040, FR-014, FR-017, FR-030, US-05
 - **Prerequisites:** — (scala się po S-33, który zmienia liczbę kart w testach)
 - **Parallel with:** S-33, S-34, S-35
 - **Blockers:** —
 - **Unknowns:**
-  - Jak gruba ma być linia i jak duże kropki, żeby wyszły na zwykłej drukarce domowej? PRD Open Questions 15; rozstrzyga wydruk próbny przed planem. — Owner: user. Block: no.
-  - Czy dwa tryby (kropki, kontynuacja) na jednym pasku poziomów są dla rodzica czytelne? Opis poziomu mówi, który tryb to jest. — Owner: user. Block: no.
+  - Jak gruba ma być linia i jak duże kropki, żeby wyszły na zwykłej drukarce domowej? PRD Open Questions 15; wydruk próbny makiet jest zrobiony, a stałe druku sprawdza faza 4 planu `pattern-lines-card`. — Owner: user. Block: no.
+  - Czy dwa tryby (kropki, kontynuacja) na jednym pasku poziomów są dla rodzica czytelne? Rozstrzygnięte w planie: opis poziomu mówi wprost, który tryb to jest, a poziom jest jedynym wyborem na pasku. — Owner: user. Block: no.
 - **Risk:** Nowy rodzaj rysowania bez katalogu szablonów: ścieżki kropek i wzory trzeba zbudować od zera i wypróbować na papierze. Tryb kontynuacji ma wyjątek od „jednej sprawdzalnej odpowiedzi” (PRD US-29), więc testy sprawdzają regułę wzoru, nie rysunek dziecka. Nowa strona dochodzi do sprawdzianu HTTP (`scripts/smoke.mjs`), a wysokość druku mierzy się osobno w Safari, Chrome iOS i Brave iOS (lessons.md).
-- **Status:** ready
+- **Status:** in-progress
 
 ### S-37: „Jak to działa” po czterech nowych kartach
 

@@ -345,9 +345,9 @@ Nowe pole `szlaczki` w `cards` profilu i ostatnich parametrów. Starsze zapisy g
 
 #### Automated
 
-- [ ] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md context/domain/glossary.md`
-- [ ] 1.2 PRD nie ma starej wartości P4: `rg -n "0,6–1,0" context/foundation/prd.md` nie zwraca wiersza P4 tabeli szlaczków w tej postaci
-- [ ] 1.3 Roadmapa nie mówi o ośmiu rzędach: `rg -n "ośmioma rzędami" context/foundation/roadmap.md` nic nie zwraca
+- [x] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md context/domain/glossary.md`
+- [x] 1.2 PRD nie ma starej wartości P4: `rg -n "0,6–1,0" context/foundation/prd.md` nie zwraca wiersza P4 tabeli szlaczków w tej postaci
+- [x] 1.3 Roadmapa nie mówi o ośmiu rzędach: `rg -n "ośmioma rzędami" context/foundation/roadmap.md` nic nie zwraca
 
 #### Manual
 
