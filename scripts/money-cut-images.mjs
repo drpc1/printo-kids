@@ -33,9 +33,9 @@ const SHEETS = [
     source: "makieta-usd.jpg",
     suffix: "usd",
     notes: [1, 5, 10, 20, 50, 100],
-    usedNotes: [5, 10, 20, 50, 100],
+    usedNotes: [1, 5, 10, 20, 50, 100],
     coins: [1, 0.5, 0.25],
-    usedCoins: [1],
+    usedCoins: [],
   },
 ];
 

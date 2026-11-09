@@ -36,8 +36,8 @@ export type PieceKind = "coin" | "note";
 
 /**
  * The values of each currency in whole units, with what each one is. The card never uses cents, so the euro coins
- * below 1 € and the dollar coins below 1 $ are not here. There is no 1 $ note: a pile is a list of values, so one
- * value must have one shape within a currency.
+ * below 1 € and all dollar coins are not here: the dollar has notes only, because the 1 $ coin is rare (decision
+ * 2026-11-09). A pile is a list of values, so one value must have one shape within a currency.
  */
 export const PIECES: Record<MoneyCurrencyId, readonly { value: number; kind: PieceKind }[]> = {
   pln: [
@@ -59,7 +59,7 @@ export const PIECES: Record<MoneyCurrencyId, readonly { value: number; kind: Pie
     { value: 100, kind: "note" },
   ],
   usd: [
-    { value: 1, kind: "coin" },
+    { value: 1, kind: "note" },
     { value: 5, kind: "note" },
     { value: 10, kind: "note" },
     { value: 20, kind: "note" },

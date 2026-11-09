@@ -60,3 +60,6 @@ export const MAX_PIECES = {
  * the pile frame. Coins are smaller, so the limit is on notes only.
  */
 export const MAX_NOTES = 4;
+
+/** Most notes of a pile when the currency has no coins (the dollar): three rows of three notes fill the pile frame. */
+export const MAX_NOTES_WITHOUT_COINS = 9;

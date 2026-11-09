@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { MONEY_CURRENCY_IDS, PIECES, pieceKind } from "./currencies.ts";
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, moneyLevelById, moneyLevels } from "./levels.ts";
-import { MAX_NOTES } from "./sheet.ts";
+import { MAX_NOTES, MAX_NOTES_WITHOUT_COINS } from "./sheet.ts";
 
 void describe("moneyLevels", () => {
   void test("three levels in order, named without an age, in every currency", () => {
@@ -57,8 +57,9 @@ void describe("moneyLevels", () => {
     }
   });
 
-  void test("every level has five rows and the note limit of the sheet; łatwy never misleads, średni has 2, trudny at least 3", () => {
+  void test("every level has five rows and its note limit; łatwy never misleads, średni has 2, trudny at least 3", () => {
     for (const currency of MONEY_CURRENCY_IDS) {
+      const limit = currency === "usd" ? MAX_NOTES_WITHOUT_COINS : MAX_NOTES;
       assert.deepEqual(
         moneyLevels(currency).map((level) => [
           level.id,
@@ -68,28 +69,26 @@ void describe("moneyLevels", () => {
           level.maxNotes,
         ]),
         [
-          ["latwy", 5, 0, 0, MAX_NOTES],
-          ["sredni", 5, 2, 2, MAX_NOTES],
-          ["trudny", 5, 3, 5, MAX_NOTES],
+          ["latwy", 5, 0, 0, limit],
+          ["sredni", 5, 2, 2, limit],
+          ["trudny", 5, 3, 5, limit],
         ],
       );
     }
   });
 
-  void test("the first level has coins only, except in dollars where the 5 $ note joins the one coin", () => {
+  void test("the first level has coins only, except in dollars, which have notes only", () => {
     for (const currency of ["pln", "eur"] as const) {
       assert.ok(moneyLevelById("latwy", currency).nominals.every((value) => pieceKind(value, currency) === "coin"));
     }
     assert.deepEqual(moneyLevelById("latwy", "usd").nominals, [1, 5]);
+    assert.ok(moneyLevelById("latwy", "usd").nominals.every((value) => pieceKind(value, "usd") === "note"));
   });
 
   void test("the descriptions name the currency sign", () => {
     assert.equal(moneyLevelById("latwy", "pln").description, "monety 1, 2 i 5 zł, małe kupki, liczba sztuk nie myli");
     assert.equal(moneyLevelById("sredni", "eur").description, "monety 1 i 2 €, banknot 5 €, liczba sztuk czasem myli");
-    assert.equal(
-      moneyLevelById("latwy", "usd").description,
-      "moneta 1 $, banknot 5 $, małe kupki, liczba sztuk nie myli",
-    );
+    assert.equal(moneyLevelById("latwy", "usd").description, "banknoty 1 i 5 $, małe kupki, liczba sztuk nie myli");
     assert.equal(moneyLevelById("trudny", "usd").description, "monety i banknoty do 100 $, liczba sztuk często myli");
   });
 
