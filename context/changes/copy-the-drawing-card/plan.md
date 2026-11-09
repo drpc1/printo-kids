@@ -311,13 +311,13 @@ Nowe pole `kopiuj` w `cards` profilu i ostatnich parametrów. Starsze zapisy go 
 
 #### Automated
 
-- [ ] 3.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Zależności przechodzą: `npm run depcruise`
-- [ ] 3.4 Typy przechodzą: `npx astro check`
-- [ ] 3.5 Build przechodzi: `npm run build`
-- [ ] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie
-- [ ] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie
+- [x] 3.1 Testy jednostkowe przechodzą: `npm test` — a35bbfa
+- [x] 3.2 Lint przechodzi: `npm run lint` — a35bbfa
+- [x] 3.3 Zależności przechodzą: `npm run depcruise` — a35bbfa
+- [x] 3.4 Typy przechodzą: `npx astro check` — a35bbfa
+- [x] 3.5 Build przechodzi: `npm run build` — a35bbfa
+- [x] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie — a35bbfa
+- [x] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie — a35bbfa
 
 #### Manual
 

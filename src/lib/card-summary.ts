@@ -1,6 +1,7 @@
 import { cardSettingsOf, type CardSettingsId, type CardSettingsMap } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
+import { copyDrawingLevelById } from "./copy-drawing/levels.ts";
 import { dictationLevelById } from "./dictation/levels.ts";
 import { levelById } from "./maze/levels.ts";
 import { moneyCurrencyById } from "./money/currencies.ts";
@@ -116,6 +117,14 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
       }
       const level = oddOneOutLevelById(settings.level);
       return { badge: badgeOf(level), level: level.label, extras: settings.colors ? ["kolory"] : [] };
+    }
+    case "kopiuj": {
+      const settings = cards.kopiuj;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = copyDrawingLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: [categoryLabel(settings.category)] };
     }
     default:
       return null;

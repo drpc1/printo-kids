@@ -135,6 +135,7 @@ const CARD_PAGES: { path: string; label: string; controls: RegExp[]; prepare?: (
   { path: "/dictation", label: "dictation", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
   { path: "/money", label: "money", controls: [/^Postać:/, /^Poziom:/] },
   { path: "/odd-one-out", label: "odd-one-out", controls: [/^Postać:/, /^Poziom:/] },
+  { path: "/copy-drawing", label: "copy-drawing", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
 ];
 
 for (const card of CARD_PAGES) {

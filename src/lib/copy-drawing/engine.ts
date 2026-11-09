@@ -1,23 +1,13 @@
 // "Skopiuj rysunek na kratce" as a card kind (S-35, phase 2): `copyDrawingSpec` wraps `copyDrawingProblems`,
 // `copyDrawingEngine` wraps the generator. Level and category are the card's content. The card has no "Pokaż rozwiązanie"
 // and no colors, so neither reaches the spec. Running out of attempts is `CardExhausted`; the engine never returns null.
-import {
-  CardExhausted,
-  VerifiedCard,
-  type CardEngine,
-  type CardKindId,
-  type CardProblem,
-  type CardSpec,
-} from "../card-contract.ts";
+import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { CopyDrawingSettings } from "../card-settings.ts";
 import { copyDrawingProblems, type CopyDrawingCard } from "./card.ts";
 import { generateCopyDrawingCard, MAX_ATTEMPTS } from "./generate.ts";
 import { copyDrawingLevelById } from "./levels.ts";
 
 type Bad = CardSpec<CopyDrawingSettings, CopyDrawingCard>["knownBad"][number];
-
-// Phase 3 registers "kopiuj" in cards.ts and removes this cast; until then it is not a CardKindId.
-const KIND = "kopiuj" as CardKindId;
 
 function seeded(seed: number): () => number {
   let state = seed >>> 0;
@@ -72,7 +62,7 @@ function knownBad(): readonly Bad[] {
 let knownBadCache: readonly Bad[] | undefined;
 
 export const copyDrawingSpec: CardSpec<CopyDrawingSettings, CopyDrawingCard> = {
-  kind: KIND,
+  kind: "kopiuj",
   problems: (card, settings): readonly CardProblem[] =>
     copyDrawingProblems(card, copyDrawingLevelById(settings.level)).map((code) => ({
       code,

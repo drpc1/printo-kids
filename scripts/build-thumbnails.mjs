@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money and odd-one-out cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out and copy-drawing cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -39,6 +39,10 @@ import { ICON_BOX, iconById } from "../src/lib/odd-one-out/icons.ts";
 import { groupLayout, iconSize, layoutOddOneOutSheet } from "../src/lib/odd-one-out/layout.ts";
 import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, oddOneOutLevelById } from "../src/lib/odd-one-out/levels.ts";
 import { ODD_ONE_OUT_SHEET } from "../src/lib/odd-one-out/sheet.ts";
+import { generateCopyDrawingCard } from "../src/lib/copy-drawing/generate.ts";
+import { layoutCopyDrawingSheet } from "../src/lib/copy-drawing/layout.ts";
+import { copyDrawingLevelById, DEFAULT_COPY_DRAWING_LEVEL_ID } from "../src/lib/copy-drawing/levels.ts";
+import { COPY_DRAWING_SHEET } from "../src/lib/copy-drawing/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -605,3 +609,67 @@ oddLines.push("</svg>", "");
 const oddOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/niepasuje.svg");
 writeFileSync(oddOutFile, oddLines.join("\n"));
 console.log(`Wrote ${oddOutFile} (${oddCard.key.length} key chars)`);
+
+// Copy-drawing card: the same elements CopyDrawingSheet draws (src/components/CopyDrawingSheet.tsx), in literal black and
+// white at the default level and the category "wszystkie", with the shared drawing constants from
+// src/lib/copy-drawing/sheet.ts. The band holds the plain instruction (no character).
+const COPY_SEED = 20261109;
+const COPY = COPY_DRAWING_SHEET;
+const copyLevel = copyDrawingLevelById(DEFAULT_COPY_DRAWING_LEVEL_ID);
+
+const copyCard = generateCopyDrawingCard(mulberry32(COPY_SEED), null, copyLevel, "wszystkie");
+if (copyCard === null) {
+  throw new Error(`Seed ${COPY_SEED} did not produce a valid copy-drawing card`);
+}
+
+const copySheet = layoutCopyDrawingSheet(copyLevel, COPY.plainInstructionSize);
+const copyLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${COPY.pageWidth} ${COPY.pageHeight}" width="${COPY.pageWidth}" height="${COPY.pageHeight}">`,
+  `<rect width="${COPY.pageWidth}" height="${COPY.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${COPY.pageWidth - 0.5}" height="${COPY.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(COPY.pageWidth / 2)}" y="${num(copySheet.band.y + copySheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${COPY.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${COPY.instructionText}</text>`,
+];
+for (const [rect, pattern] of [
+  [copySheet.source, copyCard.pattern],
+  [copySheet.copy, null],
+]) {
+  if (pattern !== null) {
+    copyLines.push('<g fill="#000">');
+    pattern.forEach((row, rowIndex) => {
+      row.forEach((filled, columnIndex) => {
+        if (filled) {
+          copyLines.push(
+            `<rect x="${num(rect.x + columnIndex * copySheet.cell)}" y="${num(rect.y + rowIndex * copySheet.cell)}" width="${copySheet.cell}" height="${copySheet.cell}"/>`,
+          );
+        }
+      });
+    });
+    copyLines.push("</g>");
+  }
+  const thickColumns = new Set(blockLines(copySheet.columns, COPY.blockEvery));
+  const thickRows = new Set(blockLines(copySheet.rows, COPY.blockEvery));
+  copyLines.push('<g fill="none" stroke="#000">');
+  for (let index = 0; index <= copySheet.columns; index += 1) {
+    const x = num(rect.x + index * copySheet.cell);
+    const width = thickColumns.has(index) ? COPY.blockStroke : COPY.gridStroke;
+    copyLines.push(
+      `<line x1="${x}" y1="${num(rect.y)}" x2="${x}" y2="${num(rect.y + rect.height)}" stroke-width="${width}"/>`,
+    );
+  }
+  for (let index = 0; index <= copySheet.rows; index += 1) {
+    const y = num(rect.y + index * copySheet.cell);
+    const width = thickRows.has(index) ? COPY.blockStroke : COPY.gridStroke;
+    copyLines.push(
+      `<line x1="${num(rect.x)}" y1="${y}" x2="${num(rect.x + rect.width)}" y2="${y}" stroke-width="${width}"/>`,
+    );
+  }
+  copyLines.push(
+    "</g>",
+    `<rect x="${num(rect.x)}" y="${num(rect.y)}" width="${num(rect.width)}" height="${num(rect.height)}" fill="none" stroke="#000" stroke-width="${COPY.frameStroke}" stroke-linejoin="miter"/>`,
+  );
+}
+copyLines.push("</svg>", "");
+
+const copyOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/kopiuj.svg");
+writeFileSync(copyOutFile, copyLines.join("\n"));
+console.log(`Wrote ${copyOutFile} (${copyCard.key})`);

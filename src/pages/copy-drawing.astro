@@ -1,0 +1,15 @@
+---
+import CopyDrawingGenerator from "@/components/CopyDrawingGenerator";
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import Layout from "@/layouts/Layout.astro";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
+---
+
+<Layout title={cardPageTitle("kopiuj")} lang="pl">
+  <GeneratorShell
+    heading={cardTitle("kopiuj")}
+    description="Wygeneruj kartę „Skopiuj rysunek na kratce” i wydrukuj ją na kartce A4."
+  >
+    <CopyDrawingGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>

@@ -42,7 +42,7 @@ void describe("copyDrawingEngine", () => {
     const constant = copyDrawingEngine.generate(settings, same, null);
     assert.throws(
       () => copyDrawingEngine.generate(settings, same, constant.key),
-      (error: unknown) => error instanceof CardExhausted && (error.kind as string) === "kopiuj" && error.attempts > 0,
+      (error: unknown) => error instanceof CardExhausted && error.kind === "kopiuj" && error.attempts > 0,
     );
   });
 });
