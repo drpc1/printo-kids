@@ -509,13 +509,13 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic otworzył z katalogu stronę „Szlaczki”
 - **When** uruchomi generowanie
-- **Then** otrzymuje gotową do wydruku kartę A4 z rzędami szlaczków: na niższych poziomach dziecko prowadzi ołówek po kropkach, na wyższych kontynuuje pokazany wzór w pustych wierszach
+- **Then** otrzymuje gotową do wydruku kartę A4 z rzędami szlaczków: na niższych poziomach dziecko prowadzi ołówek po kropkach, na wyższych kontynuuje pokazany wzór w pustej części rzędu
 
 #### Acceptance Criteria
 
-- Karta ma kilka rzędów, jeden pod drugim. Nad rzędami jest jedno zdanie polecenia, inne dla trybu kropek i inne dla trybu kontynuacji; przy nim stoi wybrana postać (US-21).
-- Wzór pochodzi z jawnej listy: linia prosta, zygzak, fala, schodki, pętle, łuki. Karta pokazuje jeden wzór na rząd. Wzór ma losowaną wysokość, gęstość i początek, więc dwa rzędy jednej karty nie są takie same, nawet gdy poziom ma tylko dwa albo trzy wzory.
-- W trybie kropek ścieżka wzdłuż kropek jest jedna; aplikacja ją zna. W trybie kontynuacji początek wzoru jednoznacznie wyznacza regułę; aplikacja ją zna, ale nie ocenia rysunku dziecka. To wyjątek od „jednej sprawdzalnej odpowiedzi” (decyzja 2026-11-01).
+- Karta ma kilka rzędów, jeden pod drugim (4–7 zależnie od poziomu). Nad rzędami jest jedno zdanie polecenia, inne dla każdego trybu; przy nim stoi wybrana postać (US-21). Karta nie ma innych obrazków (decyzja 2026-11-09; obrazki startu i celu w rzędach to osobna zmiana z kategoriami).
+- Wzór pochodzi z jawnej puli poziomu (Business Logic „Karta szlaczków”). Karta pokazuje jeden wzór na rząd i nie powtarza wzoru, dopóki pula starcza. Wzór ma losowaną długość kroku i łagodność (stosunek wysokości do kroku) w granicach poziomu, więc dwie karty prawie nigdy nie są takie same.
+- W trybie kropek ścieżka wzdłuż kropek jest jedna i się nie krzyżuje; aplikacja ją zna. W trybie kontynuacji początek wzoru jednoznacznie wyznacza regułę; aplikacja ją zna, ale nie ocenia rysunku dziecka. To wyjątek od „jednej sprawdzalnej odpowiedzi” (decyzja 2026-11-01).
 - Linie i kropki są dość grube i wyraźne, by wyszły na zwykłej drukarce domowej (Open Questions 15).
 - Każde Generuj daje nową kartę: inne wzory albo inna kolejność niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny.
@@ -525,13 +525,14 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic jest na stronie „Szlaczki”
 - **When** wybierze poziom (Poziom 1–4)
-- **Then** karta ma tryb (kropki albo kontynuacja), wzory i grubość linii zgodne z tym poziomem
+- **Then** karta ma tryb, pulę wzorów, łagodność kształtu i liczbę rzędów zgodne z tym poziomem
 
 #### Acceptance Criteria
 
-- Poziomy 1–2 to kropki, Poziomy 3–4 to kontynuacja wzoru; poziom zmienia też złożoność wzoru. Opis poziomu mówi wprost, który tryb to jest. Reguły są w Business Logic „Karta szlaczków”.
+- Poziomy 1–2 to kropki. Poziom 3 to dwa powtórzenia wzoru po kropkach, a dalej dziecko rysuje samo. Poziom 4 to kontynuacja wzoru narysowanego linią, w liniaturze jak w zeszycie do kaligrafii. Opis poziomu mówi wprost, który tryb to jest. Reguły są w Business Logic „Karta szlaczków” (decyzja 2026-11-09).
+- Na Poziomach 3–4 pasek ma przełącznik „Linie” (linie pomocnicze), domyślnie włączony: na Poziomie 3 przerywane linie na górze i na dole wzoru, na Poziomie 4 liniatura. Wyłączony zostawia bladą linię dolną. Przełącznik nie układa nowej karty. Na Poziomach 1–2 go nie ma (jak „Kształty / Cyfry” w sudoku przy 4×4).
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
-- Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają go same (US-08).
+- Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają poziom i „Linie” (US-08).
 
 ## Functional Requirements
 
@@ -636,7 +637,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-038: Rodzic może wybrać poziom karty „Skopiuj rysunek na kratce” (łatwy, średni, trudny: rozmiar kratki i katalog obiektów) oraz kategorię obiektów. Priority: must-have
 - FR-039: Rodzic może wygenerować kartę szlaczków, na której dziecko prowadzi ołówek po kropkach (niższe poziomy) albo kontynuuje pokazany wzór (wyższe poziomy), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dwa tryby w jednej karcie mieszają różne umiejętności. Resolution: kept (2026-11-01); opis poziomu mówi wprost, który tryb to jest, a poziom jest jedynym wyborem na pasku.
-- FR-040: Rodzic może wybrać poziom szlaczków (Poziom 1–4: tryb, złożoność wzoru, grubość linii). Priority: must-have
+- FR-040: Rodzic może wybrać poziom szlaczków (Poziom 1–4: tryb, pula wzorów, łagodność kształtu, liczba rzędów), a na Poziomach 3–4 włączyć albo wyłączyć linie pomocnicze. Priority: must-have
+  > Socrates: Counter-argument considered: sztywne przypisanie sześciu wzorów do poziomów szybko się powtarza, a Poziom 1 z makiety był za trudny dla 3-latka. Resolution: revised (2026-11-09, makiety w `context/changes/pattern-lines-card/`); poziomy celują w 3–4, 5–6, 6–7 i 8–10 lat (cel projektu, nie etykieta), mają pule wzorów i losowaną łagodność, a Poziom 4 pomaga w nauce pisania (liniatura, elementy liter).
 
 ## Non-Functional Requirements
 
@@ -871,20 +873,24 @@ Dwie kratki stoją obok siebie na każdym poziomie, z odstępem 10 mm, wyśrodko
 
 ### Karta szlaczków
 
-Dodane 2026-11-01 (M-5). Aplikacja zawsze tworzy kartę, na której wzór każdego rzędu wynika z jawnej reguły. Poziom wyznaczają tryb (kropki albo kontynuacja), złożoność wzoru i grubość linii. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia i ośmioma rzędami jeden pod drugim.
+Dodane 2026-11-01 (M-5), przebudowane 2026-11-09 po makietach (`context/changes/pattern-lines-card/frame.md`, `mockup-v6.mts`). Aplikacja zawsze tworzy kartę, na której wzór każdego rzędu wynika z jawnej reguły. Poziom wyznaczają tryb, pula wzorów, łagodność kształtu i liczba rzędów. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia i rzędami jeden pod drugim, rozłożonymi równo od polecenia do dołu kartki. Karta nie ma obrazków poza postacią przy poleceniu.
 
-Wzór pochodzi z jawnej listy: linia prosta, zygzak, fala, schodki, pętle i łuki. W trybie kropek dziecko prowadzi ołówek po kropkach rozstawionych wzdłuż wzoru; ścieżka jest jedna. W trybie kontynuacji początek wzoru jest narysowany w pierwszej części rzędu, a reszta rzędu jest pusta; dziecko rysuje dalej ten sam wzór.
+Tryby. **Kropki** (Poziomy 1–2): dziecko prowadzi ołówek po kropkach rozstawionych wzdłuż wzoru; pod kropkami biegnie jasnoszara ścieżka, a start oznacza puste kółko wokół pierwszej kropki. Ścieżka jest jedna i się nie krzyżuje (pętle nie wchodzą do trybu kropek). **Kropki na początku** (Poziom 3): dwa pierwsze powtórzenia wzoru są wykropkowane, a resztę rzędu dziecko rysuje samo; jedno powtórzenie nie wystarcza, bo pojedyncza fala i górka wyglądają tak samo. **Kontynuacja** (Poziom 4): co najmniej trzy powtórzenia narysowane linią, reszta rzędu pusta.
 
-Każdy wzór ma losowane parametry: wysokość, długość kroku (gęstość) i miejsce, od którego zaczyna się w rzędzie, w granicach czytelnych na danym poziomie. Dzięki temu karta z dwoma albo trzema wzorami poziomu ma osiem różnych rzędów, a kolejne Generuj daje inną kartę (decyzja 2026-11-01).
+Łagodność. Każdy rząd losuje długość kroku i stosunek wysokości do kroku z zakresu poziomu, więc ten sam wzór bywa na kilku poziomach, coraz wyższy i gęstszy. Rząd losuje wzór z puli poziomu bez powtórzeń na karcie, dopóki pula starcza.
 
-| Poziom   | Tryb        | Wzory                                | Linia              |
-| -------- | ----------- | ------------------------------------ | ------------------ |
-| Poziom 1 | kropki      | linia prosta, zygzak                 | gruba, duże kropki |
-| Poziom 2 | kropki      | fala, schodki, łuki                  | gruba              |
-| Poziom 3 | kontynuacja | zygzak, fala, schodki                | średnia            |
-| Poziom 4 | kontynuacja | pętle, łuki, wzory z dwóch elementów | cienka             |
+| Poziom   | Cel projektu (nie etykieta) | Tryb                            | Rzędy | Krok     | Wysokość / krok | Pula wzorów                                                                                                                                                                                                                                                  |
+| -------- | --------------------------- | ------------------------------- | ----- | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Poziom 1 | 3–4 lata                    | kropki co ok. 4 mm              | 4     | 40–52 mm | 0,2–0,42        | linia prosta, fala, zygzak, górki, miseczki                                                                                                                                                                                                                  |
+| Poziom 2 | 5–6 lat                     | kropki co ok. 3,5 mm            | 5     | 30–42 mm | 0,35–0,6        | fala, zygzak, górki, miseczki, schodki, kopce, zęby smoka, górka i kreska, domki (pięć w rzędzie), bramy, czubki, fala i kreska                                                                                                                              |
+| Poziom 3 | 6–7 lat                     | dwa powtórzenia po kropkach     | 6     | 22–30 mm | 0,5–0,85        | zygzak, fala, górki, miseczki, schodki, kopce, zęby smoka, pętle, górka i kreska, ząbek i kreska, klocki, rury, domki, bramy, czubki, duży i mały ząbek, kółeczka (o, a), laseczki (i)                                                                       |
+| Poziom 4 | 8–10 lat (klasy 1–3)        | kontynuacja linią, w liniaturze | 7     | 12–20 mm | 0,6–1,0         | pętle (e), spirale, pętla wysoka i niska (l e), górka duża i mała (m n), pętla i górka, fala i pętla, górka i ząbek, schodek i górka, zęby smoka, kopce, klocki, rury, czary, pętle w dół (j g), pętla w górę i w dół, duży i mały ząbek, kółeczka, laseczki |
 
-Reguły, które generator sprawdza: każdy rząd ma wzór z listy; w trybie kropek kropki wyznaczają dokładnie jedną ścieżkę wzoru; w trybie kontynuacji pokazany początek zawiera co najmniej dwa powtórzenia wzoru, więc reguła jest jednoznaczna; dwa rzędy jednej karty nie są takie same (inny wzór albo inne parametry), a na karcie występuje każdy wzór poziomu. Aplikacja nie ocenia rysunku dziecka (decyzja 2026-11-01). Każde Generuj daje inne parametry, inne wzory albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 15). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
+Poziom 1 ma o 15 mm większy pusty pas na dole kartki, żeby dziecku było wygodniej trzymać kartkę, a ręka, która wyjedzie poza kształt, została na papierze. Poziom 4 pomaga w nauce pisania: liniatura jak w zeszycie do kaligrafii (górna, przerywana środkowa, dolna i blada linia pod dolną); małe elementy (e, o, i, m n) sięgają linii środkowej, wysokie (l) górnej, pętle w dół (j g) schodzą pod dolną. Przełącznik „Linie” (US-30) na Poziomach 3–4 włącza i wyłącza linie pomocnicze; domyślnie włączony.
+
+Odrzucone po makietach (2026-11-09): kreski pionowe i skośne, fala po skosie, pierścienie, piramidki, obrazki startu i celu w S-36 (wracają z kategoriami, z polem „Brak”) oraz wzory z postaciami i znakami towarowymi; zostają ogólne motywy (klocki, rury, zęby smoka, czary).
+
+Reguły, które generator sprawdza: każdy rząd ma wzór z puli poziomu; dwa rzędy jednej karty nie są takie same; w trybie kropek ścieżka się nie krzyżuje; Poziom 3 pokazuje dokładnie dwa powtórzenia po kropkach, Poziom 4 co najmniej trzy; wzór mieści się w rzędzie i nie wchodzi w margines. Aplikacja nie ocenia rysunku dziecka (decyzja 2026-11-01). Każde Generuj daje inne parametry, inne wzory albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 15). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
 ### Poziomy
 
@@ -907,7 +913,7 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | Kto ma więcej?     | poziom, waluta, kolory                      |
 | Który nie pasuje   | poziom, kolory                              |
 | Skopiuj rysunek    | poziom, kategoria                           |
-| Szlaczki           | poziom                                      |
+| Szlaczki           | poziom, linie                               |
 
 Zasady:
 
@@ -986,5 +992,5 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 12. ~~**Czy lista poziomów ma obok opisu pokazywać typowy wiek (np. „Poziom 3 · zwykle ok. 5 lat”)?**~~ — Zamknięte 2026-10-26: tak, pod opisem, w trzeciej linii wiersza, tylko przy labiryncie, symetrii, sekwencjach i dyktandzie (kartach z dawną nazwą wiekową); sudoku i nonogram bez wieku. Wiek pomaga przy pierwszym wyborze, ale nie jest nazwą poziomu ani etykietą na pasku, żeby nie oceniać nim dziecka (US-22, FR-001).
 13. ~~**Czy układ i kratka „Skopiuj rysunek na kratce” mieszczą się na A4 (dwie kratki obok siebie), i czy kratka 5 mm na trudnym poziomie jest dość duża dla dziecka?**~~ — Zamknięte 2026-11-09 po makiecie (S-35): dwie kratki obok siebie mieszczą się w marginesie 10 mm na każdym poziomie (kratki 10 / 7 / 5 mm), kratki nie dostają numerów wierszy i kolumn, a sylwetka jest wyśrodkowana w pionie. Czytelność 5 mm na papierze potwierdza wydruk w fazie 3 planu `copy-the-drawing-card`; jeśli jest za mało, trudny wraca do planu z siatką 12×15.
 14. **Czy poziomy „Kto ma więcej?” (nominały do 100 w trzech walutach, sumy do 10, 20 i 200, liczba sztuk myli) i „Który nie pasuje” (reguły, liczba obrazków w rzędzie) pasują dziecku, i czy wygląd monety i banknotu jest czytelny na czarnym druku i w kolorze, bez kopiowania wzorów NBP?** — Owner: user. Block: nie. Tabele w Business Logic są propozycją z 2026-11-01; potwierdza je wydruk. Otwarte: czy dziecko 6 lat radzi sobie z małymi kupkami mieszanych monet na poziomie łatwym (sumy do 10 zł, najwyżej 5 sztuk, bez mylących rzędów; decyzja 2026-11-01, wcześniej jeden nominał w rzędzie). Prawa do wyglądu pieniędzy: użytkowniczka sprawdziła (2026-11-01), że wizerunek można pokazać na karcie edukacyjnej, o ile reprodukcja nie może uchodzić za prawdziwy pieniądz; rysunki są więc uproszczone (czarna wersja: moneta to koło, banknot to prostokąt z nominałem, bez zabezpieczeń i godeł). Kolorowa wersja (GitHub #270, 2026-11-08) używa obrazków, które użytkowniczka sama przygotowała; są stylizowane, mają orła i profil władcy, ale nie mają zabezpieczeń, więc dalej nie uchodzą za prawdziwy pieniądz; autorstwo i prawa do obrazków ma użytkowniczka. To zmienia wcześniejsze „bez godeł” dla wersji kolorowej. Czytelność nominału na czarnym druku potwierdził wydruk makiety (2026-11-01). Czytelność obrazków w rozmiarze karty (moneta 11 mm, banknot 18 × 9 mm) na wydruku w kolorze i w czerni z bielą potwierdziła użytkowniczka (2026-11-08). Do potwierdzenia przez użytkowniczkę, bo to propozycje, a nie jej decyzje: remis najwyżej w jednym rzędzie karty i pięć rzędów na karcie (jej decyzja z 2026-11-01 to tylko „remis jest dozwolony”). „Który nie pasuje” (GitHub 265, decyzja 2026-11-08): makiety zatwierdziła użytkowniczka, ale wartości (rozpraszacze, mały obrazek 0,5 / 0,55 / 0,72 dużego, grupy w regule liczby, czytelność ikon kategorii i małych grup na A4) są startowe i potwierdza je wydruk po S-34. Obrazki euro i dolara (GitHub 324, 2026-11-09) wycięła z makiet użytkowniczki; makieta euro ma stylizowaną architekturę bez portretów, a makieta dolara portrety, napis „THE UNITED STATES OF AMERICA” i pieczęć Skarbu, czyli bliżej prawdziwych wzorów; wdrożone na jej polecenie, a ocenę, czy wolno je pokazać na karcie edukacyjnej, ma ona (w razie wątpliwości obrazki `*usd.png` do usunięcia lub uproszczenia przed merge). Dolar nie ma monet (decyzja 2026-11-09: moneta 1 $ jest rzadka, więc jest banknot 1 $), więc każdy kawałek dolara ma cyfrę. Lista na koniec M-5: GitHub drpc1/printo-kids#263.
-15. **Czy szlaczki z kropkami (Poziomy 1–2) i z kontynuacją wzoru (Poziomy 3–4) są czytelne na zwykłej drukarce domowej i dla dziecka?** — Owner: user. Block: nie. Tabela w Business Logic jest propozycją z 2026-11-01; potwierdza ją wydruk. Otwarte: grubość linii i wielkość kropek, które wychodzą na domowej drukarce.
+15. **Czy szlaczki z kropkami (Poziomy 1–2) i z kontynuacją wzoru (Poziomy 3–4) są czytelne na zwykłej drukarce domowej i dla dziecka?** — Owner: user. Block: nie. Tabela w Business Logic jest propozycją z 2026-11-01, przebudowaną 2026-11-09 po makietach (`context/changes/pattern-lines-card/`); potwierdza ją wydruk. Otwarte: wielkość i gęstość kropek (Poziom 1 ok. 2,2 mm średnicy, Poziom 2 ok. 1,8 mm), widoczność jasnoszarej ścieżki pod kropkami, linia 0,6 mm na Poziomie 4 i liniatura 6,5 mm; czy 3–4-latek przechodzi zygzak i górki; czy kropki klocków i rur na Poziomie 3 oraz spirale na Poziomie 4 nie są za ciasne.
 16. **Jak długo trwa M-5 (cztery karty naraz)?** — Owner: user. Block: nie. Roadmapa sekwencjonuje bez dat; `delivery_weeks` nie jest ustalone.

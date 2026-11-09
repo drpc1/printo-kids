@@ -92,14 +92,16 @@ są poziomy, czym się różnią, ile jest rzędów i co pamięta profil (poziom
    szarej ścieżki pod kropkami, linia 0,6 mm na P4, liniatura 6,5 mm (Open Questions 15).
 2. **Próba z dzieckiem**: czy 3–4-latek przechodzi zygzak i górki (zatrzymanie ręki w ostrym punkcie), czy kropki
    klocków i rur na P3 nie są za ciasne, czy spirale i „fala i pętla” na P4 nie są za ciasne przy kroku 12–14 mm.
-3. **Dopracować w makiecie**: kółeczka (o a) wyglądają jak wiszące pętelki, laseczki (i) są szkicowe.
+3. **Dopracować przy implementacji**: kółeczka (o a) mają już pełne koła i łącznik od linii dolnej, ale łącznik
+   nachodzi na kółko; laseczki (i) są szkicowe. Wydruk nie jest bramką przed planem (Open Questions 15 „Block: nie”):
+   stałe kropek, linii i liniatury w jednym miejscu, wydruk i próba z dzieckiem przed scaleniem.
 
 ## What Changes for /10x-plan
 
-- **PRD do zmiany przed planem albo w nim**: US-29, US-30, FR-039, FR-040, Business Logic „Karta szlaczków” (tabela
-  poziomów, lista wzorów, osiem rzędów, „grubość linii” na P1–P2 zastąpiona kropkami), tabela „Profil i zapamiętane
-  ustawienia” (Szlaczki: poziom, **linie**), Open Questions 15. Persona: P4 dla 8–10 lat wychodzi poza przedszkolaka —
-  świadoma decyzja, jak sudoku 9×9.
+- **PRD jest już zmieniony** (2026-11-09): US-29, US-30, FR-040, Business Logic „Karta szlaczków”, tabela „Profil
+  i zapamiętane ustawienia” (Szlaczki: poziom, linie), Open Questions 15. Persona: P4 dla 8–10 lat wychodzi poza
+  przedszkolaka — świadoma decyzja, jak sudoku 9×9; wiek to cel projektu, nie etykieta (nowe karty M-5 nie mają wieku
+  pod opisem).
 - **Reguły sprawdzalne generatora**: rzędy na karcie się nie powtarzają; w trybie samych kropek ścieżka nie ma
   skrzyżowań; P3 pokazuje dokładnie dwa powtórzenia po kropkach; P4 co najmniej trzy; wzór mieści się w rzędzie
   i nie wychodzi w margines (pętle cofają się w lewo).

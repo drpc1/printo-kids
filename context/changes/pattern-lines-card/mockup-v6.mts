@@ -70,10 +70,33 @@ const U = {
     return [{ ...up[0], corner: true }, ...up.slice(1, -1), c(0.5, 1), ...down.slice(1, -1), { ...down[16], corner: true }];
   },
   // kółeczka jak pisane „o”, „a”: start na górze, w lewo, w dół, w prawo i do góry (przeciwnie do wskazówek zegara)
-  oChain: () => sample((t) => ({ x: t - 0.3 * Math.sin(t * 2 * Math.PI), y: (1 + Math.cos(t * 2 * Math.PI)) / 2 }), 64),
-  // laseczki z haczykiem jak pisane „i”: kreska w górę, w dół i haczyk, który przechodzi w następną kreskę
+  // Każde kółko to pełne koło, połączone kreską od linii dolnej, jak w pisanym „ooo”.
+  oChain: () => {
+    const cx = 0.6;
+    const rx = 0.3;
+    const ring = Array.from({ length: 49 }, (_, i) => {
+      const a = Math.PI / 2 + (i / 48) * 2 * Math.PI; // od góry, przeciwnie do wskazówek zegara
+      return { x: cx + rx * Math.cos(a), y: 0.5 + 0.5 * Math.sin(a) };
+    });
+    // łącznik jak w piśmie szkolnym: kreska wchodzi do kółka od dołu (od linii dolnej do szczytu),
+    // a po zamknięciu kółka schodzi łukiem z powrotem na linię dolną, skąd zaczyna się następne
+    return [
+      c(0, 0), { x: 0.18, y: 0.3 }, { x: 0.36, y: 0.75 }, { x: 0.5, y: 0.97 }, { ...ring[0], corner: true }, ...ring.slice(1, -1),
+      { ...ring[48], corner: true }, { x: 0.8, y: 0.8 }, { x: 0.92, y: 0.35 }, c(1, 0),
+    ];
+  },
+  // laseczki z haczykiem jak pisane „i”: skośna kreska w górę, prawie pionowa w dół i szeroki haczyk przechodzący
+  // w następną kreskę w górę
   sticks: () => [
-    c(0, 0), c(0.45, 1), c(0.5, 0.3), { x: 0.53, y: 0.12 }, { x: 0.6, y: 0.02 }, { x: 0.72, y: 0 }, { x: 0.86, y: 0.03 }, c(1, 0),
+    c(0, 0.15),
+    c(0.42, 1),
+    c(0.48, 0.22),
+    { x: 0.51, y: 0.09 },
+    { x: 0.57, y: 0.02 },
+    { x: 0.66, y: 0 },
+    { x: 0.77, y: 0.02 },
+    { x: 0.89, y: 0.08 },
+    c(1, 0.15),
   ],
   pyramid: () => [
     c(0, 0), c(0, 0.34), c(0.1, 0.34), c(0.1, 0.67), c(0.2, 0.67), c(0.2, 1), c(0.3, 1), c(0.3, 0.67), c(0.4, 0.67),
@@ -150,8 +173,8 @@ const P: Record<string, Pattern> = {
   zigFlat: { id: "zigFlat", name: "ząbek i kreska", unit: () => compose([{ u: U.zigzag(), w: 2 }, { u: U.flat(), w: 1 }]) },
   loopArc: { id: "loopArc", name: "pętla i górka", unit: () => compose([{ u: U.loops(0.25), w: 1.2 }, { u: U.arcs(), w: 1, h: 0.7 }]), span: 1.7 },
   waveLoop: { id: "waveLoop", name: "fala i pętla", unit: () => compose([{ u: U.wave(), w: 1.2, h: 0.6 }, { u: U.loops(0.25), w: 1.2 }]), span: 1.8 },
-  oChain: { id: "oChain", name: "kółeczka (o a)", unit: U.oChain, fixedRatio: 0.9 },
-  sticks: { id: "sticks", name: "laseczki z haczykiem (i)", unit: U.sticks, span: 0.8 },
+  oChain: { id: "oChain", name: "kółeczka (o a)", unit: U.oChain, fixedRatio: 0.6, span: 1.4 },
+  sticks: { id: "sticks", name: "laseczki z haczykiem (i)", unit: U.sticks },
   tallShort: { id: "tallShort", ling: "tall", name: "pętla wysoka i niska (l e)", unit: () => compose([{ u: U.loops(0.28), w: 1, h: 1 }, { u: U.loops(0.28), w: 0.8, h: 0.5 }]), span: 1.5 },
   arcZig: { id: "arcZig", name: "górka i ząbek", unit: () => compose([{ u: U.arcs(), w: 1 }, { u: U.zigzag(), w: 1 }]), span: 1.6 },
   stairsArc: { id: "stairsArc", name: "schodek i górka", unit: () => compose([{ u: U.stairs(), w: 1 }, { u: U.arcs(), w: 1 }]), span: 1.6 },
