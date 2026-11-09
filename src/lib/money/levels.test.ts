@@ -89,7 +89,8 @@ void describe("moneyLevels", () => {
     assert.equal(moneyLevelById("latwy", "pln").description, "monety 1, 2 i 5 zł, małe kupki, liczba sztuk nie myli");
     assert.equal(moneyLevelById("sredni", "eur").description, "monety 1 i 2 €, banknot 5 €, liczba sztuk czasem myli");
     assert.equal(moneyLevelById("latwy", "usd").description, "banknoty 1 i 5 $, małe kupki, liczba sztuk nie myli");
-    assert.equal(moneyLevelById("trudny", "usd").description, "monety i banknoty do 100 $, liczba sztuk często myli");
+    assert.equal(moneyLevelById("trudny", "usd").description, "banknoty do 100 $, liczba sztuk często myli");
+    assert.equal(moneyLevelById("trudny", "pln").description, "monety i banknoty do 100 zł, liczba sztuk często myli");
   });
 
   void test("the default is średni and lookups work", () => {

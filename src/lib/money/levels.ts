@@ -72,7 +72,8 @@ function joinValues(values: readonly number[]): string {
 function describe(id: MoneyLevelId, currency: MoneyCurrencyId, nominals: readonly number[]): string {
   const symbol = moneyCurrencyById(currency).symbol;
   if (id === "trudny") {
-    return `monety i banknoty do ${nominals[nominals.length - 1]} ${symbol}, liczba sztuk często myli`;
+    const pieces = PIECES[currency].some((piece) => piece.kind === "coin") ? "monety i banknoty" : "banknoty";
+    return `${pieces} do ${nominals[nominals.length - 1]} ${symbol}, liczba sztuk często myli`;
   }
   const parts = (["coin", "note"] as const).flatMap((kind) => {
     const values = nominals.filter((value) => pieceKind(value, currency) === kind);
