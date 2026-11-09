@@ -126,6 +126,22 @@ void describe("cardSummaries", () => {
     assert.equal(dollars.detail, "średni · $");
   });
 
+  void test("the odd-one-out card shows its named level and colors, and is unused until the profile chose one", () => {
+    const fresh = cardSummaries(profile("lat5"));
+    assert.equal(byId(fresh, "niepasuje").used, false);
+    assert.equal(byId(fresh, "niepasuje").badge, null);
+    assert.equal(byId(fresh, "niepasuje").title, "Który nie pasuje");
+    assert.equal(byId(fresh, "niepasuje").href, "/odd-one-out");
+
+    const chosen = byId(cardSummaries(profile("lat5", { niepasuje: { level: "trudny", colors: false } })), "niepasuje");
+    assert.equal(chosen.used, true);
+    assert.equal(chosen.badge, "trudny");
+    assert.equal(chosen.detail, "trudny");
+
+    const colored = byId(cardSummaries(profile("lat5", { niepasuje: { level: "latwy", colors: true } })), "niepasuje");
+    assert.equal(colored.detail, "łatwy · kolory");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -159,6 +175,7 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   nonogram: { nonogram: defaultCardSettings("nonogram") },
   dyktando: { dyktando: defaultCardSettings("dyktando") },
   pieniadze: { pieniadze: defaultCardSettings("pieniadze") },
+  niepasuje: { niepasuje: defaultCardSettings("niepasuje") },
 };
 
 void describe("the card registry and summaryParts", () => {

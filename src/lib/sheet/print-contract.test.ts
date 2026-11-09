@@ -17,6 +17,8 @@ const SEQUENCE_PAGE = "src/pages/sequences.astro";
 const SEQUENCE_GENERATOR = "src/components/SequenceGenerator.tsx";
 const MONEY_PAGE = "src/pages/money.astro";
 const MONEY_GENERATOR = "src/components/MoneyGenerator.tsx";
+const ODD_ONE_OUT_PAGE = "src/pages/odd-one-out.astro";
+const ODD_ONE_OUT_GENERATOR = "src/components/OddOneOutGenerator.tsx";
 const SUDOKU_PAGE = "src/pages/sudoku.astro";
 const SUDOKU_GENERATOR = "src/components/SudokuGenerator.tsx";
 const DICTATION_PAGE = "src/pages/dictation.astro";
@@ -201,6 +203,29 @@ void describe("print contract", () => {
     assert.equal(page.includes("@page"), false);
   });
 
+  void test("the printed odd-one-out SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(ODD_ONE_OUT_GENERATOR));
+
+    assert.ok(svgClass.includes("print:w-[210mm]"));
+    assert.ok(svgClass.includes("print:h-[297mm]"));
+    assert.ok(svgClass.includes("print:overflow-hidden"));
+    assert.ok(svgClass.includes("print:block"));
+    assert.ok(svgClass.includes("print:max-h-[297mm]"));
+    assert.ok(svgClass.includes("print:ring-0"));
+  });
+
+  void test("print hides the odd-one-out controls", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(ODD_ONE_OUT_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(ODD_ONE_OUT_GENERATOR));
+  });
+
+  void test("the odd-one-out page lives under /odd-one-out and uses the shared shell", () => {
+    const page = readRepoFile(ODD_ONE_OUT_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<OddOneOutGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
   void test("the printed sudoku SVG is 210mm wide and 297mm tall with overflow hidden", () => {
     const svgClass = svgClassName(readRepoFile(SUDOKU_GENERATOR));
 
@@ -324,6 +349,7 @@ void describe("print contract", () => {
       SYMMETRY_GENERATOR,
       SEQUENCE_GENERATOR,
       MONEY_GENERATOR,
+      ODD_ONE_OUT_GENERATOR,
       SUDOKU_GENERATOR,
       NONOGRAM_GENERATOR,
       NONOGRAM_SIMPLE_SHEET,
@@ -341,6 +367,7 @@ void describe("print contract", () => {
       SYMMETRY_GENERATOR,
       SEQUENCE_GENERATOR,
       MONEY_GENERATOR,
+      ODD_ONE_OUT_GENERATOR,
       SUDOKU_GENERATOR,
       NONOGRAM_GENERATOR,
       DICTATION_GENERATOR,
@@ -357,6 +384,7 @@ void describe("print contract", () => {
       SYMMETRY_GENERATOR,
       SEQUENCE_GENERATOR,
       MONEY_GENERATOR,
+      ODD_ONE_OUT_GENERATOR,
       SUDOKU_GENERATOR,
       NONOGRAM_GENERATOR,
       NONOGRAM_SIMPLE_SHEET,

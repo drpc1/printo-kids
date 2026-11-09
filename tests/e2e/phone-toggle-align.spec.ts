@@ -25,6 +25,7 @@ const CARDS = [
   { path: "/sequences", image: "Sekwencje", switchName: "Kolory" },
   { path: "/symmetry", image: "Symetria", switchName: "Kolory" },
   { path: "/money", image: "Kto ma więcej?", switchName: "Kolory" },
+  { path: "/odd-one-out", image: "Który nie pasuje", switchName: "Kolory" },
   { path: "/nonogram", image: "Nonogram", switchName: "Pokaż rozwiązanie" },
   { path: "/dictation", image: "Dyktando graficzne", switchName: "Pokaż rozwiązanie" },
 ] as const;

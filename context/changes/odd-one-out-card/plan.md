@@ -317,42 +317,42 @@ Nowe pole `niepasuje` w `cards` profilu i ostatnich parametrów. Starsze zapisy 
 
 #### Automated
 
-- [x] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md`
-- [x] 1.2 PRD nie zawiera już sylwetek z katalogu szablonów w regule kategorii tej karty
+- [x] 1.1 Prettier akceptuje pliki: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md` — 2b567ad
+- [x] 1.2 PRD nie zawiera już sylwetek z katalogu szablonów w regule kategorii tej karty — 2b567ad
 
 #### Manual
 
-- [x] 1.3 Użytkowniczka potwierdza, że zmienione zdania PRD oddają makietę
+- [x] 1.3 Użytkowniczka potwierdza, że zmienione zdania PRD oddają makietę — 2b567ad
 
 ### Phase 2: Logika karty
 
 #### Automated
 
-- [ ] 2.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Zależności przechodzą: `npm run depcruise`
-- [ ] 2.4 Typy przechodzą: `npx astro check`
-- [ ] 2.5 Build przechodzi: `npm run build`
+- [x] 2.1 Testy jednostkowe przechodzą: `npm test` — b2b6cc9
+- [x] 2.2 Lint przechodzi: `npm run lint` — b2b6cc9
+- [x] 2.3 Zależności przechodzą: `npm run depcruise` — b2b6cc9
+- [x] 2.4 Typy przechodzą: `npx astro check` — b2b6cc9
+- [x] 2.5 Build przechodzi: `npm run build` — b2b6cc9
 
 #### Manual
 
-- [ ] 2.6 Przegląd diffu: jednoznaczność, rozpraszacze i ikony zgodne z planem i makietą
+- [x] 2.6 Przegląd diffu: jednoznaczność, rozpraszacze i ikony zgodne z planem i makietą — b2b6cc9
 
 ### Phase 3: Strona, katalog i profil
 
 #### Automated
 
-- [ ] 3.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Zależności przechodzą: `npm run depcruise`
-- [ ] 3.4 Typy przechodzą: `npx astro check`
-- [ ] 3.5 Build przechodzi: `npm run build`
-- [ ] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie
-- [ ] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie
+- [x] 3.1 Testy jednostkowe przechodzą: `npm test` — 2ecdfe2
+- [x] 3.2 Lint przechodzi: `npm run lint` — 2ecdfe2
+- [x] 3.3 Zależności przechodzą: `npm run depcruise` — 2ecdfe2
+- [x] 3.4 Typy przechodzą: `npx astro check` — 2ecdfe2
+- [x] 3.5 Build przechodzi: `npm run build` — 2ecdfe2
+- [x] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie — 2ecdfe2
+- [x] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie — 2ecdfe2
 
 #### Manual
 
-- [ ] 3.8 Użytkowniczka sprawdza karty na każdym poziomie, z kolorami i bez
-- [ ] 3.9 Wydruk A4 trzech kart: czytelność ikon, małych grup i rozmiaru
-- [ ] 3.10 Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS
-- [ ] 3.11 Katalog pokazuje miniaturę i plakietkę, a okno profilu podsumowanie
+- [x] 3.8 Użytkowniczka sprawdza karty na każdym poziomie, z kolorami i bez
+- [x] 3.9 Wydruk A4 trzech kart: czytelność ikon, małych grup i rozmiaru
+- [ ] 3.10 Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS (po scaleniu, na stagingu)
+- [x] 3.11 Katalog pokazuje miniaturę i plakietkę, a okno profilu podsumowanie

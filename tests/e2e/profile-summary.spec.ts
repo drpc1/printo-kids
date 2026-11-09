@@ -24,6 +24,7 @@ const ANIA = {
     sudoku: { size: 6, level: "sredni", symbols: "shapes", colors: false },
     nonogram: { level: "sredni", category: "zwierzeta" },
     pieniadze: { level: "latwy" },
+    niepasuje: { level: "trudny", colors: false },
   },
 };
 

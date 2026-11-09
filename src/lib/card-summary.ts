@@ -6,6 +6,7 @@ import { levelById } from "./maze/levels.ts";
 import { moneyCurrencyById } from "./money/currencies.ts";
 import { moneyLevelById } from "./money/levels.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
+import { oddOneOutLevelById } from "./odd-one-out/levels.ts";
 import { sequenceLevelById } from "./sequence/levels.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
 import { symmetryLevelById } from "./symmetry/levels.ts";
@@ -107,6 +108,14 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
         level: level.label,
         extras: [...currency, ...(settings.colors ? ["kolory"] : [])],
       };
+    }
+    case "niepasuje": {
+      const settings = cards.niepasuje;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = oddOneOutLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: settings.colors ? ["kolory"] : [] };
     }
     default:
       return null;

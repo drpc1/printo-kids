@@ -1,0 +1,15 @@
+---
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import OddOneOutGenerator from "@/components/OddOneOutGenerator";
+import Layout from "@/layouts/Layout.astro";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
+---
+
+<Layout title={cardPageTitle("niepasuje")} lang="pl">
+  <GeneratorShell
+    heading={cardTitle("niepasuje")}
+    description="Wygeneruj kartę „Który nie pasuje” i wydrukuj ją na kartce A4."
+  >
+    <OddOneOutGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>
