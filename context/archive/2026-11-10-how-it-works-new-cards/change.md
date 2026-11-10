@@ -1,10 +1,10 @@
 ---
 change_id: how-it-works-new-cards
 title: How it works page after the four new cards
-status: impl_reviewed
+status: archived
 created: 2026-11-10
 updated: 2026-11-10
-archived_at: null
+archived_at: 2026-11-10T21:12:26Z
 ---
 
 ## Notes
