@@ -29,6 +29,9 @@ const NONOGRAM_SIMPLE_SHEET = "src/components/NonogramSimpleSheet.tsx";
 const COPY_DRAWING_PAGE = "src/pages/copy-drawing.astro";
 const COPY_DRAWING_GENERATOR = "src/components/CopyDrawingGenerator.tsx";
 const COPY_DRAWING_SHEET = "src/components/CopyDrawingSheet.tsx";
+const PATTERN_LINES_PAGE = "src/pages/patterns.astro";
+const PATTERN_LINES_GENERATOR = "src/components/PatternLinesGenerator.tsx";
+const PATTERN_LINES_SHEET = "src/components/PatternLinesSheet.tsx";
 const CARD_PAGE = "src/components/CardPage.tsx";
 const CARD_PAGE_HOOK = "src/hooks/useCardPage.ts";
 const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
@@ -375,6 +378,34 @@ void describe("print contract", () => {
     assert.equal(page.includes("@page"), false);
   });
 
+  void test("the printed pattern-lines SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(PATTERN_LINES_SHEET));
+
+    for (const token of [
+      "print:w-[210mm]",
+      "print:h-[297mm]",
+      "print:overflow-hidden",
+      "print:block",
+      "print:max-h-[297mm]",
+      "print:ring-0",
+    ]) {
+      assert.ok(svgClass.includes(token), token);
+    }
+  });
+
+  void test("print hides no part of the pattern-lines card: the help lines and the ruling are part of the task", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(PATTERN_LINES_SHEET), "print:hidden"), []);
+    assert.deepEqual(classNamesContaining(readRepoFile(PATTERN_LINES_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(PATTERN_LINES_GENERATOR));
+  });
+
+  void test("the pattern-lines page lives under /patterns, uses the shared shell, and has no @page of its own", () => {
+    const page = readRepoFile(PATTERN_LINES_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<PatternLinesGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
   void test("every card page except the maze has the Postać bar and draws the character beside the instruction", () => {
     for (const path of [
       SYMMETRY_GENERATOR,
@@ -386,6 +417,7 @@ void describe("print contract", () => {
       NONOGRAM_SIMPLE_SHEET,
       DICTATION_GENERATOR,
       COPY_DRAWING_SHEET,
+      PATTERN_LINES_SHEET,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterInstruction\b/, `${path} draws the speech band`);
@@ -404,6 +436,7 @@ void describe("print contract", () => {
       NONOGRAM_GENERATOR,
       DICTATION_GENERATOR,
       COPY_DRAWING_GENERATOR,
+      PATTERN_LINES_GENERATOR,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
@@ -423,6 +456,7 @@ void describe("print contract", () => {
       NONOGRAM_SIMPLE_SHEET,
       DICTATION_GENERATOR,
       COPY_DRAWING_SHEET,
+      PATTERN_LINES_SHEET,
     ]) {
       assert.match(readRepoFile(path), /printColorAdjust:\s*"exact"/, path);
     }

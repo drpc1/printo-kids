@@ -22,6 +22,8 @@ interface CardCase {
   path: string;
   changes: Change[];
   colors?: boolean;
+  /** The "Linie" switch, which exists from Poziom 3 on; the case picks Poziom 4 and turns it off. */
+  lines?: boolean;
 }
 
 const CARDS: CardCase[] = [
@@ -86,6 +88,12 @@ const CARDS: CardCase[] = [
     ],
     colors: true,
   },
+  {
+    id: "szlaczki",
+    path: "/patterns",
+    changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }],
+    lines: true,
+  },
 ];
 
 function barButton(page: Page, bar: string): Locator {
@@ -106,6 +114,9 @@ async function applyChanges(page: Page, card: CardCase): Promise<void> {
   for (const change of card.changes) {
     await choose(page, change);
   }
+  if (card.lines === true) {
+    await page.getByRole("switch", { name: "Linie" }).click();
+  }
 }
 
 async function expectChanges(page: Page, card: CardCase): Promise<void> {
@@ -114,6 +125,9 @@ async function expectChanges(page: Page, card: CardCase): Promise<void> {
   }
   if (card.colors === true) {
     await expect(page.getByRole("switch", { name: "Kolory" })).toBeChecked();
+  }
+  if (card.lines === true) {
+    await expect(page.getByRole("switch", { name: "Linie" })).not.toBeChecked();
   }
 }
 

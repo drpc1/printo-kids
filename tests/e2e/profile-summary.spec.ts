@@ -26,6 +26,7 @@ const ANIA = {
     pieniadze: { level: "latwy" },
     niepasuje: { level: "trudny", colors: false },
     kopiuj: { level: "trudny", category: "zwierzeta", colors: true },
+    szlaczki: { level: "poziom4", lines: false },
   },
 };
 
@@ -100,6 +101,7 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(
     dialog.getByRole("link", { name: /^Skopiuj rysunek na kratce\s+trudny · kolory · Zwierzęta/ }),
   ).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Szlaczki\s+Poziom 4 · bez linii/ })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
   await expect(dialog.getByRole("button", { name: "Anuluj" })).toHaveCount(0);
 });

@@ -20,7 +20,15 @@ async function viewportBox(locator: Locator): Promise<Box> {
   return box;
 }
 
-const CARDS = [
+interface ToggleCard {
+  path: string;
+  image: string;
+  switchName: string;
+  /** A level to pick first, where the default level has no switch. */
+  level?: string;
+}
+
+const CARDS: readonly ToggleCard[] = [
   { path: "/sudoku", image: "Sudoku", switchName: "Kolory" },
   { path: "/sequences", image: "Sekwencje", switchName: "Kolory" },
   { path: "/symmetry", image: "Symetria", switchName: "Kolory" },
@@ -29,7 +37,8 @@ const CARDS = [
   { path: "/copy-drawing", image: "Skopiuj rysunek na kratce", switchName: "Kolory" },
   { path: "/nonogram", image: "Nonogram", switchName: "Pokaż rozwiązanie" },
   { path: "/dictation", image: "Dyktando graficzne", switchName: "Pokaż rozwiązanie" },
-] as const;
+  { path: "/patterns", image: "Szlaczki", switchName: "Linie", level: "Poziom 3" },
+];
 
 function bottom(box: Box): number {
   return box.y + box.height;
@@ -69,6 +78,10 @@ async function referenceButton(toggle: Locator, toggleBox: Box, path: string): P
 for (const card of CARDS) {
   test(`${card.path} lines the switch up with the settings label above`, async ({ page }, testInfo) => {
     await page.goto(card.path);
+    if (card.level !== undefined) {
+      await page.getByRole("button", { name: /^Poziom:/ }).click();
+      await page.getByRole("button", { name: new RegExp(`^${card.level}(?=\\s|$)`) }).click();
+    }
     // client:only island: Generuj is absent until React mounts. The click waits for it.
     await page.getByRole("button", { name: "Generuj" }).click();
     await expect(page.getByRole("img", { name: card.image })).toBeVisible();

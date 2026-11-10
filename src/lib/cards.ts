@@ -80,6 +80,14 @@ export const CARD_KINDS = [
     description:
       "Dziecko przerysowuje czarny obrazek z jednej kratki do pustej kratki obok, zamalowując te same kratki. Na kartce są dwie kratki tej samej wielkości: w lewej jest gotowy obrazek, a prawa jest pusta. Poziom zmienia wielkość kratki i bogactwo obrazka, a kategorią wybierasz rodzaj obiektów; karta nie zdradza, co to jest.",
   },
+  {
+    id: "szlaczki",
+    title: "Szlaczki",
+    href: "/patterns",
+    thumbnail: "/thumbnails/szlaczki.svg",
+    description:
+      "Dziecko prowadzi ołówek po kropkach albo kontynuuje pokazany wzór. Na kartce są rzędy szlaczków, od czterech do siedmiu zależnie od poziomu. Poziom zmienia tryb, wzory i liczbę rzędów, a na wyższych poziomach włączasz i wyłączasz linie pomocnicze.",
+  },
 ] as const satisfies readonly CardKind[];
 
 /** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */

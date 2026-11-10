@@ -16,6 +16,7 @@ import { LEVELS } from "./maze/levels.ts";
 import { MONEY_CURRENCY_IDS } from "./money/currencies.ts";
 import { MONEY_LEVEL_IDS } from "./money/levels.ts";
 import { ODD_ONE_OUT_LEVELS } from "./odd-one-out/levels.ts";
+import { PATTERN_LINES_LEVELS } from "./pattern-lines/levels.ts";
 import { NONOGRAM_SIZES } from "./nonogram/sizes.ts";
 import { SEQUENCE_LEVELS } from "./sequence/levels.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
@@ -269,6 +270,19 @@ const INVENTORY: Inventory = {
       { level: "sredni", category: "zwierzeta", colors: false },
     ],
     decoration: [{ level: "sredni", category: "wszystkie", colors: true }],
+  },
+  // The level is the whole content; "Linie" only draws help lines, so it is decoration.
+  szlaczki: {
+    settingsList: PATTERN_LINES_LEVELS.flatMap((level) => [
+      { level: level.id, lines: true },
+      { level: level.id, lines: false },
+    ]),
+    label: (settings) => `${settings.level}/${String(settings.lines)}`,
+    mayExhaust: () => false,
+    usesPreviousKey: true,
+    base: { level: "poziom3", lines: true },
+    content: [{ level: "poziom2", lines: true }],
+    decoration: [{ level: "poziom3", lines: false }],
   },
 };
 

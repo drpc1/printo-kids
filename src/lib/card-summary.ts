@@ -8,6 +8,7 @@ import { moneyCurrencyById } from "./money/currencies.ts";
 import { moneyLevelById } from "./money/levels.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
 import { oddOneOutLevelById } from "./odd-one-out/levels.ts";
+import { patternLinesHasGuides, patternLinesLevelById } from "./pattern-lines/levels.ts";
 import { sequenceLevelById } from "./sequence/levels.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
 import { symmetryLevelById } from "./symmetry/levels.ts";
@@ -129,6 +130,15 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
         level: level.label,
         extras: [...(settings.colors ? ["kolory"] : []), categoryLabel(settings.category)],
       };
+    }
+    case "szlaczki": {
+      const settings = cards.szlaczki;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = patternLinesLevelById(settings.level);
+      const noLines = patternLinesHasGuides(settings.level) && !settings.lines;
+      return { badge: badgeOf(level), level: level.label, extras: noLines ? ["bez linii"] : [] };
     }
     default:
       return null;
