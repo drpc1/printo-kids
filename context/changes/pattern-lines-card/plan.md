@@ -37,7 +37,7 @@ Na `/patterns` rodzic wybiera poziom (a na P3–P4 przełącznik „Linie”), k
 
 ## Implementation Approach
 
-Cztery fazy. Fazy 1–3 mają osobne gałęzie i PR-y do `main`; niczego nie scalamy samodzielnie. **Faza 4 (ręczna weryfikacja) nie ma własnego PR-a:** poprawki stałych z wydruku i próby z dzieckiem idą jako commity do gałęzi fazy 3, a użytkowniczka scala PR fazy 3 dopiero po fazie 4. Przed każdym PR-em fazy uruchamiamy `/10x-impl-review` (w briefie każdej fazy).
+Cztery fazy. Fazy 1–3 mają osobne gałęzie i PR-y do `main`; niczego nie scalamy samodzielnie. **Faza 4 (wydruk próbny i próba z dzieckiem) nie blokuje scalenia ani zamknięcia slice'a** (decyzja użytkowniczki 2026-11-10: próby z dzieckiem nie mogą wstrzymywać dostarczenia). Fazy 1–3 scala się bez niej, S-36 można archiwizować, a faza 4 jest następczą weryfikacją po scaleniu: poprawki stałych z wydruku idą małym PR-em, a Open Questions 15 w PRD zostaje otwarte do jej wyniku. Przed każdym PR-em fazy uruchamiamy `/10x-impl-review` (w briefie każdej fazy).
 
 Decyzje przyjęte w planie (do potwierdzenia przy `/10x-plan-review`, wszystkie odwracalne):
 
@@ -186,7 +186,7 @@ Moduł `src/lib/pattern-lines/` bez UI i bez rejestracji w katalogu: poziomy, st
 
 ### Overview
 
-Karta wchodzi do produktu: rejestracja, ustawienia z „Linie”, strona, island, arkusz SVG, miniatura, podsumowanie w profilu, testy druku i e2e. PR tej fazy nie jest scalany, dopóki nie przejdzie faza 4.
+Karta wchodzi do produktu: rejestracja, ustawienia z „Linie”, strona, island, arkusz SVG, miniatura, podsumowanie w profilu, testy druku i e2e. PR tej fazy można scalić bez fazy 4 (decyzja 2026-11-10).
 
 ### Changes Required:
 
@@ -246,7 +246,7 @@ Karta wchodzi do produktu: rejestracja, ustawienia z „Linie”, strona, island
 - Użytkowniczka otwiera `/patterns`, generuje karty na każdym poziomie, przełącza „Linie” na P3–P4 i potwierdza, że zmienia się tylko liniatura, a karta zostaje
 - Katalog pokazuje miniaturę i plakietkę poziomu przy profilu; okno profilu pokazuje podsumowanie (z „bez linii”, gdy wyłączone)
 
-**Implementation Note**: PR fazy 3 otwórz, ale nie scalaj; po `/10x-impl-review` przejdź do fazy 4 na tej samej gałęzi.
+**Implementation Note**: PR fazy 3 otwórz; po `/10x-impl-review` użytkowniczka może go scalić. Faza 4 jest następcza i nie blokuje (decyzja 2026-11-10).
 
 ---
 
@@ -254,7 +254,7 @@ Karta wchodzi do produktu: rejestracja, ustawienia z „Linie”, strona, island
 
 ### Overview
 
-Ręczna weryfikacja przed scaleniem (PRD Open Questions 15, frame „Confidence”). Wartości w `sheet.ts` i zakresy w `levels.ts` są startowe; ta faza je potwierdza albo zmienia. Poprawki to commity do gałęzi fazy 3, nie osobny PR.
+Ręczna weryfikacja po scaleniu, niewstrzymująca dostarczenia (PRD Open Questions 15, frame „Confidence”; decyzja 2026-11-10: nie blokuje scalenia ani archiwizacji). Wartości w `sheet.ts` i zakresy w `levels.ts` są startowe; ta faza je potwierdza albo zmienia. Poprawki idą małym PR-em po scaleniu fazy 3.
 
 ### Changes Required:
 
@@ -300,7 +300,7 @@ Ręczna weryfikacja przed scaleniem (PRD Open Questions 15, frame „Confidence�
 - (opcjonalnie, nie bramka) Stryker wąsko na odczycie ustawień szlaczków w `card-settings.ts`, wynik w przeglądzie fazy 4
 - (po scaleniu na stagingu, poza bramką) Druk jest jedną stroną w Safari, Chrome iOS i Brave iOS (pomiar w każdej osobno, `lessons.md`); ewentualna poprawka jako mały PR
 
-**Implementation Note**: Po fazie 4 (bez punktu iOS, który wymaga stagingu) użytkowniczka scala PR fazy 3; punkt iOS sprawdza po scaleniu, a poprawka, jeśli będzie potrzebna, idzie małym PR-em. Jeśli wydruk wymusi większe zmiany (np. inna grubość linii na całej karcie), wracamy do planu zamiast łatać.
+**Implementation Note**: Faza 4 odbywa się po scaleniu fazy 3, kiedy użytkowniczka ma czas na wydruk i próbę z dzieckiem; punkt iOS wymaga stagingu. Poprawka, jeśli będzie potrzebna, idzie małym PR-em. Jeśli wydruk wymusi większe zmiany (np. inna grubość linii na całej karcie), wracamy do planu zamiast łatać.
 
 ---
 

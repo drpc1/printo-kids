@@ -99,16 +99,26 @@ function ruledY(patternId: PatternId): (p: Pt) => number {
   return (p) => base - (lift + p.y * scale) * unit;
 }
 
+/** How many of the latest dots a new dot is compared with for crowding. */
+const CROWD_WINDOW = 40;
+
 /**
  * The dots along a path. Corners and the end of the path always get a dot; between corners a dot comes every `spacing`.
  * A dot closer than `minDotGap * spacing` to the one before is not put; a corner replaces a close dot that is not a corner.
+ * A dot between corners is also not put that close to any earlier dot, so a path that comes back to where it began (a ring)
+ * does not stack two dots.
  */
 export function dotsOn(path: readonly Pt[], spacing: number): Pt[] {
   const minimum = SHEET.minDotGap * spacing;
   const dots: Pt[] = [{ ...path[0], corner: true }];
   const add = (point: Pt, corner: boolean): void => {
     const last = dots[dots.length - 1];
-    if (Math.hypot(point.x - last.x, point.y - last.y) >= minimum - 1e-9) {
+    // Only the latest dots can sit next to a point of a path that returns on itself within a unit; a window keeps this cheap.
+    let crowded = false;
+    for (let k = Math.max(0, dots.length - CROWD_WINDOW); !corner && !crowded && k < dots.length; k += 1) {
+      crowded = Math.hypot(point.x - dots[k].x, point.y - dots[k].y) < minimum - 1e-9;
+    }
+    if (!crowded && Math.hypot(point.x - last.x, point.y - last.y) >= minimum - 1e-9) {
       dots.push({ x: point.x, y: point.y, corner });
     } else if (corner && last.corner !== true) {
       dots[dots.length - 1] = { x: point.x, y: point.y, corner };
@@ -149,22 +159,22 @@ export function segmentsCross(a: Pt, b: Pt, c: Pt, d: Pt): boolean {
   return o1 * o2 < 0 && o3 * o4 < 0;
 }
 
-/** How many pairs of segments of the path that do not share a point cross each other. */
+/**
+ * How many pairs of segments of the path that do not share a point cross each other. The segments are swept by their left
+ * end, so only pairs whose x ranges overlap are tested.
+ */
 export function selfCrossings(path: readonly Pt[]): number {
+  const segments = Array.from({ length: Math.max(0, path.length - 1) }, (_, index) => {
+    const a = path[index];
+    const b = path[index + 1];
+    return { index, a, b, left: Math.min(a.x, b.x), right: Math.max(a.x, b.x) };
+  }).sort((first, second) => first.left - second.left);
   let crossings = 0;
-  for (let i = 0; i + 1 < path.length; i += 1) {
-    const a = path[i];
-    const b = path[i + 1];
-    const left = Math.min(a.x, b.x);
-    const right = Math.max(a.x, b.x);
-    for (let j = i + 2; j + 1 < path.length; j += 1) {
-      const c = path[j];
-      const d = path[j + 1];
-      // Segments whose x ranges do not overlap cannot cross; this skips most pairs.
-      if (Math.max(c.x, d.x) < left || Math.min(c.x, d.x) > right) {
-        continue;
-      }
-      if (segmentsCross(a, b, c, d)) {
+  for (let i = 0; i < segments.length; i += 1) {
+    const first = segments[i];
+    for (let j = i + 1; j < segments.length && segments[j].left <= first.right; j += 1) {
+      const second = segments[j];
+      if (Math.abs(first.index - second.index) >= 2 && segmentsCross(first.a, first.b, second.a, second.b)) {
         crossings += 1;
       }
     }
@@ -256,7 +266,11 @@ export function dotProblems(
   const clearance = 2 * radius + SHEET.minArmClearance - 1e-9;
   for (let i = 0; i < dots.length; i += 1) {
     for (let j = i + 1; j < dots.length; j += 1) {
-      const d = Math.hypot(dots[i].x - dots[j].x, dots[i].y - dots[j].y);
+      const dx = Math.abs(dots[i].x - dots[j].x);
+      if (j > i + 1 && dx >= clearance) {
+        continue; // Too far apart in x to be near: skips most pairs without the square root.
+      }
+      const d = Math.hypot(dx, dots[i].y - dots[j].y);
       if (j === i + 1 && d < minimum) {
         found.add("neighbours");
       }
