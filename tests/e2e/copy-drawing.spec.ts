@@ -92,6 +92,29 @@ test("Generuj draws two grids of one size on every level: black cells on the lef
   }
 });
 
+test("the Kolory switch is off by default, colors the left grid with crayons and keeps the same card", async ({
+  page,
+}) => {
+  const sheet = await generate(page);
+  const colors = page.getByRole("switch", { name: "Kolory" });
+  await expect(colors).not.toBeChecked();
+  const key = await cardKey(sheet);
+  const black = sheet.locator('g[data-grid="source"] g[data-filled] rect[fill]');
+  await expect(black).toHaveCount(0);
+
+  await colors.click();
+  await expect(colors).toBeChecked();
+  expect(await cardKey(sheet)).toBe(key);
+  expect(await black.count()).toBeGreaterThan(0);
+  const fills = await black.evaluateAll((rects) => rects.map((rect) => rect.getAttribute("fill")));
+  expect(fills.every((fill) => (fill ?? "").startsWith("var(--symmetry-"))).toBe(true);
+  await expect(sheet.locator('g[data-grid="copy"] g[data-filled]')).toHaveCount(0);
+
+  await colors.click();
+  await expect(black).toHaveCount(0);
+  expect(await cardKey(sheet)).toBe(key);
+});
+
 test("the sheet shows only the instruction as text, with no name of the object", async ({ page }) => {
   const sheet = await generate(page);
   await page.getByRole("button", { name: /^Postać:/ }).click();
@@ -136,7 +159,7 @@ test("the catalog badge of a profile shows the remembered level", async ({ page 
           id: "profile-ola",
           name: "Ola",
           character: "none",
-          cards: { kopiuj: { level: "trudny", category: "wszystkie" } },
+          cards: { kopiuj: { level: "trudny", category: "wszystkie", colors: false } },
         };
         localStorage.setItem(profilesKey, JSON.stringify({ profiles: [profile] }));
         localStorage.setItem(activeKey, profile.id);

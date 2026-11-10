@@ -60,7 +60,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać na karcie symetrii, nonogramie i dyktandzie jedną kategorię obiektów (np. Zwierzęta) albo „Wszystkie”.
 - Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (w złotych, euro albo dolarach, bez groszy i centów) i wpisuje między nimi „<”, „>” albo „=”, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wygenerować kartę „Który nie pasuje”, na której dziecko zakreśla w każdym rzędzie obrazek łamiący jawną regułę (kształt, kolor, rozmiar, liczba albo kategoria obiektu).
-- Rodzic może wygenerować kartę „Skopiuj rysunek na kratce”, na której dziecko przerysowuje czarną sylwetkę obiektu z katalogu szablonów z jednej kratki do pustej obok.
+- Rodzic może wygenerować kartę „Skopiuj rysunek na kratce”, na której dziecko przerysowuje sylwetkę obiektu z katalogu szablonów (domyślnie czarną, po włączeniu kolorów w kolorach kredek) z jednej kratki do pustej obok.
 - Rodzic może wygenerować kartę szlaczków, na której dziecko prowadzi ołówek po kropkach albo kontynuuje pokazany wzór.
 - Rodzic wybiera poziom każdej z czterech nowych kart bez nazw wieku, a profil sam pamięta ustawienia ich paska; na każdej stoi postać przy poleceniu.
 
@@ -482,28 +482,29 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic otworzył z katalogu stronę „Skopiuj rysunek na kratce”
 - **When** uruchomi generowanie
-- **Then** otrzymuje gotową do wydruku kartę A4 z dwiema kratkami tej samej wielkości: w jednej jest czarna sylwetka obiektu, druga jest pusta; dziecko przerysowuje sylwetkę, zamalowując te same kratki
+- **Then** otrzymuje gotową do wydruku kartę A4 z dwiema kratkami tej samej wielkości: w jednej jest sylwetka obiektu (domyślnie czarna), druga jest pusta; dziecko przerysowuje sylwetkę, zamalowując te same kratki (po włączeniu kolorów kredkami według wzoru)
 
 #### Acceptance Criteria
 
 - Sylwetka to cały obiekt z katalogu szablonów symetrii (połowa szablonu i jej odbicie), zamalowane kratki czarne, puste białe. Detale będące dziurami w sylwetce zostają pustymi kratkami. Karta nie zdradza nazwy obiektu.
 - Obie kratki mają tę samą siatkę; nie ma osi symetrii ani odbicia. Kratki stoją obok siebie na każdym poziomie, bez numerów wierszy i kolumn; rozmiar kratki wynika z poziomu (10 / 7 / 5 mm), a obie kratki z odstępem 10 mm mieszczą się na A4 z marginesem 10 mm (decyzja 2026-11-09 po makiecie, Open Questions 13). Sylwetka jest wyśrodkowana w pionie w siatce.
-- Odpowiedź jest jedna: te same zamalowane kratki w drugiej kratce. Aplikacja ją zna; nie ocenia rysunku dziecka.
+- Odpowiedź jest jedna: te same zamalowane kratki w drugiej kratce (przy kolorach także w tych samych kolorach). Aplikacja ją zna; nie ocenia rysunku dziecka.
 - Każde Generuj daje nową kartę: inny obiekt albo inny wariant niż poprzednia karta.
-- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Domyślnie druk jest czarny; po włączeniu kolorów lewa kratka drukuje się w kolorach kredek (US-28).
 - Te same warunki na telefonie co w US-04.
 
-### US-28: Rodzic wybiera poziom i kategorię karty „Skopiuj rysunek na kratce”
+### US-28: Rodzic wybiera poziom i kategorię karty „Skopiuj rysunek na kratce” i włącza kolory
 
 - **Given** rodzic jest na stronie „Skopiuj rysunek na kratce”
-- **When** wybierze poziom (łatwy, średni, trudny) albo kategorię obiektów
-- **Then** karta ma kratkę i obiekty zgodne z poziomem, wylosowane z wybranej kategorii
+- **When** wybierze poziom (łatwy, średni, trudny), kategorię obiektów albo włączy kolory
+- **Then** karta ma kratkę i obiekty zgodne z poziomem, wylosowane z wybranej kategorii, a sylwetka ma kolory kredek po włączeniu kolorów
 
 #### Acceptance Criteria
 
 - Poziom zmienia rozmiar siatki, wielkość kratki i katalog obiektów (łatwy prostsze, trudny bogatsze). Reguły są w Business Logic „Karta „Skopiuj rysunek na kratce””.
 - Kategoria działa jak w US-20: jeden wybór, „Wszystkie” domyślnie, alfabetycznie po polskich nazwach.
-- Poziom i kategorię pamięta profil i ostatnie parametry (US-08).
+- Kolory to osobny przełącznik na pasku, niezależny od poziomu, jak w symetrii (US-09). Domyślnie wyłączone: sylwetka jest czarna. Włączone: każda kratka sylwetki ma kolor kredki z szablonu obiektu, bez liter i bez legendy; dziury w sylwetce (okno, oczy) mają kolor szablonu albo zostają białe, gdy szablon tak ustala. Kolory ma tylko lewa kratka, prawa zostaje pusta. Przełącznik zostawia tę samą kartę; nie generuje nowej. Na drukarce czarno-białej kolory schodzą do odcieni szarości (decyzja 2026-11-10, prośba użytkowniczki).
+- Poziom, kategorię i kolory pamięta profil i ostatnie parametry (US-08).
 
 ### US-29: Rodzic generuje kartę szlaczków do druku
 
@@ -634,7 +635,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
   > Socrates: Counter-argument considered: kolory jako ozdoba nie mogą zostać, gdy kolor jest regułą i rozpraszaczem. Resolution: revised (2026-11-08, GitHub 265); na tej karcie kolory należą do zadania, więc zmiana układa nową kartę, a ikony kategorii zostają czarne także z kolorami.
 - FR-037: Rodzic może wygenerować kartę „Skopiuj rysunek na kratce”, na której dziecko przerysowuje czarną sylwetkę obiektu z katalogu szablonów z jednej kratki do pustej, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dwie kratki obok siebie nie mieszczą się na pionowym A4 z marginesem 10 mm. Resolution: kept (2026-11-01), rozstrzygnięte 2026-11-09 po makiecie (S-35): dwie kratki obok siebie mieszczą się w 10 mm marginesu na każdym poziomie, także trudny z kratką 5 mm (2 × 18 × 5 mm + odstęp 10 mm = 190 mm); kratki nie mają numerów (Open Questions 13).
-- FR-038: Rodzic może wybrać poziom karty „Skopiuj rysunek na kratce” (łatwy, średni, trudny: rozmiar kratki i katalog obiektów) oraz kategorię obiektów. Priority: must-have
+- FR-038: Rodzic może wybrać poziom karty „Skopiuj rysunek na kratce” (łatwy, średni, trudny: rozmiar kratki i katalog obiektów) oraz kategorię obiektów i włączyć kolory sylwetki. Priority: must-have
 - FR-039: Rodzic może wygenerować kartę szlaczków, na której dziecko prowadzi ołówek po kropkach (niższe poziomy) albo kontynuuje pokazany wzór (wyższe poziomy), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dwa tryby w jednej karcie mieszają różne umiejętności. Resolution: kept (2026-11-01); opis poziomu mówi wprost, który tryb to jest, a poziom jest jedynym wyborem na pasku.
 - FR-040: Rodzic może wybrać poziom szlaczków (Poziom 1–4: tryb, pula wzorów, łagodność kształtu, liczba rzędów), a na Poziomach 3–4 włączyć albo wyłączyć linie pomocnicze. Priority: must-have
@@ -651,7 +652,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), domyślny druk czarny, a przy włączonych kolorach prawdziwe kolory kratek bez liter i legendy, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karty sekwencji i sudoku spełniają te same granice co labirynt: generowanie do 5 sekund (także sudoku 9×9 na najtrudniejszym poziomie), jedna strona A4, margines co najmniej 10 mm, domyślny druk czarny bez odpowiedzi (sudoku z włączonymi kolorami drukuje kształty w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Nonogram i dyktando graficzne spełniają te same granice co labirynt: generowanie do 5 sekund (także trudny nonogram ze sprawdzeniem jednego rozwiązania), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi, te same przeglądarki na komputerze i na telefonie, w tym Brave.
-- Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karty „Który nie pasuje” i „Kto ma więcej?” z włączonymi kolorami drukują obrazki w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karty „Który nie pasuje” i „Kto ma więcej?” z włączonymi kolorami drukują obrazki w kolorach, a „Skopiuj rysunek na kratce” sylwetkę w kolorach kredek), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
@@ -861,7 +862,7 @@ Każda reguła poziomu (kolor tylko z kolorami) występuje na karcie co najmniej
 
 Dodane 2026-11-01 (M-5). Aplikacja zawsze tworzy kartę z jedną odpowiedzią: tymi samymi zamalowanymi kratkami w drugiej kratce. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Przerysuj obrazek na pustą kratkę.”) i dwiema kratkami tej samej siatki: w jednej czarna sylwetka obiektu, druga pusta. Nie ma osi symetrii ani odbicia; to różni tę kartę od symetrii.
 
-Obiekt pochodzi z katalogu szablonów (połowa i jej odbicie, jak w nonogramie) z losowanymi częściami; detale będące dziurami w sylwetce zostają pustymi kratkami; kolory szablonu karta pomija. Kategoria jak w US-20.
+Obiekt pochodzi z katalogu szablonów (połowa i jej odbicie, jak w nonogramie) z losowanymi częściami; detale będące dziurami w sylwetce zostają pustymi kratkami. Kategoria jak w US-20. Kolory (US-28) to osobne ustawienie rodzica, niezależne od poziomu, domyślnie wyłączone: sylwetka jest wtedy czarna. Włączone: każda kratka lewej kratki ma kolor kredki z szablonu, a dziury w sylwetce kolor szablonu albo biel, jak w symetrii (US-09); prawa kratka zostaje pusta. Przełącznik nie układa nowej karty.
 
 | Poziom | Siatka (cała) | Obiekty                       | Kratka (około)                     |
 | ------ | ------------- | ----------------------------- | ---------------------------------- |
@@ -912,7 +913,7 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | Dyktando graficzne | poziom, kategoria                           |
 | Kto ma więcej?     | poziom, waluta, kolory                      |
 | Który nie pasuje   | poziom, kolory                              |
-| Skopiuj rysunek    | poziom, kategoria                           |
+| Skopiuj rysunek    | poziom, kolory, kategoria                   |
 | Szlaczki           | poziom, linie                               |
 
 Zasady:

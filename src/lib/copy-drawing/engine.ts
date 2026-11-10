@@ -41,8 +41,8 @@ function turned(pattern: CopyDrawingCard["pattern"]): boolean[][] {
 }
 
 function knownBad(): readonly Bad[] {
-  const middle: CopyDrawingSettings = { level: "sredni", category: "wszystkie" };
-  const hard: CopyDrawingSettings = { level: "trudny", category: "wszystkie" };
+  const middle: CopyDrawingSettings = { level: "sredni", category: "wszystkie", colors: false };
+  const hard: CopyDrawingSettings = { level: "trudny", category: "wszystkie", colors: false };
   const base = fixture(middle);
   const blank: CopyDrawingCard = { ...base, pattern: base.pattern.map((row) => row.map(() => false)) };
   const wrongGrid: CopyDrawingCard = { ...base, pattern: base.pattern.slice(1) };

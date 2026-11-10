@@ -150,12 +150,18 @@ void describe("cardSummaries", () => {
     assert.equal(byId(fresh, "kopiuj").href, "/copy-drawing");
 
     const chosen = byId(
-      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta" } })),
+      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta", colors: false } })),
       "kopiuj",
     );
     assert.equal(chosen.used, true);
     assert.equal(chosen.badge, "trudny");
     assert.equal(chosen.detail, "trudny · Zwierzęta");
+
+    const colored = byId(
+      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta", colors: true } })),
+      "kopiuj",
+    );
+    assert.equal(colored.detail, "trudny · kolory · Zwierzęta");
   });
 
   void test("sudoku 4×4 has no level and no symbol choice", () => {

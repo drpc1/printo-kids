@@ -20,7 +20,7 @@ function mulberry32(seed: number): () => number {
 void describe("copyDrawingEngine", () => {
   void test("a card for every level is verified, frozen and keyed", () => {
     for (const level of COPY_DRAWING_LEVELS) {
-      const settings: CopyDrawingSettings = { level: level.id, category: "wszystkie" };
+      const settings: CopyDrawingSettings = { level: level.id, category: "wszystkie", colors: false };
       const verified = copyDrawingEngine.generate(settings, mulberry32(3), null);
       assert.equal(verified.kind, "kopiuj");
       assert.deepEqual(copyDrawingSpec.problems(verified.card, settings), []);
@@ -30,14 +30,14 @@ void describe("copyDrawingEngine", () => {
   });
 
   void test("the next card differs from the previous one", () => {
-    const settings: CopyDrawingSettings = { level: "sredni", category: "wszystkie" };
+    const settings: CopyDrawingSettings = { level: "sredni", category: "wszystkie", colors: false };
     const first = copyDrawingEngine.generate(settings, mulberry32(5), null);
     const second = copyDrawingEngine.generate(settings, mulberry32(5), first.key);
     assert.notEqual(second.key, first.key);
   });
 
   void test("running out of attempts is CardExhausted, not null", () => {
-    const settings: CopyDrawingSettings = { level: "latwy", category: "wszystkie" };
+    const settings: CopyDrawingSettings = { level: "latwy", category: "wszystkie", colors: false };
     const same = () => 0.5;
     const constant = copyDrawingEngine.generate(settings, same, null);
     assert.throws(
@@ -74,7 +74,7 @@ void describe("copyDrawingSpec", () => {
   });
 
   void test("level and category are content", () => {
-    const base: CopyDrawingSettings = { level: "sredni", category: "wszystkie" };
+    const base: CopyDrawingSettings = { level: "sredni", category: "wszystkie", colors: false };
     const key = copyDrawingSpec.contentKey(base);
     assert.equal(key, "sredni|wszystkie");
     assert.notEqual(key, copyDrawingSpec.contentKey({ ...base, level: "trudny" }));
