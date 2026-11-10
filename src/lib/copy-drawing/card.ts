@@ -20,16 +20,11 @@ export function copyDrawingKey(levelId: CopyDrawingLevelId, templateId: string, 
   return `${levelId}:${templateId}:${variants.join("-")}`;
 }
 
-/**
- * The silhouette moved so the empty rows above and below it differ by at most one. Its height runs from the first to
- * the last filled row, so empty rows inside it count. An empty image is returned as a copy. The one place that decides
- * where the picture stands in the grid: the generator and `copyDrawingProblems` both use it.
- */
-export function centerSilhouette(image: readonly (readonly boolean[])[]): boolean[][] {
-  const rows = image.length;
+/** How many rows `centerSilhouette` moves the picture down (negative: up); 0 for an empty image. */
+export function silhouetteRowShift(image: readonly (readonly boolean[])[]): number {
   const first = image.findIndex((row) => row.some(Boolean));
   if (first === -1) {
-    return image.map((row) => [...row]);
+    return 0;
   }
   let last = first;
   image.forEach((row, index) => {
@@ -37,8 +32,17 @@ export function centerSilhouette(image: readonly (readonly boolean[])[]): boolea
       last = index;
     }
   });
-  const height = last - first + 1;
-  const shift = Math.floor((rows - height) / 2) - first;
+  return Math.floor((image.length - (last - first + 1)) / 2) - first;
+}
+
+/**
+ * The silhouette moved so the empty rows above and below it differ by at most one. Its height runs from the first to
+ * the last filled row, so empty rows inside it count. An empty image is returned as a copy. The one place that decides
+ * where the picture stands in the grid: the generator and `copyDrawingProblems` both use it.
+ */
+export function centerSilhouette(image: readonly (readonly boolean[])[]): boolean[][] {
+  const rows = image.length;
+  const shift = silhouetteRowShift(image);
   const columns = image[0].length;
   return Array.from({ length: rows }, (_, row) => {
     const source = image[row - shift] as readonly boolean[] | undefined;

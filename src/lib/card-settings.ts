@@ -72,6 +72,7 @@ export interface DictationSettings {
 export interface CopyDrawingSettings {
   level: CopyDrawingLevelId;
   category: ObjectCategoryChoiceId;
+  colors: boolean;
 }
 
 export interface PatternLinesSettings {
@@ -121,7 +122,7 @@ const DEFAULTS: Defaults = {
   dyktando: { level: DEFAULT_DICTATION_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
   pieniadze: { level: DEFAULT_MONEY_LEVEL_ID, currency: DEFAULT_MONEY_CURRENCY_ID, colors: false },
   niepasuje: { level: DEFAULT_ODD_ONE_OUT_LEVEL_ID, colors: false },
-  kopiuj: { level: DEFAULT_COPY_DRAWING_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
+  kopiuj: { level: DEFAULT_COPY_DRAWING_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID, colors: false },
   szlaczki: { level: DEFAULT_PATTERN_LINES_LEVEL_ID, lines: true },
 };
 

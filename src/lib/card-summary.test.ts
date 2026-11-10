@@ -150,12 +150,18 @@ void describe("cardSummaries", () => {
     assert.equal(byId(fresh, "kopiuj").href, "/copy-drawing");
 
     const chosen = byId(
-      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta" } })),
+      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta", colors: false } })),
       "kopiuj",
     );
     assert.equal(chosen.used, true);
     assert.equal(chosen.badge, "trudny");
     assert.equal(chosen.detail, "trudny · Zwierzęta");
+
+    const colored = byId(
+      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta", colors: true } })),
+      "kopiuj",
+    );
+    assert.equal(colored.detail, "trudny · kolory · Zwierzęta");
   });
 
   void test("the pattern-lines card shows its numbered level and says 'bez linii' only where the switch exists", () => {

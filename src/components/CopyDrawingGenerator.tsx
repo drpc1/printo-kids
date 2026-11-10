@@ -3,6 +3,7 @@ import { CardPage } from "@/components/CardPage";
 import { CategoryChoice } from "@/components/CategoryChoice";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { CopyDrawingSheet } from "@/components/CopyDrawingSheet";
+import { SettingToggle } from "@/components/SettingToggle";
 import { SudokuChoice } from "@/components/SudokuChoice";
 import { useCardPage } from "@/hooks/useCardPage";
 import { useCardSettings } from "@/hooks/useCardSettings";
@@ -34,7 +35,7 @@ export default function CopyDrawingGenerator() {
   const [levelOpen, setLevelOpen] = useState(false);
   const [sheet, setSheet] = useState<SheetState<CopyDrawingCard>>({ kind: "idle", failure: null });
   const memory = useCardSettings("kopiuj", visit, handleProfileSwitch);
-  const { level: levelId, category: categoryId } = memory.settings;
+  const { level: levelId, category: categoryId, colors } = memory.settings;
   const view = sheetView(sheet, copyDrawingSpec.contentKey(memory.settings));
 
   function handleGenerate(): void {
@@ -91,6 +92,16 @@ export default function CopyDrawingGenerator() {
     />
   );
 
+  const colorsControl = (
+    <SettingToggle
+      label="Kolory"
+      checked={colors}
+      onCheckedChange={(next) => {
+        memory.remember({ colors: next });
+      }}
+    />
+  );
+
   return (
     <CardPage
       profiles={profiles}
@@ -123,11 +134,17 @@ export default function CopyDrawingGenerator() {
           {characterControl}
           {levelControl}
           {categoryControl}
+          {colorsControl}
         </>
       }
       sheet={
         view.verified !== null ? (
-          <CopyDrawingSheet card={view.verified.card} characterId={bar.character} characterSrc={bar.characterSrc} />
+          <CopyDrawingSheet
+            card={view.verified.card}
+            colors={colors}
+            characterId={bar.character}
+            characterSrc={bar.characterSrc}
+          />
         ) : null
       }
     />

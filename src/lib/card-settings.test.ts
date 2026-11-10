@@ -21,7 +21,7 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("dyktando"), { level: "lat6", category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("pieniadze"), { level: "sredni", currency: "pln", colors: false });
     assert.deepEqual(defaultCardSettings("niepasuje"), { level: "sredni", colors: false });
-    assert.deepEqual(defaultCardSettings("kopiuj"), { level: "sredni", category: "wszystkie" });
+    assert.deepEqual(defaultCardSettings("kopiuj"), { level: "sredni", category: "wszystkie", colors: false });
     assert.deepEqual(defaultCardSettings("szlaczki"), { level: "poziom2", lines: true });
   });
 
@@ -49,15 +49,15 @@ void describe("defaultCardSettings", () => {
     });
   });
 
-  void test("the copy-drawing card reads a stored level and category, drops unknown ones, and stays absent when never stored", () => {
-    assert.deepEqual(parseCardSettings({ kopiuj: { level: "trudny", category: "zwierzeta" } }), {
-      kopiuj: { level: "trudny", category: "zwierzeta" },
+  void test("the copy-drawing card reads a stored level, category and colors, drops unknown ones, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ kopiuj: { level: "trudny", category: "zwierzeta", colors: true } }), {
+      kopiuj: { level: "trudny", category: "zwierzeta", colors: true },
     });
     assert.deepEqual(parseCardSettings({ kopiuj: { level: "lat5", category: "nie-ma-takiej" } }), {
-      kopiuj: { level: "sredni", category: "wszystkie" },
+      kopiuj: { level: "sredni", category: "wszystkie", colors: false },
     });
     assert.deepEqual(parseCardSettings({ kopiuj: { level: "latwy" } }), {
-      kopiuj: { level: "latwy", category: "wszystkie" },
+      kopiuj: { level: "latwy", category: "wszystkie", colors: false },
     });
     assert.deepEqual(parseCardSettings({ kopiuj: "x" }), {});
     assert.deepEqual(parseCardSettings({}), {});

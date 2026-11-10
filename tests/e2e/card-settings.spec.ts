@@ -86,6 +86,7 @@ const CARDS: CardCase[] = [
       { bar: "Poziom", option: "trudny", shown: "trudny" },
       { bar: "Kategoria", option: "Zwierzęta", shown: "Zwierzęta" },
     ],
+    colors: true,
   },
   {
     id: "szlaczki",

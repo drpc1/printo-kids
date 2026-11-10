@@ -256,18 +256,20 @@ const INVENTORY: Inventory = {
     ],
     decoration: [],
   },
-  // No colors and no "Pokaż rozwiązanie": level and category are the whole content, and nothing is only decoration.
+  // Colors only change how the silhouette is drawn (like symmetry), so they are decoration; level and category are the content.
   kopiuj: {
-    settingsList: COPY_DRAWING_LEVELS.flatMap((level) => CATEGORIES.map((category) => ({ level: level.id, category }))),
+    settingsList: COPY_DRAWING_LEVELS.flatMap((level) =>
+      CATEGORIES.map((category) => ({ level: level.id, category, colors: false })),
+    ),
     label: (settings) => `${settings.level}/${settings.category}`,
     mayExhaust: narrowCategory,
     usesPreviousKey: true,
-    base: { level: "sredni", category: "wszystkie" },
+    base: { level: "sredni", category: "wszystkie", colors: false },
     content: [
-      { level: "trudny", category: "wszystkie" },
-      { level: "sredni", category: "zwierzeta" },
+      { level: "trudny", category: "wszystkie", colors: false },
+      { level: "sredni", category: "zwierzeta", colors: false },
     ],
-    decoration: [],
+    decoration: [{ level: "sredni", category: "wszystkie", colors: true }],
   },
   // The level is the whole content; "Linie" only draws help lines, so it is decoration.
   szlaczki: {

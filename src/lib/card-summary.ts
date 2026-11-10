@@ -125,7 +125,11 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
         return null;
       }
       const level = copyDrawingLevelById(settings.level);
-      return { badge: badgeOf(level), level: level.label, extras: [categoryLabel(settings.category)] };
+      return {
+        badge: badgeOf(level),
+        level: level.label,
+        extras: [...(settings.colors ? ["kolory"] : []), categoryLabel(settings.category)],
+      };
     }
     case "szlaczki": {
       const settings = cards.szlaczki;
