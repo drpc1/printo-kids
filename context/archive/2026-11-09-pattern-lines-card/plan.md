@@ -396,9 +396,9 @@ Nowe pole `szlaczki` w `cards` profilu i ostatnich parametrów. Starsze zapisy g
 #### Manual
 
 - [ ] 4.3 Wydruk A4 czterech kart (P3 i P4 z liniami i bez): kropki, ścieżka, linia 0,6 mm i liniatura czytelne, jedna strona z marginesem 10 mm
-- [ ] 4.4 Próba z dzieckiem 3–4 lata (P1): zygzak i górki, dolny zapas
-- [ ] 4.5 Próba z dzieckiem 6–7 lat (P3): klocki i rury, pętle i kółeczka po kropkach, dwa powtórzenia wystarczają
-- [ ] 4.6 Próba z dzieckiem 8–10 lat (P4): spirale i „fala i pętla” nie są za ciasne
+- [x] 4.4 Próba z dzieckiem 3–4 lata (P1): zygzak i górki, dolny zapas (przetestowane z dzieckiem 2026-11-10)
+- [x] 4.5 Próba z dzieckiem 6–7 lat (P3): klocki i rury, pętle i kółeczka po kropkach, dwa powtórzenia wystarczają (przetestowane z dzieckiem 2026-11-10)
+- [x] 4.6 Próba z dzieckiem 8–10 lat (P4): spirale i „fala i pętla” nie są za ciasne (przetestowane z dzieckiem 2026-11-10)
 - [ ] 4.7 Użytkowniczka potwierdza kształt kółeczek i laseczek na wydruku
 - [ ] 4.8 Open Questions 15 w PRD ma wynik, wartości PRD zgodne z kodem
 - [ ] 4.9 (opcjonalnie, nie bramka) Stryker wąsko na odczycie ustawień szlaczków w `card-settings.ts`, wynik w przeglądzie fazy 4
