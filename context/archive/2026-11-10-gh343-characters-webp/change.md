@@ -1,10 +1,10 @@
 ---
 change_id: gh343-characters-webp
 title: Postacie jako WebP 512 px zamiast PNG 1024 px
-status: impl_reviewed
+status: archived
 created: 2026-11-10
 updated: 2026-11-10
-archived_at: null
+archived_at: 2026-11-10T22:05:29Z
 ---
 
 ## Notes
