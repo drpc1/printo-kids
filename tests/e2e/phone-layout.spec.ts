@@ -648,3 +648,29 @@ test("the copy-drawing page keeps Generuj, Drukuj and Profil apart", async ({ pa
     expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
   }
 });
+
+test("the patterns page keeps Linie, Generuj, Drukuj and Profil apart on Poziom 3", async ({ page }) => {
+  await page.goto("/patterns");
+  await page.getByRole("button", { name: /^Poziom:/ }).click();
+  await page.getByRole("button", { name: /^Poziom 3(?=\s|$)/ }).click();
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Szlaczki" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    linie: await viewportBox(page.getByRole("switch", { name: "Linie" })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});

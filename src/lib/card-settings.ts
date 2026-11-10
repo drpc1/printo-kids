@@ -5,7 +5,11 @@ import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } f
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
 import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, ODD_ONE_OUT_LEVELS, type OddOneOutLevelId } from "./odd-one-out/levels.ts";
-import type { PatternLinesLevelId } from "./pattern-lines/levels.ts";
+import {
+  DEFAULT_PATTERN_LINES_LEVEL_ID,
+  PATTERN_LINES_LEVELS,
+  type PatternLinesLevelId,
+} from "./pattern-lines/levels.ts";
 import { DEFAULT_SEQUENCE_LEVEL_ID, SEQUENCE_LEVELS, type SequenceLevelId } from "./sequence/levels.ts";
 import {
   DEFAULT_SUDOKU_SETTINGS,
@@ -70,7 +74,6 @@ export interface CopyDrawingSettings {
   category: ObjectCategoryChoiceId;
 }
 
-/** Not yet in `CardSettingsMap`: the card is registered in phase 3. */
 export interface PatternLinesSettings {
   level: PatternLinesLevelId;
   lines: boolean;
@@ -86,6 +89,7 @@ export interface CardSettingsMap {
   pieniadze?: MoneySettings;
   niepasuje?: OddOneOutSettings;
   kopiuj?: CopyDrawingSettings;
+  szlaczki?: PatternLinesSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -100,6 +104,7 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "pieniadze",
   "niepasuje",
   "kopiuj",
+  "szlaczki",
 ];
 
 /** The settings of one card. */
@@ -117,6 +122,7 @@ const DEFAULTS: Defaults = {
   pieniadze: { level: DEFAULT_MONEY_LEVEL_ID, currency: DEFAULT_MONEY_CURRENCY_ID, colors: false },
   niepasuje: { level: DEFAULT_ODD_ONE_OUT_LEVEL_ID, colors: false },
   kopiuj: { level: DEFAULT_COPY_DRAWING_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
+  szlaczki: { level: DEFAULT_PATTERN_LINES_LEVEL_ID, lines: true },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -199,7 +205,7 @@ function parseCard<K extends CardSettingsId>(cardId: K, stored: Record<string, u
 }
 
 function fieldValue(cardId: CardSettingsId, field: string, value: unknown, fallback: unknown): unknown {
-  if (field === "colors") {
+  if (field === "colors" || field === "lines") {
     return typeof value === "boolean" ? value : fallback;
   }
   if (field === "category") {
@@ -239,6 +245,8 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return ODD_ONE_OUT_LEVELS.map((level) => level.id);
     case "kopiuj":
       return COPY_DRAWING_LEVELS.map((level) => level.id);
+    case "szlaczki":
+      return PATTERN_LINES_LEVELS.map((level) => level.id);
   }
 }
 

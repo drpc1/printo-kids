@@ -373,18 +373,18 @@ Nowe pole `szlaczki` w `cards` profilu i ostatnich parametrów. Starsze zapisy g
 
 #### Automated
 
-- [ ] 3.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 3.2 Lint przechodzi: `npm run lint`
-- [ ] 3.3 Zależności przechodzą: `npm run depcruise`
-- [ ] 3.4 Typy przechodzą: `npx astro check`
-- [ ] 3.5 Build przechodzi: `npm run build`
-- [ ] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie
-- [ ] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie
+- [x] 3.1 Testy jednostkowe przechodzą: `npm test` — 498c42f
+- [x] 3.2 Lint przechodzi: `npm run lint` — 498c42f
+- [x] 3.3 Zależności przechodzą: `npm run depcruise` — 498c42f
+- [x] 3.4 Typy przechodzą: `npx astro check` — 498c42f
+- [x] 3.5 Build przechodzi: `npm run build` — 498c42f
+- [x] 3.6 E2E nowej karty i tabel kart przechodzą na wolnym porcie
+- [x] 3.7 Sprawdzian HTTP przechodzi na zbudowanej stronie
 
 #### Manual
 
-- [ ] 3.8 Użytkowniczka sprawdza karty na każdym poziomie i działanie „Linie” na P3–P4
-- [ ] 3.9 Katalog pokazuje miniaturę i plakietkę, a okno profilu podsumowanie
+- [x] 3.8 Użytkowniczka sprawdza karty na każdym poziomie i działanie „Linie” na P3–P4
+- [x] 3.9 Katalog pokazuje miniaturę i plakietkę, a okno profilu podsumowanie
 
 ### Phase 4: Wydruk próbny i próba z dzieckiem
 

@@ -14,6 +14,8 @@ import type { MoneyCard } from "./money/rules.ts";
 import { nonogramEngine, type AnyNonogramCard } from "./nonogram/engine.ts";
 import { oddOneOutEngine } from "./odd-one-out/engine.ts";
 import type { OddOneOutCard } from "./odd-one-out/rules.ts";
+import type { PatternLinesCard } from "./pattern-lines/card.ts";
+import { patternLinesEngine } from "./pattern-lines/engine.ts";
 import { sequenceEngine } from "./sequence/engine.ts";
 import type { SequenceCard } from "./sequence/generate.ts";
 import { sudokuEngine } from "./sudoku/engine.ts";
@@ -31,6 +33,7 @@ interface CardTypeMap {
   pieniadze: MoneyCard;
   niepasuje: OddOneOutCard;
   kopiuj: CopyDrawingCard;
+  szlaczki: PatternLinesCard;
 }
 
 // The card kinds and the settings ids are one union: a kind with settings but no engine (or the reverse) fails here.
@@ -47,4 +50,5 @@ export const CARD_ENGINES = {
   pieniadze: moneyEngine,
   niepasuje: oddOneOutEngine,
   kopiuj: copyDrawingEngine,
+  szlaczki: patternLinesEngine,
 } satisfies { [K in CardKindId]: CardEngine<CardSettingsOf<K>, CardTypeMap[K]> };
