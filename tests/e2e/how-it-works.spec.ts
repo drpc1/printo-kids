@@ -51,6 +51,10 @@ test("a generator page has the footer link and the page states the rules of leve
   await expect(body).toContainText("Ustaw jako ulubioną");
   await expect(body).toContainText("do końca wizyty");
   await expect(body).toContainText("przy zdaniu polecenia");
+  // S-37: the level rules name the four M-5 cards and no longer say which old cards lack an age.
+  await expect(body).toContainText("symetria, sekwencje i szlaczki (Poziom 1–4)");
+  await expect(body).toContainText("„Kto ma więcej?”, „Który nie pasuje” i „Skopiuj rysunek na kratce”");
+  await expect(body).not.toContainText("sudoku i nonogram wieku nie mają");
 });
 
 test("the page describes every card kind in catalog order", async ({ page }, testInfo) => {
