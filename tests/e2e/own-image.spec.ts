@@ -53,7 +53,7 @@ test("a picked PNG is drawn on the sheet, Kot removes it, and the row keeps the 
   await page.getByRole("button", { name: /^Postać:/ }).click();
   await page.getByRole("dialog").getByRole("button", { name: "Kot", exact: true }).click();
   await expect(page.getByRole("dialog")).toBeHidden();
-  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.png");
+  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.webp");
 
   await page.getByRole("button", { name: "Postać: Kot" }).click();
   await expect(page.getByRole("dialog").locator('img[src^="data:image/"]')).toBeVisible();
@@ -75,7 +75,7 @@ test("Ala's saved Kot is on the sheet after reload and the device thumbnail stay
   await page.goto("/maze");
 
   await page.getByRole("button", { name: "Generuj" }).click();
-  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.png");
+  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.webp");
 
   await page.getByRole("button", { name: "Postać: Kot" }).click();
   await pickFile(page, "zdjecie.png", "image/png", PNG);
@@ -89,7 +89,7 @@ test("Ala's saved Kot is on the sheet after reload and the device thumbnail stay
   await page.reload();
   await page.getByRole("button", { name: "Generuj" }).click();
   await expect(page.getByRole("button", { name: "Postać: Kot" })).toBeVisible();
-  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.png");
+  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.webp");
 
   await page.getByRole("button", { name: "Postać: Kot" }).click();
   await expect(page.getByRole("dialog").locator('img[src^="data:image/"]')).toBeVisible();
@@ -105,7 +105,7 @@ test("a GIF leaves Kot on the sheet and the open dialog explains JPEG, PNG, or W
   await page.goto("/maze");
 
   await page.getByRole("button", { name: "Generuj" }).click();
-  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.png");
+  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.webp");
 
   await page.getByRole("button", { name: "Postać: Kot" }).click();
   const dialog = page.getByRole("dialog");
@@ -113,6 +113,6 @@ test("a GIF leaves Kot on the sheet and the open dialog explains JPEG, PNG, or W
 
   await expect(dialog).toBeVisible();
   await expect(dialog.getByText("Wybierz plik JPEG, PNG albo WebP.")).toBeVisible();
-  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.png");
+  await expect.poll(() => sheetHref(page)).toBe("/characters/kot.webp");
   expect(leaked).toEqual([]);
 });

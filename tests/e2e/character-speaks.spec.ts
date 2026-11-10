@@ -42,7 +42,7 @@ for (const card of CARDS) {
 
     await pickCharacter(page, "Dinozaur");
     await expect(page.getByRole("button", { name: "Postać: Dinozaur" })).toBeVisible();
-    await expect(sheet.locator('image[href="/characters/dinozaur.png"]')).toHaveCount(1);
+    await expect(sheet.locator('image[href="/characters/dinozaur.webp"]')).toHaveCount(1);
     await expect(sheet.locator("text", { hasText: card.sentence }).first()).toBeVisible();
 
     await pickCharacter(page, "Brak");
