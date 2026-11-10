@@ -26,17 +26,19 @@ export interface CopyDrawingSheetLayout {
 }
 
 /**
- * Places the instruction and the two grids. The block of the two grids is centered across the page and sits right under the instruction (spare room stays at the bottom)
- * inside the 10 mm margin. `instructionBoxHeight` is the band with a character, the plain line
+ * Places the instruction and the two grids. The instruction and the grids are one block, centered across the page and
+ * down the page inside the 10 mm margin like the nonogram card's; the grids sit `bandGap` under the instruction. `instructionBoxHeight` is the band with a character, the plain line
  * height without one. Throws when the level's cell size does not fit, instead of shrinking the cell or crossing the margin.
  */
 export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHeight: number): CopyDrawingSheetLayout {
   const sheet = COPY_DRAWING_SHEET;
   const { columns, rows } = level.size;
   const innerWidth = sheet.pageWidth - sheet.inset * 2;
-  const areaTop = sheet.inset + instructionBoxHeight + sheet.bandGap;
   const areaBottom = sheet.pageHeight - sheet.inset;
-  const fits = Math.min((innerWidth - sheet.gridGap) / (2 * columns), (areaBottom - areaTop) / rows);
+  const fits = Math.min(
+    (innerWidth - sheet.gridGap) / (2 * columns),
+    (areaBottom - sheet.inset - instructionBoxHeight - sheet.bandGap) / rows,
+  );
   const cell = level.cellSize;
   if (fits < cell - EPSILON) {
     throw new Error(
@@ -47,14 +49,18 @@ export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHe
   const width = columns * cell;
   const height = rows * cell;
   const left = sheet.inset + (innerWidth - (2 * width + sheet.gridGap)) / 2;
-  const top = areaTop;
+  // The instruction and the grids are one block, centered down the page like the nonogram card's.
+  const blockHeight = instructionBoxHeight + sheet.bandGap + height;
+  const blockTop = sheet.inset + (areaBottom - sheet.inset - blockHeight) / 2;
+  const bandY = blockTop;
+  const top = blockTop + instructionBoxHeight + sheet.bandGap;
   const source = { x: left, y: top, width, height };
   const copy = { x: left + width + sheet.gridGap, y: top, width, height };
 
   if (
     left < sheet.inset - EPSILON ||
     copy.x + copy.width > sheet.pageWidth - sheet.inset + EPSILON ||
-    top < areaTop - EPSILON ||
+    bandY < sheet.inset - EPSILON ||
     top + height > areaBottom + EPSILON
   ) {
     throw new Error(`Two ${columns} by ${rows} grids of ${cell} mm cross the ${sheet.inset} page margin`);
@@ -62,7 +68,7 @@ export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHe
 
   return {
     page: { width: sheet.pageWidth, height: sheet.pageHeight },
-    band: { y: sheet.inset, height: instructionBoxHeight },
+    band: { y: bandY, height: instructionBoxHeight },
     cell,
     columns,
     rows,
