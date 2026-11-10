@@ -1,14 +1,7 @@
 // "Szlaczki" as a card kind (S-36, phase 2): `patternLinesSpec` wraps `patternLinesProblems`, `patternLinesEngine` wraps the
 // generator. The level is the card's content; "Linie" only draws help lines, so it does not reach the spec. Running out of
 // attempts is `CardExhausted`; the engine never returns null.
-import {
-  CardExhausted,
-  VerifiedCard,
-  type CardEngine,
-  type CardKindId,
-  type CardProblem,
-  type CardSpec,
-} from "../card-contract.ts";
+import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { PatternLinesSettings } from "../card-settings.ts";
 import { patternLinesProblems, type PatternLinesCard, type PatternRow } from "./card.ts";
 import { generatePatternLinesCard, MAX_ATTEMPTS } from "./generate.ts";
@@ -69,8 +62,7 @@ function knownBad(): readonly Bad[] {
 let knownBadCache: readonly Bad[] | undefined;
 
 export const patternLinesSpec: CardSpec<PatternLinesSettings, PatternLinesCard> = {
-  // The id joins the card registry in phase 3; until then it is cast, like the toy kind in the contract test.
-  kind: "szlaczki" as CardKindId,
+  kind: "szlaczki",
   problems: (card, settings): readonly CardProblem[] =>
     patternLinesProblems(card, patternLinesLevelById(settings.level)).map((code) => ({
       code,

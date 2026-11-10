@@ -83,7 +83,8 @@ void describe("rowGeometry", () => {
   void test("the row is 184 mm long; level 4 takes the ruling from the top line to the faded one", () => {
     assert.equal(length, 184);
     assert.equal(rowHalfExtent(patternLinesLevelById("poziom4")), 9.75);
-    assert.equal(rowHalfExtent(patternLinesLevelById("poziom2")), 9);
+    // Half the pattern height plus the start ring (dot radius + ring gap + half the ring stroke).
+    assert.equal(rowHalfExtent(patternLinesLevelById("poziom2")), 9 + 0.9 + 1.2 + 0.25);
   });
 
   void test("level 2 dots the whole row, with a ring around the first dot and a pale track", () => {

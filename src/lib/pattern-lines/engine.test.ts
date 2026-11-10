@@ -42,7 +42,7 @@ void describe("patternLinesEngine", () => {
     const constant = patternLinesEngine.generate(settings, same, null);
     assert.throws(
       () => patternLinesEngine.generate(settings, same, constant.key),
-      (error: unknown) => error instanceof CardExhausted && (error.kind as string) === "szlaczki" && error.attempts > 0,
+      (error: unknown) => error instanceof CardExhausted && error.kind === "szlaczki" && error.attempts > 0,
     );
   });
 });

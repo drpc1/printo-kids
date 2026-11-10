@@ -158,6 +158,23 @@ void describe("cardSummaries", () => {
     assert.equal(chosen.detail, "trudny · Zwierzęta");
   });
 
+  void test("the pattern-lines card shows its numbered level and says 'bez linii' only where the switch exists", () => {
+    const fresh = cardSummaries(profile("lat5"));
+    assert.equal(byId(fresh, "szlaczki").used, false);
+    assert.equal(byId(fresh, "szlaczki").badge, null);
+    assert.equal(byId(fresh, "szlaczki").title, "Szlaczki");
+    assert.equal(byId(fresh, "szlaczki").href, "/patterns");
+
+    const lined = byId(cardSummaries(profile("lat5", { szlaczki: { level: "poziom3", lines: true } })), "szlaczki");
+    assert.equal(lined.badge, "poz. 3");
+    assert.equal(lined.detail, "Poziom 3");
+    const bare = byId(cardSummaries(profile("lat5", { szlaczki: { level: "poziom4", lines: false } })), "szlaczki");
+    assert.equal(bare.detail, "Poziom 4 · bez linii");
+    const hidden = byId(cardSummaries(profile("lat5", { szlaczki: { level: "poziom2", lines: false } })), "szlaczki");
+    assert.equal(hidden.badge, "poz. 2");
+    assert.equal(hidden.detail, "Poziom 2");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -193,6 +210,7 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   pieniadze: { pieniadze: defaultCardSettings("pieniadze") },
   niepasuje: { niepasuje: defaultCardSettings("niepasuje") },
   kopiuj: { kopiuj: defaultCardSettings("kopiuj") },
+  szlaczki: { szlaczki: defaultCardSettings("szlaczki") },
 };
 
 void describe("the card registry and summaryParts", () => {

@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out and copy-drawing cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing and pattern-lines cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -43,6 +43,11 @@ import { generateCopyDrawingCard } from "../src/lib/copy-drawing/generate.ts";
 import { layoutCopyDrawingSheet } from "../src/lib/copy-drawing/layout.ts";
 import { copyDrawingLevelById, DEFAULT_COPY_DRAWING_LEVEL_ID } from "../src/lib/copy-drawing/levels.ts";
 import { COPY_DRAWING_SHEET } from "../src/lib/copy-drawing/sheet.ts";
+import { generatePatternLinesCard } from "../src/lib/pattern-lines/generate.ts";
+import { layoutPatternLinesSheet } from "../src/lib/pattern-lines/layout.ts";
+import { DEFAULT_PATTERN_LINES_LEVEL_ID, patternLinesLevelById } from "../src/lib/pattern-lines/levels.ts";
+import { rowGeometry } from "../src/lib/pattern-lines/paths.ts";
+import { PATTERN_LINES_SHEET } from "../src/lib/pattern-lines/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -673,3 +678,59 @@ copyLines.push("</svg>", "");
 const copyOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/kopiuj.svg");
 writeFileSync(copyOutFile, copyLines.join("\n"));
 console.log(`Wrote ${copyOutFile} (${copyCard.key})`);
+
+// Pattern-lines card: the elements PatternLinesSheet draws (src/components/PatternLinesSheet.tsx), in literal black and
+// grey, at the default level with the help lines on, with the geometry of src/lib/pattern-lines/paths.ts and the
+// constants of src/lib/pattern-lines/sheet.ts. The band holds the plain instruction (no character).
+const PATTERN_SEED = 20261110;
+const PATTERN = PATTERN_LINES_SHEET;
+const patternLevel = patternLinesLevelById(DEFAULT_PATTERN_LINES_LEVEL_ID);
+
+const patternCard = generatePatternLinesCard(mulberry32(PATTERN_SEED), null, patternLevel);
+if (patternCard === null) {
+  throw new Error(`Seed ${PATTERN_SEED} did not produce a valid pattern-lines card`);
+}
+
+const patternLayout = layoutPatternLinesSheet(patternLevel, PATTERN.plainInstructionSize);
+const patternPathD = (points) =>
+  points.map((point, index) => `${index === 0 ? "M" : "L"}${num(point.x)} ${num(point.y)}`).join(" ");
+const patternLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${PATTERN.pageWidth} ${PATTERN.pageHeight}" width="${PATTERN.pageWidth}" height="${PATTERN.pageHeight}">`,
+  `<rect width="${PATTERN.pageWidth}" height="${PATTERN.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${PATTERN.pageWidth - 0.5}" height="${PATTERN.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(PATTERN.pageWidth / 2)}" y="${num(patternLayout.band.y + patternLayout.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${PATTERN.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${patternLevel.instruction}</text>`,
+];
+patternCard.rows.forEach((row, index) => {
+  const geometry = rowGeometry(row, patternLevel, true);
+  patternLines.push(`<g transform="translate(${num(patternLayout.left)} ${num(patternLayout.centers[index])})">`);
+  for (const guide of geometry.guides) {
+    const dash = guide.dash === null ? "" : ` stroke-dasharray="${guide.dash}"`;
+    patternLines.push(
+      `<line x1="${num(guide.x1)}" y1="${num(guide.y)}" x2="${num(guide.x2)}" y2="${num(guide.y)}" stroke="${guide.tone === "muted" ? "#71717a" : "#d4d4d8"}" stroke-width="${guide.stroke}"${dash}/>`,
+    );
+  }
+  if (geometry.track) {
+    patternLines.push(
+      `<path d="${patternPathD(geometry.path)}" fill="none" stroke="#d4d4d8" stroke-width="${PATTERN.trackStroke}" stroke-linecap="round" stroke-linejoin="round"/>`,
+    );
+  }
+  if (geometry.lineStroke !== null) {
+    patternLines.push(
+      `<path d="${patternPathD(geometry.path)}" fill="none" stroke="#000" stroke-width="${geometry.lineStroke}" stroke-linecap="round" stroke-linejoin="round"/>`,
+    );
+  }
+  if (geometry.startRing !== null) {
+    patternLines.push(
+      `<circle cx="${num(geometry.startRing.x)}" cy="${num(geometry.startRing.y)}" r="${num(geometry.startRing.radius)}" fill="none" stroke="#000" stroke-width="${PATTERN.startRingStroke}"/>`,
+    );
+  }
+  for (const dot of geometry.dots) {
+    patternLines.push(`<circle cx="${num(dot.x)}" cy="${num(dot.y)}" r="${geometry.dotRadius}" fill="#000"/>`);
+  }
+  patternLines.push("</g>");
+});
+patternLines.push("</svg>", "");
+
+const patternOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/szlaczki.svg");
+writeFileSync(patternOutFile, patternLines.join("\n"));
+console.log(`Wrote ${patternOutFile} (${patternCard.key})`);

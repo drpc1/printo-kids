@@ -1,0 +1,12 @@
+---
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import PatternLinesGenerator from "@/components/PatternLinesGenerator";
+import Layout from "@/layouts/Layout.astro";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
+---
+
+<Layout title={cardPageTitle("szlaczki")} lang="pl">
+  <GeneratorShell heading={cardTitle("szlaczki")} description="Wygeneruj kartę „Szlaczki” i wydrukuj ją na kartce A4.">
+    <PatternLinesGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>

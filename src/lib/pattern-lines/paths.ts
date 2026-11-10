@@ -46,9 +46,17 @@ export function rowLength(): number {
   return SHEET.pageWidth - 2 * SHEET.inset - 2 * SHEET.rowIndent;
 }
 
-/** Half the height a row of this level takes: the pattern height, or the ruling from the top line to the faded line. */
+/**
+ * Half the height a row of this level takes: the pattern height plus the start ring that can stand on its edge, or the ruling
+ * from the top line to the faded line.
+ */
 export function rowHalfExtent(level: PatternLinesLevel): number {
-  return level.ruled ? 1.5 * SHEET.ruling.unit : level.maxHeight / 2;
+  if (level.ruled) {
+    return 1.5 * SHEET.ruling.unit;
+  }
+  const dots = dotSpecFor(level.id);
+  const ring = dots === null ? 0 : dots.radius + SHEET.startRingGap + SHEET.startRingStroke / 2;
+  return level.maxHeight / 2 + ring;
 }
 
 export function dotSpecFor(levelId: PatternLinesLevelId): { radius: number; spacing: number } | null {
