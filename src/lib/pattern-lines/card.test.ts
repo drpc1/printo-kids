@@ -110,4 +110,18 @@ void describe("patternLinesProblems", () => {
     );
     assert.equal(a, b);
   });
+
+  void test("a row that cannot be drawn is reported, never thrown at", () => {
+    const withFirst = (
+      levelId: PatternLinesLevelId,
+      rows: PatternRow[],
+      first: Partial<PatternRow>,
+    ): PatternLinesCard => card(levelId, [{ ...rows[0], ...first }, ...rows.slice(1)]);
+    for (const traced of [0, -1, Number.NaN, 1.5]) {
+      assert.ok(codes(withFirst("poziom3", GOOD_3, { traced })).includes("out-of-row"), `traced ${traced}`);
+    }
+    assert.ok(codes(withFirst("poziom2", GOOD_2, { count: 1e7 })).includes("out-of-row"));
+    assert.ok(codes(withFirst("poziom2", GOOD_2, { period: Number.NaN })).includes("out-of-row"));
+    assert.ok(codes(withFirst("poziom2", GOOD_2, { period: 0 })).includes("out-of-row"));
+  });
 });

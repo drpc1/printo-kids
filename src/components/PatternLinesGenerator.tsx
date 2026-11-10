@@ -45,10 +45,11 @@ export default function PatternLinesGenerator() {
   }
 
   function handleLevelSelect(id: PatternLinesLevelId): void {
-    const next = memory.remember({ level: id });
-    if (!waitingForChild) {
-      setSheet(applySettings(sheet, patternLinesEngine, next, Math.random));
+    if (waitingForChild) {
+      return;
     }
+    const next = memory.remember({ level: id });
+    setSheet(applySettings(sheet, patternLinesEngine, next, Math.random));
   }
 
   function handleProfileSwitch(next: PatternLinesSettings): void {
@@ -82,7 +83,9 @@ export default function PatternLinesGenerator() {
       label="Linie"
       checked={lines}
       onCheckedChange={(next) => {
-        memory.remember({ lines: next });
+        if (!waitingForChild) {
+          memory.remember({ lines: next });
+        }
       }}
     />
   ) : null;
