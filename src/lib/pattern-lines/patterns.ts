@@ -90,30 +90,6 @@ const U = {
       { ...down[16], corner: true },
     ];
   },
-  // Joined round letters like "oo", "aa": a connector rises from the bottom line outside the ring and meets its top,
-  // the ring runs against the clock and stops short of closing (a closed ring would put two dots on one spot), and a stroke leaves over the ring and comes down to the bottom line.
-  oChain: (): Pt[] => {
-    const cx = 0.6;
-    const rx = 0.24;
-    const ring = Array.from({ length: 49 }, (_, i) => {
-      const a = Math.PI / 2 + (i / 48) * 2 * Math.PI;
-      return { x: cx + rx * Math.cos(a), y: 0.4 + 0.4 * Math.sin(a) };
-    });
-    return [
-      c(0, 0),
-      { x: 0.08, y: 0.28 },
-      { x: 0.2, y: 0.58 },
-      { x: 0.34, y: 0.79 },
-      { x: 0.47, y: 0.84 },
-      { ...ring[0], corner: true },
-      ...ring.slice(1, 44),
-      { ...ring[44], corner: true },
-      { x: 0.78, y: 0.86 },
-      { x: 0.9, y: 0.7 },
-      { x: 0.96, y: 0.36 },
-      c(1, 0),
-    ];
-  },
   // Sticks with a hook, like a written "i": a slanted stroke up, an almost vertical stroke down and a wide hook.
   sticks: (): Pt[] => [
     c(0, 0.15),
@@ -175,7 +151,6 @@ export type PatternId =
   | "zigFlat"
   | "loopArc"
   | "waveLoop"
-  | "oChain"
   | "sticks"
   | "tallShort"
   | "arcZig"
@@ -303,7 +278,6 @@ export const PATTERNS: readonly PatternDef[] = [
       ]),
     span: 1.8,
   },
-  { id: "oChain", name: "kółeczka (o a)", unit: U.oChain, fixedRatio: 0.6, span: 1.4 },
   { id: "sticks", name: "laseczki z haczykiem (i)", unit: U.sticks },
   {
     id: "tallShort",
