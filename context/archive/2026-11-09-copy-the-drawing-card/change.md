@@ -1,10 +1,10 @@
 ---
 change_id: copy-the-drawing-card
 title: Karta "Skopiuj rysunek na kratce" (S-35)
-status: implementing
+status: archived
 created: 2026-11-09
-updated: 2026-11-09
-archived_at: null
+updated: 2026-11-10
+archived_at: 2026-11-10T21:15:00Z
 ---
 
 ## Notes
