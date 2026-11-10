@@ -5,6 +5,7 @@ import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } f
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
 import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, ODD_ONE_OUT_LEVELS, type OddOneOutLevelId } from "./odd-one-out/levels.ts";
+import type { PatternLinesLevelId } from "./pattern-lines/levels.ts";
 import { DEFAULT_SEQUENCE_LEVEL_ID, SEQUENCE_LEVELS, type SequenceLevelId } from "./sequence/levels.ts";
 import {
   DEFAULT_SUDOKU_SETTINGS,
@@ -67,6 +68,12 @@ export interface DictationSettings {
 export interface CopyDrawingSettings {
   level: CopyDrawingLevelId;
   category: ObjectCategoryChoiceId;
+}
+
+/** Not yet in `CardSettingsMap`: the card is registered in phase 3. */
+export interface PatternLinesSettings {
+  level: PatternLinesLevelId;
+  lines: boolean;
 }
 
 export interface CardSettingsMap {

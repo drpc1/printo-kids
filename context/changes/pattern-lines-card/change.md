@@ -3,7 +3,7 @@ change_id: pattern-lines-card
 title: Karta szlaczków (S-36, ostatnia karta M-5)
 status: impl_reviewed
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-10
 archived_at: null
 ---
 

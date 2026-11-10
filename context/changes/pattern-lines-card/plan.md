@@ -351,22 +351,22 @@ Nowe pole `szlaczki` w `cards` profilu i ostatnich parametrów. Starsze zapisy g
 
 #### Manual
 
-- [ ] 1.4 Użytkowniczka potwierdza, że zmienione zdania PRD (P4, P3) oddają makietę
+- [x] 1.4 Użytkowniczka potwierdza, że zmienione zdania PRD (P4, P3) oddają makietę
 
 ### Phase 2: Logika karty
 
 #### Automated
 
-- [ ] 2.1 Testy jednostkowe przechodzą: `npm test`
-- [ ] 2.2 Lint przechodzi: `npm run lint`
-- [ ] 2.3 Zależności przechodzą: `npm run depcruise`
-- [ ] 2.4 Typy przechodzą: `npx astro check`
-- [ ] 2.5 Build przechodzi: `npm run build`
+- [x] 2.1 Testy jednostkowe przechodzą: `npm test` — 7c1f4f5
+- [x] 2.2 Lint przechodzi: `npm run lint` — 7c1f4f5
+- [x] 2.3 Zależności przechodzą: `npm run depcruise` — 7c1f4f5
+- [x] 2.4 Typy przechodzą: `npx astro check` — 7c1f4f5
+- [x] 2.5 Build przechodzi: `npm run build` — 7c1f4f5
 
 #### Manual
 
-- [ ] 2.6 Użytkowniczka zatwierdza kształt kółeczek (o a) i laseczek (i) na podglądzie
-- [ ] 2.7 Przegląd diffu: reguły sprawdzenia i układ zgodne z planem i makietą
+- [x] 2.6 Użytkowniczka zatwierdza kształt kółeczek (o a) i laseczek (i) na podglądzie
+- [x] 2.7 Przegląd diffu: reguły sprawdzenia i układ zgodne z planem i makietą — 7c1f4f5
 - [ ] 2.8 (opcjonalnie, nie bramka) Pierwszy wydruk `preview-*.svg` w 100%: kropki i szara ścieżka są widoczne; wyniki wchodzą do fazy 4
 
 ### Phase 3: Strona, katalog i profil
