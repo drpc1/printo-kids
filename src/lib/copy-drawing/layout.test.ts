@@ -27,7 +27,7 @@ void describe("layoutCopyDrawingSheet", () => {
           for (const grid of [sheet.source, sheet.copy]) {
             assert.ok(grid.x >= 10 - EPSILON, `left ${grid.x}`);
             assert.ok(grid.x + grid.width <= 200 + EPSILON, `right ${grid.x + grid.width}`);
-            assert.ok(grid.y >= 10 + boxHeight + 6 - EPSILON, `top ${grid.y}`);
+            assert.ok(grid.y >= sheet.band.y + boxHeight + 6 - EPSILON, `top ${grid.y}`);
             assert.ok(grid.y + grid.height <= 287 + EPSILON, `bottom ${grid.y + grid.height}`);
           }
         });
@@ -45,11 +45,14 @@ void describe("layoutCopyDrawingSheet", () => {
           assert.ok(Math.abs(sheet.copy.x - (sheet.source.x + sheet.source.width) - 10) < EPSILON);
         });
 
-        void test("the block is centered across the page and sits right under the instruction, spare room at the bottom", () => {
+        void test("the instruction and the grids are one block centered across and down the page, the grids 6 mm under the instruction", () => {
           const left = sheet.source.x - 10;
           const right = 200 - (sheet.copy.x + sheet.copy.width);
           assert.ok(Math.abs(left - right) < EPSILON, `${left} vs ${right}`);
-          assert.ok(Math.abs(sheet.source.y - (10 + boxHeight + 6)) < EPSILON, `top ${sheet.source.y}`);
+          assert.ok(Math.abs(sheet.source.y - (sheet.band.y + boxHeight + 6)) < EPSILON, `gap ${sheet.source.y}`);
+          const above = sheet.band.y - 10;
+          const below = 287 - (sheet.source.y + sheet.source.height);
+          assert.ok(Math.abs(above - below) < EPSILON, `${above} vs ${below}`);
         });
       });
     }
@@ -61,9 +64,10 @@ void describe("layoutCopyDrawingSheet", () => {
     assert.ok(Math.abs(sheet.source.x - 10) < EPSILON);
   });
 
-  void test("the band starts at the margin and has the height it was given", () => {
+  void test("the band has the height it was given and starts inside the margin", () => {
     const sheet = layoutCopyDrawingSheet(COPY_DRAWING_LEVELS[1], WITH_CHARACTER);
-    assert.deepEqual(sheet.band, { y: 10, height: 26 });
+    assert.equal(sheet.band.height, 26);
+    assert.ok(sheet.band.y >= 10);
   });
 
   void test("throws for a cell too large for the width instead of shrinking it", () => {
