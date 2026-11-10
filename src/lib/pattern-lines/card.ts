@@ -54,8 +54,23 @@ function repeatsProblem(row: PatternRow, level: PatternLinesLevel): boolean {
   return level.mode === "dotsThenFree" ? traced !== level.repeats : traced < Math.min(level.repeats, row.count);
 }
 
+/** More repeats than a row can hold at any step the levels allow; keeps a bad card from costing a long drawing. */
+const MAX_COUNT = 100;
+
+/** True when the row cannot be drawn at all (a count, step or traced number that is out of range), so no geometry is asked of it. */
+function undrawable(row: PatternRow): boolean {
+  return (
+    !Number.isInteger(row.count) ||
+    row.count < 1 ||
+    row.count > MAX_COUNT ||
+    !Number.isFinite(row.period) ||
+    row.period <= 0 ||
+    (row.traced !== undefined && (!Number.isInteger(row.traced) || row.traced < 1 || row.traced > row.count))
+  );
+}
+
 function outOfRow(row: PatternRow, level: PatternLinesLevel, lines: boolean): boolean {
-  if (!Number.isInteger(row.count) || row.count < 1) {
+  if (undrawable(row)) {
     return true;
   }
   if (!level.ruled && (row.height === undefined || row.height < 0 || row.height > level.maxHeight + EPSILON)) {
