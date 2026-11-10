@@ -51,4 +51,4 @@ Patrz `research.md`: opisy kart są gotowe, nieaktualny jest tekst sekcji „Poz
 
 #### Manual
 
-- [ ] 1.3 Tekst sekcji „Poziomy” zgadza się z PRD
+- [x] 1.3 Tekst sekcji „Poziomy” zgadza się z PRD
