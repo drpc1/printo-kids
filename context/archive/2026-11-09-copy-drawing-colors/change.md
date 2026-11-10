@@ -1,10 +1,10 @@
 ---
 change_id: copy-drawing-colors
 title: Przełącznik „Kolory” na karcie „Skopiuj rysunek na kratce”
-status: implementing
+status: archived
 created: 2026-11-09
 updated: 2026-11-10
-archived_at: null
+archived_at: 2026-11-10T21:15:00Z
 ---
 
 ## Notes
