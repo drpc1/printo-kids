@@ -125,3 +125,34 @@ void describe("patternLinesProblems", () => {
     assert.ok(codes(withFirst("poziom2", GOOD_2, { period: 0 })).includes("out-of-row"));
   });
 });
+
+void describe("patternLinesProblems: rows that cannot be drawn on the sheet", () => {
+  const with2 = (patch: Partial<PatternRow>): PatternLinesCard =>
+    card("poziom2", [{ ...GOOD_2[0], ...patch }, ...GOOD_2.slice(1)]);
+  const with4 = (patch: Partial<PatternRow>): PatternLinesCard =>
+    card("poziom4", [{ ...GOOD_4[0], ...patch }, ...GOOD_4.slice(1)]);
+
+  void test("a row that runs off the sheet sideways or is taller than the row is out of the row", () => {
+    const with3 = (patch: Partial<PatternRow>): PatternLinesCard =>
+      card("poziom3", [{ ...GOOD_3[0], ...patch }, ...GOOD_3.slice(1)]);
+    assert.ok(codes(with3({ height: 200 })).includes("out-of-row"));
+    assert.ok(codes(with3({ height: -5 })).includes("out-of-row"));
+  });
+
+  void test("a row with no repeat, with a fraction or with an absurd number of them is out of the row", () => {
+    assert.ok(codes(with2({ count: 0 })).includes("out-of-row"));
+    assert.ok(codes(with2({ count: 2.5 })).includes("out-of-row"));
+    assert.ok(codes(with2({ count: 101 })).includes("out-of-row"));
+    assert.ok(codes(with2({ period: 0 })).includes("out-of-row"));
+  });
+
+  void test("a continued row that shows more repeats than the row has, or fewer than the level asks, is wrong", () => {
+    assert.ok(codes(with4({ count: 3, traced: 4 })).includes("trace-repeats"));
+    assert.ok(codes(with4({ traced: 2 })).includes("trace-repeats"));
+    assert.ok(codes(with4({ traced: 0 })).includes("trace-repeats"));
+  });
+
+  void test("a dotted row that also has a drawn start is wrong", () => {
+    assert.ok(codes(with2({ traced: 2 })).includes("trace-repeats"));
+  });
+});

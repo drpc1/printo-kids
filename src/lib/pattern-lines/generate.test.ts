@@ -4,6 +4,9 @@ import { patternLinesProblems } from "./card.ts";
 import { composeRow, generatePatternLinesCard, shuffled } from "./generate.ts";
 import { PATTERN_LINES_LEVELS, patternLinesLevelById } from "./levels.ts";
 import { dotProblems, dotSpecFor, rowGeometry, rowLength, selfCrossings } from "./paths.ts";
+// Mutation runs (stryker/*.config.json) set MUTATION_RUN=1: instrumented code is several times slower, so the wall-clock
+// budget is skipped there; `npm test` keeps it.
+const MUTATION_RUN = process.env.MUTATION_RUN === "1";
 
 function mulberry32(seed: number): () => number {
   let state = seed >>> 0;
@@ -56,7 +59,7 @@ void describe("generatePatternLinesCard", () => {
         assert.notEqual(card.key, previous);
         previous = card.key;
       }
-      assert.ok(performance.now() - started < 2000, `${performance.now() - started} ms`);
+      assert.ok(MUTATION_RUN || performance.now() - started < 2000, `${performance.now() - started} ms`);
     });
   }
 

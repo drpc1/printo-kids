@@ -259,3 +259,59 @@ void describe("ODD_CRAYONS", () => {
     }
   });
 });
+
+void describe("oddOneOutRowProblems: edges the generator relies on", () => {
+  const circles = (): OddItem[] => [shape("circle"), shape("circle"), shape("circle"), shape("heart")];
+
+  void test("a group of 6 is still in range and a group of 7 or a fractional one is not", () => {
+    const six = [
+      shape("heart", "big", 6),
+      shape("heart", "big", 6),
+      shape("heart", "big", 6),
+      shape("heart", "big", 5),
+    ];
+    assert.deepEqual(oddOneOutRowProblems(row("count", 3, ...six), false), []);
+    const seven = [
+      shape("heart", "big", 7),
+      shape("heart", "big", 7),
+      shape("heart", "big", 7),
+      shape("heart", "big", 6),
+    ];
+    assert.ok(oddOneOutRowProblems(row("count", 3, ...seven), false).includes("count-range"));
+    const half = [
+      shape("heart", "big", 1.5),
+      shape("heart", "big", 1.5),
+      shape("heart", "big", 1.5),
+      shape("heart", "big", 2.5),
+    ];
+    assert.ok(oddOneOutRowProblems(row("count", 3, ...half), false).includes("count-range"));
+  });
+
+  void test("an icon is one picture: a group of icons, an unknown icon or an icon with a crayon is the wrong kind of item", () => {
+    const group: OddItem = { shape: null, icon: "kot", size: "big", count: 2, crayon: null };
+    const items = [icon("kot"), icon("ryba"), icon("ptak"), icon("jablko")];
+    assert.ok(oddOneOutRowProblems(row("category", 3, ...[group, ...items.slice(1)]), false).includes("item-kind"));
+    assert.ok(
+      oddOneOutRowProblems(row("category", 3, ...[icon("no-such-icon"), ...items.slice(1)]), false).includes(
+        "item-kind",
+      ),
+    );
+    const crayoned: OddItem = { shape: null, icon: "kot", size: "big", count: 1, crayon: "red" };
+    assert.ok(oddOneOutRowProblems(row("category", 3, ...[crayoned, ...items.slice(1)]), true).includes("item-kind"));
+  });
+
+  void test("a category row of shapes is refused, and a shape row with an icon in it is refused", () => {
+    assert.ok(oddOneOutRowProblems(row("category", 3, ...circles()), false).includes("category-row"));
+    const mixed = [icon("kot"), icon("ryba"), icon("ptak"), shape("heart")];
+    assert.ok(oddOneOutRowProblems(row("category", 3, ...mixed), false).includes("category-row"));
+    assert.ok(
+      oddOneOutRowProblems(row("shape", 3, ...[icon("kot"), ...circles().slice(1)]), false).includes("item-kind"),
+    );
+  });
+
+  void test("a card that never shows one of the level's rules is refused", () => {
+    const card = goodCard();
+    const onlyOne = { ...card, rows: card.rows.map((candidate) => ({ ...candidate, rule: card.rows[0].rule })) };
+    assert.ok(oddOneOutCardProblems(onlyOne, latwy, false).includes("missing-rule"));
+  });
+});
