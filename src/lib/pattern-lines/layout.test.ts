@@ -58,6 +58,32 @@ void describe("layoutPatternLinesSheet", () => {
     assert.deepEqual(layoutPatternLinesSheet(PATTERN_LINES_LEVELS[1], WITH_CHARACTER).band, { y: 10, height: 26 });
   });
 
+  void test("the page is A4, and a single row has no step", () => {
+    const sheet = layoutPatternLinesSheet({ ...PATTERN_LINES_LEVELS[1], rows: 1 }, WITH_CHARACTER);
+    assert.deepEqual(sheet.page, { width: 210, height: 297 });
+    assert.equal(sheet.step, 0);
+    assert.equal(sheet.centers.length, 1);
+  });
+
+  void test("the most rows that fit are accepted and one more is refused with a message that names the rows", () => {
+    const base = PATTERN_LINES_LEVELS[3];
+    let rows = 1;
+    while (rows < 40) {
+      try {
+        layoutPatternLinesSheet({ ...base, rows: rows + 1 }, WITH_CHARACTER);
+        rows += 1;
+      } catch {
+        break;
+      }
+    }
+    const widest = layoutPatternLinesSheet({ ...base, rows }, WITH_CHARACTER);
+    assert.ok(widest.step >= 2 * widest.halfExtent - EPSILON);
+    assert.throws(
+      () => layoutPatternLinesSheet({ ...base, rows: rows + 1 }, WITH_CHARACTER),
+      new RegExp(`${rows + 1} rows of .* mm do not fit under the instruction inside the margin`),
+    );
+  });
+
   void test("throws when there is no room under the instruction", () => {
     assert.throws(() => layoutPatternLinesSheet(PATTERN_LINES_LEVELS[3], 300));
   });

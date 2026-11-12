@@ -23,6 +23,8 @@
     "mutate:money": "stryker run stryker/money.config.json",
     "mutate:pattern-lines": "stryker run stryker/pattern-lines.config.json",
     "mutate:copy-drawing": "stryker run stryker/copy-drawing.config.json",
+    "mutate:card-layouts": "stryker run stryker/card-layouts.config.json",
+    "mutate:card-contract": "stryker run stryker/card-contract.config.json",
     "thumbnails": "node --experimental-strip-types scripts/build-thumbnails.mjs",
     "depcruise": "dependency-cruiser src tests",
     "depcruise:graph": "dependency-cruiser src --include-only '^(src)' --output-type dot-webpage > dependency-graph.html",

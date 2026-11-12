@@ -77,6 +77,35 @@ void describe("VerifiedCard", () => {
     );
   });
 
+  void test("the error messages name the kind, every problem and the number of attempts", () => {
+    const bad: ToyCard = { id: 9, cells: [] };
+    assert.throws(
+      () => VerifiedCard.require(toySpec, bad, settings),
+      (error: unknown) => {
+        assert.ok(error instanceof CardInvariantError);
+        assert.equal(error.message, "toy: id-too-big (id 9 > 5); no-cells (empty)");
+        return true;
+      },
+    );
+    assert.equal(new CardExhausted(TOY, 7).message, "toy: no legal card after 7 attempts");
+  });
+
+  void test("a verified card is frozen all the way down, also with nulls and numbers inside", () => {
+    interface Odd {
+      id: number;
+      cells: { value: number }[];
+      note: null;
+      label: string;
+    }
+    const spec = { ...toySpec, problems: () => [], keyOf: () => "odd" } as unknown as CardSpec<ToySettings, Odd>;
+    const verified = VerifiedCard.require(spec, { id: 1, cells: [{ value: 1 }], note: null, label: "x" }, settings);
+    assert.ok(Object.isFrozen(verified.card));
+    assert.ok(Object.isFrozen(verified.card.cells));
+    assert.ok(Object.isFrozen(verified.card.cells[0]));
+    assert.equal(verified.card.note, null);
+    assert.equal(verified.card.label, "x");
+  });
+
   void test("C3 check of an illegal card returns the problems and does not throw", () => {
     const result = VerifiedCard.check(toySpec, { id: 9, cells: [{ value: 1 }] }, settings);
     assert.ok(!result.ok);

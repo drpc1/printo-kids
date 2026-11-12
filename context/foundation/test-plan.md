@@ -142,6 +142,8 @@ Zmiana `critical-paths-mutation-testing` (2026-10-27 do 2026-10-31) uruchomiła 
 | „Kto ma więcej?” (`money`: `rules`, `generate`) | 10 | 276 | 86,59% | nie powtarzany | 37 → 37 (+1 test) |
 | szlaczki (`pattern-lines`: `paths` przecięcia i kropki, `card`) | 13 | 299 | 83,55% | nie powtarzany | 50 → 50 (+4 testy) |
 | „Skopiuj rysunek” (`copy-drawing`: `generate`, `layout`) | 12 | 95 | 72,63% | 72,63% | 26 (+2 testy; maskowanie drugą kontrolą marginesu) |
+| układy kart M-5 (`money/layout`, `odd-one-out/layout`, `pattern-lines/layout`) | 2, 10, 11, 13 | 308 | 75,97% | 83,77% | 74 → 50 (+4 testy) |
+| kontrakt kart (`card-contract.ts`) | 8, 9 | 41 | 82,93% | 87,80% | 7 → 5 (+2 testy) |
 | dane lokalne, nowe wpisy kart (`card-settings.ts:190-276`) | 5 | 121 | 95,04% | 95,04% | 6 (równoważne) |
 
 Luki zamknięte, każda z break-checkiem (zepsuty kod produkcyjny czerwieni test):

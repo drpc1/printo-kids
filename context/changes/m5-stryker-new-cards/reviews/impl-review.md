@@ -42,3 +42,13 @@ Bramki na commicie af34999: `npm run lint`, `npm run depcruise`, `npm test` (152
 - **Detail**: Zmiana poszła bez `/10x-research` i `/10x-plan` (zakres opisuje issue #263).
 - **Fix**: Brak.
 - **Decision**: ACCEPTED
+
+### F3 — Dołożone zakresy `card-layouts` i `card-contract` (2026-11-12, po rekomendacji)
+
+- **Severity**: OBSERVATION
+- **Impact**: LOW — quick decision; fix is obvious and narrowly scoped
+- **Dimension**: Scope Discipline
+- **Location**: stryker/card-layouts.config.json, stryker/card-contract.config.json
+- **Detail**: Zakres wzrósł o układy A4 trzech kart i `card-contract.ts` na prośbę użytkownika. Zmiana to testy, dwie konfiguracje i skrypty; kod produkcyjny nietknięty. Bramki na tym stanie: lint, depcruise, `npm test` (1531 testów, 1530 zielonych, 1 pominięty), `astro check`, build zielone.
+- **Fix**: Brak.
+- **Decision**: ACCEPTED

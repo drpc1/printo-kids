@@ -18,6 +18,8 @@ Stan: 2026-11-12. Stryker nie jest bramką CI. Każdy zakres ma `stryker/<zakres
 | `pattern-lines` (szlaczki) | `paths.ts` (zawężony), `card.ts` | 299 | 83,55% (card 85,26%, paths 80,70%) | 50 | 4 | nie powtarzany |
 | `copy-drawing` („Skopiuj rysunek”) | `generate.ts`, `layout.ts` | 95 | 72,63%, wcześniej 89,47% | 26, wcześniej 10 | 2 | patrz uwaga |
 | `local-data` (nowe wpisy `card-settings.ts:190-276`) | `card-settings.ts` | 121 | 95,04% | 6 | 0 | — |
+| `card-layouts` (`layout.ts` trzech kart) | `money/layout.ts`, `odd-one-out/layout.ts`, `pattern-lines/layout.ts` | 308 | 75,97% (money 82,05%, odd-one-out 86,32%, pattern-lines 50,00%) | 74 | 4 testy (A4, komunikaty, granice) | 83,77% (money 88,89%, odd-one-out 94,87%, pattern-lines 58,11%) |
+| `card-contract` (`card-contract.ts`) | `card-contract.ts` | 41 | 82,93% | 7 | 2 testy (komunikaty błędów, zamrożenie z `null`) | 87,80% (5 ocalałych) |
 
 Uwaga do `copy-drawing`: pierwszy przebieg (89,47%) liczył 18 mutantów jako przeterminowane i był przekłamany przez obciążenie maszyny; drugi, spokojny przebieg po dopisaniu testów (72,63%) jest wiarygodny. Spadek to jedna grupa: `layout.ts:61` jest drugą kontrolą marginesu po zbudowaniu układu i dubluje kontrolę z linii 43 (obie rzucają przy tych samych poziomach), więc mutanty w jednej maskuje druga.
 
@@ -28,6 +30,12 @@ Uwaga do `copy-drawing`: pierwszy przebieg (89,47%) liczył 18 mutantów jako pr
 - `odd-one-out/rules.test.ts`: grupa 6 sztuk jest jeszcze w zakresie, 7 i ułamek nie; ikona to jeden obrazek (grupa ikon, nieznana ikona, ikona z kredką → `item-kind`); wiersz kategorii z kształtem i wiersz kształtu z ikoną są odrzucane; karta bez jednej z reguł poziomu → `missing-rule`.
 - `money/rules.test.ts`: jeden zły nominał w mieszanej kupce (banknot 10 zł wśród monet) jest błędem.
 - `pattern-lines/card.test.ts`: wiersz z ujemną wysokością albo wyższy niż poziom, zerowa i ułamkowa liczba powtórzeń, zbyt mało lub zbyt dużo narysowanych powtórzeń śladu, ślad w trybie kropek.
+
+## Ocalałe bez testu: układy i kontrakt
+
+- **`pattern-lines/layout.ts` (31 ocalałych):** druga kontrola marginesu po zbudowaniu układu (`left < inset`, prawa i dolna krawędź) dubluje pierwszą kontrolę rozmiaru rzędów; mutant w jednej jest maskowany przez drugą, a przy poziomach z `levels.ts` marginesu nie da się przekroczyć.
+- **`money/layout.ts`, `odd-one-out/layout.ts`:** zdegenerowane wejścia (`rowCount <= 1` przy jednym rzędzie, `<` zamiast `<=` na granicy bez luzu, `pilePadding` o dokładnie połowie szerokości). Karta z tych poziomów ich nie osiąga.
+- **`card-contract.ts` (5):** gałąź zamrażania dla wartości nie będących obiektami (`typeof value === "object" && value !== null`); wartość prosta zamrożona lub nie nie zmienia karty.
 
 ## Ocalałe bez testu: decyzje
 

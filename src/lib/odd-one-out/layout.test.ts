@@ -133,3 +133,33 @@ void describe("iconSize", () => {
     assert.ok(iconSize(30, 0.5) < iconSize(30, 1));
   });
 });
+
+void describe("layout details a printed card shows", () => {
+  void test("a group of 3 is a triangle: two shapes below one, the point up", () => {
+    assert.deepEqual(groupOffsets(3), [
+      [-1, 0.9],
+      [1, 0.9],
+      [0, -0.9],
+    ]);
+  });
+
+  void test("an icon is the sheet's ratio of its slot, scaled", () => {
+    assert.ok(Math.abs(iconSize(20, 0.5) - ODD_ONE_OUT_SHEET.iconRatio * 20 * 0.5) < EPSILON);
+    assert.ok(Math.abs(iconSize(10, 1) - 8.2) < EPSILON);
+  });
+
+  void test("a group the sheet cannot draw is refused with its size in the message", () => {
+    assert.throws(() => groupOffsets(7), /No group of 7 shapes/);
+  });
+
+  void test("a sheet with no rows, no pictures or no room is refused and the message names the grid", () => {
+    const input = inputFor(ODD_ONE_OUT_LEVELS[0]);
+    assert.throws(() => layoutOddOneOutSheet({ ...input, rowCount: 0 }));
+    assert.throws(() => layoutOddOneOutSheet({ ...input, itemCount: 0 }));
+    assert.throws(() => layoutOddOneOutSheet({ ...input, slotPadding: 500 }));
+    assert.throws(
+      () => layoutOddOneOutSheet({ ...input, rowCount: 100 }),
+      new RegExp(`100 rows of ${input.itemCount} pictures do not fit inside the ${input.inset} page margin`),
+    );
+  });
+});
