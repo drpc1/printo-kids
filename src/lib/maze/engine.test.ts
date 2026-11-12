@@ -312,3 +312,133 @@ void describe("mazeSpec: contentKey and knownBad", () => {
     }
   });
 });
+
+void describe("mazeSpec: points off the grid and the words of the problems", () => {
+  const problemsOf = (maze: Maze) => mazeSpec.problems(maze, settings);
+
+  void test("an entrance or exit off any edge of the grid is named by its position code and the route checks stay out of it", () => {
+    const { rows, columns } = levelById(LEVEL);
+    const maze = base();
+    const offGrid = [
+      { row: -1, col: 1 },
+      { row: rows, col: 1 },
+      { row: 1, col: -1 },
+      { row: 1, col: columns },
+    ];
+    for (const point of offGrid) {
+      const badEntrance = problemsOf({ ...maze, entrance: point }).map((problem) => problem.code);
+      assert.ok(badEntrance.includes("entrance-position"), JSON.stringify(point));
+      assert.ok(!badEntrance.includes("no-route") && !badEntrance.includes("several-routes"), JSON.stringify(point));
+      const badExit = problemsOf({ ...maze, exit: point }).map((problem) => problem.code);
+      assert.ok(badExit.includes("exit-position"), JSON.stringify(point));
+      assert.ok(!badExit.includes("no-route") && !badExit.includes("several-routes"), JSON.stringify(point));
+    }
+  });
+
+  void test("the four corner cells are on the grid: a closed maze with an entrance or exit there has no route", () => {
+    const { rows, columns } = levelById(LEVEL);
+    const closed = base();
+    for (const row of closed.cells) {
+      for (const cell of row) {
+        cell.north = cell.east = cell.south = cell.west = true;
+      }
+    }
+    const corners = [
+      { row: 0, col: 0 },
+      { row: 0, col: columns - 1 },
+      { row: rows - 1, col: 0 },
+      { row: rows - 1, col: columns - 1 },
+    ];
+    for (const point of corners) {
+      for (const moved of [
+        { ...closed, entrance: point },
+        { ...closed, exit: point },
+      ]) {
+        const codes = problemsOf(moved).map((problem) => problem.code);
+        assert.ok(codes.includes("no-route"), JSON.stringify(point));
+      }
+    }
+  });
+
+  void test("each problem says in words what is wrong and where", () => {
+    const { rows, columns } = levelById(LEVEL);
+    const detail = (maze: Maze, code: string): string | undefined =>
+      problemsOf(maze).find((problem) => problem.code === code)?.detail;
+
+    const small = { ...base(), width: columns - 1 };
+    assert.equal(detail(small, "grid-size"), `expected ${columns}x${rows}, got ${columns - 1}x${rows}`);
+
+    const moved = { ...base(), entrance: { row: 0, col: 0 } };
+    assert.equal(detail(moved, "entrance-position"), "entrance at 0,0");
+    assert.equal(detail({ ...base(), exit: { row: 0, col: 1 } }, "exit-position"), "exit at 0,1");
+
+    const sealedEntrance = base();
+    sealedEntrance.cells[sealedEntrance.entrance.row][sealedEntrance.entrance.col].north = true;
+    assert.equal(detail(sealedEntrance, "entrance-sealed"), "the north wall of the entrance is closed");
+    const sealedExit = base();
+    sealedExit.cells[sealedExit.exit.row][sealedExit.exit.col].south = true;
+    assert.equal(detail(sealedExit, "exit-sealed"), "the south wall of the exit is closed");
+
+    const side = base();
+    side.cells[2][0].west = false;
+    assert.equal(detail(side, "outer-wall-open"), "side wall open at 2,0");
+    const top = base();
+    top.cells[0][columns - 1].north = false;
+    assert.equal(detail(top, "outer-wall-open"), `top or bottom wall open at 0,${columns - 1}`);
+
+    const mismatchEast = base();
+    mismatchEast.cells[2][2].east = !mismatchEast.cells[2][2].east;
+    assert.equal(detail(mismatchEast, "wall-mismatch"), "east of 2,2");
+    const mismatchSouth = base();
+    mismatchSouth.cells[2][2].south = !mismatchSouth.cells[2][2].south;
+    assert.equal(detail(mismatchSouth, "wall-mismatch"), "south of 2,2");
+  });
+
+  void test("the words of a route problem", () => {
+    const closed = base();
+    for (const row of closed.cells) {
+      for (const cell of row) {
+        cell.north = cell.east = cell.south = cell.west = true;
+      }
+    }
+    closed.cells[closed.entrance.row][closed.entrance.col].north = false;
+    closed.cells[closed.exit.row][closed.exit.col].south = false;
+    const found = problemsOf(closed);
+    assert.equal(
+      found.find((problem) => problem.code === "no-route")?.detail,
+      "no route from the entrance to the exit",
+    );
+    assert.equal(
+      found.find((problem) => problem.code === "unreachable-cells")?.detail,
+      "some cells cannot be reached from the entrance",
+    );
+  });
+
+  void test("a second route is named in words, and the first of several wall defects is the one reported", () => {
+    const loop = base();
+    let opened = false;
+    for (let row = 1; row < loop.height - 2 && !opened; row += 1) {
+      for (let col = 1; col < loop.width - 2 && !opened; col += 1) {
+        if (loop.cells[row][col].east) {
+          loop.cells[row][col].east = false;
+          loop.cells[row][col + 1].west = false;
+          if (countPaths(loop, loop.entrance, loop.exit) > 1) {
+            opened = true;
+          } else {
+            loop.cells[row][col].east = true;
+            loop.cells[row][col + 1].west = true;
+          }
+        }
+      }
+    }
+    assert.ok(opened, "no wall found whose opening makes a second route");
+    assert.equal(
+      problemsOf(loop).find((problem) => problem.code === "several-routes")?.detail,
+      "more than one route from the entrance to the exit",
+    );
+    const twoMismatches = base();
+    twoMismatches.cells[2][2].east = !twoMismatches.cells[2][2].east;
+    twoMismatches.cells[4][4].east = !twoMismatches.cells[4][4].east;
+    assert.equal(problemsOf(twoMismatches).find((problem) => problem.code === "wall-mismatch")?.detail, "east of 2,2");
+  });
+});
