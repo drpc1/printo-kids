@@ -84,6 +84,17 @@ for (const level of ODD_ONE_OUT_LEVELS) {
         }
       });
 
+      void test("a level with distractors does put them in: some rows vary exactly that many other features", () => {
+        if (level.distractors === 0) return;
+        const rows = cards(level, colors).flatMap((card) => card.rows);
+        assert.ok(
+          rows.some((row) => varyingFeatures(row.items, row.rule) === level.distractors),
+          `${level.id} colors ${String(colors)}`,
+        );
+        const withDistractor = rows.filter((row) => varyingFeatures(row.items, row.rule) > 0).length;
+        assert.ok(withDistractor / rows.length > 0.5, `${level.id}: ${withDistractor}/${rows.length}`);
+      });
+
       void test("a count row has groups of the level's size and one odd picture one more or one less", () => {
         for (const card of cards(level, colors)) {
           for (const row of card.rows.filter((candidate) => candidate.rule === "count")) {

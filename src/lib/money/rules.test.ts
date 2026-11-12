@@ -111,6 +111,9 @@ void describe("moneyRowProblems", () => {
     assert.deepEqual(moneyRowProblems(row([10], [5]), HARD), []);
     assert.ok(moneyRowProblems(row([3], [1]), HARD).includes("nominal"));
     assert.ok(moneyRowProblems(row([2], [1]), moneyLevelById("trudny", "usd")).includes("nominal"));
+    // One wrong piece among right ones is still a wrong pile (a 10 zł note slipped into a coin pile).
+    assert.ok(moneyRowProblems(row([1, 2, 10], [5]), MEDIUM).includes("nominal"));
+    assert.ok(moneyRowProblems(row([5], [1, 2, 10]), MEDIUM).includes("nominal"));
   });
 
   void test("the first level mixes the coins 1, 2 and 5 zł in a pile, up to 10 zł and 5 pieces", () => {

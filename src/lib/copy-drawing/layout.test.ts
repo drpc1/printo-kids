@@ -75,6 +75,29 @@ void describe("layoutCopyDrawingSheet", () => {
     assert.throws(() => layoutCopyDrawingSheet(level, WITH_CHARACTER));
   });
 
+  void test("the page is A4 and a level that does not fit is refused with a message that names the grids", () => {
+    const base = COPY_DRAWING_LEVELS[0];
+    const sheet = layoutCopyDrawingSheet(base, WITHOUT_CHARACTER);
+    assert.deepEqual(sheet.page, { width: 210, height: 297 });
+    const tooWide = { ...base, size: { ...base.size, columns: 12, rows: 1 }, cellSize: 7.6 };
+    assert.throws(
+      () => layoutCopyDrawingSheet(tooWide, WITHOUT_CHARACTER),
+      /Two 12 by 1 grids of 7\.6 mm do not fit inside the 10 mm page margin/,
+    );
+  });
+
+  void test("the cell is refused when it is a little over what width and height allow", () => {
+    const base = COPY_DRAWING_LEVELS[0];
+    // 12 columns: (210 - 20 - 10) / 24 = 7.5 mm.
+    const wide = { ...base, size: { ...base.size, columns: 12, rows: 1 } };
+    assert.doesNotThrow(() => layoutCopyDrawingSheet({ ...wide, cellSize: 7.5 }, WITHOUT_CHARACTER));
+    assert.throws(() => layoutCopyDrawingSheet({ ...wide, cellSize: 7.6 }, WITHOUT_CHARACTER));
+    // 20 rows with a plain line: (297 - 20 - 7 - 6) / 20 = 13.2 mm.
+    const tall = { ...base, size: { ...base.size, columns: 1, rows: 20 } };
+    assert.doesNotThrow(() => layoutCopyDrawingSheet({ ...tall, cellSize: 13.2 }, WITHOUT_CHARACTER));
+    assert.throws(() => layoutCopyDrawingSheet({ ...tall, cellSize: 13.3 }, WITHOUT_CHARACTER));
+  });
+
   void test("throws when there is no room under the instruction", () => {
     assert.throws(() => layoutCopyDrawingSheet(COPY_DRAWING_LEVELS[0], 300));
   });

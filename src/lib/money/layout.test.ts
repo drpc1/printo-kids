@@ -143,6 +143,18 @@ void describe("layoutMoneySheet", () => {
     }
   });
 
+  void test("the page is A4 and a refusal names the rows and the margin", () => {
+    assert.deepEqual(layoutMoneySheet(INPUT).page, { width: INPUT.pageWidth, height: INPUT.pageHeight });
+    assert.throws(
+      () => layoutMoneySheet({ ...INPUT, rowCount: 40 }),
+      new RegExp(`40 rows do not fit inside the ${INPUT.inset} page margin`),
+    );
+    assert.throws(() => layoutMoneySheet({ ...INPUT, rowCount: 0 }));
+    // A sign taller than the row, or piles with no room inside their padding, cannot be drawn.
+    assert.throws(() => layoutMoneySheet({ ...INPUT, signSize: 500 }));
+    assert.throws(() => layoutMoneySheet({ ...INPUT, pilePadding: 500 }));
+  });
+
   void test("throws when the rows cannot fit", () => {
     assert.throws(() => layoutMoneySheet({ ...INPUT, rowCount: 40 }));
   });
