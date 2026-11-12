@@ -1,9 +1,9 @@
 ---
 change_id: m5-stryker-new-cards
 title: M-5, Stryker, mapa ryzyk i lista wydruków dla czterech nowych kart
-status: new
+status: impl_reviewed
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-12
 archived_at: null
 ---
 
