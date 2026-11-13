@@ -50,7 +50,6 @@ export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHe
   const height = rows * cell;
   const left = sheet.inset + (innerWidth - (2 * width + sheet.gridGap)) / 2;
   // The instruction and the grids are one block that starts at the top margin, so the card begins high on the sheet (GitHub: a block centered down the page began mid-sheet on the lower levels).
-  const blockHeight = instructionBoxHeight + sheet.bandGap + height;
   const blockTop = sheet.inset;
   const bandY = blockTop;
   const top = blockTop + instructionBoxHeight + sheet.bandGap;
