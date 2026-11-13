@@ -27,7 +27,7 @@ export interface CopyDrawingSheetLayout {
 
 /**
  * Places the instruction and the two grids. The instruction and the grids are one block, centered across the page and
- * down the page inside the 10 mm margin like the nonogram card's; the grids sit `bandGap` under the instruction. `instructionBoxHeight` is the band with a character, the plain line
+ * standing at the top of the 10 mm margin; the grids sit `bandGap` under the instruction. `instructionBoxHeight` is the band with a character, the plain line
  * height without one. Throws when the level's cell size does not fit, instead of shrinking the cell or crossing the margin.
  */
 export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHeight: number): CopyDrawingSheetLayout {
@@ -49,9 +49,9 @@ export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHe
   const width = columns * cell;
   const height = rows * cell;
   const left = sheet.inset + (innerWidth - (2 * width + sheet.gridGap)) / 2;
-  // The instruction and the grids are one block, centered down the page like the nonogram card's.
+  // The instruction and the grids are one block that starts at the top margin, so the card begins high on the sheet (GitHub: a block centered down the page began mid-sheet on the lower levels).
   const blockHeight = instructionBoxHeight + sheet.bandGap + height;
-  const blockTop = sheet.inset + (areaBottom - sheet.inset - blockHeight) / 2;
+  const blockTop = sheet.inset;
   const bandY = blockTop;
   const top = blockTop + instructionBoxHeight + sheet.bandGap;
   const source = { x: left, y: top, width, height };
