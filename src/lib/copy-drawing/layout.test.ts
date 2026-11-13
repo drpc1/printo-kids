@@ -32,7 +32,7 @@ void describe("layoutCopyDrawingSheet", () => {
           }
         });
 
-        void test("the cell is the nominal one: 10, 7 and 5 mm", () => {
+        void test("the cell is the nominal one: 11, 7.5 and 5 mm", () => {
           assert.equal(sheet.cell, level.cellSize);
           assert.equal(sheet.source.width, level.size.columns * sheet.cell);
           assert.equal(sheet.source.height, level.size.rows * sheet.cell);
@@ -45,12 +45,15 @@ void describe("layoutCopyDrawingSheet", () => {
           assert.ok(Math.abs(sheet.copy.x - (sheet.source.x + sheet.source.width) - 10) < EPSILON);
         });
 
-        void test("the instruction and the grids are one block centered across the page and standing at the top margin, the grids 6 mm under the instruction", () => {
+        void test("the instruction and the grids are one block centered across and down the page, the grids 6 mm under the instruction", () => {
           const left = sheet.source.x - 10;
           const right = 200 - (sheet.copy.x + sheet.copy.width);
           assert.ok(Math.abs(left - right) < EPSILON, `${left} vs ${right}`);
           assert.ok(Math.abs(sheet.source.y - (sheet.band.y + boxHeight + 6)) < EPSILON, `gap ${sheet.source.y}`);
-          assert.ok(Math.abs(sheet.band.y - 10) < EPSILON, `band starts at ${sheet.band.y}`);
+          const topGap = sheet.band.y - 10;
+          const bottomGap = 287 - (sheet.source.y + sheet.source.height);
+          assert.ok(Math.abs(topGap - bottomGap) < EPSILON, `${topGap} vs ${bottomGap}`);
+          assert.ok(sheet.band.y >= 10 - EPSILON, `band starts at ${sheet.band.y}`);
           assert.ok(sheet.source.y + sheet.source.height <= 287 + EPSILON);
         });
       });
