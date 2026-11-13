@@ -106,6 +106,28 @@ block down the page (`top = inset + (availableHeight - blockHeight) / 2`), while
 PRD sentence, leaving code and docs out of sync. Reverting `blockTop` to the centering formula (Phase 2 of
 `plan.md`) brings the code back in line with the pre-existing PRD text, not just the user's live request.
 
+## Addendum 2 (2026-11-13): the centering fix overshot; fixed offset instead
+
+The Phase 2 centering change above (matching `layoutSudokuSheet`'s formula literally) was implemented, then
+checked against the rebuilt catalog thumbnails (`node --experimental-strip-types scripts/build-thumbnails.mjs`,
+which renders this card, sudoku and nonogram from their real generators/layouts at their real default settings).
+Measured instruction y: copy-drawing ≈89 mm, sudoku ≈59–69 mm, nonogram ≈48 mm — the centering formula pushed
+copy-drawing noticeably _deeper_ than either reference, because its block (two side-by-side, width-bound grids)
+is much shorter than sudoku's or nonogram's single tall grid, and the centering formula's offset grows as the
+block shrinks. This effectively reproduced the original "starts mid-page" complaint. Corrected to a fixed
+`topOffset: 40` mm (not derived from this card's own blockHeight) in `COPY_DRAWING_SHEET`, landing the instruction
+at y≈53.5 mm — in the same neighborhood as sudoku/nonogram, not flush at the 10 mm margin like the fully
+top-anchored cards (maze, sequences, money, …), and not deep-centered. See `plan.md` Phase 2 for the final
+implementation.
+
+## Addendum 3 (2026-11-13): card renamed to "Skopiuj obrazek"
+
+Separate, user-requested change bundled into the same PR: the card's display name "Skopiuj rysunek na kratce" was
+shortened to "Skopiuj obrazek" ("na kratce" was redundant — every card in the catalog is drawn on a grid). See
+`plan.md` Phase 3. Scoped to live, user-facing references (`src/`, `tests/e2e/`, `context/foundation/prd.md`);
+`context/archive/**`, `roadmap.md`'s historical slice narrative, `shape-notes.md` and `test-plan.md` keep the old
+name as a historical record of the slice that shipped under it.
+
 ## Sources
 
 - [src/lib/copy-drawing/layout.ts](../../../src/lib/copy-drawing/layout.ts)

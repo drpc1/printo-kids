@@ -1,4 +1,4 @@
-// "Skopiuj rysunek na kratce" as a card kind (S-35, phase 2): `copyDrawingSpec` wraps `copyDrawingProblems`,
+// "Skopiuj obrazek" as a card kind (S-35, phase 2): `copyDrawingSpec` wraps `copyDrawingProblems`,
 // `copyDrawingEngine` wraps the generator. Level and category are the card's content. The card has no "Pokaż rozwiązanie"
 // and no colors, so neither reaches the spec. Running out of attempts is `CardExhausted`; the engine never returns null.
 import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";

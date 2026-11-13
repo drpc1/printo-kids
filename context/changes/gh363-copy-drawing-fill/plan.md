@@ -141,54 +141,136 @@ sentence under its existing paragraph (it is already "closed", so this is an add
 
 ---
 
-## Phase 2: Center the instruction/grid block down the page, like sudoku and nonogram
+## Phase 2: Pin the instruction/grid block 40 mm below the top margin — about sudoku's level
 
 ### Overview
 
-Revert `layoutCopyDrawingSheet`'s top-anchored `blockTop` (introduced by PR #362) back to the vertically-centered
-formula `layoutSudokuSheet` and `layoutNonogramSheet` already use, per the user's explicit request to align the
-card's vertical rule with sudoku's.
+Two iterations happened here, both from direct user feedback:
+
+1. First attempt: revert `layoutCopyDrawingSheet`'s top-anchored `blockTop` (PR #362) to the vertically-centered
+   formula `layoutSudokuSheet`/`layoutNonogramSheet` use. **This overshot**: measured against the rebuilt catalog
+   thumbnails, it put the instruction at y≈89 mm — deeper than sudoku (y≈59) or nonogram (y≈48), i.e. it recreated
+   the "starts mid-page" look, because this card's two side-by-side grids make a much shorter block than sudoku's
+   or nonogram's single big grid, so the same centering formula overshoots for it.
+2. Final: a fixed offset (`COPY_DRAWING_SHEET.topOffset = 40`) pins the block 40 mm below the margin — not flush
+   like the fully top-anchored cards (maze, sequences, money, …, which start at `inset` = 10 mm), and not
+   proportionally centered like sudoku/nonogram, but landing in their neighborhood (sudoku's own centered top
+   ranges ~46–56 mm across its three sizes) regardless of this card's own (shorter) block height.
 
 ### Changes Required:
 
-#### 1. Copy-drawing layout
+#### 1. Copy-drawing sheet constants
+
+**File**: `src/lib/copy-drawing/sheet.ts`
+
+**Intent**: Add `topOffset: 40` to `COPY_DRAWING_SHEET`, documented as a deliberate fixed value (not derived from
+this card's own blockHeight) chosen to land near sudoku's typical position.
+
+**Contract**: `COPY_DRAWING_SHEET.topOffset === 40`.
+
+#### 2. Copy-drawing layout
 
 **File**: `src/lib/copy-drawing/layout.ts`
 
-**Intent**: Replace `const blockTop = sheet.inset;` with the centered-down-the-page formula
-(`sheet.inset + (areaBottom - sheet.inset - blockHeight) / 2`, where `blockHeight = instructionBoxHeight +
-sheet.bandGap + height`), matching `layoutSudokuSheet`'s `top = inset + (pageHeight - inset * 2 - blockHeight) / 2`
-and `layoutNonogramSheet`'s equivalent. Update the function's doc comment accordingly.
+**Intent**: Replace the centering formula with `const blockTop = sheet.inset + sheet.topOffset;`. The `fits`
+height-bound calculation must subtract `topOffset` too (available height shrinks by the same amount), otherwise a
+level could pass the fit check and then cross the margin.
 
-**Contract**: `band.y` and the grids' `y` move down the page by `(areaBottom - sheet.inset - blockHeight) / 2`
-relative to today; horizontal centering, the fixed `bandGap` between instruction and grids, and the
-margin/overflow checks are unchanged.
+**Contract**: `band.y === sheet.inset + sheet.topOffset` (50 mm) for every level, independent of
+`instructionBoxHeight`; the grids' `y` is `band.y + instructionBoxHeight + bandGap` as before; horizontal
+centering and the margin/overflow checks are unchanged in form.
 
-#### 2. Layout unit test
+#### 3. Layout unit test
 
 **File**: `src/lib/copy-drawing/layout.test.ts`
 
-**Intent**: Replace the test asserting `band.y === 10` (top-anchored) with one asserting the block is centered
-down the page (`topGap === bottomGap`, mirroring `nonogram/layout.test.ts`'s "the block is centered across and
-down the page").
+**Intent**: Replace the centering assertion with one asserting the fixed offset; update the height-bound edge-case
+test's literal thresholds (they shift from the old `sheet.inset`-only budget to `sheet.inset + topOffset`).
 
-**Contract**: New/renamed test: "the instruction and the grids are one block centered across and down the page,
-the grids 6 mm under the instruction" — asserts horizontal centering (as before) and
-`band.y - 10 === 287 - (source.y + source.height)` (vertical centering) instead of `band.y === 10`.
+**Contract**: New test asserts `band.y === 50` for every level/character combination; the "tall" edge-case test's
+thresholds move from 13.2/13.3 mm to 11.2/11.3 mm (20-row, plain-line case: `(297 - 10 - 40 - 7 - 6) / 20 = 11.2`).
 
 ### Success Criteria:
 
 #### Automated Verification:
 
-- `npm test` passes with the updated centering test
+- `npm test` passes with the updated fixed-offset test
 - `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` all pass
 
 #### Manual Verification:
 
-- In the dev preview, generate a copy-drawing card at each level and a sudoku card, and confirm both now leave a
-  visually similar (not necessarily pixel-identical) empty band above and below their content block, instead of
-  copy-drawing's content hugging the top margin while sudoku's is centered
+- Rebuild `public/thumbnails/*.svg` (`node --experimental-strip-types scripts/build-thumbnails.mjs`) and compare
+  the instruction's y in `kopiuj.svg` against `sudoku.svg`/`nonogram.svg`: should land in the same neighborhood
+  (confirmed: kopiuj y≈53.5 vs sudoku y≈59–69, nonogram y≈48), clearly not at the ~90 mm the centering attempt gave
 - Confirm the printed margin (10 mm) still holds at every level (reuses `tests/e2e/copy-drawing.spec.ts:138`)
+
+---
+
+## Phase 3: Rename the card from "Skopiuj rysunek na kratce" to "Skopiuj obrazek"
+
+### Overview
+
+User-requested rename: "na kratce" was redundant (every card in this catalog is drawn on a grid), and "obrazek" is
+the simpler word already used in the card's own instruction sentence ("Przerysuj obrazek na pustą kratkę.").
+
+### Changes Required:
+
+#### 1. Catalog entry
+
+**File**: `src/lib/cards.ts`
+
+**Intent**: Rename the `kopiuj` card kind's `title` field. `id: "kopiuj"` and `href: "/copy-drawing"` are internal
+and unchanged — only the display name changes.
+
+**Contract**: `CARD_KINDS.find(k => k.id === "kopiuj").title === "Skopiuj obrazek"`. `cardPageTitle`/`cardTitle`
+(read by `copy-drawing.astro`) derive from this field automatically.
+
+#### 2. User-visible strings in components and pages
+
+**Files**: `src/components/CopyDrawingGenerator.tsx` (dialog title), `src/components/CopyDrawingSheet.tsx`
+(`aria-label`), `src/pages/copy-drawing.astro` (description), `src/pages/how-it-works.astro` (card list sentence)
+
+**Intent**: Replace the literal string "Skopiuj rysunek na kratce" with "Skopiuj obrazek" everywhere it appears as
+user-facing text (dialog titles, `aria-label`, descriptions). Doc comments referencing the old name in
+`CopyDrawingGenerator.tsx`, `CopyDrawingSheet.tsx`, `src/lib/copy-drawing/{engine,levels,sheet}.ts` updated too,
+for consistency.
+
+**Contract**: No occurrence of the literal string "Skopiuj rysunek na kratce" remains in `src/`.
+
+#### 3. Tests
+
+**Files**: `src/lib/card-summary.test.ts`, `tests/e2e/{character-speaks,copy-drawing,copy-drawing-reprint,
+how-it-works,phone-layout,phone-toggle-align,profile-summary}.spec.ts`
+
+**Intent**: Update every literal-string assertion/selector that matched the old name (title, `aria-label`
+accessible name, catalog description sentence) to the new one.
+
+**Contract**: No test references "Skopiuj rysunek na kratce"; all reference "Skopiuj obrazek".
+
+#### 4. PRD
+
+**File**: `context/foundation/prd.md`
+
+**Intent**: Rename every live reference (US-27/US-28 headings and bodies, FR-037/FR-038, Business Logic heading
+and table, the "Profil i zapamiętane ustawienia" table, Non-Goals mentions) from "Skopiuj rysunek na kratce" to
+"Skopiuj obrazek", and record the rename decision as a dated note at the top of the card's Business Logic section.
+`context/archive/**`, `context/foundation/roadmap.md`'s historical S-35 narrative, `shape-notes.md` and
+`test-plan.md` are left with the old name — they're historical/shaping records of a slice already shipped under
+that name, not living references that must track the current UI string.
+
+**Contract**: `grep -c "Skopiuj rysunek na kratce" context/foundation/prd.md` is 0.
+
+### Success Criteria:
+
+#### Automated Verification:
+
+- `npm test` passes with every updated literal
+- `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` all pass
+
+#### Manual Verification:
+
+- Catalog page shows "Skopiuj obrazek" as the card's name; `/copy-drawing` page title/heading/description all say
+  "Skopiuj obrazek"; no leftover "na kratce" anywhere in the live UI
 
 ---
 
@@ -197,23 +279,25 @@ the grids 6 mm under the instruction" — asserts horizontal centering (as befor
 ### Unit Tests:
 
 - `levels.test.ts`: new cell-size literals
-- `layout.test.ts`: new nominal-cell literal; existing margin/fit/throw assertions are size-agnostic and need no
-  change beyond the literal
+- `layout.test.ts`: new nominal-cell literal, new fixed-offset assertion, updated height-bound edge-case
+  thresholds; existing margin/fit/throw assertions otherwise unchanged
+- `card-summary.test.ts`: new title literal
 
 ### Manual Testing Steps:
 
-1. Open `/skopiuj-rysunek` (or the current copy-drawing route), generate a card at each of the three levels, and
-   visually compare grid size/fill against the `mockup.mts` "obok-max" renders in this change folder
-2. Confirm the 10 mm print margin still holds at `latwy`/`sredni` (reuses the existing e2e assertion, no new test
-   needed since the assertion is already size-agnostic per `tests/e2e/copy-drawing.spec.ts:138`)
+1. Open `/copy-drawing`, generate a card at each of the three levels, and visually compare grid size/fill against
+   the `mockup.mts` "obok-max" renders in this change folder
+2. Confirm the 10 mm print margin still holds at every level (reuses the existing e2e assertion)
+3. Rebuild catalog thumbnails and compare the instruction's vertical position against sudoku and nonogram
+4. Confirm the card's name reads "Skopiuj obrazek" everywhere in the UI (catalog, page title/heading, dialogs)
 
 ## Performance Considerations
 
-None — static value change.
+None — static value and string changes.
 
 ## Migration Notes
 
-None — no persisted data references these cell sizes; they're read fresh on every render.
+None — no persisted data references these cell sizes or this title string; they're read fresh on every render.
 
 ## References
 
@@ -240,14 +324,25 @@ None — no persisted data references these cell sizes; they're read fresh on ev
 - [x] 1.6 latwy and sredni cards visibly larger, still inside the printed margin
 - [x] 1.7 trudny visually unchanged
 
-### Phase 2: Center the instruction/grid block down the page, like sudoku and nonogram
+### Phase 2: Pin the instruction/grid block 40 mm below the top margin — about sudoku's level
 
 #### Automated
 
-- [x] 2.1 `npm test` passes with the updated centering test
+- [x] 2.1 `npm test` passes with the updated fixed-offset test
 - [x] 2.2 `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` all pass
 
 #### Manual
 
-- [x] 2.3 copy-drawing and sudoku both leave a symmetric empty band above/below their block
+- [x] 2.3 rebuilt thumbnails: kopiuj instruction y≈53.5, sudoku y≈59–69, nonogram y≈48 — same neighborhood, not the ~90 mm the first (centering) attempt gave
 - [x] 2.4 printed margin (10 mm) holds at every level (verified by `layout.test.ts`'s margin assertions, which stayed green for every level)
+
+### Phase 3: Rename the card from "Skopiuj rysunek na kratce" to "Skopiuj obrazek"
+
+#### Automated
+
+- [x] 3.1 `npm test` passes with every updated literal
+- [x] 3.2 `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` all pass
+
+#### Manual
+
+- [x] 3.3 catalog, page title/heading/description and dialogs all read "Skopiuj obrazek"

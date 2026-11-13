@@ -9,7 +9,7 @@ import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
 /**
- * The "Skopiuj rysunek na kratce" card: the instruction (the character's speech band, or the plain line without a
+ * The "Skopiuj obrazek" card: the instruction (the character's speech band, or the plain line without a
  * character) and two grids of one size side by side. The left grid carries the black silhouette and always prints; the
  * right grid is empty, the child fills it in. The silhouette is black, or in the crayon colors of the template when the
  * colors switch is on. There is no answer and no object name on the card.
@@ -39,7 +39,7 @@ export function CopyDrawingSheet({
       )}
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
-      aria-label="Skopiuj rysunek na kratce"
+      aria-label="Skopiuj obrazek"
       data-card-key={card.key}
     >
       <rect width={layout.page.width} height={layout.page.height} fill="var(--card)" />

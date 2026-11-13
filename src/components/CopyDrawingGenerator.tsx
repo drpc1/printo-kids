@@ -22,7 +22,7 @@ import {
 import { OBJECT_CATEGORY_CHOICES } from "@/lib/symmetry/templates";
 
 /**
- * The "Skopiuj rysunek na kratce" page: Generuj, the card, Drukuj, the character, level and category choices, and the
+ * The "Skopiuj obrazek" page: Generuj, the card, Drukuj, the character, level and category choices, and the
  * shared profile corner. It has no colors and no solution switch: the left grid is the picture and prints, the right
  * grid is empty. The chosen character stands by the instruction on the card and says it. The level and the category come
  * from `useCardSettings` and every change is remembered at once; changing either with a card shown draws a new card, and
@@ -69,7 +69,7 @@ export default function CopyDrawingGenerator() {
   const levelControl = (
     <SudokuChoice
       label="Poziom"
-      dialogTitle="Poziom karty „Skopiuj rysunek na kratce”"
+      dialogTitle="Poziom karty „Skopiuj obrazek”"
       options={COPY_DRAWING_LEVELS}
       value={levelId}
       open={levelOpen}
