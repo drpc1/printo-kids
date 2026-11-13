@@ -141,7 +141,7 @@ sentence under its existing paragraph (it is already "closed", so this is an add
 
 ---
 
-## Phase 2: Pin the instruction/grid block 40 mm below the top margin — about sudoku's level
+## Phase 2: Pin the instruction/grid block at 56 mm from the top — sudoku's exact default instruction height
 
 ### Overview
 
@@ -152,10 +152,12 @@ Two iterations happened here, both from direct user feedback:
    thumbnails, it put the instruction at y≈89 mm — deeper than sudoku (y≈59) or nonogram (y≈48), i.e. it recreated
    the "starts mid-page" look, because this card's two side-by-side grids make a much shorter block than sudoku's
    or nonogram's single big grid, so the same centering formula overshoots for it.
-2. Final: a fixed offset (`COPY_DRAWING_SHEET.topOffset = 40`) pins the block 40 mm below the margin — not flush
-   like the fully top-anchored cards (maze, sequences, money, …, which start at `inset` = 10 mm), and not
-   proportionally centered like sudoku/nonogram, but landing in their neighborhood (sudoku's own centered top
-   ranges ~46–56 mm across its three sizes) regardless of this card's own (shorter) block height.
+2. Second attempt: a fixed offset `topOffset = 40` (band.y = 50 mm) — closer, still judged too high relative to
+   sudoku by the user. Measured sudoku's own default (4×4, no character) `instruction.top` exactly via
+   `layoutSudokuSheet`: 56 mm.
+3. Final: `topOffset = 46` (band.y = 56 mm), matching that exact number rather than approximating a neighborhood —
+   not flush like the fully top-anchored cards (maze, sequences, money, …, which start at `inset` = 10 mm), and
+   not proportionally centered like sudoku/nonogram, but pinned to sudoku's own computed default position.
 
 ### Changes Required:
 
@@ -163,10 +165,11 @@ Two iterations happened here, both from direct user feedback:
 
 **File**: `src/lib/copy-drawing/sheet.ts`
 
-**Intent**: Add `topOffset: 40` to `COPY_DRAWING_SHEET`, documented as a deliberate fixed value (not derived from
-this card's own blockHeight) chosen to land near sudoku's typical position.
+**Intent**: Add `topOffset: 46` to `COPY_DRAWING_SHEET`, documented as a deliberate fixed value (not derived from
+this card's own blockHeight) chosen to match sudoku's exact default `instruction.top` of 56 mm
+(`sheet.inset + topOffset = 10 + 46 = 56`).
 
-**Contract**: `COPY_DRAWING_SHEET.topOffset === 40`.
+**Contract**: `COPY_DRAWING_SHEET.topOffset === 46`.
 
 #### 2. Copy-drawing layout
 
@@ -176,7 +179,7 @@ this card's own blockHeight) chosen to land near sudoku's typical position.
 height-bound calculation must subtract `topOffset` too (available height shrinks by the same amount), otherwise a
 level could pass the fit check and then cross the margin.
 
-**Contract**: `band.y === sheet.inset + sheet.topOffset` (50 mm) for every level, independent of
+**Contract**: `band.y === sheet.inset + sheet.topOffset` (56 mm) for every level, independent of
 `instructionBoxHeight`; the grids' `y` is `band.y + instructionBoxHeight + bandGap` as before; horizontal
 centering and the margin/overflow checks are unchanged in form.
 
@@ -187,8 +190,9 @@ centering and the margin/overflow checks are unchanged in form.
 **Intent**: Replace the centering assertion with one asserting the fixed offset; update the height-bound edge-case
 test's literal thresholds (they shift from the old `sheet.inset`-only budget to `sheet.inset + topOffset`).
 
-**Contract**: New test asserts `band.y === 50` for every level/character combination; the "tall" edge-case test's
-thresholds move from 13.2/13.3 mm to 11.2/11.3 mm (20-row, plain-line case: `(297 - 10 - 40 - 7 - 6) / 20 = 11.2`).
+**Contract**: New test asserts `band.y === 56` for every level/character combination; the "tall" edge-case test's
+thresholds move from 13.2/13.3 mm to 10.9/11 mm (20-row, plain-line case:
+`(287 - 56 - 7 - 6) / 20 = 10.9`, where `287 = pageHeight - inset` and `56 = inset + topOffset`).
 
 ### Success Criteria:
 
@@ -200,8 +204,10 @@ thresholds move from 13.2/13.3 mm to 11.2/11.3 mm (20-row, plain-line case: `(29
 #### Manual Verification:
 
 - Rebuild `public/thumbnails/*.svg` (`node --experimental-strip-types scripts/build-thumbnails.mjs`) and compare
-  the instruction's y in `kopiuj.svg` against `sudoku.svg`/`nonogram.svg`: should land in the same neighborhood
-  (confirmed: kopiuj y≈53.5 vs sudoku y≈59–69, nonogram y≈48), clearly not at the ~90 mm the centering attempt gave
+  the instruction's y in `kopiuj.svg` against `sudoku.svg`: should match exactly, not just be in the same
+  neighborhood (confirmed: kopiuj instruction y=59.5 vs sudoku's first line y=59.25 — same `band.y=56`, the 0.25 mm
+  text-position difference is only the two cards' different `instructionSize`), clearly not the ~90 mm the
+  centering attempt gave or the 50 mm first fixed-offset attempt
 - Confirm the printed margin (10 mm) still holds at every level (reuses `tests/e2e/copy-drawing.spec.ts:138`)
 
 ---
@@ -324,7 +330,7 @@ None — no persisted data references these cell sizes or this title string; the
 - [x] 1.6 latwy and sredni cards visibly larger, still inside the printed margin
 - [x] 1.7 trudny visually unchanged
 
-### Phase 2: Pin the instruction/grid block 40 mm below the top margin — about sudoku's level
+### Phase 2: Pin the instruction/grid block at 56 mm from the top — sudoku's exact default instruction height
 
 #### Automated
 
@@ -333,7 +339,7 @@ None — no persisted data references these cell sizes or this title string; the
 
 #### Manual
 
-- [x] 2.3 rebuilt thumbnails: kopiuj instruction y≈53.5, sudoku y≈59–69, nonogram y≈48 — same neighborhood, not the ~90 mm the first (centering) attempt gave
+- [x] 2.3 rebuilt thumbnails: kopiuj instruction y=59.5, sudoku y=59.25/68.75 — same `band.y=56`, not the ~90 mm the centering attempt gave nor the 50 mm first fixed-offset attempt
 - [x] 2.4 printed margin (10 mm) holds at every level (verified by `layout.test.ts`'s margin assertions, which stayed green for every level)
 
 ### Phase 3: Rename the card from "Skopiuj rysunek na kratce" to "Skopiuj obrazek"

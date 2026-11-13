@@ -115,10 +115,14 @@ Measured instruction y: copy-drawing ≈89 mm, sudoku ≈59–69 mm, nonogram �
 copy-drawing noticeably _deeper_ than either reference, because its block (two side-by-side, width-bound grids)
 is much shorter than sudoku's or nonogram's single tall grid, and the centering formula's offset grows as the
 block shrinks. This effectively reproduced the original "starts mid-page" complaint. Corrected to a fixed
-`topOffset: 40` mm (not derived from this card's own blockHeight) in `COPY_DRAWING_SHEET`, landing the instruction
-at y≈53.5 mm — in the same neighborhood as sudoku/nonogram, not flush at the 10 mm margin like the fully
-top-anchored cards (maze, sequences, money, …), and not deep-centered. See `plan.md` Phase 2 for the final
-implementation.
+`topOffset: 40` mm (not derived from this card's own blockHeight), landing the instruction at y≈53.5 mm — closer,
+but the user judged it still too high relative to sudoku. Measured sudoku's own default (4×4, no character)
+`instruction.top` precisely via `layoutSudokuSheet`: exactly 56 mm. Set `topOffset: 46` (so
+`band.y = inset + topOffset = 56`), matching that number exactly rather than approximating a neighborhood —
+confirmed on the rebuilt thumbnail: kopiuj's instruction sits at y=59.5 vs sudoku's first line at y=59.25, both
+with `band.y=56` (the 0.25 mm text-position difference is only the two cards' different `instructionSize`). Not
+flush at the 10 mm margin like the fully top-anchored cards (maze, sequences, money, …), and not deep-centered.
+See `plan.md` Phase 2 for the final implementation.
 
 ## Addendum 3 (2026-11-13): card renamed to "Skopiuj obrazek"
 
