@@ -1,10 +1,10 @@
 ---
 change_id: gh238-two-branches
 title: "Dwa środowiska: staging z main i produkcja z prod"
-status: implemented
+status: archived
 created: 2026-10-31
-updated: 2026-11-01
-archived_at: null
+updated: 2026-11-13
+archived_at: 2026-11-13T19:58:50Z
 ---
 
 ## Notes
