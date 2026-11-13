@@ -4,7 +4,7 @@ PrintoKids is an Astro 7 SSR app (React 19 islands, TypeScript, Tailwind 4, Clou
 
 ## Hard rules
 
-- MVP has no accounts, payments, AI, or backend jobs. Keep maze and optional child-profile data on-device.
+- MVP has no accounts, payments, AI, or backend jobs. Keep maze and optional child-profile data on-device: profiles and card settings are never sent anywhere. The one third party is Cloudflare Web Analytics, a page-view counter loaded on production only (@src/lib/analytics.ts); the browser sends it page-view data such as the page URL and IP, and the app passes it no profile or settings data. Do not add other third-party scripts.
 - Never commit `.env` or `.dev.vars`.
 - Merge Tailwind classes with `cn()` from `@/lib/utils` (@src/lib/utils.ts). Do not concatenate class strings.
 - Do not add Next.js `'use client'` (or similar) directives. `astro/no-set-html-directive` is an ESLint error (@eslint.config.js).
@@ -19,12 +19,14 @@ Run from the repo root on Node 22.14.0 (@.nvmrc). Scripts: @package.json.
 - `npm run build` / `npm run preview` — production SSR build and preview
 - `npm test` — Node's built-in test runner (`node --test`) on the files named in the `test` script (@package.json)
 - `npm run smoke` — HTTP check of the product page against a running server (`BASE_URL`, default `http://localhost:4321`)
+- `npm run depcruise` — dependency rules for `src` and `tests` (@.dependency-cruiser.cjs). `depcruise:html`, `depcruise:graph`, `depcruise:graph:archi` and `depcruise:focus` write reports; the HTML files stay untracked.
 
 Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --write` on `*.{json,css,md}`.
 
 ## Structure and conventions
 
 - `src/pages/` routes and `src/pages/api/` endpoints; `src/layouts/` Astro layouts; `src/components/` Astro + React; `src/components/ui/` shadcn new-york (@components.json); `src/lib/` helpers.
+- Name things in the domain language before you write code, tests or copy: term, meaning, name in code and how not to name it are in @context/domain/glossary.md.
 - Import with `@/*` → `./src/*` (@tsconfig.json). Use Astro for static content and layout; React only when interactivity is required. Add shadcn pieces with `npx shadcn@latest add [name]`.
 - API routes export uppercase `GET` / `POST`. Put shared DTOs in `src/types.ts`. Extract React hooks to `src/hooks/` (`@/hooks` in @components.json).
 - A card generator page is a React island on `CardPage` (@src/components/CardPage.tsx) and `useCardPage` (@src/hooks/useCardPage.ts): it passes its settings controls, its sheet and what Generuj does, and does not copy the profile corner, the bar, Generuj or Drukuj. Its rules, layout in millimetres and SVG stay in its own module. The maze is a card like the others: its level lives in `cards.labirynt` of `CardSettingsMap` and the page reads it through `useCardSettings`. A stored top-level `level` (older profiles and last-used parameters) is read once into `cards.labirynt` by `parseStoredCards` and is not written again.
@@ -40,7 +42,7 @@ Husky lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --writ
 
 ## Tests and CI
 
-`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the HTTP check of the product page, not that suite. Push and pull request to `main` and `prod` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm test`, `npx astro check`, and `npm run build` (the build does not need Supabase secrets), a separate job `smoke` runs that HTTP check, and a job `e2e` runs Playwright on the Chromium projects (`chromium`, `phone-360`, `pixel-7`, `tablet-768`; WebKit `iphone-13` stays in the on-demand `e2e-phone.yml`). All three jobs fail the run when red. When every changed path is under `context/`, jobs `ci`, `smoke`, and `e2e` are skipped and count as success. A path outside `context/`, either side of a rename, or a failure while counting paths runs all three. Locally, `playwright.config.ts` reuses whatever already listens on port 4321 (`reuseExistingServer`), so a dev server from another checkout is tested instead of this code; set `E2E_PORT` to a free port to build and serve the current tree. Commit-message convention is unset.
+`npm test` is the product check (Node's built-in runner). `scripts/smoke.mjs` is the HTTP check of the product page, not that suite. Push and pull request to `main` and `prod` run @.github/workflows/ci.yml: job `ci` runs `npm run lint`, `npm run depcruise`, `npm test`, `npx astro check`, and `npm run build` (the build does not need Supabase secrets), a separate job `smoke` runs that HTTP check, and a job `e2e` runs Playwright on the Chromium projects (`chromium`, `phone-360`, `pixel-7`, `tablet-768`; WebKit `iphone-13` stays in the on-demand `e2e-phone.yml`). All three jobs fail the run when red. When every changed path is under `context/`, jobs `ci`, `smoke`, and `e2e` are skipped and count as success. A path outside `context/`, either side of a rename, or a failure while counting paths runs all three. Locally, `playwright.config.ts` reuses whatever already listens on port 4321 (`reuseExistingServer`), so a dev server from another checkout is tested instead of this code; set `E2E_PORT` to a free port to build and serve the current tree. Commit-message convention is unset.
 
 ## UI
 
@@ -56,4 +58,4 @@ Run it only for code covered by the current change or a risk from test-plan.md,
 prefer narrowed scope with --mutate "path/to/file.ts:start-end", and do not chase
 100% mutation score. Survived mutants should be reviewed one by one: add an
 assertion only when the mutant represents a user-visible or business-relevant bug.
-Each scope has its own config in `stryker/` and a script `npm run mutate:<scope>` (add `-- --mutate "file:start-end"` to narrow it); how to repeat a run and the results are in `context/archive/2026-10-27-critical-paths-mutation-testing/reviews/stryker-results.md`, `context/archive/2026-10-31-gh224-stryker-on-new-maze/reviews/stryker-results.md` (scope `maze`) and `context/foundation/test-plan.md` §5a.
+Each scope has its own config in `stryker/` and a script `npm run mutate:<scope>` (add `-- --mutate "file:start-end"` to narrow it); how to repeat a run and the results are in `context/archive/2026-10-27-critical-paths-mutation-testing/reviews/stryker-results.md`, `context/archive/2026-10-31-gh224-stryker-on-new-maze/reviews/stryker-results.md` (scope `maze`), `context/changes/m5-stryker-new-cards/reviews/stryker-results.md` (scopes `odd-one-out`, `money`, `pattern-lines`, `copy-drawing`; run one scope at a time and keep the computer awake) and `context/foundation/test-plan.md` §5a.

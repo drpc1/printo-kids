@@ -95,5 +95,13 @@ export function simpleNonogramProblems(card: SimpleNonogramCard): readonly Simpl
   if (JSON.stringify(rebuilt) !== JSON.stringify(card.tones)) {
     problems.add("runs-mismatch");
   }
+  // A row is described in full: every row is as long as the grid, and a chip is a maximal run (no empty chip, no two
+  // neighbouring chips of one tone), so the chips of a row have one reading (gh283 A5).
+  if (card.tones.length !== card.rows || card.tones.some((row) => row.length !== card.columns)) {
+    problems.add("runs-mismatch");
+  }
+  if (card.runs.some((row) => row.some((run, index) => run.count < 1 || row[index - 1]?.tone === run.tone))) {
+    problems.add("runs-mismatch");
+  }
   return [...problems];
 }

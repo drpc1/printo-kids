@@ -23,6 +23,10 @@ const ANIA = {
     symetria: { level: "lat6", colors: true, category: "wszystkie" },
     sudoku: { size: 6, level: "sredni", symbols: "shapes", colors: false },
     nonogram: { level: "sredni", category: "zwierzeta" },
+    pieniadze: { level: "latwy" },
+    niepasuje: { level: "trudny", colors: false },
+    kopiuj: { level: "trudny", category: "zwierzeta", colors: true },
+    szlaczki: { level: "poziom4", lines: false },
   },
 };
 
@@ -93,6 +97,9 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Sekwencje\s+domyślne/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Nonogram\s+średni · Zwierzęta/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Dyktando graficzne\s+domyślne/ })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Kto ma więcej\?\s+łatwy/ })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Skopiuj obrazek\s+trudny · kolory · Zwierzęta/ })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Szlaczki\s+Poziom 4 · bez linii/ })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
   await expect(dialog.getByRole("button", { name: "Anuluj" })).toHaveCount(0);
 });
@@ -244,7 +251,7 @@ test("an own image picked in the favorite list is the favorite after a reload", 
   const dialog = await openEdit(page, "Ania");
   await dialog.getByRole("button", { name: /^Postać:/ }).click();
   const chooser = page.waitForEvent("filechooser");
-  await dialog.getByRole("button", { name: "Własne zdjęcie", exact: true }).click();
+  await dialog.getByRole("button", { name: "Własny obrazek", exact: true }).click();
   await (
     await chooser
   ).setFiles({
@@ -255,7 +262,7 @@ test("an own image picked in the favorite list is the favorite after a reload", 
       "base64",
     ),
   });
-  await expect(dialog.getByRole("button", { name: "Postać: Własne zdjęcie" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Postać: Własny obrazek" })).toBeVisible();
 
   const stored = await page.evaluate((key) => {
     const raw = JSON.parse(localStorage.getItem(key) ?? "null") as {
@@ -267,7 +274,7 @@ test("an own image picked in the favorite list is the favorite after a reload", 
   expect(stored?.image?.startsWith("data:image/")).toBe(true);
 
   await page.reload();
-  await expect(page.getByRole("button", { name: "Postać: Własne zdjęcie" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Postać: Własny obrazek" })).toBeVisible();
 });
 
 test("the edit window keeps the character row reachable and the summary inside it", async ({ page }) => {

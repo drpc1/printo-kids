@@ -138,6 +138,23 @@ void describe("writeLastUsed", () => {
     assert.doesNotThrow(() => {
       writeLastUsed(storage, { character: "rakieta" });
     });
+    assert.equal(writeLastUsed(storage, { character: "rakieta" }), false);
+  });
+
+  void test("a successful write returns true", () => {
+    assert.equal(writeLastUsed(memoryStorage(null), { character: "rakieta" }), true);
+  });
+
+  void test("writing the character keeps the stored cards and drops an unknown field", () => {
+    const storage = memoryStorage(
+      '{"character":"none","extra":1,"cards":{"sekwencje":{"level":"lat7","colors":false}}}',
+    );
+
+    writeLastUsed(storage, { character: "rakieta" });
+
+    assert.deepEqual(storage.writes, [
+      { key: KEY, value: '{"character":"rakieta","cards":{"sekwencje":{"level":"lat7","colors":false}}}' },
+    ]);
   });
 
   void test("writing the character reads it back and stores no level", () => {
@@ -227,6 +244,16 @@ void describe("card settings in last-used", () => {
       },
     };
     assert.equal(writeLastUsedCards(storage, {}), false);
+  });
+
+  void test("writing the cards returns true and keeps an unknown field while dropping the legacy level", () => {
+    const storage = memoryStorage('{"character":"rakieta","extra":1,"level":"lat6"}');
+
+    assert.equal(writeLastUsedCards(storage, { labirynt: { level: "lat6" } }), true);
+
+    assert.deepEqual(storage.writes, [
+      { key: KEY, value: '{"character":"rakieta","extra":1,"cards":{"labirynt":{"level":"lat6"}}}' },
+    ]);
   });
 });
 

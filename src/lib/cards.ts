@@ -7,7 +7,7 @@ export interface CardKind {
   description: string;
 }
 
-export const CARD_KINDS: readonly CardKind[] = [
+export const CARD_KINDS = [
   {
     id: "labirynt",
     title: "Labirynt",
@@ -56,10 +56,45 @@ export const CARD_KINDS: readonly CardKind[] = [
     description:
       "Dziecko rysuje po liniach kratki według strzałek i liczb kratek, a na końcu odkrywa obrys obiektu. Na kartce jest pusta kratka z kropką startu i lista poleceń, na przykład „3 →”. Karta nie zdradza, co się narysuje.",
   },
-];
+  {
+    id: "pieniadze",
+    title: "Kto ma więcej?",
+    href: "/money",
+    thumbnail: "/thumbnails/pieniadze.svg",
+    description:
+      "Dziecko porównuje, w której z dwóch kupek monet i banknotów jest więcej pieniędzy, i wpisuje między nimi „<”, „>” albo „=”. Na kartce jest pięć rzędów po dwie kupki z pustym polem pośrodku, a nominał to liczba na każdej monecie i banknocie. Waluta to złote, euro albo dolary, a poziom zmienia nominały, wielkość sum i to, czy liczba sztuk myli.",
+  },
+  {
+    id: "niepasuje",
+    title: "Który nie pasuje",
+    href: "/odd-one-out",
+    thumbnail: "/thumbnails/niepasuje.svg",
+    description:
+      "Dziecko zakreśla w każdym rzędzie obrazek, który łamie regułę rzędu: ma inny kształt, rozmiar, liczbę, kolor albo rodzaj obiektu niż reszta. Na kartce jest pięć albo sześć rzędów obrazków w ramkach i w każdym jest jedna odpowiedź. Poziom zmienia liczbę obrazków, rodzaje reguł i to, ile cech mąci; kolory włączasz osobno.",
+  },
+  {
+    id: "kopiuj",
+    title: "Skopiuj obrazek",
+    href: "/copy-drawing",
+    thumbnail: "/thumbnails/kopiuj.svg",
+    description:
+      "Dziecko przerysowuje czarny obrazek z jednej kratki do pustej kratki obok, zamalowując te same kratki. Na kartce są dwie kratki tej samej wielkości: w lewej jest gotowy obrazek, a prawa jest pusta. Poziom zmienia wielkość kratki i bogactwo obrazka, a kategorią wybierasz rodzaj obiektów; karta nie zdradza, co to jest.",
+  },
+  {
+    id: "szlaczki",
+    title: "Szlaczki",
+    href: "/patterns",
+    thumbnail: "/thumbnails/szlaczki.svg",
+    description:
+      "Dziecko prowadzi ołówek po kropkach albo kontynuuje pokazany wzór. Na kartce są rzędy szlaczków, od czterech do siedmiu zależnie od poziomu. Poziom zmienia tryb, wzory i liczbę rzędów, a na wyższych poziomach włączasz i wyłączasz linie pomocnicze.",
+  },
+] as const satisfies readonly CardKind[];
+
+/** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */
+export type CardKindId = (typeof CARD_KINDS)[number]["id"];
 
 export function cardsInCatalogOrder(): CardKind[] {
-  return [...CARD_KINDS].sort((left, right) => left.title.localeCompare(right.title, "pl"));
+  return ([...CARD_KINDS] as CardKind[]).sort((left, right) => left.title.localeCompare(right.title, "pl"));
 }
 
 export function cardTitle(id: CardKind["id"]): string {

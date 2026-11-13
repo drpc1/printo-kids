@@ -111,24 +111,6 @@ export function countPaths(maze: Maze, entrance: MazePoint, exit: MazePoint): nu
   return found;
 }
 
-export function mazeForSheet(candidate: Maze, levelId: LevelId): Maze | null {
-  const level = levelById(levelId);
-  if (candidate.width !== level.columns || candidate.height !== level.rows) {
-    return null;
-  }
-  const { entrance, exit } = candidate;
-  if (entrance.row !== level.entrance.row || entrance.col !== level.entrance.col) {
-    return null;
-  }
-  if (exit.row !== level.rows - 1 || !level.exitColumns.includes(exit.col)) {
-    return null;
-  }
-  if (countPaths(candidate, entrance, exit) !== 1) {
-    return null;
-  }
-  return candidate;
-}
-
 function pointKey(point: MazePoint): string {
   return `${point.row},${point.col}`;
 }

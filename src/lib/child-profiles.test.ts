@@ -14,6 +14,7 @@ import {
   writeChildProfiles,
   type ChildProfile,
   type ChildProfileStorage,
+  updateProfiles,
 } from "./child-profiles.ts";
 
 const KEY = "printo-kids:child-profiles";
@@ -771,5 +772,87 @@ void describe("favoriteDiffers", () => {
     const broken: ChildProfile = { id: "z1", name: "Zosia", character: "wlasne" };
     assert.equal(favoriteDiffers(broken, "none", null), false);
     assert.equal(favoriteDiffers(broken, "kot", null), true);
+  });
+});
+
+void describe("updateProfiles", () => {
+  const ania: ChildProfile = { id: "a1", name: "Ania", character: "none" };
+  const olek: ChildProfile = { id: "o1", name: "Olek", character: "rakieta" };
+  const stored = (profiles: ChildProfile[]): string => JSON.stringify({ profiles });
+
+  void test("writes the transformed list and returns it with the list it started from", () => {
+    const storage = memoryStorage(stored([ania, olek]));
+
+    const result = updateProfiles(storage, ALLOWED, (list) => withFavorite(list, "a1", "dinozaur", ALLOWED));
+
+    assert.deepEqual(result, {
+      ok: true,
+      before: [ania, olek],
+      profiles: [{ ...ania, character: "dinozaur" }, olek],
+    });
+    assert.deepEqual(readChildProfiles(storage, ALLOWED), [{ ...ania, character: "dinozaur" }, olek]);
+  });
+
+  void test("a profile that vanished between reading and writing is unavailable and the disk is untouched", () => {
+    const storage = memoryStorage(stored([olek]));
+
+    const result = updateProfiles(storage, ALLOWED, (list) => withFavorite(list, "a1", "dinozaur", ALLOWED));
+
+    assert.deepEqual(result, { ok: false, reason: "unavailable" });
+    assert.deepEqual(storage.writes, []);
+  });
+
+  void test("a storage that throws on setItem is write-failed and does not throw", () => {
+    const failing: ChildProfileStorage = {
+      getItem: () => stored([ania]),
+      setItem(): void {
+        throw new Error("blocked");
+      },
+    };
+
+    assert.deepEqual(
+      updateProfiles(failing, ALLOWED, (list) => list),
+      { ok: false, reason: "write-failed" },
+    );
+  });
+
+  void test("a transform that throws is reported, not thrown", () => {
+    const storage = memoryStorage(stored([ania]));
+
+    const result = updateProfiles(storage, ALLOWED, () => {
+      throw new Error("boom");
+    });
+
+    assert.equal(result.ok, false);
+    assert.deepEqual(storage.writes, []);
+  });
+
+  void test("two updates in a row do not lose each other", () => {
+    const storage = memoryStorage(stored([ania, olek]));
+
+    updateProfiles(storage, ALLOWED, (list) => withFavorite(list, "a1", "dinozaur", ALLOWED));
+    updateProfiles(storage, ALLOWED, (list) => withProfileCards(list, "o1", { labirynt: { level: "lat6" } }));
+
+    assert.deepEqual(readChildProfiles(storage, ALLOWED), [
+      { ...ania, character: "dinozaur" },
+      { ...olek, cards: { labirynt: { level: "lat6" } } },
+    ]);
+  });
+
+  void test("the transform gets the stored list, not one read earlier", () => {
+    const storage = memoryStorage(stored([ania]));
+    const earlier = readChildProfiles(storage, ALLOWED);
+    writeChildProfiles(storage, [ania, olek]);
+    let received: ChildProfile[] | null = null;
+
+    const result = updateProfiles(storage, ALLOWED, (list) => {
+      received = list;
+      return list;
+    });
+
+    assert.deepEqual(received, [ania, olek]);
+    assert.notDeepEqual(received, earlier);
+    assert.ok(result.ok);
+    assert.equal(result.before, received);
   });
 });

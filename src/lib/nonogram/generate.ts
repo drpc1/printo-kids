@@ -32,7 +32,7 @@ export interface NonogramVariant {
 }
 
 /** Draws again at most this many times before giving up, so a single possible card cannot loop forever. */
-const MAX_ATTEMPTS = 20;
+export const MAX_ATTEMPTS = 20;
 
 /** A valid card of the level whose key differs from `previousKey`, or null after MAX_ATTEMPTS draws. */
 export function generateNonogramCard(

@@ -137,7 +137,7 @@ test("an own image is saved as the favorite from the bar and is not offered agai
 
   let dialog = await openList(page);
   const chooser = page.waitForEvent("filechooser");
-  await dialog.getByRole("button", { name: "Własne zdjęcie", exact: true }).click();
+  await dialog.getByRole("button", { name: "Własny obrazek", exact: true }).click();
   await (await chooser).setFiles({ name: "a.png", mimeType: "image/png", buffer: Buffer.from(PNG_BASE64, "base64") });
 
   dialog = await openList(page);

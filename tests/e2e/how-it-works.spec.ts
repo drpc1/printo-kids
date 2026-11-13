@@ -51,18 +51,26 @@ test("a generator page has the footer link and the page states the rules of leve
   await expect(body).toContainText("Ustaw jako ulubioną");
   await expect(body).toContainText("do końca wizyty");
   await expect(body).toContainText("przy zdaniu polecenia");
+  // S-37: the level rules name the four M-5 cards and no longer say which old cards lack an age.
+  await expect(body).toContainText("symetria, sekwencje i szlaczki (Poziom 1–4)");
+  await expect(body).toContainText("„Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”");
+  await expect(body).not.toContainText("sudoku i nonogram wieku nie mają");
 });
 
 test("the page describes every card kind in catalog order", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/");
+  const titles = await page
+    .locator("a[data-card-title]")
+    .evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute("data-card-title") ?? ""));
+  expect(titles.length).toBeGreaterThan(0);
   await page.goto("/how-it-works");
 
   await expect(page.getByRole("heading", { level: 2, name: "Rodzaje kart" })).toBeVisible();
-  const titles = ["Dyktando graficzne", "Labirynt", "Nonogram", "Sekwencje", "Sudoku", "Symetria"];
   await expect(page.getByRole("heading", { level: 3 })).toHaveText(titles);
   for (const title of titles) {
     const heading = page.getByRole("heading", { level: 3, name: title });
-    await expect(heading.getByRole("link", { name: title })).toHaveAttribute("href", /^\/[a-z]+$/);
+    await expect(heading.getByRole("link", { name: title })).toHaveAttribute("href", /^\/[a-z-]+$/);
     await expect(heading.locator("xpath=following-sibling::p[1]")).not.toBeEmpty();
   }
 });

@@ -1,9 +1,14 @@
 import { cardSettingsOf, type CardSettingsId, type CardSettingsMap } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
+import { copyDrawingLevelById } from "./copy-drawing/levels.ts";
 import { dictationLevelById } from "./dictation/levels.ts";
 import { levelById } from "./maze/levels.ts";
+import { moneyCurrencyById } from "./money/currencies.ts";
+import { moneyLevelById } from "./money/levels.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
+import { oddOneOutLevelById } from "./odd-one-out/levels.ts";
+import { patternLinesHasGuides, patternLinesLevelById } from "./pattern-lines/levels.ts";
 import { sequenceLevelById } from "./sequence/levels.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
 import { symmetryLevelById } from "./symmetry/levels.ts";
@@ -24,7 +29,7 @@ export interface CardSummary {
 
 const UNUSED_DETAIL = "domyślne";
 
-/** The six cards of a profile in the order of CARD_KINDS. */
+/** Every card of a profile in the order of CARD_KINDS. */
 export function cardSummaries(profile: ChildProfile): CardSummary[] {
   return CARD_KINDS.map((kind) => {
     const parts = summaryParts(kind.id, profile);
@@ -92,6 +97,48 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
       }
       const level = dictationLevelById(settings.level);
       return { badge: badgeOf(level), level: level.label, extras: [categoryLabel(settings.category)] };
+    }
+    case "pieniadze": {
+      const settings = cards.pieniadze;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = moneyLevelById(settings.level, settings.currency);
+      const currency = settings.currency === "pln" ? [] : [moneyCurrencyById(settings.currency).symbol];
+      return {
+        badge: badgeOf(level),
+        level: level.label,
+        extras: [...currency, ...(settings.colors ? ["kolory"] : [])],
+      };
+    }
+    case "niepasuje": {
+      const settings = cards.niepasuje;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = oddOneOutLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: settings.colors ? ["kolory"] : [] };
+    }
+    case "kopiuj": {
+      const settings = cards.kopiuj;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = copyDrawingLevelById(settings.level);
+      return {
+        badge: badgeOf(level),
+        level: level.label,
+        extras: [...(settings.colors ? ["kolory"] : []), categoryLabel(settings.category)],
+      };
+    }
+    case "szlaczki": {
+      const settings = cards.szlaczki;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = patternLinesLevelById(settings.level);
+      const noLines = patternLinesHasGuides(settings.level) && !settings.lines;
+      return { badge: badgeOf(level), level: level.label, extras: noLines ? ["bez linii"] : [] };
     }
     default:
       return null;

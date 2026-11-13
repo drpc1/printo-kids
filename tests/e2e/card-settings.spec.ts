@@ -22,6 +22,8 @@ interface CardCase {
   path: string;
   changes: Change[];
   colors?: boolean;
+  /** The "Linie" switch, which exists from Poziom 3 on; the case picks Poziom 4 and turns it off. */
+  lines?: boolean;
 }
 
 const CARDS: CardCase[] = [
@@ -65,6 +67,33 @@ const CARDS: CardCase[] = [
       { bar: "Kategoria", option: "Jedzenie", shown: "Jedzenie" },
     ],
   },
+  {
+    id: "pieniadze",
+    path: "/money",
+    changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
+    colors: true,
+  },
+  {
+    id: "niepasuje",
+    path: "/odd-one-out",
+    changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
+    colors: true,
+  },
+  {
+    id: "kopiuj",
+    path: "/copy-drawing",
+    changes: [
+      { bar: "Poziom", option: "trudny", shown: "trudny" },
+      { bar: "Kategoria", option: "Zwierzęta", shown: "Zwierzęta" },
+    ],
+    colors: true,
+  },
+  {
+    id: "szlaczki",
+    path: "/patterns",
+    changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }],
+    lines: true,
+  },
 ];
 
 function barButton(page: Page, bar: string): Locator {
@@ -85,6 +114,9 @@ async function applyChanges(page: Page, card: CardCase): Promise<void> {
   for (const change of card.changes) {
     await choose(page, change);
   }
+  if (card.lines === true) {
+    await page.getByRole("switch", { name: "Linie" }).click();
+  }
 }
 
 async function expectChanges(page: Page, card: CardCase): Promise<void> {
@@ -93,6 +125,9 @@ async function expectChanges(page: Page, card: CardCase): Promise<void> {
   }
   if (card.colors === true) {
     await expect(page.getByRole("switch", { name: "Kolory" })).toBeChecked();
+  }
+  if (card.lines === true) {
+    await expect(page.getByRole("switch", { name: "Linie" })).not.toBeChecked();
   }
 }
 
@@ -310,4 +345,41 @@ test("the note under the bar does not cover Generuj or Drukuj", async ({ page })
   const noteBox = await boxOf(note);
   expect(overlaps(noteBox, await boxOf(page.getByRole("button", { name: "Generuj" })))).toBe(false);
   expect(overlaps(noteBox, await boxOf(page.getByRole("button", { name: "Drukuj" })))).toBe(false);
+});
+
+test("a failed save shows the error in the note line without moving Generuj or Drukuj, and it goes away", async ({
+  page,
+}) => {
+  await seedAndOpen(page, "/nonogram", profileSeed(OLA));
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Nonogram" })).toBeVisible();
+  const note = page.getByRole("status");
+  const before = {
+    note: await boxOf(note),
+    generate: await boxOf(page.getByRole("button", { name: "Generuj" })),
+    print: await boxOf(page.getByRole("button", { name: "Drukuj" })),
+  };
+
+  await page.evaluate((key) => {
+    const original = Storage.prototype.setItem.bind(window.localStorage);
+    Storage.prototype.setItem = function (name: string, value: string): void {
+      if (name === key) {
+        throw new Error("quota");
+      }
+      original(name, value);
+    };
+  }, PROFILES_KEY);
+  await barButton(page, "Poziom").click();
+  await page.getByRole("button", { name: /^trudny(?=\s|$)/ }).click();
+
+  await expect(note).toHaveText("Nie udało się zapamiętać ustawień");
+  const after = {
+    note: await boxOf(note),
+    generate: await boxOf(page.getByRole("button", { name: "Generuj" })),
+    print: await boxOf(page.getByRole("button", { name: "Drukuj" })),
+  };
+  expect(after).toEqual(before);
+  expect(overlaps(after.note, after.generate)).toBe(false);
+  expect(overlaps(after.note, after.print)).toBe(false);
+  await expect(note).toHaveText("");
 });

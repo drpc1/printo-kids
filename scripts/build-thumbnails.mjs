@@ -1,10 +1,10 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram and dictation cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing and pattern-lines cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { generateMaze, mazeForSheet } from "../src/lib/maze/generate.ts";
+import { mazeEngine } from "../src/lib/maze/engine.ts";
 import { levelById } from "../src/lib/maze/levels.ts";
 import { layoutSheet } from "../src/lib/sheet/layout.ts";
 import { collectWalls } from "../src/lib/sheet/walls.ts";
@@ -12,7 +12,8 @@ import { generateSymmetryCard } from "../src/lib/symmetry/generate.ts";
 import { symmetryLevelById } from "../src/lib/symmetry/levels.ts";
 import { layoutSymmetrySheet } from "../src/lib/symmetry/layout.ts";
 import { SYMMETRY_SHEET } from "../src/lib/symmetry/sheet.ts";
-import { generateSudokuCard, sudokuBlock } from "../src/lib/sudoku/generate.ts";
+import { sudokuBlock } from "../src/lib/sudoku/block.ts";
+import { generateSudokuCard } from "../src/lib/sudoku/generate.ts";
 import { layoutSudokuSheet } from "../src/lib/sudoku/layout.ts";
 import { SUDOKU_SHEET } from "../src/lib/sudoku/sheet.ts";
 import { sudokuShapePath } from "../src/lib/sudoku/shapes.ts";
@@ -29,6 +30,24 @@ import { generateDictationCard } from "../src/lib/dictation/generate.ts";
 import { layoutDictationSheet } from "../src/lib/dictation/layout.ts";
 import { DICTATION_LEVEL_LAT6 } from "../src/lib/dictation/levels.ts";
 import { DICTATION_SHEET, formatDictationCommand } from "../src/lib/dictation/sheet.ts";
+import { generateMoneyCard } from "../src/lib/money/generate.ts";
+import { layoutMoneySheet, layoutPile } from "../src/lib/money/layout.ts";
+import { DEFAULT_MONEY_LEVEL_ID, moneyLevelById } from "../src/lib/money/levels.ts";
+import { MONEY_SHEET } from "../src/lib/money/sheet.ts";
+import { generateOddOneOutCard } from "../src/lib/odd-one-out/generate.ts";
+import { ICON_BOX, iconById } from "../src/lib/odd-one-out/icons.ts";
+import { groupLayout, iconSize, layoutOddOneOutSheet } from "../src/lib/odd-one-out/layout.ts";
+import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, oddOneOutLevelById } from "../src/lib/odd-one-out/levels.ts";
+import { ODD_ONE_OUT_SHEET } from "../src/lib/odd-one-out/sheet.ts";
+import { generateCopyDrawingCard } from "../src/lib/copy-drawing/generate.ts";
+import { layoutCopyDrawingSheet } from "../src/lib/copy-drawing/layout.ts";
+import { copyDrawingLevelById, DEFAULT_COPY_DRAWING_LEVEL_ID } from "../src/lib/copy-drawing/levels.ts";
+import { COPY_DRAWING_SHEET } from "../src/lib/copy-drawing/sheet.ts";
+import { generatePatternLinesCard } from "../src/lib/pattern-lines/generate.ts";
+import { layoutPatternLinesSheet } from "../src/lib/pattern-lines/layout.ts";
+import { DEFAULT_PATTERN_LINES_LEVEL_ID, patternLinesLevelById } from "../src/lib/pattern-lines/levels.ts";
+import { rowGeometry } from "../src/lib/pattern-lines/paths.ts";
+import { PATTERN_LINES_SHEET } from "../src/lib/pattern-lines/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -55,10 +74,7 @@ function num(value) {
 }
 
 const level = levelById(LEVEL_ID);
-const maze = mazeForSheet(generateMaze(LEVEL_ID, mulberry32(SEED)), LEVEL_ID);
-if (maze === null) {
-  throw new Error(`Seed ${SEED} did not produce a solvable ${LEVEL_ID} maze`);
-}
+const maze = mazeEngine.generate({ level: LEVEL_ID }, mulberry32(SEED), null).card;
 
 const sheet = layoutSheet({
   pageWidth: PAGE_WIDTH,
@@ -433,3 +449,288 @@ dictationLines.push(
 const dictationOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/dyktando.svg");
 writeFileSync(dictationOutFile, dictationLines.join("\n"));
 console.log(`Wrote ${dictationOutFile} (${dictationCard.key}, ${dictationCard.commands.length} commands)`);
+
+// Money card: the same elements MoneySheet draws (src/components/MoneyGenerator.tsx), in literal black, with the shared
+// drawing constants from src/lib/money/sheet.ts. The band holds the plain instruction (no character).
+const MONEY_SEED = 20261101;
+const MONEY = MONEY_SHEET;
+
+const moneyCard = generateMoneyCard(mulberry32(MONEY_SEED), null, moneyLevelById(DEFAULT_MONEY_LEVEL_ID, "pln"));
+if (moneyCard === null) {
+  throw new Error(`Seed ${MONEY_SEED} did not produce a valid money card`);
+}
+
+const moneySheet = layoutMoneySheet({
+  pageWidth: MONEY.pageWidth,
+  pageHeight: MONEY.pageHeight,
+  inset: MONEY.inset,
+  rowCount: moneyCard.rows.length,
+  bandHeight: MONEY.bandHeight,
+  bandGap: MONEY.bandGap,
+  rowGap: MONEY.rowGap,
+  signSize: MONEY.signSize,
+  signGap: MONEY.signGap,
+  pilePadding: MONEY.pilePadding,
+});
+
+const moneyLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MONEY.pageWidth} ${MONEY.pageHeight}" width="${MONEY.pageWidth}" height="${MONEY.pageHeight}">`,
+  `<rect width="${MONEY.pageWidth}" height="${MONEY.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${MONEY.pageWidth - 0.5}" height="${MONEY.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(MONEY.pageWidth / 2)}" y="${num(moneySheet.band.y + moneySheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${MONEY.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${MONEY.instructionLines.join(" ").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</text>`,
+];
+const moneyFont = `font-family="ui-sans-serif, system-ui, sans-serif" font-weight="${MONEY.fontWeight}" text-anchor="middle" dominant-baseline="central" fill="#000"`;
+moneyCard.rows.forEach((row, rowIndex) => {
+  const rowLayout = moneySheet.rows[rowIndex];
+  for (const [values, area] of [
+    [row.left, rowLayout.left],
+    [row.right, rowLayout.right],
+  ]) {
+    moneyLines.push(
+      `<rect x="${num(area.x)}" y="${num(area.y)}" width="${num(area.width)}" height="${num(area.height)}" rx="${MONEY.pileFrameRadius}" fill="none" stroke="#000" stroke-width="${MONEY.pileFrameStroke}"/>`,
+    );
+    const laid = layoutPile(values, area.innerWidth, moneyCard.currency);
+    const left = area.x + MONEY.pilePadding;
+    const top = area.y + MONEY.pilePadding + (area.innerHeight - laid.height) / 2;
+    for (const piece of laid.pieces) {
+      const x = left + piece.x;
+      const y = top + piece.y;
+      if (piece.kind === "coin") {
+        moneyLines.push(
+          `<circle cx="${num(x + piece.width / 2)}" cy="${num(y + piece.height / 2)}" r="${num(piece.width / 2 - MONEY.coinStroke / 2)}" fill="#fff" stroke="#000" stroke-width="${MONEY.coinStroke}"/>`,
+          `<text x="${num(x + piece.width / 2)}" y="${num(y + piece.height / 2)}" font-size="${MONEY.coinFontSize}" ${moneyFont}>${piece.value}</text>`,
+        );
+      } else {
+        const inner = MONEY.noteInnerInset;
+        moneyLines.push(
+          `<rect x="${num(x)}" y="${num(y)}" width="${piece.width}" height="${piece.height}" rx="1" fill="#fff" stroke="#000" stroke-width="${MONEY.noteStroke}"/>`,
+          `<rect x="${num(x + inner)}" y="${num(y + inner)}" width="${piece.width - 2 * inner}" height="${piece.height - 2 * inner}" rx="0.6" fill="none" stroke="#000" stroke-width="${MONEY.noteInnerStroke}"/>`,
+          `<text x="${num(x + piece.width / 2)}" y="${num(y + piece.height / 2)}" font-size="${MONEY.noteFontSize}" ${moneyFont}>${piece.value}</text>`,
+        );
+      }
+    }
+  }
+  moneyLines.push(
+    `<rect x="${num(rowLayout.sign.x)}" y="${num(rowLayout.sign.y)}" width="${rowLayout.sign.size}" height="${rowLayout.sign.size}" rx="2" fill="none" stroke="#000" stroke-width="${MONEY.signStroke}"/>`,
+  );
+});
+moneyLines.push("</svg>", "");
+
+const moneyOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/pieniadze.svg");
+writeFileSync(moneyOutFile, moneyLines.join("\n"));
+console.log(`Wrote ${moneyOutFile} (${moneyCard.key.length} key chars)`);
+
+// Odd-one-out card: the same elements OddOneOutSheet draws (src/components/OddOneOutGenerator.tsx), in literal black
+// and white at the default level without colors, with the shared drawing constants from src/lib/odd-one-out/sheet.ts.
+// The band holds the plain instruction (no character).
+const ODD_SEED = 20261108;
+const ODD = ODD_ONE_OUT_SHEET;
+const oddLevel = oddOneOutLevelById(DEFAULT_ODD_ONE_OUT_LEVEL_ID);
+
+const oddCard = generateOddOneOutCard(mulberry32(ODD_SEED), null, oddLevel, false);
+if (oddCard === null) {
+  throw new Error(`Seed ${ODD_SEED} did not produce a valid odd-one-out card`);
+}
+
+const oddSheet = layoutOddOneOutSheet({
+  pageWidth: ODD.pageWidth,
+  pageHeight: ODD.pageHeight,
+  inset: ODD.inset,
+  rowCount: oddCard.rows.length,
+  itemCount: oddLevel.itemCount,
+  bandHeight: ODD.bandHeight,
+  bandGap: ODD.bandGap,
+  rowGap: ODD.rowGap,
+  slotPadding: ODD.slotPadding,
+});
+
+const ODD_TONE = { ink: "#000", paper: "#fff" };
+
+function oddFigure(figure) {
+  const color = ODD_TONE[figure.tone];
+  switch (figure.kind) {
+    case "circle":
+      return `<circle cx="${figure.cx}" cy="${figure.cy}" r="${figure.r}" fill="${color}"/>`;
+    case "ellipse": {
+      const turn = figure.rotate === undefined ? "" : ` transform="rotate(${figure.rotate} ${figure.cx} ${figure.cy})"`;
+      return `<ellipse cx="${figure.cx}" cy="${figure.cy}" rx="${figure.rx}" ry="${figure.ry}" fill="${color}"${turn}/>`;
+    }
+    case "rect": {
+      const turn =
+        figure.rotate === undefined
+          ? ""
+          : ` transform="rotate(${figure.rotate} ${figure.x + figure.width / 2} ${figure.y + figure.height / 2})"`;
+      const round = figure.rx === undefined ? "" : ` rx="${figure.rx}"`;
+      return `<rect x="${figure.x}" y="${figure.y}" width="${figure.width}" height="${figure.height}"${round} fill="${color}"${turn}/>`;
+    }
+    case "polygon":
+      return `<polygon points="${figure.points.map((point) => point.join(",")).join(" ")}" fill="${color}"/>`;
+    case "path":
+      return figure.strokeWidth === undefined
+        ? `<path d="${figure.d}" fill="${color}"/>`
+        : `<path d="${figure.d}" fill="none" stroke="${color}" stroke-width="${figure.strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    case "line":
+      return `<line x1="${figure.x1}" y1="${figure.y1}" x2="${figure.x2}" y2="${figure.y2}" stroke="${color}" stroke-width="${figure.strokeWidth}" stroke-linecap="round"/>`;
+    default:
+      throw new Error(`Unknown icon figure ${figure.kind}`);
+  }
+}
+
+const oddLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ODD.pageWidth} ${ODD.pageHeight}" width="${ODD.pageWidth}" height="${ODD.pageHeight}">`,
+  `<rect width="${ODD.pageWidth}" height="${ODD.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${ODD.pageWidth - 0.5}" height="${ODD.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(ODD.pageWidth / 2)}" y="${num(oddSheet.band.y + oddSheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${ODD.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${ODD.instructionLines.join(" ")}</text>`,
+];
+oddCard.rows.forEach((row, rowIndex) => {
+  const rowLayout = oddSheet.rows[rowIndex];
+  oddLines.push(
+    `<rect x="${num(rowLayout.x)}" y="${num(rowLayout.y)}" width="${num(rowLayout.width)}" height="${num(rowLayout.height)}" rx="${ODD.rowFrameRadius}" fill="none" stroke="#000" stroke-width="${ODD.rowFrameStroke}"/>`,
+  );
+  row.items.forEach((item, itemIndex) => {
+    const { cx, cy } = rowLayout.slots[itemIndex];
+    const scale = item.size === "small" ? oddLevel.smallRatio : 1;
+    if (item.icon !== null) {
+      const icon = iconById(item.icon);
+      const size = iconSize(oddSheet.slot, scale);
+      oddLines.push(
+        `<g transform="translate(${num(cx - size / 2)} ${num(cy - size / 2)}) scale(${num(size / ICON_BOX)})">`,
+        ...icon.figures.map(oddFigure),
+        "</g>",
+      );
+      return;
+    }
+    const group = groupLayout(item.count, oddSheet.slot, scale);
+    const strokeWidth = Math.max(ODD.shapeStrokeMin, group.unit * ODD.shapeStrokeRatio);
+    for (const point of group.points) {
+      oddLines.push(
+        `<path d="${sudokuShapePath(item.shape, cx + point.x, cy + point.y, group.unit)}" fill="#fff" stroke="#000" stroke-width="${num(strokeWidth)}" stroke-linejoin="round"/>`,
+      );
+    }
+  });
+});
+oddLines.push("</svg>", "");
+
+const oddOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/niepasuje.svg");
+writeFileSync(oddOutFile, oddLines.join("\n"));
+console.log(`Wrote ${oddOutFile} (${oddCard.key.length} key chars)`);
+
+// Copy-drawing card: the same elements CopyDrawingSheet draws (src/components/CopyDrawingSheet.tsx), in literal black and
+// white at the default level and the category "wszystkie", with the shared drawing constants from
+// src/lib/copy-drawing/sheet.ts. The band holds the plain instruction (no character).
+const COPY_SEED = 20261109;
+const COPY = COPY_DRAWING_SHEET;
+const copyLevel = copyDrawingLevelById(DEFAULT_COPY_DRAWING_LEVEL_ID);
+
+const copyCard = generateCopyDrawingCard(mulberry32(COPY_SEED), null, copyLevel, "wszystkie");
+if (copyCard === null) {
+  throw new Error(`Seed ${COPY_SEED} did not produce a valid copy-drawing card`);
+}
+
+const copySheet = layoutCopyDrawingSheet(copyLevel, COPY.plainInstructionSize);
+const copyLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${COPY.pageWidth} ${COPY.pageHeight}" width="${COPY.pageWidth}" height="${COPY.pageHeight}">`,
+  `<rect width="${COPY.pageWidth}" height="${COPY.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${COPY.pageWidth - 0.5}" height="${COPY.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(COPY.pageWidth / 2)}" y="${num(copySheet.band.y + copySheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${COPY.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${COPY.instructionText}</text>`,
+];
+for (const [rect, pattern] of [
+  [copySheet.source, copyCard.pattern],
+  [copySheet.copy, null],
+]) {
+  if (pattern !== null) {
+    copyLines.push('<g fill="#000">');
+    pattern.forEach((row, rowIndex) => {
+      row.forEach((filled, columnIndex) => {
+        if (filled) {
+          copyLines.push(
+            `<rect x="${num(rect.x + columnIndex * copySheet.cell)}" y="${num(rect.y + rowIndex * copySheet.cell)}" width="${copySheet.cell}" height="${copySheet.cell}"/>`,
+          );
+        }
+      });
+    });
+    copyLines.push("</g>");
+  }
+  const thickColumns = new Set(blockLines(copySheet.columns, COPY.blockEvery));
+  const thickRows = new Set(blockLines(copySheet.rows, COPY.blockEvery));
+  copyLines.push('<g fill="none" stroke="#000">');
+  for (let index = 0; index <= copySheet.columns; index += 1) {
+    const x = num(rect.x + index * copySheet.cell);
+    const width = thickColumns.has(index) ? COPY.blockStroke : COPY.gridStroke;
+    copyLines.push(
+      `<line x1="${x}" y1="${num(rect.y)}" x2="${x}" y2="${num(rect.y + rect.height)}" stroke-width="${width}"/>`,
+    );
+  }
+  for (let index = 0; index <= copySheet.rows; index += 1) {
+    const y = num(rect.y + index * copySheet.cell);
+    const width = thickRows.has(index) ? COPY.blockStroke : COPY.gridStroke;
+    copyLines.push(
+      `<line x1="${num(rect.x)}" y1="${y}" x2="${num(rect.x + rect.width)}" y2="${y}" stroke-width="${width}"/>`,
+    );
+  }
+  copyLines.push(
+    "</g>",
+    `<rect x="${num(rect.x)}" y="${num(rect.y)}" width="${num(rect.width)}" height="${num(rect.height)}" fill="none" stroke="#000" stroke-width="${COPY.frameStroke}" stroke-linejoin="miter"/>`,
+  );
+}
+copyLines.push("</svg>", "");
+
+const copyOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/kopiuj.svg");
+writeFileSync(copyOutFile, copyLines.join("\n"));
+console.log(`Wrote ${copyOutFile} (${copyCard.key})`);
+
+// Pattern-lines card: the elements PatternLinesSheet draws (src/components/PatternLinesSheet.tsx), in literal black and
+// grey, at the default level with the help lines on, with the geometry of src/lib/pattern-lines/paths.ts and the
+// constants of src/lib/pattern-lines/sheet.ts. The band holds the plain instruction (no character).
+const PATTERN_SEED = 20261110;
+const PATTERN = PATTERN_LINES_SHEET;
+const patternLevel = patternLinesLevelById(DEFAULT_PATTERN_LINES_LEVEL_ID);
+
+const patternCard = generatePatternLinesCard(mulberry32(PATTERN_SEED), null, patternLevel);
+if (patternCard === null) {
+  throw new Error(`Seed ${PATTERN_SEED} did not produce a valid pattern-lines card`);
+}
+
+const patternLayout = layoutPatternLinesSheet(patternLevel, PATTERN.plainInstructionSize);
+const patternPathD = (points) =>
+  points.map((point, index) => `${index === 0 ? "M" : "L"}${num(point.x)} ${num(point.y)}`).join(" ");
+const patternLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${PATTERN.pageWidth} ${PATTERN.pageHeight}" width="${PATTERN.pageWidth}" height="${PATTERN.pageHeight}">`,
+  `<rect width="${PATTERN.pageWidth}" height="${PATTERN.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${PATTERN.pageWidth - 0.5}" height="${PATTERN.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(PATTERN.pageWidth / 2)}" y="${num(patternLayout.band.y + patternLayout.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${PATTERN.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${patternLevel.instruction}</text>`,
+];
+patternCard.rows.forEach((row, index) => {
+  const geometry = rowGeometry(row, patternLevel, true);
+  patternLines.push(`<g transform="translate(${num(patternLayout.left)} ${num(patternLayout.centers[index])})">`);
+  for (const guide of geometry.guides) {
+    const dash = guide.dash === null ? "" : ` stroke-dasharray="${guide.dash}"`;
+    patternLines.push(
+      `<line x1="${num(guide.x1)}" y1="${num(guide.y)}" x2="${num(guide.x2)}" y2="${num(guide.y)}" stroke="${guide.tone === "muted" ? "#71717a" : "#d4d4d8"}" stroke-width="${guide.stroke}"${dash}/>`,
+    );
+  }
+  if (geometry.track) {
+    patternLines.push(
+      `<path d="${patternPathD(geometry.path)}" fill="none" stroke="#d4d4d8" stroke-width="${PATTERN.trackStroke}" stroke-linecap="round" stroke-linejoin="round"/>`,
+    );
+  }
+  if (geometry.lineStroke !== null) {
+    patternLines.push(
+      `<path d="${patternPathD(geometry.path)}" fill="none" stroke="#000" stroke-width="${geometry.lineStroke}" stroke-linecap="round" stroke-linejoin="round"/>`,
+    );
+  }
+  if (geometry.startRing !== null) {
+    patternLines.push(
+      `<circle cx="${num(geometry.startRing.x)}" cy="${num(geometry.startRing.y)}" r="${num(geometry.startRing.radius)}" fill="none" stroke="#000" stroke-width="${PATTERN.startRingStroke}"/>`,
+    );
+  }
+  for (const dot of geometry.dots) {
+    patternLines.push(`<circle cx="${num(dot.x)}" cy="${num(dot.y)}" r="${geometry.dotRadius}" fill="#000"/>`);
+  }
+  patternLines.push("</g>");
+});
+patternLines.push("</svg>", "");
+
+const patternOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/szlaczki.svg");
+writeFileSync(patternOutFile, patternLines.join("\n"));
+console.log(`Wrote ${patternOutFile} (${patternCard.key})`);

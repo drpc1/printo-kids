@@ -1,0 +1,234 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297">
+<rect width="210" height="297" fill="#fff"/>
+<rect x="10" y="10" width="190" height="26" fill="none" stroke="#999" stroke-width="0.3" stroke-dasharray="2 1.5"/>
+<text x="105" y="23" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="7" fill="#000">Poprowadź po kropkach, potem rysuj dalej sam.</text>
+<text x="200" y="293" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="2.6" fill="#999">makieta S-36 v6 · nowe wzory · Poziom 3 · 6–7 lat · ziarno 7 · wykropkowane powtórzenia: 2 · podpisy rzędów tylko do rozmowy</text>
+<text x="10" y="44.50" font-family="Arial, Helvetica, sans-serif" font-size="2.6" fill="#aaa">domki · krok 22 mm · wys. 13 mm</text>
+<g transform="translate(13 53.50)">
+<line x1="0" y1="-6.63" x2="184" y2="-6.63" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<line x1="0" y1="6.63" x2="184" y2="6.63" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<path d="M0.00 6.63 L0.00 -1.33 L9.20 -6.63 L18.40 -1.33 L18.40 6.63 L36.80 6.63 L36.80 -1.33 L46.00 -6.63 L55.20 -1.33 L55.20 6.63 L73.60 6.63" fill="none" stroke="#ccc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="0.00" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="2.65" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="-1.33" r="0.9" fill="#000"/>
+<circle cx="3.07" cy="-3.09" r="0.9" fill="#000"/>
+<circle cx="6.13" cy="-4.86" r="0.9" fill="#000"/>
+<circle cx="9.20" cy="-6.63" r="0.9" fill="#000"/>
+<circle cx="12.27" cy="-4.86" r="0.9" fill="#000"/>
+<circle cx="15.33" cy="-3.09" r="0.9" fill="#000"/>
+<circle cx="18.40" cy="-1.33" r="0.9" fill="#000"/>
+<circle cx="18.40" cy="2.65" r="0.9" fill="#000"/>
+<circle cx="18.40" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="22.08" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="25.76" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="29.44" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="33.12" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="36.80" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="36.80" cy="2.65" r="0.9" fill="#000"/>
+<circle cx="36.80" cy="-1.33" r="0.9" fill="#000"/>
+<circle cx="39.87" cy="-3.09" r="0.9" fill="#000"/>
+<circle cx="42.93" cy="-4.86" r="0.9" fill="#000"/>
+<circle cx="46.00" cy="-6.63" r="0.9" fill="#000"/>
+<circle cx="49.07" cy="-4.86" r="0.9" fill="#000"/>
+<circle cx="52.13" cy="-3.09" r="0.9" fill="#000"/>
+<circle cx="55.20" cy="-1.33" r="0.9" fill="#000"/>
+<circle cx="55.20" cy="2.65" r="0.9" fill="#000"/>
+<circle cx="55.20" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="58.88" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="62.56" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="66.24" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="69.92" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="73.60" cy="6.63" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="6.63" r="2.1" fill="none" stroke="#000" stroke-width="0.5"/>
+</g>
+<text x="10" y="89.70" font-family="Arial, Helvetica, sans-serif" font-size="2.6" fill="#aaa">bramy · krok 36 mm · wys. 15 mm</text>
+<g transform="translate(13 98.70)">
+<line x1="0" y1="-7.50" x2="184" y2="-7.50" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<line x1="0" y1="7.50" x2="184" y2="7.50" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<path d="M0.00 7.50 L0.00 -0.75 L0.08 -1.63 L0.31 -2.50 L0.70 -3.33 L1.23 -4.13 L1.90 -4.86 L2.69 -5.52 L3.60 -6.11 L4.60 -6.60 L5.68 -6.99 L6.82 -7.27 L8.00 -7.44 L9.20 -7.50 L10.40 -7.44 L11.58 -7.27 L12.72 -6.99 L13.80 -6.60 L14.80 -6.11 L15.71 -5.52 L16.50 -4.86 L17.17 -4.12 L17.70 -3.33 L18.09 -2.50 L18.32 -1.63 L18.40 -0.75 L18.40 7.50 L36.80 7.50 L36.80 -0.75 L36.88 -1.63 L37.11 -2.50 L37.50 -3.33 L38.03 -4.13 L38.70 -4.86 L39.49 -5.52 L40.40 -6.11 L41.40 -6.60 L42.48 -6.99 L43.62 -7.27 L44.80 -7.44 L46.00 -7.50 L47.20 -7.44 L48.38 -7.27 L49.52 -6.99 L50.60 -6.60 L51.60 -6.11 L52.51 -5.52 L53.30 -4.86 L53.97 -4.12 L54.50 -3.33 L54.89 -2.50 L55.12 -1.63 L55.20 -0.75 L55.20 7.50 L73.60 7.50" fill="none" stroke="#ccc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="0.00" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="3.38" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="-0.75" r="0.9" fill="#000"/>
+<circle cx="1.23" cy="-4.13" r="0.9" fill="#000"/>
+<circle cx="4.60" cy="-6.60" r="0.9" fill="#000"/>
+<circle cx="8.00" cy="-7.44" r="0.9" fill="#000"/>
+<circle cx="11.58" cy="-7.27" r="0.9" fill="#000"/>
+<circle cx="14.80" cy="-6.11" r="0.9" fill="#000"/>
+<circle cx="17.70" cy="-3.33" r="0.9" fill="#000"/>
+<circle cx="18.40" cy="-0.75" r="0.9" fill="#000"/>
+<circle cx="18.40" cy="3.37" r="0.9" fill="#000"/>
+<circle cx="18.40" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="22.08" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="25.76" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="29.44" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="33.12" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="36.80" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="36.80" cy="3.38" r="0.9" fill="#000"/>
+<circle cx="36.80" cy="-0.75" r="0.9" fill="#000"/>
+<circle cx="38.03" cy="-4.13" r="0.9" fill="#000"/>
+<circle cx="41.40" cy="-6.60" r="0.9" fill="#000"/>
+<circle cx="44.80" cy="-7.44" r="0.9" fill="#000"/>
+<circle cx="48.38" cy="-7.27" r="0.9" fill="#000"/>
+<circle cx="51.60" cy="-6.11" r="0.9" fill="#000"/>
+<circle cx="54.50" cy="-3.33" r="0.9" fill="#000"/>
+<circle cx="55.20" cy="-0.75" r="0.9" fill="#000"/>
+<circle cx="55.20" cy="3.37" r="0.9" fill="#000"/>
+<circle cx="55.20" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="58.88" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="62.56" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="66.24" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="69.92" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="73.60" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="7.50" r="2.1" fill="none" stroke="#000" stroke-width="0.5"/>
+</g>
+<text x="10" y="134.90" font-family="Arial, Helvetica, sans-serif" font-size="2.6" fill="#aaa">czubki (ostrołuki) · krok 26 mm · wys. 15 mm</text>
+<g transform="translate(13 143.90)">
+<line x1="0" y1="-7.50" x2="184" y2="-7.50" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<line x1="0" y1="7.50" x2="184" y2="7.50" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<path d="M0.00 7.50 L0.05 6.48 L0.21 5.47 L0.48 4.45 L0.85 3.45 L1.33 2.45 L1.91 1.46 L2.60 0.48 L3.39 -0.48 L4.28 -1.43 L5.26 -2.36 L6.35 -3.28 L7.53 -4.17 L8.80 -5.04 L10.16 -5.88 L11.61 -6.71 L13.14 -7.50 L14.68 -6.71 L16.13 -5.88 L17.49 -5.04 L18.76 -4.17 L19.94 -3.28 L21.02 -2.36 L22.01 -1.43 L22.90 -0.48 L23.69 0.48 L24.37 1.46 L24.95 2.45 L25.43 3.45 L25.81 4.45 L26.07 5.47 L26.23 6.48 L26.29 7.50 L26.34 6.48 L26.50 5.47 L26.77 4.45 L27.14 3.45 L27.62 2.45 L28.20 1.46 L28.89 0.48 L29.67 -0.48 L30.56 -1.43 L31.55 -2.36 L32.63 -3.28 L33.81 -4.17 L35.08 -5.04 L36.45 -5.88 L37.89 -6.71 L39.43 -7.50 L40.96 -6.71 L42.41 -5.88 L43.77 -5.04 L45.05 -4.17 L46.22 -3.28 L47.31 -2.36 L48.30 -1.43 L49.18 -0.48 L49.97 0.48 L50.66 1.46 L51.24 2.45 L51.72 3.45 L52.09 4.45 L52.36 5.47 L52.52 6.48 L52.57 7.50" fill="none" stroke="#ccc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="0.00" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="0.85" cy="3.45" r="0.9" fill="#000"/>
+<circle cx="2.60" cy="0.48" r="0.9" fill="#000"/>
+<circle cx="5.26" cy="-2.36" r="0.9" fill="#000"/>
+<circle cx="8.80" cy="-5.04" r="0.9" fill="#000"/>
+<circle cx="13.14" cy="-7.50" r="0.9" fill="#000"/>
+<circle cx="16.13" cy="-5.88" r="0.9" fill="#000"/>
+<circle cx="19.94" cy="-3.28" r="0.9" fill="#000"/>
+<circle cx="22.90" cy="-0.48" r="0.9" fill="#000"/>
+<circle cx="24.95" cy="2.45" r="0.9" fill="#000"/>
+<circle cx="26.23" cy="6.48" r="0.9" fill="#000"/>
+<circle cx="26.29" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="27.14" cy="3.45" r="0.9" fill="#000"/>
+<circle cx="28.89" cy="0.48" r="0.9" fill="#000"/>
+<circle cx="31.55" cy="-2.36" r="0.9" fill="#000"/>
+<circle cx="35.08" cy="-5.04" r="0.9" fill="#000"/>
+<circle cx="39.43" cy="-7.50" r="0.9" fill="#000"/>
+<circle cx="42.41" cy="-5.88" r="0.9" fill="#000"/>
+<circle cx="46.22" cy="-3.28" r="0.9" fill="#000"/>
+<circle cx="49.18" cy="-0.48" r="0.9" fill="#000"/>
+<circle cx="51.24" cy="2.45" r="0.9" fill="#000"/>
+<circle cx="52.52" cy="6.48" r="0.9" fill="#000"/>
+<circle cx="52.57" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="7.50" r="2.1" fill="none" stroke="#000" stroke-width="0.5"/>
+</g>
+<text x="10" y="180.10" font-family="Arial, Helvetica, sans-serif" font-size="2.6" fill="#aaa">duży i mały ząbek · krok 36 mm · wys. 15 mm</text>
+<g transform="translate(13 189.10)">
+<line x1="0" y1="-7.50" x2="184" y2="-7.50" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<line x1="0" y1="7.50" x2="184" y2="7.50" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<path d="M0.00 7.50 L11.50 -7.50 L23.00 7.50 L29.90 0.00 L36.80 7.50 L48.30 -7.50 L59.80 7.50 L66.70 0.00 L73.60 7.50" fill="none" stroke="#ccc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="0.00" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="2.30" cy="4.50" r="0.9" fill="#000"/>
+<circle cx="4.60" cy="1.50" r="0.9" fill="#000"/>
+<circle cx="6.90" cy="-1.50" r="0.9" fill="#000"/>
+<circle cx="9.20" cy="-4.50" r="0.9" fill="#000"/>
+<circle cx="11.50" cy="-7.50" r="0.9" fill="#000"/>
+<circle cx="13.80" cy="-4.50" r="0.9" fill="#000"/>
+<circle cx="16.10" cy="-1.50" r="0.9" fill="#000"/>
+<circle cx="18.40" cy="1.50" r="0.9" fill="#000"/>
+<circle cx="20.70" cy="4.50" r="0.9" fill="#000"/>
+<circle cx="23.00" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="25.30" cy="5.00" r="0.9" fill="#000"/>
+<circle cx="27.60" cy="2.50" r="0.9" fill="#000"/>
+<circle cx="29.90" cy="0.00" r="0.9" fill="#000"/>
+<circle cx="32.20" cy="2.50" r="0.9" fill="#000"/>
+<circle cx="34.50" cy="5.00" r="0.9" fill="#000"/>
+<circle cx="36.80" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="39.10" cy="4.50" r="0.9" fill="#000"/>
+<circle cx="41.40" cy="1.50" r="0.9" fill="#000"/>
+<circle cx="43.70" cy="-1.50" r="0.9" fill="#000"/>
+<circle cx="46.00" cy="-4.50" r="0.9" fill="#000"/>
+<circle cx="48.30" cy="-7.50" r="0.9" fill="#000"/>
+<circle cx="50.60" cy="-4.50" r="0.9" fill="#000"/>
+<circle cx="52.90" cy="-1.50" r="0.9" fill="#000"/>
+<circle cx="55.20" cy="1.50" r="0.9" fill="#000"/>
+<circle cx="57.50" cy="4.50" r="0.9" fill="#000"/>
+<circle cx="59.80" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="62.10" cy="5.00" r="0.9" fill="#000"/>
+<circle cx="64.40" cy="2.50" r="0.9" fill="#000"/>
+<circle cx="66.70" cy="0.00" r="0.9" fill="#000"/>
+<circle cx="69.00" cy="2.50" r="0.9" fill="#000"/>
+<circle cx="71.30" cy="5.00" r="0.9" fill="#000"/>
+<circle cx="73.60" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="7.50" r="2.1" fill="none" stroke="#000" stroke-width="0.5"/>
+</g>
+<text x="10" y="225.30" font-family="Arial, Helvetica, sans-serif" font-size="2.6" fill="#aaa">kółeczka (o a) · krok 37 mm · wys. 15 mm</text>
+<g transform="translate(13 234.30)">
+<line x1="0" y1="-7.50" x2="184" y2="-7.50" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<line x1="0" y1="7.50" x2="184" y2="7.50" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<path d="M0.00 7.50 L6.62 3.00 L13.25 -3.75 L18.40 -7.05 L22.08 -7.50 L20.64 -7.44 L19.22 -7.24 L17.86 -6.93 L16.56 -6.50 L15.36 -5.95 L14.27 -5.30 L13.32 -4.57 L12.52 -3.75 L11.88 -2.87 L11.42 -1.94 L11.13 -0.98 L11.04 -0.00 L11.13 0.98 L11.42 1.94 L11.88 2.87 L12.52 3.75 L13.32 4.57 L14.27 5.30 L15.36 5.95 L16.56 6.50 L17.86 6.93 L19.22 7.24 L20.64 7.44 L22.08 7.50 L23.52 7.44 L24.94 7.24 L26.30 6.93 L27.60 6.50 L28.80 5.95 L29.89 5.30 L30.84 4.57 L31.64 3.75 L32.28 2.87 L32.74 1.94 L33.03 0.98 L33.12 0.00 L33.03 -0.98 L32.74 -1.94 L32.28 -2.87 L31.64 -3.75 L30.84 -4.57 L29.89 -5.30 L28.80 -5.95 L27.60 -6.50 L26.30 -6.93 L24.94 -7.24 L23.52 -7.44 L22.08 -7.50 L29.44 -4.50 L33.86 2.25 L36.80 7.50 L43.42 3.00 L50.05 -3.75 L55.20 -7.05 L58.88 -7.50 L57.44 -7.44 L56.02 -7.24 L54.66 -6.93 L53.36 -6.50 L52.16 -5.95 L51.07 -5.30 L50.12 -4.57 L49.32 -3.75 L48.68 -2.87 L48.22 -1.94 L47.93 -0.98 L47.84 -0.00 L47.93 0.98 L48.22 1.94 L48.68 2.87 L49.32 3.75 L50.12 4.57 L51.07 5.30 L52.16 5.95 L53.36 6.50 L54.66 6.93 L56.02 7.24 L57.44 7.44 L58.88 7.50 L60.32 7.44 L61.74 7.24 L63.10 6.93 L64.40 6.50 L65.60 5.95 L66.69 5.30 L67.64 4.57 L68.44 3.75 L69.08 2.87 L69.54 1.94 L69.83 0.98 L69.92 0.00 L69.83 -0.98 L69.54 -1.94 L69.08 -2.87 L68.44 -3.75 L67.64 -4.57 L66.69 -5.30 L65.60 -5.95 L64.40 -6.50 L63.10 -6.93 L61.74 -7.24 L60.32 -7.44 L58.88 -7.50 L66.24 -4.50 L70.66 2.25 L73.60 7.50" fill="none" stroke="#ccc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="0.00" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="6.62" cy="3.00" r="0.9" fill="#000"/>
+<circle cx="13.25" cy="-3.75" r="0.9" fill="#000"/>
+<circle cx="18.40" cy="-7.05" r="0.9" fill="#000"/>
+<circle cx="22.08" cy="-7.50" r="0.9" fill="#000"/>
+<circle cx="17.86" cy="-6.93" r="0.9" fill="#000"/>
+<circle cx="14.27" cy="-5.30" r="0.9" fill="#000"/>
+<circle cx="11.88" cy="-2.87" r="0.9" fill="#000"/>
+<circle cx="11.13" cy="0.98" r="0.9" fill="#000"/>
+<circle cx="13.32" cy="4.57" r="0.9" fill="#000"/>
+<circle cx="16.56" cy="6.50" r="0.9" fill="#000"/>
+<circle cx="20.64" cy="7.44" r="0.9" fill="#000"/>
+<circle cx="24.94" cy="7.24" r="0.9" fill="#000"/>
+<circle cx="28.80" cy="5.95" r="0.9" fill="#000"/>
+<circle cx="31.64" cy="3.75" r="0.9" fill="#000"/>
+<circle cx="33.12" cy="0.00" r="0.9" fill="#000"/>
+<circle cx="31.64" cy="-3.75" r="0.9" fill="#000"/>
+<circle cx="28.80" cy="-5.95" r="0.9" fill="#000"/>
+<circle cx="24.94" cy="-7.24" r="0.9" fill="#000"/>
+<circle cx="22.08" cy="-7.50" r="0.9" fill="#000"/>
+<circle cx="29.44" cy="-4.50" r="0.9" fill="#000"/>
+<circle cx="33.86" cy="2.25" r="0.9" fill="#000"/>
+<circle cx="36.80" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="43.42" cy="3.00" r="0.9" fill="#000"/>
+<circle cx="50.05" cy="-3.75" r="0.9" fill="#000"/>
+<circle cx="55.20" cy="-7.05" r="0.9" fill="#000"/>
+<circle cx="58.88" cy="-7.50" r="0.9" fill="#000"/>
+<circle cx="54.66" cy="-6.93" r="0.9" fill="#000"/>
+<circle cx="51.07" cy="-5.30" r="0.9" fill="#000"/>
+<circle cx="48.68" cy="-2.87" r="0.9" fill="#000"/>
+<circle cx="47.93" cy="0.98" r="0.9" fill="#000"/>
+<circle cx="50.12" cy="4.57" r="0.9" fill="#000"/>
+<circle cx="53.36" cy="6.50" r="0.9" fill="#000"/>
+<circle cx="57.44" cy="7.44" r="0.9" fill="#000"/>
+<circle cx="61.74" cy="7.24" r="0.9" fill="#000"/>
+<circle cx="65.60" cy="5.95" r="0.9" fill="#000"/>
+<circle cx="68.44" cy="3.75" r="0.9" fill="#000"/>
+<circle cx="69.92" cy="0.00" r="0.9" fill="#000"/>
+<circle cx="68.44" cy="-3.75" r="0.9" fill="#000"/>
+<circle cx="65.60" cy="-5.95" r="0.9" fill="#000"/>
+<circle cx="61.74" cy="-7.24" r="0.9" fill="#000"/>
+<circle cx="58.88" cy="-7.50" r="0.9" fill="#000"/>
+<circle cx="66.24" cy="-4.50" r="0.9" fill="#000"/>
+<circle cx="70.66" cy="2.25" r="0.9" fill="#000"/>
+<circle cx="73.60" cy="7.50" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="7.50" r="2.1" fill="none" stroke="#000" stroke-width="0.5"/>
+</g>
+<text x="10" y="270.50" font-family="Arial, Helvetica, sans-serif" font-size="2.6" fill="#aaa">laseczki z haczykiem (i) · krok 24 mm · wys. 13 mm</text>
+<g transform="translate(13 279.50)">
+<line x1="0" y1="-6.67" x2="184" y2="-6.67" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<line x1="0" y1="6.67" x2="184" y2="6.67" stroke="#aaa" stroke-width="0.3" stroke-dasharray="1.2 1.2"/>
+<path d="M0.00 4.67 L9.66 -6.67 L11.04 3.74 L11.73 5.47 L13.11 6.41 L15.18 6.67 L17.71 6.41 L20.47 5.60 L23.00 4.67 L32.66 -6.67 L34.04 3.74 L34.73 5.47 L36.11 6.41 L38.18 6.67 L40.71 6.41 L43.47 5.60 L46.00 4.67" fill="none" stroke="#ccc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="0.00" cy="4.67" r="0.9" fill="#000"/>
+<circle cx="2.42" cy="1.83" r="0.9" fill="#000"/>
+<circle cx="4.83" cy="-1.00" r="0.9" fill="#000"/>
+<circle cx="7.25" cy="-3.84" r="0.9" fill="#000"/>
+<circle cx="9.66" cy="-6.67" r="0.9" fill="#000"/>
+<circle cx="10.12" cy="-3.20" r="0.9" fill="#000"/>
+<circle cx="10.58" cy="0.27" r="0.9" fill="#000"/>
+<circle cx="11.04" cy="3.74" r="0.9" fill="#000"/>
+<circle cx="13.11" cy="6.41" r="0.9" fill="#000"/>
+<circle cx="17.71" cy="6.41" r="0.9" fill="#000"/>
+<circle cx="23.00" cy="4.67" r="0.9" fill="#000"/>
+<circle cx="25.41" cy="1.83" r="0.9" fill="#000"/>
+<circle cx="27.83" cy="-1.00" r="0.9" fill="#000"/>
+<circle cx="30.24" cy="-3.84" r="0.9" fill="#000"/>
+<circle cx="32.66" cy="-6.67" r="0.9" fill="#000"/>
+<circle cx="33.12" cy="-3.20" r="0.9" fill="#000"/>
+<circle cx="33.58" cy="0.27" r="0.9" fill="#000"/>
+<circle cx="34.04" cy="3.74" r="0.9" fill="#000"/>
+<circle cx="36.11" cy="6.41" r="0.9" fill="#000"/>
+<circle cx="40.71" cy="6.41" r="0.9" fill="#000"/>
+<circle cx="46.00" cy="4.67" r="0.9" fill="#000"/>
+<circle cx="0.00" cy="4.67" r="2.1" fill="none" stroke="#000" stroke-width="0.5"/>
+</g>
+</svg>

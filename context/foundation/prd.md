@@ -58,9 +58,9 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać poziom dyktanda graficznego (łatwy, średni, trudny).
 - Rodzic dostaje na karcie symetrii, nonogramie i dyktandzie więcej różnych obiektów niż rakieta, robot i truskawka, pogrupowanych w kategorie.
 - Rodzic może wybrać na karcie symetrii, nonogramie i dyktandzie jedną kategorię obiektów (np. Zwierzęta) albo „Wszystkie”.
-- Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (1, 2, 5, 10, 20 zł) i zakreśla większą albo „tyle samo”, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
+- Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (w złotych, euro albo dolarach, bez groszy i centów) i wpisuje między nimi „<”, „>” albo „=”, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wygenerować kartę „Który nie pasuje”, na której dziecko zakreśla w każdym rzędzie obrazek łamiący jawną regułę (kształt, kolor, rozmiar, liczba albo kategoria obiektu).
-- Rodzic może wygenerować kartę „Skopiuj rysunek na kratce”, na której dziecko przerysowuje czarną sylwetkę obiektu z katalogu szablonów z jednej kratki do pustej obok.
+- Rodzic może wygenerować kartę „Skopiuj obrazek”, na której dziecko przerysowuje sylwetkę obiektu z katalogu szablonów (domyślnie czarną, po włączeniu kolorów w kolorach kredek) z jednej kratki do pustej obok.
 - Rodzic może wygenerować kartę szlaczków, na której dziecko prowadzi ołówek po kropkach albo kontynuuje pokazany wzór.
 - Rodzic wybiera poziom każdej z czterech nowych kart bez nazw wieku, a profil sam pamięta ustawienia ich paska; na każdej stoi postać przy poleceniu.
 
@@ -108,7 +108,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Katalog to jedenaście postaci: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka. Wiersz „Bez postaci” zostaje.
+- Katalog to jedenaście postaci: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka. Wiersz „Brak” (bez postaci) zostaje.
 - Ta sama lista jest przy pasku „Postać” na stronie każdej karty, przy tworzeniu profilu i przy zapisie ulubionej postaci.
 - Wygląd dodawania profilu i zapisu ulubionej postaci może się zmienić, żeby zmieścić pełną listę.
 - Przy niższej rozdzielczości pełna lista jest widoczna, a nie ucięta.
@@ -147,7 +147,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma poza stopką z linkami „Jak to działa” i „Podziel się opinią” (US-22).
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
 - Wybrany profil dziecka zostaje po przejściu między katalogiem a stronami generatorów.
-- Profil w rogu strony głównej jest klikalny tak samo jak na stronach generatorów: wybór, dodanie, edycja, usunięcie i „Bez profilu”; miniatury od razu pokazują zapamiętany poziom wybranego profilu. Okno profilu nie otwiera się samo, także gdy są co najmniej dwa profile i żaden nie jest wybrany (decyzja 2026-10-31, GitHub 234).
+- Profil w rogu strony głównej jest klikalny tak samo jak na stronach generatorów: wybór, dodanie, edycja, usunięcie i „Bez profilu”; miniatury od razu pokazują zapamiętany poziom wybranego profilu. Okno profilu nie otwiera się samo, także gdy są co najmniej dwa profile i żaden nie jest wybrany (decyzja 2026-10-31, GitHub 234). Zdanie dotyczy katalogu; na stronie generatora, gdy są co najmniej dwa profile i żaden nie jest zapamiętany, okno wyboru profilu otwiera się celowo przy pierwszym wejściu (`openingVisit`).
 - Przy wybranym profilu miniatura karty, której profil już używał, pokazuje zapamiętany poziom (np. „poz. 4”, „średni”); karta, której profil jeszcze nie używał, nie ma plakietki (US-08; decyzja 2026-10-27).
 - Druk nadal nie wymaga profilu dziecka.
 - Pasek „Postać” jest na stronie każdego rodzaju karty. Na labiryncie postać stoi przy starcie, na pozostałych kartach przy poleceniu (US-21; decyzja 2026-10-26, wcześniej pasek był tylko przy labiryncie).
@@ -229,7 +229,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Karta ma kilka ciągów, jeden pod drugim. Każdy ciąg to rząd pól, w którym część pól jest wypełniona, a część pusta. Nad ciągami jest jedno zdanie polecenia.
-- Elementy to proste kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Ciąg może mieszać jedno i drugie, zgodnie z poziomem (US-11).
+- Elementy to proste kształty (koło, kwadrat, trójkąt, gwiazdka, serce, krzyżyk, ukośna strzałka; trzy ostatnie doszły w GitHub 112) i liczby. Ciąg może mieszać jedno i drugie, zgodnie z poziomem (US-11).
 - Każdy ciąg ma dokładnie jedną odpowiedź: do pustego pola pasuje wyłącznie jedna reguła z jawnej listy reguł, a pole ma wtedy jedną wartość. Aplikacja potrafi ją wyliczyć i sprawdzić. Karta, w której do pustego pola pasują dwie reguły dające różne odpowiedzi, nie jest pokazana.
 - Każde Generuj daje nową kartę: inne reguły albo inne elementy niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez odpowiedzi na kartce; postać przy poleceniu drukuje się w kolorze (US-21).
@@ -338,7 +338,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Odpowiedź jest jedna: rysunek wynika wprost z poleceń. Aplikacja potrafi go wyliczyć i sprawdzić, że wraca do startu i mieści się w kratce.
 - Każde Generuj daje nową kartę: inny obiekt albo inny wariant niż poprzednia karta. Kształt bez osi symetrii może wypaść też odbity w poziomie; odbicie to inny obrys, więc to inna karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez rysunku odpowiedzi.
-- Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć na ekranie kreskę zewnętrznego obrysu. Domyślnie wyłączone; przełączenie zostawia tę samą kartę. Udane Generuj oraz zmiana poziomu, która układa nową kartę, wyłączają przełącznik. Sama zmiana kategorii go nie wyłącza. Nieudane Generuj zostawia przełącznik i poprzednią kartę. Wydruk nigdy nie pokazuje obrysu (decyzja 2026-10-25).
+- Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć na ekranie kreskę zewnętrznego obrysu. Domyślnie wyłączone; przełączenie zostawia tę samą kartę. Udane Generuj oraz zmiana poziomu, która układa nową kartę, wyłączają przełącznik. Zmiana kategorii układa nową kartę i wyłącza przełącznik, tak jak zmiana poziomu. Nieudane Generuj albo nieudana nowa karta nie zostawia poprzedniej karty: w jej miejscu jest przyczyna, a przełącznik jest wyłączony. Wydruk nigdy nie pokazuje obrysu (decyzja 2026-10-25).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
 - Strona dyktanda ma pasek „Postać”; wybrana postać stoi przy poleceniu (US-21). Rysunkiem nadal jest obrys obiektu z katalogu szablonów albo kształtów dyktanda, nie postaci.
 
@@ -379,7 +379,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Na pasku strony jest wybór „Kategoria”: Wszystkie, a po nim kategorie alfabetycznie po polskich nazwach (Domy i budowle, Jedzenie, Kosmos i maszyny, Kształty, Przyroda, Zwierzęta); nowa kategoria wpada w swoje miejsce alfabetu. Domyślnie „Wszystkie” (decyzja 2026-10-31, GitHub 211).
 - Można wybrać dokładnie jedną kategorię. „Wszystkie” to też kategoria, a nie zaznaczenie kilku; kilku kategorii naraz nie da się zaznaczyć.
-- Wybrana kategoria obowiązuje przy następnym Generuj, jak każde ustawienie generatora, i nie zmienia działania poziomu, rozmiaru ani kolorów.
+- Zmiana kategorii przy pokazanej karcie od razu układa nową kartę z wybranej kategorii, jak zmiana poziomu; bez pokazanej karty kategoria obowiązuje przy następnym Generuj. Kategoria nie zmienia działania poziomu, rozmiaru ani kolorów (decyzja 2026-11-06, GitHub 283).
 - Każde Generuj w kategorii daje inny obiekt albo inny wariant niż poprzednia karta, na każdym poziomie i rozmiarze.
 - Profil i ostatnie parametry pamiętają kategorię osobno dla każdej karty, jak poziom (US-08). Wybór na jednej stronie nie zmienia drugiej.
 - Pasek z kategorią zostaje używalny na telefonie: Generuj i Drukuj nie nachodzą na siebie (US-04).
@@ -394,7 +394,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Postać to ten sam kolorowy obrazek co na labiryncie, z tego samego katalogu, także własny obrazek rodzica (US-02).
 - Postać drukuje się zawsze w kolorze, niezależnie od przełącznika kolorów karty (decyzja 2026-10-26). Na drukarce czarno-białej schodzi do odcieni szarości.
-- Przy „Bez postaci” karta ma samo zdanie polecenia, bez dymka.
+- Przy wyborze „Brak” karta ma samo zdanie polecenia, bez dymka.
 - Postać jest ozdobą: nie zmienia zadania, odpowiedzi ani trudności. Pola zadania (kratka symetrii, ciągi, plansza sudoku, kratka nonogramu i dyktanda) nie używają postaci.
 - Postać i dymek mieszczą się w obszarze karty nad zadaniem; zadanie nadal zajmuje większą część strony, a karta jest jedną stroną A4 z marginesem 10 mm.
 - Na labiryncie postać zostaje przy starcie jak w US-01; labirynt nie dostaje dymka.
@@ -408,11 +408,14 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Po zmianie ustawienia na pasku przy aktywnym profilu pojawia się krótki komunikat „Zapamiętane dla {imię}”, który znika sam i nie zasłania karty ani przycisków.
+- Gdy zapis ustawień do aktywnego profilu się nie uda (pełny lub zablokowany magazyn, profil usunięty w innej zakładce), w tym samym wierszu co „Zapamiętane dla {imię}” pojawia się krótki komunikat o błędzie („Nie udało się zapamiętać ustawień”), który znika sam i nie zasłania karty ani przycisków; bez profilu komunikatu nie ma (decyzja 2026-11-08, GitHub 284).
 - Pod listą postaci przy aktywnym profilu, gdy wybrana postać różni się od ulubionej, jest tekst „Tylko na tę kartę” i wybór „Ustaw jako ulubioną {imię}”.
 - Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia; przy labiryncie, symetrii, sekwencjach i dyktandzie (kartach z dawną nazwą wiekową) ma też pod opisem typowy wiek z kolumny „Dawna nazwa”. Wiersz ma więc trzy linie, np. „Poziom 3” / „mniejsza kratka, bez podpowiedzi” / „zwykle ok. 6 lat”; sudoku i nonogram mają dwie linie („łatwy” / „znaczki przy wierszach, duża kratka”), bez wieku (decyzja 2026-10-26).
 - Okno profilu ma jedno zdanie: ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
-- W stopce jest link do krótkiej strony „Jak to działa” z całą zasadą profilu, poziomów i postaci. Strona wymienia wszystkie rodzaje kart z krótkim opisem i opisuje poziomy każdej z nich, także czterech kart z M-5 („Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce”, szlaczki; US-23–US-30).
+- W stopce jest link do krótkiej strony „Jak to działa” z całą zasadą profilu, poziomów i postaci. Strona wymienia wszystkie rodzaje kart z krótkim opisem i opisuje poziomy każdej z nich, także czterech kart z M-5 („Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek”, szlaczki; US-23–US-30).
 - W stopce obok „Jak to działa” jest link „Podziel się opinią” do anonimowego, zewnętrznego formularza (Google Forms), otwierany w nowej karcie. Formularz wypełnia się dobrowolnie poza aplikacją; aplikacja nie wysyła do niego żadnych danych z urządzenia. Stopka z oboma linkami nie drukuje się (decyzja 2026-11-06, GitHub 292).
+- Gdy Generuj albo nowa karta po zmianie ustawienia się nie udały, w miejscu karty jest krótka przyczyna (np. brak kolejnych różnych kart w kategorii), pasek ustawień zostaje, a Drukuj jest wyłączone (decyzja 2026-11-06, GitHub 283).
+- Drukuj na karcie, która już była drukowana, pyta „Ta karta była już drukowana” z wyborem „Nowa karta” i „Drukuj tę samą”. „Nowa karta” tylko układa nową kartę, a drukuje ją następne Drukuj, bo Safari blokuje druk, który nie wynika wprost z kliknięcia (decyzja 2026-11-07). Ctrl+P i druk z menu przeglądarki drukują bez pytania, bo przeglądarka nie pozwala ich przerwać, ale oznaczają kartę jako wydrukowaną, więc następne Drukuj na przycisku już ostrzeże. Zmiana postaci, kolorów i „Pokaż rozwiązanie” nie układa nowej karty (decyzja 2026-11-06, GitHub 283); wyjątkiem są kolory na karcie „Który nie pasuje”, bo kolor jest tam częścią zadania i zmiana układa nową kartę (US-26; decyzja 2026-11-08, GitHub 265).
 - Nie ma samouczka przy pierwszym wejściu ani okna pomocy, które trzeba zamknąć, żeby korzystać ze strony.
 
 ### US-23: Rodzic generuje kartę „Kto ma więcej?” do druku
@@ -421,20 +424,20 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic otworzył z katalogu stronę „Kto ma więcej?”
 - **When** uruchomi generowanie
-- **Then** otrzymuje gotową do wydruku kartę A4 z kilkoma rzędami po dwie kupki monet i banknotów; dziecko zakreśla w każdym rzędzie kupkę, w której jest więcej pieniędzy, albo pole „tyle samo”, gdy kupki są równe
+- **Then** otrzymuje gotową do wydruku kartę A4 z kilkoma rzędami po dwie kupki monet i banknotów; dziecko wpisuje w każdym rzędzie w pustym polu między kupkami „<”, „>” (która kupka jest większa) albo „=” (gdy kupki są równe)
 
 #### Acceptance Criteria
 
-- Karta ma kilka rzędów, jeden pod drugim. W każdym rzędzie stoją dwie kupki oddzielone polem „=”. Nad rzędami jest jedno zdanie polecenia; przy nim stoi wybrana postać (US-21).
-- Nominały to 1, 2, 5, 10 i 20 zł. Grosze, ceny i reszta nie występują (decyzja 2026-11-01). Nominał jest widoczny jako liczba na każdej monecie i na każdym banknocie, więc druk czarny nic nie traci.
-- Odpowiedź jest jedna w rzędzie: większa kupka albo „tyle samo”. Aplikacja liczy wartość każdej kupki i potrafi sprawdzić odpowiedź. Remis jest dozwoloną odpowiedzią, nie błędem (decyzja 2026-11-01).
+- Karta ma kilka rzędów, jeden pod drugim. W każdym rzędzie stoją dwie kupki oddzielone pustym polem, w którym dziecko wpisuje znak (decyzja 2026-11-01). Nad rzędami jest jedno zdanie polecenia; przy nim stoi wybrana postać (US-21).
+- Waluta to osobny wybór na pasku: złote, euro albo dolary (GitHub 324, decyzja 2026-11-09); domyślnie złote. Nominały to 1, 2, 5, 10, 20, 50 i 100 w jednostce waluty (poziomy używają ich zestawów, Business Logic „Karta „Kto ma więcej?””). Grosze, centy, ceny i reszta nie występują (decyzja 2026-11-01). Nominał jest widoczny jako liczba na każdej monecie i na każdym banknocie, więc druk czarny nic nie traci.
+- Odpowiedź jest jedna w rzędzie: lewa kupka większa („>”), prawa większa („<”) albo równe („=”). Aplikacja liczy wartość każdej kupki i potrafi sprawdzić odpowiedź. Remis jest dozwoloną odpowiedzią, nie błędem, i na karcie występuje w zerze albo jednym rzędzie (decyzja 2026-11-01).
 - Liczy się wartość, nie liczba sztuk. Na poziomach wyższych w części rzędów kupka z większą liczbą sztuk ma mniejszą wartość.
-- Wygląd monet i banknotów jest stylizowany (koło i prostokąt z nominałem), bez kopiowania wzorów NBP (Open Questions 14).
+- Wygląd monet i banknotów jest stylizowany i nie może uchodzić za prawdziwy pieniądz (Open Questions 14): domyślnie koło i prostokąt z nominałem w czerni; po włączeniu kolorów (US-24) kolorowe obrazki użytkowniczki o tym samym rozmiarze, z nominałem na każdym kawałku.
 - Każde Generuj daje nową kartę: inne kupki niż poprzednia.
-- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez odpowiedzi na kartce; postać przy poleceniu drukuje się w kolorze (US-21).
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Domyślnie druk jest czarny, a po włączeniu kolorów (US-24) monety i banknoty drukują się w kolorach; bez odpowiedzi na kartce, a postać przy poleceniu drukuje się w kolorze (US-21).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
 
-### US-24: Rodzic wybiera poziom karty „Kto ma więcej?”
+### US-24: Rodzic wybiera poziom karty „Kto ma więcej?” i włącza kolory
 
 - **Given** rodzic jest na stronie „Kto ma więcej?”
 - **When** wybierze poziom (łatwy, średni, trudny)
@@ -442,9 +445,10 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Poziom zmienia zestaw nominałów, wielkość sum i to, czy liczba sztuk myli. Reguły są w Business Logic „Karta „Kto ma więcej?””. Karta nie nazywa poziomów wiekiem; zakładany wiek dziecka to 6–8 lat.
+- Poziom zmienia zestaw nominałów, wielkość sum i to, czy liczba sztuk myli. Reguły są w Business Logic „Karta „Kto ma więcej?””. Karta nie nazywa poziomów wiekiem; zakładany wiek dziecka to 6–8 lat. Waluta (zł, €, $) wybiera zestawy nominałów poziomów; jest zapamiętywana w profilu jak poziom i kolory, a jej zmiana przy pokazanej karcie układa nową kartę (jak zmiana poziomu), bo nominały się różnią (GitHub 324, decyzja 2026-11-09).
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
 - Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają go same (US-08).
+- Na pasku jest też przełącznik „Kolory”, niezależny od poziomu, domyślnie wyłączony: karta jest wtedy czarnym konturem, czytelnym na czarno-białej drukarce. Włączony rysuje monety i banknoty jako kolorowe, stylizowane obrazki; nominał zostaje liczbą na każdym kawałku, a wszystkie monety mają jedną średnicę i wszystkie banknoty jeden rozmiar (wielkość nie zdradza wartości). Przełącznik nie układa nowej karty. Profil i ostatnie parametry pamiętają kolory tak jak poziom (US-08).
 
 ### US-25: Rodzic generuje kartę „Który nie pasuje” do druku
 
@@ -455,7 +459,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 #### Acceptance Criteria
 
 - Karta ma kilka rzędów, jeden pod drugim. W każdym rzędzie wszystkie obrazki poza jednym łączy ta sama cecha, a jeden się od nich różni. Nad rzędami jest jedno zdanie polecenia; przy nim stoi wybrana postać (US-21).
-- Reguła pochodzi z jawnej listy: kształt, kolor, rozmiar, liczba i kategoria obiektu (Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle; bez „Kształtów” i bez obiektów z kilkoma kategoriami, Business Logic „Karta „Który nie pasuje””). Kolor działa tylko po włączeniu kolorów (US-26); bez nich druk jest czarny i reguły to pozostałe cztery.
+- Reguła pochodzi z jawnej listy: kształt, kolor, rozmiar, liczba i kategoria obiektu (Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle; bez „Kształtów”). Obiekt kategorii to prosta ikona wektorowa, po pięć w każdej kategorii, a nie sylwetka z katalogu szablonów, bo pikselowe sylwetki były nieczytelne w rzędzie obrazków (decyzja 2026-11-08, GitHub 265; Business Logic „Karta „Który nie pasuje””). Kolor działa tylko po włączeniu kolorów (US-26); bez nich druk jest czarny i reguły to pozostałe cztery.
 - Odpowiedź jest jedna w rzędzie: dokładnie jeden obrazek łamie regułę rzędu, a żadna inna reguła z listy nie wskazuje innego obrazka. Rząd, w którym pasuje inna reguła z inną odpowiedzią, nie jest pokazany. Aplikacja potrafi ją wyliczyć i sprawdzić.
 - Każde Generuj daje nową kartę: inne reguły albo inne obrazki niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest bez odpowiedzi na kartce.
@@ -469,48 +473,50 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Poziom zmienia, które reguły występują, ile obrazków stoi w rzędzie i ile jest rzędów. Reguły są w Business Logic „Karta „Który nie pasuje””.
-- Kolory są osobnym przełącznikiem jak w sekwencjach i sudoku; domyślnie wyłączone. Przełącznik nie układa nowej karty.
+- Poziom zmienia, które reguły występują, ile obrazków stoi w rzędzie, ile jest rzędów, ile cech rozprasza (rozpraszacze), jak bardzo mały obrazek różni się od dużego i jak liczne są grupy w regule liczby (decyzja 2026-11-08, GitHub 265). Reguły są w Business Logic „Karta „Który nie pasuje””.
+- Kolory są osobnym przełącznikiem jak w sekwencjach i sudoku; domyślnie wyłączone. Inaczej niż na innych kartach przełącznik układa nową kartę, bo z kolorami dochodzi reguła koloru i kolorowe rozpraszacze, a karta z kolorowymi rzędami bez kolorów traciłaby jedną odpowiedź (decyzja 2026-11-08, GitHub 265).
+- Karta nie ma „Pokaż rozwiązanie” (decyzja 2026-11-08, GitHub 265).
 - Poziom i kolory pamięta profil i ostatnie parametry (US-08).
 
-### US-27: Rodzic generuje kartę „Skopiuj rysunek na kratce” do druku
+### US-27: Rodzic generuje kartę „Skopiuj obrazek” do druku
 
-- **Given** rodzic otworzył z katalogu stronę „Skopiuj rysunek na kratce”
+- **Given** rodzic otworzył z katalogu stronę „Skopiuj obrazek”
 - **When** uruchomi generowanie
-- **Then** otrzymuje gotową do wydruku kartę A4 z dwiema kratkami tej samej wielkości: w jednej jest czarna sylwetka obiektu, druga jest pusta; dziecko przerysowuje sylwetkę, zamalowując te same kratki
+- **Then** otrzymuje gotową do wydruku kartę A4 z dwiema kratkami tej samej wielkości: w jednej jest sylwetka obiektu (domyślnie czarna), druga jest pusta; dziecko przerysowuje sylwetkę, zamalowując te same kratki (po włączeniu kolorów kredkami według wzoru)
 
 #### Acceptance Criteria
 
 - Sylwetka to cały obiekt z katalogu szablonów symetrii (połowa szablonu i jej odbicie), zamalowane kratki czarne, puste białe. Detale będące dziurami w sylwetce zostają pustymi kratkami. Karta nie zdradza nazwy obiektu.
-- Obie kratki mają tę samą siatkę; nie ma osi symetrii ani odbicia. Układ obu kratek (obok siebie albo jedna nad drugą) i rozmiar kratki wynikają z poziomu i mieszczą się na A4 z marginesem 10 mm (Open Questions 13).
-- Odpowiedź jest jedna: te same zamalowane kratki w drugiej kratce. Aplikacja ją zna; nie ocenia rysunku dziecka.
+- Obie kratki mają tę samą siatkę; nie ma osi symetrii ani odbicia. Kratki stoją obok siebie na każdym poziomie, bez numerów wierszy i kolumn; rozmiar kratki wynika z poziomu (10 / 7 / 5 mm), a obie kratki z odstępem 10 mm mieszczą się na A4 z marginesem 10 mm (decyzja 2026-11-09 po makiecie, Open Questions 13). Sylwetka jest wyśrodkowana w pionie w siatce.
+- Odpowiedź jest jedna: te same zamalowane kratki w drugiej kratce (przy kolorach także w tych samych kolorach). Aplikacja ją zna; nie ocenia rysunku dziecka.
 - Każde Generuj daje nową kartę: inny obiekt albo inny wariant niż poprzednia karta.
-- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Domyślnie druk jest czarny; po włączeniu kolorów lewa kratka drukuje się w kolorach kredek (US-28).
 - Te same warunki na telefonie co w US-04.
 
-### US-28: Rodzic wybiera poziom i kategorię karty „Skopiuj rysunek na kratce”
+### US-28: Rodzic wybiera poziom i kategorię karty „Skopiuj obrazek” i włącza kolory
 
-- **Given** rodzic jest na stronie „Skopiuj rysunek na kratce”
-- **When** wybierze poziom (łatwy, średni, trudny) albo kategorię obiektów
-- **Then** karta ma kratkę i obiekty zgodne z poziomem, wylosowane z wybranej kategorii
+- **Given** rodzic jest na stronie „Skopiuj obrazek”
+- **When** wybierze poziom (łatwy, średni, trudny), kategorię obiektów albo włączy kolory
+- **Then** karta ma kratkę i obiekty zgodne z poziomem, wylosowane z wybranej kategorii, a sylwetka ma kolory kredek po włączeniu kolorów
 
 #### Acceptance Criteria
 
-- Poziom zmienia rozmiar siatki, wielkość kratki i katalog obiektów (łatwy prostsze, trudny bogatsze). Reguły są w Business Logic „Karta „Skopiuj rysunek na kratce””.
+- Poziom zmienia rozmiar siatki, wielkość kratki i katalog obiektów (łatwy prostsze, trudny bogatsze). Reguły są w Business Logic „Karta „Skopiuj obrazek””.
 - Kategoria działa jak w US-20: jeden wybór, „Wszystkie” domyślnie, alfabetycznie po polskich nazwach.
-- Poziom i kategorię pamięta profil i ostatnie parametry (US-08).
+- Kolory to osobny przełącznik na pasku, niezależny od poziomu, jak w symetrii (US-09). Domyślnie wyłączone: sylwetka jest czarna. Włączone: każda kratka sylwetki ma kolor kredki z szablonu obiektu, bez liter i bez legendy; dziury w sylwetce (okno, oczy) mają kolor szablonu albo zostają białe, gdy szablon tak ustala. Kolory ma tylko lewa kratka, prawa zostaje pusta. Przełącznik zostawia tę samą kartę; nie generuje nowej. Na drukarce czarno-białej kolory schodzą do odcieni szarości (decyzja 2026-11-10, prośba użytkowniczki).
+- Poziom, kategorię i kolory pamięta profil i ostatnie parametry (US-08).
 
 ### US-29: Rodzic generuje kartę szlaczków do druku
 
 - **Given** rodzic otworzył z katalogu stronę „Szlaczki”
 - **When** uruchomi generowanie
-- **Then** otrzymuje gotową do wydruku kartę A4 z rzędami szlaczków: na niższych poziomach dziecko prowadzi ołówek po kropkach, na wyższych kontynuuje pokazany wzór w pustych wierszach
+- **Then** otrzymuje gotową do wydruku kartę A4 z rzędami szlaczków: na niższych poziomach dziecko prowadzi ołówek po kropkach, na wyższych kontynuuje pokazany wzór w pustej części rzędu
 
 #### Acceptance Criteria
 
-- Karta ma kilka rzędów, jeden pod drugim. Nad rzędami jest jedno zdanie polecenia, inne dla trybu kropek i inne dla trybu kontynuacji; przy nim stoi wybrana postać (US-21).
-- Wzór pochodzi z jawnej listy: linia prosta, zygzak, fala, schodki, pętle, łuki. Karta pokazuje jeden wzór na rząd. Wzór ma losowaną wysokość, gęstość i początek, więc dwa rzędy jednej karty nie są takie same, nawet gdy poziom ma tylko dwa albo trzy wzory.
-- W trybie kropek ścieżka wzdłuż kropek jest jedna; aplikacja ją zna. W trybie kontynuacji początek wzoru jednoznacznie wyznacza regułę; aplikacja ją zna, ale nie ocenia rysunku dziecka. To wyjątek od „jednej sprawdzalnej odpowiedzi” (decyzja 2026-11-01).
+- Karta ma kilka rzędów, jeden pod drugim (4–7 zależnie od poziomu). Nad rzędami jest jedno zdanie polecenia, inne dla każdego trybu; przy nim stoi wybrana postać (US-21). Karta nie ma innych obrazków (decyzja 2026-11-09; obrazki startu i celu w rzędach to osobna zmiana z kategoriami).
+- Wzór pochodzi z jawnej puli poziomu (Business Logic „Karta szlaczków”). Karta pokazuje jeden wzór na rząd i nie powtarza wzoru, dopóki pula starcza. Wzór ma losowaną długość kroku i łagodność (stosunek wysokości do kroku) w granicach poziomu, więc dwie karty prawie nigdy nie są takie same.
+- W trybie samych kropek (Poziomy 1–2) ścieżka wzdłuż kropek jest jedna i się nie krzyżuje; aplikacja ją zna. W trybie kontynuacji początek wzoru jednoznacznie wyznacza regułę; aplikacja ją zna, ale nie ocenia rysunku dziecka. To wyjątek od „jednej sprawdzalnej odpowiedzi” (decyzja 2026-11-01).
 - Linie i kropki są dość grube i wyraźne, by wyszły na zwykłej drukarce domowej (Open Questions 15).
 - Każde Generuj daje nową kartę: inne wzory albo inna kolejność niż poprzednia karta.
 - Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny.
@@ -520,13 +526,14 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - **Given** rodzic jest na stronie „Szlaczki”
 - **When** wybierze poziom (Poziom 1–4)
-- **Then** karta ma tryb (kropki albo kontynuacja), wzory i grubość linii zgodne z tym poziomem
+- **Then** karta ma tryb, pulę wzorów, łagodność kształtu i liczbę rzędów zgodne z tym poziomem
 
 #### Acceptance Criteria
 
-- Poziomy 1–2 to kropki, Poziomy 3–4 to kontynuacja wzoru; poziom zmienia też złożoność wzoru. Opis poziomu mówi wprost, który tryb to jest. Reguły są w Business Logic „Karta szlaczków”.
+- Poziomy 1–2 to kropki. Poziom 3 to dwa powtórzenia wzoru po kropkach, a dalej dziecko rysuje samo. Poziom 4 to kontynuacja wzoru narysowanego linią, w liniaturze jak w zeszycie do kaligrafii. Opis poziomu mówi wprost, który tryb to jest. Reguły są w Business Logic „Karta szlaczków” (decyzja 2026-11-09).
+- Na Poziomach 3–4 pasek ma przełącznik „Linie” (linie pomocnicze), domyślnie włączony: na Poziomie 3 przerywane linie na górze i na dole wzoru, na Poziomie 4 liniatura. Wyłączony zostawia bladą linię dolną. Przełącznik nie układa nowej karty. Na Poziomach 1–2 go nie ma (jak „Kształty / Cyfry” w sudoku przy 4×4).
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
-- Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają go same (US-08).
+- Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają poziom i „Linie” (US-08).
 
 ## Functional Requirements
 
@@ -610,27 +617,29 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 ### Postać na kartach i podpowiedzi
 
 - FR-030: Na każdej karcie poza labiryntem wybrana postać stoi przy zdaniu polecenia i „mówi” je w dymku; drukuje się zawsze w kolorze. Priority: must-have
-  > Socrates: Counter-argument considered: kolorowa postać łamie umowę czarnego druku, a pasek „Postać” wraca na strony, które go celowo nie miały. Resolution: kept (2026-10-26); postać jest ozdobą, nie częścią zadania, więc nie zmienia odpowiedzi; drukuje się w kolorze jak na labiryncie i na czarno-białej drukarce schodzi do szarości. Ulubiona postać z profilu dostaje sens na każdej karcie, a „Bez postaci” zostaje.
+  > Socrates: Counter-argument considered: kolorowa postać łamie umowę czarnego druku, a pasek „Postać” wraca na strony, które go celowo nie miały. Resolution: kept (2026-10-26); postać jest ozdobą, nie częścią zadania, więc nie zmienia odpowiedzi; drukuje się w kolorze jak na labiryncie i na czarno-białej drukarce schodzi do szarości. Ulubiona postać z profilu dostaje sens na każdej karcie, a „Brak” zostaje.
 - FR-031: Rodzic widzi krótkie podpowiedzi w miejscu wyboru (komunikat o zapamiętaniu, „Tylko na tę kartę”, opis poziomu, zdanie w oknie profilu) i może otworzyć stronę „Jak to działa”. Priority: must-have
   > Socrates: Counter-argument considered: podpowiedzi to łatka na zbyt złożony model ustawień. Resolution: kept; zasada jest prosta (karta pamięta pasek, postać zmienia się jawnie), a podpowiedź pokazuje ją dokładnie wtedy, gdy rodzic coś zmienia. Jeśli wydruk próbny pokaże, że podpowiedzi nie wystarczają, poprawiamy model, a nie dokładamy samouczek.
 - FR-032: Rodzic może w oknie profilu przywrócić domyślne ustawienia wszystkich kart („Zacznij od nowa”); imię i ulubiona postać zostają. Priority: nice-to-have
   > Socrates: Counter-argument considered: to kolejny przycisk w oknie, które ma zostać małe. Resolution: kept as nice-to-have; przydaje się, gdy profil przechodzi na młodsze rodzeństwo, ale to samo da się zrobić paskiem każdej karty.
 
-### Kto ma więcej?, Który nie pasuje, Skopiuj rysunek i Szlaczki
+### Kto ma więcej?, Który nie pasuje, Skopiuj obrazek i Szlaczki
 
-- FR-033: Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (1, 2, 5, 10, 20 zł, bez groszy) i zakreśla większą albo „tyle samo”, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
-  > Socrates: Counter-argument considered: remis psuje jedną sprawdzalną odpowiedź. Resolution: remis akceptowalny (2026-11-01); „tyle samo” jest dopuszczoną odpowiedzią, a aplikacja liczy wartość każdej kupki i zna poprawne porównanie.
+- FR-033: Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (w złotych, euro albo dolarach, bez groszy i centów) i wpisuje między nimi „<”, „>” albo „=”, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: remis psuje jedną sprawdzalną odpowiedź. Resolution: remis akceptowalny (2026-11-01); „=” jest dopuszczoną odpowiedzią, a aplikacja liczy wartość każdej kupki i zna poprawne porównanie.
 - FR-034: Rodzic może wybrać poziom karty „Kto ma więcej?” (łatwy, średni, trudny: nominały, sumy, liczba sztuk myli). Priority: must-have
   > Socrates: Counter-argument considered: dziecko 6 lat nie umie jeszcze dodawać. Resolution: kept; łatwy poziom porównuje tylko liczbę sztuk jednego nominału, a wartości poziomów potwierdza wydruk (Open Questions 14).
 - FR-035: Rodzic może wygenerować kartę „Który nie pasuje”, na której w każdym rzędzie jeden obrazek łamie jawną regułę (kształt, kolor, rozmiar, liczba albo kategoria obiektu), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dwie reguły mogą wskazać inny obrazek. Resolution: kept (2026-11-01); generator sprawdza wszystkie reguły naraz, jak w sekwencjach, i nie pokazuje rzędu, w którym pasuje inna odpowiedź.
-- FR-036: Rodzic może wybrać poziom karty „Który nie pasuje” (łatwy, średni, trudny: rodzaj reguł, liczba obrazków w rzędzie i liczba rzędów) i włączyć kolory. Priority: must-have
-- FR-037: Rodzic może wygenerować kartę „Skopiuj rysunek na kratce”, na której dziecko przerysowuje czarną sylwetkę obiektu z katalogu szablonów z jednej kratki do pustej, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
-  > Socrates: Counter-argument considered: dwie kratki obok siebie nie mieszczą się na pionowym A4 z marginesem 10 mm. Resolution: kept (2026-11-01); układ (obok siebie albo jedna nad drugą) i rozmiar kratki wynikają z poziomu i muszą mieścić się w 10 mm marginesu; rozstrzyga makieta (Open Questions 13).
-- FR-038: Rodzic może wybrać poziom karty „Skopiuj rysunek na kratce” (łatwy, średni, trudny: rozmiar kratki i katalog obiektów) oraz kategorię obiektów. Priority: must-have
+- FR-036: Rodzic może wybrać poziom karty „Który nie pasuje” (łatwy, średni, trudny: rodzaj reguł, liczba obrazków w rzędzie, liczba rzędów, rozpraszacze, subtelność różnicy rozmiaru i grupy w regule liczby) i włączyć kolory, co układa nową kartę. Priority: must-have
+  > Socrates: Counter-argument considered: kolory jako ozdoba nie mogą zostać, gdy kolor jest regułą i rozpraszaczem. Resolution: revised (2026-11-08, GitHub 265); na tej karcie kolory należą do zadania, więc zmiana układa nową kartę, a ikony kategorii zostają czarne także z kolorami.
+- FR-037: Rodzic może wygenerować kartę „Skopiuj obrazek”, na której dziecko przerysowuje czarną sylwetkę obiektu z katalogu szablonów z jednej kratki do pustej, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: dwie kratki obok siebie nie mieszczą się na pionowym A4 z marginesem 10 mm. Resolution: kept (2026-11-01), rozstrzygnięte 2026-11-09 po makiecie (S-35): dwie kratki obok siebie mieszczą się w 10 mm marginesu na każdym poziomie, także trudny z kratką 5 mm (2 × 18 × 5 mm + odstęp 10 mm = 190 mm); kratki nie mają numerów (Open Questions 13).
+- FR-038: Rodzic może wybrać poziom karty „Skopiuj obrazek” (łatwy, średni, trudny: rozmiar kratki i katalog obiektów) oraz kategorię obiektów i włączyć kolory sylwetki. Priority: must-have
 - FR-039: Rodzic może wygenerować kartę szlaczków, na której dziecko prowadzi ołówek po kropkach (niższe poziomy) albo kontynuuje pokazany wzór (wyższe poziomy), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dwa tryby w jednej karcie mieszają różne umiejętności. Resolution: kept (2026-11-01); opis poziomu mówi wprost, który tryb to jest, a poziom jest jedynym wyborem na pasku.
-- FR-040: Rodzic może wybrać poziom szlaczków (Poziom 1–4: tryb, złożoność wzoru, grubość linii). Priority: must-have
+- FR-040: Rodzic może wybrać poziom szlaczków (Poziom 1–4: tryb, pula wzorów, łagodność kształtu, liczba rzędów), a na Poziomach 3–4 włączyć albo wyłączyć linie pomocnicze. Priority: must-have
+  > Socrates: Counter-argument considered: sztywne przypisanie sześciu wzorów do poziomów szybko się powtarza, a Poziom 1 z makiety był za trudny dla 3-latka. Resolution: revised (2026-11-09, makiety w `context/changes/pattern-lines-card/`); poziomy celują w 3–4, 5–6, 6–7 i 8–10 lat (cel projektu, nie etykieta), mają pule wzorów i losowaną łagodność, a Poziom 4 pomaga w nauce pisania (liniatura, elementy liter).
 
 ## Non-Functional Requirements
 
@@ -643,10 +652,10 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karta symetrii spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm (ściany i ramka kratki), domyślny druk czarny, a przy włączonych kolorach prawdziwe kolory kratek bez liter i legendy, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karty sekwencji i sudoku spełniają te same granice co labirynt: generowanie do 5 sekund (także sudoku 9×9 na najtrudniejszym poziomie), jedna strona A4, margines co najmniej 10 mm, domyślny druk czarny bez odpowiedzi (sudoku z włączonymi kolorami drukuje kształty w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Nonogram i dyktando graficzne spełniają te same granice co labirynt: generowanie do 5 sekund (także trudny nonogram ze sprawdzeniem jednego rozwiązania), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi, te same przeglądarki na komputerze i na telefonie, w tym Brave.
-- Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karta „Który nie pasuje” z włączonymi kolorami drukuje obrazki w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karty „Który nie pasuje” i „Kto ma więcej?” z włączonymi kolorami drukują obrazki w kolorach, a „Skopiuj obrazek” sylwetkę w kolorach kredek), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
-- Dane profili dzieci i ostatnie parametry nie opuszczają urządzenia. Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
+- Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
 - Wygenerowane karty nie są przechowywane po zakończeniu przepływu drukowania.
 
 ## Business Logic
@@ -668,7 +677,7 @@ Kolumna „Dawna nazwa” w tej i kolejnych tabelach łączy poziom z dotychczas
 
 Droga do mety nie jest progiem. To typowa długość dla siatki i sposobu losowania; pojedyncza karta może być krótsza albo dłuższa.
 
-Na Poziomach 1–5 start jest na środku górnej krawędzi, a znak postaci zostaje na środku wejścia. Wyjście jest w dolnym wierszu, w losowej kolumnie co najmniej 2 kolumny od środka, a napis „Meta” stoi pod nim. Na Poziomie 6 start i meta są w narożnikach; wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety.
+Na Poziomach 1–5 start jest na środku górnej krawędzi, a znak postaci zostaje na środku wejścia. Wyjście jest w dolnym wierszu, w losowej kolumnie co najmniej 2 kolumny od środka, a napis „Meta” stoi pod nim. Na Poziomie 6 start i meta są w narożnikach; wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”. Pętle w jego ślepych odnogach są dozwolone, jeśli nie powstaje druga droga od startu do mety; odcięte komórki (wyspy, do których nie da się dojść ze startu) nie są dozwolone (decyzja 2026-11-03). W kodzie to kod `unreachable-cells` w `mazeSpec`: karta z taką komórką nie jest pokazana.
 
 Poziom 1 losuje się sposobem, który daje krótszą drogę i więcej krótkich odnóg, żeby krótka droga nie była zagadką ukrytą wśród pułapek. Poziomy 2–6 losują krętą drogę zaczynając od losowej komórki, więc odnogi są równo rozłożone między startem a metą. Generator losuje 20 labiryntów i bierze ten, który ma najwięcej głębokich odnóg przy drodze (ślepy fragment co najmniej 5 komórek) i najmniej drogi w środkowej trzeciej szerokości kartki. Dzięki temu nie trafia się karta z prawie prostą drogą w dół przy środku (GitHub 114, testy na 4-latku i 6-latku 2026-10-30).
 
@@ -701,7 +710,7 @@ Wynikiem jest karta A4. Kratka zajmuje większą część strony, zachowuje marg
 
 Aplikacja zawsze tworzy kartę, w której każdy ciąg ma dokładnie jedną odpowiedź. Poziom wyznaczają długość ciągu, rodzaj reguł i liczba pustych pól. Rodzic wybiera jeden z czterech numerowanych poziomów (Poziom 1–4). Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia na górze i ciągami jeden pod drugim; każdy ciąg to rząd pól, część pól jest wypełniona, część pusta.
 
-Elementy to cztery kształty (koło, kwadrat, trójkąt, gwiazdka) i liczby. Reguły pochodzą z jawnej listy: powtarzanie wzoru (AB, ABC, AAB, ABB), liczby rosnące o 1 lub o 2, liczby malejące o 1 i mieszanie: kształt na przemian z liczbą rosnącą. Ciąg dla pustego pola jest poprawny, gdy z całej listy reguł pasuje do niego dokładnie jedna odpowiedź. Karta, której którykolwiek ciąg nie spełnia tego, nie jest pokazana.
+Elementy to siedem kształtów (koło, kwadrat, trójkąt, gwiazdka, serce, krzyżyk, ukośna strzałka; trzy ostatnie doszły w GitHub 112) i liczby. Reguły pochodzą z jawnej listy: powtarzanie wzoru (AB, ABC, AAB, ABB), liczby rosnące o 1 lub o 2, liczby malejące o 1 i mieszanie: kształt na przemian z liczbą rosnącą. Ciąg dla pustego pola jest poprawny, gdy z całej listy reguł pasuje do niego dokładnie jedna odpowiedź. Karta, której którykolwiek ciąg nie spełnia tego, nie jest pokazana.
 
 | Poziom   | Dawna nazwa | Długość ciągu | Reguły                                         | Puste pola w ciągu | Liczba ciągów |
 | -------- | ----------- | ------------- | ---------------------------------------------- | ------------------ | ------------- |
@@ -792,7 +801,7 @@ Reguła, którą generator sprawdza: z liczb wiersza i kolumn wynika dokładnie 
 
 Dodane 2026-10-25. Aplikacja zawsze tworzy kartę z jedną odpowiedzią: rysunkiem, który wynika z poleceń. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia, listą poleceń i pustą kratką z zaznaczonym punktem startu. Polecenie to liczba kratek i strzałka (→, ←, ↑, ↓); dziecko rysuje odcinek po linii kratki. Bez skosów. Polecenie: „Rysuj po liniach kratki według strzałek. Zacznij od kropki.”.
 
-Droga to zewnętrzny obrys całej sylwetki obiektu z katalogu szablonów albo z katalogu kształtów dyktanda (niżej), obiegany w jednym kierunku od punktu startu z powrotem do niego. Kolejne odcinki w tym samym kierunku łączą się w jedno polecenie. Dziury w sylwetce (okno, oczy, pestki) nie są rysowane. Kratka jest większa od obiektu o co najmniej jedną kratkę z każdej strony, a punkt startu leży na obrysie, w lewym górnym rogu sylwetki.
+Droga to zewnętrzny obrys całej sylwetki obiektu z katalogu szablonów albo z katalogu kształtów dyktanda (niżej), obiegany w jednym kierunku od punktu startu z powrotem do niego. Kolejne odcinki w tym samym kierunku łączą się w jedno polecenie. Dziury w sylwetce (okno, oczy, pestki) nie są rysowane. Kratka jest większa od obiektu o co najmniej jedną kratkę z każdej strony, a punkt startu leży na obrysie (decyzja 2026-11-06: w którym wierzchołku, nie ma znaczenia).
 
 | Poziom | Dawna nazwa | Kratka (około) | Obiekty                        |
 | ------ | ----------- | -------------- | ------------------------------ |
@@ -813,70 +822,80 @@ Kształty dyktanda (dodane 2026-10-30, GitHub 115): oprócz obiektów z szablon�
 
 Jedzenie nie ma kształtów dyktanda, tylko obiekty z szablonów. Kategoria „Kształty” z figurami geometrycznymi (GitHub 198) składa się z obiektów z szablonów, a nie z kształtów dyktanda; kotwica i lizak wchodzą do Kosmosu i maszyn oraz Jedzenia (GitHub 124). Te same reguły obrysu (jedna zamknięta linia, bez rozłączeń i bez styku rogiem, dziury wypełnione) obowiązują kształty tak samo jak obiekty z szablonów.
 
-Liczba poleceń wynika z obiektu; im bogatszy obiekt, tym więcej poleceń. Reguły, które generator sprawdza: droga wraca do punktu startu, nie przecina się i nie dotyka sama siebie (także w narożniku kratki), mieści się w kratce, a rysunek z poleceń to dokładnie obrys sylwetki. Wariant, który łamie którąś z tych reguł, nie jest pokazany. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć na ekranie kreskę zewnętrznego obrysu. Domyślnie wyłączone; przełączenie zostawia tę samą kartę. Udane Generuj oraz zmiana poziomu, która układa nową kartę, wyłączają przełącznik. Sama zmiana kategorii go nie wyłącza. Nieudane Generuj zostawia przełącznik i poprzednią kartę. Wydruk nigdy nie pokazuje obrysu (decyzja 2026-10-25). Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11). Wynikiem jest karta A4; kratka i polecenia zajmują większą część strony i zachowują margines co najmniej 10 mm.
+Liczba poleceń wynika z obiektu; im bogatszy obiekt, tym więcej poleceń. Reguły, które generator sprawdza: droga wraca do punktu startu, nie przecina się i nie dotyka sama siebie (także w narożniku kratki), mieści się w kratce, a rysunek z poleceń to dokładnie obrys sylwetki. Wariant, który łamie którąś z tych reguł, nie jest pokazany. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć na ekranie kreskę zewnętrznego obrysu. Domyślnie wyłączone; przełączenie zostawia tę samą kartę. Udane Generuj oraz zmiana poziomu, która układa nową kartę, wyłączają przełącznik. Zmiana kategorii układa nową kartę i wyłącza przełącznik, tak jak zmiana poziomu. Nieudane Generuj albo nieudana nowa karta nie zostawia poprzedniej karty: w jej miejscu jest przyczyna, a przełącznik jest wyłączony. Wydruk nigdy nie pokazuje obrysu (decyzja 2026-10-25). Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 11). Wynikiem jest karta A4; kratka i polecenia zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
 ### Karta „Kto ma więcej?”
 
-Dodane 2026-11-01 (M-5). Aplikacja zawsze tworzy kartę, w której każdy rząd ma dokładnie jedną poprawną odpowiedź: kupkę o większej wartości albo „tyle samo”. Poziom wyznaczają zestaw nominałów, wielkość sum i to, czy liczba sztuk myli. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Zakreśl kupkę, w której jest więcej pieniędzy.”) i pięcioma rzędami; w rzędzie stoją dwie kupki oddzielone polem „=”.
+Dodane 2026-11-01 (M-5). Aplikacja zawsze tworzy kartę, w której każdy rząd ma dokładnie jedną poprawną odpowiedź: kupkę o większej wartości albo równe kupki. Poziom wyznaczają zestaw nominałów, wielkość sum i to, czy liczba sztuk myli. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Gdzie jest więcej pieniędzy? Wskaż <, > lub =.”) i pięcioma rzędami; w rzędzie stoją dwie kupki oddzielone pustym polem na znak „<”, „>” albo „=”, które wpisuje dziecko (decyzja 2026-11-01).
 
-Kupka to zestaw monet (1, 2, 5 zł) i banknotów (10, 20 zł). Moneta to koło z grubą liczbą, banknot to prostokąt z grubą liczbą; wszystkie monety mają tę samą wielkość, żeby wielkość nie zdradzała wartości, a wszystkie banknoty tę samą. Wygląd jest stylizowany i nie kopiuje wzorów NBP. Wartość kupki to suma nominałów; grosze nie występują.
+Kupka to zestaw monet i banknotów jednej waluty (złote, euro, dolary; GitHub 324, 2026-11-09). W złotych monetami są 1, 2 i 5 zł, a banknotami 10, 20, 50 i 100 zł; w euro monetami 1 i 2 €, a banknotami 5, 10, 20, 50 i 100 €; w dolarach wyłącznie banknotami 1, 5, 10, 20, 50 i 100 $, bo moneta 1 $ jest rzadko spotykana (decyzja 2026-11-09; bez 200 €). Wartość ma w jednej walucie jedną postać, więc dolar nie ma monety 1 $ obok banknotu 1 $. Moneta to koło z grubą liczbą, banknot to prostokąt z grubą liczbą; wszystkie monety mają tę samą wielkość, żeby wielkość nie zdradzała wartości, a wszystkie banknoty tę samą (banknot 18 × 9 mm). Wygląd jest stylizowany i nie kopiuje wzorów NBP. Wartość kupki to suma nominałów; grosze i centy nie występują. Czarny rysunek euro i dolara ma przy liczbie mały znak waluty (€, $; złote bez znaku, jak dotąd).
 
-| Poziom | Nominały w rzędzie                           | Sumy w kupce | Liczba sztuk                                               |
-| ------ | -------------------------------------------- | ------------ | ---------------------------------------------------------- |
-| łatwy  | jeden nominał w obu kupkach (1, 2 albo 5 zł) | do 20 zł     | więcej sztuk = więcej pieniędzy                            |
-| średni | 1, 2, 5 zł mieszane                          | do 20 zł     | część rzędów: mniej sztuk, a więcej pieniędzy              |
-| trudny | 1, 2, 5, 10, 20 zł mieszane                  | do 50 zł     | co najmniej połowa rzędów: więcej sztuk, a mniej pieniędzy |
+Kolory (US-24): osobne ustawienie rodzica, niezależne od poziomu, domyślnie wyłączone. Wyłączone to czarny kontur opisany wyżej. Włączone rysuje każdy kawałek jako gotowy kolorowy obrazek użytkowniczki (`public/money/<nominał>zl.png`, w euro `<nominał>eur.png`, w dolarach `<nominał>usd.png`; srebrna 1 zł, złota 2 zł, dwukolorowa 5 zł, banknoty 10 zł i 20 zł w różnych barwach); kolor jest czystą funkcją nominału, nominał zostaje liczbą na każdym kawałku, a obrazek jest stylizowany, bez zabezpieczeń i dokładnych wzorów NBP. Obrazek skaluje się do średnicy monety albo do rozmiaru banknotu, więc wielkość nadal nie zdradza wartości. Obrazki euro i dolara są wycięte z makiet użytkowniczki. Przełącznik nie zmienia karty.
 
-Reguły, które generator sprawdza: suma każdej kupki mieści się w sumach poziomu; kupki w jednym rzędzie różnią się wartością albo są równe tylko w jednym rzędzie na karcie (decyzja 2026-11-01: remis dozwolony); na poziomie łatwym obie kupki mają jeden nominał; na poziomie trudnym liczba sztuk wskazuje inną kupkę niż wartość w co najmniej połowie rzędów; kupka mieści się w polu rzędu na A4. Karta, która łamie którąś z tych reguł, nie jest pokazana. Czarny druk niczego nie traci, bo nominał to liczba. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 14). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
+| Poziom | Nominały w złotych       | Nominały w euro          | Nominały w dolarach                 | Sumy w kupce | Liczba sztuk w kupce                           | Rzędy, w których liczba sztuk myli |
+| ------ | ------------------------ | ------------------------ | ----------------------------------- | ------------ | ---------------------------------------------- | ---------------------------------- |
+| łatwy  | tylko monety 1, 2, 5     | tylko monety 1, 2        | banknoty 1 i 5 (dolar nie ma monet) | do 10        | 1–5                                            | żaden                              |
+| średni | monety 1, 2, 5           | monety 1, 2 i banknot 5  | banknoty 1, 5, 10                   | do 20        | 1–8                                            | dokładnie 2 z 5                    |
+| trudny | 1, 2, 5, 10, 20, 50, 100 | 1, 2, 5, 10, 20, 50, 100 | 1, 5, 10, 20, 50, 100               | do 200       | 1–10, w tym najwyżej 4 banknoty (w dolarach 9) | co najmniej 3 z 5                  |
+
+Rząd „myli”, gdy kupka z ściśle mniejszą liczbą sztuk jest ściśle więcej warta; równa liczba sztuk przy różnej wartości i remis nie „mylą”. Dwie identyczne kupki nie są remisem.
+
+Reguły, które generator sprawdza: suma każdej kupki mieści się w sumach poziomu; kupki w jednym rzędzie różnią się wartością albo są równe tylko w jednym rzędzie na karcie (decyzja 2026-11-01: remis dozwolony); na poziomie łatwym kupki mają tylko monety (dolar nie ma monet, więc ma banknoty 1 i 5 $), najwyżej 5 sztuk i żaden rząd nie myli; w kupce jest najwyżej 4 banknoty, bo więcej nie mieści się w ramce kupki (z czterema banknotami i sześcioma monetami ramka jest pełna); w dolarach, które nie mają monet, najwyżej 9 banknotów (trzy rzędy po trzy); na poziomie średnim dokładnie 2 z 5 rzędów myli, a na trudnym co najmniej 3 z 5; kupka mieści się w polu rzędu na A4. Karta, która łamie którąś z tych reguł, nie jest pokazana. Czarny druk niczego nie traci, bo nominał to liczba, także na kolorowym obrazku. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 14). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
 ### Karta „Który nie pasuje”
 
 Dodane 2026-11-01 (M-5). Aplikacja zawsze tworzy kartę, w której w każdym rzędzie dokładnie jeden obrazek łamie regułę rzędu, a żadna inna reguła z listy nie wskazuje innego obrazka. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Który nie pasuje? Zakreśl go.”) i rzędami obrazków jeden pod drugim.
 
-Reguły pochodzą z jawnej listy: kształt (koło, kwadrat, trójkąt, serce, krzyżyk z katalogu sudoku), rozmiar (duży lub mały), liczba (kropki, kształty w grupie), kolor (dziewięć kredek z sudoku) i kategoria obiektu (czarna sylwetka z katalogu szablonów). Reguła kategorii używa pięciu kategorii katalogu: Zwierzęta, Jedzenie, Przyroda, Kosmos i maszyny, Domy i budowle. Kategoria „Kształty” nie bierze w niej udziału, bo myliłaby się z regułą kształtu. W rzędzie tej reguły wszystkie obrazki poza jednym są z jednej kategorii, a odstający z innej, i rząd bierze tylko obiekty, które mają dokładnie jedną z tych pięciu kategorii; obiekt z kilkoma kategoriami nie trafia do rzędu kategorii, bo pasowałby do dwóch odpowiedzi (decyzja 2026-11-01). Reguła „kolor” wymaga włączonych kolorów (US-26); bez nich obrazki są czarnymi konturami. Jeden rząd opiera się na jednej regule; pozostałe cechy obrazków w rzędzie są takie same albo różne tak, że nie wskazują innej odpowiedzi. Dwuznaczność liczy się względem całej listy reguł, jak w sekwencjach.
+Reguły pochodzą z jawnej listy: kształt (koło, kwadrat, trójkąt, serce, krzyżyk z katalogu sudoku), rozmiar (duży lub mały), liczba (grupa 1–6 tych samych kształtów ułożonych jak oczka kostki), kolor (siedem kredek: czerwona, niebieska, zielona, pomarańczowa, fioletowa, żółta, brązowa; bez szarej i czarnej, bo mylą się z konturem) i kategoria obiektu (prosta ikona wektorowa: czarna sylwetka z białymi detalami). Reguła kategorii używa pięciu kategorii po pięć ikon: Zwierzęta (kot, ryba, ptak, żółw, królik), Jedzenie (jabłko, gruszka, marchewka, lody, banan), Przyroda (drzewo, choinka, kwiat, grzyb, liść), Kosmos i maszyny (rakieta, auto, samolot, łódka, UFO), Domy i budowle (domek, wieża zamku, namiot, latarnia morska, wieżowiec). Ikony zastąpiły sylwetki z katalogu szablonów, bo pikselowe sylwetki były nieczytelne w rzędzie obrazków (makieta zatwierdzona 2026-11-08, GitHub 265). Kategoria „Kształty” nie bierze w niej udziału, bo myliłaby się z regułą kształtu. W rzędzie tej reguły n−1 różnych ikon jest z jednej kategorii, a odstająca z innej; ikona ma jedną kategorię, więc nie pasuje do dwóch odpowiedzi. Ikony zostają czarne także z kolorami. Ikona nieczytelna na wydruku może być wymieniona na inny obiekt tej samej kategorii. Reguła „kolor” wymaga włączonych kolorów (US-26); bez nich obrazki są czarnymi konturami.
 
-| Poziom | Reguły w karcie                                | Obrazków w rzędzie | Rzędów |
-| ------ | ---------------------------------------------- | ------------------ | ------ |
-| łatwy  | kształt, rozmiar                               | 4                  | 5      |
-| średni | kształt, rozmiar, liczba, kolor (po włączeniu) | 5                  | 5      |
-| trudny | wszystkie, w tym kategoria obiektu             | 6                  | 6      |
+Jeden rząd opiera się na jednej regule. Pozostałe cechy są albo jednakowe, albo są rozpraszaczami. Rozpraszacz to cecha inna niż reguła rzędu, która zmienia się tak, że każda jej wartość występuje w rzędzie co najmniej dwa razy, więc niczego nie wskazuje. Rozpraszaczami mogą być kolor (tylko z kolorami), kształt i rozmiar; liczba nigdy, a w rzędzie kategorii tylko rozmiar. Liczba rozpraszaczy z tabeli to górna granica: rząd dostaje tyle, ile cech jest dostępnych. Jednoznaczność: cecha reguły ma dokładnie jeden obrazek z wartością występującą w rzędzie raz (to odpowiedź), a żadna inna cecha nie ma takiego obrazka. Dwuznaczność liczy się względem całej listy reguł, jak w sekwencjach (decyzja 2026-11-08, GitHub 265).
 
-Jedna karta nie pokazuje dwa razy tego samego rzędu. Obrazki to proste kontury; przy kategorii obiektu to czarne sylwetki z katalogu szablonów, bez nazw. Kolory są osobnym ustawieniem rodzica, niezależnym od poziomu; przełącznik nie układa nowej karty. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 14). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
+| Poziom | Reguły w karcie                                | Obrazków w rzędzie | Rzędów | Rozpraszacze | Mały / duży | Grupy w regule liczby                   |
+| ------ | ---------------------------------------------- | ------------------ | ------ | ------------ | ----------- | --------------------------------------- |
+| łatwy  | kształt, rozmiar                               | 4                  | 5      | brak         | 0,5         | nie dotyczy (reguły liczby nie ma)      |
+| średni | kształt, rozmiar, liczba, kolor (po włączeniu) | 5                  | 5      | do 1         | 0,55        | większość 2 albo 3 sztuki, odstająca ±1 |
+| trudny | wszystkie, w tym kategoria obiektu             | 6                  | 6      | do 2         | 0,72        | większość 4 albo 5 sztuk, odstająca ±1  |
 
-### Karta „Skopiuj rysunek na kratce”
+Każda reguła poziomu (kolor tylko z kolorami) występuje na karcie co najmniej raz, dwa sąsiednie rzędy mają różne reguły, a jedna karta nie pokazuje dwa razy tego samego rzędu. Obrazki to proste kontury; przy kategorii obiektu to ikony, bez nazw. Kolory są osobnym ustawieniem rodzica, niezależnym od poziomu, ale na tej karcie należą do zadania: przełącznik przy pokazanej karcie układa nową kartę (jak zmiana poziomu), bo z kolorami dochodzi reguła koloru i kolorowe rozpraszacze (decyzja 2026-11-08, GitHub 265). Karta nie ma „Pokaż rozwiązanie”. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 14). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
-Dodane 2026-11-01 (M-5). Aplikacja zawsze tworzy kartę z jedną odpowiedzią: tymi samymi zamalowanymi kratkami w drugiej kratce. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Przerysuj obrazek na pustą kratkę.”) i dwiema kratkami tej samej siatki: w jednej czarna sylwetka obiektu, druga pusta. Nie ma osi symetrii ani odbicia; to różni tę kartę od symetrii.
+### Karta „Skopiuj obrazek”
 
-Obiekt pochodzi z katalogu szablonów (połowa i jej odbicie, jak w nonogramie) z losowanymi częściami; detale będące dziurami w sylwetce zostają pustymi kratkami; kolory szablonu karta pomija. Kategoria jak w US-20.
+Dodane 2026-11-01 (M-5) jako „Skopiuj rysunek na kratce”; przemianowana 2026-11-13 na życzenie użytkowniczki („na kratce” było oczywiste i zbędne w nazwie). Aplikacja zawsze tworzy kartę z jedną odpowiedzią: tymi samymi zamalowanymi kratkami w drugiej kratce. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Przerysuj obrazek na pustą kratkę.”) i dwiema kratkami tej samej siatki: w jednej czarna sylwetka obiektu, druga pusta. Nie ma osi symetrii ani odbicia; to różni tę kartę od symetrii.
 
-| Poziom | Siatka (cała) | Obiekty                       | Kratka (około)                   |
-| ------ | ------------- | ----------------------------- | -------------------------------- |
-| łatwy  | 8×12          | proste warianty z połowy 4×12 | 10 mm                            |
-| średni | 12×15         | warianty z połowy 6×15        | 7 mm                             |
-| trudny | 18×24         | bogate warianty z połowy 9×24 | 5 mm, do potwierdzenia wydrukiem |
+Obiekt pochodzi z katalogu szablonów (połowa i jej odbicie, jak w nonogramie) z losowanymi częściami; detale będące dziurami w sylwetce zostają pustymi kratkami. Kategoria jak w US-20. Kolory (US-28) to osobne ustawienie rodzica, niezależne od poziomu, domyślnie wyłączone: sylwetka jest wtedy czarna. Włączone: każda kratka lewej kratki ma kolor kredki z szablonu, a dziury w sylwetce kolor szablonu albo biel, jak w symetrii (US-09); prawa kratka zostaje pusta. Przełącznik nie układa nowej karty.
 
-Dwie kratki stoją obok siebie, bo obiekty są wyższe niż szersze; jeśli na trudnym poziomie kratka 5 mm jest za mała, trudny zostaje przy siatce 12×15 z bogatszymi wariantami (Open Questions 13). Reguły, które generator sprawdza: obie kratki mają tę samą siatkę, wzór jest sylwetką obiektu z katalogu, druga kratka jest pusta, a obie kratki mieszczą się na A4 z marginesem 10 mm. Aplikacja nie ocenia rysunku dziecka. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku.
+| Poziom | Siatka (cała) | Obiekty                       | Kratka (około)                     |
+| ------ | ------------- | ----------------------------- | ---------------------------------- |
+| łatwy  | 8×12          | proste warianty z połowy 4×12 | 11 mm                              |
+| średni | 12×15         | warianty z połowy 6×15        | 7,5 mm                             |
+| trudny | 18×24         | bogate warianty z połowy 9×24 | 5 mm, czytelność potwierdza wydruk |
+
+Dwie kratki stoją obok siebie na każdym poziomie, z odstępem 10 mm, wyśrodkowane w poziomie. Polecenie z kratkami zaczyna się 56 mm od góry strony — dokładnie na wysokości, na której zaczyna się polecenie domyślnego sudoku (4×4, bez postaci) — a nie przypięte do samej góry jak labirynt, sekwencje czy „Kto ma więcej?”, ani wyśrodkowane w pionie na całej stronie jak sudoku i nonogram (decyzja 2026-11-13, GitHub 363): ten sam wzór wyśrodkowania dawałby tej karcie głębszy start niż im, bo jej siatka (ograniczona szerokością strony, nie wysokością) jest niższa niż ich. Trudny zajmuje całą szerokość między marginesami (2 × 18 × 5 mm + 10 mm = 190 mm). Kratki nie mają numerów wierszy i kolumn. Sylwetka jest wyśrodkowana w pionie w siatce, żeby szerokie obiekty (autobus, auto) nie zostawiały pustych dolnych wierszy. Jeśli wydruk pokaże, że 5 mm na trudnym jest za mało, trudny wraca do planu z siatką 12×15 i bogatszymi wariantami (decyzja 2026-11-09, Open Questions 13). Reguły, które generator sprawdza: obie kratki mają tę samą siatkę, wzór jest sylwetką obiektu z katalogu, druga kratka jest pusta, a obie kratki mieszczą się na A4 z marginesem 10 mm. Aplikacja nie ocenia rysunku dziecka. Każde Generuj daje inny obiekt albo inny wariant niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku.
 
 ### Karta szlaczków
 
-Dodane 2026-11-01 (M-5). Aplikacja zawsze tworzy kartę, na której wzór każdego rzędu wynika z jawnej reguły. Poziom wyznaczają tryb (kropki albo kontynuacja), złożoność wzoru i grubość linii. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia i ośmioma rzędami jeden pod drugim.
+Dodane 2026-11-01 (M-5), przebudowane 2026-11-09 po makietach (`context/changes/pattern-lines-card/frame.md`, `mockup-v6.mts`). Aplikacja zawsze tworzy kartę, na której wzór każdego rzędu wynika z jawnej reguły. Poziom wyznaczają tryb, pula wzorów, łagodność kształtu i liczba rzędów. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia i rzędami jeden pod drugim, rozłożonymi równo od polecenia do dołu kartki. Karta nie ma obrazków poza postacią przy poleceniu.
 
-Wzór pochodzi z jawnej listy: linia prosta, zygzak, fala, schodki, pętle i łuki. W trybie kropek dziecko prowadzi ołówek po kropkach rozstawionych wzdłuż wzoru; ścieżka jest jedna. W trybie kontynuacji początek wzoru jest narysowany w pierwszej części rzędu, a reszta rzędu jest pusta; dziecko rysuje dalej ten sam wzór.
+Tryby. **Kropki** (Poziomy 1–2): dziecko prowadzi ołówek po kropkach rozstawionych wzdłuż wzoru; pod kropkami biegnie jasnoszara ścieżka, a start oznacza puste kółko wokół pierwszej kropki. Ścieżka jest jedna i się nie krzyżuje (pętle nie wchodzą do trybu kropek). **Kropki na początku** (Poziom 3): dwa pierwsze powtórzenia wzoru są wykropkowane, a resztę rzędu dziecko rysuje samo; jedno powtórzenie nie wystarcza, bo pojedyncza fala i górka wyglądają tak samo. Pętle i pętle w dół w tej wykropkowanej części mogą się z konstrukcji krzyżować (pętla przecina samą siebie); szara ścieżka pokazuje kierunek, a reguła „bez skrzyżowań” ich nie obejmuje (decyzja 2026-11-09, S-36 plan). **Kontynuacja** (Poziom 4): co najmniej trzy powtórzenia narysowane linią, reszta rzędu pusta.
 
-Każdy wzór ma losowane parametry: wysokość, długość kroku (gęstość) i miejsce, od którego zaczyna się w rzędzie, w granicach czytelnych na danym poziomie. Dzięki temu karta z dwoma albo trzema wzorami poziomu ma osiem różnych rzędów, a kolejne Generuj daje inną kartę (decyzja 2026-11-01).
+Łagodność. Każdy rząd losuje długość kroku i stosunek wysokości do kroku z zakresu poziomu, więc ten sam wzór bywa na kilku poziomach, coraz wyższy i gęstszy. Rząd losuje wzór z puli poziomu bez powtórzeń na karcie, dopóki pula starcza.
 
-| Poziom   | Tryb        | Wzory                                | Linia              |
-| -------- | ----------- | ------------------------------------ | ------------------ |
-| Poziom 1 | kropki      | linia prosta, zygzak                 | gruba, duże kropki |
-| Poziom 2 | kropki      | fala, schodki, łuki                  | gruba              |
-| Poziom 3 | kontynuacja | zygzak, fala, schodki                | średnia            |
-| Poziom 4 | kontynuacja | pętle, łuki, wzory z dwóch elementów | cienka             |
+| Poziom   | Cel projektu (nie etykieta) | Tryb                            | Rzędy | Krok     | Wysokość / krok | Pula wzorów                                                                                                                                                                                                                                        |
+| -------- | --------------------------- | ------------------------------- | ----- | -------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Poziom 1 | 3–4 lata                    | kropki co ok. 4 mm              | 4     | 40–52 mm | 0,2–0,42        | linia prosta, fala, zygzak, górki, miseczki                                                                                                                                                                                                        |
+| Poziom 2 | 5–6 lat                     | kropki co ok. 3,5 mm            | 5     | 30–42 mm | 0,35–0,6        | fala, zygzak, górki, miseczki, schodki, kopce, zęby smoka, górka i kreska, domki (pięć w rzędzie), bramy, czubki, fala i kreska                                                                                                                    |
+| Poziom 3 | 6–7 lat                     | dwa powtórzenia po kropkach     | 6     | 22–30 mm | 0,5–0,85        | zygzak, fala, górki, miseczki, schodki, kopce, zęby smoka, pętle, górka i kreska, ząbek i kreska, klocki, rury, domki, bramy, czubki, duży i mały ząbek, pętle w dół (j, g), laseczki (i)                                                          |
+| Poziom 4 | 8–10 lat (klasy 1–3)        | kontynuacja linią, w liniaturze | 7     | 12–20 mm | z liniatury     | pętle (e), spirale, pętla wysoka i niska (l e), górka duża i mała (m n), pętla i górka, fala i pętla, górka i ząbek, schodek i górka, zęby smoka, kopce, klocki, rury, czary, pętle w dół (j g), pętla w górę i w dół, duży i mały ząbek, laseczki |
 
-Reguły, które generator sprawdza: każdy rząd ma wzór z listy; w trybie kropek kropki wyznaczają dokładnie jedną ścieżkę wzoru; w trybie kontynuacji pokazany początek zawiera co najmniej dwa powtórzenia wzoru, więc reguła jest jednoznaczna; dwa rzędy jednej karty nie są takie same (inny wzór albo inne parametry), a na karcie występuje każdy wzór poziomu. Aplikacja nie ocenia rysunku dziecka (decyzja 2026-11-01). Każde Generuj daje inne parametry, inne wzory albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 15). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
+Poziom 1 ma o 15 mm większy pusty pas na dole kartki, żeby dziecku było wygodniej trzymać kartkę, a ręka, która wyjedzie poza kształt, została na papierze. Na Poziomie 4 wysokość wzoru wyznacza liniatura (małe elementy 6,5 mm, wysokie 13 mm), więc losowany jest tylko krok 12–20 mm; stosunek wysokości do kroku dotyczy Poziomów 1–3 (decyzja 2026-11-09, S-36 plan). Poziom 4 pomaga w nauce pisania: liniatura jak w zeszycie do kaligrafii (górna, przerywana środkowa, dolna i blada linia pod dolną); małe elementy (e, o, i, m n) sięgają linii środkowej, wysokie (l) górnej, pętle w dół (j g) schodzą pod dolną. Przełącznik „Linie” (US-30) na Poziomach 3–4 włącza i wyłącza linie pomocnicze; domyślnie włączony.
+
+Odrzucone po makietach (2026-11-09): kreski pionowe i skośne, fala po skosie, pierścienie, piramidki, obrazki startu i celu w S-36 (wracają z kategoriami, z polem „Brak”) oraz wzory z postaciami i znakami towarowymi; zostają ogólne motywy (klocki, rury, zęby smoka, czary).
+
+Reguły, które generator sprawdza: każdy rząd ma wzór z puli poziomu; dwa rzędy jednej karty nie są takie same; w trybie samych kropek (Poziomy 1–2) ścieżka się nie krzyżuje; Poziom 3 pokazuje dokładnie dwa powtórzenia po kropkach, Poziom 4 co najmniej trzy; wzór mieści się w rzędzie i nie wchodzi w margines. Aplikacja nie ocenia rysunku dziecka (decyzja 2026-11-01). Każde Generuj daje inne parametry, inne wzory albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 15). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
 ### Poziomy
 
-Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4. Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj rysunek na kratce”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
+Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4. Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
 
 Każdy wiersz listy poziomów ma nazwę, pół zdania o tym, co zmienia poziom, i, przy labiryncie, symetrii, sekwencjach i dyktandzie, typowy wiek pod opisem; wiersz ma trzy linie, np. „Poziom 1” / „duża kratka, podpowiedź przy osi” / „zwykle ok. 4 lata”. Sudoku i nonogram nie mają wieku. Zapisane identyfikatory poziomów mogą zostać w danych; zmienia się etykieta, więc zapisane profile i ostatnie parametry wczytują się bez migracji.
 
@@ -892,10 +911,10 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | Sudoku             | rozmiar, poziom, „Kształty / Cyfry”, kolory |
 | Nonogram           | poziom, kategoria                           |
 | Dyktando graficzne | poziom, kategoria                           |
-| Kto ma więcej?     | poziom                                      |
+| Kto ma więcej?     | poziom, waluta, kolory                      |
 | Który nie pasuje   | poziom, kolory                              |
-| Skopiuj rysunek    | poziom, kategoria                           |
-| Szlaczki           | poziom                                      |
+| Skopiuj obrazek    | poziom, kolory, kategoria                   |
+| Szlaczki           | poziom, linie                               |
 
 Zasady:
 
@@ -910,7 +929,7 @@ Zasady:
 
 ### Postać na kartach
 
-Na labiryncie postać stoi przy starcie. Na pozostałych kartach stoi przy zdaniu polecenia nad zadaniem, a polecenie jest w jej dymku. Postać to ten sam kolorowy obrazek z katalogu albo własny obrazek rodzica i drukuje się zawsze w kolorze. Przy „Bez postaci” zostaje samo polecenie. Postać nie wpływa na zadanie, odpowiedź ani poziom; obiekty w symetrii, nonogramie i dyktandzie dalej pochodzą z katalogu szablonów.
+Na labiryncie postać stoi przy starcie. Na pozostałych kartach stoi przy zdaniu polecenia nad zadaniem, a polecenie jest w jej dymku. Postać to ten sam kolorowy obrazek z katalogu albo własny obrazek rodzica i drukuje się zawsze w kolorze. Przy wyborze „Brak” zostaje samo polecenie. Postać nie wpływa na zadanie, odpowiedź ani poziom; obiekty w symetrii, nonogramie i dyktandzie dalej pochodzą z katalogu szablonów.
 
 Postać jako treść zadania (np. połowa sylwetki w symetrii, obrazek odkrywany w nonogramie albo dyktandzie) wymaga obrysów postaci na kratce i zostaje poza zakresem (Po MVP).
 
@@ -924,8 +943,8 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 ## Non-Goals
 
-- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku (US-10–US-14, FR-019–FR-023). Do tego samego kamienia dochodzą 2026-10-25, także na prośbę użytkownika, nonogram i dyktando graficzne (US-15–US-18, FR-024–FR-027) oraz nowe obiekty w katalogu szablonów z wyborem kategorii (US-19–US-20, FR-028–FR-029). Czwarty kamień kart (M-5, 2026-11-01) bierze cztery rodzaje naraz, wyjątkowo, na prośbę użytkowniczki: „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki (US-23–US-30, FR-033–FR-040). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
-- Kamień M-5 nie obejmuje groszy, banknotów powyżej 20 zł, cen i reszty w „Kto ma więcej?”, kwoty „ułóż dokładnie tę kwotę” ani oceny rysunku dziecka na kartach „Skopiuj rysunek na kratce” i szlaczki (decyzja 2026-11-01).
+- Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku (US-10–US-14, FR-019–FR-023). Do tego samego kamienia dochodzą 2026-10-25, także na prośbę użytkownika, nonogram i dyktando graficzne (US-15–US-18, FR-024–FR-027) oraz nowe obiekty w katalogu szablonów z wyborem kategorii (US-19–US-20, FR-028–FR-029). Czwarty kamień kart (M-5, 2026-11-01) bierze cztery rodzaje naraz, wyjątkowo, na prośbę użytkowniczki: „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek” i szlaczki (US-23–US-30, FR-033–FR-040). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
+- Kamień M-5 nie obejmuje groszy i centów, banknotu 200 €, monet dolarowych, cen i reszty w „Kto ma więcej?”, kwoty „ułóż dokładnie tę kwotę” ani oceny rysunku dziecka na kartach „Skopiuj obrazek” i szlaczki (decyzja 2026-11-01).
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
 - MVP nie zapisuje ani nie archiwizuje wygenerowanych kart — ich cykl życia kończy się po wydruku.
@@ -946,7 +965,7 @@ Sekwencje i sudoku przeszły z tej listy do zakresu (2026-10-23): US-10–US-14,
 
 Nonogram przeszedł z tej listy do zakresu (2026-10-25) w wersji z obiektami z katalogu szablonów zamiast postaci: US-15–US-16, FR-024–FR-025, Business Logic „Karta nonogramu”. Dyktando graficzne nie było na tej liście; weszło do zakresu tego samego dnia: US-17–US-18, FR-026–FR-027, Business Logic „Karta dyktanda graficznego”.
 
-„Kto ma więcej?” (dawniej „Porównywanie kwot w złotych”), „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki przeszły z tej listy do zakresu (2026-11-01, M-5): US-23–US-30, FR-033–FR-040, Business Logic „Karta „Kto ma więcej?””, „Karta „Który nie pasuje””, „Karta „Skopiuj rysunek na kratce”” i „Karta szlaczków”. „Skopiuj rysunek” i szlaczki nie były na tej liście.
+„Kto ma więcej?” (dawniej „Porównywanie kwot w złotych”), „Który nie pasuje”, „Skopiuj obrazek” i szlaczki przeszły z tej listy do zakresu (2026-11-01, M-5): US-23–US-30, FR-033–FR-040, Business Logic „Karta „Kto ma więcej?””, „Karta „Który nie pasuje””, „Karta „Skopiuj obrazek”” i „Karta szlaczków”. „Skopiuj obrazek” i szlaczki nie były na tej liście.
 
 Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero przy otwarciu jego kamienia.
 
@@ -972,7 +991,7 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 10. ~~**Kiedy wraca profil z wiekiem i poziomami osobno dla każdego rodzaju karty (US-08, FR-017)?**~~ — Zamknięte 2026-10-26: profil wraca bez wieku. Pamięta sam ustawienia każdej karty z paska, pokazuje je w katalogu i w oknie profilu tylko do odczytu, a ulubiona postać zmienia się jawnie (US-08, FR-009, FR-017).
 11. **Czy startowe wartości nonogramu i dyktanda graficznego (siatka, kratka, obiekty) pasują dziecku, i czy każda kategoria w każdym rozmiarze zostawia dość obiektów z jednym rozwiązaniem nonogramu i obrysem bez dotknięć?** — Owner: user (wartości), team (liczba obiektów). Block: no. Tabele w Business Logic są propozycją z 2026-10-25; potwierdza je wydruk. Liczbę obiektów, które przechodzą reguły dyktanda, pokazała implementacja (2026-10-25, z trzema dzisiejszymi obiektami): 5 lat 18 z 20 wariantów i 9 różnych obrysów (20–28 poleceń), 6 lat 18 z 20 i 9 (24–44), 7 lat 32 z 40 i 14 (36–76). Nonogram (S-22, 2026-10-25, przed rozszerzeniem katalogu): wszystkie dzisiejsze warianty miały jedno rozwiązanie bez zgadywania — 20 z 20 w 8×12, 20 z 20 w 12×15 i 40 z 40 w 18×24. Nonogram po poziomach (S-24, 2026-10-25, po rozszerzeniu katalogu do 22 obiektów): poziom łatwy 116 z 116 wariantów spełnia reguły znaczków; średni 119 z 124 i trudny 184 z 216 wariantów ma jedno rozwiązanie bez zgadywania, a w trudnym `kot` i `tulipan` nie mają żadnego takiego wariantu, więc generator ich tam nie pokazuje; Generuj trwa do 8 ms, sprawdzenie wszystkich wariantów trudnego do 3 s. Test pilnuje, by każdy obiekt średniego poziomu miał co najmniej jeden taki wariant. Czy znaczki 9,5 mm (łatwy) i kratka 7 mm (trudny) są dość duże dla dziecka, potwierdza wydruk. Liczby po wyborze kategorii (S-26, 2026-10-25, stan katalogu z tego dnia): w każdej z pięciu kategorii zostają co najmniej 3 obiekty i co najmniej 8 różnych obrysów dyktanda na każdym poziomie, a nonogram ma co najmniej 16 wariantów z jednym rozwiązaniem na każdym rozmiarze. Najcieńsze miejsca to Przyroda w dużym nonogramie (3 obiekty, 24 warianty) i Domy i budowle w dyktandzie 6 lat (8 obrysów z 16 wariantów). Żadna kombinacja nie zostaje z jednym obrysem ani z zerem, więc kategoria nie wymaga komunikatu ani wyłączenia; test pilnuje co najmniej dwóch kart w każdej kombinacji, bez pinowania liczb. Kategoria „Kształty” (GitHub 198, 2026-10-31, katalog 34 obiekty): każdy z ośmiu obiektów ma co najmniej jeden poprawny wariant w każdym rozmiarze; łatwy nonogram 25 z 25 wariantów, średni 32 z 32 i trudny 64 z 64 ma jedno rozwiązanie bez zgadywania, a dyktando daje po 8 różnych obrysów na poziom (dziury w figurach nie zmieniają obrysu, więc kolejne karty dyktanda w tej kategorii powtarzają się szybciej niż w innych). Chmurka jest rysowana ręcznie, gwiazda w połowie 4×12 też. Po GitHub 124 (2026-10-30, katalog 26 obiektów, trzeci wariant części siedmiu obiektów): łatwy nonogram 156 z 156 wariantów, średni 164 z 172, trudny 248 z 292 mają jedno rozwiązanie bez zgadywania; `kot` i `tulipan` mają już działające warianty w trudnym, więc test pilnuje teraz każdego obiektu trudnego poziomu, bez wyjątków. Sprawdzenie wszystkich wariantów trudnego trwało 1,5–6,7 s zależnie od obciążenia maszyny, a próg testu to 15 s. W dyktandzie najmniej różnych obrysów z siedmiu obiektów mają teraz `truskawka` (2 na 5 i 6 lat) i `latarnia` (2 na 5 lat), wcześniej po 1.
 12. ~~**Czy lista poziomów ma obok opisu pokazywać typowy wiek (np. „Poziom 3 · zwykle ok. 5 lat”)?**~~ — Zamknięte 2026-10-26: tak, pod opisem, w trzeciej linii wiersza, tylko przy labiryncie, symetrii, sekwencjach i dyktandzie (kartach z dawną nazwą wiekową); sudoku i nonogram bez wieku. Wiek pomaga przy pierwszym wyborze, ale nie jest nazwą poziomu ani etykietą na pasku, żeby nie oceniać nim dziecka (US-22, FR-001).
-13. **Czy układ i kratka „Skopiuj rysunek na kratce” mieszczą się na A4 (dwie kratki obok siebie), i czy kratka 5 mm na trudnym poziomie jest dość duża dla dziecka?** — Owner: user (wartości), team (makieta). Block: nie. Tabela w Business Logic jest propozycją z 2026-11-01; rozstrzyga makieta i wydruk. Jeśli 5 mm jest za mało, trudny zostaje przy siatce 12×15 z bogatszymi wariantami. Otwarte: czy kratki dostają numery kolumn i wierszy, żeby dziecko wiedziało, od czego zacząć (zarzut z rundy Sokratesa, nie rozstrzygnięty).
-14. **Czy poziomy „Kto ma więcej?” (nominały 1/2/5/10/20 zł, sumy do 20 i 50 zł, liczba sztuk myli) i „Który nie pasuje” (reguły, liczba obrazków w rzędzie) pasują dziecku, i czy wygląd monety i banknotu jest czytelny na czarnym druku bez kopiowania wzorów NBP?** — Owner: user. Block: nie. Tabele w Business Logic są propozycją z 2026-11-01; potwierdza je wydruk. Otwarte: czy dziecko 6 lat radzi sobie z poziomem łatwym bez dodawania, i czy prawa do wyglądu pieniędzy dopuszczają stylizowane koło i prostokąt (do sprawdzenia). Do potwierdzenia przez użytkowniczkę, bo to propozycje, a nie jej decyzje: remis najwyżej w jednym rzędzie karty i pięć rzędów na karcie (jej decyzja z 2026-11-01 to tylko „remis jest dozwolony”). Lista na koniec M-5: GitHub drpc1/printo-kids#263.
-15. **Czy szlaczki z kropkami (Poziomy 1–2) i z kontynuacją wzoru (Poziomy 3–4) są czytelne na zwykłej drukarce domowej i dla dziecka?** — Owner: user. Block: nie. Tabela w Business Logic jest propozycją z 2026-11-01; potwierdza ją wydruk. Otwarte: grubość linii i wielkość kropek, które wychodzą na domowej drukarce.
+13. ~~**Czy układ i kratka „Skopiuj obrazek” mieszczą się na A4 (dwie kratki obok siebie), i czy kratka 5 mm na trudnym poziomie jest dość duża dla dziecka?**~~ — Zamknięte 2026-11-09 po makiecie (S-35): dwie kratki obok siebie mieszczą się w marginesie 10 mm na każdym poziomie (kratki 10 / 7 / 5 mm), kratki nie dostają numerów wierszy i kolumn, a sylwetka jest wyśrodkowana w pionie. Czytelność 5 mm na papierze potwierdza wydruk w fazie 3 planu `copy-the-drawing-card`; jeśli jest za mało, trudny wraca do planu z siatką 12×15. Dopisek 2026-11-13 (GitHub 363): karta nadal wypełniała wyraźnie mniej wysokości strony niż nonogram tej samej siatki (43–49% vs 61%+), bo dwie kratki obok siebie są ograniczone szerokością strony (190 mm), nie wysokością. Łatwy i średni podniesione do granicy szerokości (10→11 mm, 7→7,5 mm); trudny zostaje na 5 mm, już na granicy. Stos (jedna kratka nad drugą) sprawdzony ponownie makietą i odrzucony: zmniejsza kratkę na dwóch z trzech poziomów (np. trudny 4,85 mm) i zostawia duży, pusty odstęp między kratkami. Pełna zgodność z wypełnieniem nonogramu wymagałaby mniejszej siatki niż istniejący najmniejszy szablon (4×12), czyli nowego katalogu obiektów tylko dla tej karty — nieproporcjonalne do kosmetycznej różnicy; nie podjęte. Przy okazji, na życzenie użytkowniczki po wizualnym porównaniu z sudoku: blok polecenia i kratek najpierw wrócił do wyśrodkowania w pionie jak na sudoku/nonogramie (to, co PR #362 chwilowo zastąpił przypięciem do górnego marginesu), ale próba pokazała, że ten sam wzór wyśrodkowania sadowi tę kartę głębiej niż sudoku i nonogram (ok. 90 mm zamiast ich 46–56 mm), bo jej siatka jest niższa od ich — czyli odtwarza dokładnie „zaczyna się w połowie strony”, ten sam problem co przed PR #362. Ostatecznie blok dostał stały odstęp od górnego marginesu (`COPY_DRAWING_SHEET.topOffset`), skalibrowany na dokładnie `layoutSudokuSheet`'s `instruction.top` domyślnego sudoku (4×4, bez postaci): 56 mm od góry strony, czyli 46 mm ponad 10 mm marginesem — niżej niż w pełni przypięte karty (labirynt, sekwencje, „Kto ma więcej?”…), dokładnie na wysokości sudoku, bez odtwarzania ani starego, ani nowego problemu.
+14. **Czy poziomy „Kto ma więcej?” (nominały do 100 w trzech walutach, sumy do 10, 20 i 200, liczba sztuk myli) i „Który nie pasuje” (reguły, liczba obrazków w rzędzie) pasują dziecku, i czy wygląd monety i banknotu jest czytelny na czarnym druku i w kolorze, bez kopiowania wzorów NBP?** — Owner: user. Block: nie. Tabele w Business Logic są propozycją z 2026-11-01; potwierdza je wydruk. Otwarte: czy dziecko 6 lat radzi sobie z małymi kupkami mieszanych monet na poziomie łatwym (sumy do 10 zł, najwyżej 5 sztuk, bez mylących rzędów; decyzja 2026-11-01, wcześniej jeden nominał w rzędzie). Prawa do wyglądu pieniędzy: użytkowniczka sprawdziła (2026-11-01), że wizerunek można pokazać na karcie edukacyjnej, o ile reprodukcja nie może uchodzić za prawdziwy pieniądz; rysunki są więc uproszczone (czarna wersja: moneta to koło, banknot to prostokąt z nominałem, bez zabezpieczeń i godeł). Kolorowa wersja (GitHub #270, 2026-11-08) używa obrazków, które użytkowniczka sama przygotowała; są stylizowane, mają orła i profil władcy, ale nie mają zabezpieczeń, więc dalej nie uchodzą za prawdziwy pieniądz; autorstwo i prawa do obrazków ma użytkowniczka. To zmienia wcześniejsze „bez godeł” dla wersji kolorowej. Czytelność nominału na czarnym druku potwierdził wydruk makiety (2026-11-01). Czytelność obrazków w rozmiarze karty (moneta 11 mm, banknot 18 × 9 mm) na wydruku w kolorze i w czerni z bielą potwierdziła użytkowniczka (2026-11-08). Do potwierdzenia przez użytkowniczkę, bo to propozycje, a nie jej decyzje: remis najwyżej w jednym rzędzie karty i pięć rzędów na karcie (jej decyzja z 2026-11-01 to tylko „remis jest dozwolony”). „Który nie pasuje” (GitHub 265, decyzja 2026-11-08): makiety zatwierdziła użytkowniczka, ale wartości (rozpraszacze, mały obrazek 0,5 / 0,55 / 0,72 dużego, grupy w regule liczby, czytelność ikon kategorii i małych grup na A4) są startowe i potwierdza je wydruk po S-34. Obrazki euro i dolara (GitHub 324, 2026-11-09) wycięła z makiet użytkowniczki; makieta euro ma stylizowaną architekturę bez portretów, a makieta dolara portrety, napis „THE UNITED STATES OF AMERICA” i pieczęć Skarbu, czyli bliżej prawdziwych wzorów; wdrożone na jej polecenie, a ocenę, czy wolno je pokazać na karcie edukacyjnej, ma ona (w razie wątpliwości obrazki `*usd.png` do usunięcia lub uproszczenia przed merge). Dolar nie ma monet (decyzja 2026-11-09: moneta 1 $ jest rzadka, więc jest banknot 1 $), więc każdy kawałek dolara ma cyfrę. Lista na koniec M-5: GitHub drpc1/printo-kids#263.
+15. ~~**Czy szlaczki z kropkami (Poziomy 1–2) i z kontynuacją wzoru (Poziomy 3–4) są czytelne na zwykłej drukarce domowej i dla dziecka?**~~ — Owner: user. Block: nie. Tabela w Business Logic jest propozycją z 2026-11-01, przebudowaną 2026-11-09 po makietach (`context/changes/pattern-lines-card/`); potwierdza ją wydruk i próba z dzieckiem, które odbywają się po scaleniu i nie blokują dostarczenia karty ani zamknięcia S-36 (decyzja 2026-11-10). Zamknięte 2026-11-10: użytkowniczka wydrukowała karty i sprawdziła je z dzieckiem; kropki, jasnoszara ścieżka, linia 0,6 mm i liniatura są czytelne, a startowe wartości poziomów zostają bez zmian.
 16. **Jak długo trwa M-5 (cztery karty naraz)?** — Owner: user. Block: nie. Roadmapa sekwencjonuje bez dat; `delivery_weeks` nie jest ustalone.

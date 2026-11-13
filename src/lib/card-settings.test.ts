@@ -9,6 +9,7 @@ import {
   withCardSettings,
   type CardSettingsMap,
 } from "./card-settings.ts";
+import { CARD_KINDS } from "./cards.ts";
 
 void describe("defaultCardSettings", () => {
   void test("every card has the defaults its page starts from today", () => {
@@ -18,7 +19,95 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("sudoku"), { size: 4, level: "latwy", symbols: "shapes", colors: false });
     assert.deepEqual(defaultCardSettings("nonogram"), { level: "sredni", category: "wszystkie" });
     assert.deepEqual(defaultCardSettings("dyktando"), { level: "lat6", category: "wszystkie" });
-    assert.equal(CARD_SETTINGS_IDS.length, 6);
+    assert.deepEqual(defaultCardSettings("pieniadze"), { level: "sredni", currency: "pln", colors: false });
+    assert.deepEqual(defaultCardSettings("niepasuje"), { level: "sredni", colors: false });
+    assert.deepEqual(defaultCardSettings("kopiuj"), { level: "sredni", category: "wszystkie", colors: false });
+    assert.deepEqual(defaultCardSettings("szlaczki"), { level: "poziom2", lines: true });
+  });
+
+  void test("the pattern-lines card reads a stored level and lines, drops unknown and non-boolean values, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ szlaczki: { level: "poziom4", lines: false } }), {
+      szlaczki: { level: "poziom4", lines: false },
+    });
+    assert.deepEqual(parseCardSettings({ szlaczki: { level: "lat5", lines: "nie" } }), {
+      szlaczki: { level: "poziom2", lines: true },
+    });
+    assert.deepEqual(parseCardSettings({ szlaczki: { level: "poziom1" } }), {
+      szlaczki: { level: "poziom1", lines: true },
+    });
+    assert.deepEqual(parseCardSettings({ labirynt: { level: "lat5" } }), { labirynt: { level: "lat5" } });
+    assert.deepEqual(parseCardSettings({ szlaczki: 3 }), {});
+  });
+
+  void test("a hidden lines value survives a visit to a level without the switch", () => {
+    const off = withCardSettings({}, "szlaczki", { level: "poziom3", lines: false });
+    const second = withCardSettings(off, "szlaczki", { level: "poziom2" });
+    assert.equal(second.szlaczki?.lines, false);
+    assert.deepEqual(withCardSettings(second, "szlaczki", { level: "poziom3" }).szlaczki, {
+      level: "poziom3",
+      lines: false,
+    });
+  });
+
+  void test("the copy-drawing card reads a stored level, category and colors, drops unknown ones, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ kopiuj: { level: "trudny", category: "zwierzeta", colors: true } }), {
+      kopiuj: { level: "trudny", category: "zwierzeta", colors: true },
+    });
+    assert.deepEqual(parseCardSettings({ kopiuj: { level: "lat5", category: "nie-ma-takiej" } }), {
+      kopiuj: { level: "sredni", category: "wszystkie", colors: false },
+    });
+    assert.deepEqual(parseCardSettings({ kopiuj: { level: "latwy" } }), {
+      kopiuj: { level: "latwy", category: "wszystkie", colors: false },
+    });
+    assert.deepEqual(parseCardSettings({ kopiuj: "x" }), {});
+    assert.deepEqual(parseCardSettings({}), {});
+  });
+
+  void test("the odd-one-out card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ niepasuje: { level: "trudny", colors: true } }), {
+      niepasuje: { level: "trudny", colors: true },
+    });
+    assert.deepEqual(parseCardSettings({ niepasuje: { level: "lat5" } }), {
+      niepasuje: { level: "sredni", colors: false },
+    });
+    assert.deepEqual(parseCardSettings({ niepasuje: { level: "latwy", colors: "tak" } }), {
+      niepasuje: { level: "latwy", colors: false },
+    });
+    assert.deepEqual(parseCardSettings({ niepasuje: "x" }), {});
+  });
+
+  void test("the money card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy" } }), {
+      pieniadze: { level: "latwy", currency: "pln", colors: false },
+    });
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "lat5" } }), {
+      pieniadze: { level: "sredni", currency: "pln", colors: false },
+    });
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", currency: "pln", colors: true } }), {
+      pieniadze: { level: "latwy", currency: "pln", colors: true },
+    });
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", colors: "tak" } }), {
+      pieniadze: { level: "latwy", currency: "pln", colors: false },
+    });
+    assert.deepEqual(parseCardSettings({ pieniadze: "x" }), {});
+  });
+
+  void test("the money card reads a stored currency, and an old profile without one gets złoty", () => {
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", currency: "usd", colors: true } }), {
+      pieniadze: { level: "latwy", currency: "usd", colors: true },
+    });
+    assert.deepEqual(parseCardSettings({ pieniadze: { level: "latwy", currency: "gbp" } }), {
+      pieniadze: { level: "latwy", currency: "pln", colors: false },
+    });
+    assert.equal(parseCardSettings({ pieniadze: { level: "trudny", colors: true } }).pieniadze?.currency, "pln");
+    assert.deepEqual(parseCardSettings({}), {});
+  });
+
+  void test("the settings ids are the catalog ids and each has defaults", () => {
+    assert.deepEqual([...CARD_SETTINGS_IDS].sort(), CARD_KINDS.map((kind) => kind.id).sort());
+    for (const id of CARD_SETTINGS_IDS) {
+      assert.notEqual(defaultCardSettings(id), undefined, id);
+    }
   });
 
   void test("a default is a copy, so changing it does not change the next default", () => {

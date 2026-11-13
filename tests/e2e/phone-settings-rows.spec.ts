@@ -133,6 +133,19 @@ const CARD_PAGES: { path: string; label: string; controls: RegExp[]; prepare?: (
   },
   { path: "/nonogram", label: "nonogram", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
   { path: "/dictation", label: "dictation", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
+  { path: "/money", label: "money", controls: [/^Postać:/, /^Poziom:/] },
+  { path: "/odd-one-out", label: "odd-one-out", controls: [/^Postać:/, /^Poziom:/] },
+  { path: "/copy-drawing", label: "copy-drawing", controls: [/^Postać:/, /^Poziom:/, /^Kategoria:/] },
+  {
+    path: "/patterns",
+    label: "patterns",
+    controls: [/^Postać:/, /^Poziom: 3/],
+    prepare: async (page) => {
+      // Poziom 2, the default, has no "Linie" switch; Poziom 3 does. The click waits for the client:only island.
+      await page.getByRole("button", { name: /^Poziom:/ }).click();
+      await page.getByRole("button", { name: /^Poziom 3(?=\s|$)/ }).click();
+    },
+  },
 ];
 
 for (const card of CARD_PAGES) {

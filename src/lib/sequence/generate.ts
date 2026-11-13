@@ -48,7 +48,7 @@ export type SequenceRowProblem =
 export type SequenceProblem = SequenceRowProblem | "row-count" | "missing-rule" | "gap-row-count" | "duplicate-row";
 
 /** Draws again at most this many times before giving up, so a single possible card cannot loop forever. */
-const MAX_ATTEMPTS = 20;
+export const MAX_ATTEMPTS = 20;
 /** Draws a row again at most this many times, since many draws are ambiguous at the longer, gappier levels. */
 const MAX_ROW_ATTEMPTS = 50;
 

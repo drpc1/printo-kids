@@ -87,7 +87,7 @@ delivery_weeks: TBD — cztery karty naraz to zakres większy niż typowy kamie�
 
 ### Kto ma więcej? (pieniądze)
 
-- FR-033: Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (1, 2, 5, 10, 20 zł, bez groszy) i zakreśla większą, mniejszą albo „tyle samo”; zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have. Change: new
+- FR-033: Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (1, 2, 5, 10, 20 zł, bez groszy) i wpisuje między nimi „<”, „>” albo „=”; zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have. Change: new
   > Socrates: Counter-argument considered: remis psuje jedną sprawdzalną odpowiedź. Resolution: remis akceptowalny; „tyle samo” jest dopuszczoną odpowiedzią, a generator wylicza wartość każdej kupki i wie, które porównanie jest poprawne.
 - FR-034: Rodzic może wybrać poziom karty „Kto ma więcej?” (liczba sztuk jednego nominału, różne nominały, liczba sztuk myli). Priority: must-have. Change: new
 

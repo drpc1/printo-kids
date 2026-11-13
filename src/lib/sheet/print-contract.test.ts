@@ -15,6 +15,10 @@ const SYMMETRY_PAGE = "src/pages/symmetry.astro";
 const SYMMETRY_GENERATOR = "src/components/SymmetryGenerator.tsx";
 const SEQUENCE_PAGE = "src/pages/sequences.astro";
 const SEQUENCE_GENERATOR = "src/components/SequenceGenerator.tsx";
+const MONEY_PAGE = "src/pages/money.astro";
+const MONEY_GENERATOR = "src/components/MoneyGenerator.tsx";
+const ODD_ONE_OUT_PAGE = "src/pages/odd-one-out.astro";
+const ODD_ONE_OUT_GENERATOR = "src/components/OddOneOutGenerator.tsx";
 const SUDOKU_PAGE = "src/pages/sudoku.astro";
 const SUDOKU_GENERATOR = "src/components/SudokuGenerator.tsx";
 const DICTATION_PAGE = "src/pages/dictation.astro";
@@ -22,6 +26,12 @@ const DICTATION_GENERATOR = "src/components/DictationGenerator.tsx";
 const NONOGRAM_PAGE = "src/pages/nonogram.astro";
 const NONOGRAM_GENERATOR = "src/components/NonogramGenerator.tsx";
 const NONOGRAM_SIMPLE_SHEET = "src/components/NonogramSimpleSheet.tsx";
+const COPY_DRAWING_PAGE = "src/pages/copy-drawing.astro";
+const COPY_DRAWING_GENERATOR = "src/components/CopyDrawingGenerator.tsx";
+const COPY_DRAWING_SHEET = "src/components/CopyDrawingSheet.tsx";
+const PATTERN_LINES_PAGE = "src/pages/patterns.astro";
+const PATTERN_LINES_GENERATOR = "src/components/PatternLinesGenerator.tsx";
+const PATTERN_LINES_SHEET = "src/components/PatternLinesSheet.tsx";
 const CARD_PAGE = "src/components/CardPage.tsx";
 const CARD_PAGE_HOOK = "src/hooks/useCardPage.ts";
 const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
@@ -91,7 +101,7 @@ void describe("print contract", () => {
     assert.deepEqual(classNamesContaining(generator, "print:hidden"), ["max-h-[calc(100dvh-2rem)] print:hidden"]);
     assertCardPageShell(generator);
     // A level change the maze cannot lay out leaves the bar without a card; Drukuj must stay off then.
-    assert.match(generator, /printDisabled=\{maze === null\}/);
+    assert.match(generator, /printDisabled={view.kind !== "showing"}/);
     assert.deepEqual(classNamesContaining(readRepoFile(CARD_PAGE), "print:hidden"), [
       "flex w-full flex-col gap-3 print:hidden",
       "flex flex-col items-center gap-6 print:hidden",
@@ -174,6 +184,52 @@ void describe("print contract", () => {
     assert.match(page, /<GeneratorShell\b/);
     // The island reads localStorage on its first render, so it must never render on the server.
     assert.match(page, /<SequenceGenerator\s+client:only="react"\s*\/>/);
+  });
+
+  void test("the printed money SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(MONEY_GENERATOR));
+
+    assert.ok(svgClass.includes("print:w-[210mm]"));
+    assert.ok(svgClass.includes("print:h-[297mm]"));
+    assert.ok(svgClass.includes("print:overflow-hidden"));
+    assert.ok(svgClass.includes("print:block"));
+    assert.ok(svgClass.includes("print:max-h-[297mm]"));
+    assert.ok(svgClass.includes("print:ring-0"));
+  });
+
+  void test("print hides the money controls", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(MONEY_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(MONEY_GENERATOR));
+  });
+
+  void test("the money page lives under /money and uses the shared shell", () => {
+    const page = readRepoFile(MONEY_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<MoneyGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
+  void test("the printed odd-one-out SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(ODD_ONE_OUT_GENERATOR));
+
+    assert.ok(svgClass.includes("print:w-[210mm]"));
+    assert.ok(svgClass.includes("print:h-[297mm]"));
+    assert.ok(svgClass.includes("print:overflow-hidden"));
+    assert.ok(svgClass.includes("print:block"));
+    assert.ok(svgClass.includes("print:max-h-[297mm]"));
+    assert.ok(svgClass.includes("print:ring-0"));
+  });
+
+  void test("print hides the odd-one-out controls", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(ODD_ONE_OUT_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(ODD_ONE_OUT_GENERATOR));
+  });
+
+  void test("the odd-one-out page lives under /odd-one-out and uses the shared shell", () => {
+    const page = readRepoFile(ODD_ONE_OUT_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<OddOneOutGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
   });
 
   void test("the printed sudoku SVG is 210mm wide and 297mm tall with overflow hidden", () => {
@@ -294,14 +350,74 @@ void describe("print contract", () => {
     assert.equal(page.includes("@page"), false);
   });
 
+  void test("the printed copy-drawing SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(COPY_DRAWING_SHEET));
+
+    for (const token of [
+      "print:w-[210mm]",
+      "print:h-[297mm]",
+      "print:overflow-hidden",
+      "print:block",
+      "print:max-h-[297mm]",
+      "print:ring-0",
+    ]) {
+      assert.ok(svgClass.includes(token), token);
+    }
+  });
+
+  void test("print hides no part of the copy-drawing card: the silhouette grid prints, and the controls live in CardPage", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(COPY_DRAWING_SHEET), "print:hidden"), []);
+    assert.deepEqual(classNamesContaining(readRepoFile(COPY_DRAWING_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(COPY_DRAWING_GENERATOR));
+  });
+
+  void test("the copy-drawing page lives under /copy-drawing, uses the shared shell, and has no @page of its own", () => {
+    const page = readRepoFile(COPY_DRAWING_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<CopyDrawingGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
+  void test("the printed pattern-lines SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(PATTERN_LINES_SHEET));
+
+    for (const token of [
+      "print:w-[210mm]",
+      "print:h-[297mm]",
+      "print:overflow-hidden",
+      "print:block",
+      "print:max-h-[297mm]",
+      "print:ring-0",
+    ]) {
+      assert.ok(svgClass.includes(token), token);
+    }
+  });
+
+  void test("print hides no part of the pattern-lines card: the help lines and the ruling are part of the task", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(PATTERN_LINES_SHEET), "print:hidden"), []);
+    assert.deepEqual(classNamesContaining(readRepoFile(PATTERN_LINES_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(PATTERN_LINES_GENERATOR));
+  });
+
+  void test("the pattern-lines page lives under /patterns, uses the shared shell, and has no @page of its own", () => {
+    const page = readRepoFile(PATTERN_LINES_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<PatternLinesGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
   void test("every card page except the maze has the Postać bar and draws the character beside the instruction", () => {
     for (const path of [
       SYMMETRY_GENERATOR,
       SEQUENCE_GENERATOR,
+      MONEY_GENERATOR,
+      ODD_ONE_OUT_GENERATOR,
       SUDOKU_GENERATOR,
       NONOGRAM_GENERATOR,
       NONOGRAM_SIMPLE_SHEET,
       DICTATION_GENERATOR,
+      COPY_DRAWING_SHEET,
+      PATTERN_LINES_SHEET,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterInstruction\b/, `${path} draws the speech band`);
@@ -314,9 +430,13 @@ void describe("print contract", () => {
     for (const path of [
       SYMMETRY_GENERATOR,
       SEQUENCE_GENERATOR,
+      MONEY_GENERATOR,
+      ODD_ONE_OUT_GENERATOR,
       SUDOKU_GENERATOR,
       NONOGRAM_GENERATOR,
       DICTATION_GENERATOR,
+      COPY_DRAWING_GENERATOR,
+      PATTERN_LINES_GENERATOR,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
@@ -329,10 +449,14 @@ void describe("print contract", () => {
     for (const path of [
       SYMMETRY_GENERATOR,
       SEQUENCE_GENERATOR,
+      MONEY_GENERATOR,
+      ODD_ONE_OUT_GENERATOR,
       SUDOKU_GENERATOR,
       NONOGRAM_GENERATOR,
       NONOGRAM_SIMPLE_SHEET,
       DICTATION_GENERATOR,
+      COPY_DRAWING_SHEET,
+      PATTERN_LINES_SHEET,
     ]) {
       assert.match(readRepoFile(path), /printColorAdjust:\s*"exact"/, path);
     }
@@ -411,7 +535,7 @@ function svgClassName(source: string): string {
 
 function classNamesContaining(source: string, token: string): string[] {
   const names: string[] = [];
-  for (const match of source.matchAll(/className=\{cn\(\s*"([^"]+)"\s*\)\}/g)) {
+  for (const match of source.matchAll(/className=\{cn\(\s*"([^"]+)",?\s*\)\}/g)) {
     const className = match[1];
     if (className.includes(token)) {
       names.push(className);

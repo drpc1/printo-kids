@@ -5,14 +5,18 @@
   "testRunner": "command",
   "coverageAnalysis": "off",
   "concurrency": 4,
+  "timeoutMS": 15000,
+  "timeoutFactor": 1.5,
   "commandRunner": {
-    "command": "node scripts/with-env.mjs MUTATION_RUN=1 -- node --experimental-strip-types --test src/lib/maze/generate.test.ts src/lib/sheet/layout.test.ts src/lib/last-used.test.ts src/lib/child-profiles.test.ts src/lib/sheet/character.test.ts"
+    "command": "node scripts/with-env.mjs MUTATION_RUN=1 -- node --experimental-strip-types --test src/lib/maze/generate.test.ts src/lib/sheet/layout.test.ts src/lib/last-used.test.ts src/lib/child-profiles.test.ts src/lib/sheet/character.test.ts src/lib/maze/engine.test.ts src/lib/card-contract.test.ts"
   },
   "mutate": [
     "src/lib/maze/generate.ts",
     "src/lib/sheet/layout.ts",
     "src/lib/last-used.ts",
     "src/lib/child-profiles.ts",
-    "src/lib/sheet/character.ts"
+    "src/lib/sheet/character.ts",
+    "src/lib/maze/engine.ts",
+    "src/lib/card-contract.ts"
   ]
 }

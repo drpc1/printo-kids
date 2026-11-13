@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import type { CardSettingsMap } from "./card-settings.ts";
+import { defaultCardSettings, type CardSettingsMap } from "./card-settings.ts";
 import { cardSummaries } from "./card-summary.ts";
 import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
@@ -18,7 +18,7 @@ function byId(summaries: ReturnType<typeof cardSummaries>, id: string) {
 }
 
 void describe("cardSummaries", () => {
-  void test("lists the six cards in the order of CARD_KINDS with their pages", () => {
+  void test("lists every card in the order of CARD_KINDS with their pages", () => {
     const summaries = cardSummaries(profile("lat5"));
     assert.deepEqual(
       summaries.map((summary) => [summary.id, summary.href]),
@@ -93,6 +93,94 @@ void describe("cardSummaries", () => {
     assert.equal(on.detail, "Poziom 2 · kolory");
   });
 
+  void test("the money card shows its named level and is unused until the profile chose one", () => {
+    const fresh = cardSummaries(profile("lat5"));
+    assert.equal(byId(fresh, "pieniadze").used, false);
+    assert.equal(byId(fresh, "pieniadze").badge, null);
+    assert.equal(byId(fresh, "pieniadze").title, "Kto ma więcej?");
+    assert.equal(byId(fresh, "pieniadze").href, "/money");
+
+    const chosen = byId(
+      cardSummaries(profile("lat5", { pieniadze: { level: "latwy", currency: "pln", colors: false } })),
+      "pieniadze",
+    );
+    assert.equal(chosen.used, true);
+    assert.equal(chosen.badge, "łatwy");
+    assert.equal(chosen.detail, "łatwy");
+
+    const colored = byId(
+      cardSummaries(profile("lat5", { pieniadze: { level: "latwy", currency: "pln", colors: true } })),
+      "pieniadze",
+    );
+    assert.equal(colored.detail, "łatwy · kolory");
+
+    const euro = byId(
+      cardSummaries(profile("lat5", { pieniadze: { level: "sredni", currency: "eur", colors: true } })),
+      "pieniadze",
+    );
+    assert.equal(euro.detail, "średni · € · kolory");
+    const dollars = byId(
+      cardSummaries(profile("lat5", { pieniadze: { level: "sredni", currency: "usd", colors: false } })),
+      "pieniadze",
+    );
+    assert.equal(dollars.detail, "średni · $");
+  });
+
+  void test("the odd-one-out card shows its named level and colors, and is unused until the profile chose one", () => {
+    const fresh = cardSummaries(profile("lat5"));
+    assert.equal(byId(fresh, "niepasuje").used, false);
+    assert.equal(byId(fresh, "niepasuje").badge, null);
+    assert.equal(byId(fresh, "niepasuje").title, "Który nie pasuje");
+    assert.equal(byId(fresh, "niepasuje").href, "/odd-one-out");
+
+    const chosen = byId(cardSummaries(profile("lat5", { niepasuje: { level: "trudny", colors: false } })), "niepasuje");
+    assert.equal(chosen.used, true);
+    assert.equal(chosen.badge, "trudny");
+    assert.equal(chosen.detail, "trudny");
+
+    const colored = byId(cardSummaries(profile("lat5", { niepasuje: { level: "latwy", colors: true } })), "niepasuje");
+    assert.equal(colored.detail, "łatwy · kolory");
+  });
+
+  void test("the copy-drawing card shows its named level and category, and is unused until the profile chose one", () => {
+    const fresh = cardSummaries(profile("lat5"));
+    assert.equal(byId(fresh, "kopiuj").used, false);
+    assert.equal(byId(fresh, "kopiuj").badge, null);
+    assert.equal(byId(fresh, "kopiuj").title, "Skopiuj obrazek");
+    assert.equal(byId(fresh, "kopiuj").href, "/copy-drawing");
+
+    const chosen = byId(
+      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta", colors: false } })),
+      "kopiuj",
+    );
+    assert.equal(chosen.used, true);
+    assert.equal(chosen.badge, "trudny");
+    assert.equal(chosen.detail, "trudny · Zwierzęta");
+
+    const colored = byId(
+      cardSummaries(profile("lat5", { kopiuj: { level: "trudny", category: "zwierzeta", colors: true } })),
+      "kopiuj",
+    );
+    assert.equal(colored.detail, "trudny · kolory · Zwierzęta");
+  });
+
+  void test("the pattern-lines card shows its numbered level and says 'bez linii' only where the switch exists", () => {
+    const fresh = cardSummaries(profile("lat5"));
+    assert.equal(byId(fresh, "szlaczki").used, false);
+    assert.equal(byId(fresh, "szlaczki").badge, null);
+    assert.equal(byId(fresh, "szlaczki").title, "Szlaczki");
+    assert.equal(byId(fresh, "szlaczki").href, "/patterns");
+
+    const lined = byId(cardSummaries(profile("lat5", { szlaczki: { level: "poziom3", lines: true } })), "szlaczki");
+    assert.equal(lined.badge, "poz. 3");
+    assert.equal(lined.detail, "Poziom 3");
+    const bare = byId(cardSummaries(profile("lat5", { szlaczki: { level: "poziom4", lines: false } })), "szlaczki");
+    assert.equal(bare.detail, "Poziom 4 · bez linii");
+    const hidden = byId(cardSummaries(profile("lat5", { szlaczki: { level: "poziom2", lines: false } })), "szlaczki");
+    assert.equal(hidden.badge, "poz. 2");
+    assert.equal(hidden.detail, "Poziom 2");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -114,5 +202,30 @@ void describe("cardSummaries", () => {
       "sudoku",
     );
     assert.equal(shapes.detail, "9×9 · łatwy · kształty · kolory");
+  });
+});
+
+/** One entry per card in CARD_KINDS. A new card needs an entry here and a branch in `summaryParts`. */
+const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
+  labirynt: { labirynt: defaultCardSettings("labirynt") },
+  symetria: { symetria: defaultCardSettings("symetria") },
+  sekwencje: { sekwencje: defaultCardSettings("sekwencje") },
+  sudoku: { sudoku: defaultCardSettings("sudoku") },
+  nonogram: { nonogram: defaultCardSettings("nonogram") },
+  dyktando: { dyktando: defaultCardSettings("dyktando") },
+  pieniadze: { pieniadze: defaultCardSettings("pieniadze") },
+  niepasuje: { niepasuje: defaultCardSettings("niepasuje") },
+  kopiuj: { kopiuj: defaultCardSettings("kopiuj") },
+  szlaczki: { szlaczki: defaultCardSettings("szlaczki") },
+};
+
+void describe("the card registry and summaryParts", () => {
+  void test("every card in CARD_KINDS is used once its settings are saved", () => {
+    for (const kind of CARD_KINDS) {
+      const saved = SAVED_SETTINGS[kind.id];
+      assert.ok(saved, `add fixture settings for "${kind.id}" to SAVED_SETTINGS`);
+      const summary = byId(cardSummaries(profile(null, saved)), kind.id);
+      assert.equal(summary.used, true, `summaryParts has no branch for "${kind.id}"`);
+    }
   });
 });

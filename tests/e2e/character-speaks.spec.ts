@@ -17,6 +17,11 @@ const CARDS: CardCase[] = [
   { path: "/sudoku", sheet: "Sudoku", sentence: "Uzupełnij puste pola." },
   { path: "/nonogram", sheet: /^Nonogram/, sentence: "Zamaluj kratki według liczb." },
   { path: "/dictation", sheet: "Dyktando graficzne", sentence: "Rysuj po liniach kratki" },
+  { path: "/money", sheet: "Kto ma więcej?", sentence: "Gdzie jest więcej pieniędzy?" },
+  { path: "/odd-one-out", sheet: "Który nie pasuje", sentence: "Który nie pasuje?" },
+  { path: "/copy-drawing", sheet: "Skopiuj obrazek", sentence: "Przerysuj obrazek na pustą kratkę." },
+  // The sentence of the default level (Poziom 2); the other levels have their own.
+  { path: "/patterns", sheet: "Szlaczki", sentence: "Prowadź ołówek po kropkach." },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {
@@ -37,7 +42,7 @@ for (const card of CARDS) {
 
     await pickCharacter(page, "Dinozaur");
     await expect(page.getByRole("button", { name: "Postać: Dinozaur" })).toBeVisible();
-    await expect(sheet.locator('image[href="/characters/dinozaur.png"]')).toHaveCount(1);
+    await expect(sheet.locator('image[href="/characters/dinozaur.webp"]')).toHaveCount(1);
     await expect(sheet.locator("text", { hasText: card.sentence }).first()).toBeVisible();
 
     await pickCharacter(page, "Brak");

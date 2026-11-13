@@ -1,6 +1,15 @@
+import { COPY_DRAWING_LEVELS, DEFAULT_COPY_DRAWING_LEVEL_ID, type CopyDrawingLevelId } from "./copy-drawing/levels.ts";
 import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } from "./dictation/levels.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
+import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } from "./money/currencies.ts";
+import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
+import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, ODD_ONE_OUT_LEVELS, type OddOneOutLevelId } from "./odd-one-out/levels.ts";
+import {
+  DEFAULT_PATTERN_LINES_LEVEL_ID,
+  PATTERN_LINES_LEVELS,
+  type PatternLinesLevelId,
+} from "./pattern-lines/levels.ts";
 import { DEFAULT_SEQUENCE_LEVEL_ID, SEQUENCE_LEVELS, type SequenceLevelId } from "./sequence/levels.ts";
 import {
   DEFAULT_SUDOKU_SETTINGS,
@@ -35,6 +44,17 @@ export interface SequenceSettings {
   colors: boolean;
 }
 
+export interface MoneySettings {
+  level: MoneyLevelId;
+  currency: MoneyCurrencyId;
+  colors: boolean;
+}
+
+export interface OddOneOutSettings {
+  level: OddOneOutLevelId;
+  colors: boolean;
+}
+
 export interface SudokuCardSettings extends SudokuSettings {
   colors: boolean;
 }
@@ -49,6 +69,17 @@ export interface DictationSettings {
   category: ObjectCategoryChoiceId;
 }
 
+export interface CopyDrawingSettings {
+  level: CopyDrawingLevelId;
+  category: ObjectCategoryChoiceId;
+  colors: boolean;
+}
+
+export interface PatternLinesSettings {
+  level: PatternLinesLevelId;
+  lines: boolean;
+}
+
 export interface CardSettingsMap {
   labirynt?: LabiryntSettings;
   symetria?: SymmetrySettings;
@@ -56,6 +87,10 @@ export interface CardSettingsMap {
   sudoku?: SudokuCardSettings;
   nonogram?: NonogramSettings;
   dyktando?: DictationSettings;
+  pieniadze?: MoneySettings;
+  niepasuje?: OddOneOutSettings;
+  kopiuj?: CopyDrawingSettings;
+  szlaczki?: PatternLinesSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -67,6 +102,10 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "sudoku",
   "nonogram",
   "dyktando",
+  "pieniadze",
+  "niepasuje",
+  "kopiuj",
+  "szlaczki",
 ];
 
 /** The settings of one card. */
@@ -81,6 +120,10 @@ const DEFAULTS: Defaults = {
   sudoku: { ...DEFAULT_SUDOKU_SETTINGS, colors: false },
   nonogram: { level: DEFAULT_NONOGRAM_SIZE_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
   dyktando: { level: DEFAULT_DICTATION_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID },
+  pieniadze: { level: DEFAULT_MONEY_LEVEL_ID, currency: DEFAULT_MONEY_CURRENCY_ID, colors: false },
+  niepasuje: { level: DEFAULT_ODD_ONE_OUT_LEVEL_ID, colors: false },
+  kopiuj: { level: DEFAULT_COPY_DRAWING_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID, colors: false },
+  szlaczki: { level: DEFAULT_PATTERN_LINES_LEVEL_ID, lines: true },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -163,11 +206,14 @@ function parseCard<K extends CardSettingsId>(cardId: K, stored: Record<string, u
 }
 
 function fieldValue(cardId: CardSettingsId, field: string, value: unknown, fallback: unknown): unknown {
-  if (field === "colors") {
+  if (field === "colors" || field === "lines") {
     return typeof value === "boolean" ? value : fallback;
   }
   if (field === "category") {
     return OBJECT_CATEGORY_CHOICES.some((choice) => choice.id === value) ? value : fallback;
+  }
+  if (field === "currency") {
+    return MONEY_CURRENCY_IDS.includes(value as MoneyCurrencyId) ? value : fallback;
   }
   if (field === "size") {
     return SUDOKU_SIZES.some((size) => size.id === value) ? value : fallback;
@@ -194,6 +240,14 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return NONOGRAM_SIZES.map((size) => size.id);
     case "dyktando":
       return DICTATION_LEVELS.map((level) => level.id);
+    case "pieniadze":
+      return MONEY_LEVEL_IDS;
+    case "niepasuje":
+      return ODD_ONE_OUT_LEVELS.map((level) => level.id);
+    case "kopiuj":
+      return COPY_DRAWING_LEVELS.map((level) => level.id);
+    case "szlaczki":
+      return PATTERN_LINES_LEVELS.map((level) => level.id);
   }
 }
 

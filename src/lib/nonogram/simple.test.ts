@@ -178,3 +178,35 @@ function cardOf(tones: SimpleNonogramCard["tones"]): SimpleNonogramCard {
     key: "test",
   };
 }
+
+void describe("simpleNonogramProblems: a row described in full (gh283 A5)", () => {
+  void test("rejects a row shorter than the grid and two neighbouring chips of one tone", () => {
+    const card = cardOf([
+      ["white", "black", "black"],
+      ["black", "black", "white"],
+    ]);
+    assert.deepEqual(simpleNonogramProblems(card), []);
+    const short = {
+      ...card,
+      tones: [card.tones[0].slice(0, 2), card.tones[1]],
+      runs: [card.runs[0].slice(0, 2), card.runs[1]],
+    };
+    short.runs[0] = [
+      { tone: "white", count: 1 },
+      { tone: "black", count: 1 },
+    ];
+    assert.deepEqual(simpleNonogramProblems(short), ["runs-mismatch"]);
+    const split = {
+      ...card,
+      runs: [
+        [
+          { tone: "white", count: 1 },
+          { tone: "black", count: 1 },
+          { tone: "black", count: 1 },
+        ],
+        card.runs[1],
+      ],
+    } as typeof card;
+    assert.deepEqual(simpleNonogramProblems(split), ["runs-mismatch"]);
+  });
+});

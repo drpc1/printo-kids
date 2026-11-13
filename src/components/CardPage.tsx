@@ -1,9 +1,11 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Printer } from "lucide-react";
 import { ACTION_BUTTON_CLASS, GenerateButton } from "@/components/GenerateButton";
 import { ProfileCorner } from "@/components/ProfileCorner";
+import { ReprintDialog } from "@/components/ReprintDialog";
 import { RememberedNote } from "@/components/RememberedNote";
 import { Button } from "@/components/ui/button";
+import type { RememberNote } from "@/hooks/useCardSettings";
 import type { ProfileCornerHandlers } from "@/hooks/useChildProfileVisit";
 import type { CardSettingsMap } from "@/lib/card-settings";
 import type { ChildProfile } from "@/lib/child-profiles";
@@ -35,6 +37,9 @@ export function CardPage({
   generateFailed,
   failedText = DEFAULT_FAILED_TEXT,
   printDisabled = false,
+  printedBefore = false,
+  onRegenerate,
+  onPrinted,
 }: {
   profiles: readonly ChildProfile[];
   activeId: string | null;
@@ -44,7 +49,7 @@ export function CardPage({
   corner: ProfileCornerHandlers;
   /** Omit when a new profile has no card settings to start with (the maze starts a new profile at its default level). */
   newProfileCards?: CardSettingsMap;
-  note: string | null;
+  note: RememberNote | null;
   sheetShown: boolean;
   controls: ReactNode;
   sheet: ReactNode;
@@ -53,7 +58,19 @@ export function CardPage({
   failedText?: string;
   /** True while the shown bar has no card to print (the maze after a level change it could not lay out). */
   printDisabled?: boolean;
+  /** True while the shown card was already sent to print: Drukuj then asks before printing it again. */
+  printedBefore?: boolean;
+  /** What Generuj does; "Nowa karta" in the reprint dialog calls it. It does not print: the next Drukuj does. */
+  onRegenerate?: () => void;
+  /** Called right before every print (button, dialog, Ctrl+P) so the page can mark the card printed. Idempotent. */
+  onPrinted?: () => void;
 }) {
+  const [reprintOpen, setReprintOpen] = useState(false);
+  const onPrintedRef = useRef(onPrinted);
+  useEffect(() => {
+    onPrintedRef.current = onPrinted;
+  });
+
   useEffect(() => {
     const main = document.getElementById("worksheet-home");
     if (main === null) {
@@ -82,8 +99,44 @@ export function CardPage({
     onGenerate();
   }
 
-  function handlePrint(): void {
+  // Ctrl+P and the browser menu print what is on the page; they cannot be interrupted, but they mark the card printed.
+  useEffect(() => {
+    const mark = (): void => onPrintedRef.current?.();
+    window.addEventListener("beforeprint", mark);
+    return () => {
+      window.removeEventListener("beforeprint", mark);
+    };
+  }, []);
+
+  // Every window.print() runs synchronously inside the click that asked for it. Safari (iOS and macOS) blocks a print
+  // called outside a user gesture ("Automatyczne drukowanie w witrynie zostało zablokowane"), so nothing here prints
+  // from an effect or after a render. Marking the card first is a plain state update and does not end the gesture.
+  function printNow(): void {
+    onPrintedRef.current?.();
     window.print();
+  }
+
+  function handlePrint(): void {
+    if (printedBefore) {
+      setReprintOpen(true);
+      return;
+    }
+    printNow();
+  }
+
+  function handlePrintSame(): void {
+    setReprintOpen(false);
+    printNow();
+  }
+
+  // "Nowa karta" lays out a new card and closes the dialog without printing. The new card is not printed yet, so the
+  // next Drukuj prints it at once, inside its own click.
+  function handleNewCard(): void {
+    setReprintOpen(false);
+    if (waitingForChild || onRegenerate === undefined) {
+      return;
+    }
+    onRegenerate();
   }
 
   // One row for every card, before and after the first card. A phone wraps it into lines that start at the left edge
@@ -146,6 +199,12 @@ export function CardPage({
         </div>
       )}
       {sheet}
+      <ReprintDialog
+        open={reprintOpen}
+        onOpenChange={setReprintOpen}
+        onNewCard={handleNewCard}
+        onSameCard={handlePrintSame}
+      />
     </div>
   );
 }

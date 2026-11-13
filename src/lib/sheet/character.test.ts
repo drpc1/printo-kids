@@ -18,17 +18,17 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../
 
 const catalog = [
   { id: "none", label: "Brak", src: null },
-  { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.png" },
-  { id: "jednorozec", label: "Jednorożec", src: "/characters/jednorozec.png" },
-  { id: "kot", label: "Kot", src: "/characters/kot.png" },
-  { id: "pies", label: "Pies", src: "/characters/pies.png" },
-  { id: "rakieta", label: "Rakieta", src: "/characters/rakieta.png" },
-  { id: "robot", label: "Robot", src: "/characters/robot.png" },
-  { id: "samochodzik", label: "Samochodzik", src: "/characters/samochodzik.png" },
-  { id: "smok", label: "Smok", src: "/characters/smok.png" },
-  { id: "strazak", label: "Strażak", src: "/characters/strazak.png" },
-  { id: "syrenka", label: "Syrenka", src: "/characters/syrenka.png" },
-  { id: "wrozka", label: "Wróżka", src: "/characters/wrozka.png" },
+  { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.webp" },
+  { id: "jednorozec", label: "Jednorożec", src: "/characters/jednorozec.webp" },
+  { id: "kot", label: "Kot", src: "/characters/kot.webp" },
+  { id: "pies", label: "Pies", src: "/characters/pies.webp" },
+  { id: "rakieta", label: "Rakieta", src: "/characters/rakieta.webp" },
+  { id: "robot", label: "Robot", src: "/characters/robot.webp" },
+  { id: "samochodzik", label: "Samochodzik", src: "/characters/samochodzik.webp" },
+  { id: "smok", label: "Smok", src: "/characters/smok.webp" },
+  { id: "strazak", label: "Strażak", src: "/characters/strazak.webp" },
+  { id: "syrenka", label: "Syrenka", src: "/characters/syrenka.webp" },
+  { id: "wrozka", label: "Wróżka", src: "/characters/wrozka.webp" },
 ] as const;
 
 void describe("character catalog", () => {
@@ -40,7 +40,7 @@ void describe("character catalog", () => {
   });
 
   void test("returns the smok sheet file", () => {
-    assert.equal(characterSheetSrc("smok"), "/characters/smok.png");
+    assert.equal(characterSheetSrc("smok"), "/characters/smok.webp");
   });
 
   void test("catalog drawings start after the empty left margin of the square file", () => {
@@ -75,7 +75,6 @@ void describe("character catalog", () => {
     const generator = readRepoFile("src/components/WorksheetGenerator.tsx");
 
     assert.equal(generator.includes("characterSheetSrc("), true);
-    assert.match(generator, /generateMaze\(level, Math\.random\)/);
 
     for (const row of CHARACTER_CHOICES) {
       if (row.src === null) {
@@ -98,8 +97,8 @@ void describe("the label the bar shows", () => {
     }
   });
 
-  void test("a parent photo is labelled Własne zdjęcie", () => {
-    assert.equal(OWN_IMAGE_LABEL, "Własne zdjęcie");
+  void test("a parent photo is labelled Własny obrazek", () => {
+    assert.equal(OWN_IMAGE_LABEL, "Własny obrazek");
   });
 });
 

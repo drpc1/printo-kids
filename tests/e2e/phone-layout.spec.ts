@@ -516,34 +516,41 @@ test("the maze level list fits the screen with all six rows and no scrolling", a
   }
 });
 
+// The widest badges: the cards of this profile, plus the maze, whose level comes from the profile's old `level` field.
+// A new card needs no row here; the profile only has to stay the widest case, not list every card.
+const SEEDED_CARDS = {
+  symetria: { level: "lat6", colors: true, category: "wszystkie" },
+  sekwencje: { level: "lat6" },
+  sudoku: { size: 9, level: "trudny", symbols: "shapes", colors: false },
+  nonogram: { level: "sredni", category: "zwierzeta" },
+  dyktando: { level: "lat7", category: "wszystkie" },
+};
+
 test("the catalog badges stay inside their tile and the screen and do not cover a card name", async ({ page }) => {
-  await page.addInitScript((key) => {
-    if (localStorage.getItem(key) === null) {
-      localStorage.setItem(
-        key,
-        JSON.stringify({
-          profiles: [
-            {
-              id: "profile-ania",
-              name: "Ania",
-              character: "kot",
-              level: "lat6",
-              cards: {
-                symetria: { level: "lat6", colors: true, category: "wszystkie" },
-                sekwencje: { level: "lat6" },
-                sudoku: { size: 9, level: "trudny", symbols: "shapes", colors: false },
-                nonogram: { level: "sredni", category: "zwierzeta" },
-                dyktando: { level: "lat7", category: "wszystkie" },
+  await page.addInitScript(
+    ({ key, cards }) => {
+      if (localStorage.getItem(key) === null) {
+        localStorage.setItem(
+          key,
+          JSON.stringify({
+            profiles: [
+              {
+                id: "profile-ania",
+                name: "Ania",
+                character: "kot",
+                level: "lat6",
+                cards,
               },
-            },
-          ],
-        }),
-      );
-    }
-  }, PROFILES_KEY);
+            ],
+          }),
+        );
+      }
+    },
+    { key: PROFILES_KEY, cards: SEEDED_CARDS },
+  );
   await page.goto("/");
   const slots = page.locator("[data-badge-for]:not([hidden])");
-  await expect(slots).toHaveCount(6);
+  await expect(slots).toHaveCount(Object.keys(SEEDED_CARDS).length + 1);
   const heightWith = await page.evaluate(() => document.documentElement.scrollHeight);
 
   const width = viewportWidth(page);
@@ -567,4 +574,103 @@ test("the catalog badges stay inside their tile and the screen and do not cover 
     return document.documentElement.scrollHeight;
   });
   expect(heightWithout).toBe(heightWith);
+});
+
+test("the money page keeps Kolory, Generuj, Drukuj and Profil apart with colors on", async ({ page }) => {
+  await page.goto("/money");
+  await page.getByRole("switch", { name: "Kolory" }).click();
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Kto ma więcej?" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});
+
+test("the odd-one-out page keeps Kolory, Generuj, Drukuj and Profil apart with colors on", async ({ page }) => {
+  await page.goto("/odd-one-out");
+  await page.getByRole("switch", { name: "Kolory" }).click();
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Który nie pasuje" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});
+
+test("the copy-drawing page keeps Generuj, Drukuj and Profil apart", async ({ page }) => {
+  await page.goto("/copy-drawing");
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Skopiuj obrazek" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});
+
+test("the patterns page keeps Linie, Generuj, Drukuj and Profil apart on Poziom 3", async ({ page }) => {
+  await page.goto("/patterns");
+  await page.getByRole("button", { name: /^Poziom:/ }).click();
+  await page.getByRole("button", { name: /^Poziom 3(?=\s|$)/ }).click();
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Szlaczki" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    linie: await viewportBox(page.getByRole("switch", { name: "Linie" })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
 });
