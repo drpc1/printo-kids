@@ -1,10 +1,10 @@
 ---
 change_id: gh363-copy-drawing-fill
 title: Decide and resolve copy-drawing page-fill vs nonogram (GitHub 363)
-status: impl_reviewed
+status: archived
 created: 2026-11-13
 updated: 2026-11-13
-archived_at: null
+archived_at: 2026-11-13T19:25:23Z
 ---
 
 ## Notes
