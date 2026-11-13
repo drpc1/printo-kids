@@ -9,8 +9,8 @@ const PROFILES_KEY = "printo-kids:child-profiles";
 const ACTIVE_KEY = "printo-kids:active-profile";
 
 const LEVELS = [
-  { name: "łatwy", columns: 8, rows: 12, cell: 10 },
-  { name: "średni", columns: 12, rows: 15, cell: 7 },
+  { name: "łatwy", columns: 8, rows: 12, cell: 11 },
+  { name: "średni", columns: 12, rows: 15, cell: 7.5 },
   { name: "trudny", columns: 18, rows: 24, cell: 5 },
 ] as const;
 
