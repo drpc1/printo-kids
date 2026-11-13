@@ -1,6 +1,6 @@
 import { NONOGRAM_SIZES, type NonogramSize, type NonogramSizeId } from "../nonogram/sizes.ts";
 
-/** The levels of the "Skopiuj rysunek na kratce" card. They share their ids with the nonogram sizes and name no age. */
+/** The levels of the "Skopiuj obrazek" card. They share their ids with the nonogram sizes and name no age. */
 export type CopyDrawingLevelId = NonogramSizeId;
 
 export interface CopyDrawingLevel {
@@ -34,7 +34,7 @@ export const COPY_DRAWING_LEVELS: readonly CopyDrawingLevel[] = [
     barLabel: "łatwy",
     description: "duża kratka, prosty obrazek",
     size: sizeById("latwy"),
-    cellSize: 10,
+    cellSize: 11,
   },
   {
     id: "sredni",
@@ -42,7 +42,7 @@ export const COPY_DRAWING_LEVELS: readonly CopyDrawingLevel[] = [
     barLabel: "średni",
     description: "mniejsza kratka, więcej szczegółów",
     size: sizeById("sredni"),
-    cellSize: 7,
+    cellSize: 7.5,
   },
   {
     id: "trudny",

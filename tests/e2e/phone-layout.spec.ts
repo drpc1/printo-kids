@@ -629,7 +629,7 @@ test("the odd-one-out page keeps Kolory, Generuj, Drukuj and Profil apart with c
 test("the copy-drawing page keeps Generuj, Drukuj and Profil apart", async ({ page }) => {
   await page.goto("/copy-drawing");
   await page.getByRole("button", { name: "Generuj" }).click();
-  await expect(page.getByRole("img", { name: "Skopiuj rysunek na kratce" })).toBeVisible();
+  await expect(page.getByRole("img", { name: "Skopiuj obrazek" })).toBeVisible();
   await settle(page);
   await expectNoSidewaysScroll(page);
 

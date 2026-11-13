@@ -14,10 +14,10 @@ void describe("COPY_DRAWING_LEVELS", () => {
     assert.deepEqual(grids, ["latwy 8x12", "sredni 12x15", "trudny 18x24"]);
   });
 
-  void test("the cells are 10, 7 and 5 mm", () => {
+  void test("the cells are 11, 7.5 and 5 mm: the width-bound maximum for two equal grids side by side", () => {
     assert.deepEqual(
       COPY_DRAWING_LEVELS.map((level) => level.cellSize),
-      [10, 7, 5],
+      [11, 7.5, 5],
     );
   });
 

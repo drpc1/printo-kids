@@ -1,5 +1,5 @@
 // Provenance: copy-the-drawing-card (S-35, US-27, US-28, FR-037, FR-038)
-// Protects the "Skopiuj rysunek na kratce" page: Generuj draws two grids of one size on every level, the left one with
+// Protects the "Skopiuj obrazek" page: Generuj draws two grids of one size on every level, the left one with
 // black cells and the right one with none, a new level or category with a card shown draws a new card, both grids keep
 // the 10 mm margin of the A4 page, the catalog badge shows the profile's level, and on every screen Generuj, Drukuj and
 // the Profil corner do not cover each other. It does not prove the printed page; the trial print in the plan does.
@@ -9,8 +9,8 @@ const PROFILES_KEY = "printo-kids:child-profiles";
 const ACTIVE_KEY = "printo-kids:active-profile";
 
 const LEVELS = [
-  { name: "łatwy", columns: 8, rows: 12, cell: 10 },
-  { name: "średni", columns: 12, rows: 15, cell: 7 },
+  { name: "łatwy", columns: 8, rows: 12, cell: 11 },
+  { name: "średni", columns: 12, rows: 15, cell: 7.5 },
   { name: "trudny", columns: 18, rows: 24, cell: 5 },
 ] as const;
 
@@ -47,7 +47,7 @@ async function settle(page: Page): Promise<void> {
 async function generate(page: Page): Promise<Locator> {
   await page.goto("/copy-drawing");
   await page.getByRole("button", { name: "Generuj" }).click();
-  const sheet = page.getByRole("img", { name: "Skopiuj rysunek na kratce" });
+  const sheet = page.getByRole("img", { name: "Skopiuj obrazek" });
   await expect(sheet).toBeVisible();
   return sheet;
 }

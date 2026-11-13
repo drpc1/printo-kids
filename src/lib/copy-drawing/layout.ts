@@ -26,18 +26,22 @@ export interface CopyDrawingSheetLayout {
 }
 
 /**
- * Places the instruction and the two grids. The instruction and the grids are one block, centered across the page and
- * standing at the top of the 10 mm margin; the grids sit `bandGap` under the instruction. `instructionBoxHeight` is the band with a character, the plain line
- * height without one. Throws when the level's cell size does not fit, instead of shrinking the cell or crossing the margin.
+ * Places the instruction and the two grids. The block starts `topOffset` below the top margin — not flush like the
+ * fully top-anchored cards, and not centered down the page like sudoku's and nonogram's (their grid is tall enough
+ * that centering still lands near the top; this card's two side-by-side grids are too short for that, see
+ * `COPY_DRAWING_SHEET.topOffset`). The grids sit `bandGap` under the instruction. `instructionBoxHeight` is the band
+ * with a character, the plain line height without one. Throws when the level's cell size does not fit, instead of
+ * shrinking the cell or crossing the margin.
  */
 export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHeight: number): CopyDrawingSheetLayout {
   const sheet = COPY_DRAWING_SHEET;
   const { columns, rows } = level.size;
   const innerWidth = sheet.pageWidth - sheet.inset * 2;
   const areaBottom = sheet.pageHeight - sheet.inset;
+  const blockTop = sheet.inset + sheet.topOffset;
   const fits = Math.min(
     (innerWidth - sheet.gridGap) / (2 * columns),
-    (areaBottom - sheet.inset - instructionBoxHeight - sheet.bandGap) / rows,
+    (areaBottom - blockTop - instructionBoxHeight - sheet.bandGap) / rows,
   );
   const cell = level.cellSize;
   if (fits < cell - EPSILON) {
@@ -49,8 +53,6 @@ export function layoutCopyDrawingSheet(level: CopyDrawingLevel, instructionBoxHe
   const width = columns * cell;
   const height = rows * cell;
   const left = sheet.inset + (innerWidth - (2 * width + sheet.gridGap)) / 2;
-  // The instruction and the grids are one block that starts at the top margin, so the card begins high on the sheet (GitHub: a block centered down the page began mid-sheet on the lower levels).
-  const blockTop = sheet.inset;
   const bandY = blockTop;
   const top = blockTop + instructionBoxHeight + sheet.bandGap;
   const source = { x: left, y: top, width, height };

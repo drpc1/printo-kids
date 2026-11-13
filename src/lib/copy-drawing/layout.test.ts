@@ -32,7 +32,7 @@ void describe("layoutCopyDrawingSheet", () => {
           }
         });
 
-        void test("the cell is the nominal one: 10, 7 and 5 mm", () => {
+        void test("the cell is the nominal one: 11, 7.5 and 5 mm", () => {
           assert.equal(sheet.cell, level.cellSize);
           assert.equal(sheet.source.width, level.size.columns * sheet.cell);
           assert.equal(sheet.source.height, level.size.rows * sheet.cell);
@@ -45,12 +45,12 @@ void describe("layoutCopyDrawingSheet", () => {
           assert.ok(Math.abs(sheet.copy.x - (sheet.source.x + sheet.source.width) - 10) < EPSILON);
         });
 
-        void test("the instruction and the grids are one block centered across the page and standing at the top margin, the grids 6 mm under the instruction", () => {
+        void test("the instruction and the grids are one block, centered across the page and starting 40 mm below the top margin (about sudoku's level, not flush like the fully top-anchored cards), the grids 6 mm under the instruction", () => {
           const left = sheet.source.x - 10;
           const right = 200 - (sheet.copy.x + sheet.copy.width);
           assert.ok(Math.abs(left - right) < EPSILON, `${left} vs ${right}`);
           assert.ok(Math.abs(sheet.source.y - (sheet.band.y + boxHeight + 6)) < EPSILON, `gap ${sheet.source.y}`);
-          assert.ok(Math.abs(sheet.band.y - 10) < EPSILON, `band starts at ${sheet.band.y}`);
+          assert.ok(Math.abs(sheet.band.y - 50) < EPSILON, `band starts at ${sheet.band.y}`);
           assert.ok(sheet.source.y + sheet.source.height <= 287 + EPSILON);
         });
       });
@@ -91,10 +91,10 @@ void describe("layoutCopyDrawingSheet", () => {
     const wide = { ...base, size: { ...base.size, columns: 12, rows: 1 } };
     assert.doesNotThrow(() => layoutCopyDrawingSheet({ ...wide, cellSize: 7.5 }, WITHOUT_CHARACTER));
     assert.throws(() => layoutCopyDrawingSheet({ ...wide, cellSize: 7.6 }, WITHOUT_CHARACTER));
-    // 20 rows with a plain line: (297 - 20 - 7 - 6) / 20 = 13.2 mm.
+    // 20 rows with a plain line, 40 mm topOffset: (297 - 10 - 40 - 7 - 6) / 20 = 11.2 mm.
     const tall = { ...base, size: { ...base.size, columns: 1, rows: 20 } };
-    assert.doesNotThrow(() => layoutCopyDrawingSheet({ ...tall, cellSize: 13.2 }, WITHOUT_CHARACTER));
-    assert.throws(() => layoutCopyDrawingSheet({ ...tall, cellSize: 13.3 }, WITHOUT_CHARACTER));
+    assert.doesNotThrow(() => layoutCopyDrawingSheet({ ...tall, cellSize: 11.2 }, WITHOUT_CHARACTER));
+    assert.throws(() => layoutCopyDrawingSheet({ ...tall, cellSize: 11.3 }, WITHOUT_CHARACTER));
   });
 
   void test("throws when there is no room under the instruction", () => {

@@ -146,7 +146,7 @@ void describe("cardSummaries", () => {
     const fresh = cardSummaries(profile("lat5"));
     assert.equal(byId(fresh, "kopiuj").used, false);
     assert.equal(byId(fresh, "kopiuj").badge, null);
-    assert.equal(byId(fresh, "kopiuj").title, "Skopiuj rysunek na kratce");
+    assert.equal(byId(fresh, "kopiuj").title, "Skopiuj obrazek");
     assert.equal(byId(fresh, "kopiuj").href, "/copy-drawing");
 
     const chosen = byId(

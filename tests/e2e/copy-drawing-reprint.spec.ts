@@ -1,5 +1,5 @@
 // Provenance: copy-the-drawing-card (S-35, US-22, US-28; gh283-verified-card)
-// Protects the "Skopiuj rysunek na kratce" page's rules from the SheetState: a character change keeps the same card (the
+// Protects the "Skopiuj obrazek" page's rules from the SheetState: a character change keeps the same card (the
 // character is decoration), a level or category change draws a new card and clears the printed mark, and Drukuj on a
 // card that was already printed asks "Ta karta była już drukowana" first ("Nowa karta" draws another card and the next
 // Drukuj prints it, "Drukuj tę samą" prints the card as it is). window.print is a counter here, so the real print dialog
@@ -15,11 +15,11 @@ async function open(page: Page): Promise<void> {
   });
   await page.goto("/copy-drawing");
   await page.getByRole("button", { name: "Generuj" }).click();
-  await expect(page.getByRole("img", { name: "Skopiuj rysunek na kratce" })).toBeVisible();
+  await expect(page.getByRole("img", { name: "Skopiuj obrazek" })).toBeVisible();
 }
 
 async function cardKey(page: Page): Promise<string> {
-  const sheet = page.getByRole("img", { name: "Skopiuj rysunek na kratce" });
+  const sheet = page.getByRole("img", { name: "Skopiuj obrazek" });
   await expect(sheet).toBeVisible();
   return (await sheet.getAttribute("data-card-key")) ?? "";
 }

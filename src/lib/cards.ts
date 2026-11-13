@@ -74,7 +74,7 @@ export const CARD_KINDS = [
   },
   {
     id: "kopiuj",
-    title: "Skopiuj rysunek na kratce",
+    title: "Skopiuj obrazek",
     href: "/copy-drawing",
     thumbnail: "/thumbnails/kopiuj.svg",
     description:
