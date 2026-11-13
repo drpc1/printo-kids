@@ -3,13 +3,13 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-10
+updated: 2026-11-13
 prd_version: 6
 main_goal: low-complexity
 top_blocker: decisions
 milestone_id: four-new-card-kinds
 milestone_seq: 5
-milestone_status: open
+milestone_status: done
 ---
 
 # Roadmap: PrintoKids
@@ -20,7 +20,7 @@ milestone_status: open
 
 ## Milestone
 
-**M-5: Cztery nowe rodzaje kart: pieniądze, który nie pasuje, kopiowanie rysunku i szlaczki** — Status: open
+**M-5: Cztery nowe rodzaje kart: pieniądze, który nie pasuje, kopiowanie rysunku i szlaczki** — Status: done
 
 - **Intent:** Katalog ma sześć rodzajów kart, a dziecko 4–8 lat potrzebuje też porównywania wartości pieniędzy, wykrywania odstępstwa od reguły, przerysowywania wzoru na kratce i prowadzenia ręki po liniach. M-5 pokazuje, że rodzic generuje i drukuje każdą z czterech nowych kart z własnym poziomem bez nazwy wieku, że profil pamięta pasek każdej z nich, a postać stoi przy poleceniu. Po M-5 katalog ma dziesięć rodzajów.
 - **Source materials:** `context/foundation/prd.md` (v6)
@@ -187,6 +187,7 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 
 ## Milestone History
 
+- **M-5: Cztery nowe rodzaje kart: pieniądze, który nie pasuje, kopiowanie rysunku i szlaczki** (`four-new-card-kinds`) — closed 2026-11-13. Rodzic generuje i drukuje cztery nowe rodzaje kart („Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce”, szlaczki) z własnymi poziomami bez wieku, profil pamięta pasek każdej z nich, a postać stoi przy poleceniu; katalog ma dziesięć rodzajów, wydane na produkcji jako v2026.11.13. Slice'y S-33 do S-37.
 - **M-4: Poziomy bez wieku, profil pamiętający karty i postać na każdej karcie** (`profile-levels-and-character`) — closed 2026-11-01. Rodzic wybiera poziom każdej karty bez nazw wieku, profil sam pamięta pasek każdej karty i pokazuje go w katalogu, ulubiona postać stoi przy poleceniu na każdej karcie i zmienia się tylko jawnie, a strona „Jak to działa” tłumaczy zasady. Slice'y S-27 do S-32.
 - **M-3: Sekwencje, sudoku, nonogram i dyktando graficzne** (`sequences-and-sudoku-cards`) — closed 2026-10-26. Rodzic generuje i drukuje cztery nowe rodzaje kart (sekwencje, sudoku 4×4/6×6/9×9 z kolorami, nonogram i dyktando graficzne) z własnymi poziomami albo rozmiarami, a symetria, nonogram i dyktando biorą obiekty z katalogu 22 szablonów w pięciu kategoriach z wyborem kategorii. S-14 (wiek w profilu) nie wrócił w M-3; zastąpiły go S-28 i S-29 w M-4.
 - **M-2: Karta symetrii na A4** (`symmetry-card-a4`) — closed 2026-10-23. Rodzic wybiera rodzaj karty w katalogu, generuje kartę symetrii na poziomie nazwanym wiekiem, włącza kolory i drukuje ją jako jedną stronę A4 także z telefonu. S-14 (wiek i poziomy w profilu) wyjęty z kamienia i odłożony na prośbę użytkownika do czasu, gdy będzie więcej rodzajów kart.
