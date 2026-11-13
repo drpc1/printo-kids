@@ -11,10 +11,11 @@ export const COPY_DRAWING_SHEET = {
    * Extra gap added on top of `inset` before the instruction: this card's two side-by-side grids are too short for
    * vertical centering to land near the top the way sudoku's and nonogram's tall grids do (GitHub 363 — centering
    * this card's own, much shorter block pushed it to about 90 mm, deeper than either). A fixed offset instead pins
-   * the block at roughly sudoku's level (sudoku's own centered top ranges ~46-56 mm across its three sizes), well
-   * below the fully top-anchored cards (maze, sequences, money, …) that start flush at `inset`.
+   * the block at exactly sudoku's default instruction top — `layoutSudokuSheet`'s `instruction.top` for the
+   * default 4×4 board with no character band is 56 mm, i.e. 46 mm below `inset` — well below the fully
+   * top-anchored cards (maze, sequences, money, …) that start flush at `inset`.
    */
-  topOffset: 40,
+  topOffset: 46,
   /** Height of the band for the character and the speech bubble; equals the character size of the shared band. */
   bandHeight: 26,
   /** Space between the band (or the plain instruction) and the grids. */
