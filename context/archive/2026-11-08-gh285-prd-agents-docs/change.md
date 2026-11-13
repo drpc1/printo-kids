@@ -1,10 +1,10 @@
 ---
 change_id: gh285-prd-agents-docs
 title: Doprecyzować PRD, AGENTS.md i roadmapę po rozjazdach model-vs-kod z D01
-status: impl_reviewed
+status: archived
 created: 2026-11-08
-updated: 2026-11-08
-archived_at: null
+updated: 2026-11-13
+archived_at: 2026-11-13T19:58:51Z
 ---
 
 ## Notes

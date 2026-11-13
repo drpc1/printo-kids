@@ -1,10 +1,10 @@
 ---
 change_id: gh286-glossary-in-agents
 title: Podpiąć glossary.md do AGENTS.md i CLAUDE.md
-status: impl_reviewed
+status: archived
 created: 2026-11-08
-updated: 2026-11-08
-archived_at: null
+updated: 2026-11-13
+archived_at: 2026-11-13T19:58:51Z
 ---
 
 ## Notes
