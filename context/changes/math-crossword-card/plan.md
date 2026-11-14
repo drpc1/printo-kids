@@ -356,10 +356,10 @@ Brak: nowe pole `cards.krzyzowka` w zapisanych profilach ma wartość domyślną
 
 #### Automated
 
-- [x] 3.1 Testy jednostkowe: `npm test` (f7b7932)
-- [x] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` (f7b7932)
-- [x] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` (f7b7932)
-- [x] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke` (f7b7932)
+- [x] 3.1 Testy jednostkowe: `npm test` (add0a18)
+- [x] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` (add0a18)
+- [x] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` (add0a18)
+- [x] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke` (add0a18)
 
 #### Manual
 
