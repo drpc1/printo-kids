@@ -405,13 +405,13 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Automated
 
-- [ ] 1.1 `check-mockup.mts` kończy się bez błędów, a każdy obiekt ma co najmniej jedną przechodzącą kombinację nonogramu średniego i trudnego.
-- [ ] 1.2 `check-mockup.mts` pokazuje dla każdego kształtu poprawny obrys na każdym narysowanym poziomie.
-- [ ] 1.3 Pomiar zapisany w `mockup-measure.txt`: przechodzące kombinacje i różne obrysy na obiekt i rozmiar.
+- [x] 1.1 `check-mockup.mts` kończy się bez błędów, a każdy obiekt ma co najmniej jedną przechodzącą kombinację nonogramu średniego i trudnego.
+- [x] 1.2 `check-mockup.mts` pokazuje dla każdego kształtu poprawny obrys na każdym narysowanym poziomie.
+- [x] 1.3 Pomiar zapisany w `mockup-measure.txt`: przechodzące kombinacje i różne obrysy na obiekt i rozmiar.
 
 #### Manual
 
-- [ ] 1.4 Użytkowniczka akceptuje podglądy PNG: obiekty są czytelne w połowie 4×12, a kategorie każdego obiektu się zgadzają. Data akceptacji trafia do pola `approved` w makiecie.
+- [x] 1.4 Użytkowniczka akceptuje podglądy PNG: obiekty są czytelne w połowie 4×12, a kategorie każdego obiektu się zgadzają. Data akceptacji trafia do pola `approved` w makiecie.
 
 ### Phase 2: Kategoria z oknem dat
 
