@@ -777,7 +777,7 @@ for (const { cell, x, y } of crosswordLayout.placed) {
     crosswordLayout.cell * (text.length >= CROSSWORD.longGlyphFrom ? CROSSWORD.longGlyphRatio : CROSSWORD.glyphRatio);
   const bold = cell.kind === "num" || CROSSWORD.boldSigns.includes(text);
   crosswordLines.push(
-    `<text x="${num(x + crosswordLayout.cell / 2)}" y="${num(y + crosswordLayout.cell / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${num(size)}"${bold ? ' font-weight="bold"' : ""} text-anchor="middle" dominant-baseline="central">${text}</text>`,
+    `<text x="${num(x + crosswordLayout.cell / 2)}" y="${num(y + crosswordLayout.cell / 2 + size * CROSSWORD.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${num(size)}"${bold ? ' font-weight="bold"' : ""} text-anchor="middle">${text}</text>`,
   );
 }
 crosswordLines.push("</svg>", "");

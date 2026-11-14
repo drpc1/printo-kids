@@ -7,65 +7,65 @@
 <rect x="93" y="167" width="24" height="24" fill="url(#gap)"/>
 <rect x="69" y="95" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
 <rect x="93" y="95" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="105" y="107" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">+</text>
+<text x="105" y="111.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">+</text>
 <rect x="117" y="95" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="129" y="107" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">4</text>
+<text x="129" y="111.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">4</text>
 <rect x="141" y="95" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="153" y="107" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="153" y="111.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="165" y="95" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="177" y="107" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">6</text>
+<text x="177" y="111.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">6</text>
 <rect x="69" y="119" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="81" y="131" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">+</text>
+<text x="81" y="135.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">+</text>
 <rect x="69" y="143" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="81" y="155" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">3</text>
+<text x="81" y="159.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">3</text>
 <rect x="69" y="167" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="81" y="179" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="81" y="183.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="69" y="191" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="81" y="203" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">5</text>
+<text x="81" y="207.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">5</text>
 <rect x="117" y="119" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="129" y="131" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">−</text>
+<text x="129" y="135.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">−</text>
 <rect x="117" y="143" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
 <rect x="117" y="167" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="129" y="179" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="129" y="183.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="117" y="191" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="129" y="203" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">3</text>
+<text x="129" y="207.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">3</text>
 <rect x="165" y="47" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="177" y="59" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">7</text>
+<text x="177" y="63.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">7</text>
 <rect x="165" y="71" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="177" y="83" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">−</text>
+<text x="177" y="87.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">−</text>
 <rect x="165" y="119" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="177" y="131" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="177" y="135.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="165" y="143" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
 <rect x="69" y="47" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="81" y="59" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">8</text>
+<text x="81" y="63.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">8</text>
 <rect x="93" y="47" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="105" y="59" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">−</text>
+<text x="105" y="63.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">−</text>
 <rect x="117" y="47" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
 <rect x="141" y="47" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="153" y="59" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="153" y="63.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="21" y="143" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="33" y="155" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">4</text>
+<text x="33" y="159.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">4</text>
 <rect x="45" y="143" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="57" y="155" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">−</text>
+<text x="57" y="159.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">−</text>
 <rect x="93" y="143" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="105" y="155" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="105" y="159.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="21" y="167" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="33" y="179" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">+</text>
+<text x="33" y="183.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">+</text>
 <rect x="21" y="191" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
 <rect x="21" y="215" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="33" y="227" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="33" y="231.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="21" y="239" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="33" y="251" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">5</text>
+<text x="33" y="255.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">5</text>
 <rect x="93" y="191" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="105" y="203" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">+</text>
+<text x="105" y="207.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">+</text>
 <rect x="141" y="191" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="153" y="203" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="153" y="207.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="165" y="191" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
 <rect x="45" y="239" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="57" y="251" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">+</text>
+<text x="57" y="255.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">+</text>
 <rect x="69" y="239" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="81" y="251" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle" dominant-baseline="central">5</text>
+<text x="81" y="255.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" font-weight="bold" text-anchor="middle">5</text>
 <rect x="93" y="239" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
-<text x="105" y="251" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle" dominant-baseline="central">=</text>
+<text x="105" y="255.493" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.48" text-anchor="middle">=</text>
 <rect x="117" y="239" width="24" height="24" fill="none" stroke="#000" stroke-width="0.45"/>
 </svg>
