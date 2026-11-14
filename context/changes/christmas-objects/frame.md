@@ -98,7 +98,7 @@ Minimum na termin: A = bombka, dzwonek, prezent i piernik oraz choinka i gwiazda
 
 Kształt dyktanda nie ma kolorów ani części. Pasuje za to szerokością do siatek karty (np. statek ma 8, 12 i 18 kolumn przy siatkach 8×12, 12×15 i 18×24), a środkowanie w pionie już jest (`centerSilhouette`). Wejście kształtów to więc zmiana mechanizmu karty: drugie źródło obrazka, klucz, sprawdzenie, jeden kolor kredki na kształt przy włączonych kolorach, środkowanie w poziomie. Do tego zdanie w US-27 („sylwetka z katalogu szablonów”) i nazwa w glosariuszu („kształt dyktanda” przestaje być tylko dyktanda).
 
-Rekomendacja: ostatnia faza S-38, którą można wyciąć, jeśli termin się skróci, bo obiekty z drogi A i tak trafiają na „Skopiuj obrazek”. Do decyzji: czy na kartę wchodzą wszystkie kształty (11 istniejących i nowe świąteczne), czy tylko świąteczne. Wszystkie dają więcej różnych kart, ale zmieniają losowanie „Wszystkie” na istniejącej karcie i każdy istniejący kształt potrzebuje koloru.
+Issue: drpc1/printo-kids#379. Rekomendacja: ostatnia faza S-38, którą można wyciąć, jeśli termin się skróci, bo obiekty z drogi A i tak trafiają na „Skopiuj obrazek”. Do decyzji: czy na kartę wchodzą wszystkie kształty (11 istniejących i nowe świąteczne), czy tylko świąteczne. Wszystkie dają więcej różnych kart, ale zmieniają losowanie „Wszystkie” na istniejącej karcie i każdy istniejący kształt potrzebuje koloru.
 
 ## Confidence
 
