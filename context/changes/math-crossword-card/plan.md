@@ -341,29 +341,29 @@ Brak: nowe pole `cards.krzyzowka` w zapisanych profilach ma wartość domyślną
 
 #### Automated
 
-- [x] 2.1 Testy przechodzą: `npm test`
-- [x] 2.2 Lint: `npm run lint`
-- [x] 2.3 Zależności: `npm run depcruise`
-- [x] 2.4 Typy: `npx astro check`
-- [x] 2.5 Build: `npm run build`
+- [x] 2.1 Testy przechodzą: `npm test` — ce0d1e5
+- [x] 2.2 Lint: `npm run lint` — ce0d1e5
+- [x] 2.3 Zależności: `npm run depcruise` — ce0d1e5
+- [x] 2.4 Typy: `npx astro check` — ce0d1e5
+- [x] 2.5 Build: `npm run build` — ce0d1e5
 
 #### Manual
 
-- [x] 2.6 Użytkowniczka akceptuje podgląd wszystkich siedmiu poziomów z `preview.mts`
-- [x] 2.7 Przegląd diffu względem planu i makiety
+- [x] 2.6 Użytkowniczka akceptuje podgląd wszystkich siedmiu poziomów z `preview.mts` — ce0d1e5
+- [x] 2.7 Przegląd diffu względem planu i makiety — ce0d1e5
 
 ### Phase 3: Strona, katalog i profil
 
 #### Automated
 
-- [ ] 3.1 Testy jednostkowe: `npm test`
-- [ ] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build`
-- [ ] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
-- [ ] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke`
+- [x] 3.1 Testy jednostkowe: `npm test` (f7b7932)
+- [x] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` (f7b7932)
+- [x] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` (f7b7932)
+- [x] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke` (f7b7932)
 
 #### Manual
 
-- [ ] 3.5 Użytkowniczka sprawdza każdy poziom na stronie, „Pokaż rozwiązanie” i podgląd wydruku (jedna strona A4)
+- [x] 3.5 Użytkowniczka sprawdza każdy poziom na stronie, „Pokaż rozwiązanie” i podgląd wydruku (jedna strona A4)
 - [ ] 3.6 Miniatura w katalogu, plakietka „poz. N” przy profilu i podsumowanie w oknie profilu są poprawne
 - [ ] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
 

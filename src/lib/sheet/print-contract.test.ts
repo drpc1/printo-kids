@@ -32,6 +32,9 @@ const COPY_DRAWING_SHEET = "src/components/CopyDrawingSheet.tsx";
 const PATTERN_LINES_PAGE = "src/pages/patterns.astro";
 const PATTERN_LINES_GENERATOR = "src/components/PatternLinesGenerator.tsx";
 const PATTERN_LINES_SHEET = "src/components/PatternLinesSheet.tsx";
+const MATH_CROSSWORD_PAGE = "src/pages/math-crossword.astro";
+const MATH_CROSSWORD_GENERATOR = "src/components/MathCrosswordGenerator.tsx";
+const MATH_CROSSWORD_SHEET = "src/components/MathCrosswordSheet.tsx";
 const CARD_PAGE = "src/components/CardPage.tsx";
 const CARD_PAGE_HOOK = "src/hooks/useCardPage.ts";
 const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
@@ -406,6 +409,36 @@ void describe("print contract", () => {
     assert.equal(page.includes("@page"), false);
   });
 
+  void test("the printed math-crossword SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(MATH_CROSSWORD_SHEET));
+
+    for (const token of [
+      "print:w-[210mm]",
+      "print:h-[297mm]",
+      "print:overflow-hidden",
+      "print:block",
+      "print:max-h-[297mm]",
+      "print:ring-0",
+    ]) {
+      assert.ok(svgClass.includes(token), token);
+    }
+  });
+
+  void test("print hides only the math-crossword solution group, so a switch left on never prints the answer", () => {
+    const sheet = readRepoFile(MATH_CROSSWORD_SHEET);
+    assert.deepEqual(classNamesContaining(sheet, "print:hidden"), ["print:hidden"]);
+    assert.ok(sheet.includes('className={cn("print:hidden")} fill="var(--muted-foreground)" data-solution>'));
+    assert.deepEqual(classNamesContaining(readRepoFile(MATH_CROSSWORD_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(MATH_CROSSWORD_GENERATOR));
+  });
+
+  void test("the math-crossword page lives under /math-crossword, uses the shared shell, and has no @page of its own", () => {
+    const page = readRepoFile(MATH_CROSSWORD_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<MathCrosswordGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
   void test("every card page except the maze has the Postać bar and draws the character beside the instruction", () => {
     for (const path of [
       SYMMETRY_GENERATOR,
@@ -418,6 +451,7 @@ void describe("print contract", () => {
       DICTATION_GENERATOR,
       COPY_DRAWING_SHEET,
       PATTERN_LINES_SHEET,
+      MATH_CROSSWORD_SHEET,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterInstruction\b/, `${path} draws the speech band`);
@@ -437,6 +471,7 @@ void describe("print contract", () => {
       DICTATION_GENERATOR,
       COPY_DRAWING_GENERATOR,
       PATTERN_LINES_GENERATOR,
+      MATH_CROSSWORD_GENERATOR,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
@@ -457,6 +492,7 @@ void describe("print contract", () => {
       DICTATION_GENERATOR,
       COPY_DRAWING_SHEET,
       PATTERN_LINES_SHEET,
+      MATH_CROSSWORD_SHEET,
     ]) {
       assert.match(readRepoFile(path), /printColorAdjust:\s*"exact"/, path);
     }

@@ -146,6 +146,7 @@ const CARD_PAGES: { path: string; label: string; controls: RegExp[]; prepare?: (
       await page.getByRole("button", { name: /^Poziom 3(?=\s|$)/ }).click();
     },
   },
+  { path: "/math-crossword", label: "math-crossword", controls: [/^Postać:/, /^Poziom:/] },
 ];
 
 for (const card of CARD_PAGES) {

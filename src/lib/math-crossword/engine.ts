@@ -1,23 +1,13 @@
 // "Krzyżówka matematyczna" as a card kind (S-40, phase 2): `mathCrosswordSpec` wraps `mathCrosswordProblems`,
 // `mathCrosswordEngine` wraps the generator. The level is the card's content; "Pokaż rozwiązanie" is screen state and does
 // not reach the spec. Running out of attempts is `CardExhausted`; the engine never returns null.
-import {
-  CardExhausted,
-  VerifiedCard,
-  type CardEngine,
-  type CardKindId,
-  type CardProblem,
-  type CardSpec,
-} from "../card-contract.ts";
+import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { MathCrosswordSettings } from "../card-settings.ts";
 import { chainDepth, mathCrosswordKey, mathCrosswordProblems, type MathCrosswordCard } from "./card.ts";
 import { generateMathCrosswordCard, MAX_ATTEMPTS } from "./generate.ts";
 import { mathCrosswordLevelById } from "./levels.ts";
 
 type Bad = CardSpec<MathCrosswordSettings, MathCrosswordCard>["knownBad"][number];
-
-// Phase 3 registers "krzyzowka" in cards.ts and removes this cast; until then it is not a CardKindId.
-const KIND = "krzyzowka" as CardKindId;
 
 function seeded(seed: number): () => number {
   let state = seed >>> 0;
@@ -112,7 +102,7 @@ function knownBad(): readonly Bad[] {
 let knownBadCache: readonly Bad[] | undefined;
 
 export const mathCrosswordSpec: CardSpec<MathCrosswordSettings, MathCrosswordCard> = {
-  kind: KIND,
+  kind: "krzyzowka",
   problems: (card, settings): readonly CardProblem[] =>
     mathCrosswordProblems(card, mathCrosswordLevelById(settings.level)).map((code) => ({
       code,

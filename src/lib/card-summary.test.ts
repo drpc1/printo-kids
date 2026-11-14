@@ -181,6 +181,18 @@ void describe("cardSummaries", () => {
     assert.equal(hidden.detail, "Poziom 2");
   });
 
+  void test("the math-crossword card shows its numbered level and nothing else", () => {
+    const fresh = byId(cardSummaries(profile("lat5")), "krzyzowka");
+    assert.equal(fresh.used, false);
+    assert.equal(fresh.badge, null);
+    assert.equal(fresh.title, "Krzyżówka matematyczna");
+    assert.equal(fresh.href, "/math-crossword");
+
+    const used = byId(cardSummaries(profile("lat5", { krzyzowka: { level: "poziom6" } })), "krzyzowka");
+    assert.equal(used.badge, "poz. 6");
+    assert.equal(used.detail, "Poziom 6");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -217,6 +229,7 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   niepasuje: { niepasuje: defaultCardSettings("niepasuje") },
   kopiuj: { kopiuj: defaultCardSettings("kopiuj") },
   szlaczki: { szlaczki: defaultCardSettings("szlaczki") },
+  krzyzowka: { krzyzowka: defaultCardSettings("krzyzowka") },
 };
 
 void describe("the card registry and summaryParts", () => {

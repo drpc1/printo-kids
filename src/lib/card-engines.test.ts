@@ -12,6 +12,7 @@ import type { CardSettingsOf, SudokuCardSettings } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
 import { COPY_DRAWING_LEVELS } from "./copy-drawing/levels.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
+import { MATH_CROSSWORD_LEVELS } from "./math-crossword/levels.ts";
 import { LEVELS } from "./maze/levels.ts";
 import { MONEY_CURRENCY_IDS } from "./money/currencies.ts";
 import { MONEY_LEVEL_IDS } from "./money/levels.ts";
@@ -283,6 +284,16 @@ const INVENTORY: Inventory = {
     base: { level: "poziom3", lines: true },
     content: [{ level: "poziom2", lines: true }],
     decoration: [{ level: "poziom3", lines: false }],
+  },
+  // The level is the whole content; "Pokaż rozwiązanie" is screen state and never reaches the spec.
+  krzyzowka: {
+    settingsList: MATH_CROSSWORD_LEVELS.map((level) => ({ level: level.id })),
+    label: (settings) => settings.level,
+    mayExhaust: () => false,
+    usesPreviousKey: true,
+    base: { level: "poziom2" },
+    content: [{ level: "poziom3" }],
+    decoration: [],
   },
 };
 

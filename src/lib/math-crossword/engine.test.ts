@@ -6,9 +6,6 @@ import type { MathCrosswordSettings } from "../card-settings.ts";
 import { mathCrosswordEngine, mathCrosswordSpec } from "./engine.ts";
 import { MATH_CROSSWORD_LEVELS } from "./levels.ts";
 
-// The kind is "krzyzowka" before phase 3 registers it, so it is compared as a plain string.
-const kindOf = (value: { kind: string }): string => value.kind;
-
 function mulberry32(seed: number): () => number {
   let state = seed >>> 0;
   return () => {
@@ -25,7 +22,7 @@ void describe("mathCrosswordEngine", () => {
     for (const level of MATH_CROSSWORD_LEVELS) {
       const settings: MathCrosswordSettings = { level: level.id };
       const verified = mathCrosswordEngine.generate(settings, mulberry32(3), null);
-      assert.equal(kindOf(verified), "krzyzowka");
+      assert.equal(verified.kind, "krzyzowka");
       assert.deepEqual(mathCrosswordSpec.problems(verified.card, settings), []);
       assert.equal(verified.key, mathCrosswordSpec.keyOf(verified.card));
       assert.ok(Object.isFrozen(verified.card), level.id);
@@ -43,7 +40,7 @@ void describe("mathCrosswordEngine", () => {
     const settings: MathCrosswordSettings = { level: "poziom1" };
     assert.throws(
       () => mathCrosswordEngine.generate(settings, () => 0.5, null),
-      (error: unknown) => error instanceof CardExhausted && kindOf(error) === "krzyzowka" && error.attempts > 0,
+      (error: unknown) => error instanceof CardExhausted && error.kind === "krzyzowka" && error.attempts > 0,
     );
   });
 });

@@ -7,6 +7,8 @@ import type { CopyDrawingCard } from "./copy-drawing/card.ts";
 import { copyDrawingEngine } from "./copy-drawing/engine.ts";
 import { dictationEngine } from "./dictation/engine.ts";
 import type { DictationCard } from "./dictation/generate.ts";
+import type { MathCrosswordCard } from "./math-crossword/card.ts";
+import { mathCrosswordEngine } from "./math-crossword/engine.ts";
 import { mazeEngine } from "./maze/engine.ts";
 import type { Maze } from "./maze/generate.ts";
 import { moneyEngine } from "./money/engine.ts";
@@ -34,6 +36,7 @@ interface CardTypeMap {
   niepasuje: OddOneOutCard;
   kopiuj: CopyDrawingCard;
   szlaczki: PatternLinesCard;
+  krzyzowka: MathCrosswordCard;
 }
 
 // The card kinds and the settings ids are one union: a kind with settings but no engine (or the reverse) fails here.
@@ -51,4 +54,5 @@ export const CARD_ENGINES = {
   niepasuje: oddOneOutEngine,
   kopiuj: copyDrawingEngine,
   szlaczki: patternLinesEngine,
+  krzyzowka: mathCrosswordEngine,
 } satisfies { [K in CardKindId]: CardEngine<CardSettingsOf<K>, CardTypeMap[K]> };

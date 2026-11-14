@@ -19,6 +19,11 @@ export interface MathCrosswordSheetLayout {
   rows: number;
   /** Every cell with its top left corner on the page, mm. */
   placed: { cell: MathCell; x: number; y: number }[];
+  /**
+   * Places inside the crossword where no equation lies but drawn cells touch by side on all four sides: their frames make them
+   * look like cells to fill in, so the sheet hatches them. Top left corner on the page, mm.
+   */
+  gaps: { x: number; y: number }[];
 }
 
 /**
@@ -52,6 +57,20 @@ export function layoutMathCrosswordSheet(
   ) {
     throw new Error(`The crossword crosses the ${sheet.inset} mm page margin`);
   }
+  const taken = new Set(card.cells.map((item) => `${item.row},${item.col}`));
+  const gaps: { x: number; y: number }[] = [];
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (taken.has(`${row},${col}`)) continue;
+      const walls = [
+        [row - 1, col],
+        [row + 1, col],
+        [row, col - 1],
+        [row, col + 1],
+      ].filter(([r, c]) => taken.has(`${r},${c}`)).length;
+      if (walls === 4) gaps.push({ x: left + col * cell, y: top + row * cell });
+    }
+  }
   return {
     page: { width: sheet.pageWidth, height: sheet.pageHeight },
     band: { y: sheet.inset, height: instructionBoxHeight },
@@ -60,6 +79,7 @@ export function layoutMathCrosswordSheet(
     top,
     cols,
     rows,
+    gaps,
     placed: card.cells.map((item) => ({ cell: item, x: left + item.col * cell, y: top + item.row * cell })),
   };
 }

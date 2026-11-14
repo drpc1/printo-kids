@@ -23,6 +23,15 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("niepasuje"), { level: "sredni", colors: false });
     assert.deepEqual(defaultCardSettings("kopiuj"), { level: "sredni", category: "wszystkie", colors: false });
     assert.deepEqual(defaultCardSettings("szlaczki"), { level: "poziom2", lines: true });
+    assert.deepEqual(defaultCardSettings("krzyzowka"), { level: "poziom2" });
+  });
+
+  void test("the math-crossword card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ krzyzowka: { level: "poziom7" } }), { krzyzowka: { level: "poziom7" } });
+    assert.deepEqual(parseCardSettings({ krzyzowka: { level: "lat5" } }), { krzyzowka: { level: "poziom2" } });
+    assert.deepEqual(parseCardSettings({ krzyzowka: 3 }), {});
+    assert.deepEqual(parseCardSettings({ labirynt: { level: "lat5" } }), { labirynt: { level: "lat5" } });
+    assert.deepEqual(withCardSettings({}, "krzyzowka", { level: "poziom5" }), { krzyzowka: { level: "poziom5" } });
   });
 
   void test("the pattern-lines card reads a stored level and lines, drops unknown and non-boolean values, and stays absent when never stored", () => {

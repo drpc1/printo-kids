@@ -53,6 +53,30 @@ void describe("layoutMathCrosswordSheet", () => {
     }
   }
 
+  void test("gaps are exactly the free places inside the grid with drawn cells on all four sides", () => {
+    for (const level of MATH_CROSSWORD_LEVELS) {
+      const card = generateMathCrosswordCard(mulberry32(3), null, level);
+      assert.ok(card);
+      const sheet = layoutMathCrosswordSheet(card, WITH_CHARACTER);
+      const key = (x: number, y: number) =>
+        `${Math.round((x - sheet.left) / sheet.cell)},${Math.round((y - sheet.top) / sheet.cell)}`;
+      const taken = new Set(sheet.placed.map(({ x, y }) => key(x, y)));
+      const gaps = new Set(sheet.gaps.map(({ x, y }) => key(x, y)));
+      assert.equal(gaps.size, sheet.gaps.length);
+      for (const place of gaps) assert.ok(!taken.has(place), `gap ${place} is on a cell`);
+      for (let row = 0; row < sheet.rows; row += 1) {
+        for (let col = 0; col < sheet.cols; col += 1) {
+          const place = `${col},${row}`;
+          if (taken.has(place)) continue;
+          const walls = [`${col - 1},${row}`, `${col + 1},${row}`, `${col},${row - 1}`, `${col},${row + 1}`].filter(
+            (neighbour) => taken.has(neighbour),
+          ).length;
+          assert.equal(gaps.has(place), walls === 4, `place ${place}`);
+        }
+      }
+    }
+  });
+
   void test("the band starts at the margin with the height it was given, and the page is A4", () => {
     const card = generateMathCrosswordCard(mulberry32(2), null, MATH_CROSSWORD_LEVELS[1]);
     assert.ok(card);
