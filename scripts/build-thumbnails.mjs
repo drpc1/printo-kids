@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing and pattern-lines cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines and math-crossword cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -43,6 +43,10 @@ import { generateCopyDrawingCard } from "../src/lib/copy-drawing/generate.ts";
 import { layoutCopyDrawingSheet } from "../src/lib/copy-drawing/layout.ts";
 import { copyDrawingLevelById, DEFAULT_COPY_DRAWING_LEVEL_ID } from "../src/lib/copy-drawing/levels.ts";
 import { COPY_DRAWING_SHEET } from "../src/lib/copy-drawing/sheet.ts";
+import { generateMathCrosswordCard } from "../src/lib/math-crossword/generate.ts";
+import { layoutMathCrosswordSheet } from "../src/lib/math-crossword/layout.ts";
+import { DEFAULT_MATH_CROSSWORD_LEVEL_ID, mathCrosswordLevelById } from "../src/lib/math-crossword/levels.ts";
+import { MATH_CROSSWORD_SHEET } from "../src/lib/math-crossword/sheet.ts";
 import { generatePatternLinesCard } from "../src/lib/pattern-lines/generate.ts";
 import { layoutPatternLinesSheet } from "../src/lib/pattern-lines/layout.ts";
 import { DEFAULT_PATTERN_LINES_LEVEL_ID, patternLinesLevelById } from "../src/lib/pattern-lines/levels.ts";
@@ -734,3 +738,50 @@ patternLines.push("</svg>", "");
 const patternOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/szlaczki.svg");
 writeFileSync(patternOutFile, patternLines.join("\n"));
 console.log(`Wrote ${patternOutFile} (${patternCard.key})`);
+
+// Math-crossword card: the elements MathCrosswordSheet draws (src/components/MathCrosswordSheet.tsx), in literal black, at
+// the default level with the solution off (empty cells stay empty), with the layout of src/lib/math-crossword/layout.ts
+// and the constants of src/lib/math-crossword/sheet.ts. The band holds the plain instruction (no character).
+const CROSSWORD_SEED = 20261113;
+const CROSSWORD = MATH_CROSSWORD_SHEET;
+const crosswordLevel = mathCrosswordLevelById(DEFAULT_MATH_CROSSWORD_LEVEL_ID);
+
+const crosswordCard = generateMathCrosswordCard(mulberry32(CROSSWORD_SEED), null, crosswordLevel);
+if (crosswordCard === null) {
+  throw new Error(`Seed ${CROSSWORD_SEED} did not produce a valid math-crossword card`);
+}
+
+const crosswordLayout = layoutMathCrosswordSheet(crosswordCard, CROSSWORD.plainInstructionSize);
+const crosswordBlanks = new Set(crosswordCard.blanks);
+const crosswordLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CROSSWORD.pageWidth} ${CROSSWORD.pageHeight}" width="${CROSSWORD.pageWidth}" height="${CROSSWORD.pageHeight}">`,
+  `<rect width="${CROSSWORD.pageWidth}" height="${CROSSWORD.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${CROSSWORD.pageWidth - 0.5}" height="${CROSSWORD.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(CROSSWORD.pageWidth / 2)}" y="${num(crosswordLayout.band.y + crosswordLayout.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${CROSSWORD.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${CROSSWORD.instruction}</text>`,
+  `<defs><pattern id="gap" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="2" stroke="#a1a1aa" stroke-width="0.35"/></pattern></defs>`,
+];
+for (const { x, y } of crosswordLayout.gaps) {
+  crosswordLines.push(
+    `<rect x="${num(x)}" y="${num(y)}" width="${num(crosswordLayout.cell)}" height="${num(crosswordLayout.cell)}" fill="url(#gap)"/>`,
+  );
+}
+for (const { cell, x, y } of crosswordLayout.placed) {
+  crosswordLines.push(
+    `<rect x="${num(x)}" y="${num(y)}" width="${num(crosswordLayout.cell)}" height="${num(crosswordLayout.cell)}" fill="none" stroke="#000" stroke-width="${CROSSWORD.cellStroke}"/>`,
+  );
+  if (cell.kind === "num" && crosswordBlanks.has(cell.id)) {
+    continue;
+  }
+  const text = cell.kind === "num" ? String(crosswordCard.values[cell.id]) : cell.kind === "op" ? cell.op : "=";
+  const size =
+    crosswordLayout.cell * (text.length >= CROSSWORD.longGlyphFrom ? CROSSWORD.longGlyphRatio : CROSSWORD.glyphRatio);
+  const bold = cell.kind === "num" || CROSSWORD.boldSigns.includes(text);
+  crosswordLines.push(
+    `<text x="${num(x + crosswordLayout.cell / 2)}" y="${num(y + crosswordLayout.cell / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${num(size)}"${bold ? ' font-weight="bold"' : ""} text-anchor="middle" dominant-baseline="central">${text}</text>`,
+  );
+}
+crosswordLines.push("</svg>", "");
+
+const crosswordOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/krzyzowka.svg");
+writeFileSync(crosswordOutFile, crosswordLines.join("\n"));
+console.log(`Wrote ${crosswordOutFile}`);

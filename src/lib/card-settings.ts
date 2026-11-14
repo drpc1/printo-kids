@@ -1,6 +1,11 @@
 import { COPY_DRAWING_LEVELS, DEFAULT_COPY_DRAWING_LEVEL_ID, type CopyDrawingLevelId } from "./copy-drawing/levels.ts";
 import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } from "./dictation/levels.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
+import {
+  DEFAULT_MATH_CROSSWORD_LEVEL_ID,
+  MATH_CROSSWORD_LEVELS,
+  type MathCrosswordLevelId,
+} from "./math-crossword/levels.ts";
 import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } from "./money/currencies.ts";
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
@@ -80,6 +85,10 @@ export interface PatternLinesSettings {
   lines: boolean;
 }
 
+export interface MathCrosswordSettings {
+  level: MathCrosswordLevelId;
+}
+
 export interface CardSettingsMap {
   labirynt?: LabiryntSettings;
   symetria?: SymmetrySettings;
@@ -91,6 +100,7 @@ export interface CardSettingsMap {
   niepasuje?: OddOneOutSettings;
   kopiuj?: CopyDrawingSettings;
   szlaczki?: PatternLinesSettings;
+  krzyzowka?: MathCrosswordSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -106,6 +116,7 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "niepasuje",
   "kopiuj",
   "szlaczki",
+  "krzyzowka",
 ];
 
 /** The settings of one card. */
@@ -124,6 +135,7 @@ const DEFAULTS: Defaults = {
   niepasuje: { level: DEFAULT_ODD_ONE_OUT_LEVEL_ID, colors: false },
   kopiuj: { level: DEFAULT_COPY_DRAWING_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID, colors: false },
   szlaczki: { level: DEFAULT_PATTERN_LINES_LEVEL_ID, lines: true },
+  krzyzowka: { level: DEFAULT_MATH_CROSSWORD_LEVEL_ID },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -248,6 +260,8 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return COPY_DRAWING_LEVELS.map((level) => level.id);
     case "szlaczki":
       return PATTERN_LINES_LEVELS.map((level) => level.id);
+    case "krzyzowka":
+      return MATH_CROSSWORD_LEVELS.map((level) => level.id);
   }
 }
 

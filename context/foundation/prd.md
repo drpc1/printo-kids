@@ -63,6 +63,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wygenerować kartę „Skopiuj obrazek”, na której dziecko przerysowuje sylwetkę obiektu z katalogu szablonów (domyślnie czarną, po włączeniu kolorów w kolorach kredek) z jednej kratki do pustej obok.
 - Rodzic może wygenerować kartę szlaczków, na której dziecko prowadzi ołówek po kropkach albo kontynuuje pokazany wzór.
 - Rodzic wybiera poziom każdej z czterech nowych kart bez nazw wieku, a profil sam pamięta ustawienia ich paska; na każdej stoi postać przy poleceniu.
+- Rodzic może wygenerować krzyżówkę matematyczną, w której działania „a ○ b = c” krzyżują się we wspólnych liczbach, a dziecko uzupełnia puste pola, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-13, S-40).
+- Rodzic może wybrać poziom krzyżówki matematycznej (Poziom 1–7: od dodawania do 10 po cztery działania do 100); profil sam pamięta poziom (2026-11-13, S-40).
 
 ### Guardrails
 
@@ -535,6 +537,43 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
 - Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają poziom i „Linie” (US-08).
 
+### US-31: Rodzic generuje krzyżówkę matematyczną do druku
+
+> Dodane 2026-11-13 (M-6, S-40, GitHub 371). Makiety, poziomy, wielkości kratek i puste pola zaakceptowała użytkowniczka 2026-11-13; wartości w Business Logic są startowe i zostają potwierdzone na wydruku.
+
+- **Given** rodzic otworzył z katalogu stronę „Krzyżówka matematyczna”
+- **When** uruchomi generowanie
+- **Then** otrzymuje gotową do wydruku kartę A4 z krzyżówką: działania „a ○ b = c” biegną w prawo albo w dół i krzyżują się we wspólnych polach z liczbami, część liczb jest wpisana, a reszta pusta; dziecko wpisuje brakujące liczby
+
+#### Acceptance Criteria
+
+- Każde pole krzyżówki (liczba, znak działania, „=”) jest osobną kratką, jak w zeszytach ćwiczeń. Działanie ma dwie liczby, jeden znak i wynik, czyli pięć kratek w prawo albo w dół; liczby są od 1 do największej liczby poziomu (US-32). Nad krzyżówką jest jedno zdanie polecenia: „Uzupełnij krzyżówkę. Działania czytaj w prawo i w dół.”; przy nim stoi wybrana postać (US-21).
+- Znaki to „+”, „−”, „·” i „:”. Mnożenie i dzielenie zostają w tabliczce mnożenia: czynniki, dzielnik i iloraz od 2 do 10, dzielenie bez reszty. Każde działanie jest prawdziwe.
+- Każde nowe działanie przecina już stojące w polu z liczbą (w jednym albo dwóch polach); kratki dwóch działań nie stykają się bokiem poza przecięciem.
+- Miejsca w krzyżówce, w których nic się nie wpisuje, a które ze wszystkich czterech stron otaczają kratki działań (bez tego wyglądałyby jak puste pola do wpisania), są zakreskowane ukośnie jasnoszarą kreską, na ekranie i na wydruku (decyzja 2026-11-14, po podglądzie strony). Miejsca przy brzegu krzyżówki, z mniej niż czterema ścianami, zostają białe.
+- Odpowiedź jest jedna, a dziecko dochodzi do każdego pustego pola bez zgadywania: wystarczają same działania, w których brakuje jednej liczby, w kolejności „łańcucha” (Business Logic „Karta krzyżówki matematycznej”). Aplikacja potrafi ją wyliczyć i sprawdzić. Karta, której nie da się rozwiązać w ten sposób, nie jest pokazana.
+- To samo działanie (np. 1 + 1 = 2) powtarza się na karcie tylko wtedy, gdy nie ma innego.
+- Każde Generuj daje nową kartę: inne działania albo inny układ niż poprzednia karta.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez odpowiedzi na kartce; postać przy poleceniu drukuje się w kolorze (US-21).
+- Rodzic może włączyć „Pokaż rozwiązanie”, żeby zobaczyć brakujące liczby na ekranie i sprawdzić dziecko. Domyślnie wyłączone; przełączenie zostawia tę samą kartę. Udane Generuj oraz zmiana poziomu, która układa nową kartę, wyłączają przełącznik. Wydruk nigdy nie pokazuje rozwiązania.
+- Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+- Strona ma pasek „Postać”; wybrana postać stoi przy poleceniu (US-21). Pola krzyżówki nie używają postaci.
+
+### US-32: Rodzic wybiera poziom krzyżówki matematycznej
+
+- **Given** rodzic jest na stronie „Krzyżówka matematyczna”
+- **When** wybierze poziom (Poziom 1–7)
+- **Then** karta ma rodzaj działań, największą liczbę, wielkość krzyżówki i liczbę pustych pól zgodne z tym poziomem
+
+#### Acceptance Criteria
+
+- Poziomy to numery bez nazw wieku (decyzja 2026-11-13): Poziom 1 dodawanie do 10; Poziom 2 dodawanie i odejmowanie do 10; Poziom 3 dodawanie i odejmowanie do 20; Poziom 4 dodawanie i odejmowanie do 100; Poziom 5 mnożenie do 30; Poziom 6 mnożenie i dzielenie do 50; Poziom 7 wszystkie cztery działania do 100. Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia, bez wieku pod opisem (jak karty z M-5).
+- Poziom zmienia też liczbę działań, wielkość kratki i liczbę pustych pól razem z „łańcuchem”. Osobnej kontrolki liczby pustych pól nie ma. Reguły są w Business Logic.
+- Domyślny jest Poziom 2.
+- Zmiana poziomu przy pokazanej karcie od razu układa nową kartę, a „Pokaż rozwiązanie” zostaje wyłączone (US-22).
+- Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
+- Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają go same (US-08). „Pokaż rozwiązanie” nie jest zapamiętywane i zawsze startuje wyłączone.
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -641,6 +680,13 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-040: Rodzic może wybrać poziom szlaczków (Poziom 1–4: tryb, pula wzorów, łagodność kształtu, liczba rzędów), a na Poziomach 3–4 włączyć albo wyłączyć linie pomocnicze. Priority: must-have
   > Socrates: Counter-argument considered: sztywne przypisanie sześciu wzorów do poziomów szybko się powtarza, a Poziom 1 z makiety był za trudny dla 3-latka. Resolution: revised (2026-11-09, makiety w `context/changes/pattern-lines-card/`); poziomy celują w 3–4, 5–6, 6–7 i 8–10 lat (cel projektu, nie etykieta), mają pule wzorów i losowaną łagodność, a Poziom 4 pomaga w nauce pisania (liniatura, elementy liter).
 
+### Krzyżówka matematyczna
+
+- FR-041: Rodzic może wygenerować krzyżówkę matematyczną, w której działania „a ○ b = c” (dodawanie, odejmowanie, mnożenie, dzielenie) krzyżują się we wspólnych polach z liczbami, część liczb jest wpisana, a reszta pusta i da się ją wyliczyć bez zgadywania; zobaczyć jej podgląd, w razie potrzeby pokazać rozwiązanie na ekranie i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: samo dodawanie z pustym składnikiem to odejmowanie, więc karta nie uczy niczego nowego. Resolution: kept (2026-11-13); tak działają zeszyty ćwiczeń, które pokazała użytkowniczka, a krzyżówka daje nową kartę na właściwym poziomie na żądanie, ten sam problem co przy innych kartach.
+- FR-042: Rodzic może wybrać poziom krzyżówki matematycznej (Poziom 1–7: rodzaj działań, największa liczba, liczba działań, kratka, puste pola i łańcuch). Priority: must-have
+  > Socrates: Counter-argument considered: siedem poziomów to dużo do wyboru, a poziomy bez mierzalnych reguł wprowadzają w błąd. Resolution: kept (2026-11-13); użytkowniczka chciała więcej niż trzy poziomy, a każdy zmienia jedną rzecz naraz (rodzaj działań, zakres liczb albo wielkość), z jawną tabelą w Business Logic; wartości startowe potwierdza wydruk (Open Questions 17).
+
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
@@ -653,6 +699,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karty sekwencji i sudoku spełniają te same granice co labirynt: generowanie do 5 sekund (także sudoku 9×9 na najtrudniejszym poziomie), jedna strona A4, margines co najmniej 10 mm, domyślny druk czarny bez odpowiedzi (sudoku z włączonymi kolorami drukuje kształty w kolorach), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Nonogram i dyktando graficzne spełniają te same granice co labirynt: generowanie do 5 sekund (także trudny nonogram ze sprawdzeniem jednego rozwiązania), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karty „Który nie pasuje” i „Kto ma więcej?” z włączonymi kolorami drukują obrazki w kolorach, a „Skopiuj obrazek” sylwetkę w kolorach kredek), te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Krzyżówka matematyczna (2026-11-13, S-40) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 7 z czterema działaniami do 100 i 20 działaniami), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (rozwiązanie tylko na ekranie), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
@@ -893,9 +940,39 @@ Odrzucone po makietach (2026-11-09): kreski pionowe i skośne, fala po skosie, p
 
 Reguły, które generator sprawdza: każdy rząd ma wzór z puli poziomu; dwa rzędy jednej karty nie są takie same; w trybie samych kropek (Poziomy 1–2) ścieżka się nie krzyżuje; Poziom 3 pokazuje dokładnie dwa powtórzenia po kropkach, Poziom 4 co najmniej trzy; wzór mieści się w rzędzie i nie wchodzi w margines. Aplikacja nie ocenia rysunku dziecka (decyzja 2026-11-01). Każde Generuj daje inne parametry, inne wzory albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 15). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
+### Karta krzyżówki matematycznej
+
+Dodane 2026-11-13 (M-6, S-40, GitHub 371); makiety i poziomy zaakceptowała użytkowniczka 2026-11-13. Aplikacja zawsze tworzy kartę, na której każde puste pole da się wyliczyć bez zgadywania, a odpowiedź jest jedna. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Uzupełnij krzyżówkę. Działania czytaj w prawo i w dół.”) i krzyżówką pod nim, wyśrodkowaną w obszarze pod poleceniem. Poziom wyznaczają rodzaj działań, największa liczba, liczba działań (wielkość krzyżówki), kratka i liczba pustych pól razem z „łańcuchem”. Karta nie ma obrazków poza postacią przy poleceniu; nie ma kolorów ani kategorii.
+
+Działanie to dwie liczby, jeden znak i wynik, zapisane „a ○ b = c” w pięciu kratkach w prawo albo w dół: każde pole (liczba, znak, „=”) jest osobną kratką, jak w zeszytach ćwiczeń. Znaki to „+”, „−” (U+2212), „·” i „:”. Wszystkie liczby są od 1 do największej liczby poziomu. Mnożenie jest w tabliczce mnożenia (czynniki 2–10); dzielenie: dzielnik i iloraz 2–10, bez reszty, dzielna różna od dzielnika. Krzyżówka: każde nowe działanie przecina już stojące w polu z liczbą (jedno albo dwa przecięcia); kratki dwóch działań nie stykają się bokiem poza przecięciem, a przed i za działaniem jest pusto. To samo działanie (np. 1 + 1 = 2) powtarza się na karcie tylko wtedy, gdy nie ma innego.
+
+| Poziom | Działania | Największa liczba | Działań (cel) | Kratka do | Puste (cel) | Najwyżej pustych w działaniu | Łańcuch do |
+| ------ | --------- | ----------------- | ------------- | --------- | ----------- | ---------------------------- | ---------- |
+| 1      | +         | 10                | 5             | 26 mm     | 40%         | 1                            | 1          |
+| 2      | + −       | 10                | 9             | 24 mm     | 45%         | 1                            | 1          |
+| 3      | + −       | 20                | 13            | 17 mm     | 50%         | 2                            | 2          |
+| 4      | + −       | 100               | 12            | 16 mm     | 50%         | 2                            | 3          |
+| 5      | ·         | 30                | 12            | 16 mm     | 50%         | 2                            | 3          |
+| 6      | · :       | 50                | 15            | 14,5 mm   | 55%         | 2                            | 4          |
+| 7      | + − · :   | 100               | 20            | 13,5 mm   | 60%         | 2                            | 4          |
+
+Poziomy to numery bez wieku i bez wieku pod opisem. Domyślny jest Poziom 2. Opisy poziomów w UI: Poziom 1 „dodawanie do 10”, Poziom 2 „dodawanie i odejmowanie do 10”, Poziom 3 „dodawanie i odejmowanie do 20”, Poziom 4 „dodawanie i odejmowanie do 100”, Poziom 5 „mnożenie do 30”, Poziom 6 „mnożenie i dzielenie do 50”, Poziom 7 „wszystkie cztery działania do 100”.
+
+Łańcuch (decyzja 2026-11-13): puste pole ma łańcuch 1, gdy wynika z działania, w którym reszta liczb jest wpisana; łańcuch N, gdy najpierw trzeba wyliczyć pole o łańcuchu N−1. Poziomy 1–2 mają łańcuch 1 (każde puste pole wprost z podanych liczb), Poziom 3 do 2, Poziomy 4–5 do 3, Poziomy 6–7 do 4. W jednym działaniu brakuje najwyżej tylu liczb, ile pokazuje tabela. Puste pola rosną z poziomem (około 40% na Poziomie 1, 60% na Poziomie 7) i nie mają osobnej kontrolki na pasku.
+
+„Cel” w tabeli: generator dąży do tej liczby działań i pustych pól; karta z mniejszą liczbą działań niż cel o więcej niż ustalona tolerancja nie jest pokazana (tolerancja w kodzie poziomów, z komentarzem). Ciaśniejsza siatka może dać mniej działań niż cel.
+
+Zakreskowane miejsca (decyzja 2026-11-14): wolne miejsce w siatce, które ma kratki działań ze wszystkich czterech stron, jest zakreskowane (ukośna, jasnoszara kreska), żeby było jasne, że nic się w nim nie wpisuje; układ karty podaje je jako `gaps`.
+
+Reguły, które generator sprawdza: każde działanie jest prawdziwe; liczby mieszczą się w zakresie poziomu; znak jest z poziomu, a mnożenie i dzielenie mieszczą się w tabliczce; kratki działań nie stykają się poza przecięciem; każde puste pole da się wyliczyć samymi działaniami z jedną brakującą liczbą (bez zgadywania); łańcuch i liczba pustych pól w działaniu mieszczą się w limitach poziomu; karta ma co najmniej jedno puste pole i nie mniej działań niż cel minus tolerancja; kolejne Generuj daje inną kartę. Karta, która łamie którąś z tych reguł, nie jest pokazana. Niezależna wyrocznia w testach potwierdza jedno rozwiązanie.
+
+„Pokaż rozwiązanie” (decyzja 2026-11-13): rodzic może włączyć je na pasku, żeby zobaczyć brakujące liczby na ekranie jako szare cyfry; domyślnie wyłączone, nie zapamiętywane i nie drukowane. Udane Generuj i zmiana poziomu je wyłączają.
+
+Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 17). Wynikiem jest karta A4: krzyżówka zajmuje większą część strony i zachowuje margines co najmniej 10 mm.
+
 ### Poziomy
 
-Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4. Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
+Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
 
 Każdy wiersz listy poziomów ma nazwę, pół zdania o tym, co zmienia poziom, i, przy labiryncie, symetrii, sekwencjach i dyktandzie, typowy wiek pod opisem; wiersz ma trzy linie, np. „Poziom 1” / „duża kratka, podpowiedź przy osi” / „zwykle ok. 4 lata”. Sudoku i nonogram nie mają wieku. Zapisane identyfikatory poziomów mogą zostać w danych; zmienia się etykieta, więc zapisane profile i ostatnie parametry wczytują się bez migracji.
 
@@ -903,18 +980,19 @@ Każdy wiersz listy poziomów ma nazwę, pół zdania o tym, co zmienia poziom, 
 
 Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju karty. Ustawienia karty to wszystko, co jest na pasku tej karty poza postacią i poza „Pokaż rozwiązanie”:
 
-| Karta              | Zapamiętane ustawienia                      |
-| ------------------ | ------------------------------------------- |
-| Labirynt           | poziom                                      |
-| Symetria           | poziom, kolory, kategoria                   |
-| Sekwencje          | poziom, kolory                              |
-| Sudoku             | rozmiar, poziom, „Kształty / Cyfry”, kolory |
-| Nonogram           | poziom, kategoria                           |
-| Dyktando graficzne | poziom, kategoria                           |
-| Kto ma więcej?     | poziom, waluta, kolory                      |
-| Który nie pasuje   | poziom, kolory                              |
-| Skopiuj obrazek    | poziom, kolory, kategoria                   |
-| Szlaczki           | poziom, linie                               |
+| Karta                  | Zapamiętane ustawienia                      |
+| ---------------------- | ------------------------------------------- |
+| Labirynt               | poziom                                      |
+| Symetria               | poziom, kolory, kategoria                   |
+| Sekwencje              | poziom, kolory                              |
+| Sudoku                 | rozmiar, poziom, „Kształty / Cyfry”, kolory |
+| Nonogram               | poziom, kategoria                           |
+| Dyktando graficzne     | poziom, kategoria                           |
+| Kto ma więcej?         | poziom, waluta, kolory                      |
+| Który nie pasuje       | poziom, kolory                              |
+| Skopiuj obrazek        | poziom, kolory, kategoria                   |
+| Szlaczki               | poziom, linie                               |
+| Krzyżówka matematyczna | poziom                                      |
 
 Zasady:
 
@@ -924,7 +1002,7 @@ Zasady:
 - Bez profilu urządzenie pamięta ostatnie ustawienia osobno dla każdej karty i jedną ostatnio użytą postać dla wszystkich kart.
 - Profil nie przechowuje wieku. Wiek nie ustawia żadnego poziomu.
 - Przy wybranym profilu miniatury katalogu pokazują zapamiętany poziom (sudoku: rozmiar i poziom, np. „6×6 · średni”).
-- „Pokaż rozwiązanie” w nonogramie nie jest zapamiętywane i zawsze startuje wyłączone.
+- „Pokaż rozwiązanie” w nonogramie, dyktandzie i krzyżówce matematycznej nie jest zapamiętywane i zawsze startuje wyłączone.
 - Zgodność wstecz: dawne pole poziomu w profilu i w ostatnich parametrach zostaje poziomem labiryntu; dawna postać profilu zostaje ulubioną, a dawna postać ostatnich parametrów ostatnio użytą postacią.
 
 ### Postać na kartach
@@ -944,6 +1022,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 ## Non-Goals
 
 - Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku (US-10–US-14, FR-019–FR-023). Do tego samego kamienia dochodzą 2026-10-25, także na prośbę użytkownika, nonogram i dyktando graficzne (US-15–US-18, FR-024–FR-027) oraz nowe obiekty w katalogu szablonów z wyborem kategorii (US-19–US-20, FR-028–FR-029). Czwarty kamień kart (M-5, 2026-11-01) bierze cztery rodzaje naraz, wyjątkowo, na prośbę użytkowniczki: „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek” i szlaczki (US-23–US-30, FR-033–FR-040). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
+- Kamień M-6 (2026-11-13) zaczyna się od jednej karty: krzyżówki matematycznej (US-31–US-32, FR-041–FR-042; S-40). Nie obejmuje osobnej kontrolki liczby pustych pól, wieku pod opisem poziomu, działań z więcej niż jednym znakiem (np. „a + b − c = d”) ani kolejności wykonywania działań, ramki „Użyj:” z brakującymi liczbami, kolorów, kategorii i obrazków na karcie.
 - Kamień M-5 nie obejmuje groszy i centów, banknotu 200 €, monet dolarowych, cen i reszty w „Kto ma więcej?”, kwoty „ułóż dokładnie tę kwotę” ani oceny rysunku dziecka na kartach „Skopiuj obrazek” i szlaczki (decyzja 2026-11-01).
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
@@ -995,3 +1074,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 14. **Czy poziomy „Kto ma więcej?” (nominały do 100 w trzech walutach, sumy do 10, 20 i 200, liczba sztuk myli) i „Który nie pasuje” (reguły, liczba obrazków w rzędzie) pasują dziecku, i czy wygląd monety i banknotu jest czytelny na czarnym druku i w kolorze, bez kopiowania wzorów NBP?** — Owner: user. Block: nie. Tabele w Business Logic są propozycją z 2026-11-01; potwierdza je wydruk. Otwarte: czy dziecko 6 lat radzi sobie z małymi kupkami mieszanych monet na poziomie łatwym (sumy do 10 zł, najwyżej 5 sztuk, bez mylących rzędów; decyzja 2026-11-01, wcześniej jeden nominał w rzędzie). Prawa do wyglądu pieniędzy: użytkowniczka sprawdziła (2026-11-01), że wizerunek można pokazać na karcie edukacyjnej, o ile reprodukcja nie może uchodzić za prawdziwy pieniądz; rysunki są więc uproszczone (czarna wersja: moneta to koło, banknot to prostokąt z nominałem, bez zabezpieczeń i godeł). Kolorowa wersja (GitHub #270, 2026-11-08) używa obrazków, które użytkowniczka sama przygotowała; są stylizowane, mają orła i profil władcy, ale nie mają zabezpieczeń, więc dalej nie uchodzą za prawdziwy pieniądz; autorstwo i prawa do obrazków ma użytkowniczka. To zmienia wcześniejsze „bez godeł” dla wersji kolorowej. Czytelność nominału na czarnym druku potwierdził wydruk makiety (2026-11-01). Czytelność obrazków w rozmiarze karty (moneta 11 mm, banknot 18 × 9 mm) na wydruku w kolorze i w czerni z bielą potwierdziła użytkowniczka (2026-11-08). Do potwierdzenia przez użytkowniczkę, bo to propozycje, a nie jej decyzje: remis najwyżej w jednym rzędzie karty i pięć rzędów na karcie (jej decyzja z 2026-11-01 to tylko „remis jest dozwolony”). „Który nie pasuje” (GitHub 265, decyzja 2026-11-08): makiety zatwierdziła użytkowniczka, ale wartości (rozpraszacze, mały obrazek 0,5 / 0,55 / 0,72 dużego, grupy w regule liczby, czytelność ikon kategorii i małych grup na A4) są startowe i potwierdza je wydruk po S-34. Obrazki euro i dolara (GitHub 324, 2026-11-09) wycięła z makiet użytkowniczki; makieta euro ma stylizowaną architekturę bez portretów, a makieta dolara portrety, napis „THE UNITED STATES OF AMERICA” i pieczęć Skarbu, czyli bliżej prawdziwych wzorów; wdrożone na jej polecenie, a ocenę, czy wolno je pokazać na karcie edukacyjnej, ma ona (w razie wątpliwości obrazki `*usd.png` do usunięcia lub uproszczenia przed merge). Dolar nie ma monet (decyzja 2026-11-09: moneta 1 $ jest rzadka, więc jest banknot 1 $), więc każdy kawałek dolara ma cyfrę. Lista na koniec M-5: GitHub drpc1/printo-kids#263.
 15. ~~**Czy szlaczki z kropkami (Poziomy 1–2) i z kontynuacją wzoru (Poziomy 3–4) są czytelne na zwykłej drukarce domowej i dla dziecka?**~~ — Owner: user. Block: nie. Tabela w Business Logic jest propozycją z 2026-11-01, przebudowaną 2026-11-09 po makietach (`context/changes/pattern-lines-card/`); potwierdza ją wydruk i próba z dzieckiem, które odbywają się po scaleniu i nie blokują dostarczenia karty ani zamknięcia S-36 (decyzja 2026-11-10). Zamknięte 2026-11-10: użytkowniczka wydrukowała karty i sprawdziła je z dzieckiem; kropki, jasnoszara ścieżka, linia 0,6 mm i liniatura są czytelne, a startowe wartości poziomów zostają bez zmian.
 16. **Jak długo trwa M-5 (cztery karty naraz)?** — Owner: user. Block: nie. Roadmapa sekwencjonuje bez dat; `delivery_weeks` nie jest ustalone.
+17. **Czy startowe wartości poziomów krzyżówki matematycznej (liczba działań, kratka, puste pola, łańcuch) pasują dziecku?** — Owner: user. Block: nie. Tabela w Business Logic „Karta krzyżówki matematycznej” jest propozycją z 2026-11-13 (S-40), zaakceptowaną po makietach; potwierdza ją wydruk w fazie 4 planu `math-crossword-card`: czy cyfry mieszczą się w kratce 13,5 mm na Poziomie 7, czy dziecko daje radę wpisać liczby w kratki 26 i 24 mm na Poziomach 1–2 i czy łańcuch 3–4 na Poziomach 4–7 nie jest za trudny.

@@ -3,6 +3,7 @@ import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import { copyDrawingLevelById } from "./copy-drawing/levels.ts";
 import { dictationLevelById } from "./dictation/levels.ts";
+import { mathCrosswordLevelById } from "./math-crossword/levels.ts";
 import { levelById } from "./maze/levels.ts";
 import { moneyCurrencyById } from "./money/currencies.ts";
 import { moneyLevelById } from "./money/levels.ts";
@@ -139,6 +140,14 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
       const level = patternLinesLevelById(settings.level);
       const noLines = patternLinesHasGuides(settings.level) && !settings.lines;
       return { badge: badgeOf(level), level: level.label, extras: noLines ? ["bez linii"] : [] };
+    }
+    case "krzyzowka": {
+      const settings = cards.krzyzowka;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = mathCrosswordLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: [] };
     }
     default:
       return null;

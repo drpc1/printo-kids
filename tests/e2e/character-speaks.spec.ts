@@ -22,6 +22,7 @@ const CARDS: CardCase[] = [
   { path: "/copy-drawing", sheet: "Skopiuj obrazek", sentence: "Przerysuj obrazek na pustą kratkę." },
   // The sentence of the default level (Poziom 2); the other levels have their own.
   { path: "/patterns", sheet: "Szlaczki", sentence: "Prowadź ołówek po kropkach." },
+  { path: "/math-crossword", sheet: "Krzyżówka matematyczna", sentence: "Uzupełnij krzyżówkę." },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {
