@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 const TEXT_PROPS = {
   fontFamily: "ui-sans-serif, system-ui, sans-serif",
   textAnchor: "middle",
-  dominantBaseline: "central",
 } as const;
 
 /** The text of one cell: a number, a sign or "=", centred in its square. */
@@ -21,7 +20,7 @@ function glyph(card: MathCrosswordCard, cell: MathCell, x: number, y: number, si
     <text
       key={`t${cell.row},${cell.col}`}
       x={x + side / 2}
-      y={y + side / 2}
+      y={y + side / 2 + size * sheet.baselineShift}
       fontSize={size}
       fontWeight={bold ? "bold" : undefined}
     >

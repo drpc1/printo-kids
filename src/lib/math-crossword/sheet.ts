@@ -25,6 +25,11 @@ export const MATH_CROSSWORD_SHEET = {
   longGlyphRatio: 0.42,
   /** Texts longer than this many characters use `longGlyphRatio`. */
   longGlyphFrom: 3,
+  /**
+   * How far below the cell centre the text baseline lies, in font sizes. Digits are about 0.72 em tall, so this puts them in
+   * the middle. `dominant-baseline` is not used: phone browsers (Safari, Chrome, Brave) place the text differently.
+   */
+  baselineShift: 0.36,
   /** Operation signs drawn bold: a thin dot and colon vanish on a home printer. */
   boldSigns: ["·", ":"],
 } as const;
