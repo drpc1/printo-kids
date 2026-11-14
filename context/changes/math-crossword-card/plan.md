@@ -373,10 +373,10 @@ Brak: nowe pole `cards.krzyzowka` w zapisanych profilach ma wartość domyślną
 
 #### Automated
 
-- [ ] 4.1 Po ewentualnej poprawce: `npm test` i `npm run build`
+- [x] 4.1 Po ewentualnej poprawce: `npm test` i `npm run build`
 
 #### Manual
 
-- [ ] 4.2 Wydruk każdego poziomu na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
-- [ ] 4.3 Cyfry mieszczą się w kratkach także na Poziomie 7 (13,5 mm), a dziecko daje radę wpisać liczby na Poziomach 1–2
-- [ ] 4.4 Open Question o wartościach poziomów krzyżówki zamknięte w PRD
+- [x] 4.2 Wydruk każdego poziomu na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
+- [x] 4.3 Cyfry mieszczą się w kratkach także na Poziomie 7 (13,5 mm), a dziecko daje radę wpisać liczby na Poziomach 1–2
+- [x] 4.4 Open Question o wartościach poziomów krzyżówki zamknięte w PRD
