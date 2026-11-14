@@ -18,6 +18,15 @@ function byId(summaries: ReturnType<typeof cardSummaries>, id: string) {
 }
 
 void describe("cardSummaries", () => {
+  void test("a remembered Boże Narodzenie reads as Wszystkie outside its window and stays with the right date", () => {
+    const saved = { symetria: { level: "lat5", colors: false, category: "boze-narodzenie" } } as const;
+    const detail = (today?: Date) => byId(cardSummaries(profile("lat5", saved), today), "symetria").detail;
+    assert.match(detail(), /Boże Narodzenie/);
+    assert.match(detail(new Date(2026, 11, 10)), /Boże Narodzenie/);
+    assert.match(detail(new Date(2027, 1, 10)), /Wszystkie/);
+    assert.doesNotMatch(detail(new Date(2027, 1, 10)), /Boże Narodzenie/);
+  });
+
   void test("lists every card in the order of CARD_KINDS with their pages", () => {
     const summaries = cardSummaries(profile("lat5"));
     assert.deepEqual(

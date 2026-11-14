@@ -25,6 +25,10 @@ interface FigureSpec {
 }
 
 const CATEGORIES: readonly ObjectCategoryId[] = ["ksztalty"];
+/** The star is also a Christmas object. */
+const CATEGORIES_OF: Readonly<Record<string, readonly ObjectCategoryId[]>> = {
+  gwiazda: ["ksztalty", "boze-narodzenie"],
+};
 /** How many decorations (a cell that is a hole or a filled cell) a figure of this half size gets at most. */
 const SPOTS_BY_HALF: Readonly<Record<number, number>> = { 4: 2, 6: 2, 9: 3 };
 
@@ -245,7 +249,7 @@ function figureTemplate(spec: FigureSpec, half: number): SymmetryTemplate {
     width: half,
     height: grid.length,
     holeColor: spec.holeColor,
-    categories: CATEGORIES,
+    categories: CATEGORIES_OF[spec.id] ?? CATEGORIES,
     base,
     // A spot is a hole in one variant and a filled cell in the other, so every variant set draws a different picture.
     parts: spots.map((spot, index) => ({

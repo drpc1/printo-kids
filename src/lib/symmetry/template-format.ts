@@ -2,6 +2,25 @@ export const SYMMETRY_COLORS = ["red", "green", "yellow", "blue", "orange", "gra
 
 export type SymmetryColor = (typeof SYMMETRY_COLORS)[number];
 
+/** A day of the year, months counted from 1. */
+export interface MonthDay {
+  month: number;
+  day: number;
+}
+
+/** The days a category shows on the bar, both ends included; `to` before `from` means the window crosses New Year. */
+export interface CategoryWindow {
+  from: MonthDay;
+  to: MonthDay;
+}
+
+export interface ObjectCategory {
+  id: string;
+  label: string;
+  /** Without a window the category is always on the bar. */
+  window?: CategoryWindow;
+}
+
 /** The object categories of the template catalog, in the order of the PRD. A template has at least one. */
 export const OBJECT_CATEGORIES = [
   { id: "zwierzeta", label: "Zwierzęta" },
@@ -10,7 +29,12 @@ export const OBJECT_CATEGORIES = [
   { id: "kosmos", label: "Kosmos i maszyny" },
   { id: "budowle", label: "Domy i budowle" },
   { id: "ksztalty", label: "Kształty" },
-] as const;
+  {
+    id: "boze-narodzenie",
+    label: "Boże Narodzenie",
+    window: { from: { month: 11, day: 15 }, to: { month: 1, day: 6 } },
+  },
+] as const satisfies readonly ObjectCategory[];
 
 export type ObjectCategoryId = (typeof OBJECT_CATEGORIES)[number]["id"];
 

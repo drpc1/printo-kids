@@ -49,7 +49,9 @@ void describe("template catalog", () => {
       for (const category of OBJECT_CATEGORIES) {
         const objects = symmetryTemplatesFor(levelId).filter((template) => template.categories.includes(category.id));
 
-        assert.ok(objects.length >= 4, `${levelId} ${category.label}: ${objects.length}`);
+        // Boże Narodzenie starts with the tree and the star; the other objects come in phase 3 of christmas-objects.
+        const minimum = category.id === "boze-narodzenie" ? 2 : 4;
+        assert.ok(objects.length >= minimum, `${levelId} ${category.label}: ${objects.length}`);
       }
     }
   });

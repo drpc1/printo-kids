@@ -17,6 +17,7 @@ import {
 } from "@/lib/child-profiles";
 import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
+import { useToday } from "@/hooks/useToday";
 import { cardSummaries } from "@/lib/card-summary";
 import { readLastUsed } from "@/lib/last-used";
 import {
@@ -570,13 +571,14 @@ function ProfileCharacterControl({
 
 /** What the profile remembers for each card, read-only: the bar of every card is the one place that changes it. */
 function ProfileSummary({ profile }: { profile: ChildProfile }) {
+  const today = useToday();
   return (
     <div className={cn("flex flex-col gap-2")}>
       <p className={cn("text-muted-foreground text-sm")}>
         Ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
       </p>
       <ul className={cn("border-border rounded-md border")}>
-        {cardSummaries(profile).map((summary) => (
+        {cardSummaries(profile, today).map((summary) => (
           <li key={summary.id} className={cn("border-border border-t first:border-t-0")}>
             <a
               href={summary.href}
