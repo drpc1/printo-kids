@@ -550,6 +550,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każde pole krzyżówki (liczba, znak działania, „=”) jest osobną kratką, jak w zeszytach ćwiczeń. Działanie ma dwie liczby, jeden znak i wynik, czyli pięć kratek w prawo albo w dół; liczby są od 1 do największej liczby poziomu (US-32). Nad krzyżówką jest jedno zdanie polecenia: „Uzupełnij krzyżówkę. Działania czytaj w prawo i w dół.”; przy nim stoi wybrana postać (US-21).
 - Znaki to „+”, „−”, „·” i „:”. Mnożenie i dzielenie zostają w tabliczce mnożenia: czynniki, dzielnik i iloraz od 2 do 10, dzielenie bez reszty. Każde działanie jest prawdziwe.
 - Każde nowe działanie przecina już stojące w polu z liczbą (w jednym albo dwóch polach); kratki dwóch działań nie stykają się bokiem poza przecięciem.
+- Miejsca w krzyżówce, w których nic się nie wpisuje, a które ze wszystkich czterech stron otaczają kratki działań (bez tego wyglądałyby jak puste pola do wpisania), są zakreskowane ukośnie jasnoszarą kreską, na ekranie i na wydruku (decyzja 2026-11-14, po podglądzie strony). Miejsca przy brzegu krzyżówki, z mniej niż czterema ścianami, zostają białe.
 - Odpowiedź jest jedna, a dziecko dochodzi do każdego pustego pola bez zgadywania: wystarczają same działania, w których brakuje jednej liczby, w kolejności „łańcucha” (Business Logic „Karta krzyżówki matematycznej”). Aplikacja potrafi ją wyliczyć i sprawdzić. Karta, której nie da się rozwiązać w ten sposób, nie jest pokazana.
 - To samo działanie (np. 1 + 1 = 2) powtarza się na karcie tylko wtedy, gdy nie ma innego.
 - Każde Generuj daje nową kartę: inne działania albo inny układ niż poprzednia karta.
@@ -960,6 +961,8 @@ Poziomy to numery bez wieku i bez wieku pod opisem. Domyślny jest Poziom 2. Opi
 Łańcuch (decyzja 2026-11-13): puste pole ma łańcuch 1, gdy wynika z działania, w którym reszta liczb jest wpisana; łańcuch N, gdy najpierw trzeba wyliczyć pole o łańcuchu N−1. Poziomy 1–2 mają łańcuch 1 (każde puste pole wprost z podanych liczb), Poziom 3 do 2, Poziomy 4–5 do 3, Poziomy 6–7 do 4. W jednym działaniu brakuje najwyżej tylu liczb, ile pokazuje tabela. Puste pola rosną z poziomem (około 40% na Poziomie 1, 60% na Poziomie 7) i nie mają osobnej kontrolki na pasku.
 
 „Cel” w tabeli: generator dąży do tej liczby działań i pustych pól; karta z mniejszą liczbą działań niż cel o więcej niż ustalona tolerancja nie jest pokazana (tolerancja w kodzie poziomów, z komentarzem). Ciaśniejsza siatka może dać mniej działań niż cel.
+
+Zakreskowane miejsca (decyzja 2026-11-14): wolne miejsce w siatce, które ma kratki działań ze wszystkich czterech stron, jest zakreskowane (ukośna, jasnoszara kreska), żeby było jasne, że nic się w nim nie wpisuje; układ karty podaje je jako `gaps`.
 
 Reguły, które generator sprawdza: każde działanie jest prawdziwe; liczby mieszczą się w zakresie poziomu; znak jest z poziomu, a mnożenie i dzielenie mieszczą się w tabliczce; kratki działań nie stykają się poza przecięciem; każde puste pole da się wyliczyć samymi działaniami z jedną brakującą liczbą (bez zgadywania); łańcuch i liczba pustych pól w działaniu mieszczą się w limitach poziomu; karta ma co najmniej jedno puste pole i nie mniej działań niż cel minus tolerancja; kolejne Generuj daje inną kartę. Karta, która łamie którąś z tych reguł, nie jest pokazana. Niezależna wyrocznia w testach potwierdza jedno rozwiązanie.
 

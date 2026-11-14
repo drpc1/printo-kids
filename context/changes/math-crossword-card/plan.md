@@ -256,6 +256,8 @@ Karta pojawia się w katalogu, ma stronę, pasek, arkusz, miniaturę, plakietkę
 
 **Implementation Note**: po tej fazie zatrzymać się na potwierdzenie.
 
+**Addendum (2026-11-14, na prośbę użytkowniczki po podglądzie strony)**: wolne miejsca w siatce otoczone kratkami działań ze wszystkich czterech stron są zakreskowane (`gaps` w `layout.ts`, wzór w `MathCrosswordSheet.tsx` i w miniaturze), żeby nie wyglądały jak pola do wpisania. Czytelność kreskowania na czarno-białej drukarce sprawdza faza 4. „Pokaż rozwiązanie” jest przy braku karty ukryte (jak w nonogramie), nie nieaktywne.
+
 ---
 
 ## Phase 4: Wydruk próbny

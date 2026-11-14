@@ -39,6 +39,7 @@ export default function MathCrosswordGenerator() {
   const showSolution = cardKey !== null && solutionFor === cardKey;
 
   function handleGenerate(): void {
+    setSolutionFor(null);
     setSheet(generateSheet(sheet, mathCrosswordEngine, memory.settings, Math.random));
   }
 
@@ -47,10 +48,12 @@ export default function MathCrosswordGenerator() {
       return;
     }
     const next = memory.remember({ level: id });
+    setSolutionFor(null);
     setSheet(applySettings(sheet, mathCrosswordEngine, next, Math.random));
   }
 
   function handleProfileSwitch(next: MathCrosswordSettings): void {
+    setSolutionFor(null);
     setSheet(applySettings(sheet, mathCrosswordEngine, next, Math.random));
   }
 
