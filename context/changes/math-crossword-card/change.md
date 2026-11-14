@@ -1,9 +1,9 @@
 ---
 change_id: math-crossword-card
 title: Krzyżówka matematyczna – nowa karta (S-40, M-6)
-status: implementing
+status: impl_reviewed
 created: 2026-11-13
-updated: 2026-11-13
+updated: 2026-11-14
 archived_at: null
 ---
 

@@ -10,6 +10,7 @@ import {
   PATTERN_LINES_LEVELS,
   type PatternLinesLevelId,
 } from "./pattern-lines/levels.ts";
+import type { MathCrosswordLevelId } from "./math-crossword/levels.ts";
 import { DEFAULT_SEQUENCE_LEVEL_ID, SEQUENCE_LEVELS, type SequenceLevelId } from "./sequence/levels.ts";
 import {
   DEFAULT_SUDOKU_SETTINGS,
@@ -78,6 +79,11 @@ export interface CopyDrawingSettings {
 export interface PatternLinesSettings {
   level: PatternLinesLevelId;
   lines: boolean;
+}
+
+/** Not in `CardSettingsMap` yet: phase 3 of math-crossword-card registers the card (defaults, ids, parsing). */
+export interface MathCrosswordSettings {
+  level: MathCrosswordLevelId;
 }
 
 export interface CardSettingsMap {

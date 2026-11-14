@@ -330,27 +330,27 @@ Brak: nowe pole `cards.krzyzowka` w zapisanych profilach ma wartość domyślną
 
 #### Automated
 
-- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/foundation/prd.md context/domain/glossary.md`
-- [x] 1.2 PRD ma nowe numery: `rg -n "US-31|US-32|FR-041|FR-042" context/foundation/prd.md` zwraca trafienia
+- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/foundation/prd.md context/domain/glossary.md` — cab6ada
+- [x] 1.2 PRD ma nowe numery: `rg -n "US-31|US-32|FR-041|FR-042" context/foundation/prd.md` zwraca trafienia — cab6ada
 
 #### Manual
 
-- [x] 1.3 Użytkowniczka potwierdza zmienione zdania PRD (tabela poziomów, reguły, „Pokaż rozwiązanie”, Poziom 2 domyślny)
+- [x] 1.3 Użytkowniczka potwierdza zmienione zdania PRD (tabela poziomów, reguły, „Pokaż rozwiązanie”, Poziom 2 domyślny) — cab6ada
 
 ### Phase 2: Logika karty
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint: `npm run lint`
-- [ ] 2.3 Zależności: `npm run depcruise`
-- [ ] 2.4 Typy: `npx astro check`
-- [ ] 2.5 Build: `npm run build`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint: `npm run lint`
+- [x] 2.3 Zależności: `npm run depcruise`
+- [x] 2.4 Typy: `npx astro check`
+- [x] 2.5 Build: `npm run build`
 
 #### Manual
 
-- [ ] 2.6 Użytkowniczka akceptuje podgląd wszystkich siedmiu poziomów z `preview.mts`
-- [ ] 2.7 Przegląd diffu względem planu i makiety
+- [x] 2.6 Użytkowniczka akceptuje podgląd wszystkich siedmiu poziomów z `preview.mts`
+- [x] 2.7 Przegląd diffu względem planu i makiety
 
 ### Phase 3: Strona, katalog i profil
 
