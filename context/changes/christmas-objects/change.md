@@ -1,7 +1,7 @@
 ---
 change_id: christmas-objects
 title: Świąteczne obiekty w katalogu szablonów (S-38)
-status: preparing
+status: planned
 created: 2026-11-14
 updated: 2026-11-14
 archived_at: null
