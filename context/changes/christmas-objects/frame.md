@@ -58,19 +58,37 @@ Rekomendacje (do potwierdzenia):
 - **Zapamiętana kategoria poza oknem** czyta się jako „Wszystkie”, tak jak dziś nieznana wartość. Czy zapis ma ją nadpisywać, rozstrzyga plan.
 - **Granice pór roku** (do kawałka pór roku): meteorologiczne, od 1 grudnia, 1 marca, 1 czerwca i 1 września. To najprostsza reguła („pora roku = miesiąc”), a grudzień jest wtedy zimą, tak jak go widzi dziecko.
 
-**Lista „Bożego Narodzenia” (do potwierdzenia):**
+**Lista „Bożego Narodzenia” (do potwierdzenia)** — dwie istniejące drogi do kart (decyzja 2026-11-14: nie każdy obiekt musi być na każdej karcie):
 
-| Obiekt                                   | Kolory (kredki)                                        | Ryzyko                                      |
-| ---------------------------------------- | ------------------------------------------------------ | ------------------------------------------- |
-| choinka (istnieje, Przyroda)             | zielony, brąz, bombki czerwone                         | brak, dopisać kategorię                     |
-| gwiazda (istnieje, Kształty)             | żółty                                                  | brak, dopisać kategorię                     |
-| bombka                                   | czerwony, zawieszka żółta                              | prawie okrągła, ratuje ją zawieszka         |
-| dzwonek                                  | żółty, kokarda czerwona                                | niskie                                      |
-| prezent                                  | czerwony, wstążka żółta lub zielona                    | dziury muszą zostawić nonogram jednoznaczny |
-| piernik (ludzik)                         | brąz, lukier jako białe dziury                         | ręce i nogi bez styku rogiem w 4×12         |
-| bałwanek (opcjonalnie, później też Zima) | szary (brak białej), kapelusz czarny, nos pomarańczowy | szary w kolorach; kule stykają się bokiem   |
+- **Obiekt z szablonów** (`symmetry/objects/*.ts`) idzie na wszystkie cztery karty naraz: symetria, nonogram, dyktando, „Skopiuj obrazek”. Musi być symetryczny lewo–prawo, mieć trzy rozmiary, kolory kredek i działający wariant nonogramu średniego i trudnego (`nonogram/generate.test.ts:122,137`). Nie da się go dziś wyłączyć z jednej karty.
+- **Kształt dyktanda** (`dictation/shapes.ts`) idzie tylko na dyktando. Nie musi być symetryczny, nie ma kolorów ani części, rysuje się go raz na poziom (poziom bez rysunku jest pomijany), a jego odbicie to drugi obrys. Tędy wchodzą obiekty, które nie pasują do symetrii.
 
-Odpadają: Mikołaj (postać, biała broda, nieczytelny w 4×12, zachodzi na S-39), renifer (poroże ze stykami rogiem), skarpeta i laska cukrowa (niesymetryczne) oraz gwiazda betlejemska jako kwiat (widziana z góry).
+A. Obiekty z szablonów (symetria, nonogram, dyktando, „Skopiuj obrazek”):
+
+| Obiekt                       | Kolory (kredki)                                        | Ryzyko                                        |
+| ---------------------------- | ------------------------------------------------------ | --------------------------------------------- |
+| choinka (istnieje, Przyroda) | zielony, brąz, bombki czerwone                         | brak, dopisać kategorię                       |
+| gwiazda (istnieje, Kształty) | żółty                                                  | brak, dopisać kategorię                       |
+| bombka                       | czerwony, zawieszka żółta, wzór jako dziury            | prawie okrągła, ratuje ją zawieszka           |
+| dzwonek                      | żółty, kokarda czerwona                                | niskie                                        |
+| prezent                      | czerwony, wstążka żółta lub zielona                    | dziury muszą zostawić nonogram jednoznaczny   |
+| piernik (ludzik)             | brąz, lukier jako białe dziury                         | ręce i nogi bez styku rogiem w 4×12           |
+| bałwanek                     | szary (brak białej), kapelusz czarny, nos pomarańczowy | szary w kolorach; kule stykają się bokiem     |
+| aniołek (opcjonalnie)        | żółty, skrzydła szare                                  | skrzydła w połowie 4×12                       |
+| świeca (opcjonalnie)         | czerwony, płomień żółty i pomarańczowy                 | bardzo prosta, przez co mało warta na trudnym |
+
+B. Kształty dyktanda (tylko dyktando, asymetryczne):
+
+| Kształt                                       | Poziomy                                 | Ryzyko                          |
+| --------------------------------------------- | --------------------------------------- | ------------------------------- |
+| skarpeta                                      | łatwy, średni, trudny                   | niskie, wyraźne „L”             |
+| laska cukrowa                                 | średni, trudny (na łatwym hak za wąski) | hak musi mieć 2 kratki grubości |
+| rękawiczka                                    | łatwy, średni, trudny                   | niskie, kciuk z boku            |
+| czapka Mikołaja (opadający czubek z pomponem) | średni, trudny                          | pompon nie może dotykać rogiem  |
+| sanki (z boku)                                | średni, trudny                          | płozy bez styku rogiem          |
+| renifer (z boku, opcjonalnie)                 | trudny                                  | poroże; zachodzi na S-39        |
+
+Minimum na termin: A = bombka, dzwonek, prezent i piernik oraz choinka i gwiazda; B = skarpeta i laska cukrowa. Kształty dyktanda są tańsze (jedna bitmapa na poziom, bez części i kolorów). Odpadają: Mikołaj w całości (postać, biała broda, nieczytelny w 4×12, zachodzi na S-39) i gwiazda betlejemska jako kwiat (widziana z góry). Nowa droga „asymetryczny obiekt także na nonogram i »Skopiuj obrazek«” to osobny mechanizm, poza terminem.
 
 ## Confidence
 
