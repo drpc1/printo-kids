@@ -15,7 +15,9 @@ import { SYMMETRY_LEVELS } from "./symmetry/levels.ts";
 import {
   OBJECT_CATEGORIES,
   OBJECT_CATEGORY_CHOICES,
+  objectCategoryChoicesOn,
   symmetryTemplatesFor,
+  visibleCategoryOn,
   type ObjectCategoryChoiceId,
 } from "./symmetry/templates.ts";
 
@@ -49,7 +51,7 @@ function drawn<Card>(card: Card | null): Card {
 }
 
 void describe("category choices", () => {
-  void test("the bar lists Wszystkie first, then the six categories alphabetically, each once", () => {
+  void test("the full list has Wszystkie first, then the category with a window, then the others alphabetically, each once", () => {
     assert.equal(OBJECT_CATEGORY_CHOICES[0].id, "wszystkie");
     assert.deepEqual(
       OBJECT_CATEGORY_CHOICES.slice(1)
@@ -59,8 +61,55 @@ void describe("category choices", () => {
     );
     assert.deepEqual(
       OBJECT_CATEGORY_CHOICES.map((choice) => choice.label),
-      ["Wszystkie", "Domy i budowle", "Jedzenie", "Kosmos i maszyny", "Kształty", "Przyroda", "Zwierzęta"],
+      [
+        "Wszystkie",
+        "Boże Narodzenie",
+        "Domy i budowle",
+        "Jedzenie",
+        "Kosmos i maszyny",
+        "Kształty",
+        "Przyroda",
+        "Zwierzęta",
+      ],
     );
+  });
+
+  void test("Boże Narodzenie is on the bar from 15 November to 6 January, both ends included, in local time", () => {
+    const inside = [
+      new Date(2026, 10, 15),
+      new Date(2026, 11, 10),
+      new Date(2026, 11, 31),
+      new Date(2027, 0, 1),
+      new Date(2027, 0, 6, 23, 59),
+    ];
+    const outside = [new Date(2026, 10, 14, 23, 59), new Date(2027, 0, 7), new Date(2027, 6, 10)];
+    for (const day of inside) {
+      assert.equal(objectCategoryChoicesOn(day)[1].id, "boze-narodzenie", day.toDateString());
+      assert.equal(objectCategoryChoicesOn(day).length, OBJECT_CATEGORY_CHOICES.length, day.toDateString());
+    }
+    for (const day of outside) {
+      const ids = objectCategoryChoicesOn(day).map((choice) => choice.id);
+      assert.ok(!ids.includes("boze-narodzenie"), day.toDateString());
+      assert.equal(ids.length, OBJECT_CATEGORY_CHOICES.length - 1, day.toDateString());
+      assert.equal(ids[0], "wszystkie");
+    }
+  });
+
+  void test("a remembered category reads as Wszystkie only when its window does not include the day", () => {
+    const winter = new Date(2026, 11, 24);
+    const summer = new Date(2027, 6, 10);
+    assert.equal(visibleCategoryOn("boze-narodzenie", winter), "boze-narodzenie");
+    assert.equal(visibleCategoryOn("boze-narodzenie", summer), "wszystkie");
+    assert.equal(visibleCategoryOn("zwierzeta", summer), "zwierzeta");
+    assert.equal(visibleCategoryOn("wszystkie", summer), "wszystkie");
+    assert.equal(visibleCategoryOn("wszystkie", winter), "wszystkie");
+  });
+
+  void test("Wszystkie draws from the whole catalog all year, Christmas objects included", () => {
+    for (const level of SYMMETRY_LEVELS) {
+      assert.ok(idsOf(level.id, "wszystkie").has("choinka"), level.id);
+      assert.ok(idsOf(level.id, "wszystkie").has("gwiazda"), level.id);
+    }
   });
 
   void test("Wszystkie is every object and each category is a proper non-empty part of it", () => {

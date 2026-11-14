@@ -428,10 +428,10 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi, w tym nowe testy okna dat i kolejności paska.
-- [ ] 2.2 `npm run lint` i `npx astro check` przechodzą.
-- [ ] 2.3 `npx playwright test tests/e2e/christmas-category.spec.ts` przechodzi na projektach Chromium.
-- [ ] 2.4 `npm run build` przechodzi.
+- [x] 2.1 `npm test` przechodzi, w tym nowe testy okna dat i kolejności paska.
+- [x] 2.2 `npm run lint` i `npx astro check` przechodzą.
+- [x] 2.3 `npx playwright test tests/e2e/christmas-category.spec.ts` przechodzi na projektach Chromium.
+- [x] 2.4 `npm run build` przechodzi.
 
 #### Manual
 
