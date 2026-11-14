@@ -366,8 +366,8 @@ Brak: nowe pole `cards.krzyzowka` w zapisanych profilach ma wartość domyślną
 #### Manual
 
 - [x] 3.5 Użytkowniczka sprawdza każdy poziom na stronie, „Pokaż rozwiązanie” i podgląd wydruku (jedna strona A4)
-- [ ] 3.6 Miniatura w katalogu, plakietka „poz. N” przy profilu i podsumowanie w oknie profilu są poprawne
-- [ ] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
+- [x] 3.6 Miniatura w katalogu, plakietka „poz. N” przy profilu i podsumowanie w oknie profilu są poprawne (add0a18)
+- [x] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4 (add0a18)
 
 ### Phase 4: Wydruk próbny
 
