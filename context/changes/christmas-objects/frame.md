@@ -88,7 +88,17 @@ B. Kształty dyktanda (tylko dyktando, asymetryczne):
 | sanki (z boku)                                | średni, trudny                          | płozy bez styku rogiem          |
 | renifer (z boku, opcjonalnie)                 | trudny                                  | poroże; zachodzi na S-39        |
 
-Minimum na termin: A = bombka, dzwonek, prezent i piernik oraz choinka i gwiazda; B = skarpeta i laska cukrowa. Kształty dyktanda są tańsze (jedna bitmapa na poziom, bez części i kolorów). Odpadają: Mikołaj w całości (postać, biała broda, nieczytelny w 4×12, zachodzi na S-39) i gwiazda betlejemska jako kwiat (widziana z góry). Nowa droga „asymetryczny obiekt także na nonogram i »Skopiuj obrazek«” to osobny mechanizm, poza terminem.
+Minimum na termin: A = bombka, dzwonek, prezent i piernik oraz choinka i gwiazda; B = skarpeta i laska cukrowa. Kształty dyktanda są tańsze (jedna bitmapa na poziom, bez części i kolorów). Odpadają: Mikołaj w całości (postać, biała broda, nieczytelny w 4×12, zachodzi na S-39) i gwiazda betlejemska jako kwiat (widziana z góry). Nowa droga „asymetryczny obiekt także na nonogram” to osobny mechanizm, poza terminem.
+
+**Kształty asymetryczne także na „Skopiuj obrazek” (prośba użytkowniczki 2026-11-14).** Karta nie ma osi, więc kształt nie musi być symetryczny. Kod bierze jednak dziś tylko obiekty z szablonów:
+
+- generator losuje z `symmetryTemplatesFor` (`copy-drawing/generate.ts:21`);
+- klucz karty to `poziom:szablon:warianty` (`card.ts:19`), a sprawdzenie porównuje wzór z obrazem szablonu (`card.ts` `expectedPattern`);
+- kolory czyta z kredek szablonu (`copy-drawing/colors.ts:14`).
+
+Kształt dyktanda nie ma kolorów ani części. Pasuje za to szerokością do siatek karty (np. statek ma 8, 12 i 18 kolumn przy siatkach 8×12, 12×15 i 18×24), a środkowanie w pionie już jest (`centerSilhouette`). Wejście kształtów to więc zmiana mechanizmu karty: drugie źródło obrazka, klucz, sprawdzenie, jeden kolor kredki na kształt przy włączonych kolorach, środkowanie w poziomie. Do tego zdanie w US-27 („sylwetka z katalogu szablonów”) i nazwa w glosariuszu („kształt dyktanda” przestaje być tylko dyktanda).
+
+Rekomendacja: ostatnia faza S-38, którą można wyciąć, jeśli termin się skróci, bo obiekty z drogi A i tak trafiają na „Skopiuj obrazek”. Do decyzji: czy na kartę wchodzą wszystkie kształty (11 istniejących i nowe świąteczne), czy tylko świąteczne. Wszystkie dają więcej różnych kart, ale zmieniają losowanie „Wszystkie” na istniejącej karcie i każdy istniejący kształt potrzebuje koloru.
 
 ## Confidence
 
