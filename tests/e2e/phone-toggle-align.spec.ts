@@ -32,7 +32,7 @@ const CARDS: readonly ToggleCard[] = [
   { path: "/sudoku", image: "Sudoku", switchName: "Kolory" },
   { path: "/sequences", image: "Sekwencje", switchName: "Kolory" },
   { path: "/symmetry", image: "Symetria", switchName: "Kolory" },
-  { path: "/money", image: "Kto ma więcej?", switchName: "Kolory" },
+  { path: "/money", image: "Kto ma więcej", switchName: "Kolory" },
   { path: "/odd-one-out", image: "Który nie pasuje", switchName: "Kolory" },
   { path: "/copy-drawing", image: "Skopiuj obrazek", switchName: "Kolory" },
   { path: "/nonogram", image: "Nonogram", switchName: "Pokaż rozwiązanie" },

@@ -58,7 +58,7 @@ export const CARD_KINDS = [
   },
   {
     id: "pieniadze",
-    title: "Kto ma więcej?",
+    title: "Kto ma więcej",
     href: "/money",
     thumbnail: "/thumbnails/pieniadze.svg",
     description:

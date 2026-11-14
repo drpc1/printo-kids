@@ -205,7 +205,7 @@ function MoneySheet({
       )}
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
-      aria-label="Kto ma więcej?"
+      aria-label="Kto ma więcej"
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {characterSrc !== null ? (

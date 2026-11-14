@@ -14,13 +14,13 @@ async function open(page: Page): Promise<void> {
   });
   await page.goto("/money");
   await page.getByRole("button", { name: "Generuj" }).click();
-  await expect(page.getByRole("img", { name: "Kto ma więcej?" })).toBeVisible();
+  await expect(page.getByRole("img", { name: "Kto ma więcej" })).toBeVisible();
 }
 
 async function piles(page: Page): Promise<string> {
-  await expect(page.getByRole("img", { name: "Kto ma więcej?" })).toBeVisible();
+  await expect(page.getByRole("img", { name: "Kto ma więcej" })).toBeVisible();
   return page
-    .getByRole("img", { name: "Kto ma więcej?" })
+    .getByRole("img", { name: "Kto ma więcej" })
     .locator("g[data-pile]")
     .evaluateAll((groups) => groups.map((group) => group.textContent).join("|"));
 }

@@ -580,7 +580,7 @@ test("the money page keeps Kolory, Generuj, Drukuj and Profil apart with colors 
   await page.goto("/money");
   await page.getByRole("switch", { name: "Kolory" }).click();
   await page.getByRole("button", { name: "Generuj" }).click();
-  await expect(page.getByRole("img", { name: "Kto ma więcej?" })).toBeVisible();
+  await expect(page.getByRole("img", { name: "Kto ma więcej" })).toBeVisible();
   await settle(page);
   await expectNoSidewaysScroll(page);
 

@@ -41,7 +41,7 @@ async function settle(page: Page): Promise<void> {
 async function generate(page: Page): Promise<Locator> {
   await page.goto("/money");
   await page.getByRole("button", { name: "Generuj" }).click();
-  const sheet = page.getByRole("img", { name: "Kto ma więcej?" });
+  const sheet = page.getByRole("img", { name: "Kto ma więcej" });
   await expect(sheet).toBeVisible();
   return sheet;
 }
