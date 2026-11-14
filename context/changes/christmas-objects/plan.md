@@ -2,7 +2,7 @@
 
 ## Overview
 
-Dodajemy kategorię obiektów „Boże Narodzenie”. Pasek symetrii, nonogramu, dyktanda graficznego i „Skopiuj obrazek” pokazuje ją od 15 listopada do 6 stycznia. Kategoria zbiera 7 nowych obiektów z szablonów (bombka, dzwonek, prezent, piernik, bałwanek, aniołek, świeca), 6 nowych kształtów dyktanda (skarpeta, laska cukrowa, rękawiczka, czapka Mikołaja, sanki, renifer) oraz istniejące choinkę i gwiazdę. To pierwszy zegar w aplikacji: data steruje wyłącznie listą na pasku i tym, jak pasek czyta zapamiętaną kategorię. Całość idzie jednym wydaniem przed grudniem 2026 (roadmapa S-38, issue drpc1/printo-kids#369).
+Dodajemy kategorię obiektów „Boże Narodzenie”. Pasek symetrii, nonogramu, dyktanda graficznego i „Skopiuj obrazek” pokazuje ją od 15 listopada do 6 stycznia. Kategoria zbiera 6 nowych obiektów z szablonów (bombka, dzwonek, prezent, piernik, bałwanek, aniołek), 5 nowych kształtów dyktanda (skarpeta, laska cukrowa, czapka Mikołaja, sanki, renifer) oraz istniejące choinkę i gwiazdę. To pierwszy zegar w aplikacji: data steruje wyłącznie listą na pasku i tym, jak pasek czyta zapamiętaną kategorię. Całość idzie jednym wydaniem przed grudniem 2026 (roadmapa S-38, issue drpc1/printo-kids#369).
 
 ## Current State Analysis
 
@@ -41,7 +41,6 @@ Kategorie obiektów:
 
 - choinka: Przyroda + Boże Narodzenie;
 - gwiazda: Kształty + Boże Narodzenie;
-- dzwonek: Boże Narodzenie + Domy i budowle;
 - renifer: Boże Narodzenie + Zwierzęta;
 - pozostałe nowe: tylko Boże Narodzenie.
 
@@ -63,7 +62,7 @@ Weryfikacja: `npm test`, `npm run lint`, `npx astro check`, `npm run build` i e2
 - Kształty asymetryczne na nonogramie.
 - Data w silnikach kart, w `sheet-state` i w `symmetryTemplatesFor`; „Wszystkie” poza oknem nie pomija obiektów świątecznych.
 - Zapis „Wszystkie” przy samym wejściu na stronę i pamiętanie kategorii sezonowej na przyszły rok.
-- Druga stała kategoria dla piernika, świecy, bombki, prezentu, aniołka i bałwanka; laska cukrowa i sanki nie trafiają do stałych kategorii.
+- Druga stała kategoria dla piernika, bombki, prezentu, aniołka i bałwanka; laska cukrowa i sanki nie trafiają do stałych kategorii.
 - Mikołaj w całości (postać, S-39) i gwiazda betlejemska jako kwiat.
 - Opis na stronie „Jak to działa” (S-44), test-plan (S-46).
 - Przestawianie istniejących obiektów i ich wariantów.
@@ -85,7 +84,7 @@ Proces: przed PR każdej fazy uruchamiamy `/10x-impl-review`.
 
 ### Overview
 
-Rysunki 7 obiektów z szablonów w trzech rozmiarach (połowa 4×12, 6×15, 9×24) i 6 kształtów dyktanda na zatwierdzanych poziomach, sprawdzone skryptem reguł i pokazane jako PNG do akceptacji użytkowniczki.
+Rysunki 7 obiektów z szablonów (po akceptacji: 6) w trzech rozmiarach (połowa 4×12, 6×15, 9×24) i 6 kształtów (po akceptacji: 5) dyktanda na zatwierdzanych poziomach, sprawdzone skryptem reguł i pokazane jako PNG do akceptacji użytkowniczki.
 
 ### Changes Required:
 
@@ -129,6 +128,18 @@ Rysunki 7 obiektów z szablonów w trzech rozmiarach (połowa 4×12, 6×15, 9×2
 - Użytkowniczka akceptuje podglądy PNG: obiekty są czytelne w połowie 4×12, a kategorie każdego obiektu się zgadzają. Data akceptacji trafia do pola `approved` w makiecie.
 
 **Implementation Note**: Faza 3 i 4 czekają na akceptację makiety. Faza 2 może iść w tym czasie. Obiekt, który nie przejdzie reguł albo jest nieczytelny, odpada bez zastępstwa (kolejność cięcia w frame).
+
+### Wynik fazy 1 (makieta zaakceptowana 2026-11-14, pole `approved` w `mockup-drawings.json`)
+
+Źródłem rysunków do faz 3–4 jest `mockup-drawings.json`. Odstępstwa od kontraktu fazy 1:
+
+- Odpadły bez zastępstwa: świeca i rękawiczka (nieczytelne; rękawiczka wyglądała jak kaktus).
+- Obiekty z szablonów (6), wszystkie tylko `["boze-narodzenie"]`: bombka, dzwonek, prezent, piernik, bałwanek, aniołek. Dzwonek nie jest w Domach i budowlach.
+- Kształty dyktanda (5): skarpeta (`lat5`, `lat6`, `lat7`), laska cukrowa, czapka Mikołaja i sanki (`lat6`, `lat7`), renifer (`lat7`, kategorie `["boze-narodzenie", "zwierzeta"]`).
+- Kolor bombki i prezentu jest częścią z wariantami (baza prezentu pusta), bo `pickHints` bierze kratki osi z bazy i części. Kolory prezentu (czerwony, zielony, niebieski) i wstążki to kolorowe kratki, w czerni niewidoczne (wybór użytkowniczki).
+- `holeColor`: bombka i prezent `yellow`, dzwonek `red`, piernik, bałwanek i aniołek `black`. Wzory bombek są z dziur. Piernik ma czarne oczy, czerwony uśmiech z kratek i nie ma lukru na rękach (zamiast „lukru jako białych dziur”, `holeColor: null`).
+- Styk rogiem: skrypt wymaga ≥1 kombinacji bez styku (jak `templates.test.ts`) oraz obrysu zewnętrznego bez styku w każdej kombinacji; styk rogiem wokół dziur wewnątrz obiektu jest dozwolony.
+- Znany kompromis: w czerni prezent ma 2–3 różne sylwetki, a bombki z gładką kulą zlewają się (świadomie zostawione; ocena na wydruku w fazie 5).
 
 ---
 
@@ -240,7 +251,7 @@ Kategoria „Boże Narodzenie” z oknem 15.11–6.01, lista paska zależna od d
 
 ### Overview
 
-Siedem zatwierdzonych obiektów w katalogu szablonów, dostępnych na symetrii, nonogramie, dyktandzie i „Skopiuj obrazek”.
+Sześć zatwierdzonych obiektów w katalogu szablonów, dostępnych na symetrii, nonogramie, dyktandzie i „Skopiuj obrazek”.
 
 ### Changes Required:
 
@@ -248,15 +259,15 @@ Siedem zatwierdzonych obiektów w katalogu szablonów, dostępnych na symetrii, 
 
 **File**: `src/lib/symmetry/objects/boze-narodzenie.ts` (nowy), `src/lib/symmetry/templates.ts`
 
-**Intent**: Szablony z makiety przepisane do kodu w formacie istniejących plików obiektów (`drawing()`, części z wariantami, `holeColor`). Dzwonek ma `["boze-narodzenie", "budowle"]`, pozostałe `["boze-narodzenie"]`. Eksport dochodzi na końcu `CATALOG` (`templates.ts:32`).
+**Intent**: Szablony z makiety przepisane do kodu w formacie istniejących plików obiektów (`drawing()`, części z wariantami, `holeColor`). Renifer (kształt) ma `["boze-narodzenie", "zwierzeta"]`, wszystkie nowe obiekty z szablonów `["boze-narodzenie"]`. Eksport dochodzi na końcu `CATALOG` (`templates.ts:32`).
 
-**Contract**: `BOZE_NARODZENIE: SymmetryObjectSizes` z `half4`, `half6` i `half9`; id obiektów: `bombka`, `dzwonek`, `prezent`, `piernik`, `balwanek`, `aniolek`, `swieca`.
+**Contract**: `BOZE_NARODZENIE: SymmetryObjectSizes` z `half4`, `half6` i `half9`; id obiektów: `bombka`, `dzwonek`, `prezent`, `piernik`, `balwanek`, `aniolek` (świeca odpadła w fazie 1).
 
 #### 2. Test obecności
 
 **File**: `src/lib/symmetry/templates.test.ts`
 
-**Intent**: Test, że „Boże Narodzenie” na każdym poziomie zawiera choinkę, gwiazdę i zatwierdzone nowe obiekty, a dzwonek jest też w Domach i budowlach.
+**Intent**: Test, że „Boże Narodzenie” na każdym poziomie zawiera choinkę, gwiazdę i zatwierdzone nowe obiekty.
 
 **Contract**: bez pinowania liczby kombinacji.
 
@@ -279,7 +290,7 @@ Siedem zatwierdzonych obiektów w katalogu szablonów, dostępnych na symetrii, 
 
 ### Overview
 
-Sześć zatwierdzonych kształtów dyktanda w kategorii „Boże Narodzenie”, a renifer także w Zwierzętach.
+Pięć zatwierdzonych kształtów dyktanda w kategorii „Boże Narodzenie”, a renifer także w Zwierzętach.
 
 ### Changes Required:
 
@@ -289,7 +300,7 @@ Sześć zatwierdzonych kształtów dyktanda w kategorii „Boże Narodzenie”, 
 
 **Intent**: Bitmapy z makiety jako nowe `DictationShape` dopisane na końcu `DICTATION_SHAPES` (`:389`). Każdy kształt ma tylko zatwierdzone poziomy.
 
-**Contract**: id `skarpeta`, `laska-cukrowa`, `rekawiczka`, `czapka-mikolaja`, `sanki`, `renifer`. Renifer ma `["boze-narodzenie", "zwierzeta"]`, pozostałe `["boze-narodzenie"]`.
+**Contract**: id `skarpeta`, `laska-cukrowa`, `czapka-mikolaja`, `sanki`, `renifer` (rękawiczka odpadła w fazie 1). Renifer ma `["boze-narodzenie", "zwierzeta"]`, pozostałe `["boze-narodzenie"]`.
 
 #### 2. Testy
 
@@ -405,13 +416,13 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Automated
 
-- [x] 1.1 `check-mockup.mts` kończy się bez błędów, a każdy obiekt ma co najmniej jedną przechodzącą kombinację nonogramu średniego i trudnego.
-- [x] 1.2 `check-mockup.mts` pokazuje dla każdego kształtu poprawny obrys na każdym narysowanym poziomie.
-- [x] 1.3 Pomiar zapisany w `mockup-measure.txt`: przechodzące kombinacje i różne obrysy na obiekt i rozmiar.
+- [x] 1.1 `check-mockup.mts` kończy się bez błędów, a każdy obiekt ma co najmniej jedną przechodzącą kombinację nonogramu średniego i trudnego. — 0c7f3de
+- [x] 1.2 `check-mockup.mts` pokazuje dla każdego kształtu poprawny obrys na każdym narysowanym poziomie. — 0c7f3de
+- [x] 1.3 Pomiar zapisany w `mockup-measure.txt`: przechodzące kombinacje i różne obrysy na obiekt i rozmiar. — 0c7f3de
 
 #### Manual
 
-- [x] 1.4 Użytkowniczka akceptuje podglądy PNG: obiekty są czytelne w połowie 4×12, a kategorie każdego obiektu się zgadzają. Data akceptacji trafia do pola `approved` w makiecie.
+- [x] 1.4 Użytkowniczka akceptuje podglądy PNG: obiekty są czytelne w połowie 4×12, a kategorie każdego obiektu się zgadzają. Data akceptacji trafia do pola `approved` w makiecie. — 0c7f3de
 
 ### Phase 2: Kategoria z oknem dat
 

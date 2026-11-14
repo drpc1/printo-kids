@@ -17,21 +17,21 @@ Od 15.11 do 6.01 lista „Kategoria” ma „Boże Narodzenie” zaraz po „Wsz
 
 ## Key Decisions Made
 
-| Decision            | Choice                                                                                | Why (1 sentence)                                                         | Source |
-| ------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------ |
-| Mechanizm           | Kategoria z oknem dat                                                                 | S-43 taguje rodzaje kart, a PRD przewiduje sezonową kategorię.           | Frame  |
-| Widoczność          | Jedna pora roku i kategoria specjalna naraz; dziś tylko Boże Narodzenie               | Bez 12 stałych kategorii na pasku.                                       | User   |
-| „Wszystkie”         | Pełny katalog cały rok                                                                | Silniki kart i „Skopiuj obrazek” bez zmian; mniej ryzyka przed terminem. | User   |
-| Okno                | 15.11 – 6.01, data lokalna, granice włącznie                                          | Druk przed grudniem, do Trzech Króli.                                    | User   |
-| Kolejność paska     | Wszystkie, Boże Narodzenie, stałe alfabetycznie                                       | Rodzic od razu widzi nowość; zmienia zdanie w US-20.                     | User   |
-| Nazwa               | „Boże Narodzenie”, id `boze-narodzenie`                                               | Nie zderzy się z Wielkanocą.                                             | User   |
-| Pamięć poza oknem   | Pasek pokazuje „Wszystkie”, zapis przy pierwszej zmianie                              | Odczyt tolerancyjny jak dziś, bez zapisu przy wejściu.                   | User   |
-| Stałe kategorie     | choinka (Przyroda), gwiazda (Kształty), dzwonek (Domy i budowle), renifer (Zwierzęta) | Decyzja dla każdego obiektu osobno.                                      | User   |
-| Bałwanek            | Szary korpus w kolorach                                                               | Brak białej kredki.                                                      | User   |
-| #379                | Osobno, po S-38                                                                       | Bez zmiany mechanizmu „Skopiuj obrazek” przed terminem.                  | User   |
-| Wydanie             | Jedno, po wszystkich fazach                                                           | Raz checklista stagingu.                                                 | User   |
-| Akceptacja rysunków | PNG z makiety, wydruk na stagingu przed wydaniem                                      | Wzór gh124.                                                              | User   |
-| Miejsce daty        | `useToday` w warstwie React; mapowanie w `useCardSettings` i podsumowaniu profilu     | Silniki, `sheet-state` i `parseCardSettings` zostają czyste.             | Plan   |
+| Decision            | Choice                                                                            | Why (1 sentence)                                                         | Source |
+| ------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------ |
+| Mechanizm           | Kategoria z oknem dat                                                             | S-43 taguje rodzaje kart, a PRD przewiduje sezonową kategorię.           | Frame  |
+| Widoczność          | Jedna pora roku i kategoria specjalna naraz; dziś tylko Boże Narodzenie           | Bez 12 stałych kategorii na pasku.                                       | User   |
+| „Wszystkie”         | Pełny katalog cały rok                                                            | Silniki kart i „Skopiuj obrazek” bez zmian; mniej ryzyka przed terminem. | User   |
+| Okno                | 15.11 – 6.01, data lokalna, granice włącznie                                      | Druk przed grudniem, do Trzech Króli.                                    | User   |
+| Kolejność paska     | Wszystkie, Boże Narodzenie, stałe alfabetycznie                                   | Rodzic od razu widzi nowość; zmienia zdanie w US-20.                     | User   |
+| Nazwa               | „Boże Narodzenie”, id `boze-narodzenie`                                           | Nie zderzy się z Wielkanocą.                                             | User   |
+| Pamięć poza oknem   | Pasek pokazuje „Wszystkie”, zapis przy pierwszej zmianie                          | Odczyt tolerancyjny jak dziś, bez zapisu przy wejściu.                   | User   |
+| Stałe kategorie     | choinka (Przyroda), gwiazda (Kształty), renifer (Zwierzęta)                       | Decyzja dla każdego obiektu osobno.                                      | User   |
+| Bałwanek            | Szary korpus w kolorach                                                           | Brak białej kredki.                                                      | User   |
+| #379                | Osobno, po S-38                                                                   | Bez zmiany mechanizmu „Skopiuj obrazek” przed terminem.                  | User   |
+| Wydanie             | Jedno, po wszystkich fazach                                                       | Raz checklista stagingu.                                                 | User   |
+| Akceptacja rysunków | PNG z makiety, wydruk na stagingu przed wydaniem                                  | Wzór gh124.                                                              | User   |
+| Miejsce daty        | `useToday` w warstwie React; mapowanie w `useCardSettings` i podsumowaniu profilu | Silniki, `sheet-state` i `parseCardSettings` zostają czyste.             | Plan   |
 
 ## Scope
 

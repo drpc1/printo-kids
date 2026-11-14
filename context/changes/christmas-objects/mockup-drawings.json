@@ -574,7 +574,7 @@
     {
       "id": "dzwonek",
       "name": "dzwonek",
-      "categories": ["boze-narodzenie", "budowle"],
+      "categories": ["boze-narodzenie"],
       "holeColor": "red",
       "sizes": {
         "half4": {
