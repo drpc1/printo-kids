@@ -441,8 +441,8 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Automated
 
-- [x] 3.1 `npm test` przechodzi, w tym `templates.test.ts` (kawałek, styk rogiem, kategorie w każdym rozmiarze), testy nonogramu średniego i trudnego (każdy obiekt ma działający wariant) i `object-categories.test.ts` (≥2 karty i obrysy w każdej kategorii).
-- [x] 3.2 `npm run lint`, `npx astro check` i `npm run build` przechodzą.
+- [x] 3.1 `npm test` przechodzi, w tym `templates.test.ts` (kawałek, styk rogiem, kategorie w każdym rozmiarze), testy nonogramu średniego i trudnego (każdy obiekt ma działający wariant) i `object-categories.test.ts` (≥2 karty i obrysy w każdej kategorii). — a0a6702
+- [x] 3.2 `npm run lint`, `npx astro check` i `npm run build` przechodzą. — a0a6702
 
 #### Manual
 
