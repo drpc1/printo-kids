@@ -1,9 +1,9 @@
 ---
 change_id: gh383-kto-ma-wiecej
 title: Gh383 kto ma wiecej
-status: implementing
+status: implemented
 created: 2026-11-14
-updated: 2026-11-14
+updated: 2026-11-15
 archived_at: null
 ---
 

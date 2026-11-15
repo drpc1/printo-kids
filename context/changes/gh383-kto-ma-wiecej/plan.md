@@ -208,8 +208,8 @@ Tytuł nie jest w `localStorage`. Zapisane profile pokażą nową nazwę przy na
 
 #### Automated
 
-- [x] 2.1 W żywych zdaniach PRD, w wierszu glosariusza, w pytaniu 6 roadmapy i w ryzyku 10 planu testów nie ma `Kto ma więcej?`, a ta pisownia zostaje w akapicie PRD z 2026-11-01, w zamkniętym pytaniu 13, w historii M-5 i S-33 oraz w §5a planu testów
+- [x] 2.1 W żywych zdaniach PRD, w wierszu glosariusza, w pytaniu 6 roadmapy i w ryzyku 10 planu testów nie ma `Kto ma więcej?`, a ta pisownia zostaje w akapicie PRD z 2026-11-01, w zamkniętym pytaniu 13, w historii M-5 i S-33 oraz w §5a planu testów — 95ec493
 
 #### Manual
 
-- [x] 2.2 Nagłówek US-23 i wiersz glosariusza czytają się jako „Kto ma więcej”, a akapit wejścia karty do zakresu nadal ma znak zapytania
+- [x] 2.2 Nagłówek US-23 i wiersz glosariusza czytają się jako „Kto ma więcej”, a akapit wejścia karty do zakresu nadal ma znak zapytania — 95ec493
