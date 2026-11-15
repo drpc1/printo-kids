@@ -49,9 +49,17 @@ void describe("template catalog", () => {
       for (const category of OBJECT_CATEGORIES) {
         const objects = symmetryTemplatesFor(levelId).filter((template) => template.categories.includes(category.id));
 
-        // Boże Narodzenie starts with the tree and the star; the other objects come in phase 3 of christmas-objects.
-        const minimum = category.id === "boze-narodzenie" ? 2 : 4;
-        assert.ok(objects.length >= minimum, `${levelId} ${category.label}: ${objects.length}`);
+        assert.ok(objects.length >= 4, `${levelId} ${category.label}: ${objects.length}`);
+      }
+    }
+  });
+
+  void test("Boże Narodzenie has the tree, the star and the template objects in every size", () => {
+    for (const { levelId } of SIZES) {
+      const ids = symmetryTemplatesFor(levelId, "boze-narodzenie").map((template) => template.id);
+
+      for (const id of ["choinka", "gwiazda", "bombka", "dzwonek", "prezent", "piernik", "balwanek", "aniolek"]) {
+        assert.ok(ids.includes(id), `${levelId} ${id}`);
       }
     }
   });
