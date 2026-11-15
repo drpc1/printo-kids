@@ -17,6 +17,15 @@ const LAT5 = symmetryLevelById("lat5");
 const LAT6 = symmetryLevelById("lat6");
 const LEVELS_WITH_TEMPLATES: readonly SymmetryLevel[] = SYMMETRY_LEVELS;
 
+/**
+ * Objects of the approved Boże Narodzenie mockup (christmas-objects, 2026-11-14) whose variants are mostly colors:
+ * the bauble and the gift keep one silhouette and change color (a gift is one colored part, so it has a single part),
+ * and the gingerbread man has a fixed mouth. They are exempt from the part-count and distinct-silhouette checks below;
+ * their variant sets must still draw different colored cells.
+ */
+const COLOR_VARIANT_OBJECTS = new Set(["bombka", "prezent"]);
+const FIXED_PART_OBJECTS = new Set(["piernik"]);
+
 void describe("mirrorAnswer", () => {
   void test("reflects each cell across the vertical axis with its row and color (hand-written oracle)", () => {
     const card = cardWith([
@@ -268,9 +277,12 @@ void describe("symmetryTemplatesFor", () => {
     for (const template of symmetryTemplatesFor("lat5")) {
       assert.equal(template.width, 6, template.id);
       assert.ok(template.height <= LAT5.rows, template.id);
-      assert.ok(template.parts.length >= 2 && template.parts.length <= 3, template.id);
+      assert.ok(
+        template.parts.length <= 3 && (template.parts.length >= 2 || COLOR_VARIANT_OBJECTS.has(template.id)),
+        template.id,
+      );
       for (const part of template.parts) {
-        assert.ok(part.variants.length >= 2, `${template.id} ${part.id}`);
+        assert.ok(part.variants.length >= 2 || FIXED_PART_OBJECTS.has(template.id), `${template.id} ${part.id}`);
       }
     }
   });
@@ -302,7 +314,7 @@ void describe("symmetryTemplatesFor", () => {
   void test("7 lat has richer templates up to 9 wide and 24 tall with at least three parts", () => {
     for (const template of symmetryTemplatesFor("lat7")) {
       assert.ok(template.width <= 9 && template.height <= 24, template.id);
-      assert.ok(template.parts.length >= 3, template.id);
+      assert.ok(template.parts.length >= 3 || COLOR_VARIANT_OBJECTS.has(template.id), template.id);
     }
   });
 
@@ -327,7 +339,9 @@ void describe("symmetryTemplatesFor", () => {
   void test("different variant sets of one template draw different cells", () => {
     for (const template of symmetryTemplatesFor("lat5")) {
       const pictures = new Set(
-        variantSets(template).map((variants) => picture(composeSymmetryCard(template, variants, 0, LAT5))),
+        variantSets(template).map((variants) =>
+          picture(composeSymmetryCard(template, variants, 0, LAT5), COLOR_VARIANT_OBJECTS.has(template.id)),
+        ),
       );
 
       assert.equal(pictures.size, variantSets(template).length, template.id);
@@ -492,9 +506,9 @@ function variantSets(template: SymmetryTemplate): number[][] {
   return sets;
 }
 
-function picture(card: SymmetryCard): string {
+function picture(card: SymmetryCard, withColors = false): string {
   return card.cells
-    .map((cell) => `${cell.col},${cell.row}`)
+    .map((cell) => (withColors ? `${cell.col},${cell.row},${cell.color}` : `${cell.col},${cell.row}`))
     .sort()
     .join(" ");
 }
