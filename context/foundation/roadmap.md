@@ -95,9 +95,9 @@ Brak. Kategorie obiektów, katalog kart, pamięć paska i postać przy poleceniu
 - **Parallel with:** S-39, S-40
 - **Blockers:** —
 - **Unknowns:**
-  - Które obiekty (lista i liczba)? Rozstrzyga rozmowa przed planem. — Owner: user. Block: no.
-  - Czy świąteczne obiekty to nowa siódma kategoria „Święta” w istniejącym wyborze kategorii, czy sezonowy tag, który ukrywa się poza sezonem? Pierwsza opcja działa od razu na istniejącym mechanizmie; druga wymaga tagów z S-43, które idą po kartach, więc nie zdążyłaby przed grudniem. — Owner: user. Block: no.
-  - Czy obiekty mają być widoczne cały rok, czy tylko w sezonie? — Owner: user. Block: no.
+  - ~~Które obiekty (lista i liczba)?~~ Rozstrzygnięte 2026-11-14 (`context/changes/christmas-objects/frame.md`, makieta zaakceptowana): sześć nowych obiektów z szablonów (bombka, dzwonek, prezent, piernik, bałwanek, aniołek), pięć kształtów dyktanda (skarpeta, laska cukrowa, czapka Mikołaja, sanki, renifer) oraz istniejące choinka i gwiazda; katalog ma 40 obiektów. Mikołaj i gwiazda betlejemska poza kawałkiem.
+  - ~~Kategoria „Święta” czy sezonowy tag?~~ Rozstrzygnięte 2026-11-14 (frame): nowa siódma kategoria „Boże Narodzenie” w istniejącym wyborze kategorii, nie tag.
+  - ~~Czy obiekty mają być widoczne cały rok, czy tylko w sezonie?~~ Rozstrzygnięte 2026-11-14 (frame): kategoria jest na pasku tylko od 15.11 do 6.01; „Wszystkie” losuje z pełnego katalogu przez cały rok.
 - **Risk:** Nowy obiekt musi przejść reguły czterech kart naraz i być czytelny w połowie 4×12; obiekt, który nie daje się narysować czytelnie, zastępuje inny. Dodanie kategorii zmienia wybór kategorii na trzech kartach i ich zapamiętane ustawienia; stare wpisy muszą czytać się bez migracji. Termin: święta, więc ten kawałek idzie pierwszy.
 - **Status:** in-progress
 
