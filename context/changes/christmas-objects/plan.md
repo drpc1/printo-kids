@@ -435,7 +435,7 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Manual
 
-- [ ] 2.5 Na telefonie lista „Kategoria” z ośmioma pozycjami mieści się w całości, a Generuj i Drukuj nie nachodzą na siebie.
+- [x] 2.5 Na telefonie lista „Kategoria” z ośmioma pozycjami mieści się w całości, a Generuj i Drukuj nie nachodzą na siebie.
 
 ### Phase 3: Obiekty z szablonów
 
@@ -446,14 +446,14 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Manual
 
-- [ ] 3.3 W przeglądarce (z datą w oknie) „Boże Narodzenie” na symetrii, nonogramie, dyktandzie i „Skopiuj obrazek” daje kolejne różne obiekty, a kolory bałwanka i piernika wyglądają jak na makiecie.
+- [x] 3.3 W przeglądarce (z datą w oknie) „Boże Narodzenie” na symetrii, nonogramie, dyktandzie i „Skopiuj obrazek” daje kolejne różne obiekty, a kolory bałwanka i piernika wyglądają jak na makiecie. — a0a6702
 
 ### Phase 4: Kształty dyktanda
 
 #### Automated
 
-- [ ] 4.1 `npm test` przechodzi, w tym testy kształtów i obrysów dyktanda.
-- [ ] 4.2 `npm run lint`, `npx astro check` i `npm run build` przechodzą.
+- [x] 4.1 `npm test` przechodzi, w tym testy kształtów i obrysów dyktanda. — 0494e41
+- [x] 4.2 `npm run lint`, `npx astro check` i `npm run build` przechodzą. — 0494e41
 
 #### Manual
 

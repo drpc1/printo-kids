@@ -137,6 +137,24 @@ void describe("the approved shapes", () => {
     }
   });
 
+  void test("Boże Narodzenie has the Christmas shapes on their approved levels, the reindeer also in Zwierzęta", () => {
+    const christmas = (levelId: DictationLevelId): string[] =>
+      dictationShapesFor(levelId, "boze-narodzenie").map((shape) => shape.id);
+
+    assert.ok(christmas("lat5").includes("skarpeta"));
+    for (const id of ["skarpeta", "laska-cukrowa", "czapka-mikolaja", "sanki"]) {
+      assert.ok(christmas("lat6").includes(id), `${id} at lat6`);
+      assert.ok(christmas("lat7").includes(id), `${id} at lat7`);
+    }
+    assert.ok(christmas("lat7").includes("renifer"));
+    for (const id of ["laska-cukrowa", "czapka-mikolaja", "sanki", "renifer"]) {
+      assert.ok(!christmas("lat5").includes(id), `${id} at lat5`);
+    }
+    assert.ok(!christmas("lat6").includes("renifer"));
+    assert.ok(dictationShapesFor("lat7", "zwierzeta").some((shape) => shape.id === "renifer"));
+    assert.ok(!dictationShapesFor("lat7", "zwierzeta").some((shape) => shape.id === "skarpeta"));
+  });
+
   void test("each shape sits in the approved category", () => {
     const categoryOf = (id: string): readonly string[] | undefined =>
       DICTATION_SHAPES.find((shape) => shape.id === id)?.categories;

@@ -386,6 +386,179 @@ const KEY_VERTICAL: DictationShape = {
   },
 };
 
+/** Drawn for the approved Boże Narodzenie mockup (context/changes/christmas-objects/mockup-drawings.json). */
+const STOCKING: DictationShape = {
+  id: "skarpeta",
+  categories: ["boze-narodzenie"],
+  byLevel: {
+    lat5: ["#####...", "#####...", ".###....", ".###....", ".###....", ".####...", ".######.", ".#######", "..######"],
+    lat6: [
+      "#######....",
+      "#######....",
+      ".#####.....",
+      ".#####.....",
+      ".#####.....",
+      ".#####.....",
+      ".#####.....",
+      ".######....",
+      ".########..",
+      ".##########",
+      ".##########",
+      "..#########",
+      "...#######.",
+    ],
+    lat7: [
+      "##########.....",
+      "##########.....",
+      "##########.....",
+      ".########......",
+      ".########......",
+      ".########......",
+      ".########......",
+      ".########......",
+      ".########......",
+      ".########......",
+      ".########......",
+      ".########......",
+      ".#########.....",
+      ".###########...",
+      ".#############.",
+      ".##############",
+      ".##############",
+      "..#############",
+      "...###########.",
+      ".....#######...",
+    ],
+  },
+};
+
+/** Drawn for the approved Boże Narodzenie mockup (context/changes/christmas-objects/mockup-drawings.json). */
+const CANDY_CANE: DictationShape = {
+  id: "laska-cukrowa",
+  categories: ["boze-narodzenie"],
+  byLevel: {
+    lat6: [
+      "..###..",
+      ".#####.",
+      "##...##",
+      "##...##",
+      "##...##",
+      "##.....",
+      "##.....",
+      "##.....",
+      "##.....",
+      "##.....",
+      "##.....",
+      "##.....",
+      "##.....",
+      "##.....",
+    ],
+    lat7: [
+      "...####...",
+      "..######..",
+      ".########.",
+      "###....###",
+      "###....###",
+      "###....###",
+      "###....###",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+      "###.......",
+    ],
+  },
+};
+
+/** Drawn for the approved Boże Narodzenie mockup (context/changes/christmas-objects/mockup-drawings.json). */
+const SANTA_HAT: DictationShape = {
+  id: "czapka-mikolaja",
+  categories: ["boze-narodzenie"],
+  byLevel: {
+    lat6: [
+      "....###.....",
+      "...######...",
+      "...########.",
+      "..####...##.",
+      "..####..####",
+      "..#####.####",
+      ".######.....",
+      "##########..",
+      "##########..",
+    ],
+    lat7: [
+      "......####.......",
+      ".....########....",
+      "....###########..",
+      "....############.",
+      "...######....###.",
+      "...######...#####",
+      "...#######..#####",
+      "..########..#####",
+      "..#########..###.",
+      ".###########.....",
+      "##############...",
+      "##############...",
+      "##############...",
+    ],
+  },
+};
+
+/** Drawn for the approved Boże Narodzenie mockup (context/changes/christmas-objects/mockup-drawings.json). */
+const SLEDGE: DictationShape = {
+  id: "sanki",
+  categories: ["boze-narodzenie"],
+  byLevel: {
+    lat6: ["..........#.", ".########.##", ".########..#", "..#.....#..#", "############"],
+    lat7: [
+      "...............##.",
+      ".############..###",
+      ".############...##",
+      ".############...##",
+      "..##......##....##",
+      "..##......##....##",
+      "##################",
+      ".#################",
+    ],
+  },
+};
+
+/** Drawn for the approved Boże Narodzenie mockup (context/changes/christmas-objects/mockup-drawings.json). */
+const REINDEER: DictationShape = {
+  id: "renifer",
+  categories: ["boze-narodzenie", "zwierzeta"],
+  byLevel: {
+    lat7: [
+      "........#...#...",
+      "........#...#.#.",
+      "........##..###.",
+      ".........##.##..",
+      "..........####..",
+      "...........###..",
+      "..........######",
+      "..........######",
+      "..........####..",
+      "#.........###...",
+      "############....",
+      ".###########....",
+      ".###########....",
+      ".#.#.....#.#....",
+      ".#.#.....#.#....",
+      ".#.#.....#.#....",
+    ],
+  },
+};
+
 export const DICTATION_SHAPES: readonly DictationShape[] = [
   FISH,
   DUCK,
@@ -398,6 +571,11 @@ export const DICTATION_SHAPES: readonly DictationShape[] = [
   UMBRELLA,
   KEY_VERTICAL,
   KEY_HORIZONTAL,
+  STOCKING,
+  CANDY_CANE,
+  SANTA_HAT,
+  SLEDGE,
+  REINDEER,
 ];
 
 /** The shapes drawn for the level, only those in `category` (all of them for "wszystkie"). */
