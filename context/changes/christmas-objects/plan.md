@@ -452,8 +452,8 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Automated
 
-- [x] 4.1 `npm test` przechodzi, w tym testy kształtów i obrysów dyktanda.
-- [x] 4.2 `npm run lint`, `npx astro check` i `npm run build` przechodzą.
+- [x] 4.1 `npm test` przechodzi, w tym testy kształtów i obrysów dyktanda. — 0494e41
+- [x] 4.2 `npm run lint`, `npx astro check` i `npm run build` przechodzą. — 0494e41
 
 #### Manual
 
