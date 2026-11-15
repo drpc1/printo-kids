@@ -292,27 +292,27 @@ Brak migracji. Nowe id są dozwolone od razu, a stare dane się nie zmieniają.
 
 #### Automated
 
-- [x] 1.1 `npx astro check` bez błędów
-- [x] 1.2 `npm test` przechodzi (stare webp zastąpione, testy plików w `character.test.ts` bez zmian)
+- [x] 1.1 `npx astro check` bez błędów — bdaf9ec
+- [x] 1.2 `npm test` przechodzi (stare webp zastąpione, testy plików w `character.test.ts` bez zmian) — bdaf9ec
 
 #### Manual
 
-- [x] 1.3 Użytkowniczka akceptuje `mockup-app.png`: postacie przy poleceniu, przy starcie Poziomu 6 i lista z kreską na telefonie
+- [x] 1.3 Użytkowniczka akceptuje `mockup-app.png`: postacie przy poleceniu, przy starcie Poziomu 6 i lista z kreską na telefonie — bdaf9ec
 
 ### Phase 2: Katalog z oknem dat i lista z kreską
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` bez błędów
-- [ ] 2.2 `npm run depcruise` bez naruszeń
-- [ ] 2.3 `npm test` przechodzi, w tym nowe testy listy i okna
-- [ ] 2.4 `npx astro check` bez błędów
-- [ ] 2.5 `npm run build` przechodzi
-- [ ] 2.6 `npx playwright test tests/e2e/christmas-characters.spec.ts tests/e2e/christmas-category.spec.ts` przechodzi (z `E2E_PORT` na wolnym porcie)
+- [x] 2.1 `npm run lint` bez błędów
+- [x] 2.2 `npm run depcruise` bez naruszeń
+- [x] 2.3 `npm test` przechodzi, w tym nowe testy listy i okna
+- [x] 2.4 `npx astro check` bez błędów
+- [x] 2.5 `npm run build` przechodzi
+- [x] 2.6 `npx playwright test tests/e2e/christmas-characters.spec.ts tests/e2e/christmas-category.spec.ts` przechodzi (z `E2E_PORT` na wolnym porcie)
 
 #### Manual
 
-- [ ] 2.7 Na telefonie (375 px) lista ma 15 wierszy i kreskę, a całość przewija się w oknie bez ucięcia
+- [x] 2.7 Na telefonie (375 px) lista ma 15 wierszy i kreskę, a całość przewija się w oknie bez ucięcia
 - [ ] 2.8 Mikołaj przy poleceniu dowolnej karty i renifer przy starcie Poziomu 6 labiryntu wyglądają jak na makiecie, także w podglądzie wydruku
 - [ ] 2.9 Ulubiony bałwanek w profilu zostaje po przestawieniu zegara urządzenia na luty
 

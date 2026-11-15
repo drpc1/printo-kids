@@ -9,6 +9,7 @@ import {
   characterChoice,
   characterContentLeft,
   characterContentRight,
+  characterPickRowsOn,
   characterRow,
   characterSheetSrc,
   OWN_IMAGE_LABEL,
@@ -18,6 +19,9 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../
 
 const catalog = [
   { id: "none", label: "Brak", src: null },
+  { id: "balwanek", label: "Bałwanek", src: "/characters/balwanek.webp" },
+  { id: "mikolaj", label: "Mikołaj", src: "/characters/mikolaj.webp" },
+  { id: "renifer", label: "Renifer", src: "/characters/renifer.webp" },
   { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.webp" },
   { id: "jednorozec", label: "Jednorożec", src: "/characters/jednorozec.webp" },
   { id: "kot", label: "Kot", src: "/characters/kot.webp" },
@@ -32,7 +36,7 @@ const catalog = [
 ] as const;
 
 void describe("character catalog", () => {
-  void test("lists Brak and eleven characters in Polish alphabetical order", () => {
+  void test("lists Brak, the three Christmas characters, then eleven characters in Polish alphabetical order", () => {
     assert.deepEqual(
       CHARACTER_CHOICES.map((row) => ({ id: row.id, label: row.label, src: row.src })),
       [...catalog],
@@ -140,5 +144,38 @@ void describe("character drawing margins", () => {
   void test("the right margin of a few characters matches the measured file", () => {
     assert.equal(characterContentRight("dinozaur"), 212 / 1024);
     assert.equal(characterContentRight("samochodzik"), 189 / 1024);
+  });
+});
+
+void describe("the pick list and the window of the Christmas characters", () => {
+  const ids = (today: Date, selected = "none") => characterPickRowsOn(today, selected).rows.map((row) => row.id);
+
+  void test("inside 15 November - 6 January the list has 15 rows and a line after Renifer", () => {
+    for (const day of [new Date(2026, 10, 15), new Date(2026, 11, 31), new Date(2027, 0, 6)]) {
+      const pick = characterPickRowsOn(day, "none");
+      assert.equal(pick.rows.length, 15, day.toDateString());
+      assert.deepEqual(ids(day).slice(0, 4), ["none", "balwanek", "mikolaj", "renifer"], day.toDateString());
+      assert.equal(pick.separatorAfter, "renifer", day.toDateString());
+    }
+  });
+
+  void test("outside the window the list has 12 rows and no line", () => {
+    for (const day of [new Date(2026, 10, 14), new Date(2027, 0, 7), new Date(2026, 6, 1)]) {
+      const pick = characterPickRowsOn(day, "none");
+      assert.equal(pick.rows.length, 12, day.toDateString());
+      assert.equal(pick.separatorAfter, null, day.toDateString());
+    }
+  });
+
+  void test("a selected Christmas character keeps its row outside the window, with the line under it", () => {
+    const summer = new Date(2026, 6, 1);
+    assert.deepEqual(ids(summer, "mikolaj").slice(0, 3), ["none", "mikolaj", "dinozaur"]);
+    assert.equal(characterPickRowsOn(summer, "mikolaj").separatorAfter, "mikolaj");
+  });
+
+  void test("the catalog does not depend on the date: a saved Christmas character is never Brak", () => {
+    assert.equal(characterChoice("mikolaj"), "mikolaj");
+    assert.equal(characterSheetSrc("renifer"), "/characters/renifer.webp");
+    assert.equal(ALLOWED_CHARACTER_IDS.includes("balwanek"), true);
   });
 });

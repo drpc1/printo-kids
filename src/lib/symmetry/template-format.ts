@@ -2,17 +2,12 @@ export const SYMMETRY_COLORS = ["red", "green", "yellow", "blue", "orange", "gra
 
 export type SymmetryColor = (typeof SYMMETRY_COLORS)[number];
 
-/** A day of the year, months counted from 1. */
-export interface MonthDay {
-  month: number;
-  day: number;
-}
+import type { DateWindow, MonthDay } from "../date-window.ts";
 
-/** The days a category shows on the bar, both ends included; `to` before `from` means the window crosses New Year. */
-export interface CategoryWindow {
-  from: MonthDay;
-  to: MonthDay;
-}
+export type { MonthDay };
+
+/** The days a category shows on the bar (see `DateWindow`). */
+export type CategoryWindow = DateWindow;
 
 export interface ObjectCategory {
   id: string;

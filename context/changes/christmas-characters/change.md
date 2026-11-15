@@ -1,7 +1,7 @@
 ---
 change_id: christmas-characters
 title: Świąteczne postacie w katalogu postaci (S-39)
-status: implementing
+status: impl_reviewed
 created: 2026-11-15
 updated: 2026-11-15
 archived_at: null
