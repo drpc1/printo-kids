@@ -79,7 +79,7 @@ delivery_weeks: TBD — cztery karty naraz to zakres większy niż typowy kamie�
 ## Constraints & Preserved Behavior
 
 - Sześć istniejących kart i ich testy (`npm test`, Playwright, smoke) zostają bez zmian.
-- Katalog szablonów (34 obiekty), kształty z sudoku i kolory kredek są współdzielone; nowe karty ich nie psują ani nie przestawiają.
+- Katalog szablonów (40 obiektów), kształty z sudoku i kolory kredek są współdzielone; nowe karty ich nie psują ani nie przestawiają.
 - Zapisane profile i ostatnie parametry wczytują się bez migracji; nowe karty dokładają swoje ustawienia w tabeli „Profil i zapamiętane ustawienia”.
 - Wygląd pieniędzy: bez kopiowania wzorów NBP; moneta i banknot to stylizowane koło i prostokąt z nominałem (do potwierdzenia, prawa do wyglądu).
 
@@ -137,7 +137,7 @@ Aplikacja zawsze tworzy kartę, której zadanie ma jawną regułę wyznaczając�
 ## Forward: technical-roadmap
 
 - Pieniądze: nominały jako stylizowane koło/prostokąt z liczbą, bez kopiowania wzorów NBP.
-- Współdzielone: katalog 34 obiektów szablonów (kopiowanie), kształty z sudoku i kolory kredek (Który nie pasuje).
+- Współdzielone: katalog 40 obiektów szablonów (kopiowanie), kształty z sudoku i kolory kredek (Który nie pasuje).
 
 ## Open Questions
 

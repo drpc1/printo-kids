@@ -463,8 +463,8 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Automated
 
-- [ ] 5.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check` i `npm run build` przechodzą.
-- [ ] 5.2 E2E Chromium (`npx playwright test` z wolnym `E2E_PORT`) przechodzi.
+- [x] 5.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check` i `npm run build` przechodzą.
+- [x] 5.2 E2E Chromium (`npx playwright test` z wolnym `E2E_PORT`) przechodzi.
 
 #### Manual
 
