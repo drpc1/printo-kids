@@ -435,7 +435,7 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Manual
 
-- [ ] 2.5 Na telefonie lista „Kategoria” z ośmioma pozycjami mieści się w całości, a Generuj i Drukuj nie nachodzą na siebie.
+- [x] 2.5 Na telefonie lista „Kategoria” z ośmioma pozycjami mieści się w całości, a Generuj i Drukuj nie nachodzą na siebie.
 
 ### Phase 3: Obiekty z szablonów
 
