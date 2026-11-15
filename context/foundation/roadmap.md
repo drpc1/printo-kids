@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-14
+updated: 2026-11-15
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -49,7 +49,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | ID   | Change ID            | Outcome (user can …)                                                                                                                                                        | Prerequisites                            | PRD refs                                    | Status      |
 | ---- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------- | ----------- |
 | S-38 | christmas-objects    | Rodzic wybiera świąteczne obiekty na kartach symetrii, nonogramu, dyktanda i „Skopiuj obrazek”, generuje kartę i drukuje ją jako jedną stronę A4                            | —                                        | MS-03, FR-028, FR-029, US-19, US-20         | in-progress |
-| S-39 | christmas-characters | Rodzic wybiera świąteczną postać (np. Mikołaj, renifer) przy poleceniu na każdej karcie i w profilu jako ulubioną                                                           | —                                        | MS-02, FR-012, FR-030, US-03, US-21         | blocked     |
+| S-39 | christmas-characters | Rodzic wybiera świąteczną postać (np. Mikołaj, renifer) przy poleceniu na każdej karcie i w profilu jako ulubioną                                                           | —                                        | MS-02, FR-012, FR-030, US-03, US-21         | in-progress |
 | S-40 | math-crossword-card  | Rodzic otwiera z katalogu „Krzyżówkę matematyczną”, wybiera poziom, generuje kartę A4 z działaniami w krzyżującej się siatce, podgląda ją i drukuje; profil pamięta pasek   | —                                        | MS-01, FR-014, FR-017, FR-030, US-05, US-08 | done        |
 | S-41 | new-card-2           | Rodzic otwiera z katalogu kolejną nową kartę (rodzaj do ustalenia), generuje ją z poziomem i drukuje; profil pamięta pasek                                                  | —                                        | MS-01, FR-014, FR-017, FR-030, US-05, US-08 | blocked     |
 | S-42 | new-card-3           | Rodzic otwiera z katalogu jeszcze jedną nową kartę (rodzaj do ustalenia), generuje ją z poziomem i drukuje; profil pamięta pasek                                            | —                                        | MS-01, FR-014, FR-017, FR-030, US-05, US-08 | blocked     |
@@ -110,11 +110,11 @@ Brak. Kategorie obiektów, katalog kart, pamięć paska i postać przy poleceniu
 - **Parallel with:** S-38, S-40
 - **Blockers:** Rysunki świątecznych postaci w tym samym stylu co jedenaście istniejących.
 - **Unknowns:**
-  - Skąd rysunki i czy prawa pozwalają je pokazać w produkcie? PRD Open Questions 3. — Owner: user. Block: yes.
-  - Ile postaci i które? — Owner: user. Block: yes.
-  - Czy świąteczne postacie pokazują się tylko w sezonie, czy zawsze obok jedenastu stałych? Katalog ma dziś dokładnie jedenaście postaci wpisanych w PRD i testy. — Owner: user. Block: no.
+  - ~~Skąd rysunki i czy prawa pozwalają je pokazać w produkcie?~~ Rozstrzygnięte 2026-11-15 (frame): rysunki generuje użytkowniczka (AI) w stylu jedenastu postaci i ma do nich prawa; postacie są ogólne, renifer bez czerwonego nosa.
+  - ~~Ile postaci i które?~~ Rozstrzygnięte 2026-11-15 (frame): Mikołaj, renifer, bałwanek.
+  - ~~Czy świąteczne postacie pokazują się tylko w sezonie, czy zawsze obok jedenastu stałych?~~ Rozstrzygnięte 2026-11-15 (frame): na liście tylko 15.11–6.01, zaraz po „Brak” i oddzielone kreską; zapisana ulubiona albo ostatnio użyta postać zostaje poza oknem.
 - **Risk:** Zmienia liczbę postaci wpisaną na sztywno w PRD (FR-012, US-03) i w testach; lista postaci musi zostać w całości widoczna. Zależy od rysunków poza kodem, więc może zdążyć na święta albo nie, stąd osobny kawałek, który nie blokuje S-38.
-- **Status:** blocked
+- **Status:** in-progress
 
 ### S-40: Krzyżówka matematyczna
 
