@@ -320,8 +320,8 @@ Brak migracji. Nowe id są dozwolone od razu, a stare dane się nie zmieniają.
 
 #### Automated
 
-- [x] 3.1 `npm run format` nie zmienia plików `.md`
-- [x] 3.2 `git grep -n "jedenaście postaci\|11 postaci" context/foundation context/domain` nie zwraca nieaktualnych miejsc
+- [x] 3.1 `npm run format` nie zmienia plików `.md` — 45c84de
+- [x] 3.2 `git grep -n "jedenaście postaci\|11 postaci" context/foundation context/domain` nie zwraca nieaktualnych miejsc — 45c84de
 
 #### Manual
 
