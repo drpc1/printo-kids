@@ -108,7 +108,7 @@ Brak. Kategorie obiektów, katalog kart, pamięć paska i postać przy poleceniu
 - **PRD refs:** MS-02, FR-012, FR-030, US-03, US-21
 - **Prerequisites:** — (rysunki postaci)
 - **Parallel with:** S-38, S-40
-- **Blockers:** Rysunki świątecznych postaci w tym samym stylu co jedenaście istniejących.
+- **Blockers:** Rysunki świątecznych postaci w tym samym stylu co jedenaście istniejących (dostarczone 2026-11-15).
 - **Unknowns:**
   - ~~Skąd rysunki i czy prawa pozwalają je pokazać w produkcie?~~ Rozstrzygnięte 2026-11-15 (frame): rysunki generuje użytkowniczka (AI) w stylu jedenastu postaci i ma do nich prawa; postacie są ogólne, renifer bez czerwonego nosa.
   - ~~Ile postaci i które?~~ Rozstrzygnięte 2026-11-15 (frame): Mikołaj, renifer, bałwanek.
@@ -254,7 +254,7 @@ Nie wlicza się do „Done when” M-6. Kandydaci na S-41–S-42 są tu, dopóki
 
 Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź (poza wyjątkiem szlaczków), poziomy bez nazw wieku, jedna strona A4, czarny druk z kolorową postacią przy poleceniu, bez modelu językowego.
 
-- **Obrysy postaci na kratce** — warunek dla „Połącz kropki” i „Nonogram i dyktando postaci”. Makieta z 2026-10-26: 11 postaci da się narysować na kratce ok. 15×15.
+- **Obrysy postaci na kratce** — warunek dla „Połącz kropki” i „Nonogram i dyktando postaci”. Makieta z 2026-10-26: 11 stałych postaci da się narysować na kratce ok. 15×15.
 - **Połącz kropki** — sylwetka postaci. Czeka na obrysy.
 - **Nonogram i dyktando postaci** — rozwiązanie odsłania postać zamiast obiektu z szablonów. Czeka na obrysy.
 - **Karty kodowania** — kratka, postać, meta, strzałki, jedna najkrótsza droga.

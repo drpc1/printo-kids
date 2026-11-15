@@ -17,16 +17,16 @@ W sezonie lista wygląda tak: „Brak”, Bałwanek, Mikołaj, Renifer, kreska, 
 
 ## Kluczowe decyzje
 
-| Decyzja | Wybór | Dlaczego | Źródło |
-| --- | --- | --- | --- |
-| Postacie | Mikołaj, renifer, bałwanek | wybór użytkowniczki | Rama |
-| Rysunki | generuje użytkowniczka (AI), kadr dopasowany skryptem | ten sam styl i kadr co jedenaście postaci | Rama |
-| Okno | 15.11–6.01, zegar z S-38 | jedna reguła sezonu | Rama |
-| Postać poza oknem | zostaje w katalogu, okno filtruje tylko listę | ulubiona nie znika bez wiedzy rodzica | Rama |
-| Powtórki z S-38 | osobne rysunki, bez łączenia w kodzie | postać to ilustracja, obiekt to sylwetka na kratce | Rama |
-| Kolejność | świąteczne zaraz po „Brak” | jak kategoria z oknem w S-38, widoczne bez przewijania | Plan (rekomendacja; wiadomość z odpowiedzią nie dotarła) |
-| Oznaczenie | kreska (shadcn `Separator`) pod świątecznymi wierszami | prośba użytkowniczki 2026-11-15 | Plan |
-| Testy | unit + e2e z `page.clock` (grudzień, luty) | wzór `christmas-category.spec.ts` | Plan |
+| Decyzja           | Wybór                                                  | Dlaczego                                               | Źródło                                                   |
+| ----------------- | ------------------------------------------------------ | ------------------------------------------------------ | -------------------------------------------------------- |
+| Postacie          | Mikołaj, renifer, bałwanek                             | wybór użytkowniczki                                    | Rama                                                     |
+| Rysunki           | generuje użytkowniczka (AI), kadr dopasowany skryptem  | ten sam styl i kadr co jedenaście postaci              | Rama                                                     |
+| Okno              | 15.11–6.01, zegar z S-38                               | jedna reguła sezonu                                    | Rama                                                     |
+| Postać poza oknem | zostaje w katalogu, okno filtruje tylko listę          | ulubiona nie znika bez wiedzy rodzica                  | Rama                                                     |
+| Powtórki z S-38   | osobne rysunki, bez łączenia w kodzie                  | postać to ilustracja, obiekt to sylwetka na kratce     | Rama                                                     |
+| Kolejność         | świąteczne zaraz po „Brak”                             | jak kategoria z oknem w S-38, widoczne bez przewijania | Plan (rekomendacja; wiadomość z odpowiedzią nie dotarła) |
+| Oznaczenie        | kreska (shadcn `Separator`) pod świątecznymi wierszami | prośba użytkowniczki 2026-11-15                        | Plan                                                     |
+| Testy             | unit + e2e z `page.clock` (grudzień, luty)             | wzór `christmas-category.spec.ts`                      | Plan                                                     |
 
 ## Zakres
 
@@ -52,11 +52,11 @@ Neutralny moduł okna dat w `src/lib` daje `inWindow`. Wiersz postaci ma opcjona
 
 ## Fazy w skrócie
 
-| Faza | Co daje | Główne ryzyko |
-| --- | --- | --- |
+| Faza                 | Co daje                                                   | Główne ryzyko                                   |
+| -------------------- | --------------------------------------------------------- | ----------------------------------------------- |
 | 1. Rysunki i makieta | webp z dopasowanym kadrem, `mockup-app.png` do akceptacji | rysunek odstaje od zestawu w prawdziwym miejscu |
-| 2. Katalog i lista | postacie w aplikacji, okno, kreska, testy | wybrana postać spoza okna bez wiersza na liście |
-| 3. Dokumenty | PRD i glosariusz z 14 postaciami i regułą okna | przeoczone miejsce z liczbą 11 |
+| 2. Katalog i lista   | postacie w aplikacji, okno, kreska, testy                 | wybrana postać spoza okna bez wiersza na liście |
+| 3. Dokumenty         | PRD i glosariusz z 14 postaciami i regułą okna            | przeoczone miejsce z liczbą 11                  |
 
 **Wymagania wstępne:** lokalny `main` zsynchronizowany z `origin/main` (dziś 29 commitów za nim). Faza zaczyna się w gałęzi.
 **Szacowany nakład:** 2–3 sesje, PR na fazę z `/10x-impl-review`.

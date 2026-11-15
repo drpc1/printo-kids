@@ -303,16 +303,16 @@ Brak migracji. Nowe id są dozwolone od razu, a stare dane się nie zmieniają.
 
 #### Automated
 
-- [x] 2.1 `npm run lint` bez błędów
-- [x] 2.2 `npm run depcruise` bez naruszeń
-- [x] 2.3 `npm test` przechodzi, w tym nowe testy listy i okna
-- [x] 2.4 `npx astro check` bez błędów
-- [x] 2.5 `npm run build` przechodzi
-- [x] 2.6 `npx playwright test tests/e2e/christmas-characters.spec.ts tests/e2e/christmas-category.spec.ts` przechodzi (z `E2E_PORT` na wolnym porcie)
+- [x] 2.1 `npm run lint` bez błędów — eac4c42
+- [x] 2.2 `npm run depcruise` bez naruszeń — eac4c42
+- [x] 2.3 `npm test` przechodzi, w tym nowe testy listy i okna — eac4c42
+- [x] 2.4 `npx astro check` bez błędów — eac4c42
+- [x] 2.5 `npm run build` przechodzi — eac4c42
+- [x] 2.6 `npx playwright test tests/e2e/christmas-characters.spec.ts tests/e2e/christmas-category.spec.ts` przechodzi (z `E2E_PORT` na wolnym porcie) — eac4c42
 
 #### Manual
 
-- [x] 2.7 Na telefonie (375 px) lista ma 15 wierszy i kreskę, a całość przewija się w oknie bez ucięcia
+- [x] 2.7 Na telefonie (375 px) lista ma 15 wierszy i kreskę, a całość przewija się w oknie bez ucięcia — eac4c42
 - [ ] 2.8 Mikołaj przy poleceniu dowolnej karty i renifer przy starcie Poziomu 6 labiryntu wyglądają jak na makiecie, także w podglądzie wydruku
 - [ ] 2.9 Ulubiony bałwanek w profilu zostaje po przestawieniu zegara urządzenia na luty
 
@@ -320,8 +320,8 @@ Brak migracji. Nowe id są dozwolone od razu, a stare dane się nie zmieniają.
 
 #### Automated
 
-- [ ] 3.1 `npm run format` nie zmienia plików `.md`
-- [ ] 3.2 `git grep -n "jedenaście postaci\|11 postaci" context/foundation context/domain` nie zwraca nieaktualnych miejsc
+- [x] 3.1 `npm run format` nie zmienia plików `.md`
+- [x] 3.2 `git grep -n "jedenaście postaci\|11 postaci" context/foundation context/domain` nie zwraca nieaktualnych miejsc
 
 #### Manual
 
