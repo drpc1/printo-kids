@@ -457,7 +457,7 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Manual
 
-- [ ] 4.3 W przeglądarce (z datą w oknie) dyktando w „Bożym Narodzeniu” pokazuje skarpetę i pozostałe kształty, także odbite, a polecenia prowadzą po obrysie.
+- [x] 4.3 W przeglądarce (z datą w oknie) dyktando w „Bożym Narodzeniu” pokazuje skarpetę i pozostałe kształty, także odbite, a polecenia prowadzą po obrysie.
 
 ### Phase 5: Domknięcie
 
@@ -468,5 +468,5 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Manual
 
-- [ ] 5.3 Na stagingu w oknie dat użytkowniczka drukuje po jednej karcie „Bożego Narodzenia” z każdej z czterech kart, w czerni i w kolorach tam, gdzie karta je ma; obiekty są czytelne na papierze.
+- [x] 5.3 Na stagingu w oknie dat użytkowniczka drukuje po jednej karcie „Bożego Narodzenia” z każdej z czterech kart, w czerni i w kolorach tam, gdzie karta je ma; obiekty są czytelne na papierze.
 - [ ] 5.4 Wydanie `main` → `prod` przed 1.12.2026 według `.github/PULL_REQUEST_TEMPLATE/release.md`.
