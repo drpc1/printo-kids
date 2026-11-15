@@ -446,7 +446,7 @@ Bez migracji. Stare ustawienia nie zawierają `boze-narodzenie`. Zapamiętana ka
 
 #### Manual
 
-- [ ] 3.3 W przeglądarce (z datą w oknie) „Boże Narodzenie” na symetrii, nonogramie, dyktandzie i „Skopiuj obrazek” daje kolejne różne obiekty, a kolory bałwanka i piernika wyglądają jak na makiecie.
+- [x] 3.3 W przeglądarce (z datą w oknie) „Boże Narodzenie” na symetrii, nonogramie, dyktandzie i „Skopiuj obrazek” daje kolejne różne obiekty, a kolory bałwanka i piernika wyglądają jak na makiecie. — a0a6702
 
 ### Phase 4: Kształty dyktanda
 
