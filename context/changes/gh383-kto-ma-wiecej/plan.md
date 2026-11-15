@@ -196,20 +196,20 @@ Tytuł nie jest w `localStorage`. Zapisane profile pokażą nową nazwę przy na
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, a `src/lib/card-summary.test.ts` oczekuje tytułu `Kto ma więcej`
-- [x] 1.2 Playwright przechodzi dla `tests/e2e/money.spec.ts`, `tests/e2e/money-reprint.spec.ts`, `tests/e2e/how-it-works.spec.ts`, `tests/e2e/profile-summary.spec.ts`, `tests/e2e/phone-layout.spec.ts`, `tests/e2e/phone-toggle-align.spec.ts` i `tests/e2e/character-speaks.spec.ts`
+- [x] 1.1 `npm test` przechodzi, a `src/lib/card-summary.test.ts` oczekuje tytułu `Kto ma więcej` — a2e9d5e
+- [x] 1.2 Playwright przechodzi dla `tests/e2e/money.spec.ts`, `tests/e2e/money-reprint.spec.ts`, `tests/e2e/how-it-works.spec.ts`, `tests/e2e/profile-summary.spec.ts`, `tests/e2e/phone-layout.spec.ts`, `tests/e2e/phone-toggle-align.spec.ts` i `tests/e2e/character-speaks.spec.ts` — a2e9d5e
 
 #### Manual
 
-- [x] 1.3 Katalog, „Jak to działa” (nagłówek rodzaju i akapit poziomów), link w oknie profilu oraz nagłówek `/money` i nazwa dostępna arkusza pokazują `Kto ma więcej`
-- [x] 1.4 Kartka nadal mówi `Gdzie jest więcej pieniędzy?`, a w katalogu sąsiadami zostają „Krzyżówka matematyczna” i „Który nie pasuje”
+- [x] 1.3 Katalog, „Jak to działa” (nagłówek rodzaju i akapit poziomów), link w oknie profilu oraz nagłówek `/money` i nazwa dostępna arkusza pokazują `Kto ma więcej` — a2e9d5e
+- [x] 1.4 Kartka nadal mówi `Gdzie jest więcej pieniędzy?`, a w katalogu sąsiadami zostają „Krzyżówka matematyczna” i „Który nie pasuje” — a2e9d5e
 
 ### Phase 2: Żywy kontrakt
 
 #### Automated
 
-- [ ] 2.1 W żywych zdaniach PRD, w wierszu glosariusza, w pytaniu 6 roadmapy i w ryzyku 10 planu testów nie ma `Kto ma więcej?`, a ta pisownia zostaje w akapicie PRD z 2026-11-01, w zamkniętym pytaniu 13, w historii M-5 i S-33 oraz w §5a planu testów
+- [x] 2.1 W żywych zdaniach PRD, w wierszu glosariusza, w pytaniu 6 roadmapy i w ryzyku 10 planu testów nie ma `Kto ma więcej?`, a ta pisownia zostaje w akapicie PRD z 2026-11-01, w zamkniętym pytaniu 13, w historii M-5 i S-33 oraz w §5a planu testów
 
 #### Manual
 
-- [ ] 2.2 Nagłówek US-23 i wiersz glosariusza czytają się jako „Kto ma więcej”, a akapit wejścia karty do zakresu nadal ma znak zapytania
+- [x] 2.2 Nagłówek US-23 i wiersz glosariusza czytają się jako „Kto ma więcej”, a akapit wejścia karty do zakresu nadal ma znak zapytania

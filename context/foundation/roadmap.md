@@ -232,7 +232,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 3. **Które dwa (albo trzy) rodzaje kart wchodzą do M-6 obok krzyżówki matematycznej?** — Owner: user. Block: S-41, S-42. Kandydaci z „Po tym kamieniu”: karty kodowania, połącz kropki, pieniądze ciąg dalszy; nonogram i dyktando postaci czekają na obrysy postaci.
 4. **Czy sezonowe obiekty i postacie są widoczne cały rok, czy tylko w sezonie, i czy sezon to kategoria, czy tag?** — Owner: user. Block: no (S-38, S-39, S-43).
 5. **Czy czwarta nowa karta wchodzi do M-6 (obok krzyżówki, S-41 i S-42)?** — Owner: user. Block: no.
-6. **Czy poziomy „Kto ma więcej?” i „Który nie pasuje” pasują dziecku, a wygląd monety i banknotu jest czytelny bez kopiowania wzorów NBP?** — Owner: user. Block: no (PRD Open Questions 14).
+6. **Czy poziomy „Kto ma więcej” i „Który nie pasuje” pasują dziecku, a wygląd monety i banknotu jest czytelny bez kopiowania wzorów NBP?** — Owner: user. Block: no (PRD Open Questions 14).
 7. **Kolejne sezony** (Wielkanoc, Halloween, pory roku): wchodzą po M-6 jako osobne kawałki. — Owner: user. Block: no.
 
 ## Parked
