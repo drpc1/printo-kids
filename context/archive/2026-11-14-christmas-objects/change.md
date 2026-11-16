@@ -1,10 +1,10 @@
 ---
 change_id: christmas-objects
 title: Świąteczne obiekty w katalogu szablonów (S-38)
-status: impl_reviewed
+status: archived
 created: 2026-11-14
-updated: 2026-11-15
-archived_at: null
+updated: 2026-11-16
+archived_at: 2026-11-16T11:03:23Z
 ---
 
 ## Notes
