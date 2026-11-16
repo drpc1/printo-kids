@@ -342,14 +342,14 @@ Brak: nowe pole `cards.zegar` w zapisanych profilach ma wartość domyślną prz
 
 #### Automated
 
-- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md context/domain/glossary.md context/changes/clock-card/*.md`
-- [x] 1.2 Ustalenia zegara są na gałęzi z `main`: `git merge-base --is-ancestor origin/main HEAD` i `rg -n "US-33|US-34|FR-043|FR-044|0:xx" context/foundation/prd.md` zwraca trafienia
-- [x] 1.3 Makieta działa na `main`: `node --experimental-strip-types context/changes/clock-card/mockup.mts` kończy się bez błędu
+- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md context/domain/glossary.md context/changes/clock-card/*.md` — 6604e54
+- [x] 1.2 Ustalenia zegara są na gałęzi z `main`: `git merge-base --is-ancestor origin/main HEAD` i `rg -n "US-33|US-34|FR-043|FR-044|0:xx" context/foundation/prd.md` zwraca trafienia — 6604e54
+- [x] 1.3 Makieta działa na `main`: `node --experimental-strip-types context/changes/clock-card/mockup.mts` kończy się bez błędu — 6604e54
 
 #### Manual
 
-- [x] 1.4 Diff PRD i roadmapy względem `main` zawiera tylko zmiany zegara (święta nietknięte)
-- [x] 1.5 Użytkowniczka potwierdza dopisane zdania (opisy trybów, podsumowanie profilu)
+- [x] 1.4 Diff PRD i roadmapy względem `main` zawiera tylko zmiany zegara (święta nietknięte) — 6604e54
+- [x] 1.5 Użytkowniczka potwierdza dopisane zdania (opisy trybów, podsumowanie profilu) — 6604e54
 
 ### Phase 2: Logika karty
 
