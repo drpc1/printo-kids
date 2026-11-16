@@ -48,7 +48,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 
 | ID   | Change ID            | Outcome (user can …)                                                                                                                                                         | Prerequisites                            | PRD refs                                    | Status      |
 | ---- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------- | ----------- |
-| S-38 | christmas-objects    | Rodzic wybiera świąteczne obiekty na kartach symetrii, nonogramu, dyktanda i „Skopiuj obrazek”, generuje kartę i drukuje ją jako jedną stronę A4                             | —                                        | MS-03, FR-028, FR-029, US-19, US-20         | in-progress |
+| S-38 | christmas-objects    | Rodzic wybiera świąteczne obiekty na kartach symetrii, nonogramu, dyktanda i „Skopiuj obrazek”, generuje kartę i drukuje ją jako jedną stronę A4                             | —                                        | MS-03, FR-028, FR-029, US-19, US-20         | done        |
 | S-39 | christmas-characters | Rodzic wybiera świąteczną postać (np. Mikołaj, renifer) przy poleceniu na każdej karcie i w profilu jako ulubioną                                                            | —                                        | MS-02, FR-012, FR-030, US-03, US-21         | done        |
 | S-40 | math-crossword-card  | Rodzic otwiera z katalogu „Krzyżówkę matematyczną”, wybiera poziom, generuje kartę A4 z działaniami w krzyżującej się siatce, podgląda ją i drukuje; profil pamięta pasek    | —                                        | MS-01, FR-014, FR-017, FR-030, US-05, US-08 | done        |
 | S-41 | clock-card           | Rodzic otwiera z katalogu „Zegar”, wybiera poziom, tryb (odczytaj, dorysuj, połącz) i 24 h, generuje kartę A4 z tarczami zegara, podgląda ją i drukuje; profil pamięta pasek | —                                        | MS-01, FR-043, FR-044, US-33, US-34         | in-progress |
@@ -99,7 +99,7 @@ Brak. Kategorie obiektów, katalog kart, pamięć paska i postać przy poleceniu
   - ~~Kategoria „Święta” czy sezonowy tag?~~ Rozstrzygnięte 2026-11-14 (frame): nowa siódma kategoria „Boże Narodzenie” w istniejącym wyborze kategorii, nie tag.
   - ~~Czy obiekty mają być widoczne cały rok, czy tylko w sezonie?~~ Rozstrzygnięte 2026-11-14 (frame): kategoria jest na pasku tylko od 15.11 do 6.01; „Wszystkie” losuje z pełnego katalogu przez cały rok.
 - **Risk:** Nowy obiekt musi przejść reguły czterech kart naraz i być czytelny w połowie 4×12; obiekt, który nie daje się narysować czytelnie, zastępuje inny. Dodanie kategorii zmienia wybór kategorii na trzech kartach i ich zapamiętane ustawienia; stare wpisy muszą czytać się bez migracji. Termin: święta, więc ten kawałek idzie pierwszy.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-39: Świąteczne postacie
 
@@ -272,6 +272,8 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **M-1: Pierwsza drukowalna karta A4** (`first-printable-a4-maze`) — closed 2026-10-22. Rodzic generuje labirynt na wybranym poziomie, wybiera postać, korzysta z profili dzieci i drukuje kartę jako jedną stronę A4 także z telefonu.
 
 ## Done
+
+- **S-38: Rodzic wybiera świąteczne obiekty (np. bombka, choinka z ozdobami, Mikołaj, bałwanek, piernik, gwiazda betlejemska) na kartach symetrii, nonogramu, dyktanda graficznego i „Skopiuj obrazek”, generuje kartę, podgląda ją i drukuje jako jedną stronę A4 także z telefonu. Obiekty dochodzą do katalogu szablonów w trzech rozmiarach (połowa 4×12, 6×15, 9×24) i spełniają reguły każdej z czterech kart (jedno rozwiązanie nonogramu, obrys dyktanda bez styku).** — Archived 2026-11-16 → `context/archive/$C-$id/`. Lesson: —. Otwarte: wydanie main → prod przed 1.12.2026 (5.4).
 
 - **S-39: Rodzic wybiera świąteczną postać (np. Mikołaj, renifer, bałwanek) z listy postaci przy poleceniu na każdej karcie, w oknie profilu jako ulubioną i na labiryncie przy starcie; postać drukuje się w kolorze jak pozostałe. Lista pokazuje wszystkie postacie bez ucięcia także przy niskiej rozdzielczości.** — Archived 2026-11-16 → `context/archive/$C-$id/`. Lesson: —.
 
