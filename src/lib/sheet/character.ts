@@ -1,7 +1,36 @@
+import { inWindow, type DateWindow } from "../date-window.ts";
+
+/** The Christmas characters are offered on the pick list from 15 November to 6 January, like the category of S-38. */
+const CHRISTMAS_WINDOW: DateWindow = { from: { month: 11, day: 15 }, to: { month: 1, day: 6 } };
+
 const noneChoice = { id: "none", label: "Brak", src: null } as const;
 
 export const CHARACTER_CHOICES = [
   noneChoice,
+  {
+    id: "balwanek",
+    label: "Bałwanek",
+    src: "/characters/balwanek.webp",
+    contentLeft: 298 / 1024,
+    contentRight: 296 / 1024,
+    window: CHRISTMAS_WINDOW,
+  },
+  {
+    id: "mikolaj",
+    label: "Mikołaj",
+    src: "/characters/mikolaj.webp",
+    contentLeft: 376 / 1024,
+    contentRight: 376 / 1024,
+    window: CHRISTMAS_WINDOW,
+  },
+  {
+    id: "renifer",
+    label: "Renifer",
+    src: "/characters/renifer.webp",
+    contentLeft: 258 / 1024,
+    contentRight: 258 / 1024,
+    window: CHRISTMAS_WINDOW,
+  },
   {
     id: "dinozaur",
     label: "Dinozaur",
@@ -67,6 +96,23 @@ export function characterContentRight(id: string): number {
     return 0;
   }
   return row.contentRight;
+}
+
+/**
+ * The rows of the pick list on `today`: a character with a window is offered only inside it, except the one that
+ * is `selected` (a saved favourite or last-used one stays on the list). `separatorAfter` is the id of the last
+ * seasonal row shown, where the list draws a line, or null when none is shown. The catalog itself does not depend
+ * on the date, so a saved seasonal character is never replaced by "Brak".
+ */
+export function characterPickRowsOn(
+  today: Date,
+  selected: string,
+): { rows: readonly (typeof CHARACTER_CHOICES)[number][]; separatorAfter: string | null } {
+  const rows = CHARACTER_CHOICES.filter(
+    (row) => !("window" in row) || row.id === selected || inWindow(row.window, today),
+  );
+  const seasonal = rows.filter((row) => "window" in row);
+  return { rows, separatorAfter: seasonal.length === 0 ? null : seasonal[seasonal.length - 1].id };
 }
 
 export function characterSheetSrc(id: string): string | null {

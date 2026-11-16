@@ -17,12 +17,13 @@ import {
 } from "@/lib/child-profiles";
 import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
+import { Separator } from "@/components/ui/separator";
 import { useToday } from "@/hooks/useToday";
 import { cardSummaries } from "@/lib/card-summary";
 import { readLastUsed } from "@/lib/last-used";
 import {
   ALLOWED_CHARACTER_IDS,
-  CHARACTER_CHOICES,
+  characterPickRowsOn,
   characterChoice,
   characterRow,
   OWN_IMAGE_ID,
@@ -607,6 +608,7 @@ export function CharacterChoiceRows({
   onSelect: (id: SheetCharacterId) => void;
   onCopied: (href: string) => void;
 }) {
+  const pick = characterPickRowsOn(useToday(), selected);
   const inputRef = useRef<HTMLInputElement>(null);
   const request = useRef(0);
   const [deviceHref, setDeviceHref] = useState<string | null>(() => readOwnImage(localStorage));
@@ -642,7 +644,7 @@ export function CharacterChoiceRows({
 
   return (
     <div className={cn("flex flex-col gap-2")}>
-      {CHARACTER_CHOICES.map((option) => (
+      {pick.rows.map((option) => [
         <Button
           key={option.id}
           type="button"
@@ -657,8 +659,9 @@ export function CharacterChoiceRows({
             <img src={option.src} alt="" width={40} height={40} className={cn("size-10")} />
           ) : null}
           {option.label}
-        </Button>
-      ))}
+        </Button>,
+        option.id === pick.separatorAfter ? <Separator key={`${option.id}-line`} /> : null,
+      ])}
       <div className={cn("flex w-full items-start gap-2")}>
         <Button
           type="button"

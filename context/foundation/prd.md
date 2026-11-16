@@ -38,7 +38,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 ### Secondary
 
 - Rodzic może wybrać ulubioną postać dziecka, która pojawia się na każdej karcie.
-- Rodzic może wybrać dowolną postać z katalogu jedenastu dostarczonych postaci.
+- Rodzic może wybrać dowolną postać z katalogu czternastu postaci: jedenastu stałych i trzech świątecznych widocznych na liście 15.11–6.01 (GitHub 370).
 - Rodzic może na telefonie wygenerować kartę i wydrukować ją jako jedną stronę A4.
 - Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej i wejść na stronę generatora tego rodzaju.
 - Rodzic może wygenerować kartę symetrii, na której dziecko dorysowuje drugą połowę obiektu (np. rakiety, robota, truskawki) na kratce, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
@@ -112,7 +112,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Katalog to jedenaście postaci: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka. Wiersz „Brak” (bez postaci) zostaje.
+- Katalog to czternaście postaci: jedenaście stałych (Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka) i trzy świąteczne (Bałwanek, Mikołaj, Renifer). Wiersz „Brak” (bez postaci) zostaje. Świąteczne postacie są na liście wyboru tylko od 15.11 do 6.01, zaraz po „Brak” i oddzielone od pozostałych kreską; poza oknem lista ma jedenaście postaci bez kreski. Zapisana ulubiona albo ostatnio użyta postać świąteczna zostaje poza oknem: jej wiersz jest na liście zaznaczony, a karta ją pokazuje (decyzja 2026-11-15, GitHub 370).
 - Ta sama lista jest przy pasku „Postać” na stronie każdej karty, przy tworzeniu profilu i przy zapisie ulubionej postaci.
 - Wygląd dodawania profilu i zapisu ulubionej postaci może się zmienić, żeby zmieścić pełną listę.
 - Przy niższej rozdzielczości pełna lista jest widoczna, a nie ucięta.
@@ -647,7 +647,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 ### Katalog postaci i telefon
 
-- FR-012: Rodzic może wybrać dowolną postać z dostarczonego katalogu jedenastu postaci: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka. Priority: must-have
+- FR-012: Rodzic może wybrać dowolną postać z dostarczonego katalogu czternastu postaci: jedenastu stałych (Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka i Wróżka) i trzech świątecznych (Bałwanek, Mikołaj, Renifer), które lista pokazuje tylko 15.11–6.01. Priority: must-have
 - FR-013: Rodzic może na telefonie wygenerować labirynt, zobaczyć kartę i wydrukować ją jako jedną stronę A4. Priority: must-have
 
 ### Rodzaje kart i symetria
@@ -755,7 +755,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 Aplikacja zawsze tworzy labirynt z dokładnie jednym rozwiązaniem, a poziom wyznaczają szerokość alejki i sposób losowania labiryntu.
 
-Rodzic wybiera jeden z sześciu numerowanych poziomów (Poziom 1–6) oraz jedną z jedenastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka albo Wróżka. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Każdy poziom ma inną szerokość alejki. Każde Generuj daje nowy labirynt.
+Rodzic wybiera jeden z sześciu numerowanych poziomów (Poziom 1–6) oraz jedną z czternastu postaci dostarczonego katalogu: Samochodzik, Rakieta, Dinozaur, Jednorożec, Kot, Pies, Robot, Smok, Strażak, Syrenka, Wróżka albo, od 15.11 do 6.01, Bałwanek, Mikołaj, Renifer. Może też zostać bez postaci. Obrys zostaje pionowym prostokątem na kartce A4. Osobnej kontrolki długości drogi nie ma. Każdy poziom ma inną szerokość alejki. Każde Generuj daje nowy labirynt.
 
 | Poziom   | Dawna nazwa | Alejka       | Siatka | Losowanie                         | Droga do mety (typowo) |
 | -------- | ----------- | ------------ | ------ | --------------------------------- | ---------------------- |
@@ -1149,7 +1149,7 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — TBD by user. Block: no (pain and missing capability are captured; the second vision paragraph is incomplete until this lands).
 2. ~~**Ile komórek głębokości odróżnia płytką ślepą uliczkę od głębokiej?**~~ — Zamknięte 2026-10-16 jako nieaktualne: poziom wyznacza sposób losowania, nie próg głębokości odnogi (`random-maze-generator`).
-3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka.
+3. **Jakie jest źródło dostarczonych postaci i jakie prawa pozwalają użyć ich w produkcie?** — Owner: user. Block: yes before publishing the character-selection feature. Pierwszy nazwany zestaw (2026-10-04): samochodzik, rakieta, dinozaur, rysowane z pomocą AI. Katalog na 2026-10-10 dokłada jednorożca, kota, psa, robota, smoka, strażaka, syrenkę i wróżkę. Planowanie FR-012 nie czeka na prawa; publikacja szerszego katalogu czeka. Dopisek 2026-11-15 (GitHub 370): Mikołaj, renifer i bałwanek to ogólne postacie narysowane z pomocą AI przez użytkowniczkę, która ma do nich prawa; renifer ma ciemny nos (nie czerwony), żeby nie przypominał Rudolfa, a Mikołaj nie jest maskotką żadnej marki.
 4. ~~**Czy poziom nastolatka ma pokazywać postać?**~~ — Zamknięte 2026-10-25: na nastolatku wybrana postać stoi nad narożnym startem, lewą krawędzią równo z lewą krawędzią labiryntu, a pas nad znakiem równa się pasowi pod „Meta”; młodsze poziomy zostają ze znakiem na środku wejścia (`teen-level-character-choice`).
 5. **Czy startowe wartości poziomów symetrii (kratka, siatka, obiekty, podpowiedź) pasują dziecku?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-10-22, przebudowaną 2026-10-23 (obiekty zamiast gęstości plamy); potwierdza ją wydruk w kamieniu poziomów (S-13), nie planowanie. Połowa siatki 8×12 ma 4 kratki szerokości: rozstrzygnięte 2026-10-23 po makiecie, poziom 4 lat ma własne, prostsze warianty obiektów, a poziom 7 lat bogatsze. Oś pozioma i odsunięcie od osi wycofane z poziomów. Czeka na wydruk w S-13 (faza 4).
 6. **Czy karta symetrii ma kiedyś używać postaci jako wzoru (np. połowa sylwetki)?** — Owner: user. Block: no. Częściowo rozstrzygnięte 2026-10-26: postać stoi przy poleceniu na każdej karcie (US-21). Postać jako wzór na kratce zależy od obrysów postaci (Po MVP), jak „Połącz kropki”. Szablony obiektów karty symetrii (2026-10-23) to osobny katalog i nie czekają na tę decyzję.

@@ -5,6 +5,7 @@ import { KOSMOS } from "./objects/kosmos.ts";
 import { KSZTALTY } from "./objects/ksztalty.ts";
 import { PRZYRODA } from "./objects/przyroda.ts";
 import { ZWIERZETA } from "./objects/zwierzeta.ts";
+import { inWindow } from "../date-window.ts";
 import type { SymmetryLevelId } from "./levels.ts";
 import { OBJECT_CATEGORIES } from "./template-format.ts";
 import type {
@@ -73,14 +74,6 @@ export const OBJECT_CATEGORY_CHOICES: readonly { id: ObjectCategoryChoiceId; lab
     )
     .map(({ id, label }) => ({ id, label })),
 ];
-
-/** Whether `today` (local month and day) is inside the window, ends included, also across New Year. */
-function inWindow(window: CategoryWindow, today: Date): boolean {
-  const day = (today.getMonth() + 1) * 100 + today.getDate();
-  const from = window.from.month * 100 + window.from.day;
-  const to = window.to.month * 100 + window.to.day;
-  return from <= to ? from <= day && day <= to : day >= from || day <= to;
-}
 
 function categoryOpenOn(id: ObjectCategoryId, today: Date): boolean {
   const category: ObjectCategory | undefined = OBJECT_CATEGORIES.find((candidate) => candidate.id === id);
