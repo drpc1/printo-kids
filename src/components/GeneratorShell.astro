@@ -120,9 +120,9 @@ const { heading, description } = Astro.props;
   /* iOS print evaluates media queries and vh against the browser window on screen, not the page: 100vh is the
      window height (about 175 mm CSS on an iPhone), so a vh limit gave a different sheet in Safari, Chrome and
      Brave and changed with their toolbars (108vh printed two pages in Brave iOS, 2026-11-16). The sheet takes a
-     share of the page width instead and its height follows the A4 ratio. On an iPhone 96% fit one page in Safari
-     and Brave, with Safari about 3 mm from a second page (Chrome adds no header or footer and fit a larger
-     sheet); 94% leaves room. A desktop prints 210 mm wide and has a hover pointer, so it keeps 100vh. */
+     share of the page width instead and its height follows the A4 ratio. On an iPhone 96% fit one page in Safari,
+     Chrome and Brave, with Safari about 3 mm from a second page (Chrome adds no header or footer, so the same
+     share gives it a larger sheet); 94% leaves room. A desktop prints 210 mm wide and has a hover pointer, so it keeps 100vh. */
   @media print and (hover: none) and (max-width: 175mm) {
     #worksheet-home svg {
       width: 94%;
