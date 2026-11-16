@@ -387,10 +387,10 @@ Brak: nowe pole `cards.zegar` w zapisanych profilach ma wartość domyślną prz
 
 #### Automated
 
-- [ ] 4.1 Po ewentualnej poprawce: `npm test` i `npm run build`
+- [x] 4.1 Po ewentualnej poprawce: `npm test` i `npm run build` — 2952750
 
 #### Manual
 
-- [ ] 4.2 Wydruk każdego trybu (Poziom 1, 4, 5 i z 24 h) na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
-- [ ] 4.3 Dziecko odczytuje liczby i wskazówki, mieści godzinę w kratkach i dorysowuje wskazówki na tarczy Dorysuj
-- [ ] 4.4 Niewiadoma S-41 o porach dnia zamknięta w roadmapie i PRD
+- [x] 4.2 Wydruk każdego trybu (Poziom 1, 4, 5 i z 24 h) na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno) — 2952750
+- [x] 4.3 Dziecko odczytuje liczby i wskazówki, mieści godzinę w kratkach i dorysowuje wskazówki na tarczy Dorysuj — 2952750
+- [x] 4.4 Niewiadoma S-41 o porach dnia zamknięta w roadmapie i PRD — 2952750
