@@ -6,9 +6,6 @@ import type { ClockSettings } from "../card-settings.ts";
 import { clockEngine, clockSpec, knownBadBases } from "./engine.ts";
 import { CLOCK_LEVELS, CLOCK_MODES } from "./levels.ts";
 
-// The kind is "zegar" before phase 3 registers it, so it is compared as a plain string.
-const kindOf = (value: { kind: string }): string => value.kind;
-
 function mulberry32(seed: number): () => number {
   let state = seed >>> 0;
   return () => {
@@ -39,7 +36,7 @@ void describe("clockEngine", () => {
         for (const h24 of [false, true]) {
           const settings: ClockSettings = { level: level.id, mode: mode.id, h24 };
           const verified = clockEngine.generate(settings, mulberry32(3), null);
-          assert.equal(kindOf(verified), "zegar");
+          assert.equal(verified.kind, "zegar");
           assert.deepEqual(clockSpec.problems(verified.card, settings), []);
           assert.equal(verified.key, clockSpec.keyOf(verified.card));
           assert.ok(Object.isFrozen(verified.card) && Object.isFrozen(verified.card.times));
@@ -59,7 +56,7 @@ void describe("clockEngine", () => {
     const settings: ClockSettings = { level: "poziom1", mode: "odczytaj", h24: false };
     assert.throws(
       () => clockEngine.generate(settings, () => 0.5, null),
-      (error: unknown) => error instanceof CardExhausted && kindOf(error) === "zegar" && error.attempts > 0,
+      (error: unknown) => error instanceof CardExhausted && error.kind === "zegar" && error.attempts > 0,
     );
   });
 });

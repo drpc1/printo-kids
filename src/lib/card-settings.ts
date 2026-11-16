@@ -1,4 +1,11 @@
-import type { ClockLevelId, ClockModeId } from "./clock/levels.ts";
+import {
+  CLOCK_LEVELS,
+  CLOCK_MODE_IDS,
+  DEFAULT_CLOCK_LEVEL_ID,
+  DEFAULT_CLOCK_MODE_ID,
+  type ClockLevelId,
+  type ClockModeId,
+} from "./clock/levels.ts";
 import { COPY_DRAWING_LEVELS, DEFAULT_COPY_DRAWING_LEVEL_ID, type CopyDrawingLevelId } from "./copy-drawing/levels.ts";
 import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } from "./dictation/levels.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
@@ -90,7 +97,7 @@ export interface MathCrosswordSettings {
   level: MathCrosswordLevelId;
 }
 
-/** "Zegar" (S-41): every one of the three lays out a new card. Phase 3 adds it to `CardSettingsMap`. */
+/** "Zegar" (S-41): every one of the three lays out a new card. */
 export interface ClockSettings {
   level: ClockLevelId;
   mode: ClockModeId;
@@ -109,6 +116,7 @@ export interface CardSettingsMap {
   kopiuj?: CopyDrawingSettings;
   szlaczki?: PatternLinesSettings;
   krzyzowka?: MathCrosswordSettings;
+  zegar?: ClockSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -125,6 +133,7 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "kopiuj",
   "szlaczki",
   "krzyzowka",
+  "zegar",
 ];
 
 /** The settings of one card. */
@@ -144,6 +153,7 @@ const DEFAULTS: Defaults = {
   kopiuj: { level: DEFAULT_COPY_DRAWING_LEVEL_ID, category: DEFAULT_OBJECT_CATEGORY_ID, colors: false },
   szlaczki: { level: DEFAULT_PATTERN_LINES_LEVEL_ID, lines: true },
   krzyzowka: { level: DEFAULT_MATH_CROSSWORD_LEVEL_ID },
+  zegar: { level: DEFAULT_CLOCK_LEVEL_ID, mode: DEFAULT_CLOCK_MODE_ID, h24: false },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -226,7 +236,7 @@ function parseCard<K extends CardSettingsId>(cardId: K, stored: Record<string, u
 }
 
 function fieldValue(cardId: CardSettingsId, field: string, value: unknown, fallback: unknown): unknown {
-  if (field === "colors" || field === "lines") {
+  if (field === "colors" || field === "lines" || field === "h24") {
     return typeof value === "boolean" ? value : fallback;
   }
   if (field === "category") {
@@ -240,6 +250,9 @@ function fieldValue(cardId: CardSettingsId, field: string, value: unknown, fallb
   }
   if (field === "symbols") {
     return value === "shapes" || value === "digits" ? value : fallback;
+  }
+  if (field === "mode") {
+    return CLOCK_MODE_IDS.includes(value as ClockModeId) ? value : fallback;
   }
 
   return levelIds(cardId).includes(value as string) ? value : fallback;
@@ -270,6 +283,8 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return PATTERN_LINES_LEVELS.map((level) => level.id);
     case "krzyzowka":
       return MATH_CROSSWORD_LEVELS.map((level) => level.id);
+    case "zegar":
+      return CLOCK_LEVELS.map((level) => level.id);
   }
 }
 

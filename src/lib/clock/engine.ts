@@ -1,23 +1,13 @@
 // "Zegar" as a card kind (S-41, phase 2): `clockSpec` wraps `clockProblems`, `clockEngine` wraps the generator. The
 // level, the mode and "24 h" are all content: each changes the times or how many dials there are. Running out of attempts
 // is `CardExhausted`; the engine never returns null.
-import {
-  CardExhausted,
-  VerifiedCard,
-  type CardEngine,
-  type CardKindId,
-  type CardProblem,
-  type CardSpec,
-} from "../card-contract.ts";
+import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { ClockSettings } from "../card-settings.ts";
 import { clockKey, clockProblems, type ClockCard, type ClockTime } from "./card.ts";
 import { generateClockCard, MAX_ATTEMPTS } from "./generate.ts";
 import { clockLevelById, clockModeById } from "./levels.ts";
 
 type Bad = CardSpec<ClockSettings, ClockCard>["knownBad"][number];
-
-// Phase 3 registers "zegar" in cards.ts and removes this cast; until then it is not a CardKindId.
-const KIND = "zegar" as CardKindId;
 
 const at = (h: number, m: number): ClockTime => ({ h, m });
 
@@ -117,7 +107,7 @@ function knownBad(): readonly Bad[] {
 let knownBadCache: readonly Bad[] | undefined;
 
 export const clockSpec: CardSpec<ClockSettings, ClockCard> = {
-  kind: KIND,
+  kind: "zegar",
   problems: (candidate, settings): readonly CardProblem[] =>
     clockProblems(candidate, settings).map((code) => ({
       code,
