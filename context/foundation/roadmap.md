@@ -54,7 +54,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-41 | clock-card           | Rodzic otwiera z katalogu „Zegar”, wybiera poziom, tryb (odczytaj, dorysuj, połącz) i 24 h, generuje kartę A4 z tarczami zegara, podgląda ją i drukuje; profil pamięta pasek | —                                        | MS-01, FR-043, FR-044, US-33, US-34         | done     |
 | S-42 | coding-card          | Rodzic otwiera z katalogu karty kodowania, wybiera poziom, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje; profil pamięta pasek              | —                                        | MS-01, FR-014, FR-017, FR-030, US-05, US-08 | proposed |
 | S-43 | card-tags-filter     | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                                 | S-40, S-41, S-42                         | MS-04, FR-014, US-05                        | proposed |
-| S-44 | how-it-works-m6      | Rodzic otwiera „Jak to działa” i widzi poprawny opis nowych kart, sezonowych postaci i obiektów oraz filtra w katalogu                                                       | S-38, S-39, S-40, S-41, S-42, S-43       | MS-01, MS-02, MS-03, MS-04, US-22, FR-031   | proposed |
+| S-44 | how-it-works-m6      | Rodzic otwiera „Jak to działa” i widzi poprawny opis nowych kart, sezonowych postaci i obiektów oraz filtra w katalogu                                                       | S-38, S-39, S-40, S-41, S-42, S-43       | MS-01, MS-02, MS-03, MS-04, US-22, FR-031   | done     |
 | S-45 | stryker-m6-cards     | Rodzic dostaje nowe karty i logikę M-6 sprawdzone mutacjami Strykera na zakresach z ryzykiem (solver krzyżówki, reguły jednoznaczności nowych kart, filtr, jeśli ma logikę)  | S-40, S-41, S-42, S-43                   | MS-01, MS-04                                | proposed |
 | S-46 | test-plan-m6         | Zespół ma test-plan.md zgodny ze stanem po M-6: nowe karty, filtr i sezonowa zawartość w mapie ryzyk, §5 i §5a, bez nieaktualnych liczb kart                                 | S-38, S-39, S-40, S-41, S-42, S-43, S-45 | MS-01, MS-02, MS-03, MS-04                  | proposed |
 
@@ -182,7 +182,7 @@ Brak. Kategorie obiektów, katalog kart, pamięć paska i postać przy poleceniu
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Test zgodności treści z UI i PRD jest pisany na sztywno pod liczby kart i postaci; edycja przed końcem pozostałych kawałków rozjedzie się z tym, co rodzic widzi. Dlatego idzie na końcu treści, jak S-32 w M-4 i S-37 w M-5.
-- **Status:** proposed
+- **Status:** done
 
 ### S-45: Stryker dla nowych kart i filtra M-6
 
@@ -317,3 +317,4 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-37: Rodzic otwiera ze stopki „Jak to działa” i znajduje opisy dziesięciu rodzajów kart, a akapit „Poziomy” mówi prawdę o wszystkich dziesięciu (trzy poziomy, numery, wiek tylko przy czterech starych kartach).** — Archived 2026-11-10 → `context/archive/2026-11-10-how-it-works-new-cards/`. Lesson: —.
 - **S-40: Rodzic otwiera z katalogu „Krzyżówkę matematyczną”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z siatką działań, które krzyżują się we wspólnych polach; część liczb jest wpisana, reszta pusta do uzupełnienia. Widzi podgląd i drukuje kartę jako jedną stronę A4 także z telefonu. Profil pamięta pasek, postać stoi przy poleceniu, karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43. Generator sprawdza, że każde puste pole ma jedno rozwiązanie.** — Archived 2026-11-14 → `context/archive/2026-11-13-math-crossword-card/`. Lesson: —.
 - **S-41: Rodzic otwiera z katalogu „Zegar”, wybiera poziom (Poziom 1–5: od pełnych godzin po co minutę), tryb (Odczytaj, Dorysuj, Połącz) i zapis 24-godzinny, generuje kartę A4 z tarczami zegara ze wskazówkami, podgląda ją i drukuje także z telefonu; profil pamięta poziom, tryb i 24 h, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43.** — Archived 2026-11-16 → `context/archive/2026-11-15-clock-card/`. Lesson: —.
+- **S-44: Rodzic otwiera ze stopki „Jak to działa” i widzi opisy wszystkich rodzajów kart, poziomy i profil oraz krótką sekcję o świątecznych postaciach i obiektach (15.11–6.01).** — Archived 2026-11-16 → `context/archive/2026-11-16-how-it-works-m6/`. Lesson: —.
