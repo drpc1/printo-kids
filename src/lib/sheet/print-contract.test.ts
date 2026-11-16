@@ -72,12 +72,17 @@ void describe("print contract", () => {
     assert.match(printCss, /#worksheet-home svg\s*\{[^}]*max-height:\s*100vh\s*;/);
   });
 
-  void test("a phone print lifts the sheet's height limit, and a desktop print keeps 100vh", () => {
-    // iOS print reports 100vh as about 82% of the printable height; 108vh fit one A4 page on an iPhone.
+  void test("a phone print sizes the sheet by the page width, and a desktop print keeps 100vh", () => {
+    // iOS print measures vh against the browser window, so a vh limit changed with the browser's toolbars
+    // (108vh printed two pages in Brave iOS); 94% of the page width fits one A4 page on an iPhone.
     // hover: none and the narrow width keep a desktop with a hover pointer and a 210 mm page on 100vh.
     const home = readRepoFile(WORKSHEET_HOME);
     const phonePrint = extractBlock(home, "@media print and (hover: none) and (max-width: 175mm)");
-    assert.match(phonePrint, /#worksheet-home svg\s*\{\s*max-height:\s*108vh\s*;\s*\}/);
+    assert.match(
+      phonePrint,
+      /#worksheet-home svg\s*\{\s*width:\s*94%\s*;\s*height:\s*auto\s*;\s*max-height:\s*none\s*;\s*\}/,
+    );
+    assert.equal(/\d\s*vh\b/.test(phonePrint), false);
     assert.equal(home.match(/@media print\b/g)?.length, 2);
   });
 
