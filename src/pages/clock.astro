@@ -1,0 +1,12 @@
+---
+import ClockGenerator from "@/components/ClockGenerator";
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import Layout from "@/layouts/Layout.astro";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
+---
+
+<Layout title={cardPageTitle("zegar")} lang="pl">
+  <GeneratorShell heading={cardTitle("zegar")} description="Wygeneruj kartę z zegarami i wydrukuj ją na kartce A4.">
+    <ClockGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>

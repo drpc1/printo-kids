@@ -202,6 +202,28 @@ void describe("cardSummaries", () => {
     assert.equal(used.detail, "Poziom 6");
   });
 
+  void test("the clock card shows its numbered level, always the mode, and 24 h only when it is on", () => {
+    const fresh = byId(cardSummaries(profile("lat5")), "zegar");
+    assert.equal(fresh.used, false);
+    assert.equal(fresh.badge, null);
+    assert.equal(fresh.title, "Zegar");
+    assert.equal(fresh.href, "/clock");
+
+    const plain = byId(
+      cardSummaries(profile("lat5", { zegar: { level: "poziom1", mode: "odczytaj", h24: false } })),
+      "zegar",
+    );
+    assert.equal(plain.badge, "poz. 1");
+    assert.equal(plain.detail, "Poziom 1 · Odczytaj");
+
+    const day = byId(
+      cardSummaries(profile("lat5", { zegar: { level: "poziom4", mode: "polacz", h24: true } })),
+      "zegar",
+    );
+    assert.equal(day.badge, "poz. 4");
+    assert.equal(day.detail, "Poziom 4 · Połącz · 24 h");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -239,6 +261,7 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   kopiuj: { kopiuj: defaultCardSettings("kopiuj") },
   szlaczki: { szlaczki: defaultCardSettings("szlaczki") },
   krzyzowka: { krzyzowka: defaultCardSettings("krzyzowka") },
+  zegar: { zegar: defaultCardSettings("zegar") },
 };
 
 void describe("the card registry and summaryParts", () => {

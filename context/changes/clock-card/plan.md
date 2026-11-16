@@ -366,22 +366,22 @@ Brak: nowe pole `cards.zegar` w zapisanych profilach ma wartość domyślną prz
 #### Manual
 
 - [x] 2.6 Użytkowniczka akceptuje podgląd trzech trybów z `preview.mts` (Poziom 1, Poziom 4, 24 h) — 861b7e6
-- [x] 2.7 Przegląd diffu względem planu i makiety
+- [x] 2.7 Przegląd diffu względem planu i makiety — 0e81612
 
 ### Phase 3: Strona, katalog i profil
 
 #### Automated
 
-- [ ] 3.1 Testy jednostkowe: `npm test`
-- [ ] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build`
-- [ ] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
-- [ ] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke`
+- [x] 3.1 Testy jednostkowe: `npm test` — 8c5b18c
+- [x] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` — 8c5b18c
+- [x] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` — 8c5b18c
+- [x] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke` — 8c5b18c
 
 #### Manual
 
-- [ ] 3.5 Użytkowniczka sprawdza każdy poziom i tryb na stronie, z 24 h i bez, oraz podgląd wydruku (jedna strona A4)
-- [ ] 3.6 Miniatura w katalogu, plakietka „poz. N” przy profilu i podsumowanie „Zegar: Poziom N · tryb (· 24 h)” w oknie profilu są poprawne
-- [ ] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, „24 h” w osobnej linii, karta mieści się na A4
+- [x] 3.5 Użytkowniczka sprawdza każdy poziom i tryb na stronie, z 24 h i bez, oraz podgląd wydruku (jedna strona A4) — 8c5b18c
+- [x] 3.6 Miniatura w katalogu, plakietka „poz. N” przy profilu i podsumowanie „Zegar: Poziom N · tryb (· 24 h)” w oknie profilu są poprawne — 8c5b18c
+- [x] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, „24 h” w osobnej linii, karta mieści się na A4 — 8c5b18c
 
 ### Phase 4: Wydruk próbny
 

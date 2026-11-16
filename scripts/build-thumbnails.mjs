@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines and math-crossword cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword and clock cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -52,6 +52,11 @@ import { layoutPatternLinesSheet } from "../src/lib/pattern-lines/layout.ts";
 import { DEFAULT_PATTERN_LINES_LEVEL_ID, patternLinesLevelById } from "../src/lib/pattern-lines/levels.ts";
 import { rowGeometry } from "../src/lib/pattern-lines/paths.ts";
 import { PATTERN_LINES_SHEET } from "../src/lib/pattern-lines/sheet.ts";
+import { formatClockTime } from "../src/lib/clock/card.ts";
+import { generateClockCard } from "../src/lib/clock/generate.ts";
+import { drawDial, layoutClockSheet } from "../src/lib/clock/layout.ts";
+import { clockLevelById, clockModeById } from "../src/lib/clock/levels.ts";
+import { CLOCK_SHEET } from "../src/lib/clock/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -785,3 +790,74 @@ crosswordLines.push("</svg>", "");
 const crosswordOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/krzyzowka.svg");
 writeFileSync(crosswordOutFile, crosswordLines.join("\n"));
 console.log(`Wrote ${crosswordOutFile}`);
+
+// Clock card: the elements ClockSheet draws (src/components/ClockSheet.tsx), in literal black, in the Odczytaj mode on
+// Poziom 2 without "24 h", so the thumbnail shows half past on at least half the dials. Dials come from `drawDial` and
+// positions from `layoutClockSheet` (src/lib/clock/layout.ts), constants from src/lib/clock/sheet.ts. The band holds
+// the plain instruction (no character).
+const CLOCK_SEED = 20261116;
+const CLOCK = CLOCK_SHEET;
+const clockLevel = clockLevelById("poziom2");
+const clockMode = clockModeById("odczytaj");
+
+const clockCard = generateClockCard(mulberry32(CLOCK_SEED), null, clockLevel, clockMode, false);
+if (clockCard === null) {
+  throw new Error(`Seed ${CLOCK_SEED} did not produce a valid clock card`);
+}
+
+const clockLayout = layoutClockSheet(clockCard, CLOCK.plainInstructionSize);
+const clockText = (x, y, size, body, extra = "") =>
+  `<text x="${num(x)}" y="${num(y + size * CLOCK.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${num(size)}" text-anchor="middle"${extra}>${body}</text>`;
+const clockLine = (line, cap = "") =>
+  `<line x1="${num(line.x1)}" y1="${num(line.y1)}" x2="${num(line.x2)}" y2="${num(line.y2)}" stroke="#000" stroke-width="${num(line.stroke)}"${cap}/>`;
+const clockBox = (rect, stroke) =>
+  `<rect x="${num(rect.x)}" y="${num(rect.y)}" width="${num(rect.width)}" height="${num(rect.height)}" fill="#fff" stroke="#000" stroke-width="${stroke}"/>`;
+
+const clockLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CLOCK.pageWidth} ${CLOCK.pageHeight}" width="${CLOCK.pageWidth}" height="${CLOCK.pageHeight}">`,
+  `<rect width="${CLOCK.pageWidth}" height="${CLOCK.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${CLOCK.pageWidth - 0.5}" height="${CLOCK.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  clockText(
+    CLOCK.pageWidth / 2,
+    clockLayout.band.y + clockLayout.band.height / 2,
+    CLOCK.plainInstructionSize,
+    clockMode.instruction,
+  ),
+];
+for (const place of clockLayout.dials) {
+  const drawing = drawDial(place.cx, place.cy, clockLayout.radius, clockLevel.minuteTicks, clockCard.times[place.time]);
+  clockLines.push(
+    `<circle cx="${num(place.cx)}" cy="${num(place.cy)}" r="${num(clockLayout.radius)}" fill="#fff" stroke="#000" stroke-width="${drawing.rimStroke}"/>`,
+  );
+  for (const tick of drawing.ticks) clockLines.push(clockLine(tick));
+  if (drawing.hands !== null) {
+    clockLines.push(
+      clockLine(drawing.hands.hour, ' stroke-linecap="round"'),
+      clockLine(drawing.hands.minute, ' stroke-linecap="round"'),
+    );
+  }
+  for (const number of drawing.numbers) {
+    clockLines.push(
+      clockText(
+        number.x,
+        number.y,
+        number.size,
+        number.text,
+        ` font-weight="bold" stroke="#fff" stroke-width="${num(number.halo)}" stroke-linejoin="round" paint-order="stroke"`,
+      ),
+    );
+  }
+  clockLines.push(`<circle cx="${num(place.cx)}" cy="${num(place.cy)}" r="${num(drawing.centreDot)}" fill="#000"/>`);
+  if (place.answer !== null) {
+    clockLines.push(
+      clockBox(place.answer.hours, CLOCK.answerBox.stroke),
+      clockBox(place.answer.minutes, CLOCK.answerBox.stroke),
+      clockText(place.answer.colon.x, place.answer.colon.y, CLOCK.answerBox.colonSize, ":", ' font-weight="bold"'),
+    );
+  }
+}
+clockLines.push("</svg>", "");
+
+const clockOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/zegar.svg");
+writeFileSync(clockOutFile, clockLines.join("\n"));
+console.log(`Wrote ${clockOutFile} (${clockCard.times.map(formatClockTime).join(", ")})`);

@@ -35,6 +35,9 @@ const PATTERN_LINES_SHEET = "src/components/PatternLinesSheet.tsx";
 const MATH_CROSSWORD_PAGE = "src/pages/math-crossword.astro";
 const MATH_CROSSWORD_GENERATOR = "src/components/MathCrosswordGenerator.tsx";
 const MATH_CROSSWORD_SHEET = "src/components/MathCrosswordSheet.tsx";
+const CLOCK_PAGE = "src/pages/clock.astro";
+const CLOCK_GENERATOR = "src/components/ClockGenerator.tsx";
+const CLOCK_SHEET = "src/components/ClockSheet.tsx";
 const CARD_PAGE = "src/components/CardPage.tsx";
 const CARD_PAGE_HOOK = "src/hooks/useCardPage.ts";
 const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
@@ -444,6 +447,34 @@ void describe("print contract", () => {
     assert.equal(page.includes("@page"), false);
   });
 
+  void test("the printed clock SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(CLOCK_SHEET));
+
+    for (const token of [
+      "print:w-[210mm]",
+      "print:h-[297mm]",
+      "print:overflow-hidden",
+      "print:block",
+      "print:max-h-[297mm]",
+      "print:ring-0",
+    ]) {
+      assert.ok(svgClass.includes(token), token);
+    }
+  });
+
+  void test("the clock card has no answer on screen, so neither its sheet nor its generator hides anything in print", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(CLOCK_SHEET), "print:hidden"), []);
+    assert.deepEqual(classNamesContaining(readRepoFile(CLOCK_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(CLOCK_GENERATOR));
+  });
+
+  void test("the clock page lives under /clock, uses the shared shell, and has no @page of its own", () => {
+    const page = readRepoFile(CLOCK_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<ClockGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
   void test("every card page except the maze has the Postać bar and draws the character beside the instruction", () => {
     for (const path of [
       SYMMETRY_GENERATOR,
@@ -457,6 +488,7 @@ void describe("print contract", () => {
       COPY_DRAWING_SHEET,
       PATTERN_LINES_SHEET,
       MATH_CROSSWORD_SHEET,
+      CLOCK_SHEET,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterInstruction\b/, `${path} draws the speech band`);
@@ -477,6 +509,7 @@ void describe("print contract", () => {
       COPY_DRAWING_GENERATOR,
       PATTERN_LINES_GENERATOR,
       MATH_CROSSWORD_GENERATOR,
+      CLOCK_GENERATOR,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
@@ -498,6 +531,7 @@ void describe("print contract", () => {
       COPY_DRAWING_SHEET,
       PATTERN_LINES_SHEET,
       MATH_CROSSWORD_SHEET,
+      CLOCK_SHEET,
     ]) {
       assert.match(readRepoFile(path), /printColorAdjust:\s*"exact"/, path);
     }
