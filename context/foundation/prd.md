@@ -65,6 +65,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic wybiera poziom każdej z czterech nowych kart bez nazw wieku, a profil sam pamięta ustawienia ich paska; na każdej stoi postać przy poleceniu.
 - Rodzic może wygenerować krzyżówkę matematyczną, w której działania „a ○ b = c” krzyżują się we wspólnych liczbach, a dziecko uzupełnia puste pola, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-13, S-40).
 - Rodzic może wybrać poziom krzyżówki matematycznej (Poziom 1–7: od dodawania do 10 po cztery działania do 100); profil sam pamięta poziom (2026-11-13, S-40).
+- Rodzic może wygenerować kartę „Zegar”, na której dziecko odczytuje godzinę z tarczy ze wskazówkami, dorysowuje wskazówki do podanej godziny albo łączy tarczę z zegarem cyfrowym, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-15).
+- Rodzic może wybrać poziom karty „Zegar” (Poziom 1–5: od pełnych godzin po co minutę), tryb i zapis 24-godzinny; profil sam pamięta pasek (2026-11-15).
 
 ### Guardrails
 
@@ -144,7 +146,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Strona główna to katalog: każdy rodzaj karty ma miniaturę pokazującą z grubsza, jak wygląda wygenerowana karta, i nazwę. Rodzic nie musi zgadywać po nazwie.
 - Każdy rodzaj ma własną stronę z własnym adresem (labirynt: `/maze`, symetria: `/symmetry`). Kliknięcie miniatury otwiera ją.
-- Katalog mieści co najmniej 10 rodzajów i jest czytelny na telefonie (miniatury w 2 kolumnach) i na komputerze. Od M-5 ma dziesięć: każda z czterech nowych kart (US-23, US-25, US-27, US-29) ma własną miniaturę pokazującą z grubsza, jak wygląda wygenerowana karta, i nazwę.
+- Katalog mieści co najmniej 10 rodzajów i jest czytelny na telefonie (miniatury w 2 kolumnach) i na komputerze. Od M-5 ma dziesięć: każda z czterech nowych kart (US-23, US-25, US-27, US-29) ma własną miniaturę pokazującą z grubsza, jak wygląda wygenerowana karta, i nazwę. Od M-6 ma dwanaście: dochodzą krzyżówka matematyczna (US-31) i zegar (US-33), każda z własną miniaturą (2026-11-16, S-41).
 - Na stronie generatora jest link „Wszystkie karty” z powrotem do katalogu.
 - Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma poza stopką z linkami „Jak to działa” i „Podziel się opinią” (US-22).
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
@@ -414,7 +416,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Pod listą postaci przy aktywnym profilu, gdy wybrana postać różni się od ulubionej, jest tekst „Tylko na tę kartę” i wybór „Ustaw jako ulubioną {imię}”.
 - Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia; przy labiryncie, symetrii, sekwencjach i dyktandzie (kartach z dawną nazwą wiekową) ma też pod opisem typowy wiek z kolumny „Dawna nazwa”. Wiersz ma więc trzy linie, np. „Poziom 3” / „mniejsza kratka, bez podpowiedzi” / „zwykle ok. 6 lat”; sudoku i nonogram mają dwie linie („łatwy” / „znaczki przy wierszach, duża kratka”), bez wieku (decyzja 2026-10-26).
 - Okno profilu ma jedno zdanie: ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
-- W stopce jest link do krótkiej strony „Jak to działa” z całą zasadą profilu, poziomów i postaci. Strona wymienia wszystkie rodzaje kart z krótkim opisem i opisuje poziomy każdej z nich, także czterech kart z M-5 („Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek”, szlaczki; US-23–US-30).
+- W stopce jest link do krótkiej strony „Jak to działa” z całą zasadą profilu, poziomów i postaci. Strona wymienia wszystkie rodzaje kart z krótkim opisem i opisuje poziomy każdej z nich, także czterech kart z M-5 („Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek”, szlaczki; US-23–US-30) i kart z M-6 (krzyżówka matematyczna, zegar; US-31–US-34; 2026-11-16).
 - W stopce obok „Jak to działa” jest link „Podziel się opinią” do anonimowego, zewnętrznego formularza (Google Forms), otwierany w nowej karcie. Formularz wypełnia się dobrowolnie poza aplikacją; aplikacja nie wysyła do niego żadnych danych z urządzenia. Stopka z oboma linkami nie drukuje się (decyzja 2026-11-06, GitHub 292).
 - Gdy Generuj albo nowa karta po zmianie ustawienia się nie udały, w miejscu karty jest krótka przyczyna (np. brak kolejnych różnych kart w kategorii), pasek ustawień zostaje, a Drukuj jest wyłączone (decyzja 2026-11-06, GitHub 283).
 - Drukuj na karcie, która już była drukowana, pyta „Ta karta była już drukowana” z wyborem „Nowa karta” i „Drukuj tę samą”. „Nowa karta” tylko układa nową kartę, a drukuje ją następne Drukuj, bo Safari blokuje druk, który nie wynika wprost z kliknięcia (decyzja 2026-11-07). Ctrl+P i druk z menu przeglądarki drukują bez pytania, bo przeglądarka nie pozwala ich przerwać, ale oznaczają kartę jako wydrukowaną, więc następne Drukuj na przycisku już ostrzeże. Zmiana postaci, kolorów i „Pokaż rozwiązanie” nie układa nowej karty (decyzja 2026-11-06, GitHub 283); wyjątkiem są kolory na karcie „Który nie pasuje”, bo kolor jest tam częścią zadania i zmiana układa nową kartę (US-26; decyzja 2026-11-08, GitHub 265).
@@ -574,6 +576,42 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
 - Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają go same (US-08). „Pokaż rozwiązanie” nie jest zapamiętywane i zawsze startuje wyłączone.
 
+### US-33: Rodzic generuje kartę „Zegar” do druku
+
+> Dodane 2026-11-15 (M-6, slot S-41). Kształt karty ustaliła użytkowniczka 2026-11-15 na interaktywnej makiecie; wartości w Business Logic są startowe i zostają potwierdzone na wydruku.
+
+- **Given** rodzic otworzył z katalogu stronę „Zegar”
+- **When** uruchomi generowanie
+- **Then** otrzymuje gotową do wydruku kartę A4 z tarczami zegara ze wskazówkami; zależnie od trybu dziecko wpisuje godzinę pod tarczą, dorysowuje wskazówki do godziny podanej pod pustą tarczą albo łączy kreską tarczę z zegarem cyfrowym pokazującym tę samą godzinę
+
+#### Acceptance Criteria
+
+- Tarcza ma liczby 1–12 na każdym poziomie, kreski godzin, a od Poziomu 4 także kreski minut (US-34). Tarczy bez liczb nie ma (decyzja 2026-11-15: dzieci, które uczą się zegara, opierają się na liczbach). Wskazówka minutowa jest długa i cienka, godzinowa krótka i gruba; godzinowa stoi tam, gdzie na prawdziwym zegarze (o 7:30 między 7 a 8). Liczby leżą nad wskazówkami z białą obwódką, żeby długa wskazówka nie zakrywała „12” ani „6” (decyzja 2026-11-16, po makiecie).
+- Na pasku jest wybór „Tryb”: Odczytaj, Dorysuj, Połącz; domyślnie Odczytaj. Odczytaj: pod każdą z sześciu tarcz ze wskazówkami są dwie puste kratki z dwukropkiem między nimi („__ : __”) na godzinę i minuty (kratki, nie linie; decyzja 2026-11-16). Dorysuj: pod każdą z sześciu pustych tarcz (tylko środek) stoi godzina w ramce zegara cyfrowego, a dziecko rysuje obie wskazówki. Połącz: pięć tarcz ze wskazówkami po lewej, pięć zegarów cyfrowych z tymi samymi godzinami po prawej w innej kolejności, przy każdej kropka do połączenia kreską. Nad tarczami jest jedno zdanie polecenia, inne dla każdego trybu; przy nim stoi wybrana postać (US-21).
+- Godzina na karcie jest zapisana tylko cyframi („7:30”), bez zapisu słownego (decyzja 2026-11-15).
+- Odpowiedź jest jedna przy każdej tarczy: godzina wskazana przez wskazówki. Przy wyłączonym 24 h godzina ma postać 1:00–12:59 (12:30, nie 0:30). Godziny na jednej karcie się nie powtarzają, od Poziomu 2 co najmniej połowa tarcz ma minuty nowe dla poziomu (US-34), a w trybie Połącz kolejność zegarów cyfrowych różni się od kolejności tarcz. Aplikacja zna odpowiedź i potrafi ją sprawdzić.
+- Karta nie ma „Pokaż rozwiązanie” (decyzja 2026-11-15: odpowiedź łatwo sprawdzić okiem).
+- Każde Generuj daje nową kartę: inne godziny albo inną kolejność niż poprzednia karta.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez odpowiedzi na kartce; postać przy poleceniu drukuje się w kolorze (US-21).
+- Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+- Strona ma pasek „Postać”; wybrana postać stoi przy poleceniu (US-21). Tarcze nie używają postaci.
+
+### US-34: Rodzic wybiera poziom, tryb i zapis 24-godzinny karty „Zegar”
+
+- **Given** rodzic jest na stronie „Zegar”
+- **When** wybierze poziom (Poziom 1–5), tryb albo włączy „24 h”
+- **Then** karta ma godziny, tarczę i zapis zgodne z tymi ustawieniami
+
+#### Acceptance Criteria
+
+- Poziomy to numery bez nazw wieku i bez wieku pod opisem (jak karty z M-5): Poziom 1 pełne godziny; Poziom 2 pełne godziny i wpół do; Poziom 3 kwadranse; Poziom 4 co 5 minut; Poziom 5 co minutę. Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia. Domyślny jest Poziom 1.
+- Wygląd tarczy wynika z poziomu (kreski minut od Poziomu 4); osobnej kontrolki tarczy nie ma (decyzja 2026-11-15).
+- Od Poziomu 2 co najmniej połowa tarcz na karcie ma minuty nowe dla poziomu (np. wpół do na Poziomie 2), żeby karta nie wyszła z samych łatwiejszych godzin (decyzja 2026-11-16).
+- Na pasku jest przełącznik „24 h”, niezależny od poziomu i trybu, domyślnie wyłączony. Włączony: godziny są z całej doby poza godziną po północy (0:xx; decyzja 2026-11-16), pod każdą tarczą stoi słowami pora dnia („rano”, „po południu”, „wieczorem”, „w nocy”), a godzina jest zapisana w systemie 24-godzinnym (19:30). Odczytaj: dziecko wpisuje godzinę 24-godzinną na podstawie tarczy i pory dnia; Dorysuj: przy „19:30” rysuje wskazówki na 7:30; Połącz: zegary cyfrowe pokazują godziny 24-godzinne. Pora dnia jest słowem, nie ikoną, bo słońce i księżyc są dwuznaczne (decyzja 2026-11-15).
+- Zmiana poziomu, trybu albo „24 h” przy pokazanej karcie od razu układa nową kartę, bo zmieniają się godziny albo ich liczba (US-22).
+- Każdy poziom i tryb mieści się na jednej stronie A4 z marginesem 10 mm.
+- Profil i ostatnie parametry pamiętają poziom, tryb i „24 h” (US-08).
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -687,6 +725,13 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-042: Rodzic może wybrać poziom krzyżówki matematycznej (Poziom 1–7: rodzaj działań, największa liczba, liczba działań, kratka, puste pola i łańcuch). Priority: must-have
   > Socrates: Counter-argument considered: siedem poziomów to dużo do wyboru, a poziomy bez mierzalnych reguł wprowadzają w błąd. Resolution: kept (2026-11-13); użytkowniczka chciała więcej niż trzy poziomy, a każdy zmienia jedną rzecz naraz (rodzaj działań, zakres liczb albo wielkość), z jawną tabelą w Business Logic; wartości startowe potwierdza wydruk (Open Questions 17).
 
+### Zegar
+
+- FR-043: Rodzic może wygenerować kartę „Zegar” z tarczami zegara ze wskazówkami w trzech trybach (odczytaj godzinę, dorysuj wskazówki, połącz tarczę z zegarem cyfrowym), z jedną sprawdzalną odpowiedzią przy każdej tarczy, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: trzy tryby na jednej karcie mieszają różne umiejętności, a tryb Połącz zdradza odpowiedź, bo stoi obok. Resolution: kept (2026-11-15); tryb to jeden wybór na pasku, jak tryb szlaczków wynikający z poziomu, a Połącz jest celowo najłatwiejszy (rozpoznanie zamiast przypomnienia). Dorysuj ćwiczy położenie wskazówki godzinowej, czego sam odczyt nie sprawdza.
+- FR-044: Rodzic może wybrać poziom karty „Zegar” (Poziom 1–5: pełne godziny, wpół do, kwadranse, co 5 minut, co minutę), tryb i zapis 24-godzinny z porą dnia pod tarczą. Priority: must-have
+  > Socrates: Counter-argument considered: tarcza ze wskazówkami nie odróżnia 7:30 od 19:30, więc zapis 24-godzinny nie ma jednej odpowiedzi. Resolution: revised (2026-11-15); przy włączonym 24 h pod tarczą stoi słowami pora dnia, a generator unika godzin na granicach pór, więc odpowiedź jest jedna. Ikony słońca i księżyca odpadły, bo są dwuznaczne.
+
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
@@ -700,6 +745,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Nonogram i dyktando graficzne spełniają te same granice co labirynt: generowanie do 5 sekund (także trudny nonogram ze sprawdzeniem jednego rozwiązania), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karty „Który nie pasuje” i „Kto ma więcej?” z włączonymi kolorami drukują obrazki w kolorach, a „Skopiuj obrazek” sylwetkę w kolorach kredek), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Krzyżówka matematyczna (2026-11-13, S-40) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 7 z czterema działaniami do 100 i 20 działaniami), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (rozwiązanie tylko na ekranie), te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Karta „Zegar” (2026-11-15) spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
@@ -976,9 +1022,39 @@ Reguły, które generator sprawdza: każde działanie jest prawdziwe; liczby mie
 
 Wartości potwierdził wydruk 2026-11-14 (Open Questions 17). Wynikiem jest karta A4: krzyżówka zajmuje większą część strony i zachowuje margines co najmniej 10 mm.
 
+### Karta „Zegar”
+
+Dodane 2026-11-15 (M-6, slot S-41); kształt karty ustaliła użytkowniczka na interaktywnej makiecie. Aplikacja zawsze tworzy kartę, w której każda tarcza ma jedną odpowiedź: godzinę wskazaną przez wskazówki. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia i tarczami pod nim. Poziom wyznacza, jakie minuty występują i jak wygląda tarcza; tryb wyznacza, co robi dziecko; „24 h” wyznacza zapis. Karta nie ma kolorów, kategorii ani „Pokaż rozwiązanie”.
+
+Tarcza: okrąg, liczby 1–12, kreski godzin (grubsze przy 12, 3, 6 i 9), środek. Wskazówka minutowa jest długa i cienka, godzinowa krótka i gruba; godzinowa przesuwa się z minutami (kąt 30° na godzinę plus 0,5° na minutę), jak na prawdziwym zegarze. Od Poziomu 4 tarcza ma też kreski minut. Tarczy bez liczb nie ma: to umiejętność ok. 9 lat, po nauce odczytu, i rodzic ćwiczy ją na prawdziwym zegarze (decyzja 2026-11-15). Liczby leżą nad wskazówkami z białą obwódką: długa wskazówka przechodzi przez pierścień liczb i bez obwódki zakrywa „12” o pełnej godzinie albo „6” o wpół do (decyzja 2026-11-16, po makiecie). Zegar cyfrowy to ramka z godziną zapisaną cyframi („7:30”, minuty zawsze dwiema cyframi). Pola odpowiedzi w trybie Odczytaj to dwie kratki z dwukropkiem, nie linie (decyzja 2026-11-16).
+
+Makieta (2026-11-16, `context/changes/clock-card/mockup.mts`, zaakceptowana): Odczytaj i Dorysuj to 2 kolumny × 3 rzędy z tarczą ok. 60 mm (z 24 h ok. 52–54 mm, bo pod tarczą dochodzi słowo pory dnia), kratki odpowiedzi 18 × 13 mm, zegar cyfrowy 42 × 15 mm z cyframi 10 mm; Połącz to 5 rzędów z tarczą 45 mm (z 24 h 38 mm) i kropkami ok. 85–90 mm od siebie. Liczby na tarczy mają ok. 0,2 promienia (ok. 6 mm na karcie Odczytaj). Pora dnia przy 24 h stoi pod każdą tarczą, także w trybie Dorysuj. Wartości są startowe i zostają potwierdzone na wydruku.
+
+| Tryb                | Tarcz na karcie | Co jest na kartce                                                                | Co robi dziecko                        | Polecenie (startowe)                 | Opis w liście trybów (startowy) |
+| ------------------- | --------------- | -------------------------------------------------------------------------------- | -------------------------------------- | ------------------------------------ | ------------------------------- |
+| Odczytaj (domyślny) | 6 (2 × 3)       | tarcza ze wskazówkami, pod nią pola „__ : __”                                    | wpisuje godzinę                        | „Która godzina? Wpisz pod zegarem.”  | „dziecko wpisuje godzinę”       |
+| Dorysuj             | 6 (2 × 3)       | pusta tarcza (tylko środek), pod nią godzina w ramce zegara cyfrowego            | rysuje obie wskazówki                  | „Dorysuj wskazówki: krótką i długą.” | „dziecko rysuje wskazówki”      |
+| Połącz              | 5               | tarcze ze wskazówkami po lewej, zegary cyfrowe z tymi samymi godzinami po prawej | łączy kreską tarczę z zegarem cyfrowym | „Połącz zegar z tą samą godziną.”    | „dziecko łączy zegar z godziną” |
+
+Tryb wybiera się na pasku z listy, tak jak poziom: przycisk „Tryb: Odczytaj” otwiera listę trzech trybów, a każdy wiersz ma nazwę i pół zdania o tym, co robi dziecko (decyzja 2026-11-16, S-41).
+
+| Poziom   | Cel projektu (nie etykieta) | Minuty             | Tarcza                     | Opis w UI (startowy)      |
+| -------- | --------------------------- | ------------------ | -------------------------- | ------------------------- |
+| Poziom 1 | 5–6 lat                     | :00                | liczby 1–12, kreski godzin | „pełne godziny”           |
+| Poziom 2 | 6–7 lat                     | :00 i :30          | jak wyżej                  | „pełne godziny i wpół do” |
+| Poziom 3 | 7 lat                       | :00, :15, :30, :45 | jak wyżej                  | „kwadranse”               |
+| Poziom 4 | 7–8 lat                     | co 5 minut         | dochodzą kreski minut      | „co 5 minut”              |
+| Poziom 5 | 8–9 lat                     | dowolna minuta     | jak Poziom 4               | „co minutę”               |
+
+Domyślny jest Poziom 1, tryb Odczytaj i 24 h wyłączone (decyzja 2026-11-15). Cel projektu to szacunek z typowego toku nauki zegara w przedszkolu i klasach 1–3; nie jest etykietą na pasku ani wiekiem pod opisem, jak w szlaczkach. Tryby od najłatwiejszego: Połącz (dziecko rozpoznaje godzinę wśród podanych), Odczytaj (przypomina ją sobie i wpisuje), Dorysuj (musi wiedzieć, gdzie stoi wskazówka godzinowa, i odróżnić długość wskazówek). Na Poziomie 2 dziecko zwykle myli się na wskazówce godzinowej przy wpół do, bo stoi między liczbami; jeśli wydruk pokaże, że to za trudne, wpół do może przejść bliżej kwadransów. Od Poziomu 2 co najmniej połowa tarcz na karcie ma minuty nowe dla poziomu (Poziom 2 :30, Poziom 3 :15 i :45, Poziom 4 wielokrotności 5 poza kwadransami, Poziom 5 minuty niepodzielne przez 5), żeby karta wyższego poziomu nie wyszła z samych łatwiejszych godzin (decyzja 2026-11-16, po makiecie).
+
+„24 h”: osobny przełącznik, niezależny od poziomu i trybu, domyślnie wyłączony. Wyłączony: godziny 1:00–12:59 (12:30, nie 0:30). Włączony: godziny z całej doby, zapis 0:00–23:59, a pod każdą tarczą słowami pora dnia: „rano” 5:00–11:59, „po południu” 12:00–17:59, „wieczorem” 18:00–21:59, „w nocy” 22:00–4:59. Generator nie losuje godzin w pierwszej i ostatniej godzinie pory dnia (np. 12:xx, 17:xx), żeby granica pory nie budziła sporu („w południe” czy „po południu”). Nie losuje też godzin po północy (0:00–0:59), bo dziecko łatwo wpisze 12:30 albo 24:30 zamiast 0:30; „w nocy” daje więc 23:xx i 1:00–3:59 (decyzja 2026-11-16, po makiecie). Pora dnia jest słowem, nie ikoną, bo słońce i księżyc są dwuznaczne, a 24 h jest dla dzieci, które czytają (klasy 2–3) (decyzja 2026-11-15). Granice pór są startowe i zostają potwierdzone na wydruku.
+
+Reguły, które generator sprawdza: każda godzina ma minuty z poziomu; od Poziomu 2 co najmniej połowa tarcz ma minuty nowe dla poziomu; godziny na jednej karcie się nie powtarzają (przy wyłączonym 24 h 7:30 i 19:30 to ta sama godzina); w trybie Połącz kolejność zegarów cyfrowych różni się od kolejności tarcz i żaden zegar cyfrowy nie stoi na wysokości swojej tarczy; przy 24 h żadna godzina nie leży w godzinie granicznej pory dnia ani po północy (0:xx); kąty wskazówek wynikają z godziny; tarcze mieszczą się na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Zmiana poziomu, trybu albo „24 h” przy pokazanej karcie od razu układa nową kartę. Każde Generuj daje inne godziny albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku. Wynikiem jest karta A4; tarcze zajmują większą część strony i zachowują margines co najmniej 10 mm.
+
 ### Poziomy
 
-Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
+Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem), zegar 1–5 (od 2026-11-15; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
 
 Każdy wiersz listy poziomów ma nazwę, pół zdania o tym, co zmienia poziom, i, przy labiryncie, symetrii, sekwencjach i dyktandzie, typowy wiek pod opisem; wiersz ma trzy linie, np. „Poziom 1” / „duża kratka, podpowiedź przy osi” / „zwykle ok. 4 lata”. Sudoku i nonogram nie mają wieku. Zapisane identyfikatory poziomów mogą zostać w danych; zmienia się etykieta, więc zapisane profile i ostatnie parametry wczytują się bez migracji.
 
@@ -999,6 +1075,7 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | Skopiuj obrazek        | poziom, kolory, kategoria                   |
 | Szlaczki               | poziom, linie                               |
 | Krzyżówka matematyczna | poziom                                      |
+| Zegar                  | poziom, tryb, 24 h                          |
 
 Zasady:
 
@@ -1008,6 +1085,7 @@ Zasady:
 - Bez profilu urządzenie pamięta ostatnie ustawienia osobno dla każdej karty i jedną ostatnio użytą postać dla wszystkich kart.
 - Profil nie przechowuje wieku. Wiek nie ustawia żadnego poziomu.
 - Przy wybranym profilu miniatury katalogu pokazują zapamiętany poziom (sudoku: rozmiar i poziom, np. „6×6 · średni”).
+- Podsumowanie zegara w oknie profilu to poziom i tryb, a przy włączonym 24 h także „24 h”, np. „Zegar: Poziom 2 · Odczytaj” albo „Zegar: Poziom 4 · Połącz · 24 h”. Tryb stoi zawsze, także domyślny, bo zmienia całe zadanie; plakietka w katalogu to sam poziom („poz. 4”) (decyzja 2026-11-16, S-41).
 - „Pokaż rozwiązanie” w nonogramie, dyktandzie i krzyżówce matematycznej nie jest zapamiętywane i zawsze startuje wyłączone.
 - Zgodność wstecz: dawne pole poziomu w profilu i w ostatnich parametrach zostaje poziomem labiryntu; dawna postać profilu zostaje ulubioną, a dawna postać ostatnich parametrów ostatnio użytą postacią.
 
@@ -1029,6 +1107,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 - Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku (US-10–US-14, FR-019–FR-023). Do tego samego kamienia dochodzą 2026-10-25, także na prośbę użytkownika, nonogram i dyktando graficzne (US-15–US-18, FR-024–FR-027) oraz nowe obiekty w katalogu szablonów z wyborem kategorii (US-19–US-20, FR-028–FR-029). Czwarty kamień kart (M-5, 2026-11-01) bierze cztery rodzaje naraz, wyjątkowo, na prośbę użytkowniczki: „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek” i szlaczki (US-23–US-30, FR-033–FR-040). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
 - Kamień M-6 (2026-11-13) zaczyna się od jednej karty: krzyżówki matematycznej (US-31–US-32, FR-041–FR-042; S-40). Nie obejmuje osobnej kontrolki liczby pustych pól, wieku pod opisem poziomu, działań z więcej niż jednym znakiem (np. „a + b − c = d”) ani kolejności wykonywania działań, ramki „Użyj:” z brakującymi liczbami, kolorów, kategorii i obrazków na karcie.
+- Druga karta M-6 (2026-11-15) to „Zegar” (US-33–US-34, FR-043–FR-044; slot S-41). Nie obejmuje tarczy bez liczb ani z samymi 12, 3, 6, 9, zapisu słownego godziny („wpół do ósmej”), wskazówki sekundowej, obliczeń zegarowych („która będzie za 20 minut?”), „Pokaż rozwiązanie”, kolorów ani kategorii. Trzecią kartą M-6 (slot S-42) mają być karty kodowania (Po MVP); dostają US i FR przy otwarciu.
 - Kamień M-5 nie obejmuje groszy i centów, banknotu 200 €, monet dolarowych, cen i reszty w „Kto ma więcej?”, kwoty „ułóż dokładnie tę kwotę” ani oceny rysunku dziecka na kartach „Skopiuj obrazek” i szlaczki (decyzja 2026-11-01).
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
@@ -1052,12 +1131,16 @@ Nonogram przeszedł z tej listy do zakresu (2026-10-25) w wersji z obiektami z k
 
 „Kto ma więcej?” (dawniej „Porównywanie kwot w złotych”), „Który nie pasuje”, „Skopiuj obrazek” i szlaczki przeszły z tej listy do zakresu (2026-11-01, M-5): US-23–US-30, FR-033–FR-040, Business Logic „Karta „Kto ma więcej?””, „Karta „Który nie pasuje””, „Karta „Skopiuj obrazek”” i „Karta szlaczków”. „Skopiuj obrazek” i szlaczki nie były na tej liście.
 
+„Zegar” nie był na tej liście; wszedł do zakresu 2026-11-15 (M-6): US-33–US-34, FR-043–FR-044, Business Logic „Karta „Zegar””. Jako następną kartę M-6 użytkowniczka wybrała 2026-11-15 karty kodowania (niżej).
+
 Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero przy otwarciu jego kamienia.
 
 - **Obrysy postaci na kratce.** Wspólny warunek kilku pozycji poniżej: każda postać z katalogu narysowana na kratce (bitmapa i jedna zamknięta linia obrysu), zapisana w kodzie jak szablony obiektów. Makieta z 2026-10-26: wszystkie 11 postaci da się narysować na kratce ok. 15×15 z detalami jako pustymi kratkami (oczy, okna, pas strażaka), a obrys każdej to jedna zamknięta linia. Pies i kot oraz dinozaur i smok wymagają wyraźniejszych różnic (uszy, wąsy, skrzydło). Własny obrazek rodzica nie ma obrysu.
-- **Połącz kropki.** Sylwetka wybranej postaci. Czeka na obrysy postaci.
+- **Rysunki wektorowe do kart obrazkowych.** Wspólny warunek „Połącz kropki” i „Znajdź różnice” (decyzja 2026-11-15 po makietach): pikselowe sylwetki z katalogu szablonów są za kanciaste, bo obrys z kratki ma same kąty proste, a różnica w jednej kratce to plama, nie szczegół rysunku. Potrzebny jest osobny katalog prostych rysunków wektorowych, jak ikony kategorii w „Który nie pasuje” (GitHub 265), albo obrysy postaci.
+- **Połącz kropki.** Ponumerowane kropki na obrysie rysunku; dziecko łączy je po kolei i odkrywa obiekt. Poziomy: liczba kropek (do 10, 20, 50), liczenie co 2 albo wstecz. Odpowiedź jest jedna, bo kolejność numerów wyznacza linię. Czeka na rysunki wektorowe albo obrysy postaci.
+- **Znajdź różnice.** Dwa takie same rysunki obok siebie, różniące się w kilku szczegółach; dziecko zakreśla różnice. Poziom wyznacza liczba i wielkość różnic; różnice się nie stykają, żeby dwie nie wyglądały jak jedna. Czeka na rysunki wektorowe.
 - **Nonogram i dyktando postaci.** Po rozwiązaniu widać postać zamiast obiektu z szablonów. Czeka na obrysy postaci. Nonogram i dyktando z obiektami z szablonów są już w zakresie (FR-024, FR-026). Z makiety: pełna postać w dyktandzie to 32–64 polecenia, więc pasuje do poziomu trudnego; łatwy potrzebuje prostszych obrysów.
-- **Karty kodowania.** Kratka, postać, meta i strzałki. Jedna najkrótsza droga.
+- **Karty kodowania.** Kratka, postać, meta i strzałki. Jedna najkrótsza droga. Następna karta po zegarze (wybór użytkowniczki 2026-11-15, slot S-42). Z makiety: dziecko zapisuje strzałkami drogę w pustych polach albo, w drugim wariancie, wykonuje podane strzałki na kratce; przeszkody to zamalowane pola, a generator odrzuca kratki z dwiema najkrótszymi drogami. Może użyć wyszukiwania drogi z labiryntu.
 - **Pieniądze, ciąg dalszy.** Jedna kupka i cena („czy wystarczy?”), grosze, reszta. „Ułóż dokładnie tę kwotę” czeka na regułę, która zostawia jeden układ. Wymaga pierwszej wersji „Kto ma więcej?” (M-5).
 
 Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem waluty.
