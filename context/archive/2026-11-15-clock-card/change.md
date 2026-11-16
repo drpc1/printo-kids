@@ -1,10 +1,10 @@
 ---
 change_id: clock-card
 title: Karta „Zegar” — odczytaj, dorysuj albo połącz godzinę na tarczy
-status: implemented
+status: archived
 created: 2026-11-15
 updated: 2026-11-16
-archived_at: null
+archived_at: 2026-11-16T20:21:44Z
 ---
 
 ## Notes
