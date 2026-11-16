@@ -19,7 +19,12 @@ export function SettingToggle({
   disabled?: boolean;
 }) {
   return (
-    <label className={cn("text-muted-foreground flex items-center gap-2 px-3 text-base max-sm:basis-full")}>
+    <label
+      className={cn(
+        "text-muted-foreground flex items-center gap-2 px-3 text-base max-sm:basis-full",
+        disabled && "opacity-50",
+      )}
+    >
       <Switch checked={checked} onCheckedChange={onCheckedChange} disabled={disabled} />
       {label}
     </label>
