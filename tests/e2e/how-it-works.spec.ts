@@ -57,6 +57,11 @@ test("a generator page has the footer link and the page states the rules of leve
   );
   await expect(body).toContainText("„Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”");
   await expect(body).not.toContainText("sudoku i nonogram wieku nie mają");
+  // GitHub 375: the seasonal characters and the "Boże Narodzenie" category are described with their date window.
+  await expect(page.getByRole("heading", { level: 2, name: "Święta" })).toBeVisible();
+  await expect(body).toContainText("Od 15 listopada do 6 stycznia");
+  await expect(body).toContainText("Bałwanka, Mikołaja i Renifera");
+  await expect(body).not.toContainText("filtr");
 });
 
 test("the page describes every card kind in catalog order", async ({ page }, testInfo) => {
