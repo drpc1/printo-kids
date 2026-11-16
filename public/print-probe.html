@@ -137,6 +137,154 @@
         html[data-vh="130"] .sheet {
           max-height: 130vh;
         }
+        /* Tryby niezależne od wysokości okna: później w pliku, więc wygrywają z data-vh. */
+        html[data-mm="200"] .sheet {
+          max-height: 200mm;
+        }
+        html[data-mm="205"] .sheet {
+          max-height: 205mm;
+        }
+        html[data-mm="210"] .sheet {
+          max-height: 210mm;
+        }
+        html[data-mm="215"] .sheet {
+          max-height: 215mm;
+        }
+        html[data-mm="220"] .sheet {
+          max-height: 220mm;
+        }
+        html[data-mm="225"] .sheet {
+          max-height: 225mm;
+        }
+        html[data-mm="230"] .sheet {
+          max-height: 230mm;
+        }
+        html[data-mm="235"] .sheet {
+          max-height: 235mm;
+        }
+        html[data-mm="240"] .sheet {
+          max-height: 240mm;
+        }
+        html[data-mm="245"] .sheet {
+          max-height: 245mm;
+        }
+        html[data-mm="250"] .sheet {
+          max-height: 250mm;
+        }
+        html[data-mm="255"] .sheet {
+          max-height: 255mm;
+        }
+        html[data-mm="260"] .sheet {
+          max-height: 260mm;
+        }
+        html[data-mm="265"] .sheet {
+          max-height: 265mm;
+        }
+        html[data-mm="270"] .sheet {
+          max-height: 270mm;
+        }
+        html[data-mm="275"] .sheet {
+          max-height: 275mm;
+        }
+        html[data-mm="280"] .sheet {
+          max-height: 280mm;
+        }
+        html[data-w="70"] .sheet {
+          width: 70%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="72"] .sheet {
+          width: 72%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="74"] .sheet {
+          width: 74%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="76"] .sheet {
+          width: 76%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="78"] .sheet {
+          width: 78%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="80"] .sheet {
+          width: 80%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="82"] .sheet {
+          width: 82%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="84"] .sheet {
+          width: 84%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="86"] .sheet {
+          width: 86%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="88"] .sheet {
+          width: 88%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="90"] .sheet {
+          width: 90%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="92"] .sheet {
+          width: 92%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="94"] .sheet {
+          width: 94%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="96"] .sheet {
+          width: 96%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="98"] .sheet {
+          width: 98%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="100"] .sheet {
+          width: 100%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
         .sheet .pv {
           display: inline;
         }
@@ -957,6 +1105,16 @@
           <a href="?vh=120">120vh</a> · <a href="?vh=122">122vh</a> · <a href="?vh=124">124vh</a> ·
           <a href="?vh=128">128vh</a>
         </p>
+        <p>
+          Szerokość karty (% kartki): <a href="?w=80">80%</a> · <a href="?w=84">84%</a> · <a href="?w=86">86%</a> ·
+          <a href="?w=88">88%</a> · <a href="?w=90">90%</a> · <a href="?w=92">92%</a> · <a href="?w=94">94%</a> ·
+          <a href="?w=96">96%</a>
+        </p>
+        <p>
+          Wysokość karty w mm: <a href="?mm=220">220 mm</a> · <a href="?mm=230">230 mm</a> ·
+          <a href="?mm=240">240 mm</a> · <a href="?mm=245">245 mm</a> · <a href="?mm=250">250 mm</a> ·
+          <a href="?mm=255">255 mm</a> · <a href="?mm=260">260 mm</a> · <a href="?mm=270">270 mm</a>
+        </p>
         <p>Dziś na kartach jest <b>108vh</b>.</p>
       </div>
       <svg class="sheet" viewBox="0 0 210 297" role="img" aria-label="Sonda druku">
@@ -1145,7 +1303,19 @@
         if (vh && /^[0-9]+$/.test(vh) && +vh >= 100 && +vh <= 130 && +vh % 2 === 0) {
           document.documentElement.dataset.vh = vh;
         }
-        var label = document.documentElement.dataset.vh + "vh";
+        var root = document.documentElement;
+        var label = root.dataset.vh + "vh";
+        var w = params.get("w");
+        var mm = params.get("mm");
+        if (w && /^[0-9]+$/.test(w) && +w >= 70 && +w <= 100 && +w % 2 === 0) {
+          delete root.dataset.vh;
+          root.dataset.w = w;
+          label = "szer. " + w + "%";
+        } else if (mm && /^[0-9]+$/.test(mm) && +mm >= 200 && +mm <= 280 && +mm % 5 === 0) {
+          delete root.dataset.vh;
+          root.dataset.mm = mm;
+          label = mm + " mm";
+        }
         document.getElementById("vh-label").textContent = label;
         document.title = "Sonda druku " + label;
         var ua = navigator.userAgent;
