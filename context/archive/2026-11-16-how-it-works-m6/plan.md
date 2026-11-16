@@ -8,6 +8,6 @@ Stan: opisy dwunastu rodzajów kart (w tym krzyżówka i zegar) i akapit „Pozi
 - [x] Test e2e `how-it-works.spec.ts` sprawdza sekcję
 - [x] lint, test, astro check, build, e2e strony
 - [x] impl-review
-- [ ] PR
+- [x] PR #402 scalony
 
 PRD (US-22, FR-031) już wymienia karty M-6 — bez zmian.
