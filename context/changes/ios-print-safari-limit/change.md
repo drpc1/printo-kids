@@ -20,3 +20,15 @@ Sonda: `public/print-probe.html` (tymczasowa, statyczna, usunąć po pomiarach, 
 2026-11-16, sonda w Chrome iOS (iPhone użytkowniczki, A4, skalowanie 100%): odczyt obszaru druku 102–104 × 174–176 mm, czyli dokładnie okno na ekranie (393 × 665 px); zdarzenie druku w JS też podaje 393 × 665 px. Wniosek: na iOS zapytania media i `vh` w druku liczą się od okna przeglądarki na ekranie, nie od kartki, więc wielkość karty przy limicie w `vh` zależy od pasków przeglądarki (stąd różnica Brave / Safari), prawdopodobnie też od zwiniętego paska adresu i modelu telefonu. Limit: 100–122vh → 1 strona (karta rośnie proporcjonalnie), 124vh → 2 strony. `hover: none` i `max-width: 175mm` spełnione (wariant telefonu: TAK), `navigator.brave` brak.
 
 Kolejny krok: tryby sondy niezależne od okna, `?w=70…100` (szerokość karty w % kartki, wysokość z proporcji A4) i `?mm=200…280` (limit wysokości w mm). Jeśli największa wartość mieszcząca się na 1 stronie jest taka sama w Safari, Chrome i Brave, limit na kartach przechodzi z `vh` na ten tryb.
+
+2026-11-16, sonda w Brave iOS i Safari (ten sam iPhone, A4, skalowanie 100%). Wymiary karty odczytane z podglądu druku, w przybliżeniu.
+
+| Przeglądarka | Okno    | Nagłówek / stopka na kartce            | vh                                 | Szerokość karty (`?w=`)        | Limit w mm (`?mm=`)         |
+| ------------ | ------- | -------------------------------------- | ---------------------------------- | ------------------------------ | --------------------------- |
+| Chrome iOS   | 393×665 | brak                                   | 122vh 1 str. (ok. 188 mm), 124vh 2 | nie mierzono                   | nie mierzono                |
+| Brave iOS    | 393×655 | tytuł i data u góry, adres i nr u dołu | 104vh 1 str., **108vh 2 str.**     | 80–96% 1 str. (96% ok. 178 mm) | 240 mm 1 str., 245 mm 2     |
+| Safari       | 393×695 | adres, data i nr u dołu                | 118vh 1 str. (ok. 173 mm), 120vh 2 | 96% 1 str. (ok. 174 mm)        | 230 mm 1 str., **240 mm 2** |
+
+`navigator.brave` w Brave iOS to `object` (w Chrome i Safari brak), więc Brave da się rozpoznać, ale nie było to potrzebne. Dzisiejsze `108vh` drukowało w Brave 2 strony (okno 655 px). Limit w mm daje różną kartę w Brave i Safari (przelicznik CSS → papier nie jest stały), więc odpada. Szerokość w % kartki daje 1 stronę w Safari i Brave; Safari przy 96% jest ok. 3 mm od drugiej strony.
+
+Decyzja: wariant druku na telefonie to `width: 94%` kartki, `height: auto` (proporcje A4), bez limitu wysokości (`max-height: none`). Komputer bez zmian (`100vh`). Do sprawdzenia na stagingu na prawdziwych kartach w Safari, Chrome i Brave; potem usunąć `public/print-probe.html`.
