@@ -1,3 +1,4 @@
+import type { ClockLevelId, ClockModeId } from "./clock/levels.ts";
 import { COPY_DRAWING_LEVELS, DEFAULT_COPY_DRAWING_LEVEL_ID, type CopyDrawingLevelId } from "./copy-drawing/levels.ts";
 import { DEFAULT_DICTATION_LEVEL_ID, DICTATION_LEVELS, type DictationLevelId } from "./dictation/levels.ts";
 import { DEFAULT_LEVEL_ID, LEVELS, type LevelId } from "./maze/levels.ts";
@@ -87,6 +88,13 @@ export interface PatternLinesSettings {
 
 export interface MathCrosswordSettings {
   level: MathCrosswordLevelId;
+}
+
+/** "Zegar" (S-41): every one of the three lays out a new card. Phase 3 adds it to `CardSettingsMap`. */
+export interface ClockSettings {
+  level: ClockLevelId;
+  mode: ClockModeId;
+  h24: boolean;
 }
 
 export interface CardSettingsMap {

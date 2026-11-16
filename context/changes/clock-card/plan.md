@@ -355,15 +355,15 @@ Brak: nowe pole `cards.zegar` w zapisanych profilach ma wartość domyślną prz
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint: `npm run lint`
-- [ ] 2.3 Zależności: `npm run depcruise`
-- [ ] 2.4 Typy: `npx astro check`
-- [ ] 2.5 Build: `npm run build`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint: `npm run lint`
+- [x] 2.3 Zależności: `npm run depcruise`
+- [x] 2.4 Typy: `npx astro check`
+- [x] 2.5 Build: `npm run build`
 
 #### Manual
 
-- [ ] 2.6 Użytkowniczka akceptuje podgląd trzech trybów z `preview.mts` (Poziom 1, Poziom 4, 24 h)
+- [x] 2.6 Użytkowniczka akceptuje podgląd trzech trybów z `preview.mts` (Poziom 1, Poziom 4, 24 h)
 - [ ] 2.7 Przegląd diffu względem planu i makiety
 
 ### Phase 3: Strona, katalog i profil
