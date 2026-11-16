@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-16
+updated: '2026-11-16'
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -273,7 +273,7 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 
 ## Done
 
-- **S-38: Rodzic wybiera świąteczne obiekty (np. bombka, choinka z ozdobami, Mikołaj, bałwanek, piernik, gwiazda betlejemska) na kartach symetrii, nonogramu, dyktanda graficznego i „Skopiuj obrazek”, generuje kartę, podgląda ją i drukuje jako jedną stronę A4 także z telefonu. Obiekty dochodzą do katalogu szablonów w trzech rozmiarach (połowa 4×12, 6×15, 9×24) i spełniają reguły każdej z czterech kart (jedno rozwiązanie nonogramu, obrys dyktanda bez styku).** — Archived 2026-11-16 → `context/archive/$C-$id/`. Lesson: —. Otwarte: wydanie main → prod przed 1.12.2026 (5.4).
+- **S-38: Rodzic wybiera świąteczne obiekty (np. bombka, choinka z ozdobami, Mikołaj, bałwanek, piernik, gwiazda betlejemska) na kartach symetrii, nonogramu, dyktanda graficznego i „Skopiuj obrazek”, generuje kartę, podgląda ją i drukuje jako jedną stronę A4 także z telefonu. Obiekty dochodzą do katalogu szablonów w trzech rozmiarach (połowa 4×12, 6×15, 9×24) i spełniają reguły każdej z czterech kart (jedno rozwiązanie nonogramu, obrys dyktanda bez styku).** — Archived 2026-11-16 → `context/archive/$C-$id/`. Lesson: —. Wydanie main → prod przed 1.12.2026 idzie osobno i nie jest kryterium zamknięcia slice'a (decyzja 2026-11-16).
 
 - **S-39: Rodzic wybiera świąteczną postać (np. Mikołaj, renifer, bałwanek) z listy postaci przy poleceniu na każdej karcie, w oknie profilu jako ulubioną i na labiryncie przy starcie; postać drukuje się w kolorze jak pozostałe. Lista pokazuje wszystkie postacie bez ucięcia także przy niskiej rozdzielczości.** — Archived 2026-11-16 → `context/archive/$C-$id/`. Lesson: —.
 
