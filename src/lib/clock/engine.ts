@@ -25,17 +25,31 @@ function card(settings: ClockSettings, times: ClockTime[], order: number[] = tim
   return { level: settings.level, mode: settings.mode, h24: settings.h24, times, order };
 }
 
-/** Hand-made cards, each breaking one rule; the spec test also checks that the sound ones have no problem. */
+const halfPast: ClockSettings = { level: "poziom2", mode: "odczytaj", h24: false };
+const sound = [at(1, 30), at(2, 30), at(3, 30), at(4, 0), at(5, 0), at(6, 0)];
+const full: ClockSettings = { level: "poziom1", mode: "odczytaj", h24: false };
+const fullHours = [at(1, 0), at(2, 0), at(3, 0), at(4, 0), at(5, 0), at(6, 0)];
+const day: ClockSettings = { level: "poziom1", mode: "odczytaj", h24: true };
+const dayHours = [at(6, 0), at(7, 0), at(8, 0), at(9, 0), at(10, 0), at(13, 0)];
+const match: ClockSettings = { level: "poziom1", mode: "polacz", h24: false };
+const matchHours = [at(1, 0), at(2, 0), at(3, 0), at(4, 0), at(5, 0)];
+const matchOrder = [1, 2, 3, 4, 0];
+
+/**
+ * The sound cards the known bad ones are built from. The spec test checks that each has no problem, so a known bad
+ * card fails for the rule it breaks and not because its base was already broken.
+ */
+export function knownBadBases(): readonly { name: string; card: ClockCard; settings: ClockSettings }[] {
+  return [
+    { name: "half past on level 2", card: card(halfPast, sound), settings: halfPast },
+    { name: "full hours on level 1", card: card(full, fullHours), settings: full },
+    { name: "day hours with 24 h", card: card(day, dayHours), settings: day },
+    { name: "Połącz on level 1", card: card(match, matchHours, matchOrder), settings: match },
+  ];
+}
+
+/** Hand-made cards, each breaking one rule of a sound base from `knownBadBases`. */
 function knownBad(): readonly Bad[] {
-  const halfPast: ClockSettings = { level: "poziom2", mode: "odczytaj", h24: false };
-  const sound = [at(1, 30), at(2, 30), at(3, 30), at(4, 0), at(5, 0), at(6, 0)];
-  const full: ClockSettings = { level: "poziom1", mode: "odczytaj", h24: false };
-  const fullHours = [at(1, 0), at(2, 0), at(3, 0), at(4, 0), at(5, 0), at(6, 0)];
-  const day: ClockSettings = { level: "poziom1", mode: "odczytaj", h24: true };
-  const dayHours = [at(6, 0), at(7, 0), at(8, 0), at(9, 0), at(10, 0), at(13, 0)];
-  const match: ClockSettings = { level: "poziom1", mode: "polacz", h24: false };
-  const matchHours = [at(1, 0), at(2, 0), at(3, 0), at(4, 0), at(5, 0)];
-  const matchOrder = [1, 2, 3, 4, 0];
   return [
     {
       name: "five dials in Odczytaj",

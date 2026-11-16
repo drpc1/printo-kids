@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { CardExhausted, CardInvariantError, VerifiedCard } from "../card-contract.ts";
 import type { ClockSettings } from "../card-settings.ts";
-import { clockEngine, clockSpec } from "./engine.ts";
+import { clockEngine, clockSpec, knownBadBases } from "./engine.ts";
 import { CLOCK_LEVELS, CLOCK_MODES } from "./levels.ts";
 
 // The kind is "zegar" before phase 3 registers it, so it is compared as a plain string.
@@ -72,6 +72,12 @@ void describe("clockSpec", () => {
         codes.includes(bad.expectedCode),
         `${bad.name}: expected ${bad.expectedCode}, got [${codes.join(", ")}]`,
       );
+    }
+  });
+
+  void test("the sound bases of the known bad cards have no problem", () => {
+    for (const base of knownBadBases()) {
+      assert.deepEqual(clockSpec.problems(base.card, base.settings), [], base.name);
     }
   });
 

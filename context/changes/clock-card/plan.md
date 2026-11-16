@@ -202,6 +202,8 @@ Moduł `src/lib/clock/` bez UI i bez rejestracji w katalogu: poziomy, tryby, sta
 
 **Implementation Note**: po tej fazie zatrzymać się na potwierdzenie przed fazą 3.
 
+**Addendum (2026-11-16, po przeglądzie fazy 2, F3 i F4)**: `clockProblems(card, target)` przyjmuje też ustawienia paska i ma dwa rozszerzenia względem listy kodów: `settings-mismatch` (poziom, tryb albo 24 h karty różne od paska, wzór `level-mismatch` ze szlaczków) oraz `order-not-permutation` także wtedy, gdy poza Połączem `order` nie jest zwykłą kolejnością (0, 1, 2…), żeby jedna karta nie miała dwóch kluczy. Wspólna geometria tarczy to `drawDial` w `layout.ts` (arkusz, miniatura i podgląd rysują z niej tarczę). Faza 3 usuwa tymczasowe rzutowanie `kind` w `src/lib/clock/engine.ts` i obejście `kindOf` w `src/lib/clock/engine.test.ts`.
+
 ---
 
 ## Phase 3: Strona, katalog i profil
@@ -355,16 +357,16 @@ Brak: nowe pole `cards.zegar` w zapisanych profilach ma wartość domyślną prz
 
 #### Automated
 
-- [x] 2.1 Testy przechodzą: `npm test`
-- [x] 2.2 Lint: `npm run lint`
-- [x] 2.3 Zależności: `npm run depcruise`
-- [x] 2.4 Typy: `npx astro check`
-- [x] 2.5 Build: `npm run build`
+- [x] 2.1 Testy przechodzą: `npm test` — 861b7e6
+- [x] 2.2 Lint: `npm run lint` — 861b7e6
+- [x] 2.3 Zależności: `npm run depcruise` — 861b7e6
+- [x] 2.4 Typy: `npx astro check` — 861b7e6
+- [x] 2.5 Build: `npm run build` — 861b7e6
 
 #### Manual
 
-- [x] 2.6 Użytkowniczka akceptuje podgląd trzech trybów z `preview.mts` (Poziom 1, Poziom 4, 24 h)
-- [ ] 2.7 Przegląd diffu względem planu i makiety
+- [x] 2.6 Użytkowniczka akceptuje podgląd trzech trybów z `preview.mts` (Poziom 1, Poziom 4, 24 h) — 861b7e6
+- [x] 2.7 Przegląd diffu względem planu i makiety
 
 ### Phase 3: Strona, katalog i profil
 
