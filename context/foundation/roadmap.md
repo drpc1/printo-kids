@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: '2026-11-16'
+updated: "2026-11-16"
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -140,7 +140,7 @@ Brak. Kategorie obiektów, katalog kart, pamięć paska i postać przy poleceniu
 - **Parallel with:** S-40, S-42
 - **Blockers:** —
 - **Unknowns:**
-  - Czy granice pór dnia przy 24 h i wykluczenie godzin granicznych (PRD Business Logic „Karta „Zegar””) pasują dziecku? Potwierdza wydruk. — Owner: user. Block: no.
+  - ~~Czy granice pór dnia przy 24 h i wykluczenie godzin granicznych (PRD Business Logic „Karta „Zegar””) pasują dziecku?~~ — Zamknięte 2026-11-16: wydruk w Safari, Chrome iOS i Brave iOS oraz próba z dzieckiem potwierdziły granice pór i pozostałe wartości startowe.
 - **Risk:** Rodzaj i kształt ustalone 2026-11-15 na makiecie w rozmowie (notatki w `context/changes/clock-card/change.md`). Ryzyko to układ sześciu tarcz na A4 z polem odpowiedzi i porą dnia oraz położenie wskazówki godzinowej; sprawdza je makieta w skali przed planem.
 - **Status:** in-progress
 
