@@ -1,10 +1,10 @@
 ---
 change_id: test-plan-m6
 title: Test plan po M-6
-status: impl_reviewed
+status: archived
 created: 2026-11-17
 updated: 2026-11-17
-archived_at: null
+archived_at: 2026-11-17T09:52:33Z
 ---
 
 ## Notes
