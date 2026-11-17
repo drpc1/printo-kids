@@ -7,232 +7,267 @@ updated: 2026-11-17
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
-milestone_id: seasonal-cards-and-catalog-filter
-milestone_seq: 6
-milestone_status: done
+milestone_id: more-cards-and-catalog-filter
+milestone_seq: 7
+milestone_status: open
 ---
 
 # Roadmap: PrintoKids
 
-> Derived from the user's description of M-6 (anchors `MS-01`…`MS-04` below) + `context/foundation/prd.md` (v6) as the contract for inherited behavior + codebase baseline.
+> Derived from the user's description of M-7 (anchors `MS-01`…`MS-07` below) + `context/foundation/prd.md` (v6) as the contract for inherited behavior + codebase baseline.
 > Edit-in-place; archive when superseded.
 > Slices below are listed in dependency order. The "At a glance" table is the index.
-> M-6 is deliberately under-specified: the user decides it piece by piece. Slices with `blocked` status are placeholders whose first Unknown is "which one?"; they become `ready` as decisions land.
+> S-47 do S-49 są miejscami na trzy karty, których rodzaj użytkowniczka dopiero wybierze; wszystkie slice'y ze statusem `blocked` czekają na decyzję z ich pierwszej niewiadomej.
 
 ## Milestone
 
-**M-6: Sezonowe postacie i obiekty, filtr kart w katalogu i kolejne karty** — Status: done
+**M-7: Karty kodowania, trzy kolejne karty, pory roku, filtr katalogu i porządek w profilu i pomocy** — Status: open
 
-- **Intent:** Katalog ma dziesięć rodzajów kart i zaczyna być w nim trudno znaleźć właściwą. M-6 daje rodzicowi pierwszy sezon (Boże Narodzenie) w postaci świątecznych obiektów na kartach z szablonów i świątecznych postaci przy poleceniu, nowe rodzaje kart (krzyżówkę matematyczną, która ma powstać szybko, i dwa lub trzy rodzaje do ustalenia) oraz tagi i filtr w katalogu, które obejmą wszystkie karty naraz. Kolejność wynika z terminu: świąteczna zawartość ma zdążyć na wydruk przed grudniem.
-- **Source materials:** opis użytkownika z 2026-11-13 (anchors niżej); odziedziczone zasady z `context/foundation/prd.md` (v6).
-- **Done when:** every F-NN and S-NN in „At a glance” is `done`, poza S-42 i S-43, które 2026-11-16 przeszły do M-7 (zawężenie M-6 do wydania na produkcję bez kart kodowania i filtra katalogu; decyzja użytkownika). Sekcje „Po tym kamieniu” i „Parked” nie wliczają się.
-- **User description (verbatim):** „zaczynamy definiować nowy milestone. Chcę żeby zawierał 3-4 karty, do tego sezonowe postaci i obiekty na kartach gdzie ma to sens. I chyba czas pomyśleć o jakimś filtrowaniu/tagowaniu kart, bo zaczyna być ich dużo. Nic nie jest na ten moment wyraźnie określone. wszystko trzeba ustalić kawałek po kawałku”. Doprecyzowania z rozmowy: jedna karta do zrobienia szybko to krzyżówka matematyczna; pierwszy sezon to Boże Narodzenie; filtr to tagi na kartach i filtr na stronie głównej, wchodzą po kartach i przed „Jak to działa”; rodzaje pozostałych nowych kart zostają do ustalenia; cel sekwencjonowania to szybkość (święta przed grudniem); pierwszy kawałek to świąteczne obiekty; przed końcem kamienia Stryker dla nowych kart i aktualizacja test-plan.md.
+- **Intent:** Katalog ma 12 rodzajów kart (`CARD_KINDS` w `src/lib/cards.ts`) i trudniej w nim znaleźć właściwą. M-7 dokłada karty kodowania i trzy kolejne rodzaje kart, kolejny sezon (pory roku), skraca okno profilu i „Jak to działa”, które przy tylu kartach robią się za długie, na końcu daje tagi i filtr obejmujące wszystkie karty naraz, a potem Stryker i aktualizację test-plan.md.
+- **Source materials:** opis użytkownika z 2026-11-16 i 2026-11-17 (w tym: „nie wiem czy nie będzie trzeba przebudować profilu, bo lista konfiguracji kart staje się zbyt długa”, „jak to działa też staje się za długa”, „pory roku muszą gdzieś wejść”) (anchors niżej); odziedziczone zasady z `context/foundation/prd.md` (v6).
+- **Done when:** every F-NN and S-NN in „At a glance” is `done`. Sekcje „Po tym kamieniu” i „Parked” nie wliczają się.
+- **User description (verbatim):** „w roadmapie powinny być jeszcze 3 inne niezidentyfikowane karty i S-43 (filtr katalogu) po nich”; S-42 (karty kodowania) przeszło z M-6 (zawężenie 2026-11-16).
 - **Scope anchors:**
-  - MS-01: 3–4 nowe rodzaje kart: krzyżówka matematyczna (ustalona, ma iść szybko), zegar i karty kodowania (wybrane 2026-11-15) oraz ewentualnie czwarta do ustalenia (kandydaci z „Po tym kamieniu”).
-  - MS-02: Sezonowe postacie wybierane przy poleceniu na kartach; pierwszy sezon Boże Narodzenie.
-  - MS-03: Sezonowe obiekty na kartach, na których obiekty mają sens (katalog szablonów: symetria, nonogram, dyktando, „Skopiuj obrazek”); pierwszy sezon Boże Narodzenie.
-  - MS-04: Tagowanie i filtrowanie rodzajów kart w katalogu na stronie głównej.
-  - Dziedziczone bez zmian: FR-014 (katalog), FR-017 (pamięć paska), FR-028–FR-029 (katalog obiektów i kategorie), FR-012 (katalog postaci), FR-030 (postać przy poleceniu), FR-031, US-05, US-08, US-19–US-22.
+  - MS-01: Karty kodowania (S-42, przeniesione z M-6).
+  - MS-02: Trzy kolejne rodzaje kart, jeszcze niewybrane.
+  - MS-03: Tagowanie i filtrowanie rodzajów kart w katalogu na stronie głównej, po wszystkich czterech kartach (S-43, w M-6 jako MS-04).
+  - MS-04: Okno profilu nie rośnie w nieskończoność wraz z liczbą kart (S-52; przebudowa podsumowania ustawień kart, US-08).
+  - MS-05: „Jak to działa” zostaje czytelne przy 16 rodzajach kart (S-53; US-22).
+  - MS-06: Pory roku jako kolejne sezonowe postacie i obiekty (S-54; mechanizm sezonu z M-6).
+  - MS-07: „Skopiuj obrazek” przyjmuje też kształty niesymetryczne z katalogu kształtów dyktanda (S-55; GitHub #379).
+  - Dziedziczone bez zmian: FR-014, FR-017, FR-030, US-05, US-08, US-22.
 
 ## Vision recap
 
-Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a dziecko wciąż chce kolejną. Brakuje sposobu, żeby wygenerować nową kartę na właściwym poziomie, gdy skończy się dopasowana gotowa biblioteka. Po pięciu kamieniach jest dziesięć rodzajów kart, poziomy bez wieku i profil pamiętający pasek każdej karty; M-6 dokłada świeżość (sezon i nowe karty) oraz sposób, żeby przy tylu kartach nadal szybko trafić na właściwą.
+Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a dziecko wciąż chce kolejną. Brakuje sposobu, żeby wygenerować nową kartę na właściwym poziomie, gdy skończy się dopasowana gotowa biblioteka. Po sześciu kamieniach jest dwanaście rodzajów kart i sezonowe postacie z obiektami; M-7 dokłada kolejne karty i filtr, żeby przy tylu kartach nadal szybko trafić na właściwą.
 
 ## North star
 
-**S-38: Rodzic wybiera świąteczne obiekty na kartach z szablonów i drukuje kartę z bombką, choinką albo Mikołajem** — to najmniejszy kompletny kawałek, którego dowiezienie pokazuje, że sezonowa zawartość działa na istniejących kartach bez nowego rodzaju karty; stoi pierwszy, bo cel to szybkość, a święta mają zdążyć przed grudniem.
+**S-42: Rodzic generuje i drukuje kartę kodowania** — jedyna karta M-7 już wybrana i najmniejszy kompletny kawałek kamienia; cel to szybkość.
 
 > Gwiazda przewodnia (north star) — tu: najmniejszy kompletny kawałek, którego dowiezienie pokazuje, że kamień ma sens; stoi możliwie wcześnie, bo reszta ma sens tylko wtedy, gdy ten działa.
 
 ## At a glance
 
-| ID   | Change ID            | Outcome (user can …)                                                                                                                                                         | Prerequisites                            | PRD refs                                    | Status   |
-| ---- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------- | -------- |
-| S-38 | christmas-objects    | Rodzic wybiera świąteczne obiekty na kartach symetrii, nonogramu, dyktanda i „Skopiuj obrazek”, generuje kartę i drukuje ją jako jedną stronę A4                             | —                                        | MS-03, FR-028, FR-029, US-19, US-20         | done     |
-| S-39 | christmas-characters | Rodzic wybiera świąteczną postać (np. Mikołaj, renifer) przy poleceniu na każdej karcie i w profilu jako ulubioną                                                            | —                                        | MS-02, FR-012, FR-030, US-03, US-21         | done     |
-| S-40 | math-crossword-card  | Rodzic otwiera z katalogu „Krzyżówkę matematyczną”, wybiera poziom, generuje kartę A4 z działaniami w krzyżującej się siatce, podgląda ją i drukuje; profil pamięta pasek    | —                                        | MS-01, FR-014, FR-017, FR-030, US-05, US-08 | done     |
-| S-41 | clock-card           | Rodzic otwiera z katalogu „Zegar”, wybiera poziom, tryb (odczytaj, dorysuj, połącz) i 24 h, generuje kartę A4 z tarczami zegara, podgląda ją i drukuje; profil pamięta pasek | —                                        | MS-01, FR-043, FR-044, US-33, US-34         | done     |
-| S-42 | coding-card          | Rodzic otwiera z katalogu karty kodowania, wybiera poziom, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje; profil pamięta pasek              | —                                        | MS-01, FR-014, FR-017, FR-030, US-05, US-08 | przeniesione do M-7 |
-| S-43 | card-tags-filter     | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                                 | S-40, S-41, S-42                         | MS-04, FR-014, US-05                        | przeniesione do M-7 |
-| S-44 | how-it-works-m6      | Rodzic otwiera „Jak to działa” i widzi poprawny opis nowych kart, sezonowych postaci i obiektów oraz filtra w katalogu                                                       | S-38, S-39, S-40, S-41, S-42, S-43       | MS-01, MS-02, MS-03, MS-04, US-22, FR-031   | done     |
-| S-45 | stryker-m6-cards     | Rodzic dostaje nowe karty i logikę M-6 sprawdzone mutacjami Strykera na zakresach z ryzykiem (solver krzyżówki, reguły jednoznaczności nowych kart, filtr, jeśli ma logikę)  | S-40, S-41, S-42, S-43                   | MS-01, MS-04                                | done     |
-| S-46 | test-plan-m6         | Zespół ma test-plan.md zgodny ze stanem po M-6: nowe karty, filtr i sezonowa zawartość w mapie ryzyk, §5 i §5a, bez nieaktualnych liczb kart                                 | S-38, S-39, S-40, S-41, S-42, S-43, S-45 | MS-01, MS-02, MS-03, MS-04                  | done     |
+| ID   | Change ID        | Outcome (user can …)                                                                                                       | Prerequisites                      | PRD refs                                    | Status   |
+| ---- | ---------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------- | -------- |
+| S-42 | coding-card      | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje  | —                                  | MS-01, FR-014, FR-017, FR-030, US-05, US-08 | proposed |
+| S-47 | m7-card-a        | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                   | —                                  | MS-02, FR-014, FR-017, FR-030, US-05, US-08 | blocked  |
+| S-48 | m7-card-b        | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                   | —                                  | MS-02, FR-014, FR-017, FR-030, US-05, US-08 | blocked  |
+| S-49 | m7-card-c        | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                   | —                                  | MS-02, FR-014, FR-017, FR-030, US-05, US-08 | blocked  |
+| S-55 | copy-drawing-asymmetric-shapes | Rodzic dostaje na „Skopiuj obrazek” także niesymetryczne kształty (np. skarpeta, ryba, dinozaur), z kategorią i kolorami jak dotąd | — | MS-07, FR-037, FR-038, US-27, US-28 | blocked |
+| S-52 | profile-card-summary | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą | S-42, S-47, S-48, S-49 | MS-04, FR-017, US-08 | blocked |
+| S-54 | seasons-objects-characters | Rodzic wybiera obiekty i postacie kolejnej pory roku w jej oknie dat, tak jak świąteczne | — | MS-06, FR-028, FR-029, FR-012, US-19, US-20 | blocked |
+| S-43 | card-tags-filter | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty               | S-42, S-47, S-48, S-49             | MS-03, FR-014, US-05                        | proposed |
+| S-53 | how-it-works-m7 | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16 | S-42, S-47, S-48, S-49, S-43 | MS-05, US-22, FR-031 | blocked |
+| S-50 | stryker-m7-cards | Zespół ma karty i logikę M-7 sprawdzone mutacjami Strykera na zakresach z ryzykiem                                         | S-42, S-47, S-48, S-49, S-43, S-54, S-55 | MS-01, MS-02, MS-03                         | proposed |
+| S-51 | test-plan-m7     | Zespół ma test-plan.md zgodny ze stanem po M-7                                                                             | S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54, S-55 | MS-01, MS-02, MS-03                         | proposed |
 
 ## Streams
 
 Navigation aid — groups items that share a Prerequisites chain. Canonical ordering still lives in the dependency graph below.
 
-| Stream | Theme              | Chain                                                     | Note                                                                                                                                                                                                                                                           |
-| ------ | ------------------ | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A      | Święta: obiekty    | `S-38`                                                    | North star; jedyny kawałek świąteczny bez zależności od rysunków postaci.                                                                                                                                                                                      |
-| B      | Święta: postacie   | `S-39`                                                    | Czeka na rysunki i prawa; równolegle z A, bo cel to szybkość.                                                                                                                                                                                                  |
-| C      | Nowe karty i filtr | `S-40`, `S-41`, `S-42` → `S-43` → `S-44`, `S-45` → `S-46` | Krzyżówka matematyczna (`S-40`) idzie szybko, równolegle ze świętami; `S-41` to zegar (gotowy do planu), `S-42` karty kodowania (czekają na makietę i US/FR w PRD). Tagi (`S-43`) po kartach, żeby od razu objęły wszystkie; `S-44` do `S-46` zamykają kamień. |
+| Stream | Theme                   | Chain                                          | Note                                                                       |
+| ------ | ----------------------- | ---------------------------------------------- | -------------------------------------------------------------------------- |
+| A      | Kodowanie, filtr, jakość | `S-42` → `S-43` → `S-53` → `S-50` → `S-51`          | Filtr po wszystkich czterech kartach (dołączają S-47 do S-49); potem Stryker i test-plan. |
+| E      | Profil                  | `S-52`                                         | Po kartach, żeby przebudowa objęła wszystkie; wchodzi do S-51.            |
+| G      | Skopiuj obrazek         | `S-55`                                         | Istniejąca karta; wchodzi do S-50 i S-51.                                  |
+| F      | Pory roku               | `S-54`                                         | Niezależne od kart; wchodzi do S-50 i S-51.                                |
+| B      | Karta do ustalenia 1    | `S-47`                                         | Czeka na wybór rodzaju.                                                    |
+| C      | Karta do ustalenia 2    | `S-48`                                         | Czeka na wybór rodzaju.                                                    |
+| D      | Karta do ustalenia 3    | `S-49`                                         | Czeka na wybór rodzaju.                                                    |
 
 ## Baseline
 
-What's already in place in the codebase as of `2026-11-13` (po M-5; z kodu na main i `tech-stack.md`).
+What's already in place in the codebase as of `2026-11-17` (po M-6; z kodu na main i `tech-stack.md`).
 Foundations below assume these are present and do NOT re-scaffold them.
 
-- **Frontend:** present — katalog dziesięciu kart na `/` (`src/lib/cards.ts`), wspólna powłoka `GeneratorShell.astro` i `CardPage.tsx` z `useCardPage`, strony wszystkich dziesięciu kart, wybory poziomu i kategorii (`LevelChoice`, `CategoryChoice`), róg profilu, `how-it-works.astro`. Katalog nie ma tagów ani filtra.
+- **Frontend:** present — katalog dwunastu kart na `/` (`CARD_KINDS` w `src/lib/cards.ts`), wspólna powłoka `GeneratorShell.astro` i `CardPage.tsx` z `useCardPage`, wybory poziomu i kategorii, róg profilu, `how-it-works.astro`. Katalog nie ma tagów ani filtra.
 - **Backend / API:** absent by design — generowanie działa w przeglądarce.
-- **Data:** present — tylko na urządzeniu (`card-settings.ts`, `child-profiles.ts`, `last-used.ts`, `catalog-badges.ts`, `card-summary.ts`); kategorie obiektów z `OBJECT_CATEGORIES` w `src/lib/symmetry/template-format.ts` (sześć kategorii); katalog postaci jedenaście, bez sezonowych.
+- **Data:** present — tylko na urządzeniu (`card-settings.ts`, `child-profiles.ts`, `last-used.ts`, `catalog-badges.ts`, `card-summary.ts`); kategorie obiektów z `OBJECT_CATEGORIES` (w tym sezonowa „Boże Narodzenie” 15.11–6.01); katalog postaci ma sezonowych Mikołaja, renifera i bałwanka.
 - **Auth:** absent by design — PRD: jeden lokalny rodzic.
-- **Deploy / infra:** present — CI (lint, test, check, build, smoke), Playwright e2e na Chromium; dwa środowiska (`main` = staging, `prod`); `npm test` wylicza pliki testów jawnie.
+- **Deploy / infra:** present — CI (lint, test, check, build, smoke), Playwright e2e na Chromium; dwa środowiska (`main` = staging, `prod`).
 - **Observability:** partial — dzienniki platformy, bez śledzenia błędów aplikacji.
 
 ## Foundations
 
-Brak. Kategorie obiektów, katalog kart, pamięć paska i postać przy poleceniu już istnieją (Baseline); tagi katalogu dochodzą jako S-43 po nowych kartach, żeby od razu objęły wszystkie, i dają użytkowi filtr, a nie samo pole w danych.
+Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Baseline); tagi dochodzą jako S-43 po kartach, żeby od razu objęły wszystkie.
 
 ## Slices
 
-### S-38: Świąteczne obiekty na kartach z szablonów
-
-- **Outcome:** Rodzic wybiera świąteczne obiekty (np. bombka, choinka z ozdobami, Mikołaj, bałwanek, piernik, gwiazda betlejemska) na kartach symetrii, nonogramu, dyktanda graficznego i „Skopiuj obrazek”, generuje kartę, podgląda ją i drukuje jako jedną stronę A4 także z telefonu. Obiekty dochodzą do katalogu szablonów w trzech rozmiarach (połowa 4×12, 6×15, 9×24) i spełniają reguły każdej z czterech kart (jedno rozwiązanie nonogramu, obrys dyktanda bez styku).
-- **Change ID:** christmas-objects
-- **PRD refs:** MS-03, FR-028, FR-029, US-19, US-20
-- **Prerequisites:** —
-- **Parallel with:** S-39, S-40
-- **Blockers:** —
-- **Unknowns:**
-  - ~~Które obiekty (lista i liczba)?~~ Rozstrzygnięte 2026-11-14 (`context/changes/christmas-objects/frame.md`, makieta zaakceptowana): sześć nowych obiektów z szablonów (bombka, dzwonek, prezent, piernik, bałwanek, aniołek), pięć kształtów dyktanda (skarpeta, laska cukrowa, czapka Mikołaja, sanki, renifer) oraz istniejące choinka i gwiazda; katalog ma 40 obiektów. Mikołaj i gwiazda betlejemska poza kawałkiem.
-  - ~~Kategoria „Święta” czy sezonowy tag?~~ Rozstrzygnięte 2026-11-14 (frame): nowa siódma kategoria „Boże Narodzenie” w istniejącym wyborze kategorii, nie tag.
-  - ~~Czy obiekty mają być widoczne cały rok, czy tylko w sezonie?~~ Rozstrzygnięte 2026-11-14 (frame): kategoria jest na pasku tylko od 15.11 do 6.01; „Wszystkie” losuje z pełnego katalogu przez cały rok.
-- **Risk:** Nowy obiekt musi przejść reguły czterech kart naraz i być czytelny w połowie 4×12; obiekt, który nie daje się narysować czytelnie, zastępuje inny. Dodanie kategorii zmienia wybór kategorii na trzech kartach i ich zapamiętane ustawienia; stare wpisy muszą czytać się bez migracji. Termin: święta, więc ten kawałek idzie pierwszy.
-- **Status:** done
-
-### S-39: Świąteczne postacie
-
-- **Outcome:** Rodzic wybiera świąteczną postać (np. Mikołaj, renifer, bałwanek) z listy postaci przy poleceniu na każdej karcie, w oknie profilu jako ulubioną i na labiryncie przy starcie; postać drukuje się w kolorze jak pozostałe. Lista pokazuje wszystkie postacie bez ucięcia także przy niskiej rozdzielczości.
-- **Change ID:** christmas-characters
-- **PRD refs:** MS-02, FR-012, FR-030, US-03, US-21
-- **Prerequisites:** — (rysunki postaci)
-- **Parallel with:** S-38, S-40
-- **Blockers:** Rysunki świątecznych postaci w tym samym stylu co jedenaście istniejących (dostarczone 2026-11-15).
-- **Unknowns:**
-  - ~~Skąd rysunki i czy prawa pozwalają je pokazać w produkcie?~~ Rozstrzygnięte 2026-11-15 (frame): rysunki generuje użytkowniczka (AI) w stylu jedenastu postaci i ma do nich prawa; postacie są ogólne, renifer bez czerwonego nosa.
-  - ~~Ile postaci i które?~~ Rozstrzygnięte 2026-11-15 (frame): Mikołaj, renifer, bałwanek.
-  - ~~Czy świąteczne postacie pokazują się tylko w sezonie, czy zawsze obok jedenastu stałych?~~ Rozstrzygnięte 2026-11-15 (frame): na liście tylko 15.11–6.01, zaraz po „Brak” i oddzielone kreską; zapisana ulubiona albo ostatnio użyta postać zostaje poza oknem.
-- **Risk:** Zmienia liczbę postaci wpisaną na sztywno w PRD (FR-012, US-03) i w testach; lista postaci musi zostać w całości widoczna. Zależy od rysunków poza kodem, więc może zdążyć na święta albo nie, stąd osobny kawałek, który nie blokuje S-38.
-- **Status:** done
-
-### S-40: Krzyżówka matematyczna
-
-- **Outcome:** Rodzic otwiera z katalogu „Krzyżówkę matematyczną”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z siatką działań, które krzyżują się we wspólnych polach; część liczb jest wpisana, reszta pusta do uzupełnienia. Widzi podgląd i drukuje kartę jako jedną stronę A4 także z telefonu. Profil pamięta pasek, postać stoi przy poleceniu, karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43. Generator sprawdza, że każde puste pole ma jedno rozwiązanie.
-- **Change ID:** math-crossword-card
-- **PRD refs:** MS-01, FR-014, FR-017, FR-030, US-05, US-08
-- **Prerequisites:** —
-- **Parallel with:** S-38, S-39, S-41, S-42
-- **Blockers:** —
-- **Unknowns:**
-  - Jakie działania i zakresy liczb na poziomach (do 10, do 20, mnożenie)? Rozstrzyga rozmowa i makieta przed planem. — Owner: user. Block: no.
-  - Układ: klasyczna krzyżówka liczbowa (działania poziomo i pionowo) czy siatka z wynikami na brzegach? — Owner: user. Block: no.
-  - Dla jakiego wieku? Karty nie nazywają poziomów wiekiem, ale zakres liczb wyznacza cel projektu. — Owner: user. Block: no.
-- **Risk:** Jednoznaczność: układ musi mieć dokładnie jedno rozwiązanie (solver jak w sudoku i nonogramie). Nowa karta zmienia liczbę kart wpisaną na sztywno w testach (katalog, plakietki, `scripts/smoke.mjs`). „Szybko” wymaga małego zakresu: jeden układ siatki i trzy poziomy.
-- **Status:** done
-
-### S-41: Zegar
-
-- **Outcome:** Rodzic otwiera z katalogu „Zegar”, wybiera poziom (Poziom 1–5: od pełnych godzin po co minutę), tryb (Odczytaj, Dorysuj, Połącz) i zapis 24-godzinny, generuje kartę A4 z tarczami zegara ze wskazówkami, podgląda ją i drukuje także z telefonu; profil pamięta poziom, tryb i 24 h, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43.
-- **Change ID:** clock-card
-- **PRD refs:** MS-01, FR-043, FR-044, US-33, US-34 (dziedziczy FR-014, FR-017, FR-030, US-05, US-08)
-- **Prerequisites:** —
-- **Parallel with:** S-40, S-42
-- **Blockers:** —
-- **Unknowns:**
-  - ~~Czy granice pór dnia przy 24 h i wykluczenie godzin granicznych (PRD Business Logic „Karta „Zegar””) pasują dziecku?~~ — Zamknięte 2026-11-16: wydruk w Safari, Chrome iOS i Brave iOS oraz próba z dzieckiem potwierdziły granice pór i pozostałe wartości startowe.
-- **Risk:** Rodzaj i kształt ustalone 2026-11-15 na makiecie w rozmowie (notatki w `context/changes/clock-card/change.md`). Ryzyko to układ sześciu tarcz na A4 z polem odpowiedzi i porą dnia oraz położenie wskazówki godzinowej; sprawdza je makieta w skali przed planem.
-- **Status:** done
-
 ### S-42: Karty kodowania
 
-- **Outcome:** Rodzic otwiera z katalogu karty kodowania, wybiera poziom, generuje kartę A4 z kratką, przeszkodami, postacią i metą, na której dziecko zapisuje strzałkami najkrótszą drogę albo wykonuje podane strzałki, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43.
+- **Outcome:** Rodzic otwiera z katalogu karty kodowania, wybiera poziom, generuje kartę A4 z kratką, przeszkodami, postacią i metą, na której dziecko zapisuje strzałkami najkrótszą drogę albo wykonuje podane strzałki, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43 (M-7).
 - **Change ID:** coding-card
 - **PRD refs:** MS-01, FR-014, FR-017, FR-030, US-05, US-08
 - **Prerequisites:** —
-- **Parallel with:** S-40, S-41
+- **Parallel with:** S-47, S-48, S-49
 - **Blockers:** —
 - **Unknowns:**
   - Poziomy, wielkość kratki i oba warianty (zapisz strzałki, wykonaj strzałki): przełącznik czy wynik poziomu? Rozstrzyga makieta przed US i FR w PRD (PRD „Po MVP”, „Karty kodowania”). — Owner: user. Block: yes (przed `/10x-plan`).
-- **Risk:** Rodzaj wybrany 2026-11-15 (pierwszy szkic w rozmowie); kształt nieustalony. Jedna odpowiedź wymaga jednej najkrótszej drogi, więc generator odrzuca kratki z dwiema drogami tej samej długości; może użyć wyszukiwania drogi z labiryntu. Czwarta karta zostaje w Open Roadmap Questions.
-- **Status:** przeniesione do M-7 (2026-11-16)
+- **Risk:** Rodzaj wybrany 2026-11-15 (pierwszy szkic w rozmowie); kształt nieustalony. Jedna odpowiedź wymaga jednej najkrótszej drogi, więc generator odrzuca kratki z dwiema drogami tej samej długości; może użyć wyszukiwania drogi z labiryntu. Trzy kolejne karty M-7 to osobne slice'y (S-47 do S-49).
+- **Status:** proposed
+
+### S-47: Nowa karta a (rodzaj do ustalenia)
+
+- **Outcome:** Rodzic otwiera z katalogu nowy rodzaj karty (do ustalenia), wybiera poziom, generuje kartę A4, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43.
+- **Change ID:** m7-card-a
+- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08
+- **Prerequisites:** —
+- **Parallel with:** S-42, S-48, S-49
+- **Blockers:** —
+- **Unknowns:**
+  - Jaki to rodzaj karty? Kandydaci z „Po tym kamieniu” (pieniądze ciąg dalszy; połącz kropki i znajdź różnice czekają na rysunki wektorowe). Slice zmienia nazwę i Change ID po decyzji. — Owner: user. Block: yes (przed `/10x-new`).
+- **Risk:** Rodzaj nieustalony; slice jest miejscem w kamieniu, nie planem. Każda nowa karta potrzebuje US/FR w PRD, makiety i jednej sprawdzalnej odpowiedzi.
+- **Status:** blocked
+
+### S-48: Nowa karta b (rodzaj do ustalenia)
+
+- **Outcome:** Rodzic otwiera z katalogu nowy rodzaj karty (do ustalenia), wybiera poziom, generuje kartę A4, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43.
+- **Change ID:** m7-card-b
+- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08
+- **Prerequisites:** —
+- **Parallel with:** S-42, S-47, S-49
+- **Blockers:** —
+- **Unknowns:**
+  - Jaki to rodzaj karty? Kandydaci z „Po tym kamieniu” (pieniądze ciąg dalszy; połącz kropki i znajdź różnice czekają na rysunki wektorowe). Slice zmienia nazwę i Change ID po decyzji. — Owner: user. Block: yes (przed `/10x-new`).
+- **Risk:** Rodzaj nieustalony; slice jest miejscem w kamieniu, nie planem. Każda nowa karta potrzebuje US/FR w PRD, makiety i jednej sprawdzalnej odpowiedzi.
+- **Status:** blocked
+
+### S-49: Nowa karta c (rodzaj do ustalenia)
+
+- **Outcome:** Rodzic otwiera z katalogu nowy rodzaj karty (do ustalenia), wybiera poziom, generuje kartę A4, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43.
+- **Change ID:** m7-card-c
+- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08
+- **Prerequisites:** —
+- **Parallel with:** S-42, S-47, S-48
+- **Blockers:** —
+- **Unknowns:**
+  - Jaki to rodzaj karty? Kandydaci z „Po tym kamieniu” (pieniądze ciąg dalszy; połącz kropki i znajdź różnice czekają na rysunki wektorowe). Slice zmienia nazwę i Change ID po decyzji. — Owner: user. Block: yes (przed `/10x-new`).
+- **Risk:** Rodzaj nieustalony; slice jest miejscem w kamieniu, nie planem. Każda nowa karta potrzebuje US/FR w PRD, makiety i jednej sprawdzalnej odpowiedzi.
+- **Status:** blocked
 
 ### S-43: Tagi i filtr kart w katalogu
 
 - **Outcome:** Rodzic na stronie głównej widzi wszystkie rodzaje kart z tagami (np. logika, liczby, rysowanie, pisanie) i jednym wyborem zawęża katalog do kart z wybranym tagiem; „Wszystkie” jest domyślne i wybór nie zmienia stron generatorów ani profilu. Filtr jest używalny na telefonie (miniatury w dwóch kolumnach), a katalog nadal mieści wszystkie karty bez filtra.
 - **Change ID:** card-tags-filter
-- **PRD refs:** MS-04, FR-014, US-05
-- **Prerequisites:** S-40, S-41, S-42
-- **Parallel with:** S-38, S-39
+- **PRD refs:** MS-03, FR-014, US-05
+- **Prerequisites:** S-42, S-47, S-48, S-49
+- **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
-  - Jakie tagi i która karta ma które? Rozstrzyga rozmowa przed planem; tagi dostają wszystkie karty naraz, także trzy nowe z S-40 do S-42. — Owner: user. Block: no.
+  - Jakie tagi i która karta ma które? Rozstrzyga rozmowa przed planem; tagi dostają wszystkie karty naraz, także cztery nowe z M-7 i dwie z M-6 (krzyżówka, zegar). — Owner: user. Block: no.
   - Filtr jedno- czy wielokrotny, i czy zapamiętywany w profilu/na urządzeniu? Glosariusz (`context/domain/glossary.md`) dziś zabrania „tagów” i „filtrów” przy kategoriach obiektów, więc nazwa filtra musi się od niej odróżniać. — Owner: user. Block: no.
-  - Czy sezonowy tag „Święta” wchodzi do tego samego filtra (zależy od odpowiedzi w S-38)? — Owner: user. Block: no.
+  - ~~Czy sezonowy tag „Święta” wchodzi do filtra?~~ Zamknięte 2026-11-17 kodem: sezon to kategoria obiektów „Boże Narodzenie” z oknem 15.11–6.01 (`src/lib/symmetry/template-format.ts:30`), nie tag, więc filtr kart nie potrzebuje tagu „Święta”.
 - **Risk:** Katalog ma dziś stały kształt, a testy e2e i plakietki zakładają stałą liczbę miniatur; filtr zmienia ich widoczność. Tagi kart i kategorie obiektów to dwa różne pojęcia i trzeba je odróżnić w nazwach, żeby rodzic i kod ich nie mylił.
-- **Status:** przeniesione do M-7 (2026-11-16)
-
-### S-44: „Jak to działa” po M-6
-
-- **Outcome:** Rodzic otwiera ze stopki „Jak to działa” i widzi na liście „Rodzaje kart” wszystkie rodzaje z opisami (także nowe), poprawny akapit „Poziomy” i „Profil dziecka” oraz krótkie zdanie o filtrze i sezonowych postaciach i obiektach, bez nieaktualnych zdań o liczbie kart albo postaci.
-- **Change ID:** how-it-works-m6
-- **PRD refs:** MS-01, MS-02, MS-03, MS-04, US-22, FR-031
-- **Prerequisites:** S-38, S-39, S-40, S-41, S-42, S-43
-- **Parallel with:** S-45
-- **Blockers:** —
-- **Unknowns:** —
-- **Risk:** Test zgodności treści z UI i PRD jest pisany na sztywno pod liczby kart i postaci; edycja przed końcem pozostałych kawałków rozjedzie się z tym, co rodzic widzi. Dlatego idzie na końcu treści, jak S-32 w M-4 i S-37 w M-5.
-- **Status:** done
-
-### S-45: Stryker dla nowych kart i filtra M-6
-
-- **Outcome:** Zespół uruchamia Strykera na zakresach z ryzykiem z M-6 (przede wszystkim solver i reguły jednoznaczności krzyżówki matematycznej, a dla zegara (S-41) i kart kodowania (S-42) tylko to, co ma solver albo reguły dwuznaczności; filtr z S-43 tylko jeśli ma nietrywialną logikę), przegląda ocalałe mutanty po jednym i dopisuje asercję tylko tam, gdzie mutant oznacza błąd widoczny dla rodzica. Wyniki są w `context/changes/<change>/reviews/stryker-results.md`, a zakresy mają własne konfiguracje w `stryker/` i skrypty `npm run mutate:<scope>`.
-- **Change ID:** stryker-m6-cards
-- **PRD refs:** MS-01, MS-04
-- **Prerequisites:** S-40, S-41, S-42, S-43
-- **Parallel with:** S-44
-- **Blockers:** —
-- **Unknowns:**
-  - Które zakresy dostają Strykera (zależy od rodzajów kart S-41 i S-42)? Rozstrzyga się po ich zbudowaniu, na podstawie ryzyk z test-plan.md. — Owner: user. Block: no.
-- **Risk:** AGENTS.md: Stryker wybiórczo i bez gonienia za 100% wyniku; każdy zakres osobno, komputer nie może usnąć. Slice idzie po kartach, bo mutuje gotowy kod. Nie obejmuje S-38 (dane szablonów, reguły pilnują istniejące zakresy) ani S-39.
 - **Status:** proposed
 
-### S-46: Test plan po M-6
+### S-55: „Skopiuj obrazek” z kształtami niesymetrycznymi
 
-- **Outcome:** Zespół otwiera `context/foundation/test-plan.md` i widzi stan po M-6: nowe karty, filtr katalogu i sezonową zawartość w mapie ryzyk (§2), w tym, co jest już sprawdzone (§5), w zakresach Strykera (§5a) i w podręczniku (§6), bez nieaktualnych liczb kart.
-- **Change ID:** test-plan-m6
-- **PRD refs:** MS-01, MS-02, MS-03, MS-04
-- **Prerequisites:** S-38, S-39, S-40, S-41, S-42, S-43, S-45
-- **Parallel with:** S-44
+- **Outcome:** Rodzic dostaje na karcie „Skopiuj obrazek” także obrazki niesymetryczne lewo–prawo (np. skarpeta, laska cukrowa, ryba, dinozaur) z katalogu kształtów dyktanda, w wybranej kategorii i z kolorami po włączeniu kolorów; karta nadal ma jedną sprawdzalną odpowiedź i mieści się na A4.
+- **Change ID:** copy-drawing-asymmetric-shapes
+- **PRD refs:** MS-07, FR-037, FR-038, US-27, US-28
+- **Prerequisites:** —
+- **Parallel with:** S-42, S-47, S-48, S-49, S-52, S-54
+- **Blockers:** —
+- **Unknowns:**
+  - Wchodzą wszystkie kształty dyktanda (11 istniejących i świąteczne), czy tylko wybrane? Wszystkie zmieniają losowanie „Wszystkie” i każdy potrzebuje koloru. Issue drpc1/printo-kids#379. — Owner: user. Block: yes (przed `/10x-new`).
+- **Risk:** Klucz karty i sprawdzenie zakładają szablon symetrii (`src/lib/copy-drawing/card.ts`, `generate.ts`); zmiana dotyka też PRD US-27/US-28, Business Logic karty i glosariusza („kształt dyktanda”).
+- **Status:** blocked
+
+### S-52: Okno profilu przy wielu kartach
+
+- **Outcome:** Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą (np. tylko karty używane przez profil albo zwijana lista), a każda pozycja nadal prowadzi do strony karty; okno zostaje małe i używalne na telefonie.
+- **Change ID:** profile-card-summary
+- **PRD refs:** MS-04, FR-017, US-08
+- **Prerequisites:** S-42, S-47, S-48, S-49
+- **Parallel with:** S-54
+- **Blockers:** —
+- **Unknowns:**
+  - Co to znaczy „przebudować profil”: tylko skrócić podsumowanie (US-08: „tylko do odczytu”), czy zmienić też to, co profil pamięta? — Owner: user. Block: yes (przed `/10x-new`).
+- **Risk:** Podsumowanie jest dziś listą wszystkich rodzajów kart; z 16 kartami okno zajmuje ekran. Zmiana dotyka US-08 i danych zapisanych w profilach, więc stare profile muszą się czytać bez migracji.
+- **Status:** blocked
+
+### S-54: Pory roku
+
+- **Outcome:** Rodzic wybiera obiekty i postacie kolejnej pory roku (np. wiosny) w jej oknie dat na kartach z szablonów i przy poleceniu, tak jak świąteczne z M-6, i drukuje kartę jako jedną stronę A4.
+- **Change ID:** seasons-objects-characters
+- **PRD refs:** MS-06, FR-028, FR-029, FR-012, US-19, US-20
+- **Prerequisites:** —
+- **Parallel with:** S-42, S-47, S-48, S-49, S-52
+- **Blockers:** —
+- **Unknowns:**
+  - Który sezon jako pierwszy i ile pór roku w tym kamieniu (cztery, czy jedna na próbę)? — Owner: user. Block: yes (przed `/10x-new`).
+  - Kategoria z oknem dat jak „Boże Narodzenie” (`src/lib/symmetry/template-format.ts:30`) czy jedna ciągła kategoria pory roku? Mechanizm okna istnieje (`src/lib/date-window.ts`). — Owner: user. Block: no.
+- **Risk:** Każdy nowy obiekt musi przejść reguły czterech kart (jedno rozwiązanie nonogramu, obrys dyktanda bez styku) i być czytelny w połowie 4×12; postacie sezonowe potrzebują rysunków i praw.
+- **Status:** blocked
+
+### S-53: „Jak to działa” przy wielu kartach
+
+- **Outcome:** Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty (np. zwijane sekcje, spis treści albo krótsze opisy), choć kart jest 16; zasada profilu, poziomów i postaci zostaje na górze.
+- **Change ID:** how-it-works-m7
+- **PRD refs:** MS-05, US-22, FR-031
+- **Prerequisites:** S-42, S-47, S-48, S-49, S-43
+- **Parallel with:** S-52, S-54
+- **Blockers:** —
+- **Unknowns:**
+  - Jak skrócić: zwijanie, osobne strony kart, czy krótsze opisy? PRD (US-05) trzyma opis rodzaju w `CARD_KINDS`, więc zmiana może dotknąć PRD. — Owner: user. Block: yes (przed `/10x-new`).
+- **Risk:** Strona opisuje każdy rodzaj i poziomy w dwóch–trzech zdaniach; skracanie nie może zgubić poprawności opisów poziomów.
+- **Status:** blocked
+
+### S-50: Stryker dla kart i filtra M-7
+
+- **Outcome:** Zespół uruchamia Strykera na zakresach z ryzykiem z M-7 (generatory i reguły jednoznaczności kart kodowania i trzech nowych kart, a dla filtra tylko jego logikę, jeśli ją ma) i przegląda ocalałe mutanty pojedynczo (AGENTS.md, „Mutation testing”).
+- **Change ID:** stryker-m7-cards
+- **PRD refs:** MS-01, MS-02, MS-03
+- **Prerequisites:** S-42, S-47, S-48, S-49, S-43, S-54
+- **Parallel with:** —
+- **Blockers:** —
+- **Unknowns:**
+  - Które zakresy dostają Strykera? Rozstrzyga się po zbudowaniu kart, na podstawie ryzyk z test-plan.md; zakres wąski (`--mutate "plik:od-do"`), bez ścigania 100%. — Owner: team. Block: no.
+- **Risk:** Stryker idzie po kartach i filtrze, bo sprawdza gotowy kod; jak w M-6 jest osobnym slice'em, a nie częścią każdej karty.
+- **Status:** proposed
+
+### S-51: Test plan po M-7
+
+- **Outcome:** Zespół ma `context/foundation/test-plan.md` zgodny ze stanem po M-7: nowe karty i filtr w mapie ryzyk, §5 i §5a (zakresy Strykera z S-50), bez nieaktualnych liczb kart.
+- **Change ID:** test-plan-m7
+- **PRD refs:** MS-01, MS-02, MS-03
+- **Prerequisites:** S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54
+- **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:** —
-- **Risk:** Dokument opisuje stan, więc idzie na końcu, po wynikach Strykera (S-45); wcześniejsza edycja rozjedzie się z kodem. Tylko dokumentacja (`context/`), więc CI jobów `ci`, `smoke` i `e2e` nie uruchomi.
-- **Status:** done
+- **Risk:** Ostatni slice kamienia: opisuje to, co zbudowały i sprawdziły poprzednie.
+- **Status:** proposed
 
 ## Backlog Handoff
 
-Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Zmiana statusu plasterka wymaga tej samej zmiany w issue: zamknąć zrobione, otworzyć nowe z aktywnego kamienia, `status:ready` tylko gdy wiersz poniżej mówi yes. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty.
+Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty. Issue S-42 (#373) i S-43 (#374) już istnieją; dla pozostałych powstaną po wyborze rodzajów kart.
 
-| Roadmap ID | Change ID            | Suggested issue title                      | Ready for `/10x-plan` | Notes                                                                                                                 |
-| ---------- | -------------------- | ------------------------------------------ | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| S-38       | christmas-objects    | Świąteczne obiekty w katalogu szablonów    | yes                   | Run `/10x-new christmas-objects`, potem `/10x-plan`. Najpierw lista obiektów i decyzja kategoria czy tag (#369)       |
-| S-39       | christmas-characters | Świąteczne postacie przy poleceniu         | no                    | Czeka na rysunki i prawa (Open Questions 3) (#370)                                                                    |
-| S-40       | math-crossword-card  | Karta „Krzyżówka matematyczna” z poziomami | yes                   | Run `/10x-new math-crossword-card`, potem `/10x-plan`. Najpierw makieta układu (#371)                                 |
-| S-41       | clock-card           | Karta „Zegar” z poziomami, trybem i 24 h   | yes                   | Makieta zaakceptowana, plan gotowy (`context/changes/clock-card/plan.md`); `/10x-implement clock-card phase 1` (#372) |
-| S-42       | coding-card          | Karty kodowania                            | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373)                                                   |
-| S-43       | card-tags-filter     | Tagi i filtr kart w katalogu               | no                    | Czeka na S-40 do S-42; potem `/10x-new card-tags-filter`. Najpierw lista tagów (#374)                                 |
-| S-44       | how-it-works-m6      | „Jak to działa” po M-6                     | no                    | Czeka na S-38 do S-43 (#375)                                                                                          |
-| S-45       | stryker-m6-cards     | Stryker dla nowych kart i filtra M-6       | done                  | Zakresy `math-crossword` i `math-crossword-generate`, wyniki w `context/changes/stryker-m6-cards` (#376)              |
-| S-46       | test-plan-m6         | Test plan po M-6                           | done                  | Test plan po M-6 (#377)                                                                                               |
+| Roadmap ID | Change ID        | Suggested issue title        | Ready for `/10x-plan` | Notes                                                    |
+| ---------- | ---------------- | ---------------------------- | --------------------- | -------------------------------------------------------- |
+| S-42       | coding-card      | Karty kodowania              | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373) |
+| S-47       | m7-card-a        | Nowa karta (do ustalenia)    | no                    | Czeka na wybór rodzaju                                   |
+| S-48       | m7-card-b        | Nowa karta (do ustalenia)    | no                    | Czeka na wybór rodzaju                                   |
+| S-49       | m7-card-c        | Nowa karta (do ustalenia)    | no                    | Czeka na wybór rodzaju                                   |
+| S-43       | card-tags-filter | Tagi i filtr kart w katalogu | no                    | Czeka na S-42, S-47 do S-49; najpierw lista tagów (#374) |
+| S-55       | copy-drawing-asymmetric-shapes | „Skopiuj obrazek” z kształtami niesymetrycznymi | no | Issue #379; czeka na decyzję, które kształty |
+| S-52       | profile-card-summary | Okno profilu przy wielu kartach | no | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować |
+| S-54       | seasons-objects-characters | Pory roku | no | Czeka na wybór sezonu |
+| S-53       | how-it-works-m7 | „Jak to działa” przy wielu kartach | no | Czeka na S-43 i decyzję, jak skrócić |
+| S-50       | stryker-m7-cards | Stryker dla kart i filtra M-7 | no                   | Czeka na S-43                                            |
+| S-51       | test-plan-m7     | Test plan po M-7             | no                    | Czeka na S-50                                            |
 
 ## Open Roadmap Questions
 
 1. **Insight — czemu gotowe paczki PDF nie rozwiązują tego poza skończoną biblioteką?** — Owner: user. Block: no.
-2. **Skąd rysunki świątecznych postaci i jakie prawa pozwalają je pokazać?** — Owner: user. Block: S-39 (PRD Open Questions 3).
+2. **Jakie prawa pozwalają pokazać rysunki świątecznych postaci?** — Owner: user. Block: no (PRD Open Questions 3). Skąd rysunki: rozstrzygnięte kodem — Mikołaj, renifer i bałwanek są w katalogu (`public/characters/mikolaj.webp`, `renifer.webp`, `balwanek.webp`; `src/lib/sheet/character.ts`), S-39 `done`; prawa zostają otwarte.
 3. ~~**Które dwa (albo trzy) rodzaje kart wchodzą do M-6 obok krzyżówki matematycznej?**~~ — Zamknięte 2026-11-15: zegar (S-41) i karty kodowania (S-42). „Połącz kropki” i „Znajdź różnice” czekają na katalog rysunków wektorowych (PRD „Po MVP”). Wcześniej: Owner: user. Block: S-41, S-42. Kandydaci z „Po tym kamieniu”: karty kodowania, połącz kropki, pieniądze ciąg dalszy; nonogram i dyktando postaci czekają na obrysy postaci.
 4. ~~**Czy sezonowe obiekty i postacie są widoczne cały rok, czy tylko w sezonie, i czy sezon to kategoria, czy tag?**~~ — Zamknięte 2026-11-17 kodem: sezon to kategoria „Boże Narodzenie” z oknem 15.11–6.01 (`src/lib/symmetry/template-format.ts:30`), postacie mają to samo okno (`CHRISTMAS_WINDOW` w `src/lib/sheet/character.ts`), a zapamiętana sezonowa postać nie znika poza oknem. Filtr S-43 nie musi mieć tagu „Święta”.
 5. ~~**Czy czwarta nowa karta wchodzi do M-6 (obok krzyżówki, S-41 i S-42)?**~~ — Zamknięte 2026-11-17: nie. M-6 dowiózł dwie nowe karty (krzyżówka, zegar); katalog ma 12 rodzajów (`CARD_KINDS` w `src/lib/cards.ts`: dziesięć z M-5 + `krzyzowka` + `zegar`). Karty kodowania i kolejne karty przeszły do M-7.
 6. **Czy poziomy „Kto ma więcej?” i „Który nie pasuje” pasują dziecku, a wygląd monety i banknotu jest czytelny bez kopiowania wzorów NBP?** — Owner: user. Block: no (PRD Open Questions 14).
+9. **Które pory roku i w jakiej kolejności?** — Owner: user. Block: S-54. Rozszerza pytanie 7.
+8. **Jakie trzy rodzaje kart wchodzą do M-7 obok kart kodowania?** — Owner: user. Block: S-47, S-48, S-49. Kandydaci w „Po tym kamieniu”.
 7. **Kolejne sezony** (Wielkanoc, Halloween, pory roku): wchodzą po M-6 jako osobne kawałki. — Owner: user. Block: no.
 
 ## Parked
@@ -250,7 +285,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 
 ## Po tym kamieniu
 
-Nie wlicza się do „Done when” M-6. Kandydaci na ewentualną czwartą kartę M-6 są tu, dopóki nie zostaną wybrani; zegar i karty kodowania przeszły do S-41 i S-42 (2026-11-15).
+Nie wlicza się do „Done when” M-7. Kandydaci na trzy karty M-7 (S-47 do S-49) są tu, dopóki nie zostaną wybrani; karty kodowania to S-42.
 
 Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź (poza wyjątkiem szlaczków), poziomy bez nazw wieku, jedna strona A4, czarny druk z kolorową postacią przy poleceniu, bez modelu językowego.
 
