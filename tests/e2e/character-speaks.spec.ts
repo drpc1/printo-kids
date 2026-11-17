@@ -63,7 +63,7 @@ for (const card of CARDS) {
     await pickCharacter(page, "Samochodzik");
     await page.getByRole("button", { name: "Generuj" }).click();
     const sheet = page.getByRole("img", { name: card.sheet });
-    await expect(sheet.locator("image")).toHaveCount(1);
+    await expect(sheet.locator("image")).toHaveCount(card.characterImages ?? 1);
 
     const size = page.viewportSize();
     const box = await sheet.boundingBox();

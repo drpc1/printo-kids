@@ -4,9 +4,9 @@ import { cellKey, DIRS, isFree, shortestPaths, step, uniqueShortestPath, type Ce
 
 /**
  * Draws a grid again at most this many times before giving up, so a card that cannot be made cannot loop forever. One
- * grid gives a Zapisz card as soon as any cell is a legal goal, so a few draws are enough; the cap is generous.
+ * grid gives a Zapisz card as soon as any cell is a legal goal, but Poziom 4 Zapisz sometimes needs more than 500 draws (1 card in 300 in a trial of 300), so the cap is 3000; a run of 1500 cards had none that failed and the slowest took 64 ms.
  */
-export const MAX_ATTEMPTS = 500;
+export const MAX_ATTEMPTS = 3000;
 
 /** A shuffled copy (Fisher-Yates); `random` is the only source of chance. */
 export function shuffled<T>(items: readonly T[], random: () => number): T[] {
