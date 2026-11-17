@@ -329,9 +329,9 @@ Brak: nowe pole `cards.kodowanie` w zapisanych profilach ma wartość domyślną
 
 #### Automated
 
-- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md context/domain/glossary.md context/changes/coding-card/*.md`
+- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/foundation/prd.md context/foundation/roadmap.md context/domain/glossary.md context/changes/coding-card/*.md` — 5d78df2
 - [x] 1.2 Ustalenia są w PRD: `rg -n "US-35|US-36|FR-045|FR-046|Kodowanie: Poziom" context/foundation/prd.md` zwraca trafienia
-- [x] 1.3 Makieta działa: `node --experimental-strip-types context/changes/coding-card/mockup.mts` kończy się bez błędu
+- [x] 1.3 Makieta działa: `node --experimental-strip-types context/changes/coding-card/mockup.mts` kończy się bez błędu — 5d78df2
 
 #### Manual
 
