@@ -42,9 +42,9 @@ Zmiany (wszystkie liczby i nazwy z kodu, testów i archiwum):
 
 #### Automated
 
-- [ ] 1.1 Prettier check test-plan.md i roadmap.md
-- [ ] 1.2 Liczba rodzajów kart zgodna z `cards.ts`
+- [x] 1.1 Prettier check test-plan.md i roadmap.md — 4e2ad1b
+- [x] 1.2 Liczba rodzajów kart zgodna z `cards.ts` — 4e2ad1b
 
 #### Manual
 
-- [ ] 1.3 Liczby i nazwy zweryfikowane w kodzie
+- [x] 1.3 Liczby i nazwy zweryfikowane w kodzie — 4e2ad1b
