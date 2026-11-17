@@ -1,10 +1,10 @@
 ---
 change_id: stryker-m6-cards
 title: Stryker mutation tests for M-6 cards (S-45)
-status: done
+status: archived
 created: 2026-11-16
 updated: 2026-11-17
-archived_at: null
+archived_at: 2026-11-17T08:34:36Z
 ---
 
 ## Notes

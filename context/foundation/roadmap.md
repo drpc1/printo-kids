@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: "2026-11-16"
+updated: 2026-11-17
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -272,6 +272,8 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **M-1: Pierwsza drukowalna karta A4** (`first-printable-a4-maze`) — closed 2026-10-22. Rodzic generuje labirynt na wybranym poziomie, wybiera postać, korzysta z profili dzieci i drukuje kartę jako jedną stronę A4 także z telefonu.
 
 ## Done
+
+- **S-45: Rodzic dostaje nowe karty i logikę M-6 sprawdzone mutacjami Strykera na zakresach z ryzykiem (solver krzyżówki, reguły jednoznaczności).** — Archived 2026-11-17 → `context/archive/2026-11-16-stryker-m6-cards/`. Lesson: —.
 
 - **S-38: Rodzic wybiera świąteczne obiekty (np. bombka, choinka z ozdobami, Mikołaj, bałwanek, piernik, gwiazda betlejemska) na kartach symetrii, nonogramu, dyktanda graficznego i „Skopiuj obrazek”, generuje kartę, podgląda ją i drukuje jako jedną stronę A4 także z telefonu. Obiekty dochodzą do katalogu szablonów w trzech rozmiarach (połowa 4×12, 6×15, 9×24) i spełniają reguły każdej z czterech kart (jedno rozwiązanie nonogramu, obrys dyktanda bez styku).** — Archived 2026-11-16 → `context/archive/$C-$id/`. Lesson: —. Wydanie main → prod przed 1.12.2026 idzie osobno i nie jest kryterium zamknięcia slice'a (decyzja 2026-11-16).
 
