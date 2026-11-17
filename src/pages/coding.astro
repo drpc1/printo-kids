@@ -1,0 +1,15 @@
+---
+import CodingGenerator from "@/components/CodingGenerator";
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import Layout from "@/layouts/Layout.astro";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
+---
+
+<Layout title={cardPageTitle("kodowanie")} lang="pl">
+  <GeneratorShell
+    heading={cardTitle("kodowanie")}
+    description="Wygeneruj kartę z kodowaniem drogi strzałkami i wydrukuj ją na kartce A4."
+  >
+    <CodingGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>

@@ -148,6 +148,7 @@ const CARD_PAGES: { path: string; label: string; controls: RegExp[]; prepare?: (
   },
   { path: "/math-crossword", label: "math-crossword", controls: [/^Postać:/, /^Poziom:/] },
   { path: "/clock", label: "clock", controls: [/^Postać:/, /^Poziom:/, /^Tryb:/] },
+  { path: "/coding", label: "coding", controls: [/^Postać:/, /^Poziom:/, /^Tryb:/] },
 ];
 
 for (const card of CARD_PAGES) {

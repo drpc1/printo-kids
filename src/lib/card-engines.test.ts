@@ -11,6 +11,7 @@ import { CardExhausted, type CardEngine, type CardKindId } from "./card-contract
 import type { CardSettingsOf, SudokuCardSettings } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
 import { CLOCK_LEVELS, CLOCK_MODE_IDS } from "./clock/levels.ts";
+import { CODING_LEVELS, CODING_MODE_IDS } from "./coding/levels.ts";
 import { COPY_DRAWING_LEVELS } from "./copy-drawing/levels.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
 import { MATH_CROSSWORD_LEVELS } from "./math-crossword/levels.ts";
@@ -312,6 +313,19 @@ const INVENTORY: Inventory = {
       { level: "poziom2", mode: "odczytaj", h24: false },
       { level: "poziom1", mode: "polacz", h24: false },
       { level: "poziom1", mode: "odczytaj", h24: true },
+    ],
+    decoration: [],
+  },
+  // The level and the mode both lay out the card; nothing is decoration.
+  kodowanie: {
+    settingsList: CODING_LEVELS.flatMap((level) => CODING_MODE_IDS.map((mode) => ({ level: level.id, mode }))),
+    label: (settings) => `${settings.level}/${settings.mode}`,
+    mayExhaust: () => false,
+    usesPreviousKey: true,
+    base: { level: "poziom1", mode: "zapisz" },
+    content: [
+      { level: "poziom2", mode: "zapisz" },
+      { level: "poziom1", mode: "wykonaj" },
     ],
     decoration: [],
   },

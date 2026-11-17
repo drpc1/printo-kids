@@ -357,10 +357,10 @@ Brak: nowe pole `cards.kodowanie` w zapisanych profilach ma wartość domyślną
 
 #### Automated
 
-- [ ] 3.1 Testy jednostkowe: `npm test`
-- [ ] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build`
-- [ ] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
-- [ ] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke`
+- [x] 3.1 Testy jednostkowe: `npm test`
+- [x] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build`
+- [x] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
+- [x] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke`
 
 #### Manual
 

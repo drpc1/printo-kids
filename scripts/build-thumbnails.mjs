@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword and clock cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword, clock and coding cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -57,6 +57,10 @@ import { generateClockCard } from "../src/lib/clock/generate.ts";
 import { drawDial, layoutClockSheet } from "../src/lib/clock/layout.ts";
 import { clockLevelById, clockModeById } from "../src/lib/clock/levels.ts";
 import { CLOCK_SHEET } from "../src/lib/clock/sheet.ts";
+import { generateCodingCard } from "../src/lib/coding/generate.ts";
+import { layoutCodingSheet } from "../src/lib/coding/layout.ts";
+import { codingInstruction, codingLevelById, codingModeById } from "../src/lib/coding/levels.ts";
+import { CODING_SHEET } from "../src/lib/coding/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -861,3 +865,85 @@ clockLines.push("</svg>", "");
 const clockOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/zegar.svg");
 writeFileSync(clockOutFile, clockLines.join("\n"));
 console.log(`Wrote ${clockOutFile} (${clockCard.times.map(formatClockTime).join(", ")})`);
+
+// Coding card: the elements CodingSheet draws (src/components/CodingSheet.tsx), in literal black and grey, in the Zapisz
+// mode on Poziom 2 without a character (the plain instruction and the "Start" circle). Positions come from
+// `layoutCodingSheet` (src/lib/coding/layout.ts), constants from src/lib/coding/sheet.ts.
+const CODING_SEED = 20261117;
+const CODING = CODING_SHEET;
+const codingLevel = codingLevelById("poziom2");
+const codingMode = codingModeById("zapisz");
+const codingCard = generateCodingCard(mulberry32(CODING_SEED), null, codingLevel, codingMode);
+if (codingCard === null) {
+  throw new Error(`Seed ${CODING_SEED} did not produce a valid coding card`);
+}
+const codingLayout = layoutCodingSheet(codingCard, CODING.plainInstructionSize);
+const codingText = (x, y, size, body, extra = "") =>
+  `<text x="${num(x)}" y="${num(y + size * CODING.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${num(size)}" text-anchor="middle"${extra}>${body}</text>`;
+const codingArrow = (cx, cy, length, dir, color) => {
+  const half = length / 2;
+  const head = length * 0.32;
+  const rotation = { R: 0, D: 90, L: 180, U: 270 }[dir];
+  return `<g transform="translate(${num(cx)} ${num(cy)}) rotate(${rotation})" stroke="${color}" stroke-width="${CODING.arrowStroke}" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="${num(-half)}" y1="0" x2="${num(half)}" y2="0"/><polyline points="${num(half - head)},${num(-head)} ${num(half)},0 ${num(half - head)},${num(head)}"/></g>`;
+};
+const codingGrid = codingLayout.grid;
+const codingLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CODING.pageWidth} ${CODING.pageHeight}" width="${CODING.pageWidth}" height="${CODING.pageHeight}">`,
+  `<rect width="${CODING.pageWidth}" height="${CODING.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${CODING.pageWidth - 0.5}" height="${CODING.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  codingText(
+    CODING.pageWidth / 2,
+    codingLayout.band.y + codingLayout.band.height / 2,
+    CODING.plainInstructionSize,
+    codingInstruction(codingLevel, codingMode),
+  ),
+];
+for (let row = 0; row < codingGrid.rows; row += 1) {
+  for (let col = 0; col < codingGrid.cols; col += 1) {
+    codingLines.push(
+      `<rect x="${num(codingGrid.x + col * codingGrid.cell)}" y="${num(codingGrid.y + row * codingGrid.cell)}" width="${codingGrid.cell}" height="${codingGrid.cell}" fill="${codingCard.blocked[row][col] ? "#9a9a9a" : "#fff"}" stroke="#000" stroke-width="${CODING.gridStroke}"/>`,
+    );
+  }
+}
+codingLines.push(
+  `<rect x="${num(codingGrid.x)}" y="${num(codingGrid.y)}" width="${num(codingGrid.width)}" height="${num(codingGrid.height)}" fill="none" stroke="#000" stroke-width="${CODING.frameStroke}"/>`,
+  `<circle cx="${num(codingLayout.start.x)}" cy="${num(codingLayout.start.y)}" r="${num(codingLayout.start.circleRadius)}" fill="#fff" stroke="#000" stroke-width="1"/>`,
+  codingText(codingLayout.start.x, codingLayout.start.y, codingLayout.start.textSize, "Start", ' font-weight="bold"'),
+);
+{
+  // The finish flag: a pole and a cloth of 4 × 2 squares.
+  const size = codingLayout.goal.flagSize;
+  const pole = codingLayout.goal.x - size * 0.3;
+  const top = codingLayout.goal.y - size / 2;
+  const width = size * 0.75;
+  const height = size * 0.5;
+  codingLines.push(
+    `<line x1="${num(pole)}" y1="${num(top)}" x2="${num(pole)}" y2="${num(codingLayout.goal.y + size / 2)}" stroke="#000" stroke-width="${num(Math.max(0.8, size * 0.06))}" stroke-linecap="round"/>`,
+  );
+  for (let i = 0; i < 4; i += 1) {
+    for (let j = 0; j < 2; j += 1) {
+      if ((i + j) % 2 === 0) {
+        codingLines.push(
+          `<rect x="${num(pole + (i * width) / 4)}" y="${num(top + (j * height) / 2)}" width="${num(width / 4)}" height="${num(height / 2)}" fill="#000"/>`,
+        );
+      }
+    }
+  }
+  codingLines.push(
+    `<rect x="${num(pole)}" y="${num(top)}" width="${num(width)}" height="${num(height)}" fill="none" stroke="#000" stroke-width="0.4"/>`,
+  );
+}
+for (const answer of codingLayout.answers) {
+  const r = answer.rect;
+  codingLines.push(
+    `<rect x="${num(r.x)}" y="${num(r.y)}" width="${r.width}" height="${r.height}" rx="${CODING.boxRadius}" fill="#fff" stroke="#000" stroke-width="${CODING.boxStroke}"/>`,
+  );
+  if (answer.filled) {
+    codingLines.push(codingArrow(r.x + r.width / 2, r.y + r.height / 2, r.width * 0.6, answer.dir, "#9a9a9a"));
+  }
+}
+codingLines.push("</svg>", "");
+
+const codingOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/kodowanie.svg");
+writeFileSync(codingOutFile, codingLines.join("\n"));
+console.log(`Wrote ${codingOutFile} (${codingCard.path.join("")})`);
