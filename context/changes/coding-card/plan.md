@@ -342,11 +342,11 @@ Brak: nowe pole `cards.kodowanie` w zapisanych profilach ma wartość domyślną
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint: `npm run lint`
-- [ ] 2.3 Zależności: `npm run depcruise`
-- [ ] 2.4 Typy: `npx astro check`
-- [ ] 2.5 Build: `npm run build`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint: `npm run lint`
+- [x] 2.3 Zależności: `npm run depcruise`
+- [x] 2.4 Typy: `npx astro check`
+- [x] 2.5 Build: `npm run build`
 
 #### Manual
 

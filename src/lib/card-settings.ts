@@ -1,3 +1,4 @@
+import { type CodingLevelId, type CodingModeId } from "./coding/levels.ts";
 import {
   CLOCK_LEVELS,
   CLOCK_MODE_IDS,
@@ -102,6 +103,12 @@ export interface ClockSettings {
   level: ClockLevelId;
   mode: ClockModeId;
   h24: boolean;
+}
+
+/** "Kodowanie" (S-42): both choices lay out a new card. Not in `CardSettingsMap` until phase 3 registers the card. */
+export interface CodingSettings {
+  level: CodingLevelId;
+  mode: CodingModeId;
 }
 
 export interface CardSettingsMap {
