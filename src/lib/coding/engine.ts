@@ -1,9 +1,8 @@
 // "Kodowanie" as a card kind (S-42, phase 2): `codingSpec` wraps `codingProblems`, `codingEngine` wraps the generator.
 // Both the level and the mode are content: each changes the grid or the task. Running out of attempts is
-// `CardExhausted`; the engine never returns null. Not registered in the catalog yet (phase 3), so `kind` is cast.
+// `CardExhausted`; the engine never returns null.
 import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { CodingSettings } from "../card-settings.ts";
-import type { CardKindId } from "../cards.ts";
 import { codingKey, codingProblems, type CodingCard, type CodingTarget } from "./card.ts";
 import { generateCodingCard, MAX_ATTEMPTS } from "./generate.ts";
 import { codingLevelById, codingModeById } from "./levels.ts";
@@ -103,8 +102,7 @@ function knownBad(): readonly Bad[] {
 let knownBadCache: readonly Bad[] | undefined;
 
 export const codingSpec: CardSpec<CodingSettings, CodingCard> = {
-  // Phase 3 adds "kodowanie" to the catalog and drops this cast.
-  kind: "kodowanie" as CardKindId,
+  kind: "kodowanie",
   problems: (candidate, settings): readonly CardProblem[] =>
     codingProblems(candidate, settings).map((code) => ({
       code,

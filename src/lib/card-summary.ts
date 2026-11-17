@@ -2,6 +2,7 @@ import { cardSettingsOf, type CardSettingsId, type CardSettingsMap } from "./car
 import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import { clockLevelById, clockModeById } from "./clock/levels.ts";
+import { codingLevelById, codingModeById } from "./coding/levels.ts";
 import { copyDrawingLevelById } from "./copy-drawing/levels.ts";
 import { dictationLevelById } from "./dictation/levels.ts";
 import { mathCrosswordLevelById } from "./math-crossword/levels.ts";
@@ -162,6 +163,15 @@ function summaryParts(cardId: string, profile: ChildProfile, today?: Date): Summ
       // The mode is always shown, also the default one; "24 h" only when it is on.
       const mode = clockModeById(settings.mode);
       return { badge: badgeOf(level), level: level.label, extras: [mode.label, ...(settings.h24 ? ["24 h"] : [])] };
+    }
+    case "kodowanie": {
+      const settings = cards.kodowanie;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = codingLevelById(settings.level);
+      // The mode is always shown, also the default one.
+      return { badge: badgeOf(level), level: level.label, extras: [codingModeById(settings.mode).label] };
     }
     default:
       return null;

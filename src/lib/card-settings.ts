@@ -1,4 +1,11 @@
-import { type CodingLevelId, type CodingModeId } from "./coding/levels.ts";
+import {
+  CODING_LEVELS,
+  CODING_MODE_IDS,
+  DEFAULT_CODING_LEVEL_ID,
+  DEFAULT_CODING_MODE_ID,
+  type CodingLevelId,
+  type CodingModeId,
+} from "./coding/levels.ts";
 import {
   CLOCK_LEVELS,
   CLOCK_MODE_IDS,
@@ -105,7 +112,7 @@ export interface ClockSettings {
   h24: boolean;
 }
 
-/** "Kodowanie" (S-42): both choices lay out a new card. Not in `CardSettingsMap` until phase 3 registers the card. */
+/** "Kodowanie" (S-42): both choices lay out a new card. */
 export interface CodingSettings {
   level: CodingLevelId;
   mode: CodingModeId;
@@ -124,6 +131,7 @@ export interface CardSettingsMap {
   szlaczki?: PatternLinesSettings;
   krzyzowka?: MathCrosswordSettings;
   zegar?: ClockSettings;
+  kodowanie?: CodingSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -141,6 +149,7 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "szlaczki",
   "krzyzowka",
   "zegar",
+  "kodowanie",
 ];
 
 /** The settings of one card. */
@@ -161,6 +170,7 @@ const DEFAULTS: Defaults = {
   szlaczki: { level: DEFAULT_PATTERN_LINES_LEVEL_ID, lines: true },
   krzyzowka: { level: DEFAULT_MATH_CROSSWORD_LEVEL_ID },
   zegar: { level: DEFAULT_CLOCK_LEVEL_ID, mode: DEFAULT_CLOCK_MODE_ID, h24: false },
+  kodowanie: { level: DEFAULT_CODING_LEVEL_ID, mode: DEFAULT_CODING_MODE_ID },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -259,7 +269,9 @@ function fieldValue(cardId: CardSettingsId, field: string, value: unknown, fallb
     return value === "shapes" || value === "digits" ? value : fallback;
   }
   if (field === "mode") {
-    return CLOCK_MODE_IDS.includes(value as ClockModeId) ? value : fallback;
+    // Each card has its own modes: a stored mode of another card is not one of these.
+    const modeIds: readonly unknown[] = cardId === "kodowanie" ? CODING_MODE_IDS : CLOCK_MODE_IDS;
+    return modeIds.includes(value) ? value : fallback;
   }
 
   return levelIds(cardId).includes(value as string) ? value : fallback;
@@ -292,6 +304,8 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return MATH_CROSSWORD_LEVELS.map((level) => level.id);
     case "zegar":
       return CLOCK_LEVELS.map((level) => level.id);
+    case "kodowanie":
+      return CODING_LEVELS.map((level) => level.id);
   }
 }
 

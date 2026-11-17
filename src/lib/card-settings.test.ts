@@ -25,6 +25,23 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("szlaczki"), { level: "poziom2", lines: true });
     assert.deepEqual(defaultCardSettings("krzyzowka"), { level: "poziom2" });
     assert.deepEqual(defaultCardSettings("zegar"), { level: "poziom1", mode: "odczytaj", h24: false });
+    assert.deepEqual(defaultCardSettings("kodowanie"), { level: "poziom1", mode: "zapisz" });
+  });
+
+  void test("the coding card reads a stored level and mode, and drops an unknown mode (also a clock one)", () => {
+    assert.deepEqual(parseCardSettings({ kodowanie: { level: "poziom4", mode: "wykonaj" } }), {
+      kodowanie: { level: "poziom4", mode: "wykonaj" },
+    });
+    assert.deepEqual(parseCardSettings({ kodowanie: { level: "poziom9", mode: "odczytaj" } }), {
+      kodowanie: { level: "poziom1", mode: "zapisz" },
+    });
+    assert.deepEqual(parseCardSettings({ kodowanie: { level: "poziom2", mode: 1 } }), {
+      kodowanie: { level: "poziom2", mode: "zapisz" },
+    });
+    assert.deepEqual(parseCardSettings({ kodowanie: 3 }), {});
+    assert.deepEqual(withCardSettings({}, "kodowanie", { mode: "wykonaj" }), {
+      kodowanie: { level: "poziom1", mode: "wykonaj" },
+    });
   });
 
   void test("the clock card reads a stored level, mode and 24 h, drops unknown and non-boolean values, and stays absent when never stored", () => {

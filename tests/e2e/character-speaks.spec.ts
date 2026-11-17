@@ -9,6 +9,8 @@ interface CardCase {
   path: string;
   sheet: string | RegExp;
   sentence: string;
+  /** Images of the character on the sheet: the speech band, and on the coding card also the start cell. */
+  characterImages?: number;
 }
 
 const CARDS: CardCase[] = [
@@ -25,6 +27,8 @@ const CARDS: CardCase[] = [
   { path: "/math-crossword", sheet: "Krzyżówka matematyczna", sentence: "Uzupełnij krzyżówkę." },
   // The sentence of the default mode (Odczytaj); the other modes have their own.
   { path: "/clock", sheet: "Zegar", sentence: "Która godzina?" },
+  // The sentence of the default mode (Zapisz) on the default level (Poziom 1); Wykonaj has its own.
+  { path: "/coding", sheet: "Kodowanie", sentence: "Zapisz strzałkami najkrótszą drogę", characterImages: 2 },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {
@@ -45,7 +49,7 @@ for (const card of CARDS) {
 
     await pickCharacter(page, "Dinozaur");
     await expect(page.getByRole("button", { name: "Postać: Dinozaur" })).toBeVisible();
-    await expect(sheet.locator('image[href="/characters/dinozaur.webp"]')).toHaveCount(1);
+    await expect(sheet.locator('image[href="/characters/dinozaur.webp"]')).toHaveCount(card.characterImages ?? 1);
     await expect(sheet.locator("text", { hasText: card.sentence }).first()).toBeVisible();
 
     await pickCharacter(page, "Brak");
@@ -59,7 +63,7 @@ for (const card of CARDS) {
     await pickCharacter(page, "Samochodzik");
     await page.getByRole("button", { name: "Generuj" }).click();
     const sheet = page.getByRole("img", { name: card.sheet });
-    await expect(sheet.locator("image")).toHaveCount(1);
+    await expect(sheet.locator("image")).toHaveCount(card.characterImages ?? 1);
 
     const size = page.viewportSize();
     const box = await sheet.boundingBox();

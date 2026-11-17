@@ -699,6 +699,30 @@ test("the math-crossword page keeps Pokaż rozwiązanie, Generuj, Drukuj and Pro
   }
 });
 
+test("the coding page keeps the Tryb button, Generuj, Drukuj and Profil apart", async ({ page }) => {
+  await page.goto("/coding");
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Kodowanie" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    tryb: await viewportBox(page.getByRole("button", { name: /^Tryb:/ })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});
+
 test("the clock page keeps 24 h, Generuj, Drukuj and Profil apart", async ({ page }) => {
   await page.goto("/clock");
   await page.getByRole("button", { name: "Generuj" }).click();

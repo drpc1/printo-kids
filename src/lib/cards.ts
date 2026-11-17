@@ -104,6 +104,14 @@ export const CARD_KINDS = [
     description:
       "Dziecko odczytuje godzinę z tarczy ze wskazówkami i wpisuje ją pod zegarem, dorysowuje wskazówki do godziny podanej pod pustą tarczą albo łączy kreską tarczę z zegarem cyfrowym, zależnie od trybu. Na kartce są tarcze z liczbami 1–12: sześć przy odczytywaniu i dorysowywaniu, pięć przy łączeniu. Poziom zmienia minuty, od pełnych godzin po co minutę, a po włączeniu „24 h” pod tarczą stoi pora dnia.",
   },
+  {
+    id: "kodowanie",
+    title: "Kodowanie",
+    href: "/coding",
+    thumbnail: "/thumbnails/kodowanie.svg",
+    description:
+      "Dziecko zapisuje strzałkami najkrótszą drogę postaci do mety albo idzie za podanymi strzałkami i zakreśla obrazek, na którym kończy się droga, zależnie od trybu. Na kartce jest kratka z szarymi przeszkodami, postać w polu startu, flaga mety i pola na strzałki albo trzy obrazki. Poziom zmienia wielkość kratki, długość drogi i zakręty, a na najwyższym zapis „3 →”.",
+  },
 ] as const satisfies readonly CardKind[];
 
 /** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */

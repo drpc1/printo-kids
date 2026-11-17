@@ -117,6 +117,14 @@ const CARDS: CardCase[] = [
     ],
     toggle: { name: "24 h", startsOn: false },
   },
+  {
+    id: "kodowanie",
+    path: "/coding",
+    changes: [
+      { bar: "Poziom", option: "Poziom 4", shown: "4" },
+      { bar: "Tryb", option: "Wykonaj", shown: "Wykonaj" },
+    ],
+  },
 ];
 
 function barButton(page: Page, bar: string): Locator {
