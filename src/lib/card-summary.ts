@@ -1,8 +1,10 @@
 import { cardSettingsOf, type CardSettingsId, type CardSettingsMap } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
+import { clockLevelById, clockModeById } from "./clock/levels.ts";
 import { copyDrawingLevelById } from "./copy-drawing/levels.ts";
 import { dictationLevelById } from "./dictation/levels.ts";
+import { mathCrosswordLevelById } from "./math-crossword/levels.ts";
 import { levelById } from "./maze/levels.ts";
 import { moneyCurrencyById } from "./money/currencies.ts";
 import { moneyLevelById } from "./money/levels.ts";
@@ -12,7 +14,7 @@ import { patternLinesHasGuides, patternLinesLevelById } from "./pattern-lines/le
 import { sequenceLevelById } from "./sequence/levels.ts";
 import { SUDOKU_LEVELS, SUDOKU_SIZES, sudokuHasLevels, sudokuHasSymbolChoice } from "./sudoku/levels.ts";
 import { symmetryLevelById } from "./symmetry/levels.ts";
-import { OBJECT_CATEGORY_CHOICES, type ObjectCategoryChoiceId } from "./symmetry/templates.ts";
+import { OBJECT_CATEGORY_CHOICES, visibleCategoryOn, type ObjectCategoryChoiceId } from "./symmetry/templates.ts";
 
 /** What the profile window and the catalog show about one card of a profile. */
 export interface CardSummary {
@@ -29,10 +31,13 @@ export interface CardSummary {
 
 const UNUSED_DETAIL = "domyślne";
 
-/** Every card of a profile in the order of CARD_KINDS. */
-export function cardSummaries(profile: ChildProfile): CardSummary[] {
+/**
+ * Every card of a profile in the order of CARD_KINDS. With `today` a remembered category outside its window reads as
+ * "Wszystkie", as on the bar; without it the remembered one is shown.
+ */
+export function cardSummaries(profile: ChildProfile, today?: Date): CardSummary[] {
   return CARD_KINDS.map((kind) => {
-    const parts = summaryParts(kind.id, profile);
+    const parts = summaryParts(kind.id, profile, today);
     if (parts === null) {
       return { id: kind.id, title: kind.title, href: kind.href, used: false, badge: null, detail: UNUSED_DETAIL };
     }
@@ -53,7 +58,7 @@ interface SummaryParts {
   extras: string[];
 }
 
-function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | null {
+function summaryParts(cardId: string, profile: ChildProfile, today?: Date): SummaryParts | null {
   const cards: CardSettingsMap = profile.cards ?? {};
   switch (cardId as CardSettingsId) {
     case "labirynt": {
@@ -69,7 +74,7 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
       return {
         badge: badgeOf(level),
         level: level.label,
-        extras: [...(settings.colors ? ["kolory"] : []), categoryLabel(settings.category)],
+        extras: [...(settings.colors ? ["kolory"] : []), categoryLabel(settings.category, today)],
       };
     }
     case "sekwencje": {
@@ -88,7 +93,7 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
         return null;
       }
       const level = nonogramSizeById(settings.level);
-      return { badge: badgeOf(level), level: level.label, extras: [categoryLabel(settings.category)] };
+      return { badge: badgeOf(level), level: level.label, extras: [categoryLabel(settings.category, today)] };
     }
     case "dyktando": {
       const settings = cards.dyktando;
@@ -96,7 +101,7 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
         return null;
       }
       const level = dictationLevelById(settings.level);
-      return { badge: badgeOf(level), level: level.label, extras: [categoryLabel(settings.category)] };
+      return { badge: badgeOf(level), level: level.label, extras: [categoryLabel(settings.category, today)] };
     }
     case "pieniadze": {
       const settings = cards.pieniadze;
@@ -128,7 +133,7 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
       return {
         badge: badgeOf(level),
         level: level.label,
-        extras: [...(settings.colors ? ["kolory"] : []), categoryLabel(settings.category)],
+        extras: [...(settings.colors ? ["kolory"] : []), categoryLabel(settings.category, today)],
       };
     }
     case "szlaczki": {
@@ -139,6 +144,24 @@ function summaryParts(cardId: string, profile: ChildProfile): SummaryParts | nul
       const level = patternLinesLevelById(settings.level);
       const noLines = patternLinesHasGuides(settings.level) && !settings.lines;
       return { badge: badgeOf(level), level: level.label, extras: noLines ? ["bez linii"] : [] };
+    }
+    case "krzyzowka": {
+      const settings = cards.krzyzowka;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = mathCrosswordLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: [] };
+    }
+    case "zegar": {
+      const settings = cards.zegar;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = clockLevelById(settings.level);
+      // The mode is always shown, also the default one; "24 h" only when it is on.
+      const mode = clockModeById(settings.mode);
+      return { badge: badgeOf(level), level: level.label, extras: [mode.label, ...(settings.h24 ? ["24 h"] : [])] };
     }
     default:
       return null;
@@ -163,6 +186,7 @@ function badgeOf(level: { label: string; barLabel: string }): string {
   return /^\d+$/.test(level.barLabel) ? `poz. ${level.barLabel}` : level.label;
 }
 
-function categoryLabel(category: ObjectCategoryChoiceId): string {
-  return OBJECT_CATEGORY_CHOICES.find((choice) => choice.id === category)?.label ?? category;
+function categoryLabel(category: ObjectCategoryChoiceId, today?: Date): string {
+  const shown = today === undefined ? category : visibleCategoryOn(category, today);
+  return OBJECT_CATEGORY_CHOICES.find((choice) => choice.id === shown)?.label ?? shown;
 }

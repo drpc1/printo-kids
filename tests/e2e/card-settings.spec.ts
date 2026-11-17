@@ -17,14 +17,23 @@ interface Change {
   shown: string;
 }
 
+/** A switch on the bar ("Kolory", "Linie", "24 h") the case flips from its default. */
+interface ToggleCase {
+  name: string;
+  /** Whether the switch is on before the case flips it. */
+  startsOn: boolean;
+  /** Flipped after the bar changes, because it exists only on the chosen level ("Linie" from Poziom 3 on). */
+  afterChanges?: boolean;
+}
+
 interface CardCase {
   id: string;
   path: string;
   changes: Change[];
-  colors?: boolean;
-  /** The "Linie" switch, which exists from Poziom 3 on; the case picks Poziom 4 and turns it off. */
-  lines?: boolean;
+  toggle?: ToggleCase;
 }
+
+const COLORS: ToggleCase = { name: "Kolory", startsOn: false };
 
 const CARDS: CardCase[] = [
   {
@@ -34,13 +43,13 @@ const CARDS: CardCase[] = [
       { bar: "Poziom", option: "Poziom 4", shown: "4" },
       { bar: "Kategoria", option: "Zwierzęta", shown: "Zwierzęta" },
     ],
-    colors: true,
+    toggle: COLORS,
   },
   {
     id: "sekwencje",
     path: "/sequences",
     changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }],
-    colors: true,
+    toggle: COLORS,
   },
   {
     id: "sudoku",
@@ -49,7 +58,7 @@ const CARDS: CardCase[] = [
       { bar: "Rozmiar", option: "6×6", shown: "6×6" },
       { bar: "Poziom", option: "trudny", shown: "trudny" },
     ],
-    colors: true,
+    toggle: COLORS,
   },
   {
     id: "nonogram",
@@ -71,13 +80,13 @@ const CARDS: CardCase[] = [
     id: "pieniadze",
     path: "/money",
     changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
-    colors: true,
+    toggle: COLORS,
   },
   {
     id: "niepasuje",
     path: "/odd-one-out",
     changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
-    colors: true,
+    toggle: COLORS,
   },
   {
     id: "kopiuj",
@@ -86,13 +95,27 @@ const CARDS: CardCase[] = [
       { bar: "Poziom", option: "trudny", shown: "trudny" },
       { bar: "Kategoria", option: "Zwierzęta", shown: "Zwierzęta" },
     ],
-    colors: true,
+    toggle: COLORS,
   },
   {
     id: "szlaczki",
     path: "/patterns",
     changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }],
-    lines: true,
+    toggle: { name: "Linie", startsOn: true, afterChanges: true },
+  },
+  {
+    id: "krzyzowka",
+    path: "/math-crossword",
+    changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }],
+  },
+  {
+    id: "zegar",
+    path: "/clock",
+    changes: [
+      { bar: "Poziom", option: "Poziom 4", shown: "4" },
+      { bar: "Tryb", option: "Połącz", shown: "Połącz" },
+    ],
+    toggle: { name: "24 h", startsOn: false },
   },
 ];
 
@@ -108,14 +131,24 @@ async function choose(page: Page, change: Change): Promise<void> {
 }
 
 async function applyChanges(page: Page, card: CardCase): Promise<void> {
-  if (card.colors === true) {
-    await page.getByRole("switch", { name: "Kolory" }).click();
+  const toggle = card.toggle;
+  if (toggle !== undefined && toggle.afterChanges !== true) {
+    await page.getByRole("switch", { name: toggle.name }).click();
   }
   for (const change of card.changes) {
     await choose(page, change);
   }
-  if (card.lines === true) {
-    await page.getByRole("switch", { name: "Linie" }).click();
+  if (toggle?.afterChanges === true) {
+    await page.getByRole("switch", { name: toggle.name }).click();
+  }
+}
+
+async function expectToggle(page: Page, toggle: ToggleCase, on: boolean): Promise<void> {
+  const control = page.getByRole("switch", { name: toggle.name });
+  if (on) {
+    await expect(control).toBeChecked();
+  } else {
+    await expect(control).not.toBeChecked();
   }
 }
 
@@ -123,11 +156,8 @@ async function expectChanges(page: Page, card: CardCase): Promise<void> {
   for (const change of card.changes) {
     await expect(page.getByRole("button", { name: `${change.bar}: ${change.shown}` })).toBeVisible();
   }
-  if (card.colors === true) {
-    await expect(page.getByRole("switch", { name: "Kolory" })).toBeChecked();
-  }
-  if (card.lines === true) {
-    await expect(page.getByRole("switch", { name: "Linie" })).not.toBeChecked();
+  if (card.toggle !== undefined) {
+    await expectToggle(page, card.toggle, !card.toggle.startsOn);
   }
 }
 
@@ -201,8 +231,9 @@ for (const card of CARDS) {
           await expect(button).toHaveAttribute("aria-label", expected);
         }
       }
-      if (card.colors === true) {
-        await expect(page.getByRole("switch", { name: "Kolory" })).not.toBeChecked();
+      // A switch that exists only on another level ("Linie") is not on the default bar.
+      if (card.toggle !== undefined && card.toggle.afterChanges !== true) {
+        await expectToggle(page, card.toggle, card.toggle.startsOn);
       }
     });
   });

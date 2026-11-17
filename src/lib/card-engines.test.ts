@@ -10,8 +10,10 @@ import { CARD_ENGINES } from "./card-engines.ts";
 import { CardExhausted, type CardEngine, type CardKindId } from "./card-contract.ts";
 import type { CardSettingsOf, SudokuCardSettings } from "./card-settings.ts";
 import { CARD_KINDS } from "./cards.ts";
+import { CLOCK_LEVELS, CLOCK_MODE_IDS } from "./clock/levels.ts";
 import { COPY_DRAWING_LEVELS } from "./copy-drawing/levels.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
+import { MATH_CROSSWORD_LEVELS } from "./math-crossword/levels.ts";
 import { LEVELS } from "./maze/levels.ts";
 import { MONEY_CURRENCY_IDS } from "./money/currencies.ts";
 import { MONEY_LEVEL_IDS } from "./money/levels.ts";
@@ -283,6 +285,35 @@ const INVENTORY: Inventory = {
     base: { level: "poziom3", lines: true },
     content: [{ level: "poziom2", lines: true }],
     decoration: [{ level: "poziom3", lines: false }],
+  },
+  // The level is the whole content; "Pokaż rozwiązanie" is screen state and never reaches the spec.
+  krzyzowka: {
+    settingsList: MATH_CROSSWORD_LEVELS.map((level) => ({ level: level.id })),
+    label: (settings) => settings.level,
+    mayExhaust: () => false,
+    usesPreviousKey: true,
+    base: { level: "poziom2" },
+    content: [{ level: "poziom3" }],
+    decoration: [],
+  },
+  // The level, the mode and "24 h" all change the times or how many dials there are; nothing is decoration.
+  zegar: {
+    settingsList: CLOCK_LEVELS.flatMap((level) =>
+      CLOCK_MODE_IDS.flatMap((mode) => [
+        { level: level.id, mode, h24: false },
+        { level: level.id, mode, h24: true },
+      ]),
+    ),
+    label: (settings) => `${settings.level}/${settings.mode}/${String(settings.h24)}`,
+    mayExhaust: () => false,
+    usesPreviousKey: true,
+    base: { level: "poziom1", mode: "odczytaj", h24: false },
+    content: [
+      { level: "poziom2", mode: "odczytaj", h24: false },
+      { level: "poziom1", mode: "polacz", h24: false },
+      { level: "poziom1", mode: "odczytaj", h24: true },
+    ],
+    decoration: [],
   },
 };
 

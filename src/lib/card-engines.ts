@@ -3,10 +3,14 @@
 // unknown kind is a compile error (`npx astro check`).
 import type { CardEngine, CardKindId } from "./card-contract.ts";
 import type { CardSettingsId, CardSettingsOf } from "./card-settings.ts";
+import type { ClockCard } from "./clock/card.ts";
+import { clockEngine } from "./clock/engine.ts";
 import type { CopyDrawingCard } from "./copy-drawing/card.ts";
 import { copyDrawingEngine } from "./copy-drawing/engine.ts";
 import { dictationEngine } from "./dictation/engine.ts";
 import type { DictationCard } from "./dictation/generate.ts";
+import type { MathCrosswordCard } from "./math-crossword/card.ts";
+import { mathCrosswordEngine } from "./math-crossword/engine.ts";
 import { mazeEngine } from "./maze/engine.ts";
 import type { Maze } from "./maze/generate.ts";
 import { moneyEngine } from "./money/engine.ts";
@@ -34,6 +38,8 @@ interface CardTypeMap {
   niepasuje: OddOneOutCard;
   kopiuj: CopyDrawingCard;
   szlaczki: PatternLinesCard;
+  krzyzowka: MathCrosswordCard;
+  zegar: ClockCard;
 }
 
 // The card kinds and the settings ids are one union: a kind with settings but no engine (or the reverse) fails here.
@@ -51,4 +57,6 @@ export const CARD_ENGINES = {
   niepasuje: oddOneOutEngine,
   kopiuj: copyDrawingEngine,
   szlaczki: patternLinesEngine,
+  krzyzowka: mathCrosswordEngine,
+  zegar: clockEngine,
 } satisfies { [K in CardKindId]: CardEngine<CardSettingsOf<K>, CardTypeMap[K]> };

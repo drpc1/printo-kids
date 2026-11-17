@@ -54,6 +54,16 @@ void describe("template catalog", () => {
     }
   });
 
+  void test("Boże Narodzenie has the tree, the star and the template objects in every size", () => {
+    for (const { levelId } of SIZES) {
+      const ids = symmetryTemplatesFor(levelId, "boze-narodzenie").map((template) => template.id);
+
+      for (const id of ["choinka", "gwiazda", "bombka", "dzwonek", "prezent", "piernik", "balwanek", "aniolek"]) {
+        assert.ok(ids.includes(id), `${levelId} ${id}`);
+      }
+    }
+  });
+
   void test("the car and the bus are in Kosmos i maszyny in every size", () => {
     for (const { levelId } of SIZES) {
       const kosmos = symmetryTemplatesFor(levelId, "kosmos").map((template) => template.id);

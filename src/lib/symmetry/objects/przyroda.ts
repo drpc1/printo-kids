@@ -9,7 +9,7 @@ const TREE_4: SymmetryTemplate = {
   width: 4,
   height: 11,
   holeColor: "red",
-  categories: ["przyroda"],
+  categories: ["przyroda", "boze-narodzenie"],
   base: drawing([
     "....", // 0 star (part)
     "...g", // 1
@@ -44,7 +44,7 @@ const TREE_6: SymmetryTemplate = {
   width: 6,
   height: 15,
   holeColor: "red",
-  categories: ["przyroda"],
+  categories: ["przyroda", "boze-narodzenie"],
   base: drawing([
     "......", // 0 star (part)
     ".....g", // 1
@@ -83,7 +83,7 @@ const TREE_9: SymmetryTemplate = {
   width: 9,
   height: 24,
   holeColor: "red",
-  categories: ["przyroda"],
+  categories: ["przyroda", "boze-narodzenie"],
   base: drawing([
     ".........", // 0 star (part)
     ".........", // 1

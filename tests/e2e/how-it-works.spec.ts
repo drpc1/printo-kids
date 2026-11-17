@@ -52,9 +52,16 @@ test("a generator page has the footer link and the page states the rules of leve
   await expect(body).toContainText("do końca wizyty");
   await expect(body).toContainText("przy zdaniu polecenia");
   // S-37: the level rules name the four M-5 cards and no longer say which old cards lack an age.
-  await expect(body).toContainText("symetria, sekwencje i szlaczki (Poziom 1–4)");
+  await expect(body).toContainText(
+    "Numery mają labirynt (Poziom 1–6), symetria, sekwencje i szlaczki (Poziom 1–4), zegar (Poziom 1–5) oraz krzyżówka matematyczna (Poziom 1–7).",
+  );
   await expect(body).toContainText("„Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”");
   await expect(body).not.toContainText("sudoku i nonogram wieku nie mają");
+  // GitHub 375: the seasonal characters and the "Boże Narodzenie" category are described with their date window.
+  await expect(page.getByRole("heading", { level: 2, name: "Święta" })).toBeVisible();
+  await expect(body).toContainText("Od 15 listopada do 6 stycznia");
+  await expect(body).toContainText("Bałwanka, Mikołaja i Renifera");
+  await expect(body).not.toContainText("filtr");
 });
 
 test("the page describes every card kind in catalog order", async ({ page }, testInfo) => {

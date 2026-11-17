@@ -1,12 +1,20 @@
+import { BOZE_NARODZENIE } from "./objects/boze-narodzenie.ts";
 import { BUDOWLE } from "./objects/budowle.ts";
 import { JEDZENIE } from "./objects/jedzenie.ts";
 import { KOSMOS } from "./objects/kosmos.ts";
 import { KSZTALTY } from "./objects/ksztalty.ts";
 import { PRZYRODA } from "./objects/przyroda.ts";
 import { ZWIERZETA } from "./objects/zwierzeta.ts";
+import { inWindow } from "../date-window.ts";
 import type { SymmetryLevelId } from "./levels.ts";
 import { OBJECT_CATEGORIES } from "./template-format.ts";
-import type { ObjectCategoryId, SymmetryObjectSizes, SymmetryTemplate } from "./template-format.ts";
+import type {
+  CategoryWindow,
+  ObjectCategory,
+  ObjectCategoryId,
+  SymmetryObjectSizes,
+  SymmetryTemplate,
+} from "./template-format.ts";
 
 export type ObjectCategoryChoiceId = "wszystkie" | ObjectCategoryId;
 
@@ -29,7 +37,15 @@ function byOrder(templates: readonly SymmetryTemplate[]): readonly SymmetryTempl
   ];
 }
 
-const CATALOG: readonly SymmetryObjectSizes[] = [ZWIERZETA, JEDZENIE, PRZYRODA, KOSMOS, BUDOWLE, KSZTALTY];
+const CATALOG: readonly SymmetryObjectSizes[] = [
+  ZWIERZETA,
+  JEDZENIE,
+  PRZYRODA,
+  KOSMOS,
+  BUDOWLE,
+  KSZTALTY,
+  BOZE_NARODZENIE,
+];
 
 /** Drawn as the left half of a 12-column grid: 6 columns, and column 5 touches the axis. Used by 5 and 6 lat. */
 const TEMPLATES_6_BY_15 = byOrder(CATALOG.flatMap((sizes) => sizes.half6));
@@ -41,11 +57,39 @@ const TEMPLATES_BY_LEVEL: Readonly<Record<SymmetryLevelId, readonly SymmetryTemp
   lat7: byOrder(CATALOG.flatMap((sizes) => sizes.half9)),
 };
 
-/** The choices of the "Kategoria" bar: all objects first, then one entry per category, alphabetically by Polish label. */
+function windowOf(category: ObjectCategory): CategoryWindow | undefined {
+  return category.window;
+}
+
+/**
+ * Every choice of the "Kategoria" bar: all objects first, then the categories with a window, then the always-on
+ * ones, alphabetically by Polish label. The bar itself shows `objectCategoryChoicesOn(today)`.
+ */
 export const OBJECT_CATEGORY_CHOICES: readonly { id: ObjectCategoryChoiceId; label: string }[] = [
   { id: "wszystkie", label: "Wszystkie" },
-  ...[...OBJECT_CATEGORIES].sort((a, b) => a.label.localeCompare(b.label, "pl")),
+  ...[...OBJECT_CATEGORIES]
+    .sort(
+      (a, b) =>
+        Number(windowOf(b) !== undefined) - Number(windowOf(a) !== undefined) || a.label.localeCompare(b.label, "pl"),
+    )
+    .map(({ id, label }) => ({ id, label })),
 ];
+
+function categoryOpenOn(id: ObjectCategoryId, today: Date): boolean {
+  const category: ObjectCategory | undefined = OBJECT_CATEGORIES.find((candidate) => candidate.id === id);
+  const window = category === undefined ? undefined : windowOf(category);
+  return window === undefined || inWindow(window, today);
+}
+
+/** The choices of the bar on `today`: every category except those whose window does not include the day. */
+export function objectCategoryChoicesOn(today: Date): readonly { id: ObjectCategoryChoiceId; label: string }[] {
+  return OBJECT_CATEGORY_CHOICES.filter((choice) => choice.id === "wszystkie" || categoryOpenOn(choice.id, today));
+}
+
+/** The category the bar shows for a remembered one: "wszystkie" when its window does not include `today`. */
+export function visibleCategoryOn(category: ObjectCategoryChoiceId, today: Date): ObjectCategoryChoiceId {
+  return category === "wszystkie" || categoryOpenOn(category, today) ? category : "wszystkie";
+}
 
 export const DEFAULT_OBJECT_CATEGORY_ID: ObjectCategoryChoiceId = "wszystkie";
 

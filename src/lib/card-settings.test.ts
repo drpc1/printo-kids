@@ -23,6 +23,35 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("niepasuje"), { level: "sredni", colors: false });
     assert.deepEqual(defaultCardSettings("kopiuj"), { level: "sredni", category: "wszystkie", colors: false });
     assert.deepEqual(defaultCardSettings("szlaczki"), { level: "poziom2", lines: true });
+    assert.deepEqual(defaultCardSettings("krzyzowka"), { level: "poziom2" });
+    assert.deepEqual(defaultCardSettings("zegar"), { level: "poziom1", mode: "odczytaj", h24: false });
+  });
+
+  void test("the clock card reads a stored level, mode and 24 h, drops unknown and non-boolean values, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ zegar: { level: "poziom4", mode: "polacz", h24: true } }), {
+      zegar: { level: "poziom4", mode: "polacz", h24: true },
+    });
+    assert.deepEqual(parseCardSettings({ zegar: { level: "poziom3", mode: "dorysuj", h24: false } }), {
+      zegar: { level: "poziom3", mode: "dorysuj", h24: false },
+    });
+    assert.deepEqual(parseCardSettings({ zegar: { level: "poziom9", mode: "rysuj", h24: "tak" } }), {
+      zegar: { level: "poziom1", mode: "odczytaj", h24: false },
+    });
+    assert.deepEqual(parseCardSettings({ zegar: { level: "poziom2", mode: 1, h24: 1 } }), {
+      zegar: { level: "poziom2", mode: "odczytaj", h24: false },
+    });
+    assert.deepEqual(parseCardSettings({ zegar: 3 }), {});
+    assert.deepEqual(withCardSettings({}, "zegar", { mode: "dorysuj" }), {
+      zegar: { level: "poziom1", mode: "dorysuj", h24: false },
+    });
+  });
+
+  void test("the math-crossword card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ krzyzowka: { level: "poziom7" } }), { krzyzowka: { level: "poziom7" } });
+    assert.deepEqual(parseCardSettings({ krzyzowka: { level: "lat5" } }), { krzyzowka: { level: "poziom2" } });
+    assert.deepEqual(parseCardSettings({ krzyzowka: 3 }), {});
+    assert.deepEqual(parseCardSettings({ labirynt: { level: "lat5" } }), { labirynt: { level: "lat5" } });
+    assert.deepEqual(withCardSettings({}, "krzyzowka", { level: "poziom5" }), { krzyzowka: { level: "poziom5" } });
   });
 
   void test("the pattern-lines card reads a stored level and lines, drops unknown and non-boolean values, and stays absent when never stored", () => {

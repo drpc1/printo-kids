@@ -674,3 +674,51 @@ test("the patterns page keeps Linie, Generuj, Drukuj and Profil apart on Poziom 
     expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
   }
 });
+
+test("the math-crossword page keeps Pokaż rozwiązanie, Generuj, Drukuj and Profil apart", async ({ page }) => {
+  await page.goto("/math-crossword");
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Krzyżówka matematyczna" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    rozwiazanie: await viewportBox(page.getByRole("switch", { name: "Pokaż rozwiązanie" })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});
+
+test("the clock page keeps 24 h, Generuj, Drukuj and Profil apart", async ({ page }) => {
+  await page.goto("/clock");
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Zegar" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    h24: await viewportBox(page.getByRole("switch", { name: "24 h" })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});

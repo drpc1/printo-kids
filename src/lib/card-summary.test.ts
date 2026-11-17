@@ -18,6 +18,15 @@ function byId(summaries: ReturnType<typeof cardSummaries>, id: string) {
 }
 
 void describe("cardSummaries", () => {
+  void test("a remembered Boże Narodzenie reads as Wszystkie outside its window and stays with the right date", () => {
+    const saved = { symetria: { level: "lat5", colors: false, category: "boze-narodzenie" } } as const;
+    const detail = (today?: Date) => byId(cardSummaries(profile("lat5", saved), today), "symetria").detail;
+    assert.match(detail(), /Boże Narodzenie/);
+    assert.match(detail(new Date(2026, 11, 10)), /Boże Narodzenie/);
+    assert.match(detail(new Date(2027, 1, 10)), /Wszystkie/);
+    assert.doesNotMatch(detail(new Date(2027, 1, 10)), /Boże Narodzenie/);
+  });
+
   void test("lists every card in the order of CARD_KINDS with their pages", () => {
     const summaries = cardSummaries(profile("lat5"));
     assert.deepEqual(
@@ -181,6 +190,40 @@ void describe("cardSummaries", () => {
     assert.equal(hidden.detail, "Poziom 2");
   });
 
+  void test("the math-crossword card shows its numbered level and nothing else", () => {
+    const fresh = byId(cardSummaries(profile("lat5")), "krzyzowka");
+    assert.equal(fresh.used, false);
+    assert.equal(fresh.badge, null);
+    assert.equal(fresh.title, "Krzyżówka matematyczna");
+    assert.equal(fresh.href, "/math-crossword");
+
+    const used = byId(cardSummaries(profile("lat5", { krzyzowka: { level: "poziom6" } })), "krzyzowka");
+    assert.equal(used.badge, "poz. 6");
+    assert.equal(used.detail, "Poziom 6");
+  });
+
+  void test("the clock card shows its numbered level, always the mode, and 24 h only when it is on", () => {
+    const fresh = byId(cardSummaries(profile("lat5")), "zegar");
+    assert.equal(fresh.used, false);
+    assert.equal(fresh.badge, null);
+    assert.equal(fresh.title, "Zegar");
+    assert.equal(fresh.href, "/clock");
+
+    const plain = byId(
+      cardSummaries(profile("lat5", { zegar: { level: "poziom1", mode: "odczytaj", h24: false } })),
+      "zegar",
+    );
+    assert.equal(plain.badge, "poz. 1");
+    assert.equal(plain.detail, "Poziom 1 · Odczytaj");
+
+    const day = byId(
+      cardSummaries(profile("lat5", { zegar: { level: "poziom4", mode: "polacz", h24: true } })),
+      "zegar",
+    );
+    assert.equal(day.badge, "poz. 4");
+    assert.equal(day.detail, "Poziom 4 · Połącz · 24 h");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -217,6 +260,8 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   niepasuje: { niepasuje: defaultCardSettings("niepasuje") },
   kopiuj: { kopiuj: defaultCardSettings("kopiuj") },
   szlaczki: { szlaczki: defaultCardSettings("szlaczki") },
+  krzyzowka: { krzyzowka: defaultCardSettings("krzyzowka") },
+  zegar: { zegar: defaultCardSettings("zegar") },
 };
 
 void describe("the card registry and summaryParts", () => {

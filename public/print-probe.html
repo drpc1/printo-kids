@@ -1,0 +1,1354 @@
+<!doctype html>
+<!-- Tymczasowa sonda druku na iPhonie (Safari / Chrome / Brave). Nie jest częścią produktu; usunąć po pomiarach. -->
+<html lang="pl" data-vh="108">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Sonda druku</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        font-family: system-ui, sans-serif;
+      }
+      main {
+        padding: 16px;
+        max-width: 36rem;
+        margin: 0 auto;
+      }
+      main p {
+        line-height: 1.5;
+      }
+      main a {
+        margin: 0 2px;
+      }
+      .sheet {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 210 / 297;
+        outline: 1px solid #000;
+      }
+      .sheet text {
+        font-size: 5.5px;
+        fill: #000;
+        text-anchor: middle;
+      }
+      .sheet .big {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .sheet .small {
+        font-size: 3.6px;
+      }
+      .sheet .b,
+      .sheet .pv {
+        display: none;
+      }
+      .print-only {
+        display: none;
+      }
+
+      /* Ta sama reguła co w GeneratorShell.astro (#worksheet-home svg). */
+      @media print {
+        html,
+        body {
+          height: auto !important;
+          overflow: hidden;
+          background: none;
+        }
+        main {
+          padding: 0;
+          max-width: none;
+        }
+        .screen-only {
+          display: none;
+        }
+        .sheet {
+          width: 210mm;
+          height: 297mm;
+          overflow: hidden;
+          outline: none;
+          max-width: 100%;
+          max-height: 100vh;
+        }
+        .sheet .print-only {
+          display: inline;
+        }
+        .sheet .screen-note {
+          display: none;
+        }
+      }
+
+      /* Wariant telefonu jak w produkcie; wartość z ?vh= (domyślnie 108, jak dziś). */
+      @media print and (hover: none) and (max-width: 175mm) {
+        html[data-vh="100"] .sheet {
+          max-height: 100vh;
+        }
+        html[data-vh="102"] .sheet {
+          max-height: 102vh;
+        }
+        html[data-vh="104"] .sheet {
+          max-height: 104vh;
+        }
+        html[data-vh="106"] .sheet {
+          max-height: 106vh;
+        }
+        html[data-vh="108"] .sheet {
+          max-height: 108vh;
+        }
+        html[data-vh="110"] .sheet {
+          max-height: 110vh;
+        }
+        html[data-vh="112"] .sheet {
+          max-height: 112vh;
+        }
+        html[data-vh="114"] .sheet {
+          max-height: 114vh;
+        }
+        html[data-vh="116"] .sheet {
+          max-height: 116vh;
+        }
+        html[data-vh="118"] .sheet {
+          max-height: 118vh;
+        }
+        html[data-vh="120"] .sheet {
+          max-height: 120vh;
+        }
+        html[data-vh="122"] .sheet {
+          max-height: 122vh;
+        }
+        html[data-vh="124"] .sheet {
+          max-height: 124vh;
+        }
+        html[data-vh="126"] .sheet {
+          max-height: 126vh;
+        }
+        html[data-vh="128"] .sheet {
+          max-height: 128vh;
+        }
+        html[data-vh="130"] .sheet {
+          max-height: 130vh;
+        }
+        /* Tryby niezależne od wysokości okna: później w pliku, więc wygrywają z data-vh. */
+        html[data-mm="200"] .sheet {
+          max-height: 200mm;
+        }
+        html[data-mm="205"] .sheet {
+          max-height: 205mm;
+        }
+        html[data-mm="210"] .sheet {
+          max-height: 210mm;
+        }
+        html[data-mm="215"] .sheet {
+          max-height: 215mm;
+        }
+        html[data-mm="220"] .sheet {
+          max-height: 220mm;
+        }
+        html[data-mm="225"] .sheet {
+          max-height: 225mm;
+        }
+        html[data-mm="230"] .sheet {
+          max-height: 230mm;
+        }
+        html[data-mm="235"] .sheet {
+          max-height: 235mm;
+        }
+        html[data-mm="240"] .sheet {
+          max-height: 240mm;
+        }
+        html[data-mm="245"] .sheet {
+          max-height: 245mm;
+        }
+        html[data-mm="250"] .sheet {
+          max-height: 250mm;
+        }
+        html[data-mm="255"] .sheet {
+          max-height: 255mm;
+        }
+        html[data-mm="260"] .sheet {
+          max-height: 260mm;
+        }
+        html[data-mm="265"] .sheet {
+          max-height: 265mm;
+        }
+        html[data-mm="270"] .sheet {
+          max-height: 270mm;
+        }
+        html[data-mm="275"] .sheet {
+          max-height: 275mm;
+        }
+        html[data-mm="280"] .sheet {
+          max-height: 280mm;
+        }
+        html[data-w="70"] .sheet {
+          width: 70%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="72"] .sheet {
+          width: 72%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="74"] .sheet {
+          width: 74%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="76"] .sheet {
+          width: 76%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="78"] .sheet {
+          width: 78%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="80"] .sheet {
+          width: 80%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="82"] .sheet {
+          width: 82%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="84"] .sheet {
+          width: 84%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="86"] .sheet {
+          width: 86%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="88"] .sheet {
+          width: 88%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="90"] .sheet {
+          width: 90%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="92"] .sheet {
+          width: 92%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="94"] .sheet {
+          width: 94%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="96"] .sheet {
+          width: 96%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="98"] .sheet {
+          width: 98%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        html[data-w="100"] .sheet {
+          width: 100%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: 210 / 297;
+        }
+        .sheet .pv {
+          display: inline;
+        }
+        .sheet .pv-no {
+          display: none;
+        }
+      }
+
+      /* Wymiary obszaru druku w jednostkach CSS (przedziały co 2 mm). */
+      .sheet .w-out,
+      .sheet .h-out {
+        display: none;
+      }
+      @media print {
+        .sheet .w-out,
+        .sheet .h-out {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 100mm) and (max-width: 229.99mm) {
+        .sheet .w-out {
+          display: none;
+        }
+      }
+      @media print and (min-height: 150mm) and (max-height: 329.99mm) {
+        .sheet .h-out {
+          display: none;
+        }
+      }
+      @media print and (min-width: 100mm) and (max-width: 101.99mm) {
+        .sheet .w100 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 102mm) and (max-width: 103.99mm) {
+        .sheet .w102 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 104mm) and (max-width: 105.99mm) {
+        .sheet .w104 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 106mm) and (max-width: 107.99mm) {
+        .sheet .w106 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 108mm) and (max-width: 109.99mm) {
+        .sheet .w108 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 110mm) and (max-width: 111.99mm) {
+        .sheet .w110 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 112mm) and (max-width: 113.99mm) {
+        .sheet .w112 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 114mm) and (max-width: 115.99mm) {
+        .sheet .w114 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 116mm) and (max-width: 117.99mm) {
+        .sheet .w116 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 118mm) and (max-width: 119.99mm) {
+        .sheet .w118 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 120mm) and (max-width: 121.99mm) {
+        .sheet .w120 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 122mm) and (max-width: 123.99mm) {
+        .sheet .w122 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 124mm) and (max-width: 125.99mm) {
+        .sheet .w124 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 126mm) and (max-width: 127.99mm) {
+        .sheet .w126 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 128mm) and (max-width: 129.99mm) {
+        .sheet .w128 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 130mm) and (max-width: 131.99mm) {
+        .sheet .w130 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 132mm) and (max-width: 133.99mm) {
+        .sheet .w132 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 134mm) and (max-width: 135.99mm) {
+        .sheet .w134 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 136mm) and (max-width: 137.99mm) {
+        .sheet .w136 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 138mm) and (max-width: 139.99mm) {
+        .sheet .w138 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 140mm) and (max-width: 141.99mm) {
+        .sheet .w140 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 142mm) and (max-width: 143.99mm) {
+        .sheet .w142 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 144mm) and (max-width: 145.99mm) {
+        .sheet .w144 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 146mm) and (max-width: 147.99mm) {
+        .sheet .w146 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 148mm) and (max-width: 149.99mm) {
+        .sheet .w148 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 150mm) and (max-width: 151.99mm) {
+        .sheet .w150 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 152mm) and (max-width: 153.99mm) {
+        .sheet .w152 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 154mm) and (max-width: 155.99mm) {
+        .sheet .w154 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 156mm) and (max-width: 157.99mm) {
+        .sheet .w156 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 158mm) and (max-width: 159.99mm) {
+        .sheet .w158 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 160mm) and (max-width: 161.99mm) {
+        .sheet .w160 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 162mm) and (max-width: 163.99mm) {
+        .sheet .w162 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 164mm) and (max-width: 165.99mm) {
+        .sheet .w164 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 166mm) and (max-width: 167.99mm) {
+        .sheet .w166 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 168mm) and (max-width: 169.99mm) {
+        .sheet .w168 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 170mm) and (max-width: 171.99mm) {
+        .sheet .w170 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 172mm) and (max-width: 173.99mm) {
+        .sheet .w172 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 174mm) and (max-width: 175.99mm) {
+        .sheet .w174 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 176mm) and (max-width: 177.99mm) {
+        .sheet .w176 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 178mm) and (max-width: 179.99mm) {
+        .sheet .w178 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 180mm) and (max-width: 181.99mm) {
+        .sheet .w180 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 182mm) and (max-width: 183.99mm) {
+        .sheet .w182 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 184mm) and (max-width: 185.99mm) {
+        .sheet .w184 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 186mm) and (max-width: 187.99mm) {
+        .sheet .w186 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 188mm) and (max-width: 189.99mm) {
+        .sheet .w188 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 190mm) and (max-width: 191.99mm) {
+        .sheet .w190 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 192mm) and (max-width: 193.99mm) {
+        .sheet .w192 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 194mm) and (max-width: 195.99mm) {
+        .sheet .w194 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 196mm) and (max-width: 197.99mm) {
+        .sheet .w196 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 198mm) and (max-width: 199.99mm) {
+        .sheet .w198 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 200mm) and (max-width: 201.99mm) {
+        .sheet .w200 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 202mm) and (max-width: 203.99mm) {
+        .sheet .w202 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 204mm) and (max-width: 205.99mm) {
+        .sheet .w204 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 206mm) and (max-width: 207.99mm) {
+        .sheet .w206 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 208mm) and (max-width: 209.99mm) {
+        .sheet .w208 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 210mm) and (max-width: 211.99mm) {
+        .sheet .w210 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 212mm) and (max-width: 213.99mm) {
+        .sheet .w212 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 214mm) and (max-width: 215.99mm) {
+        .sheet .w214 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 216mm) and (max-width: 217.99mm) {
+        .sheet .w216 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 218mm) and (max-width: 219.99mm) {
+        .sheet .w218 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 220mm) and (max-width: 221.99mm) {
+        .sheet .w220 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 222mm) and (max-width: 223.99mm) {
+        .sheet .w222 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 224mm) and (max-width: 225.99mm) {
+        .sheet .w224 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 226mm) and (max-width: 227.99mm) {
+        .sheet .w226 {
+          display: inline;
+        }
+      }
+      @media print and (min-width: 228mm) and (max-width: 229.99mm) {
+        .sheet .w228 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 150mm) and (max-height: 151.99mm) {
+        .sheet .h150 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 152mm) and (max-height: 153.99mm) {
+        .sheet .h152 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 154mm) and (max-height: 155.99mm) {
+        .sheet .h154 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 156mm) and (max-height: 157.99mm) {
+        .sheet .h156 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 158mm) and (max-height: 159.99mm) {
+        .sheet .h158 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 160mm) and (max-height: 161.99mm) {
+        .sheet .h160 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 162mm) and (max-height: 163.99mm) {
+        .sheet .h162 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 164mm) and (max-height: 165.99mm) {
+        .sheet .h164 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 166mm) and (max-height: 167.99mm) {
+        .sheet .h166 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 168mm) and (max-height: 169.99mm) {
+        .sheet .h168 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 170mm) and (max-height: 171.99mm) {
+        .sheet .h170 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 172mm) and (max-height: 173.99mm) {
+        .sheet .h172 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 174mm) and (max-height: 175.99mm) {
+        .sheet .h174 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 176mm) and (max-height: 177.99mm) {
+        .sheet .h176 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 178mm) and (max-height: 179.99mm) {
+        .sheet .h178 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 180mm) and (max-height: 181.99mm) {
+        .sheet .h180 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 182mm) and (max-height: 183.99mm) {
+        .sheet .h182 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 184mm) and (max-height: 185.99mm) {
+        .sheet .h184 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 186mm) and (max-height: 187.99mm) {
+        .sheet .h186 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 188mm) and (max-height: 189.99mm) {
+        .sheet .h188 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 190mm) and (max-height: 191.99mm) {
+        .sheet .h190 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 192mm) and (max-height: 193.99mm) {
+        .sheet .h192 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 194mm) and (max-height: 195.99mm) {
+        .sheet .h194 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 196mm) and (max-height: 197.99mm) {
+        .sheet .h196 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 198mm) and (max-height: 199.99mm) {
+        .sheet .h198 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 200mm) and (max-height: 201.99mm) {
+        .sheet .h200 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 202mm) and (max-height: 203.99mm) {
+        .sheet .h202 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 204mm) and (max-height: 205.99mm) {
+        .sheet .h204 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 206mm) and (max-height: 207.99mm) {
+        .sheet .h206 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 208mm) and (max-height: 209.99mm) {
+        .sheet .h208 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 210mm) and (max-height: 211.99mm) {
+        .sheet .h210 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 212mm) and (max-height: 213.99mm) {
+        .sheet .h212 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 214mm) and (max-height: 215.99mm) {
+        .sheet .h214 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 216mm) and (max-height: 217.99mm) {
+        .sheet .h216 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 218mm) and (max-height: 219.99mm) {
+        .sheet .h218 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 220mm) and (max-height: 221.99mm) {
+        .sheet .h220 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 222mm) and (max-height: 223.99mm) {
+        .sheet .h222 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 224mm) and (max-height: 225.99mm) {
+        .sheet .h224 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 226mm) and (max-height: 227.99mm) {
+        .sheet .h226 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 228mm) and (max-height: 229.99mm) {
+        .sheet .h228 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 230mm) and (max-height: 231.99mm) {
+        .sheet .h230 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 232mm) and (max-height: 233.99mm) {
+        .sheet .h232 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 234mm) and (max-height: 235.99mm) {
+        .sheet .h234 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 236mm) and (max-height: 237.99mm) {
+        .sheet .h236 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 238mm) and (max-height: 239.99mm) {
+        .sheet .h238 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 240mm) and (max-height: 241.99mm) {
+        .sheet .h240 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 242mm) and (max-height: 243.99mm) {
+        .sheet .h242 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 244mm) and (max-height: 245.99mm) {
+        .sheet .h244 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 246mm) and (max-height: 247.99mm) {
+        .sheet .h246 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 248mm) and (max-height: 249.99mm) {
+        .sheet .h248 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 250mm) and (max-height: 251.99mm) {
+        .sheet .h250 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 252mm) and (max-height: 253.99mm) {
+        .sheet .h252 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 254mm) and (max-height: 255.99mm) {
+        .sheet .h254 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 256mm) and (max-height: 257.99mm) {
+        .sheet .h256 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 258mm) and (max-height: 259.99mm) {
+        .sheet .h258 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 260mm) and (max-height: 261.99mm) {
+        .sheet .h260 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 262mm) and (max-height: 263.99mm) {
+        .sheet .h262 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 264mm) and (max-height: 265.99mm) {
+        .sheet .h264 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 266mm) and (max-height: 267.99mm) {
+        .sheet .h266 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 268mm) and (max-height: 269.99mm) {
+        .sheet .h268 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 270mm) and (max-height: 271.99mm) {
+        .sheet .h270 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 272mm) and (max-height: 273.99mm) {
+        .sheet .h272 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 274mm) and (max-height: 275.99mm) {
+        .sheet .h274 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 276mm) and (max-height: 277.99mm) {
+        .sheet .h276 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 278mm) and (max-height: 279.99mm) {
+        .sheet .h278 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 280mm) and (max-height: 281.99mm) {
+        .sheet .h280 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 282mm) and (max-height: 283.99mm) {
+        .sheet .h282 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 284mm) and (max-height: 285.99mm) {
+        .sheet .h284 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 286mm) and (max-height: 287.99mm) {
+        .sheet .h286 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 288mm) and (max-height: 289.99mm) {
+        .sheet .h288 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 290mm) and (max-height: 291.99mm) {
+        .sheet .h290 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 292mm) and (max-height: 293.99mm) {
+        .sheet .h292 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 294mm) and (max-height: 295.99mm) {
+        .sheet .h294 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 296mm) and (max-height: 297.99mm) {
+        .sheet .h296 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 298mm) and (max-height: 299.99mm) {
+        .sheet .h298 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 300mm) and (max-height: 301.99mm) {
+        .sheet .h300 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 302mm) and (max-height: 303.99mm) {
+        .sheet .h302 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 304mm) and (max-height: 305.99mm) {
+        .sheet .h304 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 306mm) and (max-height: 307.99mm) {
+        .sheet .h306 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 308mm) and (max-height: 309.99mm) {
+        .sheet .h308 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 310mm) and (max-height: 311.99mm) {
+        .sheet .h310 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 312mm) and (max-height: 313.99mm) {
+        .sheet .h312 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 314mm) and (max-height: 315.99mm) {
+        .sheet .h314 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 316mm) and (max-height: 317.99mm) {
+        .sheet .h316 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 318mm) and (max-height: 319.99mm) {
+        .sheet .h318 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 320mm) and (max-height: 321.99mm) {
+        .sheet .h320 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 322mm) and (max-height: 323.99mm) {
+        .sheet .h322 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 324mm) and (max-height: 325.99mm) {
+        .sheet .h324 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 326mm) and (max-height: 327.99mm) {
+        .sheet .h326 {
+          display: inline;
+        }
+      }
+      @media print and (min-height: 328mm) and (max-height: 329.99mm) {
+        .sheet .h328 {
+          display: inline;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="screen-only">
+        <h1>Sonda druku</h1>
+        <p>
+          Wydrukuj tę stronę (podgląd druku albo PDF wystarczy) i zrób zrzut podglądu z liczbą stron. Kartka z wydruku
+          pokazuje dane, których potrzebuję.
+        </p>
+        <p>
+          Limit wysokości: <a href="?vh=100">100vh</a> · <a href="?vh=104">104vh</a> · <a href="?vh=108">108vh</a> ·
+          <a href="?vh=112">112vh</a> · <a href="?vh=116">116vh</a> · <a href="?vh=118">118vh</a> ·
+          <a href="?vh=120">120vh</a> · <a href="?vh=122">122vh</a> · <a href="?vh=124">124vh</a> ·
+          <a href="?vh=128">128vh</a>
+        </p>
+        <p>
+          Szerokość karty (% kartki): <a href="?w=80">80%</a> · <a href="?w=84">84%</a> · <a href="?w=86">86%</a> ·
+          <a href="?w=88">88%</a> · <a href="?w=90">90%</a> · <a href="?w=92">92%</a> · <a href="?w=94">94%</a> ·
+          <a href="?w=96">96%</a>
+        </p>
+        <p>
+          Wysokość karty w mm: <a href="?mm=220">220 mm</a> · <a href="?mm=230">230 mm</a> ·
+          <a href="?mm=240">240 mm</a> · <a href="?mm=245">245 mm</a> · <a href="?mm=250">250 mm</a> ·
+          <a href="?mm=255">255 mm</a> · <a href="?mm=260">260 mm</a> · <a href="?mm=270">270 mm</a>
+        </p>
+        <p>Dziś na kartach jest <b>108vh</b>.</p>
+      </div>
+      <svg class="sheet" viewBox="0 0 210 297" role="img" aria-label="Sonda druku">
+        <rect width="210" height="297" fill="#fff" />
+        <rect x="10" y="10" width="190" height="277" fill="none" stroke="#000" stroke-width="0.8" />
+        <line x1="10" y1="148.5" x2="16" y2="148.5" stroke="#000" stroke-width="0.5" />
+        <line x1="194" y1="148.5" x2="200" y2="148.5" stroke="#000" stroke-width="0.5" />
+        <text class="big" id="vh-label" x="105" y="45">108vh</text>
+        <text x="105" y="62">Ramka: 190 × 277 mm na pełnej kartce</text>
+        <text id="browser" x="105" y="80">przeglądarka: ?</text>
+        <text id="brave" x="105" y="90">navigator.brave: ?</text>
+        <text class="small" id="ua1" x="105" y="100"></text>
+        <text class="small" id="ua2" x="105" y="105"></text>
+        <text class="small" id="ua3" x="105" y="110"></text>
+        <text id="screen" x="105" y="120">ekran: ?</text>
+        <text id="printjs" x="105" y="130">druk (JS): brak zdarzenia</text>
+        <text class="screen-note" x="105" y="155">Wymiary obszaru druku widać dopiero na wydruku.</text>
+        <text class="print-only" x="45" y="150">szerokość CSS:</text>
+        <text class="print-only" x="45" y="160">wysokość CSS:</text>
+        <text class="w-out" x="105" y="150">poza zakresem</text>
+        <text class="h-out" x="105" y="160">poza zakresem</text>
+        <text class="b w100" x="105" y="150">100–102 mm</text>
+        <text class="b w102" x="105" y="150">102–104 mm</text>
+        <text class="b w104" x="105" y="150">104–106 mm</text>
+        <text class="b w106" x="105" y="150">106–108 mm</text>
+        <text class="b w108" x="105" y="150">108–110 mm</text>
+        <text class="b w110" x="105" y="150">110–112 mm</text>
+        <text class="b w112" x="105" y="150">112–114 mm</text>
+        <text class="b w114" x="105" y="150">114–116 mm</text>
+        <text class="b w116" x="105" y="150">116–118 mm</text>
+        <text class="b w118" x="105" y="150">118–120 mm</text>
+        <text class="b w120" x="105" y="150">120–122 mm</text>
+        <text class="b w122" x="105" y="150">122–124 mm</text>
+        <text class="b w124" x="105" y="150">124–126 mm</text>
+        <text class="b w126" x="105" y="150">126–128 mm</text>
+        <text class="b w128" x="105" y="150">128–130 mm</text>
+        <text class="b w130" x="105" y="150">130–132 mm</text>
+        <text class="b w132" x="105" y="150">132–134 mm</text>
+        <text class="b w134" x="105" y="150">134–136 mm</text>
+        <text class="b w136" x="105" y="150">136–138 mm</text>
+        <text class="b w138" x="105" y="150">138–140 mm</text>
+        <text class="b w140" x="105" y="150">140–142 mm</text>
+        <text class="b w142" x="105" y="150">142–144 mm</text>
+        <text class="b w144" x="105" y="150">144–146 mm</text>
+        <text class="b w146" x="105" y="150">146–148 mm</text>
+        <text class="b w148" x="105" y="150">148–150 mm</text>
+        <text class="b w150" x="105" y="150">150–152 mm</text>
+        <text class="b w152" x="105" y="150">152–154 mm</text>
+        <text class="b w154" x="105" y="150">154–156 mm</text>
+        <text class="b w156" x="105" y="150">156–158 mm</text>
+        <text class="b w158" x="105" y="150">158–160 mm</text>
+        <text class="b w160" x="105" y="150">160–162 mm</text>
+        <text class="b w162" x="105" y="150">162–164 mm</text>
+        <text class="b w164" x="105" y="150">164–166 mm</text>
+        <text class="b w166" x="105" y="150">166–168 mm</text>
+        <text class="b w168" x="105" y="150">168–170 mm</text>
+        <text class="b w170" x="105" y="150">170–172 mm</text>
+        <text class="b w172" x="105" y="150">172–174 mm</text>
+        <text class="b w174" x="105" y="150">174–176 mm</text>
+        <text class="b w176" x="105" y="150">176–178 mm</text>
+        <text class="b w178" x="105" y="150">178–180 mm</text>
+        <text class="b w180" x="105" y="150">180–182 mm</text>
+        <text class="b w182" x="105" y="150">182–184 mm</text>
+        <text class="b w184" x="105" y="150">184–186 mm</text>
+        <text class="b w186" x="105" y="150">186–188 mm</text>
+        <text class="b w188" x="105" y="150">188–190 mm</text>
+        <text class="b w190" x="105" y="150">190–192 mm</text>
+        <text class="b w192" x="105" y="150">192–194 mm</text>
+        <text class="b w194" x="105" y="150">194–196 mm</text>
+        <text class="b w196" x="105" y="150">196–198 mm</text>
+        <text class="b w198" x="105" y="150">198–200 mm</text>
+        <text class="b w200" x="105" y="150">200–202 mm</text>
+        <text class="b w202" x="105" y="150">202–204 mm</text>
+        <text class="b w204" x="105" y="150">204–206 mm</text>
+        <text class="b w206" x="105" y="150">206–208 mm</text>
+        <text class="b w208" x="105" y="150">208–210 mm</text>
+        <text class="b w210" x="105" y="150">210–212 mm</text>
+        <text class="b w212" x="105" y="150">212–214 mm</text>
+        <text class="b w214" x="105" y="150">214–216 mm</text>
+        <text class="b w216" x="105" y="150">216–218 mm</text>
+        <text class="b w218" x="105" y="150">218–220 mm</text>
+        <text class="b w220" x="105" y="150">220–222 mm</text>
+        <text class="b w222" x="105" y="150">222–224 mm</text>
+        <text class="b w224" x="105" y="150">224–226 mm</text>
+        <text class="b w226" x="105" y="150">226–228 mm</text>
+        <text class="b w228" x="105" y="150">228–230 mm</text>
+        <text class="b h150" x="105" y="160">150–152 mm</text>
+        <text class="b h152" x="105" y="160">152–154 mm</text>
+        <text class="b h154" x="105" y="160">154–156 mm</text>
+        <text class="b h156" x="105" y="160">156–158 mm</text>
+        <text class="b h158" x="105" y="160">158–160 mm</text>
+        <text class="b h160" x="105" y="160">160–162 mm</text>
+        <text class="b h162" x="105" y="160">162–164 mm</text>
+        <text class="b h164" x="105" y="160">164–166 mm</text>
+        <text class="b h166" x="105" y="160">166–168 mm</text>
+        <text class="b h168" x="105" y="160">168–170 mm</text>
+        <text class="b h170" x="105" y="160">170–172 mm</text>
+        <text class="b h172" x="105" y="160">172–174 mm</text>
+        <text class="b h174" x="105" y="160">174–176 mm</text>
+        <text class="b h176" x="105" y="160">176–178 mm</text>
+        <text class="b h178" x="105" y="160">178–180 mm</text>
+        <text class="b h180" x="105" y="160">180–182 mm</text>
+        <text class="b h182" x="105" y="160">182–184 mm</text>
+        <text class="b h184" x="105" y="160">184–186 mm</text>
+        <text class="b h186" x="105" y="160">186–188 mm</text>
+        <text class="b h188" x="105" y="160">188–190 mm</text>
+        <text class="b h190" x="105" y="160">190–192 mm</text>
+        <text class="b h192" x="105" y="160">192–194 mm</text>
+        <text class="b h194" x="105" y="160">194–196 mm</text>
+        <text class="b h196" x="105" y="160">196–198 mm</text>
+        <text class="b h198" x="105" y="160">198–200 mm</text>
+        <text class="b h200" x="105" y="160">200–202 mm</text>
+        <text class="b h202" x="105" y="160">202–204 mm</text>
+        <text class="b h204" x="105" y="160">204–206 mm</text>
+        <text class="b h206" x="105" y="160">206–208 mm</text>
+        <text class="b h208" x="105" y="160">208–210 mm</text>
+        <text class="b h210" x="105" y="160">210–212 mm</text>
+        <text class="b h212" x="105" y="160">212–214 mm</text>
+        <text class="b h214" x="105" y="160">214–216 mm</text>
+        <text class="b h216" x="105" y="160">216–218 mm</text>
+        <text class="b h218" x="105" y="160">218–220 mm</text>
+        <text class="b h220" x="105" y="160">220–222 mm</text>
+        <text class="b h222" x="105" y="160">222–224 mm</text>
+        <text class="b h224" x="105" y="160">224–226 mm</text>
+        <text class="b h226" x="105" y="160">226–228 mm</text>
+        <text class="b h228" x="105" y="160">228–230 mm</text>
+        <text class="b h230" x="105" y="160">230–232 mm</text>
+        <text class="b h232" x="105" y="160">232–234 mm</text>
+        <text class="b h234" x="105" y="160">234–236 mm</text>
+        <text class="b h236" x="105" y="160">236–238 mm</text>
+        <text class="b h238" x="105" y="160">238–240 mm</text>
+        <text class="b h240" x="105" y="160">240–242 mm</text>
+        <text class="b h242" x="105" y="160">242–244 mm</text>
+        <text class="b h244" x="105" y="160">244–246 mm</text>
+        <text class="b h246" x="105" y="160">246–248 mm</text>
+        <text class="b h248" x="105" y="160">248–250 mm</text>
+        <text class="b h250" x="105" y="160">250–252 mm</text>
+        <text class="b h252" x="105" y="160">252–254 mm</text>
+        <text class="b h254" x="105" y="160">254–256 mm</text>
+        <text class="b h256" x="105" y="160">256–258 mm</text>
+        <text class="b h258" x="105" y="160">258–260 mm</text>
+        <text class="b h260" x="105" y="160">260–262 mm</text>
+        <text class="b h262" x="105" y="160">262–264 mm</text>
+        <text class="b h264" x="105" y="160">264–266 mm</text>
+        <text class="b h266" x="105" y="160">266–268 mm</text>
+        <text class="b h268" x="105" y="160">268–270 mm</text>
+        <text class="b h270" x="105" y="160">270–272 mm</text>
+        <text class="b h272" x="105" y="160">272–274 mm</text>
+        <text class="b h274" x="105" y="160">274–276 mm</text>
+        <text class="b h276" x="105" y="160">276–278 mm</text>
+        <text class="b h278" x="105" y="160">278–280 mm</text>
+        <text class="b h280" x="105" y="160">280–282 mm</text>
+        <text class="b h282" x="105" y="160">282–284 mm</text>
+        <text class="b h284" x="105" y="160">284–286 mm</text>
+        <text class="b h286" x="105" y="160">286–288 mm</text>
+        <text class="b h288" x="105" y="160">288–290 mm</text>
+        <text class="b h290" x="105" y="160">290–292 mm</text>
+        <text class="b h292" x="105" y="160">292–294 mm</text>
+        <text class="b h294" x="105" y="160">294–296 mm</text>
+        <text class="b h296" x="105" y="160">296–298 mm</text>
+        <text class="b h298" x="105" y="160">298–300 mm</text>
+        <text class="b h300" x="105" y="160">300–302 mm</text>
+        <text class="b h302" x="105" y="160">302–304 mm</text>
+        <text class="b h304" x="105" y="160">304–306 mm</text>
+        <text class="b h306" x="105" y="160">306–308 mm</text>
+        <text class="b h308" x="105" y="160">308–310 mm</text>
+        <text class="b h310" x="105" y="160">310–312 mm</text>
+        <text class="b h312" x="105" y="160">312–314 mm</text>
+        <text class="b h314" x="105" y="160">314–316 mm</text>
+        <text class="b h316" x="105" y="160">316–318 mm</text>
+        <text class="b h318" x="105" y="160">318–320 mm</text>
+        <text class="b h320" x="105" y="160">320–322 mm</text>
+        <text class="b h322" x="105" y="160">322–324 mm</text>
+        <text class="b h324" x="105" y="160">324–326 mm</text>
+        <text class="b h326" x="105" y="160">326–328 mm</text>
+        <text class="b h328" x="105" y="160">328–330 mm</text>
+        <text class="pv" x="105" y="175">wariant telefonu: TAK</text>
+        <text class="pv-no print-only" x="105" y="175">wariant telefonu: NIE</text>
+        <text x="105" y="283">DÓŁ RAMKI</text>
+      </svg>
+    </main>
+    <script>
+      (function () {
+        var params = new URLSearchParams(location.search);
+        var vh = params.get("vh");
+        if (vh && /^[0-9]+$/.test(vh) && +vh >= 100 && +vh <= 130 && +vh % 2 === 0) {
+          document.documentElement.dataset.vh = vh;
+        }
+        var root = document.documentElement;
+        var label = root.dataset.vh + "vh";
+        var w = params.get("w");
+        var mm = params.get("mm");
+        if (w && /^[0-9]+$/.test(w) && +w >= 70 && +w <= 100 && +w % 2 === 0) {
+          delete root.dataset.vh;
+          root.dataset.w = w;
+          label = "szer. " + w + "%";
+        } else if (mm && /^[0-9]+$/.test(mm) && +mm >= 200 && +mm <= 280 && +mm % 5 === 0) {
+          delete root.dataset.vh;
+          root.dataset.mm = mm;
+          label = mm + " mm";
+        }
+        document.getElementById("vh-label").textContent = label;
+        document.title = "Sonda druku " + label;
+        var ua = navigator.userAgent;
+        var name = /EdgiOS/.test(ua)
+          ? "Edge iOS"
+          : /CriOS/.test(ua)
+            ? "Chrome iOS"
+            : /FxiOS/.test(ua)
+              ? "Firefox iOS"
+              : /Safari/.test(ua)
+                ? "Safari lub Brave"
+                : "inna";
+        document.getElementById("browser").textContent = "przeglądarka (z UA): " + name;
+        var brave = typeof navigator.brave;
+        document.getElementById("brave").textContent = "navigator.brave: " + (brave === "undefined" ? "brak" : brave);
+        document.getElementById("ua1").textContent = ua.slice(0, 70);
+        document.getElementById("ua2").textContent = ua.slice(70, 140);
+        document.getElementById("ua3").textContent = ua.slice(140, 210);
+        document.getElementById("screen").textContent =
+          "ekran: " + innerWidth + " × " + innerHeight + " px, dpr " + devicePixelRatio;
+        function onPrint(source) {
+          document.getElementById("printjs").textContent =
+            "druk (JS, " + source + "): " + innerWidth + " × " + innerHeight + " px";
+        }
+        addEventListener("beforeprint", function () {
+          onPrint("beforeprint");
+        });
+        var mq = matchMedia("print");
+        if (mq.addEventListener)
+          mq.addEventListener("change", function (e) {
+            if (e.matches) onPrint("media");
+          });
+      })();
+    </script>
+  </body>
+</html>

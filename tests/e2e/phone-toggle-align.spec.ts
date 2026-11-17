@@ -38,6 +38,8 @@ const CARDS: readonly ToggleCard[] = [
   { path: "/nonogram", image: "Nonogram", switchName: "Pokaż rozwiązanie" },
   { path: "/dictation", image: "Dyktando graficzne", switchName: "Pokaż rozwiązanie" },
   { path: "/patterns", image: "Szlaczki", switchName: "Linie", level: "Poziom 3" },
+  { path: "/math-crossword", image: "Krzyżówka matematyczna", switchName: "Pokaż rozwiązanie" },
+  { path: "/clock", image: "Zegar", switchName: "24 h" },
 ];
 
 function bottom(box: Box): number {

@@ -88,6 +88,22 @@ export const CARD_KINDS = [
     description:
       "Dziecko prowadzi ołówek po kropkach albo kontynuuje pokazany wzór. Na kartce są rzędy szlaczków, od czterech do siedmiu zależnie od poziomu. Poziom zmienia tryb, wzory i liczbę rzędów, a na wyższych poziomach włączasz i wyłączasz linie pomocnicze.",
   },
+  {
+    id: "krzyzowka",
+    title: "Krzyżówka matematyczna",
+    href: "/math-crossword",
+    thumbnail: "/thumbnails/krzyzowka.svg",
+    description:
+      "Dziecko uzupełnia puste pola krzyżówki, w której działania takie jak „3 + 4 = 7” biegną w prawo albo w dół i krzyżują się we wspólnych liczbach. Na kartce każde pole jest osobną kratką, część liczb jest wpisana, a resztę da się wyliczyć bez zgadywania. Poziom zmienia rodzaj działań, największą liczbę i wielkość krzyżówki.",
+  },
+  {
+    id: "zegar",
+    title: "Zegar",
+    href: "/clock",
+    thumbnail: "/thumbnails/zegar.svg",
+    description:
+      "Dziecko odczytuje godzinę z tarczy ze wskazówkami i wpisuje ją pod zegarem, dorysowuje wskazówki do godziny podanej pod pustą tarczą albo łączy kreską tarczę z zegarem cyfrowym, zależnie od trybu. Na kartce są tarcze z liczbami 1–12: sześć przy odczytywaniu i dorysowywaniu, pięć przy łączeniu. Poziom zmienia minuty, od pełnych godzin po co minutę, a po włączeniu „24 h” pod tarczą stoi pora dnia.",
+  },
 ] as const satisfies readonly CardKind[];
 
 /** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */

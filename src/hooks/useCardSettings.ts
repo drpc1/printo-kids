@@ -10,8 +10,19 @@ import {
 import { updateProfiles, withProfileCards } from "@/lib/child-profiles";
 import { readLastUsed, writeLastUsedCards } from "@/lib/last-used";
 import { ALLOWED_CHARACTER_IDS } from "@/lib/sheet/character";
+import { visibleCategoryOn } from "@/lib/symmetry/templates";
+import { useToday } from "@/hooks/useToday";
 
 type ProfileVisit = ReturnType<typeof useChildProfileVisit>;
+
+/** The bar settings as the bar shows them today: a remembered category outside its window reads as "Wszystkie". */
+function visibleSettings<K extends CardSettingsId>(settings: CardSettingsOf<K>, today: Date): CardSettingsOf<K> {
+  if (!("category" in settings)) {
+    return settings;
+  }
+  const category = visibleCategoryOn(settings.category, today);
+  return category === settings.category ? settings : { ...settings, category };
+}
 
 const NOTE_VISIBLE_MS = 2000;
 export const REMEMBER_ERROR_TEXT = "Nie udało się zapamiętać ustawień";
@@ -84,7 +95,10 @@ export function useCardSettings<K extends CardSettingsId>(
   newProfileCards: CardSettingsMap;
   corner: ProfileCornerHandlers;
 } {
-  const [settings, setSettings] = useState<CardSettingsOf<K>>(() => cardSettingsOf(visit.visitCards, cardId));
+  const today = useToday();
+  const [settings, setSettings] = useState<CardSettingsOf<K>>(() =>
+    visibleSettings(cardSettingsOf(visit.visitCards, cardId), today),
+  );
   const { note, show, showError } = useRememberNote();
 
   function persist(next: CardSettingsOf<K>): void {
@@ -118,7 +132,7 @@ export function useCardSettings<K extends CardSettingsId>(
   }
 
   function switchTo(cards: CardSettingsMap): void {
-    const next = cardSettingsOf(cards, cardId);
+    const next = visibleSettings(cardSettingsOf(cards, cardId), today);
     setSettings(next);
     onSwitch?.(next, settings);
   }

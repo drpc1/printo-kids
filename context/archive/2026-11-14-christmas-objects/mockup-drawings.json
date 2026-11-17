@@ -1,0 +1,2169 @@
+{
+  "approved": "2026-11-14",
+  "note": "S-38 Boże Narodzenie. 'objects': new template objects, left half of each drawing, one string per row; the axis is the last column. Letters as in drawing(): r red, g green, y yellow, b blue, o orange, s gray, k black, n brown. Base rows left empty ('.') are filled by the parts; a variant's top/left place its lines in the frame. 'shapes': dictation-only shapes, '#' a silhouette cell and '.' an empty cell; holes are filled for the outline. Shape levels: lat5 = łatwy (grid 10x14), lat6 = średni (14x17), lat7 = trudny (20x26); a shape lists only its levels. Categories use the ids of OBJECT_CATEGORIES plus the new 'boze-narodzenie'.",
+  "objects": [
+    {
+      "id": "bombka",
+      "name": "bombka",
+      "categories": ["boze-narodzenie"],
+      "holeColor": "yellow",
+      "sizes": {
+        "half4": {
+          "width": 4,
+          "height": 10,
+          "base": ["....", "..yy"],
+          "parts": [
+            {
+              "id": "hanger",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["...y"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["..yy"]
+                }
+              ]
+            },
+            {
+              "id": "ball",
+              "variants": [
+                {
+                  "top": 2,
+                  "lines": ["..rr", ".rrr", "rrrr", "r.r.", "rrrr", "rr..", ".rrr", "..rr"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..gg", ".ggg", "gggg", "g.g.", "gg.g", "gggg", ".ggg", "..gg"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..bb", ".bbb", "bb..", "bbbb", "bbbb", "bb..", ".bbb", "..bb"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..rr", ".rrr", "rrrr", "r.r.", "rr.r", "rrrr", ".rrr", "..rr"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..gg", ".ggg", "gggg", "g.g.", "gggg", "gggg", ".ggg", "..gg"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..bb", ".bbb", "bbbb", "bbb.", "bb..", "bbb.", ".bbb", "..bb"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..rr", ".rrr", "r.r.", "r.r.", "r.r.", "r.r.", ".rrr", "..rr"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..gg", ".ggg", "gggg", "ggg.", "g...", "ggg.", ".ggg", "..gg"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..rr", ".rrr", "r.r.", "rr.r", "rrrr", "r.r.", ".r.r", "..rr"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..rr", ".rrr", "rrrr", "rrrr", "rrrr", "rrrr", ".rrr", "..rr"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..gg", ".ggg", "gggg", "gggg", "gggg", "gggg", ".ggg", "..gg"]
+                },
+                {
+                  "top": 2,
+                  "lines": ["..bb", ".bbb", "bbbb", "bbbb", "bbbb", "bbbb", ".bbb", "..bb"]
+                }
+              ]
+            }
+          ]
+        },
+        "half6": {
+          "width": 6,
+          "height": 13,
+          "base": ["......", "...yyy", "...yyy"],
+          "parts": [
+            {
+              "id": "hanger",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": [".....y"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....yy"]
+                }
+              ]
+            },
+            {
+              "id": "ball",
+              "variants": [
+                {
+                  "top": 3,
+                  "lines": [
+                    "..rrrr",
+                    ".rrrrr",
+                    "rrrrrr",
+                    "rrrrrr",
+                    "r.rrr.",
+                    "rr.r.r",
+                    "rrr.rr",
+                    "rrrrrr",
+                    ".rrrrr",
+                    "..rrrr"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..gggg",
+                    ".ggggg",
+                    "gggggg",
+                    "gggggg",
+                    "g.ggg.",
+                    "gg.g.g",
+                    "ggg.gg",
+                    "gggggg",
+                    ".ggggg",
+                    "..gggg"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..bbbb",
+                    ".bbbbb",
+                    "bbbbbb",
+                    "b.....",
+                    "bbbbbb",
+                    "bbbbbb",
+                    "b.....",
+                    "bbbbbb",
+                    ".bbbbb",
+                    "..bbbb"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..bbbb",
+                    ".bbbbb",
+                    "bbbbbb",
+                    "bbbbbb",
+                    "b.bbb.",
+                    "bb.b.b",
+                    "bbb.bb",
+                    "bbbbbb",
+                    ".bbbbb",
+                    "..bbbb"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..rrrr",
+                    ".rrrrr",
+                    "rrrrrr",
+                    "rrrrr.",
+                    "rrrr..",
+                    "rrr...",
+                    "rrrr..",
+                    "rrrrr.",
+                    ".rrrrr",
+                    "..rrrr"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..gggg",
+                    ".ggggg",
+                    "g.gg.g",
+                    "g.gg.g",
+                    "g.gg.g",
+                    "g.gg.g",
+                    "g.gg.g",
+                    "g.gg.g",
+                    ".ggggg",
+                    "..gggg"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..rrrr",
+                    ".rrrrr",
+                    "r.rrr.",
+                    "rr.r.r",
+                    "rrr.rr",
+                    "rrrrrr",
+                    "r.rrr.",
+                    "rr.r.r",
+                    ".rr.rr",
+                    "..rrrr"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..bbbb",
+                    ".bbbbb",
+                    "bbbbb.",
+                    "bbbbb.",
+                    "b.....",
+                    "bbbbb.",
+                    "bbbbb.",
+                    "bbbbbb",
+                    ".bbbbb",
+                    "..bbbb"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..rrrr",
+                    ".rrrrr",
+                    "rrrrrr",
+                    "rrrrrr",
+                    "rrrrrr",
+                    "rrrrrr",
+                    "rrrrrr",
+                    "rrrrrr",
+                    ".rrrrr",
+                    "..rrrr"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..gggg",
+                    ".ggggg",
+                    "gggggg",
+                    "gggggg",
+                    "gggggg",
+                    "gggggg",
+                    "gggggg",
+                    "gggggg",
+                    ".ggggg",
+                    "..gggg"
+                  ]
+                },
+                {
+                  "top": 3,
+                  "lines": [
+                    "..bbbb",
+                    ".bbbbb",
+                    "bbbbbb",
+                    "bbbbbb",
+                    "bbbbbb",
+                    "bbbbbb",
+                    "bbbbbb",
+                    "bbbbbb",
+                    ".bbbbb",
+                    "..bbbb"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "half9": {
+          "width": 9,
+          "height": 21,
+          "base": [".........", ".........", "......yyy", "......yyy", "......yyy"],
+          "parts": [
+            {
+              "id": "hanger",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["........y", "........y"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".......yy", "........y"]
+                }
+              ]
+            },
+            {
+              "id": "ball",
+              "variants": [
+                {
+                  "top": 5,
+                  "lines": [
+                    "......rrr",
+                    "....rrrrr",
+                    "...rrrrrr",
+                    "..rrrrrrr",
+                    ".rrrrrrrr",
+                    ".rrrrrrrr",
+                    "r.rrr.rrr",
+                    "rr.r.r.r.",
+                    "rrr.rrr.r",
+                    "rrrrrrrrr",
+                    ".rrrrrrrr",
+                    ".rrrrrrrr",
+                    "..rrrrrrr",
+                    "...rrrrrr",
+                    "....rrrrr",
+                    "......rrr"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......ggg",
+                    "....ggggg",
+                    "...gggggg",
+                    "..ggggggg",
+                    ".gggggggg",
+                    ".gggggggg",
+                    "g.ggg.ggg",
+                    "gg.g.g.g.",
+                    "ggg.ggg.g",
+                    "ggggggggg",
+                    ".gg.ggg.g",
+                    ".g.g.g.g.",
+                    "..ggg.ggg",
+                    "...gggggg",
+                    "....ggggg",
+                    "......ggg"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......bbb",
+                    "....bbbbb",
+                    "...bbbbbb",
+                    "..bbbbbbb",
+                    ".bb......",
+                    ".bbbbbbbb",
+                    "bbbbbbbbb",
+                    "bbbbbbbbb",
+                    "bbbbbbbbb",
+                    "bb.......",
+                    ".bbbbbbbb",
+                    ".bbbbbbbb",
+                    "..bbbbbbb",
+                    "...bbbbbb",
+                    "....bbbbb",
+                    "......bbb"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......rrr",
+                    "....rrrrr",
+                    "...rrrrrr",
+                    "..rrrrrrr",
+                    ".rrrrrrrr",
+                    ".rrrrrrr.",
+                    "rrrrrrr..",
+                    "rrrrrr...",
+                    "rrrrr....",
+                    "rrrrrr...",
+                    ".rrrrrr..",
+                    ".rrrrrrr.",
+                    "..rrrrrrr",
+                    "...rrrrrr",
+                    "....rrrrr",
+                    "......rrr"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......ggg",
+                    "....ggggg",
+                    "...gggggg",
+                    "..g.gg.gg",
+                    ".gg.gg.gg",
+                    ".gg.gg.gg",
+                    "ggg.gg.gg",
+                    "ggg.gg.gg",
+                    "ggg.gg.gg",
+                    "ggg.gg.gg",
+                    ".gg.gg.gg",
+                    ".gg.gg.gg",
+                    "..g.gg.gg",
+                    "...gggggg",
+                    "....ggggg",
+                    "......ggg"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......bbb",
+                    "....bbbbb",
+                    "...bbbbbb",
+                    "..bbbbbbb",
+                    ".bbbbbbbb",
+                    ".bbbbbbbb",
+                    "b.bbb.bbb",
+                    "bb.b.b.b.",
+                    "bbb.bbb.b",
+                    "bbbbbbbbb",
+                    ".bbbbbbbb",
+                    ".b.......",
+                    "..bbbbbbb",
+                    "...bbbbbb",
+                    "....bbbbb",
+                    "......bbb"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......ggg",
+                    "....ggggg",
+                    "...gggggg",
+                    "..ggggggg",
+                    ".gggggggg",
+                    ".gggggggg",
+                    "gggg.ggg.",
+                    "ggg...g..",
+                    "gggg.ggg.",
+                    "ggggggggg",
+                    ".gggggggg",
+                    ".gggggggg",
+                    "..ggggggg",
+                    "...gggggg",
+                    "....ggggg",
+                    "......ggg"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......bbb",
+                    "....bbbbb",
+                    "...bbbbbb",
+                    "..bbbbbbb",
+                    ".bb......",
+                    ".bbbbbbbb",
+                    "bbbb.bbb.",
+                    "bbb...b..",
+                    "bbbb.bbb.",
+                    "bbbbbbbbb",
+                    ".bbbbbbbb",
+                    ".bbbbbbbb",
+                    "..bb.....",
+                    "...bbbbbb",
+                    "....bbbbb",
+                    "......bbb"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......rrr",
+                    "....rrrrr",
+                    "...rrrrrr",
+                    "..rr.rrrr",
+                    ".rrr.rrrr",
+                    ".rrr.rrrr",
+                    "rrrr.rrrr",
+                    "rrrr.rrrr",
+                    "r........",
+                    "rrrr.rrrr",
+                    ".rrr.rrrr",
+                    ".rrr.rrrr",
+                    "..rr.rrrr",
+                    "...rrrrrr",
+                    "....rrrrr",
+                    "......rrr"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......bbb",
+                    "....bbbbb",
+                    "...bbbbbb",
+                    "..bbbbbbb",
+                    ".bbbbbbbb",
+                    ".bbbbbbb.",
+                    "bbbbbb.b.",
+                    "bbbbb....",
+                    "bbbbb....",
+                    "bbbbbb.b.",
+                    ".bbbbbbb.",
+                    ".bbbbbbbb",
+                    "..bbbbbbb",
+                    "...bbbbbb",
+                    "....bbbbb",
+                    "......bbb"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......rrr",
+                    "....rrrrr",
+                    "...rrrrrr",
+                    "..rrrrrrr",
+                    ".rrrrrrrr",
+                    ".rrrrrrrr",
+                    "rrrrrrrrr",
+                    "rrrrrrrrr",
+                    "rrrrrrrrr",
+                    "rrrrrrrrr",
+                    ".rrrrrrrr",
+                    ".rrrrrrrr",
+                    "..rrrrrrr",
+                    "...rrrrrr",
+                    "....rrrrr",
+                    "......rrr"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......ggg",
+                    "....ggggg",
+                    "...gggggg",
+                    "..ggggggg",
+                    ".gggggggg",
+                    ".gggggggg",
+                    "ggggggggg",
+                    "ggggggggg",
+                    "ggggggggg",
+                    "ggggggggg",
+                    ".gggggggg",
+                    ".gggggggg",
+                    "..ggggggg",
+                    "...gggggg",
+                    "....ggggg",
+                    "......ggg"
+                  ]
+                },
+                {
+                  "top": 5,
+                  "lines": [
+                    "......bbb",
+                    "....bbbbb",
+                    "...bbbbbb",
+                    "..bbbbbbb",
+                    ".bbbbbbbb",
+                    ".bbbbbbbb",
+                    "bbbbbbbbb",
+                    "bbbbbbbbb",
+                    "bbbbbbbbb",
+                    "bbbbbbbbb",
+                    ".bbbbbbbb",
+                    ".bbbbbbbb",
+                    "..bbbbbbb",
+                    "...bbbbbb",
+                    "....bbbbb",
+                    "......bbb"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dzwonek",
+      "name": "dzwonek",
+      "categories": ["boze-narodzenie"],
+      "holeColor": "red",
+      "sizes": {
+        "half4": {
+          "width": 4,
+          "height": 10,
+          "base": ["....", "....", "....", "..yy", ".yyy", ".yyy", "....", ".yyy", "yyyy", "...."],
+          "parts": [
+            {
+              "id": "top",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["rr..", "rrrr", "...r"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....", "...y", "...y"]
+                }
+              ]
+            },
+            {
+              "id": "band",
+              "variants": [
+                {
+                  "top": 6,
+                  "lines": [".yyy"]
+                },
+                {
+                  "top": 6,
+                  "lines": [".y.."]
+                }
+              ]
+            },
+            {
+              "id": "clapper",
+              "variants": [
+                {
+                  "top": 9,
+                  "lines": ["...s"]
+                },
+                {
+                  "top": 9,
+                  "lines": ["..ss"]
+                }
+              ]
+            }
+          ]
+        },
+        "half6": {
+          "width": 6,
+          "height": 15,
+          "base": [
+            "......",
+            "......",
+            "......",
+            "......",
+            "...yyy",
+            "..yyyy",
+            "..yyyy",
+            "..yyyy",
+            ".yyyyy",
+            "......",
+            ".yyyyy",
+            "yyyyyy",
+            "yyyyyy",
+            "......",
+            "......"
+          ],
+          "parts": [
+            {
+              "id": "top",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["rrr...", "rrrr..", "rrrrrr", "....rr"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["......", "......", ".....y", "....yy"]
+                }
+              ]
+            },
+            {
+              "id": "band",
+              "variants": [
+                {
+                  "top": 9,
+                  "lines": [".yyyyy"]
+                },
+                {
+                  "top": 9,
+                  "lines": [".y.y.y"]
+                },
+                {
+                  "top": 9,
+                  "lines": [".y...."]
+                }
+              ]
+            },
+            {
+              "id": "clapper",
+              "variants": [
+                {
+                  "top": 13,
+                  "lines": [".....s", "....ss"]
+                },
+                {
+                  "top": 13,
+                  "lines": ["....ss", "....ss"]
+                }
+              ]
+            }
+          ]
+        },
+        "half9": {
+          "width": 9,
+          "height": 23,
+          "base": [
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "......yyy",
+            ".....yyyy",
+            "....yyyyy",
+            "....yyyyy",
+            "....yyyyy",
+            "...yyyyyy",
+            ".........",
+            ".........",
+            "..yyyyyyy",
+            "..yyyyyyy",
+            ".........",
+            ".yyyyyyyy",
+            "yyyyyyyyy",
+            "yyyyyyyyy",
+            ".......ss",
+            "......sss",
+            ".......ss"
+          ],
+          "parts": [
+            {
+              "id": "top",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["..rr.....", "..rrrr...", "..rrrrrrr", "..rrrrrrr", "..rrrr.rr", "..rr...rr"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".........", ".........", ".........", "........y", ".......yy", ".......yy"]
+                }
+              ]
+            },
+            {
+              "id": "band",
+              "variants": [
+                {
+                  "top": 12,
+                  "lines": ["...yyyyyy", "...yyyyyy"]
+                },
+                {
+                  "top": 12,
+                  "lines": ["...y.....", "...yyyyyy"]
+                },
+                {
+                  "top": 12,
+                  "lines": ["...yy.yy.", "...yyyyyy"]
+                }
+              ]
+            },
+            {
+              "id": "lower-band",
+              "variants": [
+                {
+                  "top": 16,
+                  "lines": [".yyyyyyyy"]
+                },
+                {
+                  "top": 16,
+                  "lines": [".yy.y.y.y"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "prezent",
+      "name": "prezent",
+      "categories": ["boze-narodzenie"],
+      "holeColor": "yellow",
+      "sizes": {
+        "half4": {
+          "width": 4,
+          "height": 10,
+          "base": [],
+          "parts": [
+            {
+              "id": "gift",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": [".yy.", "..yy", "rrry", "rrry", "rrry", "rrry", "rrry", "rrry", "rrry", "rrry"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".yy.", "..yy", "rrry", "rrry", "rrry", "yyyy", "rrry", "rrry", "rrry", "rrry"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....", "..yy", "rrry", "rrry", "rrry", "rrry", "rrry", "rrry", "rrry", "rrry"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....", "..yy", "rrry", "rrry", "rrry", "yyyy", "rrry", "rrry", "rrry", "rrry"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".rr.", "..rr", "gggr", "gggr", "gggr", "gggr", "gggr", "gggr", "gggr", "gggr"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".rr.", "..rr", "gggr", "gggr", "gggr", "rrrr", "gggr", "gggr", "gggr", "gggr"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....", "..rr", "gggr", "gggr", "gggr", "gggr", "gggr", "gggr", "gggr", "gggr"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....", "..rr", "gggr", "gggr", "gggr", "rrrr", "gggr", "gggr", "gggr", "gggr"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".yy.", "..yy", "bbby", "bbby", "bbby", "bbby", "bbby", "bbby", "bbby", "bbby"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".yy.", "..yy", "bbby", "bbby", "bbby", "yyyy", "bbby", "bbby", "bbby", "bbby"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....", "..yy", "bbby", "bbby", "bbby", "bbby", "bbby", "bbby", "bbby", "bbby"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....", "..yy", "bbby", "bbby", "bbby", "yyyy", "bbby", "bbby", "bbby", "bbby"]
+                }
+              ]
+            }
+          ]
+        },
+        "half6": {
+          "width": 6,
+          "height": 13,
+          "base": [],
+          "parts": [
+            {
+              "id": "gift",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": [
+                    ".yyy..",
+                    "..yyyy",
+                    "....yy",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".yyy..",
+                    "..yyyy",
+                    "....yy",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "yyyyyy",
+                    "yyyyyy",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "......",
+                    "....yy",
+                    "....yy",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "......",
+                    "....yy",
+                    "....yy",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "yyyyyy",
+                    "yyyyyy",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry",
+                    "rrrrry"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".rrr..",
+                    "..rrrr",
+                    "....rr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".rrr..",
+                    "..rrrr",
+                    "....rr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "rrrrrr",
+                    "rrrrrr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "......",
+                    "....rr",
+                    "....rr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "......",
+                    "....rr",
+                    "....rr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "rrrrrr",
+                    "rrrrrr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr",
+                    "gggggr"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".yyy..",
+                    "..yyyy",
+                    "....yy",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".yyy..",
+                    "..yyyy",
+                    "....yy",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "yyyyyy",
+                    "yyyyyy",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "......",
+                    "....yy",
+                    "....yy",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "......",
+                    "....yy",
+                    "....yy",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "yyyyyy",
+                    "yyyyyy",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby",
+                    "bbbbby"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "half9": {
+          "width": 9,
+          "height": 22,
+          "base": [],
+          "parts": [
+            {
+              "id": "gift",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": [
+                    "...yy....",
+                    "..yyyy...",
+                    "..yyyyy..",
+                    "...yyyyyy",
+                    "......yyy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "...yy....",
+                    "..yyyy...",
+                    "..yyyyy..",
+                    "...yyyyyy",
+                    "......yyy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".yyyyyyyy",
+                    ".yyyyyyyy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".........",
+                    ".........",
+                    ".........",
+                    "......yyy",
+                    "......yyy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".........",
+                    ".........",
+                    ".........",
+                    "......yyy",
+                    "......yyy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".yyyyyyyy",
+                    ".yyyyyyyy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy",
+                    ".rrrrrryy"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "...rr....",
+                    "..rrrr...",
+                    "..rrrrr..",
+                    "...rrrrrr",
+                    "......rrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "...rr....",
+                    "..rrrr...",
+                    "..rrrrr..",
+                    "...rrrrrr",
+                    "......rrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".rrrrrrrr",
+                    ".rrrrrrrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".........",
+                    ".........",
+                    ".........",
+                    "......rrr",
+                    "......rrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".........",
+                    ".........",
+                    ".........",
+                    "......rrr",
+                    "......rrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".rrrrrrrr",
+                    ".rrrrrrrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr",
+                    ".ggggggrr"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "...yy....",
+                    "..yyyy...",
+                    "..yyyyy..",
+                    "...yyyyyy",
+                    "......yyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    "...yy....",
+                    "..yyyy...",
+                    "..yyyyy..",
+                    "...yyyyyy",
+                    "......yyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".yyyyyyyy",
+                    ".yyyyyyyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".........",
+                    ".........",
+                    ".........",
+                    "......yyy",
+                    "......yyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy"
+                  ]
+                },
+                {
+                  "top": 0,
+                  "lines": [
+                    ".........",
+                    ".........",
+                    ".........",
+                    "......yyy",
+                    "......yyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".yyyyyyyy",
+                    ".yyyyyyyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy",
+                    ".bbbbbbyy"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "piernik",
+      "name": "piernik",
+      "categories": ["boze-narodzenie"],
+      "holeColor": "black",
+      "sizes": {
+        "half4": {
+          "width": 4,
+          "height": 11,
+          "base": [".nnn", ".n.n", ".nnn", ".nrr", "....", "....", "..nn", "..nn", ".nnn", "....", "...."],
+          "parts": [
+            {
+              "id": "arms",
+              "variants": [
+                {
+                  "top": 4,
+                  "lines": ["nnnn", "nnnn"]
+                },
+                {
+                  "top": 4,
+                  "lines": ["nnnn", ".nnn"]
+                }
+              ]
+            },
+            {
+              "id": "legs",
+              "variants": [
+                {
+                  "top": 9,
+                  "lines": [".nn.", "nn.."]
+                },
+                {
+                  "top": 9,
+                  "lines": [".nn.", ".nn."]
+                }
+              ]
+            }
+          ]
+        },
+        "half6": {
+          "width": 6,
+          "height": 15,
+          "base": [
+            "...nnn",
+            "..nnnn",
+            "..n.nn",
+            "......",
+            "......",
+            "......",
+            "......",
+            "......",
+            "......",
+            "..nnnn",
+            "..nnnn",
+            ".nnnnn",
+            "......",
+            "......",
+            "......"
+          ],
+          "parts": [
+            {
+              "id": "mouth",
+              "variants": [
+                {
+                  "top": 3,
+                  "lines": ["..nnrn", "...nnr"]
+                }
+              ]
+            },
+            {
+              "id": "arms",
+              "variants": [
+                {
+                  "top": 5,
+                  "lines": ["....nn", "nnnnnn", "nnnnnn", "nnnnnn"]
+                },
+                {
+                  "top": 5,
+                  "lines": ["nn..nn", "nnnnnn", "nnnnnn", "..nnnn"]
+                },
+                {
+                  "top": 5,
+                  "lines": ["....nn", "..nnnn", "nnnnnn", "nnnnnn"]
+                }
+              ]
+            },
+            {
+              "id": "legs",
+              "variants": [
+                {
+                  "top": 12,
+                  "lines": [".nnn..", ".nnn..", "nnn..."]
+                },
+                {
+                  "top": 12,
+                  "lines": [".nnn..", ".nnn..", ".nnn.."]
+                },
+                {
+                  "top": 12,
+                  "lines": ["nnn...", "nnn...", "nn...."]
+                }
+              ]
+            }
+          ]
+        },
+        "half9": {
+          "width": 9,
+          "height": 23,
+          "base": [
+            "......nnn",
+            ".....nnnn",
+            "....nnnnn",
+            "....n.nnn",
+            "....n.nnn",
+            "....nnnnn",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "...nnnnnn",
+            "..nnnnnnn",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "........."
+          ],
+          "parts": [
+            {
+              "id": "mouth",
+              "variants": [
+                {
+                  "top": 6,
+                  "lines": ["....nnrnn", ".....nnrr"]
+                }
+              ]
+            },
+            {
+              "id": "arms",
+              "variants": [
+                {
+                  "top": 8,
+                  "lines": ["......nnn", "nnnnnnnnn", "nnnnnnnnn", "nnnnnnnnn", "...nnnnnn"]
+                },
+                {
+                  "top": 8,
+                  "lines": ["nn....nnn", "nnnnnnnnn", "nnnnnnnnn", "nnnnnnnnn", "...nnnnnn"]
+                },
+                {
+                  "top": 8,
+                  "lines": ["......nnn", "...nnnnnn", "nnnnnnnnn", "nnnnnnnnn", "nnnnnnnnn"]
+                }
+              ]
+            },
+            {
+              "id": "buttons",
+              "variants": [
+                {
+                  "top": 13,
+                  "lines": ["...nnnnnn", "...nnnnnn", "...nnnnnn"]
+                },
+                {
+                  "top": 13,
+                  "lines": ["...nnnnn.", "...nnnnnn", "...nnnnn."]
+                }
+              ]
+            },
+            {
+              "id": "legs",
+              "variants": [
+                {
+                  "top": 18,
+                  "lines": ["..nnnn...", "..nnnn...", "..nnnn...", ".nnnn....", "nnnn....."]
+                },
+                {
+                  "top": 18,
+                  "lines": ["..nnnn...", "..nnnn...", "..nnnn...", "..nnnn...", "..nnnn..."]
+                },
+                {
+                  "top": 18,
+                  "lines": [".nnnn....", ".nnnn....", "nnnn.....", "nnnn.....", "nnn......"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "balwanek",
+      "name": "bałwanek",
+      "categories": ["boze-narodzenie"],
+      "holeColor": "black",
+      "sizes": {
+        "half4": {
+          "width": 4,
+          "height": 12,
+          "base": ["....", "....", "....", ".sss", ".s.o", ".sss", "..ss", ".sss", "....", "....", "ssss", ".sss"],
+          "parts": [
+            {
+              "id": "hat",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["..kk", "..kk", ".kkk"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....", "..kk", ".kkk"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["...k", "..kk", ".kkk"]
+                }
+              ]
+            },
+            {
+              "id": "buttons",
+              "variants": [
+                {
+                  "top": 8,
+                  "lines": ["ssss", "sss."]
+                },
+                {
+                  "top": 8,
+                  "lines": ["sss.", "ssss"]
+                }
+              ]
+            }
+          ]
+        },
+        "half6": {
+          "width": 6,
+          "height": 15,
+          "base": [
+            "......",
+            "......",
+            "......",
+            "......",
+            "...sss",
+            "..ss.o",
+            "..ssss",
+            "......",
+            ".sssss",
+            "ssssss",
+            "......",
+            "......",
+            "......",
+            "ssssss",
+            ".sssss"
+          ],
+          "parts": [
+            {
+              "id": "hat",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["....kk", "....kk", "....kk", "..kkkk"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["...kkk", "...kkk", "...kkk", ".kkkkk"]
+                }
+              ]
+            },
+            {
+              "id": "scarf",
+              "variants": [
+                {
+                  "top": 7,
+                  "lines": ["...sss"]
+                },
+                {
+                  "top": 7,
+                  "lines": ["..rrrr"]
+                }
+              ]
+            },
+            {
+              "id": "buttons",
+              "variants": [
+                {
+                  "top": 10,
+                  "lines": ["sssss.", "ssssss", "sssss."]
+                },
+                {
+                  "top": 10,
+                  "lines": ["ssssss", "sssss.", "ssssss"]
+                }
+              ]
+            }
+          ]
+        },
+        "half9": {
+          "width": 9,
+          "height": 24,
+          "base": [
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".....ssss",
+            "....sssss",
+            "....s.sss",
+            "....sssso",
+            "....sssss",
+            ".....ssss",
+            ".........",
+            "...ssssss",
+            "..sssssss",
+            ".ssssssss",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "..sssssss",
+            "....sssss"
+          ],
+          "parts": [
+            {
+              "id": "hat",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["......kkk", "......kkk", "......kkk", "......kkk", "....kkkkk"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["......kkk", "......kkk", "......rrr", "......kkk", "...kkkkkk"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".........", ".........", "......kkk", "......kkk", "....kkkkk"]
+                }
+              ]
+            },
+            {
+              "id": "scarf",
+              "variants": [
+                {
+                  "top": 11,
+                  "lines": ["....rrrrr"]
+                },
+                {
+                  "top": 11,
+                  "lines": ["....sssss"]
+                }
+              ]
+            },
+            {
+              "id": "buttons",
+              "variants": [
+                {
+                  "top": 15,
+                  "lines": [".sssssss.", "sssssssss", "sssssssss", "ssssssss.", "sssssssss", ".ssssssss", ".sssssss."]
+                },
+                {
+                  "top": 15,
+                  "lines": [".ssssssss", "ssssssss.", "sssssssss", "sssssssss", "ssssssss.", ".ssssssss", ".ssssssss"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "aniolek",
+      "name": "aniołek",
+      "categories": ["boze-narodzenie"],
+      "holeColor": "black",
+      "sizes": {
+        "half4": {
+          "width": 4,
+          "height": 11,
+          "base": ["..yy", "...o", "...o", "...y", "...y", "...y", "..yy", "..yy", ".yyy"],
+          "parts": [
+            {
+              "id": "wings",
+              "variants": [
+                {
+                  "top": 1,
+                  "lines": ["s...", "ss..", "sss.", "sss.", ".ss."]
+                },
+                {
+                  "top": 1,
+                  "lines": ["....", "s...", "sss.", "sss.", ".ss."]
+                },
+                {
+                  "top": 1,
+                  "lines": ["....", "....", "sss.", "sss.", "sss."]
+                }
+              ]
+            },
+            {
+              "id": "hem",
+              "variants": [
+                {
+                  "top": 9,
+                  "lines": [".yyy", "yyyy"]
+                },
+                {
+                  "top": 9,
+                  "lines": [".yyy", ".yyy"]
+                }
+              ]
+            }
+          ]
+        },
+        "half6": {
+          "width": 6,
+          "height": 15,
+          "base": [
+            "......",
+            "....oo",
+            "....oo",
+            "....oo",
+            "......",
+            "......",
+            "......",
+            "......",
+            "......",
+            "...yyy",
+            "..yyyy",
+            "..yyyy",
+            ".yyyyy",
+            "......",
+            "......"
+          ],
+          "parts": [
+            {
+              "id": "halo",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["...yyy"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["....yy"]
+                },
+                {
+                  "top": 0,
+                  "lines": ["..yyyy"]
+                }
+              ]
+            },
+            {
+              "id": "wings",
+              "variants": [
+                {
+                  "top": 4,
+                  "lines": ["s...yy", "ss..yy", "sssyyy", "sssyyy", ".ssyyy"]
+                },
+                {
+                  "top": 4,
+                  "lines": ["....yy", ".s..yy", "sssyyy", "sssyyy", ".ssyyy"]
+                }
+              ]
+            },
+            {
+              "id": "hem",
+              "variants": [
+                {
+                  "top": 13,
+                  "lines": [".yyyyy", "yyyyyy"]
+                },
+                {
+                  "top": 13,
+                  "lines": [".yyyyy", ".y.yyy"]
+                }
+              ]
+            }
+          ]
+        },
+        "half9": {
+          "width": 9,
+          "height": 22,
+          "base": [
+            ".........",
+            ".........",
+            "......ooo",
+            ".....oooo",
+            ".........",
+            ".....oooo",
+            "......ooo",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "....yyyyy",
+            "....yyyyy",
+            "...yyyyyy",
+            "...yyyyyy",
+            "..yyyyyyy",
+            "..yyyyyyy",
+            ".........",
+            "........."
+          ],
+          "parts": [
+            {
+              "id": "halo",
+              "variants": [
+                {
+                  "top": 0,
+                  "lines": ["......yyy", ".....yyyy"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".....yyyy", "......yyy"]
+                },
+                {
+                  "top": 0,
+                  "lines": [".........", "....yyyyy"]
+                }
+              ]
+            },
+            {
+              "id": "eyes",
+              "variants": [
+                {
+                  "top": 4,
+                  "lines": [".....o.oo"]
+                },
+                {
+                  "top": 4,
+                  "lines": [".....oooo"]
+                }
+              ]
+            },
+            {
+              "id": "wings",
+              "variants": [
+                {
+                  "top": 7,
+                  "lines": ["s.....yyy", "ss....yyy", "sss..yyyy", "sssssyyyy", "sssssyyyy", ".ssssyyyy", "..sssyyyy"]
+                },
+                {
+                  "top": 7,
+                  "lines": ["......yyy", "......yyy", ".s...yyyy", "sssssyyyy", "sssssyyyy", ".ssssyyyy", "...ssyyyy"]
+                }
+              ]
+            },
+            {
+              "id": "hem",
+              "variants": [
+                {
+                  "top": 20,
+                  "lines": [".yyyyyyyy", "yyyyyyyyy"]
+                },
+                {
+                  "top": 20,
+                  "lines": [".yyyyyyyy", ".yy.yyy.y"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "shapes": {
+    "skarpeta": {
+      "name": "skarpeta",
+      "categories": ["boze-narodzenie"],
+      "levels": {
+        "lat5": {
+          "rows": [
+            "#####...",
+            "#####...",
+            ".###....",
+            ".###....",
+            ".###....",
+            ".####...",
+            ".######.",
+            ".#######",
+            "..######"
+          ]
+        },
+        "lat6": {
+          "rows": [
+            "#######....",
+            "#######....",
+            ".#####.....",
+            ".#####.....",
+            ".#####.....",
+            ".#####.....",
+            ".#####.....",
+            ".######....",
+            ".########..",
+            ".##########",
+            ".##########",
+            "..#########",
+            "...#######."
+          ]
+        },
+        "lat7": {
+          "rows": [
+            "##########.....",
+            "##########.....",
+            "##########.....",
+            ".########......",
+            ".########......",
+            ".########......",
+            ".########......",
+            ".########......",
+            ".########......",
+            ".########......",
+            ".########......",
+            ".########......",
+            ".#########.....",
+            ".###########...",
+            ".#############.",
+            ".##############",
+            ".##############",
+            "..#############",
+            "...###########.",
+            ".....#######..."
+          ]
+        }
+      }
+    },
+    "laska-cukrowa": {
+      "name": "laska cukrowa",
+      "categories": ["boze-narodzenie"],
+      "levels": {
+        "lat6": {
+          "rows": [
+            "..###..",
+            ".#####.",
+            "##...##",
+            "##...##",
+            "##...##",
+            "##.....",
+            "##.....",
+            "##.....",
+            "##.....",
+            "##.....",
+            "##.....",
+            "##.....",
+            "##.....",
+            "##....."
+          ]
+        },
+        "lat7": {
+          "rows": [
+            "...####...",
+            "..######..",
+            ".########.",
+            "###....###",
+            "###....###",
+            "###....###",
+            "###....###",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###.......",
+            "###......."
+          ]
+        }
+      }
+    },
+    "czapka-mikolaja": {
+      "name": "czapka Mikołaja",
+      "categories": ["boze-narodzenie"],
+      "levels": {
+        "lat6": {
+          "rows": [
+            "....###.....",
+            "...######...",
+            "...########.",
+            "..####...##.",
+            "..####..####",
+            "..#####.####",
+            ".######.....",
+            "##########..",
+            "##########.."
+          ]
+        },
+        "lat7": {
+          "rows": [
+            "......####.......",
+            ".....########....",
+            "....###########..",
+            "....############.",
+            "...######....###.",
+            "...######...#####",
+            "...#######..#####",
+            "..########..#####",
+            "..#########..###.",
+            ".###########.....",
+            "##############...",
+            "##############...",
+            "##############..."
+          ]
+        }
+      }
+    },
+    "sanki": {
+      "name": "sanki",
+      "categories": ["boze-narodzenie"],
+      "levels": {
+        "lat6": {
+          "rows": ["..........#.", ".########.##", ".########..#", "..#.....#..#", "############"]
+        },
+        "lat7": {
+          "rows": [
+            "...............##.",
+            ".############..###",
+            ".############...##",
+            ".############...##",
+            "..##......##....##",
+            "..##......##....##",
+            "##################",
+            ".#################"
+          ]
+        }
+      }
+    },
+    "renifer": {
+      "name": "renifer",
+      "categories": ["boze-narodzenie", "zwierzeta"],
+      "levels": {
+        "lat7": {
+          "rows": [
+            "........#...#...",
+            "........#...#.#.",
+            "........##..###.",
+            ".........##.##..",
+            "..........####..",
+            "...........###..",
+            "..........######",
+            "..........######",
+            "..........####..",
+            "#.........###...",
+            "############....",
+            ".###########....",
+            ".###########....",
+            ".#.#.....#.#....",
+            ".#.#.....#.#....",
+            ".#.#.....#.#...."
+          ]
+        }
+      }
+    }
+  }
+}

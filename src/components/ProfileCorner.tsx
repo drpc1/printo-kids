@@ -17,11 +17,13 @@ import {
 } from "@/lib/child-profiles";
 import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
+import { Separator } from "@/components/ui/separator";
+import { useToday } from "@/hooks/useToday";
 import { cardSummaries } from "@/lib/card-summary";
 import { readLastUsed } from "@/lib/last-used";
 import {
   ALLOWED_CHARACTER_IDS,
-  CHARACTER_CHOICES,
+  characterPickRowsOn,
   characterChoice,
   characterRow,
   OWN_IMAGE_ID,
@@ -570,13 +572,14 @@ function ProfileCharacterControl({
 
 /** What the profile remembers for each card, read-only: the bar of every card is the one place that changes it. */
 function ProfileSummary({ profile }: { profile: ChildProfile }) {
+  const today = useToday();
   return (
     <div className={cn("flex flex-col gap-2")}>
       <p className={cn("text-muted-foreground text-sm")}>
         Ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
       </p>
       <ul className={cn("border-border rounded-md border")}>
-        {cardSummaries(profile).map((summary) => (
+        {cardSummaries(profile, today).map((summary) => (
           <li key={summary.id} className={cn("border-border border-t first:border-t-0")}>
             <a
               href={summary.href}
@@ -605,6 +608,7 @@ export function CharacterChoiceRows({
   onSelect: (id: SheetCharacterId) => void;
   onCopied: (href: string) => void;
 }) {
+  const pick = characterPickRowsOn(useToday(), selected);
   const inputRef = useRef<HTMLInputElement>(null);
   const request = useRef(0);
   const [deviceHref, setDeviceHref] = useState<string | null>(() => readOwnImage(localStorage));
@@ -640,7 +644,7 @@ export function CharacterChoiceRows({
 
   return (
     <div className={cn("flex flex-col gap-2")}>
-      {CHARACTER_CHOICES.map((option) => (
+      {pick.rows.map((option) => [
         <Button
           key={option.id}
           type="button"
@@ -655,8 +659,9 @@ export function CharacterChoiceRows({
             <img src={option.src} alt="" width={40} height={40} className={cn("size-10")} />
           ) : null}
           {option.label}
-        </Button>
-      ))}
+        </Button>,
+        option.id === pick.separatorAfter ? <Separator key={`${option.id}-line`} /> : null,
+      ])}
       <div className={cn("flex w-full items-start gap-2")}>
         <Button
           type="button"
