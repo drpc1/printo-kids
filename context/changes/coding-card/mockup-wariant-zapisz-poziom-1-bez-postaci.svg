@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297">
+<defs><pattern id="hatch" width="2.4" height="2.4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="2.4" stroke="#555" stroke-width="0.6"/></pattern></defs>
+<rect width="210" height="297" fill="#fff"/>
+<text x="105" y="18.34" font-family="Arial, Helvetica, sans-serif" font-size="6.5" fill="#000" text-anchor="middle">Zapisz strzałkami drogę do mety.</text>
+<text x="105" y="26.34" font-family="Arial, Helvetica, sans-serif" font-size="6.5" fill="#000" text-anchor="middle">Jedna strzałka to jeden krok.</text>
+<rect x="20" y="59" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="54" y="59" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="88" y="59" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="122" y="59" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="156" y="59" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="20" y="93" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="54" y="93" width="34" height="34" fill="#9a9a9a" stroke="#000" stroke-width="0.5"/>
+<rect x="88" y="93" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="122" y="93" width="34" height="34" fill="#9a9a9a" stroke="#000" stroke-width="0.5"/>
+<rect x="156" y="93" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="20" y="127" width="34" height="34" fill="#9a9a9a" stroke="#000" stroke-width="0.5"/>
+<rect x="54" y="127" width="34" height="34" fill="#9a9a9a" stroke="#000" stroke-width="0.5"/>
+<rect x="88" y="127" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="122" y="127" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="156" y="127" width="34" height="34" fill="#9a9a9a" stroke="#000" stroke-width="0.5"/>
+<rect x="20" y="161" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="54" y="161" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="88" y="161" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="122" y="161" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="156" y="161" width="34" height="34" fill="#9a9a9a" stroke="#000" stroke-width="0.5"/>
+<rect x="20" y="195" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="54" y="195" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="88" y="195" width="34" height="34" fill="#9a9a9a" stroke="#000" stroke-width="0.5"/>
+<rect x="122" y="195" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="156" y="195" width="34" height="34" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="20" y="59" width="170" height="170" fill="none" stroke="#000" stroke-width="1.1"/>
+<circle cx="37" cy="76" r="12.24" fill="none" stroke="#000" stroke-width="1"/>
+<text x="37" y="78.69" font-family="Arial, Helvetica, sans-serif" font-size="7.48" font-weight="bold" fill="#000" text-anchor="middle">Start</text>
+<line x1="64.27" y1="166.78" x2="64.27" y2="189.22" stroke="#000" stroke-width="1.35" stroke-linecap="round"/>
+<rect x="64.27" y="166.78" width="4.21" height="5.61" fill="#000"/>
+<rect x="64.27" y="172.39" width="4.21" height="5.61" fill="#fff"/>
+<rect x="68.48" y="166.78" width="4.21" height="5.61" fill="#fff"/>
+<rect x="68.48" y="172.39" width="4.21" height="5.61" fill="#000"/>
+<rect x="72.68" y="166.78" width="4.21" height="5.61" fill="#000"/>
+<rect x="72.68" y="172.39" width="4.21" height="5.61" fill="#fff"/>
+<rect x="76.89" y="166.78" width="4.21" height="5.61" fill="#fff"/>
+<rect x="76.89" y="172.39" width="4.21" height="5.61" fill="#000"/>
+<rect x="64.27" y="166.78" width="16.83" height="11.22" fill="none" stroke="#000" stroke-width="0.4"/>
+<rect x="31.5" y="238" width="22" height="22" rx="1.5" fill="#fff" stroke="#000" stroke-width="0.6"/>
+<g transform="translate(42.5 249) rotate(0)" stroke="#9a9a9a" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="-6.6" y1="0" x2="6.6" y2="0"/><polyline points="2.38,-4.22 6.6,0 2.38,4.22"/></g>
+<rect x="56.5" y="238" width="22" height="22" rx="1.5" fill="#fff" stroke="#000" stroke-width="0.6"/>
+<rect x="81.5" y="238" width="22" height="22" rx="1.5" fill="#fff" stroke="#000" stroke-width="0.6"/>
+<rect x="106.5" y="238" width="22" height="22" rx="1.5" fill="#fff" stroke="#000" stroke-width="0.6"/>
+<rect x="131.5" y="238" width="22" height="22" rx="1.5" fill="#fff" stroke="#000" stroke-width="0.6"/>
+<rect x="156.5" y="238" width="22" height="22" rx="1.5" fill="#fff" stroke="#000" stroke-width="0.6"/>
+</svg>
