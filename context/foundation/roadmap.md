@@ -56,7 +56,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-43 | card-tags-filter     | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                                 | S-40, S-41, S-42                         | MS-04, FR-014, US-05                        | proposed |
 | S-44 | how-it-works-m6      | Rodzic otwiera „Jak to działa” i widzi poprawny opis nowych kart, sezonowych postaci i obiektów oraz filtra w katalogu                                                       | S-38, S-39, S-40, S-41, S-42, S-43       | MS-01, MS-02, MS-03, MS-04, US-22, FR-031   | done     |
 | S-45 | stryker-m6-cards     | Rodzic dostaje nowe karty i logikę M-6 sprawdzone mutacjami Strykera na zakresach z ryzykiem (solver krzyżówki, reguły jednoznaczności nowych kart, filtr, jeśli ma logikę)  | S-40, S-41, S-42, S-43                   | MS-01, MS-04                                | done     |
-| S-46 | test-plan-m6         | Zespół ma test-plan.md zgodny ze stanem po M-6: nowe karty, filtr i sezonowa zawartość w mapie ryzyk, §5 i §5a, bez nieaktualnych liczb kart                                 | S-38, S-39, S-40, S-41, S-42, S-43, S-45 | MS-01, MS-02, MS-03, MS-04                  | proposed |
+| S-46 | test-plan-m6         | Zespół ma test-plan.md zgodny ze stanem po M-6: nowe karty, filtr i sezonowa zawartość w mapie ryzyk, §5 i §5a, bez nieaktualnych liczb kart                                 | S-38, S-39, S-40, S-41, S-42, S-43, S-45 | MS-01, MS-02, MS-03, MS-04                  | done     |
 
 ## Streams
 
@@ -207,7 +207,7 @@ Brak. Kategorie obiektów, katalog kart, pamięć paska i postać przy poleceniu
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Dokument opisuje stan, więc idzie na końcu, po wynikach Strykera (S-45); wcześniejsza edycja rozjedzie się z kodem. Tylko dokumentacja (`context/`), więc CI jobów `ci`, `smoke` i `e2e` nie uruchomi.
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -223,7 +223,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 | S-43       | card-tags-filter     | Tagi i filtr kart w katalogu               | no                    | Czeka na S-40 do S-42; potem `/10x-new card-tags-filter`. Najpierw lista tagów (#374)                                 |
 | S-44       | how-it-works-m6      | „Jak to działa” po M-6                     | no                    | Czeka na S-38 do S-43 (#375)                                                                                          |
 | S-45       | stryker-m6-cards     | Stryker dla nowych kart i filtra M-6       | done                  | Zakresy `math-crossword` i `math-crossword-generate`, wyniki w `context/changes/stryker-m6-cards` (#376)              |
-| S-46       | test-plan-m6         | Test plan po M-6                           | no                    | Czeka na S-38 do S-43 i S-45 (#377)                                                                                   |
+| S-46       | test-plan-m6         | Test plan po M-6                           | done                  | Test plan po M-6 (#377)                                                                                               |
 
 ## Open Roadmap Questions
 
