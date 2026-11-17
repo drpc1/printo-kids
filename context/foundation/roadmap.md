@@ -51,7 +51,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 
 | ID   | Change ID                      | Outcome (user can …)                                                                                                               | Prerequisites                                              | PRD refs                                                                  | Status   |
 | ---- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | -------- |
-| S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje          | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | proposed |
+| S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje          | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | planning |
 | S-47 | m7-card-a                      | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                           | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | blocked  |
 | S-48 | m7-card-b                      | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                           | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | blocked  |
 | S-49 | m7-card-c                      | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                           | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | blocked  |
@@ -107,7 +107,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
   - ~~Poziomy, wielkość kratki i oba warianty: przełącznik czy wynik poziomu?~~ — Zamknięte 2026-11-17 po makiecie (`context/changes/coding-card/`): przełącznik „Tryb” (Zapisz, Wykonaj) niezależny od poziomu, Poziomy 1–4 (kratka 5×5, 6×6, 8×8, 10×10; droga 6–8, 9–12, 13–17, 18–24 kroków), zapis „3 →” na Poziomie 4, szare pola przykładu w Zapisz, trzy obrazki do zakreślenia w Wykonaj, szare przeszkody (PRD US-35, US-36, FR-045, FR-046, Business Logic „Karta kodowania”).
   - Wartości startowe, domyślny tryb Zapisz i brak „Pokaż rozwiązanie” potwierdza wydruk (PRD Open Questions 18). — Owner: user. Block: no.
 - **Risk:** Jedna odpowiedź w Zapisz wymaga jednej najkrótszej drogi; generator liczy drogi własnym BFS (wyszukiwanie labiryntu liczy drogi między ścianami, nie po polach z przeszkodami). Ślepe losowanie w makiecie: Poziom 4 średnio ok. 2400 kratek, ok. 0,2 s na kartę; plan powinien celować metą w daleki punkt. Trzy kolejne karty M-7 to osobne slice'y (S-47 do S-49).
-- **Status:** proposed
+- **Status:** planning
 
 ### S-47: Nowa karta a (rodzaj do ustalenia)
 
