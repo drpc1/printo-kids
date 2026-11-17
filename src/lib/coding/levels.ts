@@ -132,8 +132,8 @@ export const CODING_MODES: readonly CodingMode[] = [
     id: "zapisz",
     label: "Zapisz",
     description: "dziecko zapisuje drogę",
-    instruction: "Zapisz strzałkami drogę do mety. Jedna strzałka to jeden krok.",
-    instructionGrouped: "Zapisz drogę do mety. Liczba kratek i strzałka.",
+    instruction: "Zapisz strzałkami najkrótszą drogę do mety. Jedna strzałka to jeden krok.",
+    instructionGrouped: "Zapisz najkrótszą drogę do mety. Liczba kratek i strzałka.",
   },
   {
     id: "wykonaj",
