@@ -336,7 +336,7 @@ Brak: nowe pole `cards.kodowanie` w zapisanych profilach ma wartość domyślną
 #### Manual
 
 - [x] 1.4 Diff PRD i roadmapy dotyczy tylko kodowania
-- [ ] 1.5 Użytkowniczka potwierdza opisy trybów i zdanie o podsumowaniu profilu
+- [x] 1.5 Użytkowniczka potwierdza opisy trybów i zdanie o podsumowaniu profilu
 
 ### Phase 2: Logika karty
 
