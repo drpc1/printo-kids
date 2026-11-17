@@ -1,82 +1,82 @@
 # PrintoKids
 
-PrintoKids generates a solvable A4 maze, previews it, and prints it.
+PrintoKids generates a solvable A4 worksheet, previews it, and prints it. The home page is a catalog of card kinds. A parent picks a kind, a level, and an optional character, then generates a new sheet in the browser. Child profiles and card settings stay on the device and are never sent to the server.
+
+## Cards
+
+| Card                   | Path              |
+| ---------------------- | ----------------- |
+| Labirynt               | `/maze`           |
+| Symetria               | `/symmetry`       |
+| Sudoku                 | `/sudoku`         |
+| Sekwencje              | `/sequences`      |
+| Nonogram               | `/nonogram`       |
+| Dyktando graficzne     | `/dictation`      |
+| Kto ma więcej          | `/money`          |
+| Który nie pasuje       | `/odd-one-out`    |
+| Skopiuj obrazek        | `/copy-drawing`   |
+| Szlaczki               | `/patterns`       |
+| Krzyżówka matematyczna | `/math-crossword` |
+
+On the site the catalog sorts these by Polish title. `/how-it-works` explains each kind. Older Polish paths (`/labirynt`, `/symetria`, `/sekwencje`, `/dyktando`) redirect to the paths above.
 
 ## Tech Stack
 
-- [Astro](https://astro.build/) v7 - Modern web framework with server-first rendering
-- [React](https://react.dev/) v19 - UI library for interactive components
-- [TypeScript](https://www.typescriptlang.org/) v6 - Type-safe JavaScript
-- [Tailwind CSS](https://tailwindcss.com/) v4 - Utility-first CSS framework
-- [Cloudflare Workers](https://workers.cloudflare.com/) - Edge deployment runtime
+- [Astro](https://astro.build/) v7 — server-rendered pages, React islands where the page is interactive
+- [React](https://react.dev/) v19
+- [TypeScript](https://www.typescriptlang.org/) v6
+- [Tailwind CSS](https://tailwindcss.com/) v4
+- [Cloudflare Workers](https://workers.cloudflare.com/) — `main` deploys the staging Worker `printo-kids-staging`; `prod` deploys the production Worker `printo-kids`
 
 ## Prerequisites
 
-- Node.js v22.14.0 (as specified in `.nvmrc`)
-- npm (comes with Node.js)
+- Node.js v22.14.0 (`.nvmrc`)
+- npm
 
 ## Getting Started
 
-1. Install dependencies:
-
 ```bash
 npm install
-```
-
-2. Run the development server:
-
-```bash
 npm run dev
 ```
 
+The dev server listens on `http://localhost:4321`.
+
 ## Available Scripts
 
-- `npm run dev` - Start development server (Cloudflare workerd runtime)
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint with type-checked rules
-- `npm run lint:fix` - Auto-fix ESLint issues
-- `npm run format` - Run Prettier
-- `npm test` - Run the product test suite
-- `npm run smoke` - HTTP check of the product page against a running server (`BASE_URL`, defaults to `http://localhost:4321`). `GET /` must return 200 and the A4 maze sentence; the removed account routes must return 404.
+- `npm run dev` — development server (Cloudflare workerd)
+- `npm run build` — production SSR build
+- `npm run preview` — serve the production build
+- `npm run lint` / `npm run lint:fix` — ESLint with type-checked rules
+- `npm run format` — Prettier
+- `npm test` — product tests (Node's built-in runner, files listed in the `test` script)
+- `npm run smoke` — HTTP check against a running server (`BASE_URL`, default `http://localhost:4321`). `GET /` must return the catalog sentence, each card page its worksheet sentence, the old Polish paths a redirect, and the removed account routes 404
+- `npm run depcruise` — dependency rules for `src` and `tests`
+
+Playwright: `npx playwright test`. Locally the config reuses whatever already listens on port 4321; set `E2E_PORT` to a free port to build and serve this checkout. Contributor conventions are in `AGENTS.md`.
 
 ## Project Structure
 
-```md
-.
-├── src/
-│ ├── layouts/ # Astro layouts
-│ ├── pages/ # Astro pages
-│ │ └── api/ # API endpoints
-│ ├── components/ # UI components (Astro & React)
-│ └── assets/ # Static assets
-├── public/ # Public assets
-├── wrangler.jsonc # Cloudflare Workers config
+```text
+src/
+  pages/          routes (catalog at /, one page per card)
+  layouts/        Astro layouts
+  components/     Astro and React; ui/ is the shadcn catalog
+  hooks/          card page and settings
+  lib/            one folder per card kind, plus shared sheet and profile code
+public/           characters, thumbnails, other static files
+context/          product notes (PRD, roadmap, glossary)
+wrangler.jsonc    Cloudflare Workers config
 ```
 
 ## Deployment
 
-This project deploys to [Cloudflare Workers](https://workers.cloudflare.com/).
-
-1. Build the project:
-
-```bash
-npm run build
-```
-
-2. Deploy with Wrangler:
-
-```bash
-npx wrangler deploy
-```
+Workers Builds deploys from `main` (staging, `X-Robots-Tag: noindex`) and from `prod` (production). The environment is chosen at build time with `CLOUDFLARE_ENV`. A manual deploy is `npm run build`, then `npx wrangler deploy`.
 
 ## CI
 
-GitHub Actions workflow (`.github/workflows/ci.yml`) runs two jobs on every push and pull request to `main`. Both jobs fail the run when red.
+Push and pull request to `main` and `prod` run `.github/workflows/ci.yml`. When every changed path is under `context/`, the three jobs below are skipped and count as success. Otherwise each one fails the run when red.
 
-- **ci** — `npm run lint`, `npm test`, `npx astro check`, and `npm run build`.
-- **smoke** — a separate job that builds the app, serves the production preview, and runs `npm run smoke` (the product-page HTTP check) against it.
-
-## License
-
-MIT
+- **ci** — `npm run lint`, `npm run depcruise`, `npm test`, `npx astro check`, and `npm run build`
+- **smoke** — production preview, then `npm run smoke`
+- **e2e** — Playwright on Chromium (`chromium`, `phone-360`, `pixel-7`, `tablet-768`). WebKit `iphone-13` stays in the on-demand `e2e-phone.yml`
