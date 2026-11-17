@@ -46,7 +46,7 @@ wynik poziomu? — rozstrzyga makieta przed US i FR. Block: yes przed `/10x-plan
 
 - Strzałki bezwzględne (→ ← ↑ ↓), jak w dyktandzie graficznym; bez „obróć się w lewo”.
 - **Zapisz**: postać na starcie, meta to flaga w szachownicę; pod kratką tyle pustych pól, ile kroków.
-  Polecenie: „Zapisz strzałkami drogę do mety. Jedna strzałka to jeden krok.”
+  Polecenie: „Zapisz strzałkami najkrótszą drogę do mety. Jedna strzałka to jeden krok.”
 - **Wykonaj**: postać na starcie, pod kratką podane strzałki, na kratce trzy obrazki (gwiazdka, serce, koło);
   droga kończy się na jednym z nich, dwa pozostałe stoją blisko końca, poza drogą. Polecenie: „Idź za strzałkami.
   Zakreśl, dokąd dojdziesz.”

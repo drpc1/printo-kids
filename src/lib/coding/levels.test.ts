@@ -42,8 +42,11 @@ void describe("coding levels and modes", () => {
   void test("the instruction names the number of cells only for Zapisz on a grouped level", () => {
     const [one, , , four] = CODING_LEVELS;
     const [zapisz, wykonaj] = CODING_MODES;
-    assert.equal(codingInstruction(one, zapisz), "Zapisz strzałkami drogę do mety. Jedna strzałka to jeden krok.");
-    assert.equal(codingInstruction(four, zapisz), "Zapisz drogę do mety. Liczba kratek i strzałka.");
+    assert.equal(
+      codingInstruction(one, zapisz),
+      "Zapisz strzałkami najkrótszą drogę do mety. Jedna strzałka to jeden krok.",
+    );
+    assert.equal(codingInstruction(four, zapisz), "Zapisz najkrótszą drogę do mety. Liczba kratek i strzałka.");
     assert.equal(codingInstruction(one, wykonaj), codingInstruction(four, wykonaj));
   });
 });
