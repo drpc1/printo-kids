@@ -67,6 +67,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać poziom krzyżówki matematycznej (Poziom 1–7: od dodawania do 10 po cztery działania do 100); profil sam pamięta poziom (2026-11-13, S-40).
 - Rodzic może wygenerować kartę „Zegar”, na której dziecko odczytuje godzinę z tarczy ze wskazówkami, dorysowuje wskazówki do podanej godziny albo łączy tarczę z zegarem cyfrowym, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-15).
 - Rodzic może wybrać poziom karty „Zegar” (Poziom 1–5: od pełnych godzin po co minutę), tryb i zapis 24-godzinny; profil sam pamięta pasek (2026-11-15).
+- Rodzic może wygenerować kartę kodowania, na której dziecko zapisuje strzałkami jedyną najkrótszą drogę postaci do mety na kratce z przeszkodami albo idzie za podanymi strzałkami i zakreśla obrazek, na którym skończyło, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-17, S-42).
+- Rodzic może wybrać poziom karty kodowania (Poziom 1–4: od kratki 5×5 po 10×10) i tryb (Zapisz, Wykonaj); profil sam pamięta pasek (2026-11-17, S-42).
 
 ### Guardrails
 
@@ -146,7 +148,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 - Strona główna to katalog: każdy rodzaj karty ma miniaturę pokazującą z grubsza, jak wygląda wygenerowana karta, i nazwę. Rodzic nie musi zgadywać po nazwie.
 - Każdy rodzaj ma własną stronę z własnym adresem (labirynt: `/maze`, symetria: `/symmetry`). Kliknięcie miniatury otwiera ją.
-- Katalog mieści co najmniej 10 rodzajów i jest czytelny na telefonie (miniatury w 2 kolumnach) i na komputerze. Od M-5 ma dziesięć: każda z czterech nowych kart (US-23, US-25, US-27, US-29) ma własną miniaturę pokazującą z grubsza, jak wygląda wygenerowana karta, i nazwę. Od M-6 ma dwanaście: dochodzą krzyżówka matematyczna (US-31) i zegar (US-33), każda z własną miniaturą (2026-11-16, S-41).
+- Katalog mieści co najmniej 10 rodzajów i jest czytelny na telefonie (miniatury w 2 kolumnach) i na komputerze. Od M-5 ma dziesięć: każda z czterech nowych kart (US-23, US-25, US-27, US-29) ma własną miniaturę pokazującą z grubsza, jak wygląda wygenerowana karta, i nazwę. Od M-6 ma dwanaście: dochodzą krzyżówka matematyczna (US-31) i zegar (US-33), każda z własną miniaturą (2026-11-16, S-41). W M-7 dochodzi karta kodowania (US-35) z własną miniaturą i adresem (propozycja: `/coding`, jak `/clock`).
 - Na stronie generatora jest link „Wszystkie karty” z powrotem do katalogu.
 - Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma poza stopką z linkami „Jak to działa” i „Podziel się opinią” (US-22).
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
@@ -612,6 +614,39 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy poziom i tryb mieści się na jednej stronie A4 z marginesem 10 mm.
 - Profil i ostatnie parametry pamiętają poziom, tryb i „24 h” (US-08).
 
+### US-35: Rodzic generuje kartę kodowania do druku
+
+> Dodane 2026-11-17 (M-7, S-42). Kształt karty ustaliła użytkowniczka 2026-11-17 na makiecie (`context/changes/coding-card/`); wartości w Business Logic są startowe i zostają potwierdzone na wydruku.
+
+- **Given** rodzic otworzył z katalogu stronę „Kodowanie”
+- **When** uruchomi generowanie
+- **Then** otrzymuje gotową do wydruku kartę A4 z kratką, przeszkodami i wybraną postacią na starcie; zależnie od trybu dziecko zapisuje strzałkami drogę postaci do mety albo idzie za podanymi strzałkami i zakreśla obrazek, na którym skończyło
+
+#### Acceptance Criteria
+
+- Kratka ma pola wolne i przeszkody (szare pola); postać stoi w polu startu. Kroki są tylko w prawo, w lewo, w górę i w dół, o jedno pole, bez wchodzenia na przeszkody i poza kratkę. Strzałki są bezwzględne (→ ← ↑ ↓), jak w dyktandzie graficznym.
+- Na pasku jest wybór „Tryb”: Zapisz, Wykonaj. Zapisz: na kratce jest meta (flaga w szachownicę), a pod kratką puste pola na strzałki, dokładnie tyle, ile kroków ma najkrótsza droga; pierwsze pola są wpisane szarym jako przykład zapisu. Wykonaj: pod kratką są podane strzałki, a na kratce trzy obrazki (gwiazdka, serce, koło); droga ze strzałek kończy się na jednym z nich. Nad kratką jest jedno zdanie polecenia, inne dla każdego trybu; przy nim stoi wybrana postać (US-21).
+- Odpowiedź jest jedna. Zapisz: najkrótsza droga od startu do mety jest dokładnie jedna, więc jedna jest droga, która mieści się w polach; kratka z dwiema najkrótszymi drogami tej samej długości nie jest pokazana. Wykonaj: droga ze strzałek omija przeszkody, nie wraca na to samo pole i kończy się na jednym obrazku; dwa pozostałe obrazki nie leżą na drodze. Aplikacja zna odpowiedź i potrafi ją sprawdzić.
+- Przy wyborze postaci „Brak” start na kratce to kółko z napisem „Start”, a polecenie stoi bez dymka.
+- Karta nie ma „Pokaż rozwiązanie” (propozycja; Open Questions 18).
+- Każde Generuj daje nową kartę: inną kratkę albo inną drogę niż poprzednia karta.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez odpowiedzi na kartce (poza szarymi polami przykładu w trybie Zapisz); postać przy poleceniu i na starcie drukuje się w kolorze (US-21).
+- Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+
+### US-36: Rodzic wybiera poziom i tryb karty kodowania
+
+- **Given** rodzic jest na stronie „Kodowanie”
+- **When** wybierze poziom (Poziom 1–4) albo tryb
+- **Then** karta ma kratkę, długość drogi i zapis zgodne z tymi ustawieniami
+
+#### Acceptance Criteria
+
+- Poziomy to numery bez nazw wieku i bez wieku pod opisem (jak karty z M-5): Poziom 1 kratka 5×5; Poziom 2 kratka 6×6; Poziom 3 kratka 8×8; Poziom 4 kratka 10×10 i zapis „liczba kratek i strzałka” („3 →”, jak w dyktandzie). Poziom zmienia też długość drogi, liczbę zakrętów, liczbę przeszkód i liczbę pól przykładu. Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia. Reguły są w Business Logic.
+- Tryb jest osobnym wyborem, niezależnym od poziomu: każdy tryb ma wszystkie poziomy (decyzja 2026-11-17).
+- Zmiana poziomu albo trybu przy pokazanej karcie od razu układa nową kartę (US-22).
+- Każdy poziom i tryb mieści się na jednej stronie A4 z marginesem 10 mm.
+- Profil i ostatnie parametry pamiętają poziom i tryb (US-08).
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -732,6 +767,13 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-044: Rodzic może wybrać poziom karty „Zegar” (Poziom 1–5: pełne godziny, wpół do, kwadranse, co 5 minut, co minutę), tryb i zapis 24-godzinny z porą dnia pod tarczą. Priority: must-have
   > Socrates: Counter-argument considered: tarcza ze wskazówkami nie odróżnia 7:30 od 19:30, więc zapis 24-godzinny nie ma jednej odpowiedzi. Resolution: revised (2026-11-15); przy włączonym 24 h pod tarczą stoi słowami pora dnia, a generator unika godzin na granicach pór, więc odpowiedź jest jedna. Ikony słońca i księżyca odpadły, bo są dwuznaczne.
 
+### Kodowanie
+
+- FR-045: Rodzic może wygenerować kartę kodowania z kratką, przeszkodami i postacią na starcie w dwóch trybach (zapisz strzałkami jedyną najkrótszą drogę do mety; wykonaj podane strzałki i zakreśl obrazek na końcu drogi), z jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: „najkrótsza droga” jest dla przedszkolaka abstrakcyjna, a na kratce z przeszkodami bywa kilka dróg tej samej długości. Resolution: kept (2026-11-17); generator liczy najkrótsze drogi i nie pokazuje kratki, w której jest ich więcej niż jedna, a pól na strzałki jest dokładnie tyle, ile kroków, więc dłuższa droga się nie mieści i słowo „najkrótsza” nie jest potrzebne. Wykonaj nie potrzebuje najkrótszej drogi, bo strzałki są podane.
+- FR-046: Rodzic może wybrać poziom karty kodowania (Poziom 1–4: kratka, długość drogi, zakręty, przeszkody, zapis „3 →” na Poziomie 4) i tryb (Zapisz, Wykonaj). Priority: must-have
+  > Socrates: Counter-argument considered: dwa tryby w jednej karcie mieszają planowanie z czytaniem poleceń, a tryb mógłby wynikać z poziomu. Resolution: kept (2026-11-17, decyzja użytkowniczki po makiecie); tryb to osobny wybór na pasku, jak w zegarze, bo obie umiejętności rosną z kratką i długością drogi, a rodzic wybiera, co dziecko ćwiczy.
+
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
@@ -746,6 +788,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karty „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek” i szlaczki spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (karty „Który nie pasuje” i „Kto ma więcej?” z włączonymi kolorami drukują obrazki w kolorach, a „Skopiuj obrazek” sylwetkę w kolorach kredek), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Krzyżówka matematyczna (2026-11-13, S-40) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 7 z czterema działaniami do 100 i 20 działaniami), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (rozwiązanie tylko na ekranie), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karta „Zegar” (2026-11-15) spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Karta kodowania (2026-11-17, S-42) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 4 w trybie Zapisz ze sprawdzeniem jednej najkrótszej drogi), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (szare pola przykładu i szare przeszkody to nie odpowiedź), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
@@ -1052,9 +1095,37 @@ Domyślny jest Poziom 1, tryb Odczytaj i 24 h wyłączone (decyzja 2026-11-15). 
 
 Reguły, które generator sprawdza: każda godzina ma minuty z poziomu; od Poziomu 2 co najmniej połowa tarcz ma minuty nowe dla poziomu; godziny na jednej karcie się nie powtarzają (przy wyłączonym 24 h 7:30 i 19:30 to ta sama godzina); w trybie Połącz kolejność zegarów cyfrowych różni się od kolejności tarcz i żaden zegar cyfrowy nie stoi na wysokości swojej tarczy; przy 24 h żadna godzina nie leży w godzinie granicznej pory dnia ani po północy (0:xx); kąty wskazówek wynikają z godziny; tarcze mieszczą się na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Zmiana poziomu, trybu albo „24 h” przy pokazanej karcie od razu układa nową kartę. Każde Generuj daje inne godziny albo inną kolejność niż poprzednia karta. Wartości potwierdził wydruk 2026-11-16 w Safari, Chrome iOS i Brave iOS oraz próba z dzieckiem: liczby i wskazówki są czytelne, godzina mieści się w kratkach, a wskazówki da się dorysować; wartości startowe zostają bez zmian. Wynikiem jest karta A4; tarcze zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
+### Karta kodowania
+
+Dodane 2026-11-17 (M-7, S-42); kształt karty ustaliła użytkowniczka na makiecie (`context/changes/coding-card/mockup.mts`, `frame.md`). Aplikacja zawsze tworzy kartę z jedną odpowiedzią. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia i kratką pod nim, a pod kratką rzędem pól ze strzałkami; blok kratki i pól jest wyśrodkowany w obszarze pod poleceniem. Poziom wyznacza kratkę, długość drogi, zakręty, przeszkody, zapis i liczbę pól przykładu; tryb wyznacza, co robi dziecko. Karta nie ma kolorów, kategorii ani „Pokaż rozwiązanie”.
+
+Kratka: pola wolne (białe) i przeszkody (szare pola, decyzja 2026-11-17: kreskowanie odpadło). W polu startu stoi wybrana postać (ten sam obrazek co przy poleceniu, także własny obrazek rodzica); przy „Brak” start to kółko z napisem „Start”. Krok to przejście o jedno pole w prawo, w lewo, w górę albo w dół, bez skosów, bez wchodzenia na przeszkodę i poza kratkę. Strzałki są bezwzględne (→ ← ↑ ↓), jak w dyktandzie graficznym; „obróć się w lewo” nie występuje. Strzałki są rysowane kreską, nie znakiem czcionki, żeby telefon i drukarka rysowały je tak samo.
+
+| Tryb              | Co jest na kartce                                                                                             | Co robi dziecko                                             | Polecenie (startowe)                                                                                                           |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Zapisz (domyślny) | postać na starcie, meta (flaga w szachownicę), pod kratką puste pola; pierwsze pola wpisane szarym (przykład) | zapisuje strzałkami drogę postaci do mety                   | „Zapisz strzałkami drogę do mety. Jedna strzałka to jeden krok.” (Poziom 4: „Zapisz drogę do mety. Liczba kratek i strzałka.”) |
+| Wykonaj           | postać na starcie, trzy obrazki (gwiazdka, serce, koło), pod kratką podane strzałki                           | idzie za strzałkami i zakreśla obrazek, na którym skończyło | „Idź za strzałkami. Zakreśl, dokąd dojdziesz.”                                                                                 |
+
+Tryb wybiera się na pasku z listy, tak jak w zegarze: przycisk „Tryb: Zapisz” otwiera listę dwóch trybów, a każdy wiersz ma nazwę i pół zdania o tym, co robi dziecko. Tryb nie zależy od poziomu (decyzja 2026-11-17). Domyślny tryb Zapisz jest propozycją (Open Questions 18).
+
+| Poziom   | Kratka | Bok pola (około) | Przeszkody (około) | Kroków drogi | Zakrętów (co najmniej) | Zapis                            | Pola przykładu (Zapisz) | Opis w UI (startowy)          |
+| -------- | ------ | ---------------- | ------------------ | ------------ | ---------------------- | -------------------------------- | ----------------------- | ----------------------------- |
+| Poziom 1 | 5×5    | 34 mm            | 24% pól            | 6–8          | 1                      | jedna strzałka na krok           | 1                       | „kratka 5×5, krótka droga”    |
+| Poziom 2 | 6×6    | 29 mm            | 26% pól            | 9–12         | 2                      | jedna strzałka na krok           | 1                       | „kratka 6×6, dłuższa droga”   |
+| Poziom 3 | 8×8    | 22 mm            | 28% pól            | 13–17        | 3                      | jedna strzałka na krok           | 2                       | „kratka 8×8, więcej zakrętów” |
+| Poziom 4 | 10×10  | 18 mm            | 30% pól            | 18–24        | 4                      | „3 →” (liczba kratek i strzałka) | 2                       | „kratka 10×10, zapis „3 →””   |
+
+Domyślny jest Poziom 1. Poziomy to numery bez wieku i bez wieku pod opisem. Na Poziomie 4 kolejne kroki w tym samym kierunku łączą się w jedno polecenie „liczba kratek i strzałka”, jak w dyktandzie, więc droga 24 kroków to ok. 9 pól zamiast 24. Długość drogi wydłużyła użytkowniczka po pierwszej makiecie (2026-11-17: było 4–6, 6–9, 9–13, 13–18). Pola przykładu (pomysł użytkowniczki 2026-11-17) to pierwsze kroki odpowiedzi wpisane szarym, bledsze niż druk, jak podpowiedź przy osi w symetrii; pokazują, jak się zapisuje strzałki (na Poziomie 4 np. „1 →”, „2 ↑”), a dziecko pisze dalej. W trybie Wykonaj pól przykładu nie ma, bo strzałki są podane.
+
+Zapisz — jedna najkrótsza droga: generator losuje przeszkody, start i metę i liczy wyszukiwaniem wszerz (BFS) odległość i liczbę najkrótszych dróg od startu do każdego pola; kratka jest dobra, gdy do mety prowadzi dokładnie jedna najkrótsza droga, jej długość i liczba zakrętów mieszczą się w poziomie. Pól na strzałki jest dokładnie tyle, ile kroków tej drogi (na Poziomie 4 tyle, ile poleceń „n →”): dłuższa droga się w nich nie mieści, a każda droga tej długości to ta jedna, więc słowo „najkrótsza” w poleceniu nie jest potrzebne. Inne, dłuższe drogi do mety mogą istnieć. Wyszukiwanie drogi labiryntu (`countPaths` w `src/lib/maze/generate.ts`) liczy drogi między ścianami komórek, a nie po polach z przeszkodami, więc karta ma własne, krótkie wyszukiwanie. Makieta: na 300 kart Poziom 1 potrzebował średnio 47 losowań kratki (ok. 2 ms na kartę), Poziom 4 średnio ok. 2400 (ok. 0,2 s); plan może celować metą w daleki punkt, żeby losowań było mniej.
+
+Wykonaj — jedna kratka końcowa: droga ze strzałek jest losowana po wolnych polach, bez wracania na to samo pole (dziecko nie gubi się na skrzyżowaniu własnej drogi), z długością i liczbą zakrętów poziomu; nie musi być najkrótsza. Kończy się na jednym z trzech obrazków; dwa pozostałe stoją blisko końca drogi (do 3 kroków), ale nie na niej, żeby dziecko nie zatrzymało się za wcześnie. Który obrazek jest celem, losuje się z kartą.
+
+Reguły, które generator sprawdza: start, meta i obrazki leżą na wolnych polach; droga odpowiedzi nie wchodzi na przeszkodę ani poza kratkę i nie wraca na to samo pole; w Zapisz najkrótsza droga do mety jest dokładnie jedna, ma długość i liczbę zakrętów poziomu, a liczba pól równa się liczbie kroków (Poziom 4: liczbie poleceń); w Wykonaj droga kończy się na obrazku-celu, a pozostałe obrazki nie leżą na drodze; kratka i pola mieszczą się na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Zmiana poziomu albo trybu przy pokazanej karcie od razu układa nową kartę. Każde Generuj daje inną kratkę albo inną drogę niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 18). Wynikiem jest karta A4; kratka i pola zajmują większą część strony i zachowują margines co najmniej 10 mm.
+
 ### Poziomy
 
-Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem), zegar 1–5 (od 2026-11-15; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
+Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem), zegar 1–5 (od 2026-11-15; bez wieku pod opisem), kodowanie 1–4 (od M-7, 2026-11-17, S-42; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
 
 Każdy wiersz listy poziomów ma nazwę, pół zdania o tym, co zmienia poziom, i, przy labiryncie, symetrii, sekwencjach i dyktandzie, typowy wiek pod opisem; wiersz ma trzy linie, np. „Poziom 1” / „duża kratka, podpowiedź przy osi” / „zwykle ok. 4 lata”. Sudoku i nonogram nie mają wieku. Zapisane identyfikatory poziomów mogą zostać w danych; zmienia się etykieta, więc zapisane profile i ostatnie parametry wczytują się bez migracji.
 
@@ -1076,6 +1147,7 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | Szlaczki               | poziom, linie                               |
 | Krzyżówka matematyczna | poziom                                      |
 | Zegar                  | poziom, tryb, 24 h                          |
+| Kodowanie              | poziom, tryb                                |
 
 Zasady:
 
@@ -1086,6 +1158,7 @@ Zasady:
 - Profil nie przechowuje wieku. Wiek nie ustawia żadnego poziomu.
 - Przy wybranym profilu miniatury katalogu pokazują zapamiętany poziom (sudoku: rozmiar i poziom, np. „6×6 · średni”).
 - Podsumowanie zegara w oknie profilu to poziom i tryb, a przy włączonym 24 h także „24 h”, np. „Zegar: Poziom 2 · Odczytaj” albo „Zegar: Poziom 4 · Połącz · 24 h”. Tryb stoi zawsze, także domyślny, bo zmienia całe zadanie; plakietka w katalogu to sam poziom („poz. 4”) (decyzja 2026-11-16, S-41).
+- Podsumowanie kodowania w oknie profilu to poziom i tryb, np. „Kodowanie: Poziom 2 · Zapisz”, jak w zegarze; plakietka w katalogu to sam poziom („poz. 2”) (propozycja 2026-11-17, S-42; kształt okna profilu przy 16 kartach przebudowuje S-52).
 - „Pokaż rozwiązanie” w nonogramie, dyktandzie i krzyżówce matematycznej nie jest zapamiętywane i zawsze startuje wyłączone.
 - Zgodność wstecz: dawne pole poziomu w profilu i w ostatnich parametrach zostaje poziomem labiryntu; dawna postać profilu zostaje ulubioną, a dawna postać ostatnich parametrów ostatnio użytą postacią.
 
@@ -1107,7 +1180,8 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 
 - Kolejne rodzaje kart wchodzą jako osobne kamienie, po jednym naraz, a nie razem z labiryntem. Pierwszym po labiryncie jest symetria (US-05–US-09, FR-014–FR-018). Drugi kamień kart (2026-10-23) bierze dwa rodzaje naraz, wyjątkowo, na prośbę użytkownika: sekwencje i sudoku (US-10–US-14, FR-019–FR-023). Do tego samego kamienia dochodzą 2026-10-25, także na prośbę użytkownika, nonogram i dyktando graficzne (US-15–US-18, FR-024–FR-027) oraz nowe obiekty w katalogu szablonów z wyborem kategorii (US-19–US-20, FR-028–FR-029). Czwarty kamień kart (M-5, 2026-11-01) bierze cztery rodzaje naraz, wyjątkowo, na prośbę użytkowniczki: „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj obrazek” i szlaczki (US-23–US-30, FR-033–FR-040). Rodzaje z listy „Po MVP” zostają poza zakresem, dopóki ich kamień nie jest otwarty.
 - Kamień M-6 (2026-11-13) zaczyna się od jednej karty: krzyżówki matematycznej (US-31–US-32, FR-041–FR-042; S-40). Nie obejmuje osobnej kontrolki liczby pustych pól, wieku pod opisem poziomu, działań z więcej niż jednym znakiem (np. „a + b − c = d”) ani kolejności wykonywania działań, ramki „Użyj:” z brakującymi liczbami, kolorów, kategorii i obrazków na karcie.
-- Druga karta M-6 (2026-11-15) to „Zegar” (US-33–US-34, FR-043–FR-044; slot S-41). Nie obejmuje tarczy bez liczb ani z samymi 12, 3, 6, 9, zapisu słownego godziny („wpół do ósmej”), wskazówki sekundowej, obliczeń zegarowych („która będzie za 20 minut?”), „Pokaż rozwiązanie”, kolorów ani kategorii. Trzecią kartą M-6 (slot S-42) mają być karty kodowania (Po MVP); dostają US i FR przy otwarciu.
+- Druga karta M-6 (2026-11-15) to „Zegar” (US-33–US-34, FR-043–FR-044; slot S-41). Nie obejmuje tarczy bez liczb ani z samymi 12, 3, 6, 9, zapisu słownego godziny („wpół do ósmej”), wskazówki sekundowej, obliczeń zegarowych („która będzie za 20 minut?”), „Pokaż rozwiązanie”, kolorów ani kategorii. Karty kodowania (slot S-42) przeszły do M-7 (zawężenie M-6 2026-11-16).
+- Pierwsza karta M-7 (2026-11-17) to karta kodowania (US-35–US-36, FR-045–FR-046; S-42). Nie obejmuje strzałek względnych („obróć się w lewo”), pętli i powtórzeń („3 × →” jako osobnej instrukcji), kroków po skosie, wielu postaci ani zbierania przedmiotów po drodze, kolorów, kategorii ani „Pokaż rozwiązanie”.
 - Kamień M-5 nie obejmuje groszy i centów, banknotu 200 €, monet dolarowych, cen i reszty w „Kto ma więcej?”, kwoty „ułóż dokładnie tę kwotę” ani oceny rysunku dziecka na kartach „Skopiuj obrazek” i szlaczki (decyzja 2026-11-01).
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
@@ -1131,7 +1205,9 @@ Nonogram przeszedł z tej listy do zakresu (2026-10-25) w wersji z obiektami z k
 
 „Kto ma więcej?” (dawniej „Porównywanie kwot w złotych”), „Który nie pasuje”, „Skopiuj obrazek” i szlaczki przeszły z tej listy do zakresu (2026-11-01, M-5): US-23–US-30, FR-033–FR-040, Business Logic „Karta „Kto ma więcej?””, „Karta „Który nie pasuje””, „Karta „Skopiuj obrazek”” i „Karta szlaczków”. „Skopiuj obrazek” i szlaczki nie były na tej liście.
 
-„Zegar” nie był na tej liście; wszedł do zakresu 2026-11-15 (M-6): US-33–US-34, FR-043–FR-044, Business Logic „Karta „Zegar””. Jako następną kartę M-6 użytkowniczka wybrała 2026-11-15 karty kodowania (niżej).
+„Zegar” nie był na tej liście; wszedł do zakresu 2026-11-15 (M-6): US-33–US-34, FR-043–FR-044, Business Logic „Karta „Zegar””. Jako następną kartę M-6 użytkowniczka wybrała 2026-11-15 karty kodowania.
+
+Karty kodowania przeszły z tej listy do zakresu (2026-11-17, M-7, S-42): US-35–US-36, FR-045–FR-046, Business Logic „Karta kodowania”. Nie korzystają z wyszukiwania drogi labiryntu (inna kratka), tylko z własnego.
 
 Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero przy otwarciu jego kamienia.
 
@@ -1140,7 +1216,6 @@ Pozostałe typy nie mają kolejności. Następny typ dostaje US i FR dopiero prz
 - **Połącz kropki.** Ponumerowane kropki na obrysie rysunku; dziecko łączy je po kolei i odkrywa obiekt. Poziomy: liczba kropek (do 10, 20, 50), liczenie co 2 albo wstecz. Odpowiedź jest jedna, bo kolejność numerów wyznacza linię. Czeka na rysunki wektorowe albo obrysy postaci.
 - **Znajdź różnice.** Dwa takie same rysunki obok siebie, różniące się w kilku szczegółach; dziecko zakreśla różnice. Poziom wyznacza liczba i wielkość różnic; różnice się nie stykają, żeby dwie nie wyglądały jak jedna. Czeka na rysunki wektorowe.
 - **Nonogram i dyktando postaci.** Po rozwiązaniu widać postać zamiast obiektu z szablonów. Czeka na obrysy postaci. Nonogram i dyktando z obiektami z szablonów są już w zakresie (FR-024, FR-026). Z makiety: pełna postać w dyktandzie to 32–64 polecenia, więc pasuje do poziomu trudnego; łatwy potrzebuje prostszych obrysów.
-- **Karty kodowania.** Kratka, postać, meta i strzałki. Jedna najkrótsza droga. Następna karta po zegarze (wybór użytkowniczki 2026-11-15, slot S-42). Z makiety: dziecko zapisuje strzałkami drogę w pustych polach albo, w drugim wariancie, wykonuje podane strzałki na kratce; przeszkody to zamalowane pola, a generator odrzuca kratki z dwiema najkrótszymi drogami. Może użyć wyszukiwania drogi z labiryntu.
 - **Pieniądze, ciąg dalszy.** Jedna kupka i cena („czy wystarczy?”), grosze, reszta. „Ułóż dokładnie tę kwotę” czeka na regułę, która zostawia jeden układ. Wymaga pierwszej wersji „Kto ma więcej?” (M-5).
 
 Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem waluty.
@@ -1164,3 +1239,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 15. ~~**Czy szlaczki z kropkami (Poziomy 1–2) i z kontynuacją wzoru (Poziomy 3–4) są czytelne na zwykłej drukarce domowej i dla dziecka?**~~ — Owner: user. Block: nie. Tabela w Business Logic jest propozycją z 2026-11-01, przebudowaną 2026-11-09 po makietach (`context/changes/pattern-lines-card/`); potwierdza ją wydruk i próba z dzieckiem, które odbywają się po scaleniu i nie blokują dostarczenia karty ani zamknięcia S-36 (decyzja 2026-11-10). Zamknięte 2026-11-10: użytkowniczka wydrukowała karty i sprawdziła je z dzieckiem; kropki, jasnoszara ścieżka, linia 0,6 mm i liniatura są czytelne, a startowe wartości poziomów zostają bez zmian.
 16. **Jak długo trwa M-5 (cztery karty naraz)?** — Owner: user. Block: nie. Roadmapa sekwencjonuje bez dat; `delivery_weeks` nie jest ustalone.
 17. ~~**Czy startowe wartości poziomów krzyżówki matematycznej (liczba działań, kratka, puste pola, łańcuch) pasują dziecku?**~~ — Zamknięte 2026-11-14 po wydruku użytkowniczki: wszystkie poziomy (1–7) wychodzą na jednej stronie A4, cyfry mieszczą się w kratkach także na Poziomie 7 (13,5 mm), liczby da się wpisać w kratki na Poziomach 1–2, a zakreskowanie jest widoczne; startowe wartości poziomów zostają bez zmian. Na telefonie (Brave, Chrome, Safari) wydruk wykazał jeszcze liczby niewycentrowane w kratce; poprawione w GitHub 371 (jawne przesunięcie linii bazowej zamiast `dominant-baseline`). Wcześniej: Owner: user. Block: nie. Tabela w Business Logic „Karta krzyżówki matematycznej” jest propozycją z 2026-11-13 (S-40), zaakceptowaną po makietach; potwierdza ją wydruk w fazie 4 planu `math-crossword-card`: czy cyfry mieszczą się w kratce 13,5 mm na Poziomie 7, czy dziecko daje radę wpisać liczby w kratki 26 i 24 mm na Poziomach 1–2 i czy łańcuch 3–4 na Poziomach 4–7 nie jest za trudny.
+18. **Czy startowe wartości karty kodowania (kratka, bok pola, długość drogi, przeszkody, pola przykładu) pasują dziecku, i czy domyślny tryb Zapisz oraz brak „Pokaż rozwiązanie” są dobre?** — Owner: user. Block: nie. Tabela w Business Logic „Karta kodowania” jest propozycją z 2026-11-17 (S-42), przyjętą po makiecie (`context/changes/coding-card/`); potwierdza ją wydruk: czy strzałka mieści się w polu 16 mm na Poziomach 3–4, czy szare pola przykładu nie mylą się z przeszkodami (ten sam odcień w makiecie; może trzeba jaśniejszego) i czy droga 18–24 kroków na Poziomie 4 nie jest za długa. Domyślny tryb Zapisz i brak „Pokaż rozwiązanie” (jak w zegarze: odpowiedź da się sprawdzić, prowadząc palcem po strzałkach) to propozycje sesji, nie decyzje użytkowniczki.
