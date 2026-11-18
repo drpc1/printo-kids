@@ -8,7 +8,7 @@ Czternasta karta: „Od najmniejszego” (`/size-order`, id `odnajmniejszego`). 
 
 Katalog ma trzynaście kart; najbliższy wzór to „Który nie pasuje” (`src/lib/odd-one-out/`, `OddOneOutGenerator.tsx`, `OddOneOutPicture.tsx`) i świeżo zamknięte kodowanie (`context/changes/coding-card/plan.md`). PRD i makieta (`mockup.mts`: wysokości, układ rzędu, linia dolna, ograniczenie szerokości szerokich ikon, jedna kredka na rząd, pula obrazków) są na `main`, więc dokumenty są małe i łączą się z logiką w fazie 1.
 
-Decyzje (użytkowniczka 2026-11-18, PRD): 3 / 4 / 5 obrazków i 4 / 4 / 5 rzędów, najmniejszy krok ×1,35 / ×1,25 / ×1,14; zawsze „od najmniejszego”; ikony i kształty mieszane na jednej karcie (≥1 każdego, bez powtórek), bez kategorii; polecenie „Od najmniejszego: wpisz 1, 2, 3… albo narysuj kropki.”; bez klucza i bez „Pokaż rozwiązanie”. Przyjęte bez pytania (można zmienić): domyślny poziom łatwy; nazwy techniczne poniżej.
+Decyzje (użytkowniczka 2026-11-18, PRD): 3 / 4 / 5 obrazków i 4 / 4 / 5 rzędów, najmniejszy krok ×1,35 / ×1,25 / ×1,14; zawsze „od najmniejszego”; ikony i kształty mieszane na jednej karcie (≥1 każdego, bez powtórek), bez kategorii; polecenie „Od najmniejszego. Wpisz 1, 2, 3… albo narysuj kropki.”; bez klucza i bez „Pokaż rozwiązanie”. Przyjęte bez pytania (można zmienić): domyślny poziom łatwy; nazwy techniczne poniżej.
 
 ### Key Discoveries:
 

@@ -15,9 +15,12 @@ export const SIZE_ORDER_SHEET = {
   /** Space between the band (or the plain instruction) and the first row. */
   bandGap: 8,
   /** Font size of the plain instruction when no character stands in the band (one line). */
-  plainInstructionSize: 7,
-  /** The instruction; the child writes 1, 2, 3… or draws dots (no key, decision 2026-11-18). */
-  instruction: "Od najmniejszego: wpisz 1, 2, 3… albo narysuj kropki.",
+  plainInstructionSize: 6.5,
+  /**
+   * The instruction, two sentences so that the speech bubble sets it in two lines (one line of this length ran out of
+   * the bubble); the child writes 1, 2, 3… or draws dots (no key, decision 2026-11-18).
+   */
+  instruction: "Od najmniejszego. Wpisz 1, 2, 3… albo narysuj kropki.",
   /** Answer box under every picture: wide enough for a digit or up to five dots. */
   answerBox: { height: 13, maxWidth: 30, slotMargin: 6 },
   /** Line width and corner radius of an answer box. */

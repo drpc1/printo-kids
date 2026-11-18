@@ -49,7 +49,7 @@ test("łatwy is the default: 4 rows of 3 pictures with an answer box under each,
   await expect(page.getByRole("button", { name: "Poziom: łatwy" })).toBeVisible();
   await expect(page.getByRole("switch", { name: "Kolory" })).not.toBeChecked();
   await expect(page.getByRole("switch", { name: /rozwiązanie/i })).toHaveCount(0);
-  await expect(sheet.locator("text", { hasText: "Od najmniejszego: wpisz 1, 2, 3…" }).first()).toBeVisible();
+  await expect(sheet.locator("text", { hasText: "Wpisz 1, 2, 3…" }).first()).toBeVisible();
 
   await expect(sheet.locator("g[data-row]")).toHaveCount(4);
   await expect(sheet.locator("g[data-picture]")).toHaveCount(12);
@@ -106,7 +106,7 @@ test("without a character the instruction stands alone; with one it is in the sp
   await page.getByRole("button", { name: "Brak" }).click();
   await expect(page.getByRole("button", { name: "Postać: Brak" })).toBeVisible();
   await expect(sheet.locator("image")).toHaveCount(0);
-  await expect(sheet.locator("text", { hasText: "Od najmniejszego: wpisz 1, 2, 3…" }).first()).toBeVisible();
+  await expect(sheet.locator("text", { hasText: "Wpisz 1, 2, 3…" }).first()).toBeVisible();
 
   await page.getByRole("button", { name: /^Postać:/ }).click();
   await page.getByRole("button", { name: "Dinozaur" }).click();
