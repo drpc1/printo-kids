@@ -248,17 +248,17 @@ Brak: pole `cards.odnajmniejszego` w zapisanych profilach dostaje wartość domy
 
 #### Automated
 
-- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/changes/size-order-card/*.md context/domain/glossary.md context/foundation/roadmap.md`
-- [x] 1.2 Testy przechodzą: `npm test`
-- [x] 1.3 Lint: `npm run lint`
-- [x] 1.4 Zależności: `npm run depcruise`
-- [x] 1.5 Typy: `npx astro check`
-- [x] 1.6 Build: `npm run build`
+- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/changes/size-order-card/*.md context/domain/glossary.md context/foundation/roadmap.md` — fb2729a5
+- [x] 1.2 Testy przechodzą: `npm test` — fb2729a5
+- [x] 1.3 Lint: `npm run lint` — fb2729a5
+- [x] 1.4 Zależności: `npm run depcruise` — fb2729a5
+- [x] 1.5 Typy: `npx astro check` — fb2729a5
+- [x] 1.6 Build: `npm run build` — fb2729a5
 
 #### Manual
 
 - [ ] 1.7 Użytkowniczka akceptuje podgląd karty z kodu (skrypt jak `preview.mts` z kodowania; trzy poziomy, z kolorami i bez)
-- [ ] 1.8 Przegląd diffu względem planu i makiety (`/10x-impl-review` przed PR fazy)
+- [x] 1.8 Przegląd diffu względem planu i makiety (`/10x-impl-review` przed PR fazy) — fb2729a5
 
 ### Phase 2: Strona, katalog i profil
 

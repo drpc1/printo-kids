@@ -1,7 +1,7 @@
 ---
 change_id: size-order-card
 title: Karta „Od najmniejszego” (S-48, GitHub 420)
-status: implementing
+status: impl_reviewed
 created: 2026-11-18
 updated: 2026-11-18
 archived_at: null
