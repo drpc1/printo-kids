@@ -336,7 +336,7 @@ Brak: nowe pole `cards.kodowanie` w zapisanych profilach ma wartość domyślną
 #### Manual
 
 - [x] 1.4 Diff PRD i roadmapy dotyczy tylko kodowania
-- [ ] 1.5 Użytkowniczka potwierdza opisy trybów i zdanie o podsumowaniu profilu
+- [x] 1.5 Użytkowniczka potwierdza opisy trybów i zdanie o podsumowaniu profilu
 
 ### Phase 2: Logika karty
 
@@ -350,8 +350,8 @@ Brak: nowe pole `cards.kodowanie` w zapisanych profilach ma wartość domyślną
 
 #### Manual
 
-- [ ] 2.6 Użytkowniczka akceptuje podgląd z `preview.mts` (oba tryby, Poziom 1 i 4, z postacią i „Brak”)
-- [ ] 2.7 Przegląd diffu względem planu i makiety
+- [x] 2.6 Użytkowniczka akceptuje podgląd z `preview.mts` (oba tryby, Poziom 1 i 4, z postacią i „Brak”)
+- [x] 2.7 Przegląd diffu względem planu i makiety
 
 ### Phase 3: Strona, katalog i profil
 
