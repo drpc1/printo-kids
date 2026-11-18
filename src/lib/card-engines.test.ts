@@ -14,6 +14,7 @@ import { CLOCK_LEVELS, CLOCK_MODE_IDS } from "./clock/levels.ts";
 import { CODING_LEVELS, CODING_MODE_IDS } from "./coding/levels.ts";
 import { COPY_DRAWING_LEVELS } from "./copy-drawing/levels.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
+import { SIZE_ORDER_LEVELS } from "./size-order/levels.ts";
 import { MATH_CROSSWORD_LEVELS } from "./math-crossword/levels.ts";
 import { LEVELS } from "./maze/levels.ts";
 import { MONEY_CURRENCY_IDS } from "./money/currencies.ts";
@@ -328,6 +329,22 @@ const INVENTORY: Inventory = {
       { level: "poziom1", mode: "wykonaj" },
     ],
     decoration: [],
+  },
+  // Only the level lays out the card; the colors are one crayon per row and stay decoration.
+  odnajmniejszego: {
+    settingsList: SIZE_ORDER_LEVELS.flatMap((level) => [
+      { level: level.id, colors: false },
+      { level: level.id, colors: true },
+    ]),
+    label: (settings) => `${settings.level}/${String(settings.colors)}`,
+    mayExhaust: () => false,
+    usesPreviousKey: true,
+    base: { level: "latwy", colors: false },
+    content: [
+      { level: "sredni", colors: false },
+      { level: "trudny", colors: false },
+    ],
+    decoration: [{ level: "latwy", colors: true }],
   },
 };
 

@@ -26,6 +26,18 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("krzyzowka"), { level: "poziom2" });
     assert.deepEqual(defaultCardSettings("zegar"), { level: "poziom1", mode: "odczytaj", h24: false });
     assert.deepEqual(defaultCardSettings("kodowanie"), { level: "poziom1", mode: "zapisz" });
+    assert.deepEqual(defaultCardSettings("odnajmniejszego"), { level: "latwy", colors: false });
+  });
+
+  void test("the size-order card reads a stored level and colors, drops unknown values, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ odnajmniejszego: { level: "trudny", colors: true } }), {
+      odnajmniejszego: { level: "trudny", colors: true },
+    });
+    assert.deepEqual(parseCardSettings({ odnajmniejszego: { level: "poziom2", colors: "tak" } }), {
+      odnajmniejszego: { level: "latwy", colors: false },
+    });
+    assert.deepEqual(parseCardSettings({ odnajmniejszego: 3 }), {});
+    assert.deepEqual(parseCardSettings({}), {});
   });
 
   void test("the coding card reads a stored level and mode, and drops an unknown mode (also a clock one)", () => {

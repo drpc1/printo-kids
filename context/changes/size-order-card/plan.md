@@ -257,24 +257,24 @@ Brak: pole `cards.odnajmniejszego` w zapisanych profilach dostaje wartość domy
 
 #### Manual
 
-- [ ] 1.7 Użytkowniczka akceptuje podgląd karty z kodu (skrypt jak `preview.mts` z kodowania; trzy poziomy, z kolorami i bez)
+- [x] 1.7 Użytkowniczka akceptuje podgląd karty z kodu (skrypt jak `preview.mts` z kodowania; trzy poziomy, z kolorami i bez) — fb2729a5
 - [x] 1.8 Przegląd diffu względem planu i makiety (`/10x-impl-review` przed PR fazy) — fb2729a5
 
 ### Phase 2: Strona, katalog i profil
 
 #### Automated
 
-- [ ] 2.1 Testy jednostkowe: `npm test`
-- [ ] 2.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build`
-- [ ] 2.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
-- [ ] 2.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke`
+- [x] 2.1 Testy jednostkowe: `npm test` — 47dd529a
+- [x] 2.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` — 47dd529a
+- [x] 2.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` — 47dd529a
+- [x] 2.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke` — 47dd529a
 
 #### Manual
 
 - [ ] 2.5 Użytkowniczka sprawdza każdy poziom, kolory i podgląd wydruku (jedna strona A4), z postacią i z „Brak”
 - [ ] 2.6 Miniatura w katalogu, plakietka poziomu przy profilu i podsumowanie w oknie profilu są poprawne
 - [ ] 2.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
-- [ ] 2.8 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy)
+- [x] 2.8 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy) — 47dd529a
 
 ### Phase 3: Wydruk próbny
 

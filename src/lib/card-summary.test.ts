@@ -246,6 +246,26 @@ void describe("cardSummaries", () => {
     assert.equal(follow.detail, "Poziom 4 · Wykonaj");
   });
 
+  void test("the size-order card shows its named level and colors, and is unused until the profile chose one", () => {
+    const fresh = byId(cardSummaries(profile("lat5")), "odnajmniejszego");
+    assert.equal(fresh.used, false);
+    assert.equal(fresh.badge, null);
+    assert.equal(fresh.title, "Od najmniejszego");
+    assert.equal(fresh.href, "/size-order");
+
+    const plain = byId(
+      cardSummaries(profile("lat5", { odnajmniejszego: { level: "sredni", colors: false } })),
+      "odnajmniejszego",
+    );
+    assert.equal(plain.badge, "średni");
+    assert.equal(plain.detail, "średni");
+    const colored = byId(
+      cardSummaries(profile("lat5", { odnajmniejszego: { level: "trudny", colors: true } })),
+      "odnajmniejszego",
+    );
+    assert.equal(colored.detail, "trudny · kolory");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -285,6 +305,7 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   krzyzowka: { krzyzowka: defaultCardSettings("krzyzowka") },
   zegar: { zegar: defaultCardSettings("zegar") },
   kodowanie: { kodowanie: defaultCardSettings("kodowanie") },
+  odnajmniejszego: { odnajmniejszego: defaultCardSettings("odnajmniejszego") },
 };
 
 void describe("the card registry and summaryParts", () => {

@@ -30,6 +30,7 @@ const ANIA = {
     krzyzowka: { level: "poziom6" },
     zegar: { level: "poziom4", mode: "polacz", h24: true },
     kodowanie: { level: "poziom2", mode: "wykonaj" },
+    odnajmniejszego: { level: "sredni", colors: true },
   },
 };
 
@@ -106,6 +107,7 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Krzyżówka matematyczna\s+Poziom 6/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Zegar\s+Poziom 4 · Połącz · 24 h/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Kodowanie\s+Poziom 2 · Wykonaj/ })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Od najmniejszego\s+średni · kolory/ })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
   await expect(dialog.getByRole("button", { name: "Anuluj" })).toHaveCount(0);
 });

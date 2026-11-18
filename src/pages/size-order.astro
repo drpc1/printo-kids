@@ -1,0 +1,15 @@
+---
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import SizeOrderGenerator from "@/components/SizeOrderGenerator";
+import Layout from "@/layouts/Layout.astro";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
+---
+
+<Layout title={cardPageTitle("odnajmniejszego")} lang="pl">
+  <GeneratorShell
+    heading={cardTitle("odnajmniejszego")}
+    description="Wygeneruj kartę „Od najmniejszego” i wydrukuj ją na kartce A4."
+  >
+    <SizeOrderGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>

@@ -1,22 +1,12 @@
 // "Od najmniejszego" as a card kind: `sizeOrderSpec` wraps `sizeOrderCardProblems`, `sizeOrderEngine` wraps the
 // generator. Running out of attempts is `CardExhausted`; the engine never returns null.
-import {
-  CardExhausted,
-  VerifiedCard,
-  type CardEngine,
-  type CardKindId,
-  type CardProblem,
-  type CardSpec,
-} from "../card-contract.ts";
+import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { SizeOrderSettings } from "../card-settings.ts";
 import { sizeOrderCardKey, sizeOrderCardProblems, type SizeOrderCard } from "./card.ts";
 import { generateSizeOrderCard, MAX_ATTEMPTS } from "./generate.ts";
 import { sizeOrderLevelById } from "./levels.ts";
 
 type Bad = CardSpec<SizeOrderSettings, SizeOrderCard>["knownBad"][number];
-
-// Phase 2 adds this id to CARD_KINDS (src/lib/cards.ts); until then the union does not hold it.
-const KIND = "odnajmniejszego" as unknown as CardKindId;
 
 function sizeOrderProblems(card: SizeOrderCard, settings: SizeOrderSettings): readonly CardProblem[] {
   return sizeOrderCardProblems(card, sizeOrderLevelById(settings.level)).map((code) => ({
@@ -76,7 +66,7 @@ function knownBad(): readonly Bad[] {
 let knownBadCache: readonly Bad[] | undefined;
 
 export const sizeOrderSpec: CardSpec<SizeOrderSettings, SizeOrderCard> = {
-  kind: KIND,
+  kind: "odnajmniejszego",
   problems: sizeOrderProblems,
   keyOf: sizeOrderCardKey,
   // Only the level lays out a new card: colors are decoration (one crayon per row), so they stay out of the key.
