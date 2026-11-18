@@ -29,7 +29,7 @@ const CARDS: CardCase[] = [
   { path: "/clock", sheet: "Zegar", sentence: "Która godzina?" },
   // The sentence of the default mode (Zapisz) on the default level (Poziom 1); Wykonaj has its own.
   { path: "/coding", sheet: "Kodowanie", sentence: "Zapisz strzałkami najkrótszą drogę", characterImages: 2 },
-  { path: "/size-order", sheet: "Od najmniejszego", sentence: "Od najmniejszego: wpisz 1, 2, 3…" },
+  { path: "/size-order", sheet: "Od najmniejszego", sentence: "Wpisz 1, 2, 3…" },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {
