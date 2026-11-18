@@ -15,7 +15,7 @@ Decyzje (użytkowniczka 2026-11-18, PRD): 3 / 4 / 5 obrazków i 4 / 4 / 5 rzęd�
 - Rejestry: `src/lib/cards.ts` (`CARD_KINDS`, wpis „kodowanie” :108 jako wzór; opis rodzaju żyje tu i zasila „Jak to działa”), `src/lib/card-settings.ts` (`CardSettingsMap`, `CARD_SETTINGS_IDS`, `DEFAULTS`, `levelIds()`, `parseStoredCards`), `src/lib/card-engines.ts` (`CardTypeMap`, `CARD_ENGINES`; `card-engines.test.ts` `INVENTORY` typowane po `CardKindId`, brak wpisu = błąd kompilacji), `src/lib/card-summary.ts` (`summaryParts`, `badgeOf`).
 - Kontrakt: `src/lib/card-contract.ts` (`CardSpec`: `problems`, `keyOf`, `contentKey`, `knownBad` ≥ 2 z `expectedCode`; `VerifiedCard`, `CardExhausted`). Wzór: `src/lib/odd-one-out/engine.ts`.
 - Zmiana ustawienia przy pokazanej karcie: `applySettings` (`src/lib/sheet-state.ts`) układa nową kartę tylko, gdy `spec.contentKey(settings)` się zmienia. **Kolory nie mogą wchodzić do `contentKey`** (PRD: nie układają nowej karty; odwrotnie niż w „Który nie pasuje”), poziom tak. Karta nosi więc kredkę rzędu zawsze (wylosowaną), a rysunek używa jej tylko przy `colors`.
-- Obrazki: `ICONS`, `Icon`, `IconFigure`, `ICON_BOX` (`src/lib/odd-one-out/icons.ts`); `SUDOKU_SHAPES`, `sudokuShapePath(id, cx, cy, size)` (`src/lib/sudoku/shapes.ts`). Makieta liczy obrys ikony (`iconBounds`, tylko figury „ink”) i stawia ikonę na linii dolnej; ten kod idzie do `src/lib/size-order/` (najpierw sprawdzić, czy `odd-one-out/layout.ts` albo `OddOneOutPicture.tsx` nie ma gotowego obrysu do reuse).
+- Obrazki: `ICONS`, `Icon`, `IconFigure`, `ICON_BOX` (`src/lib/odd-one-out/icons.ts`); `SUDOKU_SHAPES`, `sudokuShapePath(id, cx, cy, size)` (`src/lib/sudoku/shapes.ts`). Makieta liczy obrys ikony (`iconBounds`, tylko figury „ink”) i stawia ikonę na linii dolnej; ten kod idzie do `src/lib/size-order/` (`iconBounds`, testowane jednostkowo). `IconPicture` w `OddOneOutPicture.tsx` rysuje ikonę zawsze czarną (w „Który nie pasuje” ikony nie mają kredki), więc nowa karta ma własny `SizeOrderPicture` z kolorem tuszu i nie zmienia tamtej karty (przegląd planu F1).
 - Strona: `OddOneOutGenerator.tsx` jako wzór (`useCardPage`, `useCardSettings`, `LevelChoice`, `SettingToggle`, `CharacterInstruction`, `CardPage`); SVG A4 z `print:h-[297mm] print:w-[210mm]`; tekst SVG z jawnym przesunięciem linii bazowej, nie `dominant-baseline` (lekcja GitHub 371).
 - Bramki: skrypt `test` w `package.json` wymienia każdy plik testów (pilnuje `src/lib/test-script.test.ts`); `cards-only-through-engines` w `.dependency-cruiser.cjs`; `print-contract.test.ts` (stała ścieżki strony, SVG 210×297, brak `print:hidden` na arkuszu, brak własnego `@page`); `how-it-works.spec.ts` sprawdza brzmienie zdania „Poziomy” z `how-it-works.astro` (dopisać „Od najmniejszego” do kart łatwy / średni / trudny).
 - Miniatura: `scripts/build-thumbnails.mjs` (sekcja odd-one-out ok. :537, wyjście `public/thumbnails/<id>.svg`) z prawdziwego generatora. Wzory e2e: `tests/e2e/odd-one-out*.spec.ts`, `card-settings.spec.ts`, `character-speaks.spec.ts`, `phone-layout.spec.ts`, `phone-settings-rows.spec.ts`, `profile-summary.spec.ts`.
@@ -70,7 +70,7 @@ Glosariusz, status roadmapy i moduł `src/lib/size-order/` bez UI i bez rejestra
 
 **Intent**: Jedno miejsce na tabelę poziomów i stałe druku, wspólne dla generatora, arkusza, miniatury i testów.
 
-**Contract**: `SizeOrderLevelId = "latwy" | "sredni" | "trudny"`, `DEFAULT_SIZE_ORDER_LEVEL_ID = "latwy"`, `SizeOrderLevel` (`id`, `label`, `barLabel`, `description`, `itemCount`, `rowCount`, `heights`, `minStep`), `SIZE_ORDER_LEVELS`, `sizeOrderLevelById()`. `SIZE_ORDER_SHEET` (`as const`, komentarz przy każdej stałej): strona 210×297, `inset` 10, pas postaci, pole odpowiedzi 13 × do 30 mm, odstęp pola od linii dolnej 4 mm, `rowPad` 4 mm, udział szerokości slotu 0,85 dla szerokiego obrazka, stała grubość konturu kształtu ok. 1 mm, instrukcja.
+**Contract**: `SizeOrderLevelId = "latwy" | "sredni" | "trudny"`, `DEFAULT_SIZE_ORDER_LEVEL_ID = "latwy"`, `SizeOrderLevel` (`id`, `label`, `barLabel`, `description`, `itemCount`, `rowCount`, `heights`, `minStep`), `SIZE_ORDER_LEVELS`, `sizeOrderLevelById()`. `SIZE_ORDER_SHEET` (`as const`, komentarz przy każdej stałej): strona 210×297, `inset` 10, pas postaci, pole odpowiedzi 13 × do 30 mm, odstęp pola od linii dolnej 4 mm, `rowPad` 4 mm, udział szerokości slotu 0,85 dla szerokiego obrazka, stała grubość konturu kształtu ok. 1 mm, `minStepMm` 2,5 mm, instrukcja.
 
 #### 3. Karta, reguły i generator
 
@@ -78,7 +78,7 @@ Glosariusz, status roadmapy i moduł `src/lib/size-order/` bez UI i bez rejestra
 
 **Intent**: Karta z jedną odpowiedzią z konstrukcji i stabilnymi kodami problemów; generator losuje bez solvera.
 
-**Contract**: `SizeOrderPicture = { kind: "icon"; id } | { kind: "shape"; id }`, `SizeRow` (`picture`, `heights` w kolejności na kartce, `crayon`), `SizeOrderCard` (`levelId`, `rows`). `answerOf(row)` (miejsce od najmniejszego dla każdego slotu). `sizeOrderCardProblems(card, level)` zwraca kody: `settings-mismatch`, `wrong-row-count`, `wrong-item-count`, `heights-not-level`, `step-too-small`, `row-already-ordered` (rosnąco albo malejąco), `duplicate-picture`, `missing-icon`, `missing-shape`, `crayon-repeated` (ta sama kredka w sąsiednich rzędach). `generateSizeOrderCard(rand, level)`: obrazki z puli `ICONS` + `SUDOKU_SHAPES` z warunkiem ≥1/≥1, kolejność i kredki.
+**Contract**: `SizeOrderPicture = { kind: "icon"; id } | { kind: "shape"; id }`, `SizeRow` (`picture`, `heights` w kolejności na kartce, `crayon`), `SizeOrderCard` (`levelId`, `rows`). `answerOf(row)` (miejsce od najmniejszego dla każdego slotu). `sizeOrderCardProblems(card, level)` zwraca kody: `settings-mismatch`, `wrong-row-count`, `wrong-item-count`, `heights-not-level`, `step-too-small`, `row-already-ordered` (rosnąco albo malejąco), `step-too-small-mm` (po układzie różnica dwóch najbliższych wysokości mniejsza niż `minStepMm` z `SIZE_ORDER_SHEET`; wstępnie 2,5 mm, potwierdza wydruk w fazie 3), `duplicate-picture`, `missing-icon`, `missing-shape`, `crayon-repeated` (ta sama kredka w sąsiednich rzędach). `generateSizeOrderCard(rand, level)`: obrazki z puli `ICONS` + `SUDOKU_SHAPES` z warunkiem ≥1/≥1, kolejność i kredki; rząd, którego sylwetka po zmniejszeniu szerokiej ikony łamie `step-too-small-mm`, dostaje inną sylwetkę (reguła potrzebuje układu, więc generator woła `layoutSizeOrderSheet`).
 
 #### 4. Silnik
 
@@ -86,15 +86,15 @@ Glosariusz, status roadmapy i moduł `src/lib/size-order/` bez UI i bez rejestra
 
 **Intent**: Karta jako rodzaj karty: `sizeOrderSpec` + `sizeOrderEngine`, nigdy `null`; wyczerpanie to `CardExhausted`.
 
-**Contract**: `contentKey(settings)` zależy tylko od `level` (nie od `colors`); `keyOf(card)` z obrazków i kolejności; `knownBad` ≥ 2 kody z `expectedCode` (np. rząd rosnący, powtórzony obrazek, za mały krok).
+**Contract**: `contentKey(settings)` zależy tylko od `level` (nie od `colors`); `keyOf(card)` z obrazków i kolejności; `knownBad` ≥ 2 kody z `expectedCode` (np. rząd rosnący, powtórzony obrazek, za mały krok). Do regexu `cards-only-through-engines` w `.dependency-cruiser.cjs` (:139) dopisać `size-order`.
 
-#### 5. Układ A4
+#### 5. Układ A4 i podgląd
 
 **File**: `src/lib/size-order/layout.ts`
 
 **Intent**: Rozmieszczenie w mm wspólne dla strony, miniatury i testu; obrys ikony i stawianie na linii dolnej (z makiety), rząd mniejszy dla szerokiej ikony.
 
-**Contract**: `layoutSizeOrderSheet(card)` zwraca pas postaci, rzędy (`top`, `baseline`, `boxY`) i dla każdego slotu `cx`, `height`, pole odpowiedzi; wszystko w marginesie 10 mm; najszerszy obrazek mieści się w slocie.
+**Contract**: `iconBounds(icon)` (obrys figur „ink”, z makiety) i `layoutSizeOrderSheet(card)`; ten drugi zwraca pas postaci, rzędy (`top`, `baseline`, `boxY`) i dla każdego slotu `cx`, `height`, pole odpowiedzi; wszystko w marginesie 10 mm; najszerszy obrazek mieści się w slocie. Podgląd: `context/changes/size-order-card/preview.mts` (jak w kodowaniu) zapisuje SVG z układu dla trzech poziomów, z kolorami i bez, do oceny przez użytkowniczkę.
 
 ### Success Criteria:
 
@@ -201,6 +201,7 @@ Po scaleniu, nie blokuje wydania: wydruk trzech poziomów, z kolorami i bez, i p
 - Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
 - Krok ×1,14 na trudnym (najwyższy ok. 24 mm) jest widoczny bez linijki; pole 13 mm mieści cyfrę i do pięciu kropek
 - Dziecko porządkuje rzędy na łatwym i średnim
+- Próg `minStepMm` (2,5 mm) zostaje albo się zmienia po wydruku szerokich ikon (żółw, auto) na trudnym
 - Open Questions 19 zamknięte w PRD, roadmapa S-48 zgodna
 
 ---
@@ -285,5 +286,5 @@ Brak: pole `cards.odnajmniejszego` w zapisanych profilach dostaje wartość domy
 
 - [ ] 3.2 Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS
 - [ ] 3.3 Krok ×1,14 na trudnym jest widoczny bez linijki; pole 13 mm mieści cyfrę i do pięciu kropek
-- [ ] 3.4 Dziecko porządkuje rzędy na łatwym i średnim
+- [ ] 3.4 Dziecko porządkuje rzędy na łatwym i średnim; próg `minStepMm` (2,5 mm) potwierdzony na szerokich ikonach trudnego
 - [ ] 3.5 Open Questions 19 zamknięte w PRD, roadmapa S-48 zgodna
