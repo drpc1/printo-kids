@@ -271,20 +271,20 @@ Brak: pole `cards.odnajmniejszego` w zapisanych profilach dostaje wartość domy
 
 #### Manual
 
-- [ ] 2.5 Użytkowniczka sprawdza każdy poziom, kolory i podgląd wydruku (jedna strona A4), z postacią i z „Brak”
-- [ ] 2.6 Miniatura w katalogu, plakietka poziomu przy profilu i podsumowanie w oknie profilu są poprawne
-- [ ] 2.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
+- [x] 2.5 Użytkowniczka sprawdza każdy poziom, kolory i podgląd wydruku (jedna strona A4), z postacią i z „Brak”
+- [x] 2.6 Miniatura w katalogu, plakietka poziomu przy profilu i podsumowanie w oknie profilu są poprawne
+- [x] 2.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
 - [x] 2.8 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy) — 47dd529a
 
 ### Phase 3: Wydruk próbny
 
 #### Automated
 
-- [ ] 3.1 Po ewentualnej poprawce: `npm test` i `npm run build`
+- [x] 3.1 Po ewentualnej poprawce: `npm test` i `npm run build`
 
 #### Manual
 
-- [ ] 3.2 Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS
-- [ ] 3.3 Krok ×1,14 na trudnym jest widoczny bez linijki; pole 13 mm mieści cyfrę i do pięciu kropek
-- [ ] 3.4 Dziecko porządkuje rzędy na łatwym i średnim; próg `minStepMm` (2,5 mm) potwierdzony na szerokich ikonach trudnego
-- [ ] 3.5 Open Questions 19 zamknięte w PRD, roadmapa S-48 zgodna
+- [x] 3.2 Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS
+- [x] 3.3 Krok ×1,14 na trudnym jest widoczny bez linijki; pole 13 mm mieści cyfrę i do pięciu kropek
+- [x] 3.4 Dziecko porządkuje rzędy na łatwym i średnim; próg `minStepMm` (2,5 mm) potwierdzony na szerokich ikonach trudnego
+- [x] 3.5 Open Questions 19 zamknięte w PRD, roadmapa S-48 zgodna
