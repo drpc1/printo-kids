@@ -18,6 +18,8 @@ import type { Maze } from "./maze/generate.ts";
 import { moneyEngine } from "./money/engine.ts";
 import type { MoneyCard } from "./money/rules.ts";
 import { nonogramEngine, type AnyNonogramCard } from "./nonogram/engine.ts";
+import { sizeOrderEngine } from "./size-order/engine.ts";
+import type { SizeOrderCard } from "./size-order/card.ts";
 import { oddOneOutEngine } from "./odd-one-out/engine.ts";
 import type { OddOneOutCard } from "./odd-one-out/rules.ts";
 import type { PatternLinesCard } from "./pattern-lines/card.ts";
@@ -43,6 +45,7 @@ interface CardTypeMap {
   krzyzowka: MathCrosswordCard;
   zegar: ClockCard;
   kodowanie: CodingCard;
+  odnajmniejszego: SizeOrderCard;
 }
 
 // The card kinds and the settings ids are one union: a kind with settings but no engine (or the reverse) fails here.
@@ -63,4 +66,5 @@ export const CARD_ENGINES = {
   krzyzowka: mathCrosswordEngine,
   zegar: clockEngine,
   kodowanie: codingEngine,
+  odnajmniejszego: sizeOrderEngine,
 } satisfies { [K in CardKindId]: CardEngine<CardSettingsOf<K>, CardTypeMap[K]> };

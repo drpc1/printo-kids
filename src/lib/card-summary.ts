@@ -10,6 +10,7 @@ import { levelById } from "./maze/levels.ts";
 import { moneyCurrencyById } from "./money/currencies.ts";
 import { moneyLevelById } from "./money/levels.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
+import { sizeOrderLevelById } from "./size-order/levels.ts";
 import { oddOneOutLevelById } from "./odd-one-out/levels.ts";
 import { patternLinesHasGuides, patternLinesLevelById } from "./pattern-lines/levels.ts";
 import { sequenceLevelById } from "./sequence/levels.ts";
@@ -172,6 +173,14 @@ function summaryParts(cardId: string, profile: ChildProfile, today?: Date): Summ
       const level = codingLevelById(settings.level);
       // The mode is always shown, also the default one.
       return { badge: badgeOf(level), level: level.label, extras: [codingModeById(settings.mode).label] };
+    }
+    case "odnajmniejszego": {
+      const settings = cards.odnajmniejszego;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = sizeOrderLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: settings.colors ? ["kolory"] : [] };
     }
     default:
       return null;
