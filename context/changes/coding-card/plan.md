@@ -357,26 +357,26 @@ Brak: nowe pole `cards.kodowanie` w zapisanych profilach ma wartość domyślną
 
 #### Automated
 
-- [x] 3.1 Testy jednostkowe: `npm test`
-- [x] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build`
-- [x] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
-- [x] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke`
+- [x] 3.1 Testy jednostkowe: `npm test` — 84e19f3f
+- [x] 3.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` — 84e19f3f
+- [x] 3.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` — 84e19f3f
+- [x] 3.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke` — 84e19f3f
 
 #### Manual
 
-- [ ] 3.5 Użytkowniczka sprawdza każdy poziom i oba tryby na stronie oraz podgląd wydruku (jedna strona A4), z postacią i z „Brak”
-- [ ] 3.6 Miniatura w katalogu, plakietka „poz. N” przy profilu i podsumowanie „Kodowanie: Poziom N · tryb” w oknie profilu są poprawne
-- [ ] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
+- [x] 3.5 Użytkowniczka sprawdza każdy poziom i oba tryby na stronie oraz podgląd wydruku (jedna strona A4), z postacią i z „Brak”
+- [x] 3.6 Miniatura w katalogu, plakietka „poz. N” przy profilu i podsumowanie „Kodowanie: Poziom N · tryb” w oknie profilu są poprawne
+- [x] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
 
 ### Phase 4: Wydruk próbny
 
 #### Automated
 
-- [ ] 4.1 Po ewentualnej poprawce: `npm test` i `npm run build`
+- [x] 4.1 Po ewentualnej poprawce: `npm test` i `npm run build`
 
 #### Manual
 
-- [ ] 4.2 Wydruk każdego trybu (Poziom 1, 3, 4) na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS
-- [ ] 4.3 Strzałka mieści się w polu 16 mm na Poziomach 3–4, szare pola przykładu nie mylą się z przeszkodami, droga 18–24 kroków nie jest za długa
+- [x] 4.2 Wydruk każdego trybu (Poziom 1, 3, 4) na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS
+- [x] 4.3 Strzałka mieści się w polu 16 mm na Poziomach 3–4, szare pola przykładu nie mylą się z przeszkodami, droga 18–24 kroków nie jest za długa
 - [ ] 4.4 Dziecko zapisuje drogę w Zapisz i zakreśla obrazek w Wykonaj
-- [ ] 4.5 Open Questions 18 zamknięte w PRD, roadmapa S-42 zgodna
+- [x] 4.5 Open Questions 18 zamknięte w PRD, roadmapa S-42 zgodna
