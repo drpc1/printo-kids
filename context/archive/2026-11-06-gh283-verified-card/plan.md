@@ -337,7 +337,7 @@ Czysty stan strony (D02 4.6, faza 3b, włączona) z dwoma niezmiennikami: nieuda
 
 ### Overview
 
-Wzorzec migracji dla „Kto ma więcej?”. Tryb: spec i silnik `/10x-tdd`, komponent `/10x-implement`.
+Wzorzec migracji dla „Kto ma więcej”. Tryb: spec i silnik `/10x-tdd`, komponent `/10x-implement`.
 
 ### Changes Required:
 
@@ -360,7 +360,7 @@ Wzorzec migracji dla „Kto ma więcej?”. Tryb: spec i silnik `/10x-tdd`, komp
 
 #### Manual Verification:
 
-- Strona „Kto ma więcej?”: Generuj na trzech poziomach i druk bez zmian wizualnych
+- Strona „Kto ma więcej”: Generuj na trzech poziomach i druk bez zmian wizualnych
 
 ---
 
@@ -709,7 +709,7 @@ export const CARD_ENGINES = { … } satisfies {
 
 #### Manual
 
-- [x] 5.4 Strona „Kto ma więcej?”: Generuj na trzech poziomach i druk bez zmian wizualnych
+- [x] 5.4 Strona „Kto ma więcej”: Generuj na trzech poziomach i druk bez zmian wizualnych
 
 ### Phase 6: Symetria pionowo
 

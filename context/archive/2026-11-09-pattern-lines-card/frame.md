@@ -71,7 +71,7 @@ Rząd losuje wzór z puli bez powtórzeń na karcie, krok i łagodność z zakre
 ## Cross-System Convention
 
 - Przełącznik widoczny tylko na części poziomów ma precedens: „Kształty / Cyfry” w sudoku (tylko 6×6 i 9×9).
-- Przełącznik, który nie układa nowej karty: „Kolory” na symetrii, sekwencjach, sudoku, „Kto ma więcej?”.
+- Przełącznik, który nie układa nowej karty: „Kolory” na symetrii, sekwencjach, sudoku, „Kto ma więcej”.
 - Makieta jako skrypt w folderze zmiany: wzór z `context/archive/2026-11-08-odd-one-out-card/mockup.mts`.
 - Ustawienie zapamiętane w profilu: `CardSettingsMap` i tolerancyjny odczyt w `src/lib/card-settings.ts`.
 

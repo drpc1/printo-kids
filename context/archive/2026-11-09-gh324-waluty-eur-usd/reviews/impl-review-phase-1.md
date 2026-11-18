@@ -1,6 +1,6 @@
 <!-- IMPL-REVIEW-REPORT -->
 
-# Implementation Review: Waluty EUR i USD na karcie „Kto ma więcej?”
+# Implementation Review: Waluty EUR i USD na karcie „Kto ma więcej”
 
 - **Plan**: context/changes/gh324-waluty-eur-usd/plan.md
 - **Scope**: Phase 1 of 3

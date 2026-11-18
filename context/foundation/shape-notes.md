@@ -21,7 +21,7 @@ checkpoint:
     - topic: milestone
       decision: M-5, cztery nowe rodzaje kart naraz (wyjątek od zasady „po jednym kamieniu”, na prośbę użytkowniczki, jak drugi i trzeci kamień kart)
     - topic: karta z pieniędzmi
-      decision: nazwa „Kto ma więcej?”; wiek 6–8 lat; nominały 1/2/5/10/20 zł, bez groszy; remis akceptowalny jako odpowiedź „tyle samo”
+      decision: nazwa „Kto ma więcej”; wiek 6–8 lat; nominały 1/2/5/10/20 zł, bez groszy; remis akceptowalny jako odpowiedź „tyle samo”
     - topic: „Który nie pasuje” reguły
       decision: kształt i kolor, kategoria obiektu, rozmiar albo liczba (sekwencja AB/AAB poza zakresem startu)
     - topic: kopiowanie rysunku
@@ -40,7 +40,7 @@ PrintoKids ma sześć rodzajów kart: labirynt, symetria, sekwencje, sudoku, non
 
 ## Seed idea
 
-Cztery nowe rodzaje kart w jednym kamieniu (M-5): porównywarka pieniędzy „Kto ma więcej?”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki.
+Cztery nowe rodzaje kart w jednym kamieniu (M-5): porównywarka pieniędzy „Kto ma więcej”, „Który nie pasuje”, „Skopiuj rysunek na kratce” i szlaczki.
 
 ## Vision & Problem Statement
 
@@ -48,7 +48,7 @@ Rodzic ma sześć rodzajów kart, ale dziecko 4–8 lat potrzebuje też umiejęt
 
 ## User & Persona
 
-Ta sama osoba co dotąd: rodzic dziecka w wieku przedszkolnym i wczesnoszkolnym, w tym twórca produktu. „Kto ma więcej?” celuje w dzieci 6–8 lat; pozostałe karty w przedszkolaków i młodszych uczniów.
+Ta sama osoba co dotąd: rodzic dziecka w wieku przedszkolnym i wczesnoszkolnym, w tym twórca produktu. „Kto ma więcej” celuje w dzieci 6–8 lat; pozostałe karty w przedszkolaków i młodszych uczniów.
 
 ## Access Control
 
@@ -58,7 +58,7 @@ Bez zmian — jeden lokalny użytkownik-rodzic, bez logowania, profile i ustawie
 
 ### Primary
 
-- Rodzic może wygenerować każdą z czterech nowych kart (Kto ma więcej?, Który nie pasuje, Skopiuj rysunek na kratce, Szlaczki), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
+- Rodzic może wygenerować każdą z czterech nowych kart (Kto ma więcej, Który nie pasuje, Skopiuj rysunek na kratce, Szlaczki), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 
 ### Secondary
 
@@ -85,11 +85,11 @@ delivery_weeks: TBD — cztery karty naraz to zakres większy niż typowy kamie�
 
 ## Functional Requirements
 
-### Kto ma więcej? (pieniądze)
+### Kto ma więcej (pieniądze)
 
-- FR-033: Rodzic może wygenerować kartę „Kto ma więcej?”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (1, 2, 5, 10, 20 zł, bez groszy) i wpisuje między nimi „<”, „>” albo „=”; zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have. Change: new
+- FR-033: Rodzic może wygenerować kartę „Kto ma więcej”, na której dziecko porównuje wartość dwóch kupek monet i banknotów (1, 2, 5, 10, 20 zł, bez groszy) i wpisuje między nimi „<”, „>” albo „=”; zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have. Change: new
   > Socrates: Counter-argument considered: remis psuje jedną sprawdzalną odpowiedź. Resolution: remis akceptowalny; „tyle samo” jest dopuszczoną odpowiedzią, a generator wylicza wartość każdej kupki i wie, które porównanie jest poprawne.
-- FR-034: Rodzic może wybrać poziom karty „Kto ma więcej?” (liczba sztuk jednego nominału, różne nominały, liczba sztuk myli). Priority: must-have. Change: new
+- FR-034: Rodzic może wybrać poziom karty „Kto ma więcej” (liczba sztuk jednego nominału, różne nominały, liczba sztuk myli). Priority: must-have. Change: new
 
 ### Który nie pasuje
 

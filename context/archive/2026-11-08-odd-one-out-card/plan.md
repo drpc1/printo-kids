@@ -8,7 +8,7 @@ Plan wynika z makiet zatwierdzonych przez użytkowniczkę 2026-11-08 (`mockup.mt
 
 ## Current State Analysis
 
-Wzorcem jest karta „Kto ma więcej?” (S-33), ostatnia dodana i jedyna z poziomami łatwy/średni/trudny oraz przełącznikiem kolorów (`research.md`, „Miejsca, które dotyka nowa karta”):
+Wzorcem jest karta „Kto ma więcej” (S-33), ostatnia dodana i jedyna z poziomami łatwy/średni/trudny oraz przełącznikiem kolorów (`research.md`, „Miejsca, które dotyka nowa karta”):
 
 - moduł `src/lib/money/` (`levels.ts`, `rules.ts`, `generate.ts`, `engine.ts`, `layout.ts`, `sheet.ts`, `colors.ts` + testy),
 - rejestr `src/lib/cards.ts:10` (`CARD_KINDS` z `description`), ustawienia `src/lib/card-settings.ts:37-92` i `levelIds` (`:194-212`), silniki `src/lib/card-engines.ts` (`CardTypeMap`, `CARD_ENGINES` z `satisfies`), podsumowanie `src/lib/card-summary.ts:95-110`,
@@ -33,7 +33,7 @@ Na `/odd-one-out` rodzic wybiera poziom i kolory, klika Generuj i dostaje kartę
 
 ## What We're NOT Doing
 
-- Przełącznik „Pokaż rozwiązanie”: karta go nie ma (decyzja 2026-11-08, jak „Kto ma więcej?” i sekwencje).
+- Przełącznik „Pokaż rozwiązanie”: karta go nie ma (decyzja 2026-11-08, jak „Kto ma więcej” i sekwencje).
 - Sylwetki z katalogu szablonów symetrii w regule kategorii ani kategoria „Kształty”.
 - Reguła „sekwencja AB/AAB” (roadmap, Parking lot).
 - Testy mutacyjne Stryker dla generatora. Reguły pokrywają testy jednostkowe z ręcznym oraklem; ewentualny Stryker należy do #263.

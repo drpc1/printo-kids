@@ -9,7 +9,7 @@
 
 ## Starting Point
 
-Karta „Kto ma więcej?” (S-33) wyznacza wzorzec: moduł w `src/lib/<karta>/`, wpis w `CARD_KINDS`, ustawienia w `CardSettingsMap`, silnik w `CARD_ENGINES`, island na `CardPage`, miniatura ze skryptu. Kształty i kredki bierzemy z sudoku. Pikselowe sylwetki z katalogu szablonów okazały się nieczytelne w makiecie.
+Karta „Kto ma więcej” (S-33) wyznacza wzorzec: moduł w `src/lib/<karta>/`, wpis w `CARD_KINDS`, ustawienia w `CardSettingsMap`, silnik w `CARD_ENGINES`, island na `CardPage`, miniatura ze skryptu. Kształty i kredki bierzemy z sudoku. Pikselowe sylwetki z katalogu szablonów okazały się nieczytelne w makiecie.
 
 ## Desired End State
 
@@ -24,7 +24,7 @@ Rodzic otwiera „Który nie pasuje” z katalogu (`/odd-one-out`), wybiera pozi
 | Grupy w regule liczby | średni 2–3 (±1), trudny 4–5 (±1)                                                | Trudny wymaga liczenia, nie rzutu oka                                          | Plan     |
 | Kolory                | przełącznik układa nową kartę; `contentKey` = poziom + kolory                   | Kolor jest treścią zadania, więc bez kolorów stara karta traci jedną odpowiedź | Plan     |
 | Rozkład reguł         | każda reguła poziomu ≥1 raz, sąsiednie rzędy różne                              | Karta ćwiczy wszystkie reguły poziomu i nie jest przewidywalna                 | Plan     |
-| „Pokaż rozwiązanie”   | brak                                                                            | Jak „Kto ma więcej?”; PRD go nie wymaga                                        | Plan     |
+| „Pokaż rozwiązanie”   | brak                                                                            | Jak „Kto ma więcej”; PRD go nie wymaga                                        | Plan     |
 | Wydruk na papierze    | na gotowej stronie, w fazie 3                                                   | Decyzja użytkowniczki; mniej przerw                                            | Plan     |
 | Ikony w kodzie        | dane (figury z tonem), rysowane przez React i skrypt miniatury                  | ESLint zakazuje wklejania tekstu SVG; brak hexów w komponentach                | Research |
 | Id i adres            | `niepasuje`, `/odd-one-out`                                                     | Konwencja jak `pieniadze` / `/money`                                           | Plan     |

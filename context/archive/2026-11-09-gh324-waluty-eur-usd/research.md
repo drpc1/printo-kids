@@ -4,14 +4,14 @@ researcher: Claude
 git_commit: ecd5b886dd5f29ac97f871a7ac57465a49fbf1c5
 branch: claude/gh324-waluty-5d7f26
 repository: printo-kids
-topic: "Waluty EUR i USD na karcie „Kto ma więcej?” (GitHub #324)"
+topic: "Waluty EUR i USD na karcie „Kto ma więcej” (GitHub #324)"
 tags: [research, codebase, money, card-settings, currency]
 status: complete
 last_updated: 2026-11-09
 last_updated_by: Claude
 ---
 
-# Research: waluty EUR i USD na karcie „Kto ma więcej?”
+# Research: waluty EUR i USD na karcie „Kto ma więcej”
 
 ## Research Question
 

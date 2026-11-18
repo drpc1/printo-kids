@@ -1,4 +1,4 @@
-// Cuts the single coin and note pictures of the "Kto ma więcej?" card out of the author's mockup sheets
+// Cuts the single coin and note pictures of the "Kto ma więcej" card out of the author's mockup sheets
 // (`context/ideas/waluty/makieta-eur.jpg`, `makieta-usd.jpg`) into transparent, 256-colour PNGs in `public/money/`.
 //
 // Needs `sharp`, which is not a dependency of the project: `npm i --no-save sharp`, then `node scripts/money-cut-images.mjs`.

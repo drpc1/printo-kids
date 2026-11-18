@@ -1,4 +1,4 @@
-// "Kto ma więcej?" as a card kind (gh283, phase 5): `moneySpec` wraps today's `moneyCardProblems`, `moneyEngine` wraps
+// "Kto ma więcej" as a card kind (gh283, phase 5): `moneySpec` wraps today's `moneyCardProblems`, `moneyEngine` wraps
 // today's sampling generator. Running out of attempts is `CardExhausted`; the engine never returns null.
 import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { MoneySettings } from "../card-settings.ts";

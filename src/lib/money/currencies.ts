@@ -1,4 +1,4 @@
-/** The currencies of the "Kto ma więcej?" card. Coins and notes of a currency are listed in `PIECES`. */
+/** The currencies of the "Kto ma więcej" card. Coins and notes of a currency are listed in `PIECES`. */
 export type MoneyCurrencyId = "pln" | "eur" | "usd";
 
 export interface MoneyCurrency {

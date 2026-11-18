@@ -1,10 +1,10 @@
-# Kolory na karcie „Kto ma więcej?” Implementation Plan
+# Kolory na karcie „Kto ma więcej” Implementation Plan
 
 > Status: po przeglądzie planu (`reviews/plan-review.md`), do zatwierdzenia. Faza 1 jest bramką: użytkowniczka potwierdza obrazki na wydruku w rozmiarze karty. Nic nie jest zaimplementowane.
 
 ## Overview
 
-Karta „Kto ma więcej?” (S-33, PRD US-23) dostaje ustawienie `colors` (GitHub drpc1/printo-kids#270). Wyłączone (domyślnie) to dzisiejszy prosty czarny kontur, czytelny na czarno-białej drukarce. Włączone to kolorowe, bardziej realistyczne monety i banknoty: kolor zależy od nominału (srebrna 1 zł, złota 2 zł, dwukolorowa 5 zł, banknoty 10 zł i 20 zł w różnych barwach), a nominał zostaje liczbą na każdym kawałku. Użytkowniczka uznała (2026-11-08) kolor i „realistyczniejszy” wygląd za jeden zakres. Przełączenie nie układa nowej karty.
+Karta „Kto ma więcej” (S-33, PRD US-23) dostaje ustawienie `colors` (GitHub drpc1/printo-kids#270). Wyłączone (domyślnie) to dzisiejszy prosty czarny kontur, czytelny na czarno-białej drukarce. Włączone to kolorowe, bardziej realistyczne monety i banknoty: kolor zależy od nominału (srebrna 1 zł, złota 2 zł, dwukolorowa 5 zł, banknoty 10 zł i 20 zł w różnych barwach), a nominał zostaje liczbą na każdym kawałku. Użytkowniczka uznała (2026-11-08) kolor i „realistyczniejszy” wygląd za jeden zakres. Przełączenie nie układa nowej karty.
 
 ## Current State Analysis
 
@@ -141,7 +141,7 @@ PRD przestaje mówić, że druk karty jest tylko czarny.
 ### Changes Required:
 
 **File**: `context/foundation/prd.md`
-**Changes**: US-23 (kryterium „Druk jest czarny…”: czarny jest domyślnie, kolory po włączeniu), US-24 lub nowy punkt o przełączniku Kolory, FR-033/FR-034 bez zmian numeracji, Business Logic „Karta „Kto ma więcej?””: akapit o kolorach (kolor zależy od nominału, nominał zawsze liczbą, bez zabezpieczeń i godeł), Non-Functional Requirements (zdanie o czarnym druku „Kto ma więcej?”), tabela „Profil i zapamiętane ustawienia” (Kto ma więcej?: poziom, kolory), Open Questions 14 (czytelność na wydruku).
+**Changes**: US-23 (kryterium „Druk jest czarny…”: czarny jest domyślnie, kolory po włączeniu), US-24 lub nowy punkt o przełączniku Kolory, FR-033/FR-034 bez zmian numeracji, Business Logic „Karta „Kto ma więcej””: akapit o kolorach (kolor zależy od nominału, nominał zawsze liczbą, bez zabezpieczeń i godeł), Non-Functional Requirements (zdanie o czarnym druku „Kto ma więcej”), tabela „Profil i zapamiętane ustawienia” (Kto ma więcej: poziom, kolory), Open Questions 14 (czytelność na wydruku).
 
 ### Success Criteria:
 

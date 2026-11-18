@@ -14,7 +14,7 @@ Stan: 2026-11-12. Stryker nie jest bramką CI. Każdy zakres ma `stryker/<zakres
 | Zakres | Pliki | Mutanty | Wynik przed | Ocalałe przed | Testy dopisane | Wynik po |
 | --- | --- | --- | --- | --- | --- | --- |
 | `odd-one-out` („Który nie pasuje”) | `rules.ts`, `generate.ts` | 515 | 79,22% (rules 88,13%, generate 68,78%) | 107 | 5 | 98,09% w `rules.ts:80-195` (4 ocalałe); `generate.ts` nie powtarzany |
-| `money` („Kto ma więcej?”) | `rules.ts`, `generate.ts` | 276 | 86,59% (rules 96,67%, generate 74,60%) | 37 | 1 test, 2 asercje | nie powtarzany (godziny) |
+| `money` („Kto ma więcej”) | `rules.ts`, `generate.ts` | 276 | 86,59% (rules 96,67%, generate 74,60%) | 37 | 1 test, 2 asercje | nie powtarzany (godziny) |
 | `pattern-lines` (szlaczki) | `paths.ts` (zawężony), `card.ts` | 299 | 83,55% (card 85,26%, paths 80,70%) | 50 | 4 | nie powtarzany |
 | `copy-drawing` („Skopiuj rysunek”) | `generate.ts`, `layout.ts` | 95 | 72,63%, wcześniej 89,47% | 26, wcześniej 10 | 2 | patrz uwaga |
 | `local-data` (nowe wpisy `card-settings.ts:190-276`) | `card-settings.ts` | 121 | 95,04% | 6 | 0 | — |

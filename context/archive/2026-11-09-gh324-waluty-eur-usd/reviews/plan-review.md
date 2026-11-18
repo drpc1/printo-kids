@@ -1,6 +1,6 @@
 <!-- PLAN-REVIEW-REPORT -->
 
-# Plan Review: Waluty EUR i USD na karcie „Kto ma więcej?”
+# Plan Review: Waluty EUR i USD na karcie „Kto ma więcej”
 
 - **Plan**: context/changes/gh324-waluty-eur-usd/plan.md
 - **Mode**: Quick (uzupełnione sprawdzeniem kodu przez autora; użytkowniczka śpi, triage wykonany autonomicznie)

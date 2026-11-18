@@ -4,14 +4,14 @@ researcher: Claude
 git_commit: 55c17c9a183835fe568eb318f60789b6190650e9
 branch: claude/priceless-satoshi-530d60
 repository: printo-kids
-topic: "Przełącznik Kolory na karcie Kto ma więcej? (GitHub #270), kolorowe i bardziej realistyczne monety i banknoty"
+topic: "Przełącznik Kolory na karcie Kto ma więcej (GitHub #270), kolorowe i bardziej realistyczne monety i banknoty"
 tags: [research, codebase, money, card-settings, colors]
 status: complete
 last_updated: 2026-11-08
 last_updated_by: Claude
 ---
 
-# Research: kolory na karcie „Kto ma więcej?”
+# Research: kolory na karcie „Kto ma więcej”
 
 ## Research Question
 
@@ -53,7 +53,7 @@ Karta jest dziś w całości czarna, a jej rysowanie jest w jednym pliku React p
 ## Historical Context
 
 - `context/archive/2026-11-01-coins-who-has-more/plan.md:39`: kolor wyłączony z S-33 jako osobny kawałek; „ustawienia karty to obiekt, do którego dojdzie pole `colors`”.
-- PRD Open Questions 14: wygląd pieniędzy stylizowany, bez zabezpieczeń i godeł; wizerunek na karcie edukacyjnej jest dopuszczalny, o ile nie uchodzi za prawdziwy pieniądz. PRD US-23 i Business Logic „Karta „Kto ma więcej?”” mówią o druku czarnym i o jednakowej wielkości monet.
+- PRD Open Questions 14: wygląd pieniędzy stylizowany, bez zabezpieczeń i godeł; wizerunek na karcie edukacyjnej jest dopuszczalny, o ile nie uchodzi za prawdziwy pieniądz. PRD US-23 i Business Logic „Karta „Kto ma więcej”” mówią o druku czarnym i o jednakowej wielkości monet.
 
 ## Code References
 

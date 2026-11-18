@@ -19,8 +19,8 @@ Co trzeba dotknąć, żeby dodać ósmy rodzaj karty (`CARD_KINDS` ma dziś sied
 
 ## Summary
 
-- **Kolejność w M-5**: S-33 („Kto ma więcej?”) ma status `done` (`context/foundation/roadmap.md:44`), a jego faza 1 zamieniła liczbę kart w testach na liczbę z katalogu (`context/archive/2026-11-01-coins-who-has-more/plan.md`, „Faza 1”). S-34 nie ma innych warunków wstępnych (roadmap `:88`).
-- **Wzorzec karty** to „Kto ma więcej?” (ostatnia dodana karta, z poziomami i przełącznikiem kolorów): moduł `src/lib/money/` (`levels.ts`, `rules.ts`, `generate.ts`, `engine.ts`, `layout.ts`, `sheet.ts`, `colors.ts` + testy), strona `src/pages/money.astro`, island `src/components/MoneyGenerator.tsx` na `CardPage`/`useCardPage`/`useCardSettings` i `sheet-state`.
+- **Kolejność w M-5**: S-33 („Kto ma więcej”) ma status `done` (`context/foundation/roadmap.md:44`), a jego faza 1 zamieniła liczbę kart w testach na liczbę z katalogu (`context/archive/2026-11-01-coins-who-has-more/plan.md`, „Faza 1”). S-34 nie ma innych warunków wstępnych (roadmap `:88`).
+- **Wzorzec karty** to „Kto ma więcej” (ostatnia dodana karta, z poziomami i przełącznikiem kolorów): moduł `src/lib/money/` (`levels.ts`, `rules.ts`, `generate.ts`, `engine.ts`, `layout.ts`, `sheet.ts`, `colors.ts` + testy), strona `src/pages/money.astro`, island `src/components/MoneyGenerator.tsx` na `CardPage`/`useCardPage`/`useCardSettings` i `sheet-state`.
 - **Ograniczenie z katalogu**: do reguły „kategoria” nadaje się 26 obiektów z jedną kategorią (Zwierzęta 5, Jedzenie 6, Przyroda 4, Kosmos 7, Domy 4; tyle samo na każdym rozmiarze szablonu). Żaden obiekt nie ma dziś kilku kategorii. Rząd trudnego poziomu ma 6 obrazków, więc wymaga 5 obiektów z jednej kategorii: Przyroda i Domy mają tylko 4 różne obiekty, więc albo rząd kategorii bierze większość tylko z Zwierząt, Jedzenia i Kosmosu, albo dopuszcza ten sam obiekt w innym wariancie części. To decyzja do makiety/planu.
 
 ## Detailed Findings

@@ -1,8 +1,8 @@
-# Waluty EUR i USD na karcie „Kto ma więcej?” Implementation Plan
+# Waluty EUR i USD na karcie „Kto ma więcej” Implementation Plan
 
 ## Overview
 
-Karta „Kto ma więcej?” (`pieniadze`) dostaje ustawienie paska `currency` (`pln` | `eur` | `usd`), pamiętane w profilu jak poziom i kolory. Waluta wybiera zestaw nominałów każdego poziomu, rodzaj kawałka (moneta albo banknot) i kolorowe obrazki. Poziom trudny dostaje nominały większe niż 20 (50 i 100) we wszystkich walutach. Centów i groszy nie ma.
+Karta „Kto ma więcej” (`pieniadze`) dostaje ustawienie paska `currency` (`pln` | `eur` | `usd`), pamiętane w profilu jak poziom i kolory. Waluta wybiera zestaw nominałów każdego poziomu, rodzaj kawałka (moneta albo banknot) i kolorowe obrazki. Poziom trudny dostaje nominały większe niż 20 (50 i 100) we wszystkich walutach. Centów i groszy nie ma.
 
 Decyzje użytkowniczki (2026-11-09, `change.md`): ustawienie paska, nie osobna karta; bez centów; USD łatwy to moneta 1 $ plus banknot 5 $; obrazki USD z makiety wdrażane w całości (prawo sprawdzi użytkowniczka przed merge); PR po każdej fazie, bez merge; zestawy trudnego dobiera Claude.
 
@@ -195,7 +195,7 @@ Wybór waluty na pasku, ładowanie obrazków wybranej waluty, znak waluty w czar
 
 **Files**: `context/foundation/prd.md`, `src/lib/cards.ts` (opis rodzaju), `context/domain/glossary.md`
 
-**Intent**: PRD: US-23/US-24 (waluta, nominały trudnego, USD łatwy z banknotem 5 $), FR-033/FR-034, Business Logic „Karta „Kto ma więcej?”” (tabela nominałów per waluta, `MAX_NOTES`), tabela „Profil i zapamiętane ustawienia” (poziom, waluta, kolory), Open Questions 14 (obrazki EUR/USD, ocena prawna po stronie użytkowniczki). Opis w `CARD_KINDS` wspomina walutę. Glossary: „waluta” jako pojęcie karty.
+**Intent**: PRD: US-23/US-24 (waluta, nominały trudnego, USD łatwy z banknotem 5 $), FR-033/FR-034, Business Logic „Karta „Kto ma więcej”” (tabela nominałów per waluta, `MAX_NOTES`), tabela „Profil i zapamiętane ustawienia” (poziom, waluta, kolory), Open Questions 14 (obrazki EUR/USD, ocena prawna po stronie użytkowniczki). Opis w `CARD_KINDS` wspomina walutę. Glossary: „waluta” jako pojęcie karty.
 
 **Contract**: zmiany wąskie (sekcje karty pieniędzy), bo #265 edytuje inne części PRD.
 

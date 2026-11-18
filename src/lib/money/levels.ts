@@ -1,7 +1,7 @@
 import { moneyCurrencyById, pieceKind, PIECES, type MoneyCurrencyId } from "./currencies.ts";
 import { MAX_NOTES, MAX_NOTES_WITHOUT_COINS, MAX_PIECES, MONEY_SHEET } from "./sheet.ts";
 
-/** The levels of the "Kto ma więcej?" card. The card does not name its levels after an age. */
+/** The levels of the "Kto ma więcej" card. The card does not name its levels after an age. */
 export type MoneyLevelId = "latwy" | "sredni" | "trudny";
 
 export const MONEY_LEVEL_IDS: readonly MoneyLevelId[] = ["latwy", "sredni", "trudny"];

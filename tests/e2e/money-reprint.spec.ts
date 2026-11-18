@@ -1,5 +1,5 @@
 // Provenance: gh283-verified-card (phase 5; PRD US-22, I-9)
-// Protects the "Kto ma więcej?" page's two rules from the SheetState: a character change keeps the same card, and
+// Protects the "Kto ma więcej" page's two rules from the SheetState: a character change keeps the same card, and
 // Drukuj on a card that was already printed asks "Ta karta była już drukowana" first ("Nowa karta" draws another card
 // and the next Drukuj prints it, "Drukuj tę samą" prints the card as it is). window.print is a counter here, so the
 // real print dialog is not covered; the trial print in the plan does that.
@@ -14,13 +14,13 @@ async function open(page: Page): Promise<void> {
   });
   await page.goto("/money");
   await page.getByRole("button", { name: "Generuj" }).click();
-  await expect(page.getByRole("img", { name: "Kto ma więcej?" })).toBeVisible();
+  await expect(page.getByRole("img", { name: "Kto ma więcej" })).toBeVisible();
 }
 
 async function piles(page: Page): Promise<string> {
-  await expect(page.getByRole("img", { name: "Kto ma więcej?" })).toBeVisible();
+  await expect(page.getByRole("img", { name: "Kto ma więcej" })).toBeVisible();
   return page
-    .getByRole("img", { name: "Kto ma więcej?" })
+    .getByRole("img", { name: "Kto ma więcej" })
     .locator("g[data-pile]")
     .evaluateAll((groups) => groups.map((group) => group.textContent).join("|"));
 }
