@@ -248,12 +248,12 @@ Brak: pole `cards.odnajmniejszego` w zapisanych profilach dostaje wartość domy
 
 #### Automated
 
-- [ ] 1.1 Formatowanie dokumentów: `npx prettier --check context/changes/size-order-card/*.md context/domain/glossary.md context/foundation/roadmap.md`
-- [ ] 1.2 Testy przechodzą: `npm test`
-- [ ] 1.3 Lint: `npm run lint`
-- [ ] 1.4 Zależności: `npm run depcruise`
-- [ ] 1.5 Typy: `npx astro check`
-- [ ] 1.6 Build: `npm run build`
+- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/changes/size-order-card/*.md context/domain/glossary.md context/foundation/roadmap.md`
+- [x] 1.2 Testy przechodzą: `npm test`
+- [x] 1.3 Lint: `npm run lint`
+- [x] 1.4 Zależności: `npm run depcruise`
+- [x] 1.5 Typy: `npx astro check`
+- [x] 1.6 Build: `npm run build`
 
 #### Manual
 
