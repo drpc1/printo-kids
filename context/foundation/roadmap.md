@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-17
+updated: 2026-11-18
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -17,7 +17,7 @@ milestone_status: open
 > Derived from the user's description of M-7 (anchors `MS-01`…`MS-07` below) + `context/foundation/prd.md` (v6) as the contract for inherited behavior + codebase baseline.
 > Edit-in-place; archive when superseded.
 > Slices below are listed in dependency order. The "At a glance" table is the index.
-> S-47 do S-49 są miejscami na trzy karty, których rodzaj użytkowniczka dopiero wybierze; wszystkie slice'y ze statusem `blocked` czekają na decyzję z ich pierwszej niewiadomej.
+> S-47 do S-49 to trzy karty wybrane przez użytkowniczkę 2026-11-18: „Cienie”, „Od najmniejszego” i „Labirynt liczbowy”; każda zaczyna od makiety. Wszystkie slice'y ze statusem `blocked` czekają na decyzję z ich pierwszej niewiadomej.
 
 ## Milestone
 
@@ -49,19 +49,19 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 
 ## At a glance
 
-| ID   | Change ID                      | Outcome (user can …)                                                                                                               | Prerequisites                                              | PRD refs                                                                  | Status      |
-| ---- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ----------- |
-| S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje          | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | in-progress |
-| S-47 | m7-card-a                      | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                           | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | blocked     |
-| S-48 | m7-card-b                      | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                           | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | blocked     |
-| S-49 | m7-card-c                      | Rodzic otwiera z katalogu nową kartę (rodzaj do ustalenia), generuje, podgląda i drukuje                                           | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | blocked     |
-| S-55 | copy-drawing-asymmetric-shapes | Rodzic dostaje na „Skopiuj obrazek” także niesymetryczne kształty (np. skarpeta, ryba, dinozaur), z kategorią i kolorami jak dotąd | —                                                          | MS-07, FR-037, FR-038, US-27, US-28                                       | blocked     |
-| S-52 | profile-card-summary           | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą                                 | S-42, S-47, S-48, S-49                                     | MS-04, FR-017, US-08                                                      | blocked     |
-| S-54 | seasons-objects-characters     | Rodzic wybiera obiekty i postacie kolejnej pory roku w jej oknie dat, tak jak świąteczne                                           | —                                                          | MS-06, FR-028, FR-029, FR-012, US-19, US-20                               | blocked     |
-| S-43 | card-tags-filter               | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                       | S-42, S-47, S-48, S-49                                     | MS-03, FR-014, US-05                                                      | proposed    |
-| S-53 | how-it-works-m7                | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16                                           | S-42, S-47, S-48, S-49, S-43                               | MS-05, US-22, FR-031                                                      | blocked     |
-| S-50 | stryker-m7-cards               | Zespół ma karty i logikę M-7 sprawdzone mutacjami Strykera na zakresach z ryzykiem                                                 | S-42, S-47, S-48, S-49, S-43, S-54, S-55                   | MS-01, MS-02, MS-03                                                       | proposed    |
-| S-51 | test-plan-m7                   | Zespół ma test-plan.md zgodny ze stanem po M-7                                                                                     | S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54, S-55 | MS-01, MS-02, MS-03                                                       | proposed    |
+| ID   | Change ID                      | Outcome (user can …)                                                                                                                                        | Prerequisites                                              | PRD refs                                                                  | Status      |
+| ---- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ----------- |
+| S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje                                   | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | in-progress |
+| S-47 | shadows-card                   | Rodzic otwiera z katalogu „Cienie”, generuje kartę A4, na której dziecko łączy obiekty z ich cieniami, podgląda ją i drukuje                                | —                                                          | MS-02, FR-014, FR-017, FR-028, FR-029, FR-030, US-05, US-08, US-20        | ready       |
+| S-48 | size-order-card                | Rodzic otwiera z katalogu „Od najmniejszego”, generuje kartę A4, na której dziecko numeruje obrazki od najmniejszego do największego, podgląda ją i drukuje | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | ready       |
+| S-49 | number-maze-card               | Rodzic otwiera z katalogu „Labirynt liczbowy”, generuje kartę A4, na której dziecko idzie od startu do mety po kolejnych liczbach, podgląda ją i drukuje    | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | ready       |
+| S-55 | copy-drawing-asymmetric-shapes | Rodzic dostaje na „Skopiuj obrazek” także niesymetryczne kształty (np. skarpeta, ryba, dinozaur), z kategorią i kolorami jak dotąd                          | —                                                          | MS-07, FR-037, FR-038, US-27, US-28                                       | blocked     |
+| S-52 | profile-card-summary           | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą                                                          | S-42, S-47, S-48, S-49                                     | MS-04, FR-017, US-08                                                      | blocked     |
+| S-54 | seasons-objects-characters     | Rodzic wybiera obiekty i postacie kolejnej pory roku w jej oknie dat, tak jak świąteczne                                                                    | —                                                          | MS-06, FR-028, FR-029, FR-012, US-19, US-20                               | blocked     |
+| S-43 | card-tags-filter               | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                | S-42, S-47, S-48, S-49                                     | MS-03, FR-014, US-05                                                      | proposed    |
+| S-53 | how-it-works-m7                | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16                                                                    | S-42, S-47, S-48, S-49, S-43                               | MS-05, US-22, FR-031                                                      | blocked     |
+| S-50 | stryker-m7-cards               | Zespół ma karty i logikę M-7 sprawdzone mutacjami Strykera na zakresach z ryzykiem                                                                          | S-42, S-47, S-48, S-49, S-43, S-54, S-55                   | MS-01, MS-02, MS-03                                                       | proposed    |
+| S-51 | test-plan-m7                   | Zespół ma test-plan.md zgodny ze stanem po M-7                                                                                                              | S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54, S-55 | MS-01, MS-02, MS-03                                                       | proposed    |
 
 ## Streams
 
@@ -73,9 +73,9 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 | E      | Profil                   | `S-52`                                     | Po kartach, żeby przebudowa objęła wszystkie; wchodzi do S-51.                            |
 | G      | Skopiuj obrazek          | `S-55`                                     | Istniejąca karta; wchodzi do S-50 i S-51.                                                 |
 | F      | Pory roku                | `S-54`                                     | Niezależne od kart; wchodzi do S-50 i S-51.                                               |
-| B      | Karta do ustalenia 1     | `S-47`                                     | Czeka na wybór rodzaju.                                                                   |
-| C      | Karta do ustalenia 2     | `S-48`                                     | Czeka na wybór rodzaju.                                                                   |
-| D      | Karta do ustalenia 3     | `S-49`                                     | Czeka na wybór rodzaju.                                                                   |
+| B      | Cienie                   | `S-47`                                     | Najpierw makieta; obiekty z katalogu szablonów.                                           |
+| C      | Od najmniejszego         | `S-48`                                     | Najpierw makieta.                                                                         |
+| D      | Labirynt liczbowy        | `S-49`                                     | Najpierw makieta i wpis w glosariuszu (nazwa obok `labirynt`).                            |
 
 ## Baseline
 
@@ -109,44 +109,48 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 - **Risk:** Jedna odpowiedź w Zapisz wymaga jednej najkrótszej drogi; generator liczy drogi własnym BFS (wyszukiwanie labiryntu liczy drogi między ścianami, nie po polach z przeszkodami). Ślepe losowanie w makiecie: Poziom 4 średnio ok. 2400 kratek, ok. 0,2 s na kartę; plan powinien celować metą w daleki punkt. Trzy kolejne karty M-7 to osobne slice'y (S-47 do S-49).
 - **Status:** in-progress
 
-### S-47: Nowa karta a (rodzaj do ustalenia)
+### S-47: Cienie
 
-- **Outcome:** Rodzic otwiera z katalogu nowy rodzaj karty (do ustalenia), wybiera poziom, generuje kartę A4, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43.
-- **Change ID:** m7-card-a
-- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08
+- **Outcome:** Rodzic otwiera z katalogu „Cienie”, wybiera poziom i kategorię obiektów, uruchamia generowanie i dostaje kartę A4: w jednej kolumnie obiekty z katalogu szablonów, w drugiej ich czarne cienie w innej kolejności; dziecko łączy kreską każdy obiekt z jego cieniem. Podgląda kartę i drukuje ją jako jedną stronę A4 także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43. Generator sprawdza, że każdy obiekt pasuje do dokładnie jednego cienia.
+- **Change ID:** shadows-card
+- **PRD refs:** MS-02, FR-014, FR-017, FR-028, FR-029, FR-030, US-05, US-08, US-20 (US i FR karty dochodzą przy otwarciu)
 - **Prerequisites:** —
 - **Parallel with:** S-42, S-48, S-49
 - **Blockers:** —
 - **Unknowns:**
-  - Jaki to rodzaj karty? Kandydaci z „Po tym kamieniu” (pieniądze ciąg dalszy; połącz kropki i znajdź różnice czekają na rysunki wektorowe). Slice zmienia nazwę i Change ID po decyzji. — Owner: user. Block: yes (przed `/10x-new`).
-- **Risk:** Rodzaj nieustalony; slice jest miejscem w kamieniu, nie planem. Każda nowa karta potrzebuje US/FR w PRD, makiety i jednej sprawdzalnej odpowiedzi.
-- **Status:** blocked
+  - ~~Jaki to rodzaj karty?~~ — Zamknięte 2026-11-18 (decyzja użytkowniczki po szkicu w rozmowie): „Cienie”.
+  - Poziomy (liczba obiektów, cienie-pułapki z innych wariantów tego samego obiektu na wyższych poziomach), kolory obiektów (przełącznik jak w symetrii czy zawsze w kolorze) i układ na A4. Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+- **Risk:** Cień nie ma dziur, więc dwa warianty różniące się tylko oknem albo oczami dają ten sam cień; generator porównuje cienie z wypełnionymi dziurami i nie stawia na jednej karcie dwóch takich samych. Karta bierze katalog szablonów, więc kategoria (z „Boże Narodzenie” w oknie dat) działa bez nowej pracy.
+- **Status:** ready
 
-### S-48: Nowa karta b (rodzaj do ustalenia)
+### S-48: Od najmniejszego
 
-- **Outcome:** Rodzic otwiera z katalogu nowy rodzaj karty (do ustalenia), wybiera poziom, generuje kartę A4, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43.
-- **Change ID:** m7-card-b
-- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08
+- **Outcome:** Rodzic otwiera z katalogu „Od najmniejszego”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z rzędami obrazków tego samego obiektu w różnych wielkościach; dziecko wpisuje pod nimi kolejność od najmniejszego do największego (1, 2, 3…). Podgląda kartę i drukuje ją jako jedną stronę A4 także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43. Generator sprawdza, że każda para obrazków w rzędzie różni się wyraźnie wielkością.
+- **Change ID:** size-order-card
+- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08 (US i FR karty dochodzą przy otwarciu)
 - **Prerequisites:** —
 - **Parallel with:** S-42, S-47, S-49
 - **Blockers:** —
 - **Unknowns:**
-  - Jaki to rodzaj karty? Kandydaci z „Po tym kamieniu” (pieniądze ciąg dalszy; połącz kropki i znajdź różnice czekają na rysunki wektorowe). Slice zmienia nazwę i Change ID po decyzji. — Owner: user. Block: yes (przed `/10x-new`).
-- **Risk:** Rodzaj nieustalony; slice jest miejscem w kamieniu, nie planem. Każda nowa karta potrzebuje US/FR w PRD, makiety i jednej sprawdzalnej odpowiedzi.
-- **Status:** blocked
+  - ~~Jaki to rodzaj karty?~~ — Zamknięte 2026-11-18 (decyzja użytkowniczki po szkicu w rozmowie): „Od najmniejszego”.
+  - Poziomy (3–5 obrazków w rzędzie, najmniejsza różnica wielkości, czy wyższy poziom odwraca kierunek „od największego”), źródło obrazków (obiekty z szablonów, kształty z sudoku czy ikony z „Który nie pasuje”) i czy jest kategoria. Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+- **Risk:** Jedna odpowiedź wymaga różnicy wielkości, którą dziecko widzi bez linijki; w rzędzie stoi ta sama sylwetka, a wielkość to jedna miara (wysokość), żeby kształt nie mylił się z wielkością. Najmniejszą różnicę potwierdza wydruk.
+- **Status:** ready
 
-### S-49: Nowa karta c (rodzaj do ustalenia)
+### S-49: Labirynt liczbowy
 
-- **Outcome:** Rodzic otwiera z katalogu nowy rodzaj karty (do ustalenia), wybiera poziom, generuje kartę A4, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43.
-- **Change ID:** m7-card-c
-- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08
+- **Outcome:** Rodzic otwiera z katalogu „Labirynt liczbowy”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z kratką wypełnioną liczbami, zaznaczonym startem i metą; dziecko rysuje drogę od startu do mety po sąsiednich kratkach (bez skosów) z kolejnymi liczbami od 1 do największej liczby poziomu, omijając liczby-pułapki. Podgląda kartę i drukuje ją jako jedną stronę A4 także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43. Generator sprawdza, że droga jest jedna.
+- **Change ID:** number-maze-card
+- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08 (US i FR karty dochodzą przy otwarciu)
 - **Prerequisites:** —
 - **Parallel with:** S-42, S-47, S-48
 - **Blockers:** —
 - **Unknowns:**
-  - Jaki to rodzaj karty? Kandydaci z „Po tym kamieniu” (pieniądze ciąg dalszy; połącz kropki i znajdź różnice czekają na rysunki wektorowe). Slice zmienia nazwę i Change ID po decyzji. — Owner: user. Block: yes (przed `/10x-new`).
-- **Risk:** Rodzaj nieustalony; slice jest miejscem w kamieniu, nie planem. Każda nowa karta potrzebuje US/FR w PRD, makiety i jednej sprawdzalnej odpowiedzi.
-- **Status:** blocked
+  - ~~Jaki to rodzaj karty?~~ — Zamknięte 2026-11-18 (decyzja i opis użytkowniczki: droga od startu do mety po liczbach rosnących od 1 do 15, 20, 30 itd.).
+  - Poziomy (propozycja ze szkicu: 1–15 na kratce 5×5, 1–20 na 5×6, 1–30 na 6×7, 1–50 na 7×8; wyżej liczenie co 2 albo co 5), jak bardzo kuszące są pułapki, czy jest „Pokaż rozwiązanie”. Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+  - Nazwa w kodzie i w glosariuszu: `labirynt` to już inna karta, więc nowa potrzebuje własnego id (propozycja `liczby`) i wpisu w `context/domain/glossary.md` przed planem. — Owner: team. Block: no.
+- **Risk:** Jedna droga: z każdej kratki drogi tylko jedna sąsiednia kratka ma następną liczbę, a start i meta są zaznaczone. Droga to losowa ścieżka bez samoprzecięć przez dużą część kratki; pułapki mają być bliskie liczbom drogi, żeby kusiły, ale żadna nie może stać przy drodze z następną liczbą.
+- **Status:** ready
 
 ### S-43: Tagi i filtr kart w katalogu
 
@@ -243,21 +247,21 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 
 ## Backlog Handoff
 
-Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty. Issue S-42 (#373) i S-43 (#374) już istnieją; dla pozostałych powstaną po wyborze rodzajów kart.
+Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty. Issue S-42 (#373), S-43 (#374) i S-47 do S-49 (#419–#421) już istnieją; dla pozostałych powstaną po decyzjach z ich niewiadomych.
 
-| Roadmap ID | Change ID                      | Suggested issue title                           | Ready for `/10x-plan` | Notes                                                               |
-| ---------- | ------------------------------ | ----------------------------------------------- | --------------------- | ------------------------------------------------------------------- |
-| S-42       | coding-card                    | Karty kodowania                                 | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373) |
-| S-47       | m7-card-a                      | Nowa karta (do ustalenia)                       | no                    | Czeka na wybór rodzaju                                              |
-| S-48       | m7-card-b                      | Nowa karta (do ustalenia)                       | no                    | Czeka na wybór rodzaju                                              |
-| S-49       | m7-card-c                      | Nowa karta (do ustalenia)                       | no                    | Czeka na wybór rodzaju                                              |
-| S-43       | card-tags-filter               | Tagi i filtr kart w katalogu                    | no                    | Czeka na S-42, S-47 do S-49; najpierw lista tagów (#374)            |
-| S-55       | copy-drawing-asymmetric-shapes | „Skopiuj obrazek” z kształtami niesymetrycznymi | no                    | Issue #379; czeka na decyzję, które kształty                        |
-| S-52       | profile-card-summary           | Okno profilu przy wielu kartach                 | no                    | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować               |
-| S-54       | seasons-objects-characters     | Pory roku                                       | no                    | Czeka na wybór sezonu                                               |
-| S-53       | how-it-works-m7                | „Jak to działa” przy wielu kartach              | no                    | Czeka na S-43 i decyzję, jak skrócić                                |
-| S-50       | stryker-m7-cards               | Stryker dla kart i filtra M-7                   | no                    | Czeka na S-43                                                       |
-| S-51       | test-plan-m7                   | Test plan po M-7                                | no                    | Czeka na S-50                                                       |
+| Roadmap ID | Change ID                      | Suggested issue title                           | Ready for `/10x-plan` | Notes                                                                                                    |
+| ---------- | ------------------------------ | ----------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------- |
+| S-42       | coding-card                    | Karty kodowania                                 | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373)                                      |
+| S-47       | shadows-card                   | Cienie                                          | no                    | Run `/10x-new shadows-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#419)                    |
+| S-48       | size-order-card                | Od najmniejszego                                | no                    | Run `/10x-new size-order-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#420)                 |
+| S-49       | number-maze-card               | Labirynt liczbowy                               | no                    | Run `/10x-new number-maze-card`; najpierw makieta i wpis w glosariuszu, potem US/FR i `/10x-plan` (#421) |
+| S-43       | card-tags-filter               | Tagi i filtr kart w katalogu                    | no                    | Czeka na S-42, S-47 do S-49; najpierw lista tagów (#374)                                                 |
+| S-55       | copy-drawing-asymmetric-shapes | „Skopiuj obrazek” z kształtami niesymetrycznymi | no                    | Issue #379; czeka na decyzję, które kształty                                                             |
+| S-52       | profile-card-summary           | Okno profilu przy wielu kartach                 | no                    | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować                                                    |
+| S-54       | seasons-objects-characters     | Pory roku                                       | no                    | Czeka na wybór sezonu                                                                                    |
+| S-53       | how-it-works-m7                | „Jak to działa” przy wielu kartach              | no                    | Czeka na S-43 i decyzję, jak skrócić                                                                     |
+| S-50       | stryker-m7-cards               | Stryker dla kart i filtra M-7                   | no                    | Czeka na S-43                                                                                            |
+| S-51       | test-plan-m7                   | Test plan po M-7                                | no                    | Czeka na S-50                                                                                            |
 
 ## Open Roadmap Questions
 
@@ -268,7 +272,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 5. ~~**Czy czwarta nowa karta wchodzi do M-6 (obok krzyżówki, S-41 i S-42)?**~~ — Zamknięte 2026-11-17: nie. M-6 dowiózł dwie nowe karty (krzyżówka, zegar); katalog ma 12 rodzajów (`CARD_KINDS` w `src/lib/cards.ts`: dziesięć z M-5 + `krzyzowka` + `zegar`). Karty kodowania i kolejne karty przeszły do M-7.
 6. **Czy poziomy „Kto ma więcej?” i „Który nie pasuje” pasują dziecku, a wygląd monety i banknotu jest czytelny bez kopiowania wzorów NBP?** — Owner: user. Block: no (PRD Open Questions 14).
 7. **Które pory roku i w jakiej kolejności?** — Owner: user. Block: S-54. Rozszerza pytanie 7.
-8. **Jakie trzy rodzaje kart wchodzą do M-7 obok kart kodowania?** — Owner: user. Block: S-47, S-48, S-49. Kandydaci w „Po tym kamieniu”.
+8. ~~**Jakie trzy rodzaje kart wchodzą do M-7 obok kart kodowania?**~~ — Zamknięte 2026-11-18 (decyzja użytkowniczki po szkicach w rozmowie): „Cienie” (S-47), „Od najmniejszego” (S-48) i „Labirynt liczbowy” (S-49). Pozostali rozważani kandydaci są w „Po tym kamieniu”. Wcześniej: Owner: user. Block: S-47, S-48, S-49.
 9. **Kolejne sezony** (Wielkanoc, Halloween, pory roku): wchodzą po M-6 jako osobne kawałki. — Owner: user. Block: no.
 
 ## Parked
@@ -286,7 +290,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 
 ## Po tym kamieniu
 
-Nie wlicza się do „Done when” M-7. Kandydaci na trzy karty M-7 (S-47 do S-49) są tu, dopóki nie zostaną wybrani; karty kodowania to S-42.
+Nie wlicza się do „Done when” M-7. Trzy karty M-7 wybrano 2026-11-18 (S-47 do S-49); karty kodowania to S-42. Kandydaci, których wtedy nie wybrano, zostają tu.
 
 Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź (poza wyjątkiem szlaczków), poziomy bez nazw wieku, jedna strona A4, czarny druk z kolorową postacią przy poleceniu, bez modelu językowego.
 
@@ -296,6 +300,9 @@ Wspólna umowa z labiryntem: algorytm, jedna sprawdzalna odpowiedź (poza wyjąt
 - **Znajdź różnice** — dwa rysunki różniące się w kilku szczegółach. Czeka na rysunki wektorowe.
 - **Nonogram i dyktando postaci** — rozwiązanie odsłania postać zamiast obiektu z szablonów. Czeka na obrysy.
 - **Pieniądze, ciąg dalszy** — jedna kupka i cena („czy wystarczy?”), grosze, reszta.
+- **Policz** (rozważone 2026-11-18) — rzędy rozrzuconych obrazków, dziecko wpisuje, ile ich jest; dla 3–5 lat.
+- **Piramidy liczbowe** (rozważone 2026-11-18) — każda cegła to suma dwóch pod nią, część pusta; bez zgadywania jak krzyżówka matematyczna.
+- **Futoshiki** (rozważone 2026-11-18) — sudoku z nierównościami między polami; korzysta z solvera sudoku.
 
 Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą listą.
 
