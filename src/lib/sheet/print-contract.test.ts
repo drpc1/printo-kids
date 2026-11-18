@@ -41,6 +41,9 @@ const CLOCK_SHEET = "src/components/ClockSheet.tsx";
 const CODING_PAGE = "src/pages/coding.astro";
 const CODING_GENERATOR = "src/components/CodingGenerator.tsx";
 const CODING_SHEET = "src/components/CodingSheet.tsx";
+const SIZE_ORDER_PAGE = "src/pages/size-order.astro";
+const SIZE_ORDER_GENERATOR = "src/components/SizeOrderGenerator.tsx";
+const SIZE_ORDER_SHEET_COMPONENT = "src/components/SizeOrderSheet.tsx";
 const CARD_PAGE = "src/components/CardPage.tsx";
 const CARD_PAGE_HOOK = "src/hooks/useCardPage.ts";
 const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
@@ -506,6 +509,34 @@ void describe("print contract", () => {
     assert.equal(page.includes("@page"), false);
   });
 
+  void test("the printed size-order SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(SIZE_ORDER_SHEET_COMPONENT));
+
+    for (const token of [
+      "print:w-[210mm]",
+      "print:h-[297mm]",
+      "print:overflow-hidden",
+      "print:block",
+      "print:max-h-[297mm]",
+      "print:ring-0",
+    ]) {
+      assert.ok(svgClass.includes(token), token);
+    }
+  });
+
+  void test("the size-order card has no answer on screen, so neither its sheet nor its generator hides anything in print", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(SIZE_ORDER_SHEET_COMPONENT), "print:hidden"), []);
+    assert.deepEqual(classNamesContaining(readRepoFile(SIZE_ORDER_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(SIZE_ORDER_GENERATOR));
+  });
+
+  void test("the size-order page lives under /size-order, uses the shared shell, and has no @page of its own", () => {
+    const page = readRepoFile(SIZE_ORDER_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<SizeOrderGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
   void test("every card page except the maze has the Postać bar and draws the character beside the instruction", () => {
     for (const path of [
       SYMMETRY_GENERATOR,
@@ -521,6 +552,7 @@ void describe("print contract", () => {
       MATH_CROSSWORD_SHEET,
       CLOCK_SHEET,
       CODING_SHEET,
+      SIZE_ORDER_SHEET_COMPONENT,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterInstruction\b/, `${path} draws the speech band`);
@@ -543,6 +575,7 @@ void describe("print contract", () => {
       MATH_CROSSWORD_GENERATOR,
       CLOCK_GENERATOR,
       CODING_GENERATOR,
+      SIZE_ORDER_GENERATOR,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
@@ -566,6 +599,7 @@ void describe("print contract", () => {
       MATH_CROSSWORD_SHEET,
       CLOCK_SHEET,
       CODING_SHEET,
+      SIZE_ORDER_SHEET_COMPONENT,
     ]) {
       assert.match(readRepoFile(path), /printColorAdjust:\s*"exact"/, path);
     }

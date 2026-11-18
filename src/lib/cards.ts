@@ -112,6 +112,14 @@ export const CARD_KINDS = [
     description:
       "Dziecko zapisuje strzałkami najkrótszą drogę postaci do mety albo idzie za podanymi strzałkami i zakreśla obrazek, na którym kończy się droga, zależnie od trybu. Na kartce jest kratka z szarymi przeszkodami, postać w polu startu, flaga mety i pola na strzałki albo trzy obrazki. Poziom zmienia wielkość kratki, długość drogi i zakręty, a na najwyższym zapis „3 →”.",
   },
+  {
+    id: "odnajmniejszego",
+    title: "Od najmniejszego",
+    href: "/size-order",
+    thumbnail: "/thumbnails/odnajmniejszego.svg",
+    description:
+      "Dziecko numeruje obrazki w rzędzie od najmniejszego do największego: wpisuje 1, 2, 3… w pustym polu pod obrazkiem albo rysuje tyle kropek. Na kartce jest kilka rzędów, w każdym ta sama sylwetka (ikona albo kształt) w trzech, czterech albo pięciu wielkościach w pomieszanej kolejności, stojąca na wspólnej linii. Poziom zmienia liczbę obrazków i rzędów oraz to, jak mało różnią się wielkości; po włączeniu kolorów każdy rząd ma jedną kredkę.",
+  },
 ] as const satisfies readonly CardKind[];
 
 /** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */

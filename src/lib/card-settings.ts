@@ -26,7 +26,7 @@ import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } f
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
 import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, ODD_ONE_OUT_LEVELS, type OddOneOutLevelId } from "./odd-one-out/levels.ts";
-import type { SizeOrderLevelId } from "./size-order/levels.ts";
+import { DEFAULT_SIZE_ORDER_LEVEL_ID, SIZE_ORDER_LEVELS, type SizeOrderLevelId } from "./size-order/levels.ts";
 import {
   DEFAULT_PATTERN_LINES_LEVEL_ID,
   PATTERN_LINES_LEVELS,
@@ -139,6 +139,7 @@ export interface CardSettingsMap {
   krzyzowka?: MathCrosswordSettings;
   zegar?: ClockSettings;
   kodowanie?: CodingSettings;
+  odnajmniejszego?: SizeOrderSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -157,6 +158,7 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "krzyzowka",
   "zegar",
   "kodowanie",
+  "odnajmniejszego",
 ];
 
 /** The settings of one card. */
@@ -178,6 +180,7 @@ const DEFAULTS: Defaults = {
   krzyzowka: { level: DEFAULT_MATH_CROSSWORD_LEVEL_ID },
   zegar: { level: DEFAULT_CLOCK_LEVEL_ID, mode: DEFAULT_CLOCK_MODE_ID, h24: false },
   kodowanie: { level: DEFAULT_CODING_LEVEL_ID, mode: DEFAULT_CODING_MODE_ID },
+  odnajmniejszego: { level: DEFAULT_SIZE_ORDER_LEVEL_ID, colors: false },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -313,6 +316,8 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return CLOCK_LEVELS.map((level) => level.id);
     case "kodowanie":
       return CODING_LEVELS.map((level) => level.id);
+    case "odnajmniejszego":
+      return SIZE_ORDER_LEVELS.map((level) => level.id);
   }
 }
 

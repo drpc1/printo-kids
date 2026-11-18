@@ -626,6 +626,31 @@ test("the odd-one-out page keeps Kolory, Generuj, Drukuj and Profil apart with c
   }
 });
 
+test("the size-order page keeps Kolory, Generuj, Drukuj and Profil apart with colors on", async ({ page }) => {
+  await page.goto("/size-order");
+  await page.getByRole("switch", { name: "Kolory" }).click();
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Od najmniejszego" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    kolory: await viewportBox(page.getByRole("switch", { name: "Kolory" })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});
+
 test("the copy-drawing page keeps Generuj, Drukuj and Profil apart", async ({ page }) => {
   await page.goto("/copy-drawing");
   await page.getByRole("button", { name: "Generuj" }).click();

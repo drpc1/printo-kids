@@ -125,6 +125,12 @@ const CARDS: CardCase[] = [
       { bar: "Tryb", option: "Wykonaj", shown: "Wykonaj" },
     ],
   },
+  {
+    id: "odnajmniejszego",
+    path: "/size-order",
+    changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
+    toggle: COLORS,
+  },
 ];
 
 function barButton(page: Page, bar: string): Locator {

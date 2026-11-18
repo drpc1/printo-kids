@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword, clock and coding cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword, clock, coding and size-order cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -61,6 +61,10 @@ import { generateCodingCard } from "../src/lib/coding/generate.ts";
 import { layoutCodingSheet } from "../src/lib/coding/layout.ts";
 import { codingInstruction, codingLevelById, codingModeById } from "../src/lib/coding/levels.ts";
 import { CODING_SHEET } from "../src/lib/coding/sheet.ts";
+import { generateSizeOrderCard } from "../src/lib/size-order/generate.ts";
+import { iconBounds, layoutSizeOrderSheet } from "../src/lib/size-order/layout.ts";
+import { DEFAULT_SIZE_ORDER_LEVEL_ID, sizeOrderLevelById } from "../src/lib/size-order/levels.ts";
+import { SIZE_ORDER_SHEET } from "../src/lib/size-order/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -947,3 +951,54 @@ codingLines.push("</svg>", "");
 const codingOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/kodowanie.svg");
 writeFileSync(codingOutFile, codingLines.join("\n"));
 console.log(`Wrote ${codingOutFile} (${codingCard.path.join("")})`);
+
+// Size-order card: the same elements SizeOrderSheet draws (src/components/SizeOrderSheet.tsx), in literal black and white
+// at the default level (łatwy) without colors, with positions from `layoutSizeOrderSheet` and the shared constants from
+// src/lib/size-order/sheet.ts. The band holds the plain instruction (no character).
+const SIZE_SEED = 20261118;
+const SIZE = SIZE_ORDER_SHEET;
+const sizeLevel = sizeOrderLevelById(DEFAULT_SIZE_ORDER_LEVEL_ID);
+const sizeCard = generateSizeOrderCard(mulberry32(SIZE_SEED), sizeLevel);
+if (sizeCard === null) {
+  throw new Error(`Seed ${SIZE_SEED} did not produce a valid size-order card`);
+}
+const sizeLayout = layoutSizeOrderSheet(sizeCard, SIZE.plainInstructionSize);
+
+const sizeLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE.pageWidth} ${SIZE.pageHeight}" width="${SIZE.pageWidth}" height="${SIZE.pageHeight}">`,
+  `<rect width="${SIZE.pageWidth}" height="${SIZE.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${SIZE.pageWidth - 0.5}" height="${SIZE.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(SIZE.pageWidth / 2)}" y="${num(sizeLayout.band.y + sizeLayout.band.height / 2 + SIZE.plainInstructionSize * SIZE.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SIZE.plainInstructionSize}" text-anchor="middle">${SIZE.instruction}</text>`,
+];
+sizeCard.rows.forEach((row, rowIndex) => {
+  const rowLayout = sizeLayout.rows[rowIndex];
+  if (rowIndex > 0) {
+    sizeLines.push(
+      `<line x1="${SIZE.inset}" y1="${num(rowLayout.top)}" x2="${SIZE.pageWidth - SIZE.inset}" y2="${num(rowLayout.top)}" stroke="#ccc" stroke-width="${SIZE.rowDividerStroke}" stroke-dasharray="1.5 1.5"/>`,
+    );
+  }
+  rowLayout.slots.forEach((slot) => {
+    if (row.picture.kind === "icon") {
+      const icon = iconById(row.picture.id);
+      const bounds = iconBounds(icon);
+      const factor = slot.height / (bounds.y1 - bounds.y0);
+      sizeLines.push(
+        `<g transform="translate(${num(slot.cx - ((bounds.x0 + bounds.x1) / 2) * factor)} ${num(rowLayout.baseline - bounds.y1 * factor)}) scale(${num(factor)})">`,
+        ...icon.figures.map(oddFigure),
+        "</g>",
+      );
+    } else {
+      sizeLines.push(
+        `<path d="${sudokuShapePath(row.picture.id, slot.cx, rowLayout.baseline - slot.height / 2, slot.height - SIZE.shapeStroke)}" fill="#fff" stroke="#000" stroke-width="${SIZE.shapeStroke}" stroke-linejoin="round"/>`,
+      );
+    }
+    sizeLines.push(
+      `<rect x="${num(slot.box.x)}" y="${num(slot.box.y)}" width="${num(slot.box.width)}" height="${slot.box.height}" rx="${SIZE.boxRadius}" fill="#fff" stroke="#000" stroke-width="${SIZE.boxStroke}"/>`,
+    );
+  });
+});
+sizeLines.push("</svg>", "");
+
+const sizeOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/odnajmniejszego.svg");
+writeFileSync(sizeOutFile, sizeLines.join("\n"));
+console.log(`Wrote ${sizeOutFile} (${sizeCard.rows.length} rows)`);
