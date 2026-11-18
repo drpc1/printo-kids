@@ -1,11 +1,11 @@
-# Waluty EUR i USD na karcie „Kto ma więcej?” — Plan Brief
+# Waluty EUR i USD na karcie „Kto ma więcej” — Plan Brief
 
 > Full plan: `context/changes/gh324-waluty-eur-usd/plan.md`
 > Research: `context/changes/gh324-waluty-eur-usd/research.md`
 
 ## What & Why
 
-Karta „Kto ma więcej?” ma dziś tylko złotówki. Użytkowniczka przygotowała makiety obrazków EUR i USD; karta dostaje ustawienie paska „Waluta” (zł / € / $), pamiętane w profilu, a poziom trudny dostaje nominały 50 i 100.
+Karta „Kto ma więcej” ma dziś tylko złotówki. Użytkowniczka przygotowała makiety obrazków EUR i USD; karta dostaje ustawienie paska „Waluta” (zł / € / $), pamiętane w profilu, a poziom trudny dostaje nominały 50 i 100.
 
 ## Starting Point
 

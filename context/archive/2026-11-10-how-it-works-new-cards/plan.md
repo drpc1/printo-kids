@@ -19,13 +19,13 @@ Patrz `research.md`: opisy kart są gotowe, nieaktualny jest tekst sekcji „Poz
 
 **File**: `src/pages/how-it-works.astro`
 
-**Intent**: Przepisać `text` sekcji „Poziomy”: łatwy / średni / trudny mają nonogram, dyktando graficzne, „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj rysunek na kratce” (sudoku też, z osobnym wyborem rozmiaru); numery mają labirynt (1–6), symetria, sekwencje i szlaczki (1–4). Wiek jako wskazówka tylko przy labiryncie, symetrii, sekwencjach i dyktandzie; pozostałe karty wieku nie mają. Zachować zdania o opisie poziomu i o nieporównywalności numerów.
+**Intent**: Przepisać `text` sekcji „Poziomy”: łatwy / średni / trudny mają nonogram, dyktando graficzne, „Kto ma więcej”, „Który nie pasuje” i „Skopiuj rysunek na kratce” (sudoku też, z osobnym wyborem rozmiaru); numery mają labirynt (1–6), symetria, sekwencje i szlaczki (1–4). Wiek jako wskazówka tylko przy labiryncie, symetrii, sekwencjach i dyktandzie; pozostałe karty wieku nie mają. Zachować zdania o opisie poziomu i o nieporównywalności numerów.
 
 #### 2. Test e2e
 
 **File**: `tests/e2e/how-it-works.spec.ts`
 
-**Intent**: W teście stron „states the rules” dodać asercje na frazę o szlaczkach i „Kto ma więcej?” w sekcji Poziomy oraz brak starego zdania „sudoku i nonogram wieku nie mają”.
+**Intent**: W teście stron „states the rules” dodać asercje na frazę o szlaczkach i „Kto ma więcej” w sekcji Poziomy oraz brak starego zdania „sudoku i nonogram wieku nie mają”.
 
 ### Success Criteria:
 

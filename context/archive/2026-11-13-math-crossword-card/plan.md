@@ -14,7 +14,7 @@ Rodzic otwiera z katalogu „Krzyżówka matematyczna” (`/math-crossword`), wy
 
 ### Key Discoveries:
 
-- Rejestr kart: `src/lib/cards.ts:10-91` (`CardKind` z `description` na „Jak to działa”); kolejność katalogu alfabetyczna (`cardsInCatalogOrder`, :96), więc krzyżówka sama staje przed „Kto ma więcej?”.
+- Rejestr kart: `src/lib/cards.ts:10-91` (`CardKind` z `description` na „Jak to działa”); kolejność katalogu alfabetyczna (`cardsInCatalogOrder`, :96), więc krzyżówka sama staje przed „Kto ma więcej”.
 - Ustawienia: `src/lib/card-settings.ts` — interfejs ustawień (:72-81), `CardSettingsMap` (:83-94), `CARD_SETTINGS_IDS` (:98-109), `DEFAULTS` (:116-127), wyczerpujący `switch` w `levelIds()` (:229-252). `parseStoredCards` i `useCardSettings` są ogólne.
 - Silniki: `src/lib/card-engines.ts:26-54` (`CardTypeMap`, `CARD_ENGINES`, `satisfies` + `kindsAndSettingsAgree` — brak wpisu to błąd kompilacji).
 - Podsumowanie profilu i plakietka: `src/lib/card-summary.ts:56-146` (`summaryParts`), `badgeOf()` :162-164 daje „poz. N” dla liczbowego `barLabel`.

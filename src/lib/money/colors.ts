@@ -4,7 +4,7 @@ import { PIECES, type MoneyCurrencyId } from "./currencies.ts";
 const SUFFIX: Record<MoneyCurrencyId, string> = { pln: "zl", eur: "eur", usd: "usd" };
 
 /**
- * The coloured look of a coin or note on the "Kto ma więcej?" card: a stylised picture in `public/money/` (drawn by
+ * The coloured look of a coin or note on the "Kto ma więcej" card: a stylised picture in `public/money/` (drawn by
  * the card's author, with the value printed on it), one per value and currency. Colour is a pure function of the value
  * and the currency; with colors off the card keeps its plain black drawing and there is no picture.
  */

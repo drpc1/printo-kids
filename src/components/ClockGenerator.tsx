@@ -24,7 +24,7 @@ import {
  * The "Zegar" page: Generuj, the card, Drukuj, the character, level and mode buttons, the "24 h" switch and the shared
  * profile corner. The chosen character stands by the instruction and says it. The three settings come from
  * `useCardSettings` and every change is remembered at once. Each of them changes the times or how many dials there
- * are, so with a card shown every change draws a new card (as the currency does on "Kto ma więcej?"); so does a
+ * are, so with a card shown every change draws a new card (as the currency does on "Kto ma więcej"); so does a
  * profile switch that changed one of them. The card has no answer on it and no "Pokaż rozwiązanie", colors or category.
  */
 export default function ClockGenerator() {

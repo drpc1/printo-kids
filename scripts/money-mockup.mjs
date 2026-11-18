@@ -1,4 +1,4 @@
-// Writes print-ready mockups of the "Kto ma więcej?" card to context/changes/coins-who-has-more/: one A4 sheet per level
+// Writes print-ready mockups of the "Kto ma więcej" card to context/changes/coins-who-has-more/: one A4 sheet per level
 // (łatwy, średni, trudny), five rows of two piles with an empty square between them. The rows are real cards from the
 // generator (fixed seed), drawn from the same constants and layout as the page. Print each file on A4 at 100%, in black
 // and white, to judge: is the number on every coin and note readable, is the square big enough to write <, > or =.

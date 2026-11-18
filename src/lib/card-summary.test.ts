@@ -106,7 +106,7 @@ void describe("cardSummaries", () => {
     const fresh = cardSummaries(profile("lat5"));
     assert.equal(byId(fresh, "pieniadze").used, false);
     assert.equal(byId(fresh, "pieniadze").badge, null);
-    assert.equal(byId(fresh, "pieniadze").title, "Kto ma więcej?");
+    assert.equal(byId(fresh, "pieniadze").title, "Kto ma więcej");
     assert.equal(byId(fresh, "pieniadze").href, "/money");
 
     const chosen = byId(

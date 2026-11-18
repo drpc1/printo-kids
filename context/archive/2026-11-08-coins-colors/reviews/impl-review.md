@@ -1,6 +1,6 @@
 <!-- IMPL-REVIEW-REPORT -->
 
-# Implementation Review: Kolory na karcie „Kto ma więcej?”
+# Implementation Review: Kolory na karcie „Kto ma więcej”
 
 - **Plan**: context/changes/coins-colors/plan.md
 - **Scope**: Full plan (fazy 2–4; faza 1 ma tylko krok ręczny)

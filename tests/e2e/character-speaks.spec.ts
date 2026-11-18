@@ -19,7 +19,7 @@ const CARDS: CardCase[] = [
   { path: "/sudoku", sheet: "Sudoku", sentence: "Uzupełnij puste pola." },
   { path: "/nonogram", sheet: /^Nonogram/, sentence: "Zamaluj kratki według liczb." },
   { path: "/dictation", sheet: "Dyktando graficzne", sentence: "Rysuj po liniach kratki" },
-  { path: "/money", sheet: "Kto ma więcej?", sentence: "Gdzie jest więcej pieniędzy?" },
+  { path: "/money", sheet: "Kto ma więcej", sentence: "Gdzie jest więcej pieniędzy?" },
   { path: "/odd-one-out", sheet: "Który nie pasuje", sentence: "Który nie pasuje?" },
   { path: "/copy-drawing", sheet: "Skopiuj obrazek", sentence: "Przerysuj obrazek na pustą kratkę." },
   // The sentence of the default level (Poziom 2); the other levels have their own.

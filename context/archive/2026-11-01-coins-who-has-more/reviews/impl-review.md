@@ -1,6 +1,6 @@
 <!-- IMPL-REVIEW-REPORT -->
 
-# Implementation Review: S-33 Karta „Kto ma więcej?”
+# Implementation Review: S-33 Karta „Kto ma więcej”
 
 - **Plan**: context/changes/coins-who-has-more/plan.md
 - **Scope**: Full plan

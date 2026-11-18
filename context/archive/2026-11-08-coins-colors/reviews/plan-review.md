@@ -1,6 +1,6 @@
 <!-- PLAN-REVIEW-REPORT -->
 
-# Plan Review: Kolory na karcie „Kto ma więcej?”
+# Plan Review: Kolory na karcie „Kto ma więcej”
 
 - **Plan**: context/changes/coins-colors/plan.md
 - **Mode**: Deep (bez sub-agenta, sprawdzenie lokalne)

@@ -11,7 +11,7 @@ Wycinamy materiał kursu 10xDevs z całej historii `main`, `prod` i tagu `v2026.
 - Rulesety: `25797959` „main: checki, pominiecie tylko przy pull request” i `26293197` „prod: PR, checki, merge commit”. Blokują force-push.
 - Narzędzia: brak `git filter-repo`, Pythona i Javy (więc też BFG). Jest wbudowany `git filter-branch`.
 - Lokalnie jest 11 worktree. Otwarta praca:
-  - `claude/s32-coins-comparison-494c51` (S-33 „Kto ma więcej?”): 8 commitów, gotowe, lokalna (nigdy niepushowana). Ma trafić na `main`, ale na razie nie na `prod`.
+  - `claude/s32-coins-comparison-494c51` (S-33 „Kto ma więcej”): 8 commitów, gotowe, lokalna (nigdy niepushowana). Ma trafić na `main`, ale na razie nie na `prod`.
   - gh271 (`claude/gh271-web-analytics-cc1c9b`): 2 commity, gotowe do PR.
   - Kilka starych, niezmergowanych gałęzi lokalnych (`chore/archive-gh180-no-character`, `gh180-no-character`, `sequence-shape-colors`…).
 - Kopia skilli poza repo już istnieje: `C:\Users\agapp\.claude\skills\` ma wszystkie 28 skilli `10x-*` i `playwright-cli`.

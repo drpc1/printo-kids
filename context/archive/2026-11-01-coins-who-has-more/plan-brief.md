@@ -1,11 +1,11 @@
-# S-33 Karta „Kto ma więcej?” — Plan Brief
+# S-33 Karta „Kto ma więcej” — Plan Brief
 
 > Full plan: `context/changes/coins-who-has-more/plan.md`
 > Frame brief: `context/changes/coins-who-has-more/frame.md`
 
 ## What & Why
 
-Dokładamy kartę „Kto ma więcej?”: pięć rzędów po dwie kupki monet i banknotów, dziecko wpisuje między kupkami „<”, „>” lub „=”. Pierwsza z czterech kart M-5; przy okazji testy przestają wpisywać liczbę kart na sztywno. Frame: ramowanie „jedna zmiana z kartą” się utrzymało, ale czytelność monety na czarnym druku jest nieznana, a lista miejsc z liczbą kart w issue była niepełna (brakuje `cards.test.ts`).
+Dokładamy kartę „Kto ma więcej”: pięć rzędów po dwie kupki monet i banknotów, dziecko wpisuje między kupkami „<”, „>” lub „=”. Pierwsza z czterech kart M-5; przy okazji testy przestają wpisywać liczbę kart na sztywno. Frame: ramowanie „jedna zmiana z kartą” się utrzymało, ale czytelność monety na czarnym druku jest nieznana, a lista miejsc z liczbą kart w issue była niepełna (brakuje `cards.test.ts`).
 
 ## Starting Point
 
@@ -20,7 +20,7 @@ Na `/money` rodzic wybiera poziom (łatwy / średni / trudny), generuje kartę A
 | Decision      | Choice                                                                                              | Why                                         | Source |
 | ------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------- | ------ |
 | Zakres        | Jedna zmiana: karta plus testy z katalogu                                                           | Zgodne z issue i konwencją                  | Frame  |
-| Id i adres    | `pieniadze`, `/money`, tytuł „Kto ma więcej?”                                                       | Wzorzec innych kart                         | Plan   |
+| Id i adres    | `pieniadze`, `/money`, tytuł „Kto ma więcej”                                                       | Wzorzec innych kart                         | Plan   |
 | Remis         | Zero lub jeden rząd na karcie                                                                       | Decyzja użytkownika                         | Plan   |
 | Poziom łatwy  | Sumy do 10 zł, tylko monety 1, 2, 5 zł mieszane, 1–5 sztuk, bez mylących rzędów                     | Małe kupki dla dziecka 6 lat                | Plan   |
 | Poziom średni | Monety 1/2/5 zł, suma do 20 zł, dokładnie 2 z 5 rzędów „myli”                                       | Stopniowanie do trudnego                    | Plan   |

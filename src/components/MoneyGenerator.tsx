@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 const INSTRUCTION_TEXT = MONEY_SHEET.instructionLines.join(" ");
 
 /**
- * The "Kto ma więcej?" card page: Generuj, the character and level buttons, the card, Drukuj, and the shared profile
+ * The "Kto ma więcej" card page: Generuj, the character and level buttons, the card, Drukuj, and the shared profile
  * corner. The chosen character stands by the instruction on the card and says it. The level comes from
  * `useCardSettings` (the active profile's, or the device's) and every change is remembered at once; the page never
  * touches the maze's last-used parameters, it only keeps the bar values the profile corner shows. The card is black
@@ -205,7 +205,7 @@ function MoneySheet({
       )}
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       role="img"
-      aria-label="Kto ma więcej?"
+      aria-label="Kto ma więcej"
     >
       <rect width={sheet.page.width} height={sheet.page.height} fill="var(--card)" />
       {characterSrc !== null ? (

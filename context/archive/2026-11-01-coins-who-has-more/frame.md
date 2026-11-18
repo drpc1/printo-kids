@@ -1,10 +1,10 @@
-# Frame Brief: S-33 Karta „Kto ma więcej?”
+# Frame Brief: S-33 Karta „Kto ma więcej”
 
 > Framing step before /10x-plan. Captures what is actually at issue, separated from what was assumed.
 
 ## Reported Observation
 
-Karta „Kto ma więcej?” (roadmap S-33, GitHub drpc1/printo-kids#264, PRD US-23, US-24, FR-033, FR-034) nie istnieje. Issue zaleca makietę monety i banknotu czytelną na czarnym druku przed planem. Testy i skrypty mają na sztywno wpisaną liczbę sześciu kart.
+Karta „Kto ma więcej” (roadmap S-33, GitHub drpc1/printo-kids#264, PRD US-23, US-24, FR-033, FR-034) nie istnieje. Issue zaleca makietę monety i banknotu czytelną na czarnym druku przed planem. Testy i skrypty mają na sztywno wpisaną liczbę sześciu kart.
 
 ## Initial Framing (preserved)
 
@@ -55,5 +55,5 @@ Plan ma dwa niezależne tory w jednej zmianie: (A) faza makiety ze skryptem i r�
 ## References
 
 - Source files: `src/lib/cards.ts:10`, `src/lib/card-settings.ts:52-84`, `src/lib/card-summary.ts:27-99`, `src/components/SequenceGenerator.tsx`, `src/lib/cards.test.ts:9-14`, `src/lib/card-settings.test.ts:21`, `src/lib/card-summary.test.ts:21`, `tests/e2e/phone-layout.spec.ts:546`, `tests/e2e/catalog.spec.ts:17,471`, `scripts/smoke.mjs`, `scripts/sudoku-mockup.mjs`
-- PRD: US-23, US-24, FR-033, FR-034, Business Logic „Karta „Kto ma więcej?””, Open Questions 14
+- PRD: US-23, US-24, FR-033, FR-034, Business Logic „Karta „Kto ma więcej””, Open Questions 14
 - Investigation: czytanie kodu w sesji, bez sub-agentów (powierzchnia mała)

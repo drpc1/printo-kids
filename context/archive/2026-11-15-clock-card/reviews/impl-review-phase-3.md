@@ -9,7 +9,7 @@
 - **Verdict**: APPROVED
 - **Findings**: 0 critical, 0 warnings, 2 observations
 
-Commit 8c5b18c. Dwa przeglądy równoległe (zgodność z planem; bezpieczeństwo, druk i wzorce względem krzyżówki, „Kto ma więcej?” i szlaczków). Bramki 3.1–3.4 przed commitem: `npm test` 1773 (1 pominięty jak dotąd), lint, depcruise, astro check (0 błędów), build, e2e na czterech projektach Chromium 789 passed (327 skipped z warunków projektów), smoke na podglądzie (port 4398, bo 4399 zajmowało e2e). Kontrole z celowo zepsutym kodem: gałąź `mode` w `fieldValue` i „24 h” w podsumowaniu — testy czerwone, pliki przywrócone. Kontrole ręczne 3.5–3.7 potwierdziła użytkowniczka. Dopisek z fazy 2 spełniony (rzutowanie `kind` i obejście `kindOf` usunięte). Jedyny dodatek poza listą plików: opcjonalne `disabled` w `SettingToggle`, wymagane przez kontrakt planu („wszystkie `disabled={waitingForChild}`”), domyślnie `false`, pozostali wywołujący bez zmian.
+Commit 8c5b18c. Dwa przeglądy równoległe (zgodność z planem; bezpieczeństwo, druk i wzorce względem krzyżówki, „Kto ma więcej” i szlaczków). Bramki 3.1–3.4 przed commitem: `npm test` 1773 (1 pominięty jak dotąd), lint, depcruise, astro check (0 błędów), build, e2e na czterech projektach Chromium 789 passed (327 skipped z warunków projektów), smoke na podglądzie (port 4398, bo 4399 zajmowało e2e). Kontrole z celowo zepsutym kodem: gałąź `mode` w `fieldValue` i „24 h” w podsumowaniu — testy czerwone, pliki przywrócone. Kontrole ręczne 3.5–3.7 potwierdziła użytkowniczka. Dopisek z fazy 2 spełniony (rzutowanie `kind` i obejście `kindOf` usunięte). Jedyny dodatek poza listą plików: opcjonalne `disabled` w `SettingToggle`, wymagane przez kontrakt planu („wszystkie `disabled={waitingForChild}`”), domyślnie `false`, pozostali wywołujący bez zmian.
 
 ## Verdicts
 
@@ -44,4 +44,4 @@ Commit 8c5b18c. Dwa przeglądy równoległe (zgodność z planem; bezpieczeństw
 - **Fix**: Zostawić (zgodne z istniejącym wzorem); gdy inna karta dostanie `mode`, sprawdzać też `cardId`.
 - **Decision**: ACCEPTED — zgodne z istniejącym wzorem (currency, size, symbols); wrócić, gdy inna karta dostanie mode
 
-Pomniejsze, bez osobnej pozycji: `change()` w `ClockGenerator.tsx:45-51` wraca przed `remember` przy `waitingForChild` (jak krzyżówka; „Kto ma więcej?” zapamiętuje mimo to), nieosiągalne, bo kontrolki są wtedy wyłączone.
+Pomniejsze, bez osobnej pozycji: `change()` w `ClockGenerator.tsx:45-51` wraca przed `remember` przy `waitingForChild` (jak krzyżówka; „Kto ma więcej” zapamiętuje mimo to), nieosiągalne, bo kontrolki są wtedy wyłączone.

@@ -1,6 +1,6 @@
 ---
 change_id: gh324-waluty-eur-usd
-title: Karta „Kto ma więcej?”: pieniądze w EUR i USD
+title: Karta „Kto ma więcej”: pieniądze w EUR i USD
 status: archived
 created: 2026-11-09
 updated: 2026-11-09

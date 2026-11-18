@@ -1,5 +1,5 @@
 /**
- * How the "Kto ma więcej?" card is drawn, in page units (mm on an A4 sheet). The page component, the catalog
+ * How the "Kto ma więcej" card is drawn, in page units (mm on an A4 sheet). The page component, the catalog
  * thumbnail script and the mockup script all read these, so none of them can drift from the printed card.
  * Coins and notes are simplified drawings (a circle and a rectangle with the value as a bold number) or, with colors on,
  * stylised pictures of the same size (a note is 18 × 9 mm, like the pictures); they do not copy

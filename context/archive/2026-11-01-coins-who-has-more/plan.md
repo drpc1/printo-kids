@@ -1,8 +1,8 @@
-# S-33 Karta „Kto ma więcej?” Implementation Plan
+# S-33 Karta „Kto ma więcej” Implementation Plan
 
 ## Overview
 
-Dokładamy dziesiąty rodzaj karty: „Kto ma więcej?” (GitHub drpc1/printo-kids#264, PRD US-23, US-24, FR-033, FR-034). Pięć rzędów po dwie kupki monet i banknotów oddzielone pustym polem na znak; dziecko wpisuje w polu między kupkami „<”, „>” lub „=”. Karta ma poziomy łatwy / średni / trudny, pamięć ustawień w profilu, miniaturę w katalogu i wpis w „Jak to działa”. Jako pierwsza z czterech kart M-5 zamienia wpisaną na sztywno liczbę kart w testach i skryptach na liczbę z katalogu, żeby S-34 do S-36 dokładały karty bez zmiany tych testów.
+Dokładamy dziesiąty rodzaj karty: „Kto ma więcej” (GitHub drpc1/printo-kids#264, PRD US-23, US-24, FR-033, FR-034). Pięć rzędów po dwie kupki monet i banknotów oddzielone pustym polem na znak; dziecko wpisuje w polu między kupkami „<”, „>” lub „=”. Karta ma poziomy łatwy / średni / trudny, pamięć ustawień w profilu, miniaturę w katalogu i wpis w „Jak to działa”. Jako pierwsza z czterech kart M-5 zamienia wpisaną na sztywno liczbę kart w testach i skryptach na liczbę z katalogu, żeby S-34 do S-36 dokładały karty bez zmiany tych testów.
 
 ## Current State Analysis
 
@@ -47,7 +47,7 @@ Pięć faz. Faza 1 (testy z liczbą z katalogu) jest mechaniczna i nie zależy o
 
 Decyzje z rozmowy (2026-11-01):
 
-- Id `pieniadze`, strona `/money`, tytuł „Kto ma więcej?”, w katalogu alfabetycznie między „Dyktando graficzne” a „Labirynt”. Poziomy `latwy` / `sredni` / `trudny`, domyślnie `sredni`. Ustawienia: tylko `level`.
+- Id `pieniadze`, strona `/money`, tytuł „Kto ma więcej”, w katalogu alfabetycznie między „Dyktando graficzne” a „Labirynt”. Poziomy `latwy` / `sredni` / `trudny`, domyślnie `sredni`. Ustawienia: tylko `level`.
 - Poziomy (wartości startowe, potwierdza wydruk):
   - łatwy: monety 1, 2 i 5 zł mieszane (decyzja użytkowniczki 2026-11-01: nie jeden nominał w rzędzie), suma kupki do 10 zł, od 1 do 5 sztuk; żaden rząd „nie myli” (kupka z mniejszą liczbą sztuk nie jest warta więcej);
   - średni: monety 1, 2, 5 zł mieszane, suma kupki do 20 zł; dokładnie 2 z 5 rzędów „myli”;
@@ -237,7 +237,7 @@ Karta widoczna dla rodzica: strona `/money`, wpis w katalogu, pamięć ustawień
 
 **File**: `src/lib/cards.ts`, `src/lib/card-settings.ts`, `src/lib/card-summary.ts`
 
-**Intent**: Wpis `pieniadze` w `CARD_KINDS` (tytuł „Kto ma więcej?”, `/money`, miniatura, opis w 2–3 zdaniach: co dziecko robi i co jest na kartce); `MoneySettings { level }` w `CardSettingsMap`, `CARD_SETTINGS_IDS`, `DEFAULTS` i `levelIds`; `summaryParts` dla `pieniadze` (plakietka = etykieta poziomu; poziomy nazwane).
+**Intent**: Wpis `pieniadze` w `CARD_KINDS` (tytuł „Kto ma więcej”, `/money`, miniatura, opis w 2–3 zdaniach: co dziecko robi i co jest na kartce); `MoneySettings { level }` w `CardSettingsMap`, `CARD_SETTINGS_IDS`, `DEFAULTS` i `levelIds`; `summaryParts` dla `pieniadze` (plakietka = etykieta poziomu; poziomy nazwane).
 
 **Contract**: Brak zmian w kształcie zapisanych danych: karta, której profil nie używał, startuje z domyślnym poziomem.
 
@@ -245,7 +245,7 @@ Karta widoczna dla rodzica: strona `/money`, wpis w katalogu, pamięć ustawień
 
 **File**: `src/pages/money.astro`, `src/components/MoneyGenerator.tsx`
 
-**Intent**: Strona na `GeneratorShell` z opisem „Wygeneruj kartę „Kto ma więcej?” i wydrukuj ją na kartce A4.”; generator na `CardPage` / `useCardPage` / `useCardSettings("pieniadze", …)` jak `SequenceGenerator`, z paskiem Postać i Poziom, bez kolorów. Karta SVG z poleceniem i postacią w dymku (`CharacterInstruction`), pięć rzędów, pole „=”. Zmiana poziomu przy pokazanej karcie generuje nową kartę; przełączenie profilu z innym poziomem też. Karta: `aria-label` „Kto ma więcej?”, klasy druku jak sekwencje (`print:h-[297mm]`, `print:w-[210mm]`).
+**Intent**: Strona na `GeneratorShell` z opisem „Wygeneruj kartę „Kto ma więcej” i wydrukuj ją na kartce A4.”; generator na `CardPage` / `useCardPage` / `useCardSettings("pieniadze", …)` jak `SequenceGenerator`, z paskiem Postać i Poziom, bez kolorów. Karta SVG z poleceniem i postacią w dymku (`CharacterInstruction`), pięć rzędów, pole „=”. Zmiana poziomu przy pokazanej karcie generuje nową kartę; przełączenie profilu z innym poziomem też. Karta: `aria-label` „Kto ma więcej”, klasy druku jak sekwencje (`print:h-[297mm]`, `print:w-[210mm]`).
 
 **Contract**: Stałe z `sheet.ts`; polecenie „Gdzie jest więcej pieniędzy? Wskaż <, > lub =.” (bez słowa „zakreśl”, bo jest niejasne dla małych dzieci); brak odpowiedzi na kartce.
 
@@ -278,7 +278,7 @@ Karta widoczna dla rodzica: strona `/money`, wpis w katalogu, pamięć ustawień
 
 - Karta w przeglądarce: polecenie z postacią, pięć rzędów, kupki czytelne, pole na znak dość duże do wpisania „<”, „>” lub „=”
 - Wydruk na jednej stronie A4 w Safari, Chrome iOS i Brave iOS osobno (mierzone, nie przenoszone z jednej przeglądarki)
-- Katalog: miniatura, plakietka po wyborze profilu, okno profilu pokazuje „Kto ma więcej? łatwy …”
+- Katalog: miniatura, plakietka po wyborze profilu, okno profilu pokazuje „Kto ma więcej łatwy …”
 
 **Implementation Note**: Po fazie 4 zatrzymaj się na potwierdzenie ręczne.
 
@@ -296,7 +296,7 @@ PRD ma opisywać to, co zbudowano: trzy decyzje z rozmowy odbiegają od tekstu.
 
 **File**: `context/foundation/prd.md`
 
-**Intent**: Success Criteria (punkt o karcie „Kto ma więcej?”), US-23 (w tym AC o zakreślaniu), US-24, Business Logic „Karta „Kto ma więcej?”” (polecenie, tabela poziomów, remis, „zakreśla”), FR-033 i FR-034: łatwy poziom = sumy do 10 zł, tylko monety, 1–5 sztuk; odpowiedź wpisywana jako „<”, „>” lub „=” w polu między kupkami (zamiast zakreślania kupki); remis zero lub jeden rząd; średni dokładnie 2 z 5 rzędów „myli”, trudny co najmniej 3 z 5. Open Questions 14: zapisać ustalenie o prawach (uproszczone rysunki, które nie uchodzą za prawdziwy pieniądz) i to, co potwierdził wydruk.
+**Intent**: Success Criteria (punkt o karcie „Kto ma więcej”), US-23 (w tym AC o zakreślaniu), US-24, Business Logic „Karta „Kto ma więcej”” (polecenie, tabela poziomów, remis, „zakreśla”), FR-033 i FR-034: łatwy poziom = sumy do 10 zł, tylko monety, 1–5 sztuk; odpowiedź wpisywana jako „<”, „>” lub „=” w polu między kupkami (zamiast zakreślania kupki); remis zero lub jeden rząd; średni dokładnie 2 z 5 rzędów „myli”, trudny co najmniej 3 z 5. Open Questions 14: zapisać ustalenie o prawach (uproszczone rysunki, które nie uchodzą za prawdziwy pieniądz) i to, co potwierdził wydruk.
 
 **Contract**: Zmieniają się tylko te zdania; numeracja US i FR zostaje.
 
@@ -343,7 +343,7 @@ Brak migracji: karta bez zapisu startuje z domyślnym poziomem (`parseCardSettin
 - Frame: `context/changes/coins-who-has-more/frame.md`
 - Issue: https://github.com/drpc1/printo-kids/issues/264
 - Wzorzec: `src/components/SequenceGenerator.tsx`, `src/lib/sequence/generate.ts`, `scripts/sudoku-mockup.mjs`
-- PRD: US-23, US-24, FR-033, FR-034, Business Logic „Karta „Kto ma więcej?””
+- PRD: US-23, US-24, FR-033, FR-034, Business Logic „Karta „Kto ma więcej””
 - `context/foundation/lessons.md` (druk na iOS osobno w każdej przeglądarce)
 
 ## Progress

@@ -100,7 +100,7 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Sekwencje\s+domyślne/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Nonogram\s+średni · Zwierzęta/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Dyktando graficzne\s+domyślne/ })).toBeVisible();
-  await expect(dialog.getByRole("link", { name: /^Kto ma więcej\?\s+łatwy/ })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Kto ma więcej\s+łatwy/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Skopiuj obrazek\s+trudny · kolory · Zwierzęta/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Szlaczki\s+Poziom 4 · bez linii/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Krzyżówka matematyczna\s+Poziom 6/ })).toBeVisible();

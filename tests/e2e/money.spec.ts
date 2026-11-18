@@ -1,5 +1,5 @@
 // Provenance: coins-who-has-more (S-33, US-23, US-24, FR-033, FR-034)
-// Protects the "Kto ma więcej?" page: Generuj draws five rows of two piles with an empty square between them and no
+// Protects the "Kto ma więcej" page: Generuj draws five rows of two piles with an empty square between them and no
 // answer on the sheet, a new level draws a new card, the sheet keeps the 10 mm margin of the A4 page, the catalog
 // badge shows the profile's level, and on every screen Generuj, Drukuj and the Profil corner do not cover each other.
 // It does not prove the printed page; the trial print in the plan does.
@@ -41,7 +41,7 @@ async function settle(page: Page): Promise<void> {
 async function generate(page: Page): Promise<Locator> {
   await page.goto("/money");
   await page.getByRole("button", { name: "Generuj" }).click();
-  const sheet = page.getByRole("img", { name: "Kto ma więcej?" });
+  const sheet = page.getByRole("img", { name: "Kto ma więcej" });
   await expect(sheet).toBeVisible();
   return sheet;
 }
