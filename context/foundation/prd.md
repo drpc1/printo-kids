@@ -659,7 +659,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 #### Acceptance Criteria
 
-- Karta ma kilka rzędów, jeden pod drugim. W rzędzie stoi jeden obrazek w 3–5 wielkościach (zależnie od poziomu, US-38), w pomieszanej kolejności; pod każdym jest puste, szerokie pole na cyfrę albo kropki. Nad rzędami jest jedno zdanie polecenia: „Od najmniejszego. Wpisz 1, 2, 3… albo narysuj kropki.”; przy nim stoi wybrana postać (US-21). Karta nie ma klucza ani przełącznika „cyfry / kropki”: dziecko, które nie pisze jeszcze cyfr, rysuje kropki (decyzja 2026-11-18).
+- Karta ma kilka rzędów, jeden pod drugim. W rzędzie stoi jeden obrazek w 3–5 wielkościach (zależnie od poziomu, US-38), w pomieszanej kolejności; pod każdym jest puste, szerokie pole na cyfrę albo kropki. Nad rzędami jest jedno zdanie polecenia: „Ponumeruj od najmniejszego. Cyfrą albo kropkami.”; przy nim stoi wybrana postać (US-21). Karta nie ma klucza ani przełącznika „cyfry / kropki”: dziecko, które nie pisze jeszcze cyfr, rysuje kropki (decyzja 2026-11-18).
 - Obrazek rzędu to ikona z karty „Który nie pasuje” albo kształt z sudoku; rzędy jednej karty mieszają ikony i kształty i nie powtarzają obrazka (decyzja 2026-11-18).
 - Wielkość to wysokość obrazka. Obrazki rzędu są tą samą sylwetką w jednej skali (proporcje i grubość kreski się nie zmieniają) i stoją na wspólnej linii dolnej, żeby dziecko porównywało tylko wysokość.
 - Odpowiedź jest jedna w rzędzie: wszystkie wielkości są różne, a dwie najbliższe różnią się co najmniej o krok poziomu, widoczny bez linijki. Rząd nigdy nie jest już ułożony rosnąco ani malejąco. Aplikacja zna odpowiedź i potrafi ją sprawdzić.
@@ -1168,7 +1168,7 @@ Reguły, które generator sprawdza: start, meta i obrazki leżą na wolnych pola
 
 ### Karta „Od najmniejszego”
 
-Dodane 2026-11-18 (M-7, S-48, GitHub 420); kształt karty ustaliła użytkowniczka na makiecie (`context/changes/size-order-card/mockup.mts`). Aplikacja zawsze tworzy kartę, w której każdy rząd ma jedną odpowiedź z samej konstrukcji: różne wielkości jednego obrazka, bez solvera. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Od najmniejszego. Wpisz 1, 2, 3… albo narysuj kropki.”) i rzędami jeden pod drugim, rozłożonymi równo od polecenia do dołu kartki.
+Dodane 2026-11-18 (M-7, S-48, GitHub 420); kształt karty ustaliła użytkowniczka na makiecie (`context/changes/size-order-card/mockup.mts`). Aplikacja zawsze tworzy kartę, w której każdy rząd ma jedną odpowiedź z samej konstrukcji: różne wielkości jednego obrazka, bez solvera. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Ponumeruj od najmniejszego. Cyfrą albo kropkami.”) i rzędami jeden pod drugim, rozłożonymi równo od polecenia do dołu kartki.
 
 Rząd to jeden obrazek w n wielkościach, w losowej kolejności, która nie jest ani rosnąca, ani malejąca. Obrazek to ikona z karty „Który nie pasuje” (25 ikon w pięciu kategoriach) albo jeden z dziewięciu kształtów sudoku; rząd losuje go z obu pul razem, karta nie powtarza obrazka i ma co najmniej jedną ikonę i co najmniej jeden kształt (decyzja 2026-11-18). Kategorii nie ma: pięć ikon w kategorii nie wystarcza na rzędy bez powtórek. Wielkość to wysokość obrysu obrazka; obrazki rzędu mają jedną skalę i stoją na wspólnej linii dolnej, a kontur kształtu ma stałą grubość (ok. 1 mm), żeby grubość kreski nie była drugą wskazówką wielkości. Najwyższy obrazek rzędu wypełnia wysokość rzędu nad polem odpowiedzi; szeroki obrazek (żółw, auto) zmniejsza cały rząd, tak żeby najszerszy mieścił się w swojej części szerokości rzędu.
 
