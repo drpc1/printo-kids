@@ -53,7 +53,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | ---- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ----------- |
 | S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje                                   | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | in-progress |
 | S-47 | shadows-card                   | Rodzic otwiera z katalogu „Cienie”, generuje kartę A4, na której dziecko łączy obiekty z ich cieniami, podgląda ją i drukuje                                | —                                                          | MS-02, FR-014, FR-017, FR-028, FR-029, FR-030, US-05, US-08, US-20        | ready       |
-| S-48 | size-order-card                | Rodzic otwiera z katalogu „Od najmniejszego”, generuje kartę A4, na której dziecko numeruje obrazki od najmniejszego do największego, podgląda ją i drukuje | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | in-progress |
+| S-48 | size-order-card                | Rodzic otwiera z katalogu „Od najmniejszego”, generuje kartę A4, na której dziecko numeruje obrazki od najmniejszego do największego, podgląda ją i drukuje | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | done        |
 | S-49 | number-maze-card               | Rodzic otwiera z katalogu „Labirynt liczbowy”, generuje kartę A4, na której dziecko idzie od startu do mety po kolejnych liczbach, podgląda ją i drukuje    | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | ready       |
 | S-55 | copy-drawing-asymmetric-shapes | Rodzic dostaje na „Skopiuj obrazek” także niesymetryczne kształty (np. skarpeta, ryba, dinozaur), z kategorią i kolorami jak dotąd                          | —                                                          | MS-07, FR-037, FR-038, US-27, US-28                                       | blocked     |
 | S-52 | profile-card-summary           | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą                                                          | S-42, S-47, S-48, S-49                                     | MS-04, FR-017, US-08                                                      | blocked     |
@@ -136,7 +136,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
   - ~~Poziomy (3–5 obrazków w rzędzie, najmniejsza różnica wielkości, czy wyższy poziom odwraca kierunek „od największego”), źródło obrazków (obiekty z szablonów, kształty z sudoku czy ikony z „Który nie pasuje”) i czy jest kategoria.~~ — Zamknięte 2026-11-18 (makieta w `context/changes/size-order-card/`, decyzje użytkowniczki): łatwy / średni / trudny z 3 / 4 / 5 obrazkami i najmniejszym krokiem ×1,35 / ×1,25 / ×1,14; kierunek zawsze „od najmniejszego”; ikony z „Który nie pasuje” i kształty sudoku razem na karcie; bez kategorii; przełącznik „Kolory” (jedna kredka na rząd); dziecko wpisuje cyfrę albo rysuje kropki, bez klucza i przełącznika. PRD: US-37–US-38, FR-047–FR-048, Business Logic „Karta „Od najmniejszego””.
   - Czy najmniejszy krok wielkości widać bez linijki na wydruku, zwłaszcza na trudnym (najwyższy obrazek ok. 24 mm). Rozstrzyga wydruk w planie (PRD Open Questions 19). — Owner: user. Block: no.
 - **Risk:** Jedna odpowiedź wymaga różnicy wielkości, którą dziecko widzi bez linijki; w rzędzie stoi ta sama sylwetka, a wielkość to jedna miara (wysokość), żeby kształt nie mylił się z wielkością. Najmniejszą różnicę potwierdza wydruk.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-49: Labirynt liczbowy
 
@@ -317,6 +317,8 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **M-1: Pierwsza drukowalna karta A4** (`first-printable-a4-maze`) — closed 2026-10-22. Rodzic generuje labirynt na wybranym poziomie, wybiera postać, korzysta z profili dzieci i drukuje kartę jako jedną stronę A4 także z telefonu.
 
 ## Done
+
+- **S-48: Rodzic otwiera z katalogu „Od najmniejszego”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z rzędami obrazków tego samego obiektu w różnych wielkościach; dziecko wpisuje pod nimi kolejność od najmniejszego do największego (1, 2, 3…).** — Archived 2026-11-18 → `context/archive/2026-11-18-size-order-card/`. Lesson: —.
 
 - **S-45: Rodzic dostaje nowe karty i logikę M-6 sprawdzone mutacjami Strykera na zakresach z ryzykiem (solver krzyżówki, reguły jednoznaczności).** — Archived 2026-11-17 → `context/archive/2026-11-16-stryker-m6-cards/`. Lesson: —.
 
