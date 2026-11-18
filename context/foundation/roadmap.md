@@ -127,13 +127,14 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 
 - **Outcome:** Rodzic otwiera z katalogu „Od najmniejszego”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z rzędami obrazków tego samego obiektu w różnych wielkościach; dziecko wpisuje pod nimi kolejność od najmniejszego do największego (1, 2, 3…). Podgląda kartę i drukuje ją jako jedną stronę A4 także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43. Generator sprawdza, że każda para obrazków w rzędzie różni się wyraźnie wielkością.
 - **Change ID:** size-order-card
-- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08 (US i FR karty dochodzą przy otwarciu)
+- **PRD refs:** MS-02, FR-014, FR-017, FR-030, FR-047, FR-048, US-05, US-08, US-37, US-38
 - **Prerequisites:** —
 - **Parallel with:** S-42, S-47, S-49
 - **Blockers:** —
 - **Unknowns:**
   - ~~Jaki to rodzaj karty?~~ — Zamknięte 2026-11-18 (decyzja użytkowniczki po szkicu w rozmowie): „Od najmniejszego”.
-  - Poziomy (3–5 obrazków w rzędzie, najmniejsza różnica wielkości, czy wyższy poziom odwraca kierunek „od największego”), źródło obrazków (obiekty z szablonów, kształty z sudoku czy ikony z „Który nie pasuje”) i czy jest kategoria. Rozstrzyga makieta przed planem. — Owner: user. Block: no.
+  - ~~Poziomy (3–5 obrazków w rzędzie, najmniejsza różnica wielkości, czy wyższy poziom odwraca kierunek „od największego”), źródło obrazków (obiekty z szablonów, kształty z sudoku czy ikony z „Który nie pasuje”) i czy jest kategoria.~~ — Zamknięte 2026-11-18 (makieta w `context/changes/size-order-card/`, decyzje użytkowniczki): łatwy / średni / trudny z 3 / 4 / 5 obrazkami i najmniejszym krokiem ×1,35 / ×1,25 / ×1,14; kierunek zawsze „od najmniejszego”; ikony z „Który nie pasuje” i kształty sudoku razem na karcie; bez kategorii; przełącznik „Kolory” (jedna kredka na rząd); dziecko wpisuje cyfrę albo rysuje kropki, bez klucza i przełącznika. PRD: US-37–US-38, FR-047–FR-048, Business Logic „Karta „Od najmniejszego””.
+  - Czy najmniejszy krok wielkości widać bez linijki na wydruku, zwłaszcza na trudnym (najwyższy obrazek ok. 24 mm). Rozstrzyga wydruk w planie (PRD Open Questions 19). — Owner: user. Block: no.
 - **Risk:** Jedna odpowiedź wymaga różnicy wielkości, którą dziecko widzi bez linijki; w rzędzie stoi ta sama sylwetka, a wielkość to jedna miara (wysokość), żeby kształt nie mylił się z wielkością. Najmniejszą różnicę potwierdza wydruk.
 - **Status:** ready
 

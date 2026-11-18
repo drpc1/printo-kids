@@ -69,6 +69,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać poziom karty „Zegar” (Poziom 1–5: od pełnych godzin po co minutę), tryb i zapis 24-godzinny; profil sam pamięta pasek (2026-11-15).
 - Rodzic może wygenerować kartę kodowania, na której dziecko zapisuje strzałkami jedyną najkrótszą drogę postaci do mety na kratce z przeszkodami albo idzie za podanymi strzałkami i zakreśla obrazek, na którym skończyło, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-17, S-42).
 - Rodzic może wybrać poziom karty kodowania (Poziom 1–4: od kratki 5×5 po 10×10) i tryb (Zapisz, Wykonaj); profil sam pamięta pasek (2026-11-17, S-42).
+- Rodzic może wygenerować kartę „Od najmniejszego”, na której dziecko porządkuje w każdym rzędzie ten sam obrazek w kilku wielkościach od najmniejszego do największego, wpisując pod nim cyfrę albo rysując kropki, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-18, S-48).
+- Rodzic może wybrać poziom karty „Od najmniejszego” (łatwy, średni, trudny: 3, 4 albo 5 obrazków w rzędzie i coraz mniejsza różnica wielkości) i włączyć kolory; profil sam pamięta pasek (2026-11-18, S-48).
 
 ### Guardrails
 
@@ -647,6 +649,39 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy poziom i tryb mieści się na jednej stronie A4 z marginesem 10 mm.
 - Profil i ostatnie parametry pamiętają poziom i tryb (US-08).
 
+### US-37: Rodzic generuje kartę „Od najmniejszego” do druku
+
+> Dodane 2026-11-18 (M-7, S-48, GitHub 420). Kształt karty ustaliła użytkowniczka 2026-11-18 na makiecie (`context/changes/size-order-card/`); wartości w Business Logic są startowe i zostają potwierdzone na wydruku.
+
+- **Given** rodzic otworzył z katalogu stronę „Od najmniejszego”
+- **When** uruchomi generowanie
+- **Then** otrzymuje gotową do wydruku kartę A4 z kilkoma rzędami; w każdym rzędzie stoi ten sam obrazek w kilku wielkościach, a dziecko pod każdym wpisuje jego miejsce od najmniejszego (1, 2, 3…) albo rysuje tyle kropek
+
+#### Acceptance Criteria
+
+- Karta ma kilka rzędów, jeden pod drugim. W rzędzie stoi jeden obrazek w 3–5 wielkościach (zależnie od poziomu, US-38), w pomieszanej kolejności; pod każdym jest puste, szerokie pole na cyfrę albo kropki. Nad rzędami jest jedno zdanie polecenia: „Od najmniejszego: wpisz 1, 2, 3… albo narysuj kropki.”; przy nim stoi wybrana postać (US-21). Karta nie ma klucza ani przełącznika „cyfry / kropki”: dziecko, które nie pisze jeszcze cyfr, rysuje kropki (decyzja 2026-11-18).
+- Obrazek rzędu to ikona z karty „Który nie pasuje” albo kształt z sudoku; rzędy jednej karty mieszają ikony i kształty i nie powtarzają obrazka (decyzja 2026-11-18).
+- Wielkość to wysokość obrazka. Obrazki rzędu są tą samą sylwetką w jednej skali (proporcje i grubość kreski się nie zmieniają) i stoją na wspólnej linii dolnej, żeby dziecko porównywało tylko wysokość.
+- Odpowiedź jest jedna w rzędzie: wszystkie wielkości są różne, a dwie najbliższe różnią się co najmniej o krok poziomu, widoczny bez linijki. Rząd nigdy nie jest już ułożony rosnąco ani malejąco. Aplikacja zna odpowiedź i potrafi ją sprawdzić.
+- Karta nie ma kategorii (za mało ikon w kategorii na rzędy bez powtórek) ani „Pokaż rozwiązanie” (odpowiedź widać na kartce).
+- Każde Generuj daje nową kartę: inne obrazki albo inną kolejność niż poprzednia karta.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Domyślnie druk jest czarny; po włączeniu kolorów (US-38) obrazki drukują się w kolorach kredek; bez odpowiedzi na kartce, a postać przy poleceniu drukuje się w kolorze (US-21).
+- Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+
+### US-38: Rodzic wybiera poziom karty „Od najmniejszego” i włącza kolory
+
+- **Given** rodzic jest na stronie „Od najmniejszego”
+- **When** wybierze poziom (łatwy, średni, trudny) albo włączy kolory
+- **Then** karta ma liczbę obrazków w rzędzie, liczbę rzędów i najmniejszą różnicę wielkości zgodne z poziomem, a obrazki mają kolory kredek po włączeniu kolorów
+
+#### Acceptance Criteria
+
+- Poziomy to łatwy, średni, trudny, bez wieku pod opisem (jak karty z M-5): łatwy 3 obrazki w rzędzie, średni 4, trudny 5; z poziomem maleje najmniejsza różnica wielkości. Kierunek jest zawsze „od najmniejszego”; trudniejszy poziom go nie odwraca (decyzja 2026-11-18). Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia. Reguły są w Business Logic.
+- Kolory to osobny przełącznik na pasku, niezależny od poziomu, domyślnie wyłączony: ikony są wtedy czarnymi sylwetkami, a kształty czarnymi konturami. Włączony daje każdemu rzędowi jedną kredkę dla wszystkich jego obrazków, więc kolor nie zdradza wielkości. Przełącznik zostawia tę samą kartę; nie generuje nowej (decyzja 2026-11-18).
+- Zmiana poziomu przy pokazanej karcie od razu układa nową kartę (US-22).
+- Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
+- Profil i ostatnie parametry pamiętają poziom i kolory (US-08).
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -774,6 +809,13 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - FR-046: Rodzic może wybrać poziom karty kodowania (Poziom 1–4: kratka, długość drogi, zakręty, przeszkody, zapis „3 →” na Poziomie 4) i tryb (Zapisz, Wykonaj). Priority: must-have
   > Socrates: Counter-argument considered: dwa tryby w jednej karcie mieszają planowanie z czytaniem poleceń, a tryb mógłby wynikać z poziomu. Resolution: kept (2026-11-17, decyzja użytkowniczki po makiecie); tryb to osobny wybór na pasku, jak w zegarze, bo obie umiejętności rosną z kratką i długością drogi, a rodzic wybiera, co dziecko ćwiczy.
 
+### Od najmniejszego
+
+- FR-047: Rodzic może wygenerować kartę „Od najmniejszego” z rzędami tego samego obrazka (ikona albo kształt) w kilku wielkościach, pod którymi dziecko wpisuje kolejność od najmniejszego cyfrą albo kropkami, z jedną sprawdzalną odpowiedzią w rzędzie, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: ten sam obrazek w różnych wielkościach może się różnić tak mało, że dziecko zgaduje, a szeroki i wysoki obrazek mylą „większy” z „wyższym”. Resolution: kept (2026-11-18, makieta); w rzędzie stoi ta sama sylwetka w jednej skali na wspólnej linii dolnej, więc jedyną różnicą jest wysokość, a generator pilnuje najmniejszego kroku poziomu. Krok potwierdza wydruk.
+  > Socrates: Counter-argument considered: dziecko 4–5 lat nie pisze jeszcze cyfr. Resolution: revised (2026-11-18, decyzja użytkowniczki); polecenie pozwala narysować kropki zamiast cyfry, a pole jest dość szerokie na jedno i drugie; bez klucza i bez przełącznika, żeby karta została prosta.
+- FR-048: Rodzic może wybrać poziom karty „Od najmniejszego” (łatwy, średni, trudny: 3, 4 albo 5 obrazków w rzędzie, liczba rzędów, najmniejsza różnica wielkości) i włączyć kolory, które nie zmieniają karty. Priority: must-have
+
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
@@ -789,6 +831,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Krzyżówka matematyczna (2026-11-13, S-40) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 7 z czterema działaniami do 100 i 20 działaniami), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (rozwiązanie tylko na ekranie), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karta „Zegar” (2026-11-15) spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karta kodowania (2026-11-17, S-42) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 4 w trybie Zapisz ze sprawdzeniem jednej najkrótszej drogi), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (szare pola przykładu i szare przeszkody to nie odpowiedź), te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- Karta „Od najmniejszego” (2026-11-18, S-48) spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (z włączonymi kolorami obrazki w kolorach kredek), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
@@ -1123,9 +1166,29 @@ Wykonaj — jedna kratka końcowa: droga ze strzałek jest losowana po wolnych p
 
 Reguły, które generator sprawdza: start, meta i obrazki leżą na wolnych polach; droga odpowiedzi nie wchodzi na przeszkodę ani poza kratkę i nie wraca na to samo pole; w Zapisz najkrótsza droga do mety jest dokładnie jedna, ma długość i liczbę zakrętów poziomu, a liczba pól równa się liczbie kroków (Poziom 4: liczbie poleceń); w Wykonaj droga kończy się na obrazku-celu, a pozostałe obrazki nie leżą na drodze; kratka i pola mieszczą się na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Zmiana poziomu albo trybu przy pokazanej karcie od razu układa nową kartę. Każde Generuj daje inną kratkę albo inną drogę niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 18). Wynikiem jest karta A4; kratka i pola zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
+### Karta „Od najmniejszego”
+
+Dodane 2026-11-18 (M-7, S-48, GitHub 420); kształt karty ustaliła użytkowniczka na makiecie (`context/changes/size-order-card/mockup.mts`). Aplikacja zawsze tworzy kartę, w której każdy rząd ma jedną odpowiedź z samej konstrukcji: różne wielkości jednego obrazka, bez solvera. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Od najmniejszego: wpisz 1, 2, 3… albo narysuj kropki.”) i rzędami jeden pod drugim, rozłożonymi równo od polecenia do dołu kartki.
+
+Rząd to jeden obrazek w n wielkościach, w losowej kolejności, która nie jest ani rosnąca, ani malejąca. Obrazek to ikona z karty „Który nie pasuje” (25 ikon w pięciu kategoriach) albo jeden z dziewięciu kształtów sudoku; rząd losuje go z obu pul razem, karta nie powtarza obrazka i ma co najmniej jedną ikonę i co najmniej jeden kształt (decyzja 2026-11-18). Kategorii nie ma: pięć ikon w kategorii nie wystarcza na rzędy bez powtórek. Wielkość to wysokość obrysu obrazka; obrazki rzędu mają jedną skalę i stoją na wspólnej linii dolnej, a kontur kształtu ma stałą grubość (ok. 1 mm), żeby grubość kreski nie była drugą wskazówką wielkości. Najwyższy obrazek rzędu wypełnia wysokość rzędu nad polem odpowiedzi; szeroki obrazek (żółw, auto) zmniejsza cały rząd, tak żeby najszerszy mieścił się w swojej części szerokości rzędu.
+
+Pod każdym obrazkiem jest puste pole o wysokości ok. 13 mm i szerokości do 30 mm: mieści cyfrę albo do pięciu kropek. Nie ma klucza ani przełącznika „cyfry / kropki” (decyzja 2026-11-18).
+
+| Poziom | Obrazków w rzędzie | Rzędów | Wysokości (ułamek najwyższego) | Najmniejszy krok | Najwyższy obrazek (około) |
+| ------ | ------------------ | ------ | ------------------------------ | ---------------- | ------------------------- |
+| łatwy  | 3                  | 4      | 0,48 / 0,74 / 1                | ×1,35            | 36 mm                     |
+| średni | 4                  | 4      | 0,5 / 0,63 / 0,79 / 1          | ×1,25            | 36 mm                     |
+| trudny | 5                  | 5      | 0,55 / 0,65 / 0,76 / 0,87 / 1  | ×1,14            | 24 mm                     |
+
+„Najmniejszy krok” to stosunek wysokości dwóch najbliższych wielkości w rzędzie. Opisy poziomów w UI: łatwy „3 obrazki, wyraźne różnice”, średni „4 obrazki, mniejsze różnice”, trudny „5 obrazków, małe różnice”. Domyślny jest łatwy. Kierunek jest zawsze „od najmniejszego”.
+
+Kolory (US-38): osobne ustawienie rodzica, niezależne od poziomu, domyślnie wyłączone (ikony czarne, kształty jako czarne kontury). Włączone: każdy rząd ma jedną kredkę z siedmiu kredek „Który nie pasuje” (bez szarej i czarnej), różną w kolejnych rzędach; ikona jest wypełniona kredką z białymi detalami, kształt wypełniony kredką. Kolor jest ten sam dla wszystkich obrazków rzędu, więc nie zdradza wielkości. Przełącznik nie układa nowej karty.
+
+Reguły, które generator sprawdza: obrazki rzędu to ta sama sylwetka w różnych wysokościach; każde dwie sąsiednie wielkości różnią się co najmniej o krok poziomu; rząd nie jest ułożony rosnąco ani malejąco; karta nie powtarza obrazka i ma co najmniej jedną ikonę i jeden kształt; obrazki i pola mieszczą się w rzędzie i na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Karta nie ma „Pokaż rozwiązanie”. Każde Generuj daje inne obrazki albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 19). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
+
 ### Poziomy
 
-Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem), zegar 1–5 (od 2026-11-15; bez wieku pod opisem), kodowanie 1–4 (od M-7, 2026-11-17, S-42; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
+Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem), zegar 1–5 (od 2026-11-15; bez wieku pod opisem), kodowanie 1–4 (od M-7, 2026-11-17, S-42; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej?”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Od M-7 łatwy / średni / trudny ma też „Od najmniejszego” (2026-11-18, S-48), bez wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
 
 Każdy wiersz listy poziomów ma nazwę, pół zdania o tym, co zmienia poziom, i, przy labiryncie, symetrii, sekwencjach i dyktandzie, typowy wiek pod opisem; wiersz ma trzy linie, np. „Poziom 1” / „duża kratka, podpowiedź przy osi” / „zwykle ok. 4 lata”. Sudoku i nonogram nie mają wieku. Zapisane identyfikatory poziomów mogą zostać w danych; zmienia się etykieta, więc zapisane profile i ostatnie parametry wczytują się bez migracji.
 
@@ -1148,6 +1211,7 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | Krzyżówka matematyczna | poziom                                      |
 | Zegar                  | poziom, tryb, 24 h                          |
 | Kodowanie              | poziom, tryb                                |
+| Od najmniejszego       | poziom, kolory                              |
 
 Zasady:
 
@@ -1182,6 +1246,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 - Kamień M-6 (2026-11-13) zaczyna się od jednej karty: krzyżówki matematycznej (US-31–US-32, FR-041–FR-042; S-40). Nie obejmuje osobnej kontrolki liczby pustych pól, wieku pod opisem poziomu, działań z więcej niż jednym znakiem (np. „a + b − c = d”) ani kolejności wykonywania działań, ramki „Użyj:” z brakującymi liczbami, kolorów, kategorii i obrazków na karcie.
 - Druga karta M-6 (2026-11-15) to „Zegar” (US-33–US-34, FR-043–FR-044; slot S-41). Nie obejmuje tarczy bez liczb ani z samymi 12, 3, 6, 9, zapisu słownego godziny („wpół do ósmej”), wskazówki sekundowej, obliczeń zegarowych („która będzie za 20 minut?”), „Pokaż rozwiązanie”, kolorów ani kategorii. Karty kodowania (slot S-42) przeszły do M-7 (zawężenie M-6 2026-11-16).
 - Pierwsza karta M-7 (2026-11-17) to karta kodowania (US-35–US-36, FR-045–FR-046; S-42). Nie obejmuje strzałek względnych („obróć się w lewo”), pętli i powtórzeń („3 × →” jako osobnej instrukcji), kroków po skosie, wielu postaci ani zbierania przedmiotów po drodze, kolorów, kategorii ani „Pokaż rozwiązanie”.
+- Druga karta M-7 (2026-11-18) to „Od najmniejszego” (US-37–US-38, FR-047–FR-048; S-48). Nie obejmuje kierunku „od największego”, klucza ani przełącznika „cyfry / kropki”, kategorii obrazków, porównania szerokości, długości albo ciężaru (wielkość to tylko wysokość), sylwetek z katalogu szablonów ani „Pokaż rozwiązanie”.
 - Kamień M-5 nie obejmuje groszy i centów, banknotu 200 €, monet dolarowych, cen i reszty w „Kto ma więcej?”, kwoty „ułóż dokładnie tę kwotę” ani oceny rysunku dziecka na kartach „Skopiuj obrazek” i szlaczki (decyzja 2026-11-01).
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
@@ -1240,3 +1305,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 16. **Jak długo trwa M-5 (cztery karty naraz)?** — Owner: user. Block: nie. Roadmapa sekwencjonuje bez dat; `delivery_weeks` nie jest ustalone.
 17. ~~**Czy startowe wartości poziomów krzyżówki matematycznej (liczba działań, kratka, puste pola, łańcuch) pasują dziecku?**~~ — Zamknięte 2026-11-14 po wydruku użytkowniczki: wszystkie poziomy (1–7) wychodzą na jednej stronie A4, cyfry mieszczą się w kratkach także na Poziomie 7 (13,5 mm), liczby da się wpisać w kratki na Poziomach 1–2, a zakreskowanie jest widoczne; startowe wartości poziomów zostają bez zmian. Na telefonie (Brave, Chrome, Safari) wydruk wykazał jeszcze liczby niewycentrowane w kratce; poprawione w GitHub 371 (jawne przesunięcie linii bazowej zamiast `dominant-baseline`). Wcześniej: Owner: user. Block: nie. Tabela w Business Logic „Karta krzyżówki matematycznej” jest propozycją z 2026-11-13 (S-40), zaakceptowaną po makietach; potwierdza ją wydruk w fazie 4 planu `math-crossword-card`: czy cyfry mieszczą się w kratce 13,5 mm na Poziomie 7, czy dziecko daje radę wpisać liczby w kratki 26 i 24 mm na Poziomach 1–2 i czy łańcuch 3–4 na Poziomach 4–7 nie jest za trudny.
 18. ~~**Czy startowe wartości karty kodowania (kratka, bok pola, długość drogi, przeszkody, pola przykładu) pasują dziecku?**~~ — Zamknięte 2026-11-18 po wydruku użytkowniczki: karty wszystkich poziomów i obu trybów wychodzą na jednej stronie A4, a startowe wartości zostają bez zmian; próba z dzieckiem (Zapisz i Wykonaj) pozostaje do zrobienia i nie blokuje zamknięcia. Wcześniej: Owner: user. Block: nie. Tabela w Business Logic „Karta kodowania” jest propozycją z 2026-11-17 (S-42), przyjętą po makiecie (`context/changes/coding-card/`); potwierdza ją wydruk: czy strzałka mieści się w polu 16 mm na Poziomach 3–4, czy szare pola przykładu nie mylą się z przeszkodami (ten sam odcień w makiecie; może trzeba jaśniejszego) i czy droga 18–24 kroków na Poziomie 4 nie jest za długa. Zamknięte decyzjami 2026-11-17 (użytkowniczka): domyślny tryb Zapisz, brak „Pokaż rozwiązanie” (jak w zegarze: odpowiedź da się sprawdzić, prowadząc palcem po strzałkach) i kółko „Start” przy postaci „Brak”; zostają wartości startowe, które potwierdza wydruk.
+19. **Czy najmniejszy krok wielkości karty „Od najmniejszego” (×1,35 / ×1,25 / ×1,14) dziecko widzi bez linijki, także na małych obrazkach trudnego poziomu (najwyższy ok. 24 mm)?** — Owner: user. Block: nie. Tabela w Business Logic „Karta „Od najmniejszego”” jest propozycją z 2026-11-18 (S-48), zaakceptowaną na makiecie; potwierdza ją wydruk w planie `size-order-card`.
