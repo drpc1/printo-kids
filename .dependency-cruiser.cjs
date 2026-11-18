@@ -136,7 +136,7 @@ module.exports = {
         path: '^src/(components|hooks|pages)/'
       },
       to: {
-        path: '^src/lib/(maze|symmetry|sequence|sudoku|nonogram|dictation|money|odd-one-out|copy-drawing|pattern-lines|math-crossword|clock|coding)/generate[.]ts$',
+        path: '^src/lib/(maze|symmetry|sequence|sudoku|nonogram|dictation|money|odd-one-out|copy-drawing|pattern-lines|math-crossword|clock|coding|size-order)/generate[.]ts$',
         dependencyTypesNot: ['type-only']
       }
     },
