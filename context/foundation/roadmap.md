@@ -54,7 +54,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje                                   | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | in-progress |
 | S-47 | shadows-card                   | Rodzic otwiera z katalogu „Cienie”, generuje kartę A4, na której dziecko łączy obiekty z ich cieniami, podgląda ją i drukuje                                | —                                                          | MS-02, FR-014, FR-017, FR-028, FR-029, FR-030, US-05, US-08, US-20        | ready       |
 | S-48 | size-order-card                | Rodzic otwiera z katalogu „Od najmniejszego”, generuje kartę A4, na której dziecko numeruje obrazki od najmniejszego do największego, podgląda ją i drukuje | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | done        |
-| S-49 | number-maze-card               | Rodzic otwiera z katalogu „Labirynt liczbowy”, generuje kartę A4, na której dziecko idzie od startu do mety po kolejnych liczbach, podgląda ją i drukuje    | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08, US-39, US-40, FR-049, FR-050 | in-progress |
+| S-49 | number-maze-card               | Rodzic otwiera z katalogu „Labirynt liczbowy”, generuje kartę A4, na której dziecko idzie od startu do mety po kolejnych liczbach, podgląda ją i drukuje    | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08, US-39, US-40, FR-049, FR-050 | done        |
 | S-55 | copy-drawing-asymmetric-shapes | Rodzic dostaje na „Skopiuj obrazek” także niesymetryczne kształty (np. skarpeta, ryba, dinozaur), z kategorią i kolorami jak dotąd                          | —                                                          | MS-07, FR-037, FR-038, US-27, US-28                                       | blocked     |
 | S-52 | profile-card-summary           | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą                                                          | S-42, S-47, S-48, S-49                                     | MS-04, FR-017, US-08                                                      | blocked     |
 | S-54 | seasons-objects-characters     | Rodzic wybiera obiekty i postacie kolejnej pory roku w jej oknie dat, tak jak świąteczne                                                                    | —                                                          | MS-06, FR-028, FR-029, FR-012, US-19, US-20                               | blocked     |
@@ -151,7 +151,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
   - ~~Poziomy, jak bardzo kuszące są pułapki, czy jest „Pokaż rozwiązanie”.~~ — Zamknięte 2026-11-20 po makiecie (`context/changes/number-maze-card/`): sześć poziomów (1–15 na 5×5, 1–20 na 5×6, 1–30 na 6×7, 1–50 na 8×9, bo 7×8 zostawiało 6 pułapek; co 2 do 60 na 6×7; co 5 do 200 na 7×8), pułapki kuszące na każdym poziomie, bez „Pokaż rozwiązanie” (decyzje użytkowniczki). Generator z makiety przeszedł 200 z 200 kart na każdym poziomie. Wartości potwierdza wydruk (PRD Open Questions 20).
   - ~~Nazwa w kodzie i w glosariuszu.~~ — Zamknięte 2026-11-20: id `liczby`, strona `/number-maze`, w aplikacji zawsze „Labirynt liczbowy”; wpis w `context/domain/glossary.md`.
 - **Risk:** Jedna droga: z każdej kratki drogi tylko jedna sąsiednia kratka ma następną liczbę, a start i meta są zaznaczone. Droga to losowa ścieżka bez samoprzecięć przez dużą część kratki; pułapki mają być bliskie liczbom drogi, żeby kusiły, ale żadna nie może stać przy drodze z następną liczbą.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-43: Tagi i filtr kart w katalogu
 
@@ -255,7 +255,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 | S-42       | coding-card                    | Karty kodowania                                 | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373)                      |
 | S-47       | shadows-card                   | Cienie                                          | no                    | Run `/10x-new shadows-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#419)    |
 | S-48       | size-order-card                | Od najmniejszego                                | no                    | Run `/10x-new size-order-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#420) |
-| S-49       | number-maze-card               | Labirynt liczbowy                               | no                    | W toku: faza 1 (logika), potem `/10x-implement number-maze-card phase 2` (#421)          |
+| S-49       | number-maze-card               | Labirynt liczbowy                               | no                    | Zrobione, zarchiwizowane                                                                 |
 | S-43       | card-tags-filter               | Tagi i filtr kart w katalogu                    | no                    | Czeka na S-42, S-47 do S-49; najpierw lista tagów (#374)                                 |
 | S-55       | copy-drawing-asymmetric-shapes | „Skopiuj obrazek” z kształtami niesymetrycznymi | no                    | Issue #379; czeka na decyzję, które kształty                                             |
 | S-52       | profile-card-summary           | Okno profilu przy wielu kartach                 | no                    | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować                                    |
@@ -318,6 +318,7 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 
 ## Done
 
+- **S-49: Rodzic otwiera z katalogu „Labirynt liczbowy”, wybiera poziom i dostaje kartę A4 z kratką liczb, na której dziecko rysuje drogę od startu do mety po kolejnych liczbach, omijając pułapki** — Archived 2026-11-20 → `context/archive/2026-11-20-number-maze-card/`. Lesson: —.
 - **S-48: Rodzic otwiera z katalogu „Od najmniejszego”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z rzędami obrazków tego samego obiektu w różnych wielkościach; dziecko wpisuje pod nimi kolejność od najmniejszego do największego (1, 2, 3…).** — Archived 2026-11-18 → `context/archive/2026-11-18-size-order-card/`. Lesson: —.
 
 - **S-45: Rodzic dostaje nowe karty i logikę M-6 sprawdzone mutacjami Strykera na zakresach z ryzykiem (solver krzyżówki, reguły jednoznaczności).** — Archived 2026-11-17 → `context/archive/2026-11-16-stryker-m6-cards/`. Lesson: —.
