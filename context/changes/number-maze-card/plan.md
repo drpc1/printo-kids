@@ -253,16 +253,16 @@ Brak: pole `cards.liczby` w zapisanych profilach dostaje wartość domyślną pr
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint: `npm run lint`
-- [x] 1.3 Zależności: `npm run depcruise`
-- [x] 1.4 Typy: `npx astro check`
-- [x] 1.5 Build: `npm run build`
+- [x] 1.1 Testy przechodzą: `npm test` — cb340991
+- [x] 1.2 Lint: `npm run lint` — cb340991
+- [x] 1.3 Zależności: `npm run depcruise` — cb340991
+- [x] 1.4 Typy: `npx astro check` — cb340991
+- [x] 1.5 Build: `npm run build` — cb340991
 
 #### Manual
 
-- [x] 1.6 Użytkowniczka akceptuje podgląd karty z kodu (`preview.mts`, sześć poziomów)
-- [x] 1.7 Przegląd diffu względem planu i makiety (`/10x-impl-review` przed PR fazy)
+- [x] 1.6 Użytkowniczka akceptuje podgląd karty z kodu (`preview.mts`, sześć poziomów) — cb340991
+- [x] 1.7 Przegląd diffu względem planu i makiety (`/10x-impl-review` przed PR fazy) — cb340991
 
 ### Phase 2: Strona, katalog i profil
 
