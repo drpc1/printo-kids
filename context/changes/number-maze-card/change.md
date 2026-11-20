@@ -1,7 +1,7 @@
 ---
 change_id: number-maze-card
 title: Karta „Labirynt liczbowy” (S-49, GitHub 421)
-status: impl_reviewed
+status: implemented
 created: 2026-11-20
 updated: 2026-11-20
 archived_at: null
