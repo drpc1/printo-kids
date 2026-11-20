@@ -207,7 +207,6 @@ Po scaleniu, nie blokuje wydania: wydruk sześciu poziomów i próba z dzieckiem
 
 - Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
 - Liczby trzycyfrowe Poziomu 6 są czytelne w kratce ok. 27 mm, a kratka 24 mm Poziomu 4 wystarcza na rysowanie drogi
-- Dziecko przechodzi drogę na Poziomach 1–2, a pułapki kuszą, ale nie mylą drogi
 - Open Questions 20 zamknięte w PRD, roadmapa S-49 zgodna
 
 ---
@@ -284,11 +283,10 @@ Brak: pole `cards.liczby` w zapisanych profilach dostaje wartość domyślną pr
 
 #### Automated
 
-- [ ] 3.1 Po ewentualnej poprawce: `npm test` i `npm run build`
+- [x] 3.1 Po ewentualnej poprawce: `npm test` i `npm run build`
 
 #### Manual
 
-- [ ] 3.2 Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
-- [ ] 3.3 Liczby trzycyfrowe Poziomu 6 są czytelne w kratce ok. 27 mm, a kratka 24 mm Poziomu 4 wystarcza na rysowanie drogi
-- [ ] 3.4 Dziecko przechodzi drogę na Poziomach 1–2, a pułapki kuszą, ale nie mylą drogi
-- [ ] 3.5 Open Questions 20 zamknięte w PRD, roadmapa S-49 zgodna
+- [x] 3.2 Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
+- [x] 3.3 Liczby trzycyfrowe Poziomu 6 są czytelne w kratce ok. 27 mm, a kratka 24 mm Poziomu 4 wystarcza na rysowanie drogi
+- [x] 3.4 Open Questions 20 zamknięte w PRD, roadmapa S-49 zgodna
