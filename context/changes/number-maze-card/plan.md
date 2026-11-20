@@ -268,17 +268,17 @@ Brak: pole `cards.liczby` w zapisanych profilach dostaje wartość domyślną pr
 
 #### Automated
 
-- [x] 2.1 Testy jednostkowe: `npm test`
-- [x] 2.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build`
-- [x] 2.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768`
-- [x] 2.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke`
+- [x] 2.1 Testy jednostkowe: `npm test` — 913d83aa
+- [x] 2.2 Lint, zależności, typy, build: `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` — 913d83aa
+- [x] 2.3 E2E na czterech projektach Chromium z własnym portem: `E2E_PORT=4399 npx playwright test --project=chromium --project=phone-360 --project=pixel-7 --project=tablet-768` — 913d83aa
+- [x] 2.4 Smoke na zbudowanym podglądzie: `BASE_URL=http://localhost:4399 npm run smoke` — 913d83aa
 
 #### Manual
 
-- [x] 2.5 Użytkowniczka sprawdza każdy poziom i podgląd wydruku (jedna strona A4), z postacią i z „Brak”
+- [x] 2.5 Użytkowniczka sprawdza każdy poziom i podgląd wydruku (jedna strona A4), z postacią i z „Brak” — 913d83aa
 - [x] 2.6 Miniatura w katalogu, plakietka poziomu przy profilu i podsumowanie w oknie profilu są poprawne
 - [x] 2.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
-- [x] 2.8 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy)
+- [x] 2.8 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy) — 913d83aa
 
 ### Phase 3: Wydruk próbny
 
