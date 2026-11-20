@@ -30,7 +30,8 @@ test("the Labirynt card on the catalog opens the maze generator", async ({ page 
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await page.goto("/");
 
-  const card = page.getByRole("link", { name: "Labirynt" });
+  // Exact: "Labirynt liczbowy" also contains the word.
+  const card = page.getByRole("link", { name: "Labirynt", exact: true });
   await expect(card).toBeVisible();
   await card.click();
 
@@ -66,7 +67,8 @@ test("the chosen profile persists across the catalog round trip", async ({ page 
   await page.getByRole("link", { name: "Wszystkie karty" }).click();
   await expect(page).toHaveURL(/\/$/);
 
-  await page.getByRole("link", { name: "Labirynt" }).click();
+  // The maze link reads "Labirynt, poz. …" with a profile; the anchor keeps "Labirynt liczbowy" out.
+  await page.getByRole("link", { name: /^Labirynt(,|$)/ }).click();
   await expect(page).toHaveURL(/\/maze$/);
 
   await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();

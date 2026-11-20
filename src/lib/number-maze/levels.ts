@@ -33,7 +33,7 @@ export const NUMBER_MAZE_LEVELS: readonly NumberMazeLevel[] = [
   {
     id: "poziom1",
     label: "Poziom 1",
-    barLabel: "Poziom 1",
+    barLabel: "1",
     description: "liczby do 15, duża kratka",
     cols: 5,
     rows: 5,
@@ -46,7 +46,7 @@ export const NUMBER_MAZE_LEVELS: readonly NumberMazeLevel[] = [
   {
     id: "poziom2",
     label: "Poziom 2",
-    barLabel: "Poziom 2",
+    barLabel: "2",
     description: "liczby do 20",
     cols: 5,
     rows: 6,
@@ -59,7 +59,7 @@ export const NUMBER_MAZE_LEVELS: readonly NumberMazeLevel[] = [
   {
     id: "poziom3",
     label: "Poziom 3",
-    barLabel: "Poziom 3",
+    barLabel: "3",
     description: "liczby do 30",
     cols: 6,
     rows: 7,
@@ -72,7 +72,7 @@ export const NUMBER_MAZE_LEVELS: readonly NumberMazeLevel[] = [
   {
     id: "poziom4",
     label: "Poziom 4",
-    barLabel: "Poziom 4",
+    barLabel: "4",
     description: "liczby do 50, mniejsza kratka",
     cols: 8,
     rows: 9,
@@ -85,7 +85,7 @@ export const NUMBER_MAZE_LEVELS: readonly NumberMazeLevel[] = [
   {
     id: "poziom5",
     label: "Poziom 5",
-    barLabel: "Poziom 5",
+    barLabel: "5",
     description: "liczenie co 2 do 60",
     cols: 6,
     rows: 7,
@@ -98,7 +98,7 @@ export const NUMBER_MAZE_LEVELS: readonly NumberMazeLevel[] = [
   {
     id: "poziom6",
     label: "Poziom 6",
-    barLabel: "Poziom 6",
+    barLabel: "6",
     description: "liczenie co 5 do 200",
     cols: 7,
     rows: 8,

@@ -53,7 +53,7 @@ test("a generator page has the footer link and the page states the rules of leve
   await expect(body).toContainText("przy zdaniu polecenia");
   // S-37: the level rules name the four M-5 cards and no longer say which old cards lack an age.
   await expect(body).toContainText(
-    "Numery mają labirynt (Poziom 1–6), symetria, sekwencje i szlaczki (Poziom 1–4), zegar (Poziom 1–5), kodowanie (Poziom 1–4) oraz krzyżówka matematyczna (Poziom 1–7).",
+    "Numery mają labirynt (Poziom 1–6), symetria, sekwencje i szlaczki (Poziom 1–4), zegar (Poziom 1–5), kodowanie (Poziom 1–4), krzyżówka matematyczna (Poziom 1–7) oraz „Labirynt liczbowy” (Poziom 1–6).",
   );
   await expect(body).toContainText("„Kto ma więcej”, „Który nie pasuje”, „Skopiuj obrazek” i „Od najmniejszego”");
   await expect(body).not.toContainText("sudoku i nonogram wieku nie mają");
@@ -76,8 +76,9 @@ test("the page describes every card kind in catalog order", async ({ page }, tes
   await expect(page.getByRole("heading", { level: 2, name: "Rodzaje kart" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 3 })).toHaveText(titles);
   for (const title of titles) {
-    const heading = page.getByRole("heading", { level: 3, name: title });
-    await expect(heading.getByRole("link", { name: title })).toHaveAttribute("href", /^\/[a-z-]+$/);
+    // Exact: "Labirynt" is also a word of "Labirynt liczbowy".
+    const heading = page.getByRole("heading", { level: 3, name: title, exact: true });
+    await expect(heading.getByRole("link", { name: title, exact: true })).toHaveAttribute("href", /^\/[a-z-]+$/);
     await expect(heading.locator("xpath=following-sibling::p[1]")).not.toBeEmpty();
   }
 });

@@ -27,6 +27,15 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("zegar"), { level: "poziom1", mode: "odczytaj", h24: false });
     assert.deepEqual(defaultCardSettings("kodowanie"), { level: "poziom1", mode: "zapisz" });
     assert.deepEqual(defaultCardSettings("odnajmniejszego"), { level: "latwy", colors: false });
+    assert.deepEqual(defaultCardSettings("liczby"), { level: "poziom1" });
+  });
+
+  void test("the number-maze card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ liczby: { level: "poziom6" } }), { liczby: { level: "poziom6" } });
+    assert.deepEqual(parseCardSettings({ liczby: { level: "poziom7" } }), { liczby: { level: "poziom1" } });
+    assert.deepEqual(parseCardSettings({ liczby: { level: "latwy" } }), { liczby: { level: "poziom1" } });
+    assert.deepEqual(parseCardSettings({ liczby: 3 }), {});
+    assert.deepEqual(withCardSettings({}, "liczby", { level: "poziom4" }), { liczby: { level: "poziom4" } });
   });
 
   void test("the size-order card reads a stored level and colors, drops unknown values, and stays absent when never stored", () => {

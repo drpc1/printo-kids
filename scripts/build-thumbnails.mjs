@@ -1,4 +1,4 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword, clock, coding and size-order cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword, clock, coding, size-order and number-maze cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -65,6 +65,10 @@ import { generateSizeOrderCard } from "../src/lib/size-order/generate.ts";
 import { iconBounds, layoutSizeOrderSheet } from "../src/lib/size-order/layout.ts";
 import { DEFAULT_SIZE_ORDER_LEVEL_ID, sizeOrderLevelById } from "../src/lib/size-order/levels.ts";
 import { SIZE_ORDER_SHEET } from "../src/lib/size-order/sheet.ts";
+import { generateNumberMazeCard } from "../src/lib/number-maze/generate.ts";
+import { layoutNumberMazeSheet } from "../src/lib/number-maze/layout.ts";
+import { DEFAULT_NUMBER_MAZE_LEVEL_ID, numberMazeLevelById } from "../src/lib/number-maze/levels.ts";
+import { NUMBER_MAZE_SHEET } from "../src/lib/number-maze/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -1002,3 +1006,51 @@ sizeLines.push("</svg>", "");
 const sizeOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/odnajmniejszego.svg");
 writeFileSync(sizeOutFile, sizeLines.join("\n"));
 console.log(`Wrote ${sizeOutFile} (${sizeCard.rows.length} rows)`);
+
+// Number-maze card: the same elements NumberMazeSheet draws (src/components/NumberMazeSheet.tsx), in literal black at
+// the default level (Poziom 1), with positions from `layoutNumberMazeSheet` and the shared constants from
+// src/lib/number-maze/sheet.ts. The band holds the plain instruction of the level (no character); there is no path.
+const NUMBER_MAZE_SEED = 20261120;
+const NUMBER = NUMBER_MAZE_SHEET;
+const numberLevel = numberMazeLevelById(DEFAULT_NUMBER_MAZE_LEVEL_ID);
+const numberCard = generateNumberMazeCard(mulberry32(NUMBER_MAZE_SEED), numberLevel);
+if (numberCard === null) {
+  throw new Error(`Seed ${NUMBER_MAZE_SEED} did not produce a valid number-maze card`);
+}
+const numberLayout = layoutNumberMazeSheet(numberCard, NUMBER.plainInstructionSize);
+
+const numberLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${NUMBER.pageWidth} ${NUMBER.pageHeight}" width="${NUMBER.pageWidth}" height="${NUMBER.pageHeight}">`,
+  `<rect width="${NUMBER.pageWidth}" height="${NUMBER.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${NUMBER.pageWidth - 0.5}" height="${NUMBER.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(NUMBER.pageWidth / 2)}" y="${num(numberLayout.band.y + numberLayout.band.height / 2 + NUMBER.plainInstructionSize * NUMBER.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${NUMBER.plainInstructionSize}" text-anchor="middle">${numberLevel.instruction}</text>`,
+];
+for (const cell of numberLayout.cells) {
+  numberLines.push(
+    `<rect x="${num(cell.x)}" y="${num(cell.y)}" width="${num(numberLayout.cell)}" height="${num(numberLayout.cell)}" fill="none" stroke="#000" stroke-width="${NUMBER.cellStroke}"/>`,
+  );
+}
+const { grid: numberGrid } = numberLayout;
+numberLines.push(
+  `<rect x="${num(numberGrid.x)}" y="${num(numberGrid.y)}" width="${num(numberGrid.width)}" height="${num(numberGrid.height)}" fill="none" stroke="#000" stroke-width="${NUMBER.frameStroke}"/>`,
+);
+for (const end of numberLayout.endpoints) {
+  numberLines.push(
+    `<rect x="${num(end.x)}" y="${num(end.y)}" width="${num(end.size)}" height="${num(end.size)}" rx="${NUMBER.endpointRadius}" fill="none" stroke="#000" stroke-width="${NUMBER.endpointStroke}"/>`,
+  );
+}
+for (const cell of numberLayout.cells) {
+  numberLines.push(
+    `<text x="${num(cell.x + numberLayout.cell / 2)}" y="${num(cell.baseline)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${num(cell.fontSize)}" font-weight="bold" text-anchor="middle">${cell.text}</text>`,
+  );
+}
+for (const label of numberLayout.labels) {
+  numberLines.push(
+    `<text x="${num(label.x)}" y="${num(label.baseline)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${NUMBER.labelSize}" font-weight="bold" text-anchor="middle">${label.text}</text>`,
+  );
+}
+numberLines.push("</svg>", "");
+
+const numberOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/liczby.svg");
+writeFileSync(numberOutFile, numberLines.join("\n"));
+console.log(`Wrote ${numberOutFile} (${numberCard.path.length} path cells)`);

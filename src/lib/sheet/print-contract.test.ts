@@ -44,6 +44,9 @@ const CODING_SHEET = "src/components/CodingSheet.tsx";
 const SIZE_ORDER_PAGE = "src/pages/size-order.astro";
 const SIZE_ORDER_GENERATOR = "src/components/SizeOrderGenerator.tsx";
 const SIZE_ORDER_SHEET_COMPONENT = "src/components/SizeOrderSheet.tsx";
+const NUMBER_MAZE_PAGE = "src/pages/number-maze.astro";
+const NUMBER_MAZE_GENERATOR = "src/components/NumberMazeGenerator.tsx";
+const NUMBER_MAZE_SHEET_COMPONENT = "src/components/NumberMazeSheet.tsx";
 const CARD_PAGE = "src/components/CardPage.tsx";
 const CARD_PAGE_HOOK = "src/hooks/useCardPage.ts";
 const SPEECH_BAND_COMPONENT = "src/components/SpeechBand.tsx";
@@ -537,6 +540,34 @@ void describe("print contract", () => {
     assert.equal(page.includes("@page"), false);
   });
 
+  void test("the printed number-maze SVG is 210mm wide and 297mm tall with overflow hidden", () => {
+    const svgClass = svgClassName(readRepoFile(NUMBER_MAZE_SHEET_COMPONENT));
+
+    for (const token of [
+      "print:w-[210mm]",
+      "print:h-[297mm]",
+      "print:overflow-hidden",
+      "print:block",
+      "print:max-h-[297mm]",
+      "print:ring-0",
+    ]) {
+      assert.ok(svgClass.includes(token), token);
+    }
+  });
+
+  void test("the number-maze card has no answer on screen, so neither its sheet nor its generator hides anything in print", () => {
+    assert.deepEqual(classNamesContaining(readRepoFile(NUMBER_MAZE_SHEET_COMPONENT), "print:hidden"), []);
+    assert.deepEqual(classNamesContaining(readRepoFile(NUMBER_MAZE_GENERATOR), "print:hidden"), []);
+    assertCardPageShell(readRepoFile(NUMBER_MAZE_GENERATOR));
+  });
+
+  void test("the number-maze page lives under /number-maze, uses the shared shell, and has no @page of its own", () => {
+    const page = readRepoFile(NUMBER_MAZE_PAGE);
+    assert.match(page, /<GeneratorShell\b/);
+    assert.match(page, /<NumberMazeGenerator\s+client:only="react"\s*\/>/);
+    assert.equal(page.includes("@page"), false);
+  });
+
   void test("every card page except the maze has the Postać bar and draws the character beside the instruction", () => {
     for (const path of [
       SYMMETRY_GENERATOR,
@@ -553,6 +584,7 @@ void describe("print contract", () => {
       CLOCK_SHEET,
       CODING_SHEET,
       SIZE_ORDER_SHEET_COMPONENT,
+      NUMBER_MAZE_SHEET_COMPONENT,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterInstruction\b/, `${path} draws the speech band`);
@@ -576,6 +608,7 @@ void describe("print contract", () => {
       CLOCK_GENERATOR,
       CODING_GENERATOR,
       SIZE_ORDER_GENERATOR,
+      NUMBER_MAZE_GENERATOR,
     ]) {
       const source = readRepoFile(path);
       assert.match(source, /<CharacterChoiceControl\b/, `${path} has the Postać button`);
@@ -600,6 +633,7 @@ void describe("print contract", () => {
       CLOCK_SHEET,
       CODING_SHEET,
       SIZE_ORDER_SHEET_COMPONENT,
+      NUMBER_MAZE_SHEET_COMPONENT,
     ]) {
       assert.match(readRepoFile(path), /printColorAdjust:\s*"exact"/, path);
     }

@@ -1,22 +1,12 @@
 // "Labirynt liczbowy" as a card kind: `numberMazeSpec` wraps `numberMazeCardProblems`, `numberMazeEngine` wraps the
 // generator. Running out of attempts is `CardExhausted`; the engine never returns null.
-import {
-  CardExhausted,
-  VerifiedCard,
-  type CardEngine,
-  type CardKindId,
-  type CardProblem,
-  type CardSpec,
-} from "../card-contract.ts";
+import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { NumberMazeSettings } from "../card-settings.ts";
 import { neighbours, numberMazeCardKey, numberMazeCardProblems, type NumberMazeCard } from "./card.ts";
 import { generateNumberMazeCard, MAX_ATTEMPTS } from "./generate.ts";
 import { numberMazeLevelById } from "./levels.ts";
 
 type Bad = CardSpec<NumberMazeSettings, NumberMazeCard>["knownBad"][number];
-
-// The kind joins `CARD_KINDS` in phase 2 (page and catalog); until then the id is cast, as size-order did in its phase 1.
-const KIND = "liczby" as unknown as CardKindId;
 
 function numberMazeProblems(card: NumberMazeCard, settings: NumberMazeSettings): readonly CardProblem[] {
   return numberMazeCardProblems(card, numberMazeLevelById(settings.level)).map((code) => ({
@@ -85,7 +75,7 @@ function knownBad(): readonly Bad[] {
 let knownBadCache: readonly Bad[] | undefined;
 
 export const numberMazeSpec: CardSpec<NumberMazeSettings, NumberMazeCard> = {
-  kind: KIND,
+  kind: "liczby",
   problems: numberMazeProblems,
   keyOf: numberMazeCardKey,
   // The level is the only setting: it lays out a new card.

@@ -30,6 +30,8 @@ const CARDS: CardCase[] = [
   // The sentence of the default mode (Zapisz) on the default level (Poziom 1); Wykonaj has its own.
   { path: "/coding", sheet: "Kodowanie", sentence: "Zapisz strzałkami najkrótszą drogę", characterImages: 2 },
   { path: "/size-order", sheet: "Od najmniejszego", sentence: "Ponumeruj od najmniejszego" },
+  // The sentence of the default level (Poziom 1); Poziomy 5 and 6 count in twos and fives.
+  { path: "/number-maze", sheet: "Labirynt liczbowy", sentence: "Idź po liczbach" },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {
