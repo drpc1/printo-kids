@@ -71,6 +71,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać poziom karty kodowania (Poziom 1–4: od kratki 5×5 po 10×10) i tryb (Zapisz, Wykonaj); profil sam pamięta pasek (2026-11-17, S-42).
 - Rodzic może wygenerować kartę „Od najmniejszego”, na której dziecko porządkuje w każdym rzędzie ten sam obrazek w kilku wielkościach od najmniejszego do największego, wpisując pod nim cyfrę albo rysując kropki, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-18, S-48).
 - Rodzic może wybrać poziom karty „Od najmniejszego” (łatwy, średni, trudny: 3, 4 albo 5 obrazków w rzędzie i coraz mniejsza różnica wielkości) i włączyć kolory; profil sam pamięta pasek (2026-11-18, S-48).
+- Rodzic może wygenerować „Labirynt liczbowy”: kratkę wypełnioną liczbami, na której dziecko rysuje drogę od startu do mety po kolejnych liczbach, omijając liczby-pułapki; zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-20, S-49).
+- Rodzic może wybrać poziom „Labiryntu liczbowego” (Poziom 1–6: od liczb 1–15 na kratce 5×5 po liczenie co 5 do 200); profil sam pamięta poziom (2026-11-20, S-49).
 
 ### Guardrails
 
@@ -682,6 +684,38 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
 - Profil i ostatnie parametry pamiętają poziom i kolory (US-08).
 
+### US-39: Rodzic generuje „Labirynt liczbowy” do druku
+
+> Dodane 2026-11-20 (M-7, S-49, GitHub 421). Kształt karty i poziomy ustaliła użytkowniczka 2026-11-20 na makiecie (`context/changes/number-maze-card/`); wartości w Business Logic są startowe i zostają potwierdzone na wydruku.
+
+- **Given** rodzic otworzył z katalogu stronę „Labirynt liczbowy”
+- **When** uruchomi generowanie
+- **Then** otrzymuje gotową do wydruku kartę A4 z kratką całą wypełnioną liczbami, z zaznaczonym startem i metą; dziecko rysuje drogę od startu do mety po sąsiednich kratkach z kolejnymi liczbami (1, 2, 3… albo co 2, co 5), omijając liczby-pułapki
+
+#### Acceptance Criteria
+
+- W każdej kratce stoi jedna liczba. Start to lewy górny róg, meta prawy dolny; obie kratki mają grubą ramkę, a nad startem stoi napis „Start”, pod metą „Meta”. Na starcie stoi pierwsza liczba poziomu, na mecie ostatnia. Nad kratką jest jedno zdanie polecenia (zależne od poziomu, US-40); przy nim stoi wybrana postać (US-21).
+- Droga idzie po sąsiednich kratkach w prawo, w lewo, w górę albo w dół, bez skosów, i nie wraca na kratkę, na której już była. Przechodzi przez dużą część kratki i nie jest najkrótszą drogą do mety.
+- Odpowiedź jest jedna: z każdej kratki drogi dokładnie jedna sąsiednia kratka ma następną liczbę, a ostatnia liczba stoi na mecie. Aplikacja zna drogę i potrafi sprawdzić tę regułę niezależnie od tego, jak ułożyła kartę; karta, która jej nie spełnia, nie jest pokazana.
+- Pozostałe kratki to pułapki: liczby z zakresu poziomu, bliskie liczbom drogi obok nich, żeby kusiły (decyzja 2026-11-20). Pułapka nigdy nie jest następną liczbą żadnej sąsiedniej kratki drogi i nie powtarza liczby startu ani mety.
+- Karta nie ma „Pokaż rozwiązanie” (decyzja 2026-11-20), kolorów ani kategorii.
+- Każde Generuj daje nową kartę: inną drogę albo inne pułapki niż poprzednia karta.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Druk jest czarny i bez drogi na kartce; postać przy poleceniu drukuje się w kolorze (US-21).
+- Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
+
+### US-40: Rodzic wybiera poziom „Labiryntu liczbowego”
+
+- **Given** rodzic jest na stronie „Labirynt liczbowy”
+- **When** wybierze poziom (Poziom 1–6)
+- **Then** karta ma wielkość kratki, zakres liczb i krok liczenia zgodne z tym poziomem
+
+#### Acceptance Criteria
+
+- Poziomy to numery bez nazw wieku i bez wieku pod opisem (jak karty z M-5): Poziom 1 liczby 1–15 na kratce 5×5; Poziom 2 1–20 na 5×6; Poziom 3 1–30 na 6×7; Poziom 4 1–50 na 8×9; Poziom 5 liczenie co 2 od 2 do 60 na 6×7; Poziom 6 liczenie co 5 od 5 do 200 na 7×8 (decyzja 2026-11-20). Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia. Reguły są w Business Logic.
+- Zmiana poziomu przy pokazanej karcie od razu układa nową kartę (US-22).
+- Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
+- Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają go same (US-08).
+
 ## Functional Requirements
 
 ### Generator i druk
@@ -816,6 +850,14 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
   > Socrates: Counter-argument considered: dziecko 4–5 lat nie pisze jeszcze cyfr. Resolution: revised (2026-11-18, decyzja użytkowniczki); polecenie pozwala narysować kropki zamiast cyfry, a pole jest dość szerokie na jedno i drugie; bez klucza i bez przełącznika, żeby karta została prosta.
 - FR-048: Rodzic może wybrać poziom karty „Od najmniejszego” (łatwy, średni, trudny: 3, 4 albo 5 obrazków w rzędzie, liczba rzędów, najmniejsza różnica wielkości) i włączyć kolory, które nie zmieniają karty. Priority: must-have
 
+### Labirynt liczbowy
+
+- FR-049: Rodzic może wygenerować „Labirynt liczbowy”: kratkę wypełnioną liczbami z zaznaczonym startem i metą, na której droga po sąsiednich kratkach (bez skosów) z kolejnymi liczbami prowadzi od startu do mety, a pozostałe kratki to kuszące pułapki; z jedną sprawdzalną drogą, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: pułapka z następną liczbą obok drogi daje dwie drogi, a pułapki z dowolnymi liczbami są za łatwe, bo od razu widać, że nie pasują. Resolution: kept (2026-11-20, makieta); generator zabrania przy drodze tylko następnej liczby, a pułapkę bierze z liczb bliskich liczbom drogi obok niej. Niezależne sprawdzenie idzie od startu i w każdym kroku wymaga dokładnie jednej sąsiedniej kratki z następną liczbą; makieta przeszła 200 z 200 kart na każdym poziomie.
+  > Socrates: Counter-argument considered: nazwa „labirynt” myli się z labiryntem ze ścianami. Resolution: kept; w aplikacji karta nazywa się zawsze „Labirynt liczbowy”, a w kodzie `liczby` (glosariusz), nigdy samym „labiryntem”.
+- FR-050: Rodzic może wybrać poziom „Labiryntu liczbowego” (Poziom 1–6: wielkość kratki, zakres liczb, liczenie co 1, co 2 albo co 5). Priority: must-have
+  > Socrates: Counter-argument considered: Poziom 4 na kratce 7×8 zostawiał drodze 50 z 56 kratek, czyli tylko 6 pułapek, i zagadki prawie nie było. Resolution: revised (2026-11-20, makieta); Poziom 4 ma kratkę 8×9 (50 z 72), a droga na każdym poziomie zajmuje około 60–70% kratki.
+
 ## Non-Functional Requirements
 
 - Od uruchomienia generowania do pokazania gotowej karty upływa nie więcej niż 5 sekund.
@@ -832,6 +874,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karta „Zegar” (2026-11-15) spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karta kodowania (2026-11-17, S-42) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 4 w trybie Zapisz ze sprawdzeniem jednej najkrótszej drogi), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (szare pola przykładu i szare przeszkody to nie odpowiedź), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karta „Od najmniejszego” (2026-11-18, S-48) spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (z włączonymi kolorami obrazki w kolorach kredek), te same przeglądarki na komputerze i na telefonie, w tym Brave.
+- „Labirynt liczbowy” (2026-11-20, S-49) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 4 z drogą przez 50 kratek na 8×9), jedna strona A4, margines co najmniej 10 mm, czarny druk bez drogi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
@@ -1186,9 +1229,30 @@ Kolory (US-38): osobne ustawienie rodzica, niezależne od poziomu, domyślnie wy
 
 Reguły, które generator sprawdza: obrazki rzędu to ta sama sylwetka w różnych wysokościach; każde dwie sąsiednie wielkości różnią się co najmniej o krok poziomu; rząd nie jest ułożony rosnąco ani malejąco; karta nie powtarza obrazka i ma co najmniej jedną ikonę i jeden kształt; obrazki i pola mieszczą się w rzędzie i na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Karta nie ma „Pokaż rozwiązanie”. Każde Generuj daje inne obrazki albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 19). Wynikiem jest karta A4; rzędy zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
+### Karta „Labirynt liczbowy”
+
+Dodane 2026-11-20 (M-7, S-49, GitHub 421); kształt karty i poziomy ustaliła użytkowniczka na makiecie (`context/changes/number-maze-card/mockup.mts`, `stats.md`). Aplikacja zawsze tworzy kartę z jedną drogą od startu do mety. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia i kratką pod nim, wyśrodkowaną w poziomie; w każdej kratce stoi gruba liczba. Start to lewy górny róg z napisem „Start” nad kratką, meta prawy dolny z napisem „Meta” pod kratką; obie kratki mają grubą ramkę. Karta nie ma obrazków poza postacią przy poleceniu; nie ma kolorów, kategorii ani „Pokaż rozwiązanie” (decyzja 2026-11-20).
+
+Droga: losowa droga bez samoprzecięć po sąsiednich kratkach (w prawo, w lewo, w górę, w dół) od startu do mety przez dokładnie tyle kratek, ile liczb ma poziom. Na drodze stoją kolejne liczby poziomu: pierwsza na starcie, ostatnia na mecie. Liczba kratek drogi ma tę samą parzystość co liczba kratek najkrótszej drogi do mety (inaczej meta jest nieosiągalna); każdy poziom z tabeli ją spełnia.
+
+Pułapki: każda kratka poza drogą dostaje liczbę z zakresu poziomu (w kroku poziomu), bliską liczbom sąsiednich kratek drogi: najwyżej 3 kroki od nich na Poziomach 1–2 i 2 kroki na Poziomach 3–6 (decyzja 2026-11-20: kuszące na każdym poziomie). Pułapka nigdy nie jest następną liczbą żadnej sąsiedniej kratki drogi i nie powtarza pierwszej ani ostatniej liczby. Kratka bez sąsiada na drodze dostaje dowolną liczbę z zakresu poza tymi dwiema.
+
+| Poziom | Liczby            | Kratka | Droga (kratek) | Pułapki | Kratka (około) | Polecenie                                     |
+| ------ | ----------------- | ------ | -------------- | ------- | -------------- | --------------------------------------------- |
+| 1      | 1–15              | 5×5    | 15 z 25        | 10      | 30 mm          | „Idź po liczbach 1, 2, 3… od startu do mety.” |
+| 2      | 1–20              | 5×6    | 20 z 30        | 10      | 30 mm          | jak wyżej                                     |
+| 3      | 1–30              | 6×7    | 30 z 42        | 12      | 30 mm          | jak wyżej                                     |
+| 4      | 1–50              | 8×9    | 50 z 72        | 22      | 24 mm          | jak wyżej                                     |
+| 5      | co 2: 2, 4 … 60   | 6×7    | 30 z 42        | 12      | 30 mm          | „Licz co 2: 2, 4, 6… od startu do mety.”      |
+| 6      | co 5: 5, 10 … 200 | 7×8    | 40 z 56        | 16      | 27 mm          | „Licz co 5: 5, 10, 15… od startu do mety.”    |
+
+Poziomy to numery bez wieku i bez wieku pod opisem. Opisy poziomów w UI (startowe): Poziom 1 „liczby do 15, duża kratka”, Poziom 2 „liczby do 20”, Poziom 3 „liczby do 30”, Poziom 4 „liczby do 50, mniejsza kratka”, Poziom 5 „liczenie co 2 do 60”, Poziom 6 „liczenie co 5 do 200”. Domyślny jest Poziom 1. Kratka ma najwyżej 30 mm i wypełnia szerokość albo wysokość pod poleceniem.
+
+Reguły, które generator sprawdza: droga nie wraca na żadną kratkę i idzie tylko po sąsiednich kratkach; pierwsza liczba stoi na starcie, ostatnia na mecie; idąc od startu, z każdej kratki drogi dokładnie jedna sąsiednia kratka ma następną liczbę (sprawdzenie niezależne od budowy karty); pułapki są w zakresie poziomu i nie powtarzają pierwszej ani ostatniej liczby; kratka mieści się na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Każde Generuj daje inną drogę albo inne pułapki niż poprzednia karta. W makiecie najdłuższe ułożenie karty to ok. 0,6 s na Poziomie 4 (droga przez 50 z 72 kratek), na pozostałych poziomach poniżej 0,1 s. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 20). Wynikiem jest karta A4: kratka zajmuje większą część strony i zachowuje margines co najmniej 10 mm.
+
 ### Poziomy
 
-Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem), zegar 1–5 (od 2026-11-15; bez wieku pod opisem), kodowanie 1–4 (od M-7, 2026-11-17, S-42; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Od M-7 łatwy / średni / trudny ma też „Od najmniejszego” (2026-11-18, S-48), bez wieku pod opisem. Numery i nazwy nie są porównywalne między kartami.
+Ustalone 2026-10-26: żadna karta nie nazywa poziomów wiekiem. Karty z trzema poziomami mają łatwy / średni / trudny (nonogram, dyktando graficzne; sudoku ma dodatkowo osobny wybór rozmiaru). Karty z większą liczbą poziomów mają własną skalę „Poziom 1…N”, od najłatwiejszego: labirynt 1–6, symetria 1–4, sekwencje 1–4, szlaczki 1–4, krzyżówka matematyczna 1–7 (od M-6, 2026-11-13, S-40; bez wieku pod opisem), zegar 1–5 (od 2026-11-15; bez wieku pod opisem), kodowanie 1–4 (od M-7, 2026-11-17, S-42; bez wieku pod opisem). Od M-5 łatwy / średni / trudny mają też „Kto ma więcej”, „Który nie pasuje” i „Skopiuj obrazek”; żadna z czterech nowych kart nie ma wieku pod opisem. Od M-7 łatwy / średni / trudny ma też „Od najmniejszego” (2026-11-18, S-48), bez wieku pod opisem. „Labirynt liczbowy” ma Poziom 1–6 (od M-7, 2026-11-20, S-49), bez wieku pod opisem; jego numery nie są porównywalne z poziomami labiryntu. Numery i nazwy nie są porównywalne między kartami.
 
 Każdy wiersz listy poziomów ma nazwę, pół zdania o tym, co zmienia poziom, i, przy labiryncie, symetrii, sekwencjach i dyktandzie, typowy wiek pod opisem; wiersz ma trzy linie, np. „Poziom 1” / „duża kratka, podpowiedź przy osi” / „zwykle ok. 4 lata”. Sudoku i nonogram nie mają wieku. Zapisane identyfikatory poziomów mogą zostać w danych; zmienia się etykieta, więc zapisane profile i ostatnie parametry wczytują się bez migracji.
 
@@ -1212,6 +1276,7 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | Zegar                  | poziom, tryb, 24 h                          |
 | Kodowanie              | poziom, tryb                                |
 | Od najmniejszego       | poziom, kolory                              |
+| Labirynt liczbowy      | poziom                                      |
 
 Zasady:
 
@@ -1247,6 +1312,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 - Druga karta M-6 (2026-11-15) to „Zegar” (US-33–US-34, FR-043–FR-044; slot S-41). Nie obejmuje tarczy bez liczb ani z samymi 12, 3, 6, 9, zapisu słownego godziny („wpół do ósmej”), wskazówki sekundowej, obliczeń zegarowych („która będzie za 20 minut?”), „Pokaż rozwiązanie”, kolorów ani kategorii. Karty kodowania (slot S-42) przeszły do M-7 (zawężenie M-6 2026-11-16).
 - Pierwsza karta M-7 (2026-11-17) to karta kodowania (US-35–US-36, FR-045–FR-046; S-42). Nie obejmuje strzałek względnych („obróć się w lewo”), pętli i powtórzeń („3 × →” jako osobnej instrukcji), kroków po skosie, wielu postaci ani zbierania przedmiotów po drodze, kolorów, kategorii ani „Pokaż rozwiązanie”.
 - Druga karta M-7 (2026-11-18) to „Od najmniejszego” (US-37–US-38, FR-047–FR-048; S-48). Nie obejmuje kierunku „od największego”, klucza ani przełącznika „cyfry / kropki”, kategorii obrazków, porównania szerokości, długości albo ciężaru (wielkość to tylko wysokość), sylwetek z katalogu szablonów ani „Pokaż rozwiązanie”.
+- Trzecia karta M-7 (2026-11-20) to „Labirynt liczbowy” (US-39–US-40, FR-049–FR-050; S-49). Nie obejmuje skosów, startu i mety w innych miejscach niż rogi, liczenia wstecz, liczb ujemnych, działań w kratkach (np. „3 + 4”), kolorów, kategorii, obrazków w kratkach ani „Pokaż rozwiązanie”.
 - Kamień M-5 nie obejmuje groszy i centów, banknotu 200 €, monet dolarowych, cen i reszty w „Kto ma więcej”, kwoty „ułóż dokładnie tę kwotę” ani oceny rysunku dziecka na kartach „Skopiuj obrazek” i szlaczki (decyzja 2026-11-01).
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
@@ -1306,3 +1372,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 17. ~~**Czy startowe wartości poziomów krzyżówki matematycznej (liczba działań, kratka, puste pola, łańcuch) pasują dziecku?**~~ — Zamknięte 2026-11-14 po wydruku użytkowniczki: wszystkie poziomy (1–7) wychodzą na jednej stronie A4, cyfry mieszczą się w kratkach także na Poziomie 7 (13,5 mm), liczby da się wpisać w kratki na Poziomach 1–2, a zakreskowanie jest widoczne; startowe wartości poziomów zostają bez zmian. Na telefonie (Brave, Chrome, Safari) wydruk wykazał jeszcze liczby niewycentrowane w kratce; poprawione w GitHub 371 (jawne przesunięcie linii bazowej zamiast `dominant-baseline`). Wcześniej: Owner: user. Block: nie. Tabela w Business Logic „Karta krzyżówki matematycznej” jest propozycją z 2026-11-13 (S-40), zaakceptowaną po makietach; potwierdza ją wydruk w fazie 4 planu `math-crossword-card`: czy cyfry mieszczą się w kratce 13,5 mm na Poziomie 7, czy dziecko daje radę wpisać liczby w kratki 26 i 24 mm na Poziomach 1–2 i czy łańcuch 3–4 na Poziomach 4–7 nie jest za trudny.
 18. ~~**Czy startowe wartości karty kodowania (kratka, bok pola, długość drogi, przeszkody, pola przykładu) pasują dziecku?**~~ — Zamknięte 2026-11-18 po wydruku użytkowniczki: karty wszystkich poziomów i obu trybów wychodzą na jednej stronie A4, a startowe wartości zostają bez zmian; próba z dzieckiem (Zapisz i Wykonaj) pozostaje do zrobienia i nie blokuje zamknięcia. Wcześniej: Owner: user. Block: nie. Tabela w Business Logic „Karta kodowania” jest propozycją z 2026-11-17 (S-42), przyjętą po makiecie (`context/changes/coding-card/`); potwierdza ją wydruk: czy strzałka mieści się w polu 16 mm na Poziomach 3–4, czy szare pola przykładu nie mylą się z przeszkodami (ten sam odcień w makiecie; może trzeba jaśniejszego) i czy droga 18–24 kroków na Poziomie 4 nie jest za długa. Zamknięte decyzjami 2026-11-17 (użytkowniczka): domyślny tryb Zapisz, brak „Pokaż rozwiązanie” (jak w zegarze: odpowiedź da się sprawdzić, prowadząc palcem po strzałkach) i kółko „Start” przy postaci „Brak”; zostają wartości startowe, które potwierdza wydruk.
 19. ~~Czy najmniejszy krok wielkości karty „Od najmniejszego” (×1,35 / ×1,25 / ×1,14) dziecko widzi bez linijki, także na małych obrazkach trudnego poziomu (najwyższy ok. 24 mm)?~~ — Zamknięte 2026-11-18 po wydruku i sprawdzeniu użytkowniczki: krok ×1,35 / ×1,25 / ×1,14 jest widoczny na wydruku, także na trudnym (najwyższy obrazek ok. 24 mm), pole 13 mm mieści cyfrę i kropki, wydruk to jedna strona A4 w Safari, Chrome iOS i Brave iOS, a startowe wartości poziomów zostają bez zmian. Próg różnicy dwóch najbliższych wysokości na papierze (`minStepMm`) to 2 mm, nie 2,5 mm z planu: najmniejsza różnica trudnego to 0,10 × ok. 24 mm = 2,4 mm, więc 2,5 mm odrzucałoby każdy rząd; 2 mm odrzuca tylko ikony szersze niż ok. 1,6 × wysokość.
+20. **Czy startowe wartości „Labiryntu liczbowego” (kratki 5×5 … 8×9, zakresy do 15, 20, 30, 50, liczenie co 2 do 60 i co 5 do 200, kratka 24–30 mm, pułapki do 3 albo 2 kroków od liczb drogi) pasują dziecku, i czy liczby trzycyfrowe Poziomu 6 mieszczą się czytelnie w kratce ok. 27 mm?** — Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-11-20 (S-49), zaakceptowaną po makiecie; potwierdza ją wydruk po implementacji.

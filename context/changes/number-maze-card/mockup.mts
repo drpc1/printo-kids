@@ -7,6 +7,7 @@
 // sąsiedniej kratki drogi.
 // Uruchom z katalogu repo:
 //   node --experimental-strip-types context/changes/number-maze-card/mockup.mts
+// Karta nie ma „Pokaż rozwiązanie” (decyzja użytkowniczki 2026-11-20).
 // Drukuj na A4 w 100%. Kółko i dymek u góry zastępują postać przy poleceniu (US-21).
 import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -199,7 +200,7 @@ function checkOnePath(values: readonly number[], level: Level): string | null {
   return cur === goal ? null : "ostatnia liczba nie stoi na mecie";
 }
 
-function sheet(level: Level, card: Card, solution: boolean): string {
+function sheet(level: Level, card: Card): string {
   const { cols, rows } = level;
   const left = PAGE.inset;
   const width = PAGE.w - 2 * PAGE.inset;
@@ -220,14 +221,6 @@ function sheet(level: Level, card: Card, solution: boolean): string {
 
   const xy = (c: Cell) => [gx + (c % cols) * cell, gy + Math.floor(c / cols) * cell] as const;
 
-  if (solution) {
-    const pts = card.path.map((c) => {
-      const [x, y] = xy(c);
-      return `${(x + cell / 2).toFixed(2)},${(y + cell / 2).toFixed(2)}`;
-    });
-    parts.push(`<polyline points="${pts.join(" ")}" fill="none" stroke="#9ab" stroke-width="${(cell * 0.32).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>`);
-  }
-
   const fontSize = cell * (String(Math.max(...card.values)).length > 2 ? 0.36 : 0.42);
   for (let c = 0; c < cols * rows; c++) {
     const [x, y] = xy(c);
@@ -244,8 +237,7 @@ function sheet(level: Level, card: Card, solution: boolean): string {
     parts.push(`<text x="${(x + cell / 2).toFixed(2)}" y="${ty.toFixed(2)}" ${FONT} font-size="5.5" font-weight="bold" text-anchor="middle" fill="#111">${label}</text>`);
   }
 
-  const tag = solution ? " · Pokaż rozwiązanie (tylko ekran)" : "";
-  parts.push(`<text x="${PAGE.w - PAGE.inset}" y="${PAGE.h - 4}" ${FONT} font-size="3" text-anchor="end" fill="#999">makieta S-49 · ${level.title} · kratka ${cell.toFixed(1)} mm · pułapek ${card.traps}, kuszących ${card.tempting}${tag}</text>`);
+  parts.push(`<text x="${PAGE.w - PAGE.inset}" y="${PAGE.h - 4}" ${FONT} font-size="3" text-anchor="end" fill="#999">makieta S-49 · ${level.title} · kratka ${cell.toFixed(1)} mm · pułapek ${card.traps}, kuszących ${card.tempting}</text>`);
   return `<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 ${PAGE.w} ${PAGE.h}"><rect width="${PAGE.w}" height="${PAGE.h}" fill="#fff"/>${parts.join("")}</svg>`;
 }
 
@@ -253,12 +245,8 @@ const files: { file: string; title: string }[] = [];
 const stats: string[] = ["| Poziom | Kratka | Droga | Pułapki (kuszące) | Próby | Węzły DFS | ms | Sprawdzenie 200 kart |", "|---|---|---|---|---|---|---|---|"];
 for (const level of LEVELS) {
   const card = build(level, mulberry32(level.seed));
-  writeFileSync(resolve(OUT, `mockup-${level.name}.svg`), sheet(level, card, false));
+  writeFileSync(resolve(OUT, `mockup-${level.name}.svg`), sheet(level, card));
   files.push({ file: `mockup-${level.name}.svg`, title: level.title });
-  if (level.name === "poziom-1" || level.name === "poziom-4") {
-    writeFileSync(resolve(OUT, `mockup-${level.name}-rozwiazanie.svg`), sheet(level, card, true));
-    files.push({ file: `mockup-${level.name}-rozwiazanie.svg`, title: `${level.title}, Pokaż rozwiązanie` });
-  }
   // wykonalność: 200 kart z kolejnych ziaren, najdłuższy czas
   let worst = 0;
   for (let s = 1; s <= 200; s++) worst = Math.max(worst, build(level, mulberry32(level.seed * 1000 + s)).ms);

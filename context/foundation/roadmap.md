@@ -142,14 +142,14 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 
 - **Outcome:** Rodzic otwiera z katalogu „Labirynt liczbowy”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z kratką wypełnioną liczbami, zaznaczonym startem i metą; dziecko rysuje drogę od startu do mety po sąsiednich kratkach (bez skosów) z kolejnymi liczbami od 1 do największej liczby poziomu, omijając liczby-pułapki. Podgląda kartę i drukuje ją jako jedną stronę A4 także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43. Generator sprawdza, że droga jest jedna.
 - **Change ID:** number-maze-card
-- **PRD refs:** MS-02, FR-014, FR-017, FR-030, US-05, US-08 (US i FR karty dochodzą przy otwarciu)
+- **PRD refs:** MS-02, FR-014, FR-017, FR-030, FR-049, FR-050, US-05, US-08, US-39, US-40
 - **Prerequisites:** —
 - **Parallel with:** S-42, S-47, S-48
 - **Blockers:** —
 - **Unknowns:**
   - ~~Jaki to rodzaj karty?~~ — Zamknięte 2026-11-18 (decyzja i opis użytkowniczki: droga od startu do mety po liczbach rosnących od 1 do 15, 20, 30 itd.).
-  - Poziomy (propozycja ze szkicu: 1–15 na kratce 5×5, 1–20 na 5×6, 1–30 na 6×7, 1–50 na 7×8; wyżej liczenie co 2 albo co 5), jak bardzo kuszące są pułapki, czy jest „Pokaż rozwiązanie”. Rozstrzyga makieta przed planem. — Owner: user. Block: no.
-  - Nazwa w kodzie i w glosariuszu: `labirynt` to już inna karta, więc nowa potrzebuje własnego id (propozycja `liczby`) i wpisu w `context/domain/glossary.md` przed planem. — Owner: team. Block: no.
+  - ~~Poziomy, jak bardzo kuszące są pułapki, czy jest „Pokaż rozwiązanie”.~~ — Zamknięte 2026-11-20 po makiecie (`context/changes/number-maze-card/`): sześć poziomów (1–15 na 5×5, 1–20 na 5×6, 1–30 na 6×7, 1–50 na 8×9, bo 7×8 zostawiało 6 pułapek; co 2 do 60 na 6×7; co 5 do 200 na 7×8), pułapki kuszące na każdym poziomie, bez „Pokaż rozwiązanie” (decyzje użytkowniczki). Generator z makiety przeszedł 200 z 200 kart na każdym poziomie. Wartości potwierdza wydruk (PRD Open Questions 20).
+  - ~~Nazwa w kodzie i w glosariuszu.~~ — Zamknięte 2026-11-20: id `liczby`, strona `/number-maze`, w aplikacji zawsze „Labirynt liczbowy”; wpis w `context/domain/glossary.md`.
 - **Risk:** Jedna droga: z każdej kratki drogi tylko jedna sąsiednia kratka ma następną liczbę, a start i meta są zaznaczone. Droga to losowa ścieżka bez samoprzecięć przez dużą część kratki; pułapki mają być bliskie liczbom drogi, żeby kusiły, ale żadna nie może stać przy drodze z następną liczbą.
 - **Status:** ready
 
