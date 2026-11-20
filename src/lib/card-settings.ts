@@ -26,6 +26,7 @@ import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } f
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
 import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, ODD_ONE_OUT_LEVELS, type OddOneOutLevelId } from "./odd-one-out/levels.ts";
+import type { NumberMazeLevelId } from "./number-maze/levels.ts";
 import { DEFAULT_SIZE_ORDER_LEVEL_ID, SIZE_ORDER_LEVELS, type SizeOrderLevelId } from "./size-order/levels.ts";
 import {
   DEFAULT_PATTERN_LINES_LEVEL_ID,
@@ -81,6 +82,11 @@ export interface OddOneOutSettings {
 export interface SizeOrderSettings {
   level: SizeOrderLevelId;
   colors: boolean;
+}
+
+/** "Labirynt liczbowy" (S-49): the level is the only setting; it lays out a new card. */
+export interface NumberMazeSettings {
+  level: NumberMazeLevelId;
 }
 
 export interface SudokuCardSettings extends SudokuSettings {
