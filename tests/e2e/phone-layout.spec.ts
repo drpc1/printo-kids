@@ -651,6 +651,30 @@ test("the size-order page keeps Kolory, Generuj, Drukuj and Profil apart with co
   }
 });
 
+test("the number-maze page keeps the Poziom button, Generuj, Drukuj and Profil apart", async ({ page }) => {
+  await page.goto("/number-maze");
+  await page.getByRole("button", { name: "Generuj" }).click();
+  await expect(page.getByRole("img", { name: "Labirynt liczbowy" })).toBeVisible();
+  await settle(page);
+  await expectNoSidewaysScroll(page);
+
+  const width = viewportWidth(page);
+  const boxes = {
+    poziom: await viewportBox(page.getByRole("button", { name: /^Poziom:/ })),
+    generuj: await viewportBox(page.getByRole("button", { name: "Generuj" })),
+    drukuj: await viewportBox(page.getByRole("button", { name: "Drukuj" })),
+    profil: await viewportBox(page.getByRole("button", { name: "Profil", exact: true })),
+  };
+  const names = Object.keys(boxes) as (keyof typeof boxes)[];
+  for (const [index, first] of names.entries()) {
+    for (const second of names.slice(index + 1)) {
+      expect(overlaps(boxes[first], boxes[second]), `${first} / ${second}`).toBe(false);
+    }
+    expect(boxes[first].x).toBeGreaterThanOrEqual(0);
+    expect(boxes[first].x + boxes[first].width).toBeLessThanOrEqual(width);
+  }
+});
+
 test("the copy-drawing page keeps Generuj, Drukuj and Profil apart", async ({ page }) => {
   await page.goto("/copy-drawing");
   await page.getByRole("button", { name: "Generuj" }).click();

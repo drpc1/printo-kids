@@ -120,6 +120,14 @@ export const CARD_KINDS = [
     description:
       "Dziecko numeruje obrazki w rzędzie od najmniejszego do największego: wpisuje 1, 2, 3… w pustym polu pod obrazkiem albo rysuje tyle kropek. Na kartce jest kilka rzędów, w każdym ta sama sylwetka (ikona albo kształt) w trzech, czterech albo pięciu wielkościach w pomieszanej kolejności, stojąca na wspólnej linii. Poziom zmienia liczbę obrazków i rzędów oraz to, jak mało różnią się wielkości; po włączeniu kolorów każdy rząd ma jedną kredkę.",
   },
+  {
+    id: "liczby",
+    title: "Labirynt liczbowy",
+    href: "/number-maze",
+    thumbnail: "/thumbnails/liczby.svg",
+    description:
+      "Dziecko rysuje drogę od startu do mety po sąsiednich kratkach z kolejnymi liczbami, w prawo, w lewo, w górę albo w dół, bez skosów, i omija liczby-pułapki. Na kartce jest kratka cała wypełniona liczbami: start w lewym górnym rogu, meta w prawym dolnym, obie w grubej ramce, a droga jest jedna. Poziom zmienia wielkość kratki, zakres liczb i to, czy liczy się co 1, co 2, czy co 5.",
+  },
 ] as const satisfies readonly CardKind[];
 
 /** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */

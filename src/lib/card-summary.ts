@@ -10,6 +10,7 @@ import { levelById } from "./maze/levels.ts";
 import { moneyCurrencyById } from "./money/currencies.ts";
 import { moneyLevelById } from "./money/levels.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
+import { numberMazeLevelById } from "./number-maze/levels.ts";
 import { sizeOrderLevelById } from "./size-order/levels.ts";
 import { oddOneOutLevelById } from "./odd-one-out/levels.ts";
 import { patternLinesHasGuides, patternLinesLevelById } from "./pattern-lines/levels.ts";
@@ -181,6 +182,14 @@ function summaryParts(cardId: string, profile: ChildProfile, today?: Date): Summ
       }
       const level = sizeOrderLevelById(settings.level);
       return { badge: badgeOf(level), level: level.label, extras: settings.colors ? ["kolory"] : [] };
+    }
+    case "liczby": {
+      const settings = cards.liczby;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = numberMazeLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: [] };
     }
     default:
       return null;

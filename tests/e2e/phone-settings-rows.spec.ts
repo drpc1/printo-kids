@@ -150,6 +150,7 @@ const CARD_PAGES: { path: string; label: string; controls: RegExp[]; prepare?: (
   { path: "/clock", label: "clock", controls: [/^Postać:/, /^Poziom:/, /^Tryb:/] },
   { path: "/coding", label: "coding", controls: [/^Postać:/, /^Poziom:/, /^Tryb:/] },
   { path: "/size-order", label: "size-order", controls: [/^Postać:/, /^Poziom:/] },
+  { path: "/number-maze", label: "number-maze", controls: [/^Postać:/, /^Poziom:/] },
 ];
 
 for (const card of CARD_PAGES) {

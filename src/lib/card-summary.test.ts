@@ -266,6 +266,18 @@ void describe("cardSummaries", () => {
     assert.equal(colored.detail, "trudny · kolory");
   });
 
+  void test("the number-maze card shows its numbered level and nothing else, and is unused until the profile chose one", () => {
+    const fresh = byId(cardSummaries(profile("lat5")), "liczby");
+    assert.equal(fresh.used, false);
+    assert.equal(fresh.badge, null);
+    assert.equal(fresh.title, "Labirynt liczbowy");
+    assert.equal(fresh.href, "/number-maze");
+
+    const used = byId(cardSummaries(profile("lat5", { liczby: { level: "poziom4" } })), "liczby");
+    assert.equal(used.badge, "poz. 4");
+    assert.equal(used.detail, "Poziom 4");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -306,6 +318,7 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   zegar: { zegar: defaultCardSettings("zegar") },
   kodowanie: { kodowanie: defaultCardSettings("kodowanie") },
   odnajmniejszego: { odnajmniejszego: defaultCardSettings("odnajmniejszego") },
+  liczby: { liczby: defaultCardSettings("liczby") },
 };
 
 void describe("the card registry and summaryParts", () => {

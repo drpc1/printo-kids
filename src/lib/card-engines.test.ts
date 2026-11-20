@@ -15,6 +15,7 @@ import { CODING_LEVELS, CODING_MODE_IDS } from "./coding/levels.ts";
 import { COPY_DRAWING_LEVELS } from "./copy-drawing/levels.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
 import { SIZE_ORDER_LEVELS } from "./size-order/levels.ts";
+import { NUMBER_MAZE_LEVELS } from "./number-maze/levels.ts";
 import { MATH_CROSSWORD_LEVELS } from "./math-crossword/levels.ts";
 import { LEVELS } from "./maze/levels.ts";
 import { MONEY_CURRENCY_IDS } from "./money/currencies.ts";
@@ -345,6 +346,16 @@ const INVENTORY: Inventory = {
       { level: "trudny", colors: false },
     ],
     decoration: [{ level: "latwy", colors: true }],
+  },
+  // The level is the only setting and lays out the card; the card has no colors and no "Pokaż rozwiązanie".
+  liczby: {
+    settingsList: NUMBER_MAZE_LEVELS.map((level) => ({ level: level.id })),
+    label: (settings) => settings.level,
+    mayExhaust: () => false,
+    usesPreviousKey: true,
+    base: { level: "poziom1" },
+    content: [{ level: "poziom2" }, { level: "poziom6" }],
+    decoration: [],
   },
 };
 
