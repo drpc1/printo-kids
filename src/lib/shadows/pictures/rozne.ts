@@ -234,9 +234,8 @@ export const PTAKI: readonly ShadowPicture[] = [
     id: "sowa",
     label: "sowa",
     // Przerysowana 2026-11-21 (uwaga użytkowniczki: wyglądała strasznie): jasna twarz, dziób, błysk w oku,
-    // brzuszek, skrzydła i łapki na gałęzi.
+    // brzuszek, skrzydła i łapki (bez gałęzi, jak inne ptaki).
     shapes: [
-      stroke("M8 90 H92", 6, "darkbrown"),
       path("M30 36 C28 28 28 22 30 16 C36 20 42 25 44 29 Z M70 36 C72 28 72 22 70 16 C64 20 58 25 56 29 Z", "brown"),
       ellipse(50, 58, 30, 32, "brown"),
       ellipse(41, 90, 6, 3, "orange"),
