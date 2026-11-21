@@ -49,7 +49,7 @@ void describe("copyDrawingEngine", () => {
 
 void describe("copyDrawingSpec", () => {
   void test("every known bad card is rejected with its expected code", () => {
-    assert.equal(copyDrawingSpec.knownBad.length, 4);
+    assert.equal(copyDrawingSpec.knownBad.length, 5);
     for (const bad of copyDrawingSpec.knownBad) {
       const codes = copyDrawingSpec.problems(bad.card, bad.settings).map((problem) => problem.code);
       assert.ok(
@@ -59,13 +59,15 @@ void describe("copyDrawingSpec", () => {
     }
   });
 
-  void test("the known bad cards cover the four rules the plan names", () => {
+  void test("the known bad cards cover the four rules, the silhouette both for a template and for a shape", () => {
     assert.deepEqual(copyDrawingSpec.knownBad.map((bad) => bad.expectedCode).sort(), [
       "grid-size",
       "level-mismatch",
       "no-filled-cell",
       "not-silhouette",
+      "not-silhouette",
     ]);
+    assert.ok(copyDrawingSpec.knownBad.some((bad) => bad.card.picture.kind === "shape"));
   });
 
   void test("require throws CardInvariantError for a bad card", () => {

@@ -1,19 +1,22 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { symmetryTemplatesFor } from "../symmetry/templates.ts";
+import { symmetryTemplatesFor, type SymmetryTemplate } from "../symmetry/templates.ts";
+import { dictationShapesFor } from "../dictation/shapes.ts";
 import { copyDrawingCellColors } from "./colors.ts";
+import type { CopyDrawingPicture } from "./card.ts";
 import { composeCopyDrawingCard } from "./generate.ts";
 import { COPY_DRAWING_LEVELS } from "./levels.ts";
+
+/** The picture of a template with its first variant for every part. */
+function templatePicture(template: SymmetryTemplate): CopyDrawingPicture {
+  return { kind: "template", templateId: template.id, variants: template.parts.map(() => 0) };
+}
 
 void describe("copyDrawingCellColors", () => {
   for (const level of COPY_DRAWING_LEVELS) {
     void test(`${level.id}: every filled cell has a crayon, the grid matches the card, and the silhouette is mirrored`, () => {
       for (const template of symmetryTemplatesFor(level.size.templateLevel, "wszystkie")) {
-        const card = composeCopyDrawingCard(
-          template,
-          template.parts.map(() => 0),
-          level,
-        );
+        const card = composeCopyDrawingCard(templatePicture(template), level);
         const colors = copyDrawingCellColors(card);
         assert.ok(colors, template.id);
         assert.equal(colors.length, card.pattern.length);
@@ -37,11 +40,7 @@ void describe("copyDrawingCellColors", () => {
     );
     assert.ok(withHole);
     for (let variant = 0; variant < 3; variant += 1) {
-      const card = composeCopyDrawingCard(
-        withHole,
-        withHole.parts.map(() => 0),
-        level,
-      );
+      const card = composeCopyDrawingCard(templatePicture(withHole), level);
       const colors = copyDrawingCellColors(card);
       assert.ok(colors);
       const colored = colors.flat().filter((crayon) => crayon !== null).length;
@@ -56,12 +55,80 @@ void describe("copyDrawingCellColors", () => {
   void test("a card that names an unknown template has no colors", () => {
     const level = COPY_DRAWING_LEVELS[0];
     const template = symmetryTemplatesFor(level.size.templateLevel, "wszystkie")[0];
-    const card = composeCopyDrawingCard(
-      template,
-      template.parts.map(() => 0),
-      level,
+    const card = composeCopyDrawingCard(templatePicture(template), level);
+    assert.equal(card.picture.kind, "template");
+    const picture = card.picture;
+    assert.equal(copyDrawingCellColors({ ...card, picture: { ...picture, templateId: "nie-ma-takiego" } }), null);
+    assert.equal(copyDrawingCellColors({ ...card, picture: { ...picture, variants: [99] } }), null);
+  });
+
+  void test("a shape card colors every cell of the pattern with the crayon of its letter, and nothing else", () => {
+    for (const level of COPY_DRAWING_LEVELS) {
+      for (const shape of dictationShapesFor(level.dictationLevel).filter((candidate) => candidate.onCopyDrawing)) {
+        for (const mirrored of [false, true]) {
+          const card = composeCopyDrawingCard({ kind: "shape", shapeId: shape.id, mirrored }, level);
+          const colors = copyDrawingCellColors(card);
+          assert.ok(colors, shape.id);
+          card.pattern.forEach((row, rowIndex) => {
+            row.forEach((filled, columnIndex) => {
+              assert.equal(
+                colors[rowIndex][columnIndex] !== null,
+                filled,
+                `${level.id} ${shape.id} ${columnIndex},${rowIndex}`,
+              );
+            });
+          });
+        }
+      }
+    }
+  });
+
+  void test("the stocking has a gray cuff and red and green stripes, and the flip mirrors the colors", () => {
+    const level = COPY_DRAWING_LEVELS[1];
+    const straight = copyDrawingCellColors(
+      composeCopyDrawingCard({ kind: "shape", shapeId: "skarpeta", mirrored: false }, level),
     );
-    assert.equal(copyDrawingCellColors({ ...card, templateId: "nie-ma-takiego" }), null);
-    assert.equal(copyDrawingCellColors({ ...card, variants: [99] }), null);
+    const flipped = copyDrawingCellColors(
+      composeCopyDrawingCard({ kind: "shape", shapeId: "skarpeta", mirrored: true }, level),
+    );
+    assert.ok(straight && flipped);
+    // lat6: 12 wide in a 12 wide grid, 14 rows in 15, so no horizontal offset and no vertical shift.
+    assert.deepEqual(straight[0].slice(0, 7), ["gray", "gray", "gray", "gray", "gray", "gray", null]);
+    assert.equal(straight[3][0], "red");
+    assert.equal(straight[5][0], "green");
+    assert.deepEqual(
+      flipped,
+      straight.map((row) => [...row].reverse()),
+    );
+  });
+
+  void test("the sledge keeps its enclosed empty cells white", () => {
+    const level = COPY_DRAWING_LEVELS[1];
+    const card = composeCopyDrawingCard({ kind: "shape", shapeId: "sanki", mirrored: false }, level);
+    const colors = copyDrawingCellColors(card);
+    assert.ok(colors);
+    const colored = colors.flat().filter((crayon) => crayon !== null).length;
+    assert.equal(colored, card.pattern.flat().filter(Boolean).length, "no hole color is added");
+    // Drawing row 3 is "..k.....k..k" and the 5 rows stand 5 rows down in the 15 row grid; column 4 is between the legs.
+    assert.equal(card.pattern[8][4], false);
+    assert.equal(colors[8][4], null);
+    assert.equal(card.pattern[8][2], true);
+  });
+
+  void test("a shape card with an unknown shape, the horizontal key or a level without a drawing has no colors", () => {
+    const level = COPY_DRAWING_LEVELS[1];
+    const card = composeCopyDrawingCard({ kind: "shape", shapeId: "dinozaur", mirrored: false }, level);
+    assert.equal(
+      copyDrawingCellColors({ ...card, picture: { kind: "shape", shapeId: "nie-ma", mirrored: false } }),
+      null,
+    );
+    assert.equal(
+      copyDrawingCellColors({ ...card, picture: { kind: "shape", shapeId: "klucz-poziomy", mirrored: false } }),
+      null,
+    );
+    assert.equal(
+      copyDrawingCellColors({ ...card, picture: { kind: "shape", shapeId: "renifer", mirrored: false } }),
+      null,
+    );
   });
 });

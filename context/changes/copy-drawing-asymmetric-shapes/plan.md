@@ -320,34 +320,34 @@ Karta nie jest zapisywana (US-08), więc zmiana `CopyDrawingCard` nie wymaga mig
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi, w tym nowe testy liter i `onCopyDrawing` i dotychczasowe testy obrysu kształtów (prosto i odbite, `maxCommands`)
-- [x] 1.2 `npm run lint` przechodzi
-- [x] 1.3 `npm run depcruise` przechodzi
-- [x] 1.4 `npx astro check` przechodzi
-- [x] 1.5 `npm run build` przechodzi
-- [x] 1.6 `npm run thumbnails` zmienia najwyżej `public/thumbnails/dyktando.svg`
+- [x] 1.1 `npm test` przechodzi, w tym nowe testy liter i `onCopyDrawing` i dotychczasowe testy obrysu kształtów (prosto i odbite, `maxCommands`) — 262da3f3
+- [x] 1.2 `npm run lint` przechodzi — 262da3f3
+- [x] 1.3 `npm run depcruise` przechodzi — 262da3f3
+- [x] 1.4 `npx astro check` przechodzi — 262da3f3
+- [x] 1.5 `npm run build` przechodzi — 262da3f3
+- [x] 1.6 `npm run thumbnails` zmienia najwyżej `public/thumbnails/dyktando.svg` — 262da3f3
 
 #### Manual
 
-- [x] 1.7 Strona dyktanda (`/dictation`) pokazuje nowe rysunki renifera (trudny), ciężarówki (średni, trudny), helikoptera (średni), dinozaura i skarpety; obrys jest czytelny, a „Pokaż rozwiązanie” rysuje kreskę po obrysie
-- [ ] 1.8 Przed PR-em fazy: `/10x-impl-review copy-drawing-asymmetric-shapes` i poprawki z przeglądu
+- [x] 1.7 Strona dyktanda (`/dictation`) pokazuje nowe rysunki renifera (trudny), ciężarówki (średni, trudny), helikoptera (średni), dinozaura i skarpety; obrys jest czytelny, a „Pokaż rozwiązanie” rysuje kreskę po obrysie — 262da3f3
+- [x] 1.8 Przed PR-em fazy: `/10x-impl-review copy-drawing-asymmetric-shapes` i poprawki z przeglądu
 
 ### Phase 2: Kształty na karcie „Skopiuj obrazek”
 
 #### Automated
 
-- [ ] 2.1 `npm test` przechodzi, w tym nowe testy karty kształtu, generatora, kolorów i silnika
-- [ ] 2.2 `npm run lint` przechodzi
-- [ ] 2.3 `npm run depcruise` przechodzi
-- [ ] 2.4 `npx astro check` przechodzi
-- [ ] 2.5 `npm run build` przechodzi
-- [ ] 2.6 `npm run thumbnails` zmienia najwyżej `public/thumbnails/kopiuj.svg`
-- [ ] 2.7 Wąski Stryker na zmienionych zakresach `generate.ts`, `card.ts` i `colors.ts`, wynik w `reviews/stryker-results.md`
+- [x] 2.1 `npm test` przechodzi, w tym nowe testy karty kształtu, generatora, kolorów i silnika
+- [x] 2.2 `npm run lint` przechodzi
+- [x] 2.3 `npm run depcruise` przechodzi
+- [x] 2.4 `npx astro check` przechodzi
+- [x] 2.5 `npm run build` przechodzi
+- [x] 2.6 `npm run thumbnails` zmienia najwyżej `public/thumbnails/kopiuj.svg`
+- [x] 2.7 Wąski Stryker na zmienionych zakresach `generate.ts`, `card.ts` i `colors.ts`, wynik w `reviews/stryker-results.md`
 
 #### Manual
 
-- [ ] 2.8 Na `/copy-drawing` kolejne Generuj dają szablony i kształty na każdym poziomie; kształt odbity wygląda jak w makiecie, kolory po włączeniu zgadzają się z makietą, przełącznik nie zmienia karty
-- [ ] 2.9 Kategoria (np. Zwierzęta, Boże Narodzenie) daje kształty tylko ze swojej kategorii; klucz poziomy nie pada w „Domy i budowle”
+- [x] 2.8 Na `/copy-drawing` kolejne Generuj dają szablony i kształty na każdym poziomie; kształt odbity wygląda jak w makiecie, kolory po włączeniu zgadzają się z makietą, przełącznik nie zmienia karty
+- [x] 2.9 Kategoria (np. Zwierzęta, Boże Narodzenie) daje kształty tylko ze swojej kategorii; klucz poziomy nie pada w „Domy i budowle”
 - [ ] 2.10 Przed PR-em fazy: `/10x-impl-review copy-drawing-asymmetric-shapes` i poprawki z przeglądu
 
 ### Phase 3: Wydruk próbny i staging
