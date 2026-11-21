@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { dictationCardFromSilhouette, dictationCardProblems, generateDictationCard } from "./generate.ts";
 import { DICTATION_LEVELS, type DictationLevelId } from "./levels.ts";
+import { symmetryColorOfLetter } from "../symmetry/template-format.ts";
 import { outlineProblems, silhouetteOfCells } from "./outline.ts";
 import { DICTATION_SHAPES, dictationShapesFor, shapeSilhouette, type DictationShape } from "./shapes.ts";
 
@@ -62,7 +63,12 @@ void describe("dictation shapes", () => {
   });
 
   void test("a level without a drawing gives no shape and no silhouette", () => {
-    const partial: DictationShape = { id: "partial", categories: ["zwierzeta"], byLevel: { lat6: ["##", "##"] } };
+    const partial: DictationShape = {
+      id: "partial",
+      categories: ["zwierzeta"],
+      onCopyDrawing: true,
+      byLevel: { lat6: ["kk", "kk"] },
+    };
 
     assert.throws(() => shapeSilhouette(partial, "lat5", false), /no drawing for lat5/);
     assert.deepEqual(dictationShapesFor("lat5", "wszystkie", [partial]), []);
@@ -71,9 +77,58 @@ void describe("dictation shapes", () => {
   });
 
   void test("rows of different length are a broken drawing", () => {
-    const ragged: DictationShape = { id: "ragged", categories: ["zwierzeta"], byLevel: { lat5: ["###", "##"] } };
+    const ragged: DictationShape = {
+      id: "ragged",
+      categories: ["zwierzeta"],
+      onCopyDrawing: true,
+      byLevel: { lat5: ["kkk", "kk"] },
+    };
 
     assert.throws(() => shapeSilhouette(ragged, "lat5", false), /row of 2 cells in a 3 wide drawing/);
+  });
+
+  void test('every cell of every drawing is "." or a crayon letter, never "#"', () => {
+    for (const shape of DICTATION_SHAPES) {
+      for (const levelId of levelIdsOf(shape)) {
+        for (const line of shape.byLevel[levelId] ?? []) {
+          assert.ok(!line.includes("#"), `${shape.id} ${levelId}`);
+          for (const letter of line) {
+            assert.ok(
+              letter === "." || symmetryColorOfLetter(letter) !== undefined,
+              `${shape.id} ${levelId} "${letter}"`,
+            );
+          }
+        }
+      }
+    }
+  });
+
+  void test("an unknown letter is a broken drawing", () => {
+    const hashed: DictationShape = {
+      id: "hashed",
+      categories: ["zwierzeta"],
+      onCopyDrawing: true,
+      byLevel: { lat5: ["k#", "kk"] },
+    };
+
+    assert.throws(() => shapeSilhouette(hashed, "lat5", false), /Unknown color letter "#"/);
+  });
+
+  void test("every crayon letter is a silhouette cell, whatever its color", () => {
+    const colored: DictationShape = {
+      id: "colored",
+      categories: ["zwierzeta"],
+      onCopyDrawing: true,
+      byLevel: { lat5: ["rgy", "bo.", "skn"] },
+    };
+
+    assert.equal(shapeSilhouette(colored, "lat5", false).cells.length, 8);
+  });
+
+  void test("every shape but the horizontal key comes on the Skopiuj obrazek card", () => {
+    const off = DICTATION_SHAPES.filter((shape) => !shape.onCopyDrawing).map((shape) => shape.id);
+
+    assert.deepEqual(off, ["klucz-poziomy"]);
   });
 
   void test("enclosed empty cells are filled: the child draws only the outer line", () => {
