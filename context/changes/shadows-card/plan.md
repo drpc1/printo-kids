@@ -2,13 +2,13 @@
 
 ## Overview
 
-Szesnasta karta: „Cienie” (`/shadows`, id `cienie`). Na A4 stoi zdanie polecenia z postacią w dymku i 4–6 par: kolorowy obrazek w lewej kolumnie, czarne cienie w prawej w innej kolejności, kropki po wewnętrznych stronach; dziecko łączy kreską obrazek z jego cieniem. Obrazki to własny katalog karty: ok. 80 gładkich rysunków wektorowych w prawdziwych, uproszczonych kolorach w 12 rodzinach. Trudność rośnie z podobieństwa obrazków: łatwy 4 pary różnych rzeczy z różnych rodzin, średni 5 par z jednej rodziny różnych rzeczy o podobnym kształcie, trudny 6 par wariantów jednej rzeczy. Bez kategorii, bez przełącznika kolorów, bez „Pokaż rozwiązanie”; profil pamięta poziom. Wejście: PRD US-41, US-42, FR-051, FR-052, Business Logic „Karta „Cienie””, Open Questions 21 i makieta v2 `context/changes/shadows-card/` (PR #440); roadmapa S-47, GitHub #419.
+Szesnasta karta: „Cienie” (`/shadows`, id `cienie`). Na A4 stoi zdanie polecenia z postacią w dymku i 4–6 par: kolorowy obrazek w lewej kolumnie, czarne cienie w prawej w innej kolejności, kropki po wewnętrznych stronach; dziecko łączy kreską obrazek z jego cieniem. Obrazki to własny katalog karty: ok. 80 gładkich rysunków wektorowych w prawdziwych, uproszczonych kolorach w 13 rodzinach. Trudność rośnie z podobieństwa obrazków: łatwy 4 pary różnych rzeczy z różnych rodzin, średni 5 par z jednej rodziny różnych rzeczy o podobnym kształcie, trudny 6 par wariantów jednej rzeczy. Bez kategorii, bez przełącznika kolorów, bez „Pokaż rozwiązanie”; profil pamięta poziom. Wejście: PRD US-41, US-42, FR-051, FR-052, Business Logic „Karta „Cienie””, Open Questions 21 i makieta v2 `context/changes/shadows-card/` (PR #440); roadmapa S-47, GitHub #419.
 
 ## Current State Analysis
 
 Katalog ma piętnaście kart; najbliższy wzór kodu to „Od najmniejszego” (`context/archive/2026-11-18-size-order-card/plan.md`, `src/lib/size-order/`, `SizeOrderGenerator.tsx`): losowanie bez solvera, jedna kontrolka poziomu, rytm faz. Makieta v2 (`mockup.mts`) ma już format rysunku (kształty `path` / `rect` / `circle` / `ellipse` / gruby łuk ucha, kolor części, `detail` pomijany w cieniu), układ dwóch kolumn i 14 przykładowych rysunków (choinka jednym obrysem).
 
-Decyzje (użytkowniczka 2026-11-20 i 2026-11-21): poziomy 4 / 5 / 6 par z rodzin jak wyżej; ok. 80 obrazków w 12 rodzinach: **6 rodzin wariantów jednej rzeczy** (kubki, domki, ryby, auta, drzewa, klucze) dla trudnego i **6 rodzin różnych rzeczy o podobnym kształcie** (owoce, warzywa, zwierzęta, ptaki, ubrania, zabawki) dla średniego, łatwy bierze z wszystkich; obrazki zawsze w kolorze; bez kategorii; **cały katalog rysowany w fazie 1 z arkuszem podglądu do akceptacji przed logiką karty**. Przyjęte bez pytania (w PRD, można zmienić): domyślny poziom łatwy, brak „Pokaż rozwiązanie”, nazwy techniczne poniżej.
+Decyzje (użytkowniczka 2026-11-20 i 2026-11-21): poziomy 4 / 5 / 6 par z rodzin jak wyżej; ok. 80 obrazków w 13 rodzinach: **6 rodzin wariantów jednej rzeczy** (kubki, domki, ryby, auta, drzewa, klucze) dla trudnego i **6 rodzin różnych rzeczy o podobnym kształcie** (owoce, warzywa, zwierzęta, ptaki, ubrania, zabawki) dla średniego, łatwy bierze z wszystkich; obrazki zawsze w kolorze; bez kategorii; **cały katalog rysowany w fazie 1 z arkuszem podglądu do akceptacji przed logiką karty**. Przyjęte bez pytania (w PRD, można zmienić): domyślny poziom łatwy, brak „Pokaż rozwiązanie”, nazwy techniczne poniżej.
 
 ### Key Discoveries:
 
@@ -50,7 +50,7 @@ Losuje się rodzinę(-y), obrazki bez powtórek i kolejność cieni bez cienia w
 
 ### Overview
 
-Format rysunku, paleta tokenów, ok. 80 rysunków w 12 rodzinach, maska cienia i test rozróżnialności, arkusz podglądu do akceptacji. Bez karty i bez rejestracji.
+Format rysunku, paleta tokenów, ok. 80 rysunków w 13 rodzinach, maska cienia i test rozróżnialności, arkusz podglądu do akceptacji. Bez karty i bez rejestracji.
 
 ### Changes Required:
 
@@ -74,7 +74,7 @@ Format rysunku, paleta tokenów, ok. 80 rysunków w 12 rodzinach, maska cienia i
 
 **File**: `src/lib/shadows/pictures/warianty.ts` i `src/lib/shadows/pictures/rozne.ts` (po sześć rodzin w pliku; zamiast 12 plików, przegląd fazy 1), `src/lib/shadows/families.ts`
 
-**Intent**: Katalog ok. 80 rysunków: 6 rodzin `warianty` (kubki, domki, ryby, auta, drzewa, klucze) i 6 rodzin `rozne` (owoce, warzywa, zwierzęta, ptaki, ubrania, zabawki), po 6–8 obrazków. Styl z makiety v2: prawdziwe, uproszczone kolory, jednolite barwy, ciemny kontur; części nie nachodzą tak, żeby było widać ich krawędzie w środku kształtu (choinka jednym obrysem); w rodzinach `warianty` obrazki różnią się szczegółem obrysu (ucho, dzióbek, dach, płetwa, ząbki klucza), nie tylko detalem w środku, bo cień detali nie ma. Rysunki z makiety v2 przechodzą do katalogu.
+**Intent**: Katalog ok. 80 rysunków: 7 rodzin `warianty` (kubki, domki, ryby, auta, drzewa, klucze, kwiaty) i 6 rodzin `rozne` (owoce, warzywa, zwierzęta, ptaki, ubrania, zabawki), po 6–8 obrazków. Styl z makiety v2: prawdziwe, uproszczone kolory, jednolite barwy, ciemny kontur; części nie nachodzą tak, żeby było widać ich krawędzie w środku kształtu (choinka jednym obrysem); w rodzinach `warianty` obrazki różnią się szczegółem obrysu (ucho, dzióbek, dach, płetwa, ząbki klucza), nie tylko detalem w środku, bo cień detali nie ma. Rysunki z makiety v2 przechodzą do katalogu.
 
 **Contract**: `SHADOW_FAMILIES: readonly ShadowFamily[]` (`id`, `label`, `kind`, `pictures`); id obrazków unikalne w całym katalogu; rodzina ma 6–8 obrazków; obrazek należy do jednej rodziny.
 
@@ -92,7 +92,7 @@ Format rysunku, paleta tokenów, ok. 80 rysunków w 12 rodzinach, maska cienia i
 
 **Intent**: Pilnować katalogu zamiast liczyć cienie przy każdej karcie; dać użytkowniczce arkusz do akceptacji.
 
-**Contract**: testy: 12 rodzin (6 + 6), 6–8 obrazków w rodzinie, ≥ 72 obrazki, unikalne id, `d` tylko z dozwolonych poleceń, barwy z `PICTURE_COLORS`, detal leży wewnątrz maski bez detali (detal nie zmienia cienia), **każda para obrazków w katalogu ma `shadowDifference ≥ MIN_SHADOW_DIFFERENCE`** (różne rodziny też mogą razem trafić na łatwy), maska znanych kształtów (koło, prostokąt, łuk) ma oczekiwane pole. `catalog.mts` pisze `catalog-*.svg` / PNG i `catalog.html`: rodzinami, każdy obrazek obok swojego cienia, z podpisem, oraz listą najbliższych par (najmniejsza różnica) do oceny progu.
+**Contract**: testy: 13 rodzin (7 + 6), 6–8 obrazków w rodzinie, ≥ 72 obrazki, unikalne id, `d` tylko z dozwolonych poleceń, barwy z `PICTURE_COLORS`, detal leży wewnątrz maski bez detali (detal nie zmienia cienia), **każda para obrazków w katalogu ma `shadowDifference ≥ MIN_SHADOW_DIFFERENCE`** (różne rodziny też mogą razem trafić na łatwy), maska znanych kształtów (koło, prostokąt, łuk) ma oczekiwane pole. `catalog.mts` pisze `catalog-*.svg` / PNG i `catalog.html`: rodzinami, każdy obrazek obok swojego cienia, z podpisem, oraz listą najbliższych par (najmniejsza różnica) do oceny progu.
 
 ### Success Criteria:
 
@@ -195,7 +195,7 @@ Rejestracja karty, strona `/shadows`, arkusz SVG, miniatura, „Jak to działa�
 
 **Intent**: Strona na `CardPage` i `useCardPage` z paskiem Postać · Poziom; arkusz SVG z `layoutShadowsSheet`.
 
-**Contract**: `handleLevelSelect` → `remember` + `applySettings` (nowa karta); bez kolorów, kategorii i „Pokaż rozwiązanie”; błąd generowania jak w `SizeOrderGenerator`; obrazek rysowany z kształtów w `var(--picture-…)` z konturem w dwóch przejściach jak w `catalog.mts` (najpierw obrys wszystkich części w `--picture-line`, pogrubiony o szerokość linii, potem same wypełnienia, na końcu detale z własnym obrysem), żeby zachodzące części jednego koloru nie miały kreski w środku (uwaga użytkowniczki o choince, 2026-11-20), cień z kształtów bez detali w `var(--foreground)`; ucho (`stroke`) w cieniu też czarne.
+**Contract**: `handleLevelSelect` → `remember` + `applySettings` (nowa karta); bez kolorów, kategorii i „Pokaż rozwiązanie”; błąd generowania jak w `SizeOrderGenerator`; obrazek rysowany z kształtów w `var(--picture-…)` z konturem w dwóch przejściach jak w `catalog.mts` (najpierw obrys wszystkich części w `--picture-line`, pogrubiony o szerokość linii, potem same wypełnienia, na końcu detale z własnym obrysem; detal `stroke` — wąsy, linie łusek cebuli — to zwykła linia w swojej barwie, bez obrysu, jak w `render.mts`), żeby zachodzące części jednego koloru nie miały kreski w środku (uwaga użytkowniczki o choince, 2026-11-20), cień z kształtów bez detali w `var(--foreground)`; ucho (`stroke`) w cieniu też czarne.
 
 #### 3. Miniatura i „Jak to działa”
 

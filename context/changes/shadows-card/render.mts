@@ -41,7 +41,11 @@ export function pictureAt(picture: ShadowPicture, x: number, y: number, size: nu
     : [
         ...body.map((shape) => shapeSvg(shape, LINE, 2 * PICTURE_LINE_WIDTH)),
         ...body.map((shape) => shapeSvg(shape, COLOR[shape.paint], 0)),
-        ...details.flatMap((shape) => [shapeSvg(shape, LINE, 2 * PICTURE_LINE_WIDTH), shapeSvg(shape, COLOR[shape.paint], 0)]),
+        ...details.flatMap((shape) =>
+          shape.kind === "stroke"
+            ? [`<path d="${shape.d}" fill="none" stroke="${COLOR[shape.paint]}" stroke-width="${shape.width}" stroke-linecap="round" stroke-linejoin="round"/>`]
+            : [shapeSvg(shape, LINE, 2 * PICTURE_LINE_WIDTH), shapeSvg(shape, COLOR[shape.paint], 0)],
+        ),
       ];
   return `<g transform="translate(${x} ${y}) scale(${size / 100})">${parts.join("")}</g>`;
 }

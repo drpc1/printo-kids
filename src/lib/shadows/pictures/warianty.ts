@@ -1,5 +1,5 @@
-// The six "warianty" families of the shadows card: variants of one thing that differ in a detail of the outline
-// (handle, roof, fin, wheels, crown, key bow). Details inside the outline (windows, eyes) are left out of the shadow,
+// The seven "warianty" families of the shadows card: variants of one thing that differ in a detail of the outline
+// (handle, roof, fin, wheels, crown, key bow, flower head). Details inside the outline (windows, eyes) are left out of the shadow,
 // so a variant never differs by a detail alone.
 import { circle, ellipse, path, rect, stroke, type ShadowPicture } from "../picture-format.ts";
 
@@ -380,6 +380,102 @@ export const KLUCZE: readonly ShadowPicture[] = [
       rect(70, 54, 16, 24, "brown"),
       ellipse(22, 50, 17, 26, "brown"),
       ellipse(22, 50, 7, 14, "white", 0, true),
+    ],
+  },
+];
+
+/** Petals in a ring around (cx, cy): `n` ellipses `dist` from the centre, the long side pointing outwards. */
+function petals(cx: number, cy: number, n: number, dist: number, rx: number, ry: number, paint: "white" | "yellow") {
+  return Array.from({ length: n }, (_, k) => {
+    const angle = (360 / n) * k;
+    const rad = (angle * Math.PI) / 180;
+    const x = Math.round((cx + dist * Math.cos(rad)) * 10) / 10;
+    const y = Math.round((cy + dist * Math.sin(rad)) * 10) / 10;
+    return ellipse(x, y, rx, ry, paint, angle);
+  });
+}
+
+/** A hanging bell flower whose top is at (x, y). */
+function bell(x: number, y: number): string {
+  return `M${x - 5} ${y} C${x - 6} ${y + 8} ${x - 8} ${y + 12} ${x - 10} ${y + 17} L${x - 6} ${y + 15} L${x - 3} ${y + 18} L${x} ${y + 16} L${x + 3} ${y + 18} L${x + 6} ${y + 15} L${x + 10} ${y + 17} C${x + 8} ${y + 12} ${x + 6} ${y + 8} ${x + 5} ${y} Z`;
+}
+
+// Dodane 2026-11-21 (prośba użytkowniczki): różne kwiaty na łodydze; różnią się kształtem kwiatu i liści.
+export const KWIATY: readonly ShadowPicture[] = [
+  {
+    id: "tulipan",
+    label: "tulipan",
+    shapes: [
+      stroke("M50 48 V96", 4, "green"),
+      path("M49 94 C36 86 28 70 30 54 C40 64 46 76 50 86 Z", "leaf"),
+      path("M51 94 C62 88 70 76 70 64 C62 72 56 80 50 88 Z", "leaf"),
+      path("M32 18 L41 28 L50 14 L59 28 L68 18 C71 38 63 52 50 52 C37 52 29 38 32 18 Z", "red"),
+    ],
+  },
+  {
+    id: "stokrotka",
+    label: "stokrotka",
+    shapes: [
+      stroke("M50 40 V96", 4, "green"),
+      ellipse(40, 78, 11, 4.5, "leaf", -30),
+      ...petals(50, 30, 12, 14, 7, 3.6, "white"),
+      circle(50, 30, 7, "yellow"),
+    ],
+  },
+  {
+    id: "slonecznik",
+    label: "słonecznik",
+    shapes: [
+      stroke("M50 50 V96", 6, "green"),
+      path("M48 76 C38 64 22 66 18 74 C26 84 40 84 48 76 Z", "leaf"),
+      path("M52 70 C62 58 78 60 82 68 C74 78 60 78 52 70 Z", "leaf"),
+      ...petals(50, 30, 16, 18, 9, 3.4, "yellow"),
+      circle(50, 30, 12, "brown"),
+      circle(46, 27, 1.6, "darkbrown", true),
+      circle(54, 27, 1.6, "darkbrown", true),
+      circle(50, 33, 1.6, "darkbrown", true),
+      circle(44, 34, 1.6, "darkbrown", true),
+      circle(56, 34, 1.6, "darkbrown", true),
+    ],
+  },
+  {
+    id: "roza",
+    label: "róża",
+    shapes: [
+      stroke("M50 50 V96", 4, "green"),
+      path("M52 60 L58 57 L52 65 Z M48 86 L42 83 L48 91 Z", "green"),
+      path("M50 70 C40 62 30 64 24 70 C30 77 42 77 50 70 Z", "leaf"),
+      path("M50 80 C60 72 70 74 76 80 C70 87 58 87 50 80 Z", "leaf"),
+      path("M41 41 L50 53 L59 41 Z", "green"),
+      path(
+        "M32 26 C30 14 38 9 44 14 C46 7 54 7 56 14 C62 9 70 14 68 26 C66 38 58 44 50 44 C42 44 34 38 32 26 Z",
+        "red",
+      ),
+      stroke("M37 22 C41 33 59 33 63 22 M44 17 C46 25 54 25 56 17 M42 36 C46 40 54 40 58 36", 1.6, "darkred", true),
+    ],
+  },
+  {
+    id: "dzwonek",
+    label: "dzwonek",
+    shapes: [
+      stroke("M36 96 C36 58 46 30 72 18 L84 22 M55 30 L65 36 M44 47 L54 54", 3.5, "green"),
+      path("M37 94 C26 86 22 74 24 64 C30 72 34 82 38 90 Z", "leaf"),
+      path(bell(84, 21), "purple"),
+      path(bell(65, 35), "purple"),
+      path(bell(54, 53), "purple"),
+    ],
+  },
+  {
+    id: "mak",
+    label: "mak",
+    shapes: [
+      stroke("M50 44 C46 62 54 78 50 96", 3.5, "green"),
+      path("M50 82 L40 78 L43 73 L33 71 L37 66 L27 62 C38 59 47 66 51 76 Z", "leaf"),
+      path(
+        "M22 30 C18 16 34 10 44 18 C46 12 54 12 56 18 C66 10 82 16 78 30 C76 40 64 46 50 46 C36 46 24 40 22 30 Z",
+        "red",
+      ),
+      circle(50, 29, 6, "black", true),
     ],
   },
 ];
