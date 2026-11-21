@@ -49,11 +49,7 @@ export const KUBKI: readonly ShadowPicture[] = [
   {
     id: "garnuszek",
     label: "niski kubek",
-    shapes: [
-      stroke("M80 54 C94 54 94 80 80 80", 9, "orange"),
-      rect(14, 44, 68, 48, "orange", 6),
-      circle(48, 68, 8, "white", true),
-    ],
+    shapes: [stroke("M80 54 C94 54 94 80 80 80", 9, "orange"), rect(14, 44, 68, 48, "orange", 6)],
   },
   {
     id: "czajnik",
@@ -337,15 +333,21 @@ export const AUTA: readonly ShadowPicture[] = [
   {
     id: "motocykl",
     label: "motocykl",
+    // Przerysowany 2026-11-21 (uwaga użytkowniczki): bak, siodełko, silnik, widelec z kierownicą, błotnik i duże koła.
     shapes: [
-      stroke("M64 50 L72 30 L82 28", 4, "darkgray"),
-      circle(74, 34, 4, "yellow"),
-      circle(20, 74, 15, "black"),
-      circle(80, 74, 15, "black"),
-      path("M20 74 L34 48 H62 L72 58 L80 74 H66 L58 62 H42 L34 74 Z", "red"),
-      rect(34, 40, 24, 9, "black", 3),
-      circle(20, 74, 5, "gray", true),
-      circle(80, 74, 5, "gray", true),
+      stroke("M80 70 L69 32", 5, "darkgray"),
+      stroke("M71 34 L64 24 H56", 4, "black"),
+      stroke("M24 70 L44 62", 4, "darkgray"),
+      circle(22, 70, 17, "black"),
+      circle(80, 70, 17, "black"),
+      path("M4 64 C6 46 32 42 40 56 L33 59 C28 51 14 52 11 64 Z", "red"),
+      path("M14 46 C18 40 34 39 40 43 V50 H16 Z", "black"),
+      path("M36 44 C42 34 60 32 70 40 L66 51 H38 Z", "red"),
+      rect(38, 50, 24, 18, "gray", 3),
+      circle(76, 42, 5, "yellow"),
+      circle(22, 70, 7, "gray", true),
+      circle(80, 70, 7, "gray", true),
+      stroke("M42 56 H58 M42 62 H58", 1.4, "darkgray", true),
     ],
   },
 ];
