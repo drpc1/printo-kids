@@ -306,17 +306,17 @@ Brak: pole `cards.cienie` w zapisanych profilach dostaje wartość domyślną pr
 
 #### Automated
 
-- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/changes/shadows-card/*.md context/foundation/roadmap.md`
-- [x] 1.2 Testy przechodzą: `npm test`
-- [x] 1.3 Lint: `npm run lint`
-- [x] 1.4 Zależności: `npm run depcruise`
-- [x] 1.5 Typy: `npx astro check`
-- [x] 1.6 Build: `npm run build`
+- [x] 1.1 Formatowanie dokumentów: `npx prettier --check context/changes/shadows-card/*.md context/foundation/roadmap.md` — c7075ddc
+- [x] 1.2 Testy przechodzą: `npm test` — c7075ddc
+- [x] 1.3 Lint: `npm run lint` — c7075ddc
+- [x] 1.4 Zależności: `npm run depcruise` — c7075ddc
+- [x] 1.5 Typy: `npx astro check` — c7075ddc
+- [x] 1.6 Build: `npm run build` — c7075ddc
 
 #### Manual
 
-- [ ] 1.7 Użytkowniczka akceptuje arkusz katalogu (`catalog.html`): wygląd i kolory rysunków, rodziny, czytelność cieni i próg najbliższych par
-- [x] 1.8 Przegląd diffu względem planu i makiety (`/10x-impl-review` przed PR fazy)
+- [x] 1.7 Użytkowniczka akceptuje arkusz katalogu (`catalog.html`): wygląd i kolory rysunków, rodziny, czytelność cieni i próg najbliższych par — c7075ddc
+- [x] 1.8 Przegląd diffu względem planu i makiety (`/10x-impl-review` przed PR fazy) — c7075ddc
 
 ### Phase 2: Logika karty
 
