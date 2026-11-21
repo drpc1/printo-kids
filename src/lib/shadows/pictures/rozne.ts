@@ -57,8 +57,10 @@ export const OWOCE: readonly ShadowPicture[] = [
     id: "banan",
     label: "banan",
     shapes: [
-      path("M14 30 C20 72 60 88 92 64 C94 60 92 57 88 59 C60 74 34 62 26 30 Z", "yellow"),
-      path("M12 30 L18 20 L28 26 L26 32 Z", "brown"),
+      // Przerysowany 2026-11-21 (uwaga użytkowniczki): pełny łuk, grubszy w środku, zwężony do ogonka i czubka.
+      path("M23 10 L29 9 L31 26 L25 26 Z", "brown"),
+      path("M25 24 C12 56 30 86 62 86 C76 86 88 82 95 72 C84 76 70 76 58 72 C42 66 31 50 31 24 Z", "yellow"),
+      circle(94, 73, 2.6, "darkbrown"),
     ],
   },
   {
@@ -262,6 +264,10 @@ export const PTAKI: readonly ShadowPicture[] = [
       ellipse(60, 94, 9, 4, "orange"),
       ellipse(50, 54, 28, 38, "black"),
       ellipse(50, 62, 18, 26, "white", 0, true),
+      circle(41, 27, 6, "white", true),
+      circle(59, 27, 6, "white", true),
+      circle(42, 28, 2.8, "black", true),
+      circle(58, 28, 2.8, "black", true),
       path("M44 34 H56 L50 42 Z", "orange", true),
     ],
   },
