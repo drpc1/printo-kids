@@ -18,16 +18,16 @@ Test `lists every card in the order of CARD_KINDS with their pages` porównuje w
 
 W oknie edycji profilu nazwy w podsumowaniu stoją alfabetycznie. Wiersze „domyślne” zostają. `CARD_KINDS` jest w tej samej kolejności, więc nowa karta wchodzi w swoje miejsce w rejestrze. Test oblewa dopisanie jej na końcu, poza tym miejscem.
 
-PRD przy oknie profilu mówi, że te nazwy idą alfabetycznie, jak katalog. Przykład „Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta” zostaje wzorem treści wiersza.
+PRD przy oknie profilu mówi, że te nazwy idą alfabetycznie, bo rejestr kart jest ułożony alfabetycznie po polskich tytułach i nowa karta wchodzi w swoje miejsce. Przykład „Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta” zostaje wzorem treści wiersza.
 
 Sprawdzenie: `npm test` oraz `npx playwright test tests/e2e/profile-summary.spec.ts --project=chromium`.
 
 ### Key Discoveries:
 
 - Kolejność podsumowania to `CARD_KINDS.map` w `src/lib/card-summary.ts:40-41`. Komentarz nad funkcją mówi wprost „in the order of CARD_KINDS”.
-- Komparator katalogu jest w `src/lib/cards.ts:128-130`. Test `orders titles alphabetically and leaves CARD_KINDS in insertion order` (`src/lib/cards.test.ts:6-14`) pilnuje, że stała nie jest tą kopią.
+- Komparator katalogu jest w `src/lib/cards.ts:128-130`. Test w `src/lib/cards.test.ts` wymaga polskich tytułów w `CARD_KINDS` i tego, żeby `cardsInCatalogOrder()` nadal zwracało kopię.
 - Jedyny widoczny konsument kolejności `cardSummaries()` to `ProfileSummary` (`src/components/ProfileCorner.tsx:582`). `catalogBadges` składa rekord po `id`, więc kolejność tablicy go nie zmienia.
-- Plan `context/archive/2026-10-28-catalog-alpha-order/plan.md` zostawił podsumowanie przy dopisaniu celowo (nowa karta na końcu listy). Issue 429 to odwraca tylko dla podsumowania.
+- Plan `context/archive/2026-10-28-catalog-alpha-order/plan.md` zostawił podsumowanie przy dopisaniu celowo (nowa karta na końcu listy). Issue 429 odwraca to i dla podsumowania, i dla rejestru: nowa karta wchodzi w swoje miejsce alfabetu.
 - E2E katalogu (`tests/e2e/catalog.spec.ts:10-26`) porównuje DOM z `localeCompare(..., "pl")` w procesie testu, nie z zahardkodowaną listą.
 
 ## What We're NOT Doing
@@ -56,7 +56,7 @@ Podsumowanie profilu zwraca karty w kolejności katalogu. Test jednostkowy i E2E
 
 **Intent**: `cardSummaries()` ma oddawać każdy rodzaj w kolejności katalogu, bo okno profilu rysuje tę tablicę bez własnego sortowania.
 
-**Contract**: Wynik nadal ma po jednym wierszu na każdy `CardKind`, z tymi samymi polami (`id`, `title`, `href`, `used`, `badge`, `detail`). Jedyna zmiana kolejności: iteracja po `cardsInCatalogOrder()`, nie po `CARD_KINDS`. Komentarz nad funkcją przestaje mówić o kolejności `CARD_KINDS`. `CARD_KINDS` się nie zmienia. `catalogBadges` bez zmian.
+**Contract**: Wynik nadal ma po jednym wierszu na każdy `CardKind`, z tymi samymi polami (`id`, `title`, `href`, `used`, `badge`, `detail`). Podsumowanie idzie po `cardsInCatalogOrder()`. Komentarz nad funkcją przestaje mówić o kolejności dopisania. `CARD_KINDS` jest w kolejności polskich tytułów: nowa karta jest wstawiana w swoje miejsce, a nie dopisywana na końcu. `cardsInCatalogOrder()` nadal zwraca kopię. `catalogBadges` bez zmian.
 
 #### 2. Test kolejności
 
@@ -93,7 +93,7 @@ Podsumowanie profilu zwraca karty w kolejności katalogu. Test jednostkowy i E2E
 
 ### Overview
 
-US-08 mówi, że nazwy w podsumowaniu ustawień idą alfabetycznie, tak jak katalog. Przykład treści wiersza i tabela ustawień zostają tam, gdzie są.
+US-08 mówi, że nazwy w podsumowaniu ustawień idą alfabetycznie, bo rejestr kart jest ułożony alfabetycznie po polskich tytułach i nowa karta wchodzi w swoje miejsce. Przykład treści wiersza i tabela ustawień zostają tam, gdzie są.
 
 ### Changes Required:
 
@@ -103,13 +103,13 @@ US-08 mówi, że nazwy w podsumowaniu ustawień idą alfabetycznie, tak jak kata
 
 **Intent**: Rodzic i następny autor mają w PRD tę samą regułę, którą realizuje `cardSummaries()`.
 
-**Contract**: Jedno zdanie w punkcie US-08, który zaczyna się od „Okno profilu pokazuje imię…”. Mówi, że nazwy w podsumowaniu ustawień idą alfabetycznie, w kolejności katalogu. Przykład „Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta” zostaje. Tabela w Business Logic „Profil i zapamiętane ustawienia” zostaje w dotychczasowej kolejności.
+**Contract**: Jedno zdanie w punkcie US-08, który zaczyna się od „Okno profilu pokazuje imię…”. Mówi, że nazwy w podsumowaniu ustawień idą alfabetycznie, bo rejestr kart jest ułożony alfabetycznie po polskich tytułach i nowa karta wchodzi w swoje miejsce. Przykład „Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta” zostaje. Tabela w Business Logic „Profil i zapamiętane ustawienia” zostaje w dotychczasowej kolejności.
 
 ### Success Criteria:
 
 #### Manual Verification:
 
-- Punkt US-08 o oknie profilu mówi, że nazwy podsumowania idą alfabetycznie, jak katalog, a przykład „Labirynt: Poziom 4 · Nonogram…” i tabela ustawień w Business Logic są w dotychczasowej kolejności
+- Punkt US-08 o oknie profilu mówi, że nazwy podsumowania idą alfabetycznie, bo rejestr kart jest ułożony alfabetycznie po polskich tytułach i nowa karta wchodzi w swoje miejsce, a przykład „Labirynt: Poziom 4 · Nonogram…” i tabela ustawień w Business Logic są w dotychczasowej kolejności
 
 **Implementation Note**: Faza nie ma sprawdzenia automatycznego. Po dopisaniu zdania pokaż diff tego punktu.
 
@@ -143,7 +143,7 @@ Kolejność nie jest zapisana w profilu. Zapisane profile i ostatnie parametry c
 ## References
 
 - Issue [#429](https://github.com/agapios-eu/printo-kids/issues/429)
-- Decyzja odwracana tylko dla podsumowania: `context/archive/2026-10-28-catalog-alpha-order/plan.md`
+- Decyzja odwracana dla podsumowania i rejestru: `context/archive/2026-10-28-catalog-alpha-order/plan.md`
 - Komparator: `src/lib/cards.ts:128`
 - Wzorzec asercji E2E: `tests/e2e/catalog.spec.ts:10`
 
@@ -155,7 +155,7 @@ Kolejność nie jest zapisana w profilu. Zapisane profile i ostatnie parametry c
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi; test kolejności w `src/lib/card-summary.test.ts` porównuje wynik z `cardsInCatalogOrder()`, a `src/lib/cards.test.ts` nadal wymaga, żeby `CARD_KINDS` zaczynało się od Labiryntu — 42178bc7
+- [x] 1.1 `npm test` przechodzi; test kolejności w `src/lib/card-summary.test.ts` porównuje wynik z `cardsInCatalogOrder()`, a `src/lib/cards.test.ts` wymaga, żeby tytuły `CARD_KINDS` były alfabetyczne po polsku — 42178bc7
 - [x] 1.2 `npx playwright test tests/e2e/profile-summary.spec.ts --project=chromium` przechodzi, w tym asercja kolejności tytułów; gdy port 4321 zajmuje inny checkout, ustaw `E2E_PORT` — 42178bc7
 
 #### Manual
@@ -166,4 +166,4 @@ Kolejność nie jest zapisana w profilu. Zapisane profile i ostatnie parametry c
 
 #### Manual
 
-- [x] 2.1 Punkt US-08 o oknie profilu mówi, że nazwy podsumowania idą alfabetycznie, jak katalog, a przykład „Labirynt: Poziom 4 · Nonogram…” i tabela ustawień w Business Logic są w dotychczasowej kolejności — 7b0a75bd
+- [x] 2.1 Punkt US-08 o oknie profilu mówi, że nazwy podsumowania idą alfabetycznie, bo rejestr kart jest ułożony alfabetycznie po polskich tytułach i nowa karta wchodzi w swoje miejsce, a przykład „Labirynt: Poziom 4 · Nonogram…” i tabela ustawień w Business Logic są w dotychczasowej kolejności — 7b0a75bd
