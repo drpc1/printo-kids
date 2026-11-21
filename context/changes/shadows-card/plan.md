@@ -330,7 +330,7 @@ Brak: pole `cards.cienie` w zapisanych profilach dostaje wartość domyślną pr
 
 #### Manual
 
-- [ ] 2.6 Użytkowniczka akceptuje podgląd kart z kodu (`preview.mts`; trzy poziomy, z postacią i bez)
+- [x] 2.6 Użytkowniczka akceptuje podgląd kart z kodu (`preview.mts`; trzy poziomy, z postacią i bez) — zaakceptowane 2026-11-21 po poprawkach rysunków (katalog 104 obrazki w 13 rodzinach)
 - [x] 2.7 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy)
 
 ### Phase 3: Strona, katalog i profil
