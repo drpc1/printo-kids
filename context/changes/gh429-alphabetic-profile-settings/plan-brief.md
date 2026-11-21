@@ -59,7 +59,7 @@ Jedno źródło alfabetu: kopia z `cardsInCatalogOrder()`. Podsumowanie przestaj
 
 - Równe tytuły zostają w kolejności dopisania (stabilne sortowanie). Dziś się nie powtarzają.
 - Różnica ICU między Node a Chromium dla przyszłego tytułu wywaliłaby ten E2E tak samo jak test katalogu. Obecne czternaście tytułów jest zgodne.
-- Plan z 2026-10-28 przestaje obowiązywać tylko dla podsumowania profilu.
+- Plan z 2026-10-28 przestaje obowiązywać dla podsumowania profilu i dla rejestru: nowa karta wchodzi w swoje miejsce alfabetu.
 
 ## Success Criteria (Summary)
 
