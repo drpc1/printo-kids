@@ -51,7 +51,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 
 | ID   | Change ID                      | Outcome (user can …)                                                                                                                                        | Prerequisites                                              | PRD refs                                                                  | Status      |
 | ---- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ----------- |
-| S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje                                   | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | in-progress |
+| S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje                                   | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | done        |
 | S-47 | shadows-card                   | Rodzic otwiera z katalogu „Cienie”, generuje kartę A4, na której dziecko łączy obiekty z ich cieniami, podgląda ją i drukuje                                | —                                                          | MS-02, FR-014, FR-017, FR-030, FR-051, FR-052, US-05, US-08, US-41, US-42 | in-progress |
 | S-48 | size-order-card                | Rodzic otwiera z katalogu „Od najmniejszego”, generuje kartę A4, na której dziecko numeruje obrazki od najmniejszego do największego, podgląda ją i drukuje | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | done        |
 | S-49 | number-maze-card               | Rodzic otwiera z katalogu „Labirynt liczbowy”, generuje kartę A4, na której dziecko idzie od startu do mety po kolejnych liczbach, podgląda ją i drukuje    | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08, US-39, US-40, FR-049, FR-050 | done        |
@@ -107,7 +107,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
   - ~~Poziomy, wielkość kratki i oba warianty: przełącznik czy wynik poziomu?~~ — Zamknięte 2026-11-17 po makiecie (`context/changes/coding-card/`): przełącznik „Tryb” (Zapisz, Wykonaj) niezależny od poziomu, Poziomy 1–4 (kratka 5×5, 6×6, 8×8, 10×10; droga 6–8, 9–12, 13–17, 18–24 kroków), zapis „3 →” na Poziomie 4, szare pola przykładu w Zapisz, trzy obrazki do zakreślenia w Wykonaj, szare przeszkody (PRD US-35, US-36, FR-045, FR-046, Business Logic „Karta kodowania”).
   - Wartości startowe, domyślny tryb Zapisz i brak „Pokaż rozwiązanie” potwierdza wydruk (PRD Open Questions 18). — Owner: user. Block: no.
 - **Risk:** Jedna odpowiedź w Zapisz wymaga jednej najkrótszej drogi; generator liczy drogi własnym BFS (wyszukiwanie labiryntu liczy drogi między ścianami, nie po polach z przeszkodami). Ślepe losowanie w makiecie: Poziom 4 średnio ok. 2400 kratek, ok. 0,2 s na kartę; plan powinien celować metą w daleki punkt. Trzy kolejne karty M-7 to osobne slice'y (S-47 do S-49).
-- **Status:** in-progress
+- **Status:** done
 
 ### S-47: Cienie
 
@@ -319,6 +319,7 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 
 ## Done
 
+- **S-42: Rodzic otwiera z katalogu karty kodowania, wybiera poziom, generuje kartę A4 z kratką, przeszkodami, postacią i metą, na której dziecko zapisuje strzałkami najkrótszą drogę albo wykonuje podane strzałki, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43 (M-7).** — Archived 2026-11-21 → `context/archive/2026-11-17-coding-card/`. Lesson: —.
 - **S-49: Rodzic otwiera z katalogu „Labirynt liczbowy”, wybiera poziom i dostaje kartę A4 z kratką liczb, na której dziecko rysuje drogę od startu do mety po kolejnych liczbach, omijając pułapki** — Archived 2026-11-20 → `context/archive/2026-11-20-number-maze-card/`. Lesson: —.
 - **S-48: Rodzic otwiera z katalogu „Od najmniejszego”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z rzędami obrazków tego samego obiektu w różnych wielkościach; dziecko wpisuje pod nimi kolejność od najmniejszego do największego (1, 2, 3…).** — Archived 2026-11-18 → `context/archive/2026-11-18-size-order-card/`. Lesson: —.
 
