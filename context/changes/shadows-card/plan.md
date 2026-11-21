@@ -128,7 +128,7 @@ Poziomy, karta, generator, układ A4 i silnik z testami; podgląd kart z kodu. B
 
 **Intent**: Jedno miejsce na tabelę poziomów i stałe druku.
 
-**Contract**: `ShadowsLevelId = "latwy" | "sredni" | "trudny"`, `DEFAULT_SHADOWS_LEVEL_ID = "latwy"`, `ShadowsLevel` (`id`, `label`, `barLabel`, `description`, `pairCount`, `familyKind: "dowolne" | "rozne" | "warianty"`, `pictureSize`), `SHADOWS_LEVELS`, `shadowsLevelById()`. `SHADOWS_SHEET` (`as const`, komentarz przy każdej stałej): strona 210×297, `inset` 10, pas postaci, szerokość pola obrazka, promień i odstęp kropki, polecenie „Połącz każdy obrazek z jego cieniem.”.
+**Contract**: `ShadowsLevelId = "latwy" | "sredni" | "trudny"`, `DEFAULT_SHADOWS_LEVEL_ID = "latwy"`, `ShadowsLevel` (`id`, `label`, `barLabel`, `description`, `pairCount`, `familyRule: "dowolne" | "rozne" | "warianty"`, `pictureSize`), `SHADOWS_LEVELS`, `shadowsLevelById()`. `SHADOWS_SHEET` (`as const`, komentarz przy każdej stałej): strona 210×297, `inset` 10, pas postaci, szerokość pola obrazka, promień i odstęp kropki, polecenie „Połącz każdy obrazek z jego cieniem.”.
 
 #### 2. Karta, reguły i generator
 
@@ -144,7 +144,7 @@ Poziomy, karta, generator, układ A4 i silnik z testami; podgląd kart z kodu. B
 
 **Intent**: Karta jako rodzaj karty: `shadowsSpec` + `shadowsEngine`, nigdy `null`; wyczerpanie to `CardExhausted`.
 
-**Contract**: `contentKey(settings)` = poziom; `keyOf(card)` z id obrazków i kolejności cieni; `knownBad` ≥ 2 z `expectedCode` (np. cień w swoim rzędzie, obrazki z dwóch rodzin na średnim). Do regexu `cards-only-through-engines` dopisać `shadows`.
+**Contract**: `contentKey(settings)` = poziom; `keyOf(card)` z id obrazków i kolejności cieni; `knownBad` ≥ 2 z `expectedCode` (np. cień w swoim rzędzie, obrazki z dwóch rodzin na średnim). Do regexu `cards-only-through-engines` dopisać `shadows`. Silnik bierze id `cienie` rzutowaniem do `CardKindId` do fazy 3, a typ `ShadowsSettings` trafia do `src/lib/card-settings.ts` już w tej fazie (jak w „Od najmniejszego”).
 
 #### 4. Układ A4 i podgląd
 
@@ -152,7 +152,7 @@ Poziomy, karta, generator, układ A4 i silnik z testami; podgląd kart z kodu. B
 
 **Intent**: Rozmieszczenie w mm wspólne dla strony, miniatury i testu.
 
-**Contract**: `layoutShadowsSheet(card, hasCharacter)`: pas postaci, rzędy (`cy`), pole obrazka lewego i prawego (`x`, `y`, `size`), kropki; wszystko w marginesie 10 mm; pole nie większe niż `pictureSize` poziomu i wysokość rzędu. `preview.mts` pisze SVG kart z kodu dla trzech poziomów, z postacią i bez.
+**Contract**: `layoutShadowsSheet(card, instructionBoxHeight)` (wysokość pasa polecenia z `instructionBoxHeight` w `src/lib/sheet/speech.ts`, jak w „Od najmniejszego”): pas postaci, rzędy (`cy`), pole obrazka lewego i prawego (`x`, `y`, `size`), kropki; wszystko w marginesie 10 mm; pole nie większe niż `pictureSize` poziomu i wysokość rzędu. `preview.mts` pisze SVG kart z kodu dla trzech poziomów, z postacią i bez (pliki w `.gitignore` folderu); rysownik obrazków wspólny z `catalog.mts` w `render.mts`.
 
 ### Success Criteria:
 
@@ -322,16 +322,16 @@ Brak: pole `cards.cienie` w zapisanych profilach dostaje wartość domyślną pr
 
 #### Automated
 
-- [ ] 2.1 Testy przechodzą: `npm test`
-- [ ] 2.2 Lint: `npm run lint`
-- [ ] 2.3 Zależności: `npm run depcruise`
-- [ ] 2.4 Typy: `npx astro check`
-- [ ] 2.5 Build: `npm run build`
+- [x] 2.1 Testy przechodzą: `npm test`
+- [x] 2.2 Lint: `npm run lint`
+- [x] 2.3 Zależności: `npm run depcruise`
+- [x] 2.4 Typy: `npx astro check`
+- [x] 2.5 Build: `npm run build`
 
 #### Manual
 
 - [ ] 2.6 Użytkowniczka akceptuje podgląd kart z kodu (`preview.mts`; trzy poziomy, z postacią i bez)
-- [ ] 2.7 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy)
+- [x] 2.7 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy)
 
 ### Phase 3: Strona, katalog i profil
 
