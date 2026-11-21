@@ -111,17 +111,17 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 
 ### S-47: Cienie
 
-- **Outcome:** Rodzic otwiera z katalogu „Cienie”, wybiera poziom i kategorię obiektów, uruchamia generowanie i dostaje kartę A4: w jednej kolumnie obiekty z katalogu szablonów, w drugiej ich czarne cienie w innej kolejności; dziecko łączy kreską każdy obiekt z jego cieniem. Podgląda kartę i drukuje ją jako jedną stronę A4 także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43. Generator sprawdza, że każdy obiekt pasuje do dokładnie jednego cienia.
+- **Outcome:** Rodzic otwiera z katalogu „Cienie”, wybiera poziom, uruchamia generowanie i dostaje kartę A4: w jednej kolumnie kolorowe obrazki z własnego katalogu karty, w drugiej ich czarne cienie w innej kolejności; dziecko łączy kreską każdy obrazek z jego cieniem. Podgląda kartę i drukuje ją jako jedną stronę A4 także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43. Generator sprawdza, że cienie na karcie różnią się wyraźnie.
 - **Change ID:** shadows-card
-- **PRD refs:** MS-02, FR-014, FR-017, FR-028, FR-029, FR-030, FR-051, FR-052, US-05, US-08, US-20, US-41, US-42
+- **PRD refs:** MS-02, FR-014, FR-017, FR-030, FR-051, FR-052, US-05, US-08, US-41, US-42
 - **Prerequisites:** —
 - **Parallel with:** S-42, S-48, S-49
 - **Blockers:** —
 - **Unknowns:**
   - ~~Jaki to rodzaj karty?~~ — Zamknięte 2026-11-18 (decyzja użytkowniczki po szkicu w rozmowie): „Cienie”.
-  - ~~Poziomy (liczba obiektów, cienie-pułapki z innych wariantów tego samego obiektu na wyższych poziomach), kolory obiektów (przełącznik jak w symetrii czy zawsze w kolorze) i układ na A4.~~ — Zamknięte 2026-11-20 (makieta w `context/changes/shadows-card/`, decyzje użytkowniczki): łatwy / średni / trudny z 4 / 5 / 6 parami z siatek 8×12 / 12×15 / 18×24, na trudnym dwie pary z wariantów jednego obiektu o różnych cieniach (pułapki); obiekty zawsze w kolorze, bez przełącznika; obiekty w lewej kolumnie, cienie w prawej, kropki po wewnętrznych stronach; mała kategoria dobiera inne warianty tych samych obiektów. PRD: US-41–US-42, FR-051–FR-052, Business Logic „Karta „Cienie””.
-  - Czy obrazki trudnego poziomu (kratka ok. 1,4 mm) i pułapki są czytelne na wydruku. Rozstrzyga wydruk w planie (PRD Open Questions 21). — Owner: user. Block: no.
-- **Risk:** Cień nie ma dziur, więc dwa warianty różniące się tylko oknem albo oczami dają ten sam cień; generator porównuje cienie z wypełnionymi dziurami i nie stawia na jednej karcie dwóch takich samych. Karta bierze katalog szablonów, więc kategoria (z „Boże Narodzenie” w oknie dat) działa bez nowej pracy.
+  - ~~Poziomy (liczba obiektów, cienie-pułapki z innych wariantów tego samego obiektu na wyższych poziomach), kolory obiektów (przełącznik jak w symetrii czy zawsze w kolorze) i układ na A4.~~ — Zamknięte 2026-11-20 (makieta v2 w `context/changes/shadows-card/`, decyzje użytkowniczki): własny katalog ok. 80 gładkich rysunków w prawdziwych, uproszczonych kolorach w 12 rodzinach zamiast sylwetek z kratek; trudność z podobieństwa obrazków: łatwy 4 pary różnych rzeczy, średni 5 par z jednej rodziny, trudny 6 par wariantów jednej rzeczy; obrazki zawsze w kolorze; bez kategorii; obrazki w lewej kolumnie, cienie w prawej. PRD: US-41–US-42, FR-051–FR-052, Business Logic „Karta „Cienie””.
+  - Czy warianty jednej rzeczy na trudnym są rozróżnialne na wydruku i jaki próg różnicy cieni to zapewnia. Rozstrzyga makieta rysunków i wydruk w planie (PRD Open Questions 21). — Owner: user. Block: no.
+- **Risk:** Karta potrzebuje własnego katalogu ok. 80 rysunków (pierwsza makieta z sylwetkami z kratek odpadła, bo źle wyglądały), więc plan jest większy niż przy kartach z gotowymi obrazkami. Cień nie ma detali, więc dwa podobne rysunki mogą dać prawie ten sam cień; generator porównuje cienie i nie stawia na karcie dwóch zbyt podobnych.
 - **Status:** ready
 
 ### S-48: Od najmniejszego
