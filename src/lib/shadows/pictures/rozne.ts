@@ -73,6 +73,19 @@ export const OWOCE: readonly ShadowPicture[] = [
       circle(70, 70, 16, "darkred"),
     ],
   },
+  {
+    id: "arbuz",
+    label: "arbuz",
+    shapes: [
+      path("M6 30 C6 76 94 76 94 30 Z", "green"),
+      path("M13 32 C15 66 85 66 87 32 Z", "red", true),
+      ellipse(32, 42, 2, 3, "black", 0, true),
+      ellipse(50, 48, 2, 3, "black", 0, true),
+      ellipse(68, 42, 2, 3, "black", 0, true),
+      ellipse(41, 54, 2, 3, "black", 0, true),
+      ellipse(59, 54, 2, 3, "black", 0, true),
+    ],
+  },
 ];
 
 export const WARZYWA: readonly ShadowPicture[] = [
@@ -129,6 +142,28 @@ export const WARZYWA: readonly ShadowPicture[] = [
       rect(47, 6, 6, 14, "green", 2),
       path("M40 26 C20 40 14 70 30 88 C44 100 66 94 72 76 C78 58 70 40 58 28 Z", "purple"),
       path("M36 32 L44 18 H56 L64 32 L54 27 L50 34 L46 27 Z", "green"),
+    ],
+  },
+  {
+    id: "kukurydza",
+    label: "kukurydza",
+    shapes: [
+      ellipse(50, 46, 14, 34, "yellow"),
+      path("M50 94 C30 80 26 56 34 40 C38 60 44 74 52 82 Z", "leaf"),
+      path("M50 94 C70 80 74 56 66 40 C62 60 56 74 48 82 Z", "leaf"),
+      stroke("M40 30 H60 M39 40 H61 M40 50 H60 M44 20 V60 M50 14 V62 M56 20 V60", 1.2, "orange", true),
+    ],
+  },
+  {
+    id: "rzodkiewka",
+    label: "rzodkiewka",
+    shapes: [
+      stroke("M50 80 C50 88 53 93 50 98", 3.4, "white"),
+      ellipse(38, 26, 8, 16, "leaf", -25),
+      ellipse(62, 26, 8, 16, "leaf", 25),
+      ellipse(50, 20, 7, 17, "leaf"),
+      circle(50, 60, 22, "red"),
+      path("M36 70 C40 80 60 80 64 70 C58 76 42 76 36 70 Z", "white", true),
     ],
   },
 ];
@@ -235,6 +270,42 @@ export const ZWIERZETA: readonly ShadowPicture[] = [
       circle(58, 50, 10, "brown", true),
     ],
   },
+  {
+    id: "pies",
+    label: "pies",
+    shapes: [
+      stroke("M32 88 C14 86 10 72 16 62", 7, "sand"),
+      path("M30 94 C26 76 32 60 42 54 H58 C68 60 74 76 70 94 Z", "sand"),
+      ellipse(42, 93, 7, 4, "sand"),
+      ellipse(58, 93, 7, 4, "sand"),
+      circle(50, 38, 18, "sand"),
+      ellipse(31, 40, 7, 15, "brown", 15),
+      ellipse(69, 40, 7, 15, "brown", -15),
+      ellipse(60, 75, 6, 8, "brown", 0, true),
+      ellipse(50, 46, 8, 6, "cream", 0, true),
+      ellipse(50, 43, 3.5, 2.5, "black", 0, true),
+      circle(43, 34, 2.6, "black", true),
+      circle(57, 34, 2.6, "black", true),
+    ],
+  },
+  {
+    id: "swinka",
+    label: "świnka",
+    shapes: [
+      stroke("M17 50 C8 48 9 39 15 41 C20 43 15 50 10 48", 3.4, "pink"),
+      rect(26, 66, 8, 24, "pink", 2),
+      rect(38, 68, 8, 22, "pink", 2),
+      rect(54, 68, 8, 22, "pink", 2),
+      rect(64, 66, 8, 24, "pink", 2),
+      ellipse(46, 56, 32, 20, "pink"),
+      path("M73 36 L76 23 L86 33 Z", "pink"),
+      circle(80, 46, 15, "pink"),
+      ellipse(93, 50, 5, 7, "pink"),
+      circle(82, 41, 2.2, "black", true),
+      circle(93, 48, 1.2, "darkred", true),
+      circle(93, 53, 1.2, "darkred", true),
+    ],
+  },
 ];
 
 export const PTAKI: readonly ShadowPicture[] = [
@@ -323,6 +394,31 @@ export const PTAKI: readonly ShadowPicture[] = [
       path("M18 70 C18 86 38 92 60 92 C84 92 96 80 92 62 C80 72 60 70 44 66 Z", "white"),
     ],
   },
+  {
+    id: "flaming",
+    label: "flaming",
+    shapes: [
+      stroke("M58 50 V96 M58 68 L68 62 L62 56", 3.4, "pink"),
+      stroke("M40 40 C26 36 24 20 32 14", 6, "pink"),
+      circle(34, 13, 6, "pink"),
+      path("M39 10 L48 15 L45 23 L39 17 Z", "black"),
+      ellipse(58, 40, 22, 13, "pink", -10),
+      path("M52 36 C62 30 74 32 78 40 C68 45 58 44 52 36 Z", "red", true),
+      circle(33, 12, 1.5, "black", true),
+    ],
+  },
+  {
+    id: "papuga",
+    label: "papuga",
+    shapes: [
+      path("M44 70 L40 98 H60 L56 70 Z", "blue"),
+      ellipse(50, 54, 18, 26, "green"),
+      circle(50, 28, 14, "red"),
+      path("M38 24 C27 24 26 38 34 40 L40 32 Z", "yellow"),
+      ellipse(57, 56, 8, 17, "blue", 10, true),
+      circle(47, 25, 2.4, "black", true),
+    ],
+  },
 ];
 
 export const UBRANIA: readonly ShadowPicture[] = [
@@ -363,9 +459,18 @@ export const UBRANIA: readonly ShadowPicture[] = [
   {
     id: "skarpeta",
     label: "skarpetka",
+    // Przerysowana 2026-11-21 (uwaga użytkowniczki): ściągacz, paski, pięta i palce w innym kolorze.
     shapes: [
-      path("M30 6 H60 V54 L84 68 C94 74 90 94 76 94 H38 C26 94 26 80 30 72 Z", "teal"),
-      rect(30, 6, 30, 10, "white", 0, true),
+      path(
+        "M30 16 H60 V56 C60 60 64 62 68 63 L82 66 C95 69 96 92 80 93 H40 C25 93 22 80 28 70 C30 66 30 62 30 58 Z",
+        "red",
+      ),
+      rect(27, 6, 36, 12, "white", 2),
+      stroke("M33 9 V15 M39 9 V15 M45 9 V15 M51 9 V15 M57 9 V15", 1.2, "gray", true),
+      rect(31, 28, 28, 6, "white", 0, true),
+      rect(31, 42, 28, 6, "white", 0, true),
+      path("M29 73 C26 82 30 90 40 92 C40 84 38 77 30 71 Z", "white", true),
+      path("M81 67 C92 70 95 89 81 92 C85 85 85 74 81 67 Z", "white", true),
     ],
   },
   {
@@ -374,6 +479,29 @@ export const UBRANIA: readonly ShadowPicture[] = [
     shapes: [
       path("M26 94 V44 C26 28 34 18 46 18 C58 18 64 28 64 44 V56 L74 40 C78 32 90 36 86 46 L72 80 V94 Z", "purple"),
       rect(30, 82, 38, 8, "white", 0, true),
+    ],
+  },
+  {
+    id: "kapelusz",
+    label: "kapelusz",
+    shapes: [
+      ellipse(50, 72, 46, 10, "sand"),
+      path("M28 72 C28 40 34 30 50 30 C66 30 72 40 72 72 Z", "sand"),
+      rect(30, 58, 40, 8, "red", 0, true),
+    ],
+  },
+  {
+    id: "szalik",
+    label: "szalik",
+    shapes: [
+      stroke("M30 88 V96 M35 88 V96 M40 88 V96 M60 78 V86 M65 78 V86 M70 78 V86", 3.4, "red"),
+      rect(26, 28, 18, 60, "red", 2),
+      rect(56, 28, 18, 50, "red", 2),
+      path("M22 34 C22 6 78 6 78 34 L66 36 C66 20 34 20 34 36 Z", "red"),
+      rect(27, 50, 16, 6, "white", 0, true),
+      rect(27, 66, 16, 6, "white", 0, true),
+      rect(57, 48, 16, 6, "white", 0, true),
+      rect(57, 62, 16, 6, "white", 0, true),
     ],
   },
 ];
@@ -458,6 +586,18 @@ export const ZABAWKI: readonly ShadowPicture[] = [
       path("M44 48 L60 12 H68 L60 48 Z M44 52 L60 88 H68 L60 52 Z", "sky"),
       path("M84 48 L94 34 H98 L94 50 Z", "sky"),
       ellipse(50, 50, 46, 9, "sky"),
+    ],
+  },
+  {
+    id: "klocki",
+    label: "klocki",
+    shapes: [
+      rect(12, 58, 36, 36, "red", 3),
+      rect(52, 58, 36, 36, "blue", 3),
+      rect(32, 20, 36, 36, "yellow", 3),
+      circle(30, 76, 9, "white", true),
+      rect(61, 67, 18, 18, "white", 1, true),
+      path("M50 28 L60 46 H40 Z", "white", true),
     ],
   },
 ];
