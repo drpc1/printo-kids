@@ -166,4 +166,4 @@ Kolejność nie jest zapisana w profilu. Zapisane profile i ostatnie parametry c
 
 #### Manual
 
-- [ ] 2.1 Punkt US-08 o oknie profilu mówi, że nazwy podsumowania idą alfabetycznie, jak katalog, a przykład „Labirynt: Poziom 4 · Nonogram…” i tabela ustawień w Business Logic są w dotychczasowej kolejności
+- [x] 2.1 Punkt US-08 o oknie profilu mówi, że nazwy podsumowania idą alfabetycznie, jak katalog, a przykład „Labirynt: Poziom 4 · Nonogram…” i tabela ustawień w Business Logic są w dotychczasowej kolejności — 7b0a75bd
