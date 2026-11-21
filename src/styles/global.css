@@ -66,6 +66,31 @@
   --symmetry-black: oklch(0.2 0 0);
   --symmetry-purple: oklch(0.48 0.17 305);
   --symmetry-brown: oklch(0.42 0.07 55);
+  /* Real, simplified colors of the shadows card pictures (src/lib/shadows/picture-format.ts PICTURE_COLORS); --picture-line is their outline. Only in :root: paper stays white. */
+  --picture-green: #3f9a3c;
+  --picture-darkgreen: #2e7a30;
+  --picture-leaf: #5cae3e;
+  --picture-lime: #b9cf45;
+  --picture-brown: #8a5a32;
+  --picture-darkbrown: #5e3b1f;
+  --picture-red: #d63a2f;
+  --picture-darkred: #a52a22;
+  --picture-pink: #f2a7b8;
+  --picture-yellow: #f2cf3a;
+  --picture-orange: #f08a24;
+  --picture-sky: #bfe3f5;
+  --picture-blue: #3b78c4;
+  --picture-navy: #2b4a7e;
+  --picture-teal: #3aa7a0;
+  --picture-purple: #7b4fa8;
+  --picture-wall: #f3dfb8;
+  --picture-sand: #e2c08a;
+  --picture-cream: #f6efe0;
+  --picture-white: #ffffff;
+  --picture-gray: #9a9a9a;
+  --picture-darkgray: #555555;
+  --picture-black: #2b2b2b;
+  --picture-line: #3a3a3a;
 }
 
 .dark {
