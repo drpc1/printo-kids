@@ -212,7 +212,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karta, której profil jeszcze nie używał, startuje z domyślnymi ustawieniami tej karty.
 - Ulubiona postać zmienia się tylko jawnie: w oknie profilu albo wyborem „Ustaw jako ulubioną” pod listą postaci na pasku. Inna postać wybrana na pasku działa tylko do końca wizyty na tej stronie.
 - Bez profilu ostatnio użyte ustawienia są pamiętane osobno dla każdego rodzaju karty, a ostatnio użyta postać jest wspólna dla wszystkich kart. Są widocznymi, edytowalnymi wartościami domyślnymi (FR-006).
-- Okno profilu pokazuje imię, ulubioną postać, usuwanie profilu i podsumowanie ustawień kart tylko do odczytu („Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta”); pozycja podsumowania prowadzi do strony tej karty. Okno nie ma kontrolek poziomów.
+- Okno profilu pokazuje imię, ulubioną postać, usuwanie profilu i podsumowanie ustawień kart tylko do odczytu („Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta”); pozycja podsumowania prowadzi do strony tej karty. Nazwy w podsumowaniu ustawień idą alfabetycznie, bo rejestr kart jest ułożony alfabetycznie po polskich tytułach i nowa karta wchodzi w swoje miejsce. Okno nie ma kontrolek poziomów.
 - Katalog przy wybranym profilu pokazuje na miniaturach zapamiętany poziom (US-05).
 - Zapisane wcześniej profile i ostatnie parametry nadal się wczytują: dawny poziom profilu i ostatnich parametrów zostaje poziomem labiryntu, dawna postać zostaje ulubioną postacią profilu i ostatnio użytą postacią.
 - Dane zostają na urządzeniu.

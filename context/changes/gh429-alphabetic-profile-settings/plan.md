@@ -2,7 +2,7 @@
 
 ## Overview
 
-Okno profilu ma listować nazwy kart w tej samej kolejności co katalog: polski alfabet tytułów z `cardsInCatalogOrder()`. `CARD_KINDS` zostaje kolejnością dopisania. Issue [#429](https://github.com/agapios-eu/printo-kids/issues/429) odwraca w tym jednym miejscu decyzję z 2026-10-28, która zostawiała podsumowanie przy kolejności dopisania.
+Okno profilu ma listować nazwy kart alfabetycznie po polskich tytułach. `CARD_KINDS` jest w tej samej kolejności: nowa karta jest wstawiana w swoje miejsce, a nie dopisywana na końcu. Issue [#429](https://github.com/agapios-eu/printo-kids/issues/429) odwraca decyzję z 2026-10-28, która zostawiała rejestr przy kolejności dopisania.
 
 ## Current State Analysis
 
@@ -16,7 +16,7 @@ Test `lists every card in the order of CARD_KINDS with their pages` porównuje w
 
 ## Desired End State
 
-W oknie edycji profilu nazwy w podsumowaniu stoją w kolejności `cardsInCatalogOrder()`. Wiersze „domyślne” zostają. Nowa karta dopisana do `CARD_KINDS` wpada w alfabet podsumowania sama, tak jak na stronie głównej. `CARD_KINDS[0]` nadal jest Labiryntem.
+W oknie edycji profilu nazwy w podsumowaniu stoją alfabetycznie. Wiersze „domyślne” zostają. `CARD_KINDS` jest w tej samej kolejności, więc nowa karta wchodzi w swoje miejsce w rejestrze. Test oblewa dopisanie jej na końcu, poza tym miejscem.
 
 PRD przy oknie profilu mówi, że te nazwy idą alfabetycznie, jak katalog. Przykład „Labirynt: Poziom 4 · Nonogram: średni, Zwierzęta” zostaje wzorem treści wiersza.
 
@@ -32,7 +32,7 @@ Sprawdzenie: `npm test` oraz `npx playwright test tests/e2e/profile-summary.spec
 
 ## What We're NOT Doing
 
-- Przestawianie stałej `CARD_KINDS` i zmiana kolejności katalogu, plakietek oraz „Jak to działa”.
+- Zostawianie `CARD_KINDS` w kolejności dopisania. Rejestr jest alfabetyczny; katalog i „Jak to działa” czytają tę samą kolejność.
 - Ukrywanie wierszy „domyślne” albo zmiana treści szczegółu.
 - Drugi komparator (inne opcje `localeCompare`, ręczna lista tytułów).
 - Przestawianie przykładu w US-08 i tabeli ustawień w Business Logic „Profil i zapamiętane ustawienia”.
@@ -78,7 +78,7 @@ Podsumowanie profilu zwraca karty w kolejności katalogu. Test jednostkowy i E2E
 
 #### Automated Verification:
 
-- `npm test` przechodzi; test kolejności w `src/lib/card-summary.test.ts` porównuje wynik z `cardsInCatalogOrder()`, a `src/lib/cards.test.ts` nadal wymaga, żeby `CARD_KINDS` zaczynało się od Labiryntu
+- `npm test` przechodzi; test kolejności w `src/lib/card-summary.test.ts` porównuje wynik z `cardsInCatalogOrder()`, a `src/lib/cards.test.ts` wymaga, żeby tytuły `CARD_KINDS` były alfabetyczne po polsku
 - `npx playwright test tests/e2e/profile-summary.spec.ts --project=chromium` przechodzi, w tym asercja kolejności tytułów; gdy port 4321 zajmuje inny checkout, ustaw `E2E_PORT`
 
 #### Manual Verification:
@@ -120,7 +120,7 @@ US-08 mówi, że nazwy w podsumowaniu ustawień idą alfabetycznie, tak jak kata
 ### Unit Tests:
 
 - Kolejność `cardSummaries()` jest kolejnością `cardsInCatalogOrder()` (id i adres).
-- `CARD_KINDS` nadal zaczyna się od Labiryntu i nie jest tablicą zwróconą przez `cardsInCatalogOrder()`. Istniejący test w `src/lib/cards.test.ts` to już sprawdza; tej fazy nie rozszerzamy o drugi taki test.
+- Tytuły `CARD_KINDS` są równe tej tablicy po `localeCompare(..., "pl")`. Test w `src/lib/cards.test.ts` to sprawdza. `cardsInCatalogOrder()` nadal zwraca kopię, nie tę samą tablicę.
 
 ### Integration Tests:
 
@@ -155,12 +155,12 @@ Kolejność nie jest zapisana w profilu. Zapisane profile i ostatnie parametry c
 
 #### Automated
 
-- [x] 1.1 `npm test` przechodzi; test kolejności w `src/lib/card-summary.test.ts` porównuje wynik z `cardsInCatalogOrder()`, a `src/lib/cards.test.ts` nadal wymaga, żeby `CARD_KINDS` zaczynało się od Labiryntu
-- [x] 1.2 `npx playwright test tests/e2e/profile-summary.spec.ts --project=chromium` przechodzi, w tym asercja kolejności tytułów; gdy port 4321 zajmuje inny checkout, ustaw `E2E_PORT`
+- [x] 1.1 `npm test` przechodzi; test kolejności w `src/lib/card-summary.test.ts` porównuje wynik z `cardsInCatalogOrder()`, a `src/lib/cards.test.ts` nadal wymaga, żeby `CARD_KINDS` zaczynało się od Labiryntu — 42178bc7
+- [x] 1.2 `npx playwright test tests/e2e/profile-summary.spec.ts --project=chromium` przechodzi, w tym asercja kolejności tytułów; gdy port 4321 zajmuje inny checkout, ustaw `E2E_PORT` — 42178bc7
 
 #### Manual
 
-- [x] 1.3 W oknie edycji profilu pierwsza nazwa podsumowania to Dyktando graficzne, a dalsza kolejność jest taka jak katalog na stronie głównej
+- [x] 1.3 W oknie edycji profilu pierwsza nazwa podsumowania to Dyktando graficzne, a dalsza kolejność jest taka jak katalog na stronie głównej — 42178bc7
 
 ### Phase 2: Zdanie w PRD
 

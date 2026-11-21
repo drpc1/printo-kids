@@ -12,7 +12,7 @@ W oknie profilu nazwy kart przy zapamiętanych ustawieniach mają iść alfabety
 
 ## Desired End State
 
-Rodzic w oknie edycji widzi te same nazwy w tej samej kolejności co katalog na stronie głównej. Pierwsza jest Dyktando graficzne. `CARD_KINDS` nadal zaczyna się od Labiryntu. PRD mówi o tej kolejności przy oknie profilu.
+Rodzic w oknie edycji widzi nazwy alfabetycznie po polsku. Pierwsza jest Dyktando graficzne. `CARD_KINDS` jest w tej samej kolejności, a nowa karta wchodzi w swoje miejsce. PRD mówi o tej kolejności przy oknie profilu.
 
 ## Key Decisions Made
 
@@ -20,7 +20,7 @@ Rodzic w oknie edycji widzi te same nazwy w tej samej kolejności co katalog na 
 | --- | --- | --- |
 | Gdzie żyje kolejność | `cardSummaries()` iteruje `cardsInCatalogOrder()` | Okno rysuje wynik tej funkcji, a plakietki kluczują po id, więc sortowanie tablicy ich nie rusza |
 | Komparator | Istniejący `localeCompare(..., "pl")`, bez opcji | Drugi alfabet rozjechałby się z katalogiem |
-| `CARD_KINDS` | Zostaje kolejnością dopisania | Tego wymaga i issue 429, i test katalogu |
+| `CARD_KINDS` | Alfabet polskich tytułów; nowa karta w swoim miejscu | Issue 429; test oblewa dopisanie na końcu |
 | Wiersze „domyślne” | Zostają na liście | Issue sortuje nazwy, nie ukrywa kart nieużywanych |
 | Przykład w US-08 | Zostaje „Labirynt: Poziom 4 · Nonogram…” | To wzór treści wiersza, nie kolejność listy |
 | E2E | Rozszerzyć istniejący test okna edycji o kolejność tytułów | Issue prosi o asercję pozycji, a test dziś sprawdza tylko widoczność |
@@ -37,7 +37,7 @@ Rodzic w oknie edycji widzi te same nazwy w tej samej kolejności co katalog na 
 
 **Out of scope:**
 
-- Przestawianie `CARD_KINDS`, katalogu, plakietek i „Jak to działa”
+- Zostawianie `CARD_KINDS` w kolejności dopisania
 - Ukrywanie wierszy „domyślne” i zmiana szczegółów
 - Przykład w US-08, tabela ustawień w Business Logic, glosariusz
 
@@ -64,5 +64,5 @@ Jedno źródło alfabetu: kopia z `cardsInCatalogOrder()`. Podsumowanie przestaj
 ## Success Criteria (Summary)
 
 - W oknie edycji pierwsza nazwa to Dyktando graficzne, a cała lista zgadza się z katalogiem.
-- `npm test` i E2E `profile-summary` na Chromium są zielone, a `CARD_KINDS` nadal zaczyna się od Labiryntu.
+- `npm test` i E2E `profile-summary` na Chromium są zielone, a `CARD_KINDS` jest alfabetyczne po polskich tytułach.
 - US-08 mówi o alfabecie, a przykład wiersza i tabela ustawień stoją po staremu.
