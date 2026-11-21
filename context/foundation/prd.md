@@ -73,8 +73,8 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać poziom karty „Od najmniejszego” (łatwy, średni, trudny: 3, 4 albo 5 obrazków w rzędzie i coraz mniejsza różnica wielkości) i włączyć kolory; profil sam pamięta pasek (2026-11-18, S-48).
 - Rodzic może wygenerować „Labirynt liczbowy”: kratkę wypełnioną liczbami, na której dziecko rysuje drogę od startu do mety po kolejnych liczbach, omijając liczby-pułapki; zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-20, S-49).
 - Rodzic może wybrać poziom „Labiryntu liczbowego” (Poziom 1–6: od liczb 1–15 na kratce 5×5 po liczenie co 5 do 200); profil sam pamięta poziom (2026-11-20, S-49).
-- Rodzic może wygenerować kartę „Cienie”, na której dziecko łączy kreską kolorowe obiekty z katalogu szablonów z ich czarnymi cieniami ustawionymi w innej kolejności, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-20, S-47).
-- Rodzic może wybrać poziom karty „Cienie” (łatwy, średni, trudny: od 4 par prostych obiektów po 6 par z cieniami-pułapkami) i kategorię obiektów; profil sam pamięta poziom i kategorię (2026-11-20, S-47).
+- Rodzic może wygenerować kartę „Cienie”, na której dziecko łączy kreską kolorowe obrazki z ich czarnymi cieniami ustawionymi w innej kolejności, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu (2026-11-20, S-47).
+- Rodzic może wybrać poziom karty „Cienie” (łatwy, średni, trudny: od zupełnie różnych rzeczy po warianty jednej rzeczy różniące się szczegółem); profil sam pamięta poziom (2026-11-20, S-47).
 
 ### Guardrails
 
@@ -720,38 +720,36 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 ### US-41: Rodzic generuje kartę „Cienie” do druku
 
-> Dodane 2026-11-20 (M-7, S-47, GitHub 419). Kształt karty i poziomy ustaliła użytkowniczka 2026-11-20 na makiecie (`context/changes/shadows-card/`); wartości w Business Logic są startowe i zostają potwierdzone na wydruku.
+> Dodane 2026-11-20 (M-7, S-47, GitHub 419). Kształt karty, obrazki i poziomy ustaliła użytkowniczka 2026-11-20 na makiecie v2 (`context/changes/shadows-card/`); pierwsza makieta z sylwetkami z katalogu szablonów odpadła, bo pikselowe obrazki źle wyglądały, a poziomy różniły się liczbą par zamiast podobieństwem obrazków. Wartości w Business Logic są startowe i zostają potwierdzone na wydruku.
 
 - **Given** rodzic otworzył z katalogu stronę „Cienie”
 - **When** uruchomi generowanie
-- **Then** otrzymuje gotową do wydruku kartę A4 z dwiema kolumnami: po lewej kolorowe obiekty, po prawej ich czarne cienie w innej kolejności; dziecko łączy kreską kropkę przy obiekcie z kropką przy jego cieniu
+- **Then** otrzymuje gotową do wydruku kartę A4 z dwiema kolumnami: po lewej kolorowe obrazki, po prawej ich czarne cienie w innej kolejności; dziecko łączy kreską kropkę przy obrazku z kropką przy jego cieniu
 
 #### Acceptance Criteria
 
-- Karta ma kilka par (4–6 zależnie od poziomu, US-42). Obiekty stoją jeden pod drugim w lewej kolumnie, cienie w prawej; przy każdym obrazku jest kropka po wewnętrznej stronie kolumny. Żaden cień nie stoi w rzędzie swojego obiektu. Nad kolumnami jest jedno zdanie polecenia: „Połącz każdy obrazek z jego cieniem.”; przy nim stoi wybrana postać (US-21).
-- Obiekt to cała sylwetka obiektu z katalogu szablonów (połowa szablonu i jej odbicie, jak w nonogramie i „Skopiuj obrazek”) w kolorach kredek szablonu; dziury w sylwetce mają kolor szablonu albo zostają białe, jak w symetrii (US-09). Karta nie zdradza nazwy obiektu.
-- Cień to ta sama sylwetka z wypełnionymi dziurami, cała czarna, tej samej wielkości co obiekt. Obiekt i cień nie są obrócone ani odbite.
-- Obiekty są zawsze w kolorze; karta nie ma przełącznika „Kolory”, bo czarny obiekt byłby swoim cieniem (decyzja 2026-11-20). Na drukarce czarno-białej kolory schodzą do odcieni szarości, a cień zostaje czarny.
-- Odpowiedź jest jedna: żadne dwa cienie na karcie nie są takie same. Generator porównuje cienie z wypełnionymi dziurami, więc dwa warianty różniące się tylko oknem albo oczami (jeden cień) nie stoją na jednej karcie. Aplikacja zna pary i potrafi sprawdzić tę regułę; karta, która jej nie spełnia, nie jest pokazana.
-- Kategoria działa jak w US-20, z „Boże Narodzenie” w swoim oknie dat: jeden wybór, „Wszystkie” domyślnie, a zmiana kategorii przy pokazanej karcie od razu układa nową kartę.
-- Karta nie ma „Pokaż rozwiązanie”: parę obiektu z cieniem rodzic sprawdza okiem na kartce.
-- Każde Generuj daje nową kartę: inne obiekty, inne warianty albo inną kolejność niż poprzednia karta.
-- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Obiekty drukują się w kolorach kredek, cienie na czarno, bez kresek odpowiedzi na kartce; postać przy poleceniu drukuje się w kolorze (US-21).
+- Karta ma kilka par (4–6 zależnie od poziomu, US-42). Obrazki stoją jeden pod drugim w lewej kolumnie, cienie w prawej; przy każdym jest kropka po wewnętrznej stronie kolumny. Żaden cień nie stoi w rzędzie swojego obrazka. Nad kolumnami jest jedno zdanie polecenia: „Połącz każdy obrazek z jego cieniem.”; przy nim stoi wybrana postać (US-21).
+- Obrazki to własny katalog tej karty: gładkie, uproszczone rysunki wektorowe z ciemnym konturem, w prawdziwych kolorach rzeczy (choinka zielona, jabłko czerwone, cytryna żółta), jednolitymi barwami, bez cieniowania (decyzja użytkowniczki 2026-11-20 po makiecie v2). Nie są to sylwetki z kratek katalogu szablonów ani ikony z „Który nie pasuje”. Karta nie zdradza nazwy obrazka.
+- Cień to ten sam rysunek bez detali wewnątrz obrysu (okna, pestki, oczy), cały czarny, tej samej wielkości co obrazek. Obrazek i cień nie są obrócone ani odbite.
+- Obrazki są zawsze w kolorze; karta nie ma przełącznika „Kolory”, bo czarny obrazek byłby swoim cieniem (decyzja 2026-11-20). Na drukarce czarno-białej kolory schodzą do odcieni szarości, a cień zostaje czarny.
+- Odpowiedź jest jedna: żadne dwa cienie na karcie nie są takie same ani prawie takie same. Aplikacja zna pary i potrafi sprawdzić, że cienie karty różnią się wyraźnie (Business Logic); karta, która tego nie spełnia, nie jest pokazana.
+- Karta nie ma kategorii (decyzja użytkowniczki 2026-11-20 po makiecie v2): rodzinę obrazków losuje generator. Nie ma też „Pokaż rozwiązanie”: parę obrazka z cieniem rodzic sprawdza okiem na kartce.
+- Każde Generuj daje nową kartę: inne obrazki albo inną kolejność niż poprzednia karta.
+- Karta zajmuje większą część strony A4, nie przekracza marginesu 10 mm i drukuje się jako jedna strona. Obrazki drukują się w kolorze, cienie na czarno, bez kresek odpowiedzi na kartce; postać przy poleceniu drukuje się w kolorze (US-21).
 - Te same warunki na telefonie co w US-04: Generuj i Drukuj nie nachodzą na siebie, karta mieści się na A4 w szerokości i w długości, podgląd zostaje. Przeglądarki jak w US-04, w tym Brave.
 
-### US-42: Rodzic wybiera poziom i kategorię karty „Cienie”
+### US-42: Rodzic wybiera poziom karty „Cienie”
 
 - **Given** rodzic jest na stronie „Cienie”
-- **When** wybierze poziom (łatwy, średni, trudny) albo kategorię obiektów
-- **Then** karta ma liczbę par, rozmiar obiektów i cienie-pułapki zgodne z poziomem, a obiekty pochodzą z wybranej kategorii
+- **When** wybierze poziom (łatwy, średni, trudny)
+- **Then** obrazki na karcie są tym bardziej do siebie podobne, im wyższy poziom
 
 #### Acceptance Criteria
 
-- Poziomy to łatwy, średni, trudny, bez wieku pod opisem (jak karty z M-5): łatwy 4 pary prostych obiektów (szablony 8×12), średni 5 par (12×15), trudny 6 par bogatych obiektów (18×24), w tym dwie pary z wariantów jednego obiektu o różnych cieniach, czyli pułapki (decyzja 2026-11-20). Na łatwym i średnim każdy obiekt karty jest inny. Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia. Reguły są w Business Logic.
-- Gdy kategoria ma mniej obiektów niż par na poziomie („Domy i budowle” i „Przyroda” mają po 4), brakujące pary to inne warianty tych samych obiektów, każdy o innym cieniu, czyli dodatkowe pułapki (decyzja 2026-11-20). W kategorii „Kształty” żaden obiekt nie ma dwóch różnych cieni, więc trudny ma tam 6 różnych figur bez pułapek.
-- Zmiana poziomu albo kategorii przy pokazanej karcie od razu układa nową kartę (US-22).
+- Trudność rośnie z podobieństwa obrazków, nie z drobniejszego rysunku (decyzja użytkowniczki 2026-11-20 po makiecie v2): łatwy to 4 pary zupełnie różnych rzeczy z różnych rodzin (np. auto, domek, choinka, jabłko); średni to 5 par różnych rzeczy z jednej rodziny o podobnym kształcie (np. truskawka, gruszka, cytryna, pomarańcza, jabłko); trudny to 6 par wariantów jednej rzeczy, które różnią się szczegółem obrysu (np. kubek, kubek z dwoma uszami, filiżanka na spodku, szklanka, dzbanek). Poziomy nie mają wieku pod opisem (jak karty z M-5). Każdy wiersz listy poziomów ma nazwę i pół zdania o tym, co się zmienia. Reguły są w Business Logic.
+- Zmiana poziomu przy pokazanej karcie od razu układa nową kartę (US-22).
 - Każdy poziom mieści się na jednej stronie A4 z marginesem 10 mm.
-- Poziom i kategoria są na pasku strony. Profil i ostatnie parametry pamiętają je same (US-08).
+- Poziom jest na pasku strony. Profil i ostatnie parametry pamiętają go same (US-08).
 
 ## Functional Requirements
 
@@ -897,11 +895,11 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 ### Cienie
 
-- FR-051: Rodzic może wygenerować kartę „Cienie”, na której dziecko łączy kreską kolorowe obiekty z katalogu szablonów z ich czarnymi cieniami w innej kolejności, z jedną sprawdzalną odpowiedzią (cienie na karcie są różne), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
-  > Socrates: Counter-argument considered: cień nie ma dziur, więc dwa warianty różniące się tylko oknem albo oczami mają jeden cień i karta miałaby dwie odpowiedzi. Resolution: kept (2026-11-20, makieta); generator porównuje cienie z wypełnionymi dziurami, przycięte do obrysu, i nie stawia na karcie dwóch takich samych. W makiecie żadne dwa różne obiekty katalogu nie mają jednego cienia w żadnym rozmiarze, a karta układa się w każdej kategorii na każdym poziomie (40 z 40 losowań).
-  > Socrates: Counter-argument considered: przełącznik „Kolory” jak w symetrii dałby kartę na czarno-białą drukarkę. Resolution: revised (2026-11-20, decyzja użytkowniczki); czarny obiekt to już cień, a szara sylwetka z kratkami wygląda jak drugi cień, więc obiekty są zawsze w kolorze, a cienie czarne.
-- FR-052: Rodzic może wybrać poziom karty „Cienie” (łatwy, średni, trudny: liczba par, rozmiar szablonów, pułapki z wariantów jednego obiektu) i kategorię obiektów. Priority: must-have
-  > Socrates: Counter-argument considered: „Domy i budowle” i „Przyroda” mają po 4 obiekty, za mało na 5–6 różnych par. Resolution: revised (2026-11-20, decyzja użytkowniczki); brakujące pary to inne warianty tych samych obiektów o innych cieniach, więc karta zawsze ma liczbę par poziomu.
+- FR-051: Rodzic może wygenerować kartę „Cienie”, na której dziecko łączy kreską kolorowe obrazki z własnego katalogu karty z ich czarnymi cieniami w innej kolejności, z jedną sprawdzalną odpowiedzią (cienie na karcie różnią się wyraźnie), zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
+  > Socrates: Counter-argument considered: katalog szablonów jest gotowy, a własne rysunki to dużo pracy. Resolution: revised (decyzja użytkowniczki 2026-11-20 po makiecie v2); sylwetki z kratek źle wyglądały na tej karcie, a jedna rzecz ma w katalogu tylko 2–4 różne cienie, za mało na trudny poziom z wariantów jednej rzeczy. Karta dostaje własny katalog ok. 80 gładkich rysunków w 12 rodzinach.
+  > Socrates: Counter-argument considered: przełącznik „Kolory” jak w symetrii dałby kartę na czarno-białą drukarkę. Resolution: revised (2026-11-20, decyzja użytkowniczki); czarny obrazek to już cień, więc obrazki są zawsze w kolorze, a cienie czarne.
+- FR-052: Rodzic może wybrać poziom karty „Cienie” (łatwy, średni, trudny: coraz bardziej podobne obrazki, od różnych rzeczy po warianty jednej rzeczy, i 4, 5 albo 6 par). Priority: must-have
+  > Socrates: Counter-argument considered: trudność z liczby par i drobniejszego rysunku jest prostsza do wygenerowania. Resolution: revised (decyzja użytkowniczki 2026-11-20 po makiecie v2); takie poziomy różniły się głównie wielkością obrazków, a dziecko na każdym porównywało zupełnie różne kształty. Trudność to podobieństwo obrazków, więc katalog jest ułożony w rodziny.
 
 ## Non-Functional Requirements
 
@@ -920,7 +918,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Karta kodowania (2026-11-17, S-42) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 4 w trybie Zapisz ze sprawdzeniem jednej najkrótszej drogi), jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (szare pola przykładu i szare przeszkody to nie odpowiedź), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - Karta „Od najmniejszego” (2026-11-18, S-48) spełnia te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, czarny druk bez odpowiedzi na kartce (z włączonymi kolorami obrazki w kolorach kredek), te same przeglądarki na komputerze i na telefonie, w tym Brave.
 - „Labirynt liczbowy” (2026-11-20, S-49) spełnia te same granice co labirynt: generowanie do 5 sekund (także Poziom 4 z drogą przez 50 kratek na 8×9), jedna strona A4, margines co najmniej 10 mm, czarny druk bez drogi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave.
-- „Cienie” (2026-11-20, S-47) spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, obiekty w kolorach kredek i czarne cienie, bez kresek odpowiedzi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave. Obiekty tej karty drukują się w kolorze bez przełącznika, jak postać.
+- „Cienie” (2026-11-20, S-47) spełniają te same granice co labirynt: generowanie do 5 sekund, jedna strona A4, margines co najmniej 10 mm, obrazki w kolorze i czarne cienie, bez kresek odpowiedzi na kartce, te same przeglądarki na komputerze i na telefonie, w tym Brave. Obrazki tej karty drukują się w kolorze bez przełącznika, jak postać.
 - Postać przy poleceniu (US-21) jest jedynym elementem, który drukuje się w kolorze niezależnie od przełącznika kolorów karty.
 - Lokalne profile dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry pozostają dostępne między wizytami do czasu usunięcia ich przez rodzica albo wyczyszczenia danych przeglądarki.
 - Dane profili dzieci, zapamiętane w nich ustawienia kart i ostatnie parametry nie opuszczają urządzenia; aplikacja nie przekazuje ich nikomu. Licznik odsłon to osobna sprawa: na produkcji (nie na stagingu) strony ładują zewnętrzny skrypt Cloudflare Web Analytics, a przeglądarka wysyła mu dane odsłony, m.in. adres strony i adres IP; skrypt nie dostaje od aplikacji profili ani ustawień (`src/lib/analytics.ts`, GitHub 271). Formularz opinii ze stopki (US-22) jest zewnętrzny i anonimowy; rodzic wypełnia go sam, a aplikacja nic do niego nie przekazuje.
@@ -1298,21 +1296,21 @@ Reguły, które generator sprawdza: droga nie wraca na żadną kratkę i idzie t
 
 ### Karta „Cienie”
 
-Dodane 2026-11-20 (M-7, S-47, GitHub 419); kształt karty i poziomy ustaliła użytkowniczka na makiecie (`context/changes/shadows-card/mockup.mts`, `stats.md`). Aplikacja zawsze tworzy kartę z jedną odpowiedzią: każdy obiekt pasuje do dokładnie jednego cienia. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Połącz każdy obrazek z jego cieniem.”) i parami pod nim, rozłożonymi równo od polecenia do dołu kartki. W każdym rzędzie stoi obiekt po lewej i cień po prawej, z kropkami po wewnętrznych stronach kolumn; pole obrazka ma ok. 70 mm szerokości, a środek kartki zostaje wolny na kreskę. Kolejność cieni jest losowa, a żaden cień nie stoi w rzędzie swojego obiektu. Karta nie ma kolorów do wyboru ani „Pokaż rozwiązanie”.
+Dodane 2026-11-20 (M-7, S-47, GitHub 419); kształt karty, obrazki i poziomy ustaliła użytkowniczka na makiecie v2 (`context/changes/shadows-card/mockup.mts`). Aplikacja zawsze tworzy kartę z jedną odpowiedzią: każdy obrazek pasuje do dokładnie jednego cienia. Kartka to pionowy prostokąt A4 z jednym zdaniem polecenia („Połącz każdy obrazek z jego cieniem.”) i parami pod nim, rozłożonymi równo od polecenia do dołu kartki. W każdym rzędzie stoi obrazek po lewej i cień po prawej, z kropkami po wewnętrznych stronach kolumn; środek kartki zostaje wolny na kreskę. Kolejność cieni jest losowa, a żaden cień nie stoi w rzędzie swojego obrazka. Karta nie ma kategorii, kolorów do wyboru ani „Pokaż rozwiązanie”.
 
-Obiekt pochodzi z katalogu szablonów (połowa i jej odbicie, jak w nonogramie i „Skopiuj obrazek”) z losowanymi częściami, zawsze w kolorach kredek szablonu; dziury mają kolor szablonu albo zostają białe, jak w symetrii (US-09). Cień to sylwetka obiektu z wypełnionymi dziurami (każda pusta kratka, do której nie da się dojść od brzegu siatki po pustych kratkach), cała czarna. Obiekt i jego cień mają tę samą wielkość i stoją na środku swojego pola, przycięte do obrysu. Wszystkie obrazki karty mają jedną wielkość kratki: największy obrys na karcie wypełnia pole, więc proporcje między obiektami zostają. Kategoria jak w US-20, z „Boże Narodzenie” w oknie dat.
+Obrazki: własny katalog karty, ok. 80 gładkich rysunków wektorowych w 12 rodzinach po 6–8 (decyzja użytkowniczki 2026-11-20 po makiecie v2). Rysunek ma ciemny kontur i prawdziwe, uproszczone kolory rzeczy, jednolitymi barwami, bez cieniowania; części nie nachodzą na siebie tak, żeby było widać ich krawędzie w środku kształtu (np. choinka to jeden obrys z trzema piętrami, nie trzy trójkąty). Detal (okno, pestka, oko, pasek) leży wewnątrz obrysu i cień go pomija. Cień to ten sam rysunek bez detali, cały czarny, tej samej wielkości co obrazek. Wszystkie obrazki karty mają jedną wielkość pola (ok. 52 / 43 / 35 mm na łatwym / średnim / trudnym).
 
-| Poziom | Par | Obiekty (siatka)              | Pułapki                                               | Kratka obrazka (około) |
-| ------ | --- | ----------------------------- | ----------------------------------------------------- | ---------------------- |
-| łatwy  | 4   | proste, z połowy 4×12 (8×12)  | brak, każdy obiekt inny                               | 4,6 mm                 |
-| średni | 5   | z połowy 6×15 (12×15)         | brak, każdy obiekt inny                               | 2,8 mm                 |
-| trudny | 6   | bogate, z połowy 9×24 (18×24) | 2 pary z wariantów jednego obiektu o różnych cieniach | 1,4 mm                 |
+Rodziny są propozycją do planu (startowa lista, rysunki potwierdza makieta w planie): owoce, warzywa, naczynia (kubki, filiżanka, szklanka, dzbanek), zwierzęta domowe, zwierzęta leśne, ptaki, ryby i zwierzęta morskie, pojazdy, budynki, ubrania, narzędzia, zabawki. Rodzina, z której trudny bierze warianty jednej rzeczy, ma co najmniej 6 obrazków tej samej rzeczy różniących się szczegółem obrysu (ucho, dzióbek, spodek, kształt); pozostałe rodziny mają różne rzeczy o podobnym kształcie.
 
-Pułapka to dwa warianty jednego obiektu, których cienie się różnią (np. prezent z kokardą i bez niej); dziecko musi porównać szczegół obrysu, a nie tylko rodzaj obiektu. Gdy kategoria ma mniej obiektów niż par na poziomie, brakujące pary to inne warianty tych samych obiektów o innych cieniach, czyli dodatkowe pułapki (decyzja 2026-11-20). „Kształty” nie mają obiektu z dwoma różnymi cieniami, więc w tej kategorii trudny ma 6 różnych figur bez pułapek. Opisy poziomów w UI (startowe): łatwy „4 pary, proste obrazki”, średni „5 par, więcej szczegółów”, trudny „6 par, podobne cienie”. Domyślny jest łatwy.
+| Poziom | Par | Obrazki                                                           | Pole obrazka (około) |
+| ------ | --- | ----------------------------------------------------------------- | -------------------- |
+| łatwy  | 4   | zupełnie różne rzeczy, każda z innej rodziny                      | 52 mm                |
+| średni | 5   | różne rzeczy z jednej rodziny o podobnym kształcie (np. owoce)    | 43 mm                |
+| trudny | 6   | warianty jednej rzeczy różniące się szczegółem obrysu (np. kubki) | 35 mm                |
 
-Makieta (2026-11-20, katalog 40 obiektów): wśród wszystkich wariantów jest 119 różnych cieni w siatce 8×12 (z 241 wariantów), 136 w 12×15 (z 279) i 163 w 18×24 (z 460); żadne dwa różne obiekty nie mają jednego cienia w żadnym rozmiarze; 32 z 40 obiektów (wszystkie poza „Kształtami”) mają co najmniej dwa różne cienie, więc mogą dać pułapkę. Najmniejsze kategorie to „Domy i budowle” (4 obiekty, 9–14 różnych cieni zależnie od rozmiaru) i „Przyroda” (4 obiekty, 16–18).
+Opisy poziomów w UI (startowe): łatwy „4 pary, różne rzeczy”, średni „5 par, podobne kształty”, trudny „6 par, prawie takie same”. Domyślny jest łatwy.
 
-Reguły, które generator sprawdza: karta ma liczbę par poziomu; każdy obiekt to sylwetka obiektu z katalogu w rozmiarze poziomu i z wybranej kategorii; cienie karty są parami różne (porównanie cieni z wypełnionymi dziurami, przyciętych do obrysu); na łatwym i średnim każdy obiekt jest inny, chyba że kategoria ma mniej obiektów niż par; na trudnym dwie pary pochodzą z jednego obiektu, gdy kategoria ma obiekt z dwoma różnymi cieniami; żaden cień nie stoi w rzędzie swojego obiektu; obrazki mieszczą się na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Każde Generuj daje inne obiekty, inne warianty albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 21). Wynikiem jest karta A4: pary zajmują większą część strony i zachowują margines co najmniej 10 mm.
+Reguły, które generator sprawdza: karta ma liczbę par poziomu; obrazki pochodzą z rodzin zgodnych z poziomem (łatwy: każdy z innej rodziny; średni: jedna rodzina; trudny: warianty jednej rzeczy); cienie karty różnią się parami wyraźnie, czyli cienie porównane w jednej siatce różnią się co najmniej o ustaloną część obrysu (próg w kodzie poziomów, z komentarzem; potwierdza go wydruk); żaden cień nie stoi w rzędzie swojego obrazka; obrazki mieszczą się na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Każde Generuj daje inne obrazki albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 21). Wynikiem jest karta A4: pary zajmują większą część strony i zachowują margines co najmniej 10 mm.
 
 ### Poziomy
 
@@ -1341,7 +1339,7 @@ Profil dziecka zawiera imię, ulubioną postać i ustawienia każdego rodzaju ka
 | Kodowanie              | poziom, tryb                                |
 | Od najmniejszego       | poziom, kolory                              |
 | Labirynt liczbowy      | poziom                                      |
-| Cienie                 | poziom, kategoria                           |
+| Cienie                 | poziom                                      |
 
 Zasady:
 
@@ -1378,7 +1376,7 @@ Wygenerowane karty nie są zapisywane; ich cykl życia kończy się po wydruku.
 - Pierwsza karta M-7 (2026-11-17) to karta kodowania (US-35–US-36, FR-045–FR-046; S-42). Nie obejmuje strzałek względnych („obróć się w lewo”), pętli i powtórzeń („3 × →” jako osobnej instrukcji), kroków po skosie, wielu postaci ani zbierania przedmiotów po drodze, kolorów, kategorii ani „Pokaż rozwiązanie”.
 - Druga karta M-7 (2026-11-18) to „Od najmniejszego” (US-37–US-38, FR-047–FR-048; S-48). Nie obejmuje kierunku „od największego”, klucza ani przełącznika „cyfry / kropki”, kategorii obrazków, porównania szerokości, długości albo ciężaru (wielkość to tylko wysokość), sylwetek z katalogu szablonów ani „Pokaż rozwiązanie”.
 - Trzecia karta M-7 (2026-11-20) to „Labirynt liczbowy” (US-39–US-40, FR-049–FR-050; S-49). Nie obejmuje skosów, startu i mety w innych miejscach niż rogi, liczenia wstecz, liczb ujemnych, działań w kratkach (np. „3 + 4”), kolorów, kategorii, obrazków w kratkach ani „Pokaż rozwiązanie”.
-- Czwarta karta M-7 (2026-11-20) to „Cienie” (US-41–US-42, FR-051–FR-052; S-47). Nie obejmuje przełącznika „Kolory” (obiekty są zawsze w kolorze), cieni obróconych, odbitych albo w innej wielkości niż obiekt, cieni postaci z katalogu, ikon z „Który nie pasuje” ani kształtów sudoku, kilku kategorii naraz ani „Pokaż rozwiązanie”.
+- Czwarta karta M-7 (2026-11-20) to „Cienie” (US-41–US-42, FR-051–FR-052; S-47). Nie obejmuje kategorii obrazków, przełącznika „Kolory” (obrazki są zawsze w kolorze), cieni obróconych, odbitych albo w innej wielkości niż obrazek, sylwetek z katalogu szablonów, ikon z „Który nie pasuje”, cieni postaci z katalogu ani „Pokaż rozwiązanie”.
 - Kamień M-5 nie obejmuje groszy i centów, banknotu 200 €, monet dolarowych, cen i reszty w „Kto ma więcej”, kwoty „ułóż dokładnie tę kwotę” ani oceny rysunku dziecka na kartach „Skopiuj obrazek” i szlaczki (decyzja 2026-11-01).
 - MVP nie używa LLM do generowania ani oceniania kart — rezultat podlega jawnym regułom algorytmicznym.
 - MVP nie ma kont rodziców ani synchronizacji między urządzeniami — ustawienia i profile pozostają lokalne.
@@ -1439,4 +1437,4 @@ Poza tą listą zostają kolorowanki oraz działania na liczbach z dopiskiem wal
 18. ~~**Czy startowe wartości karty kodowania (kratka, bok pola, długość drogi, przeszkody, pola przykładu) pasują dziecku?**~~ — Zamknięte 2026-11-18 po wydruku użytkowniczki: karty wszystkich poziomów i obu trybów wychodzą na jednej stronie A4, a startowe wartości zostają bez zmian; próba z dzieckiem (Zapisz i Wykonaj) pozostaje do zrobienia i nie blokuje zamknięcia. Wcześniej: Owner: user. Block: nie. Tabela w Business Logic „Karta kodowania” jest propozycją z 2026-11-17 (S-42), przyjętą po makiecie (`context/changes/coding-card/`); potwierdza ją wydruk: czy strzałka mieści się w polu 16 mm na Poziomach 3–4, czy szare pola przykładu nie mylą się z przeszkodami (ten sam odcień w makiecie; może trzeba jaśniejszego) i czy droga 18–24 kroków na Poziomie 4 nie jest za długa. Zamknięte decyzjami 2026-11-17 (użytkowniczka): domyślny tryb Zapisz, brak „Pokaż rozwiązanie” (jak w zegarze: odpowiedź da się sprawdzić, prowadząc palcem po strzałkach) i kółko „Start” przy postaci „Brak”; zostają wartości startowe, które potwierdza wydruk.
 19. ~~Czy najmniejszy krok wielkości karty „Od najmniejszego” (×1,35 / ×1,25 / ×1,14) dziecko widzi bez linijki, także na małych obrazkach trudnego poziomu (najwyższy ok. 24 mm)?~~ — Zamknięte 2026-11-18 po wydruku i sprawdzeniu użytkowniczki: krok ×1,35 / ×1,25 / ×1,14 jest widoczny na wydruku, także na trudnym (najwyższy obrazek ok. 24 mm), pole 13 mm mieści cyfrę i kropki, wydruk to jedna strona A4 w Safari, Chrome iOS i Brave iOS, a startowe wartości poziomów zostają bez zmian. Próg różnicy dwóch najbliższych wysokości na papierze (`minStepMm`) to 2 mm, nie 2,5 mm z planu: najmniejsza różnica trudnego to 0,10 × ok. 24 mm = 2,4 mm, więc 2,5 mm odrzucałoby każdy rząd; 2 mm odrzuca tylko ikony szersze niż ok. 1,6 × wysokość.
 20. ~~Czy startowe wartości „Labiryntu liczbowego” (kratki 5×5 … 8×9, zakresy do 15, 20, 30, 50, liczenie co 2 do 60 i co 5 do 200, kratka 24–30 mm, pułapki do 3 albo 2 kroków od liczb drogi) pasują dziecku, i czy liczby trzycyfrowe Poziomu 6 mieszczą się czytelnie w kratce ok. 27 mm?~~ — Zamknięte 2026-11-20 po wydruku użytkowniczki: karty wszystkich poziomów wyglądają dobrze i są czytelne, także trzycyfrowe liczby Poziomu 6 w kratce ok. 27 mm; startowe wartości poziomów zostają bez zmian. Wcześniej: Owner: user. Block: no. Tabela w Business Logic jest propozycją z 2026-11-20 (S-49), zaakceptowaną po makiecie; potwierdza ją wydruk po implementacji.
-21. **Czy startowe wartości karty „Cienie” (4 / 5 / 6 par, obiekty z siatek 8×12 / 12×15 / 18×24, dwie pułapki na trudnym) pasują dziecku, i czy obrazki trudnego poziomu (kratka obrazka ok. 1,4 mm) oraz pułapki różniące się drobną częścią (np. kokardą) są czytelne na wydruku, także w odcieniach szarości na czarno-białej drukarce?** — Owner: user. Block: no. Tabela w Business Logic „Karta „Cienie”” jest propozycją z 2026-11-20 (S-47), zaakceptowaną po makiecie (`context/changes/shadows-card/`); potwierdza ją wydruk w planie `shadows-card`.
+21. **Czy startowe wartości karty „Cienie” (4 / 5 / 6 par, pole obrazka ok. 52 / 43 / 35 mm, rodziny i próg różnicy cieni) pasują dziecku, i czy warianty jednej rzeczy na trudnym (np. kubki różniące się uchem) są rozróżnialne na wydruku, także w odcieniach szarości na czarno-białej drukarce?** — Owner: user. Block: no. Tabela w Business Logic „Karta „Cienie”” jest propozycją z 2026-11-20 (S-47), zaakceptowaną po makiecie v2 (`context/changes/shadows-card/`); potwierdzają ją rysunki i wydruk w planie `shadows-card`.
