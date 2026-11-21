@@ -1,9 +1,10 @@
 ---
 change_id: coding-card
 title: Karta kodowania — zapisz albo wykonaj strzałki na kratce z przeszkodami
-status: impl_reviewed
+status: archived
 created: 2026-11-17
-updated: 2026-11-18
+updated: 2026-11-21
+archived_at: 2026-11-21T20:09:07Z
 ---
 
 ## Notes
