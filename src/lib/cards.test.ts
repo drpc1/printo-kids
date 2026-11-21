@@ -3,14 +3,18 @@ import { describe, test } from "node:test";
 import { CARD_KINDS, cardPageTitle, cardTitle, cardsInCatalogOrder } from "./cards.ts";
 
 void describe("cardsInCatalogOrder", () => {
-  void test("orders titles alphabetically and leaves CARD_KINDS in insertion order", () => {
+  void test("keeps CARD_KINDS in Polish alphabetical order and returns a sorted copy", () => {
+    const titles = CARD_KINDS.map((kind) => kind.title);
     const ordered = cardsInCatalogOrder();
 
     assert.deepEqual(
-      ordered.map((kind) => kind.title),
-      CARD_KINDS.map((kind) => kind.title).sort((a, b) => a.localeCompare(b, "pl")),
+      titles,
+      [...titles].sort((a, b) => a.localeCompare(b, "pl")),
     );
-    assert.equal(CARD_KINDS[0].title, "Labirynt");
+    assert.deepEqual(
+      ordered.map((kind) => kind.title),
+      titles,
+    );
     assert.notEqual(ordered, CARD_KINDS);
   });
 });

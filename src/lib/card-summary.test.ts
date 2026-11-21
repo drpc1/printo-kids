@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { defaultCardSettings, type CardSettingsMap } from "./card-settings.ts";
 import { cardSummaries } from "./card-summary.ts";
-import { CARD_KINDS } from "./cards.ts";
+import { CARD_KINDS, cardsInCatalogOrder } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import type { LevelId } from "./maze/levels.ts";
 
@@ -27,11 +27,11 @@ void describe("cardSummaries", () => {
     assert.doesNotMatch(detail(new Date(2027, 1, 10)), /Boże Narodzenie/);
   });
 
-  void test("lists every card in the order of CARD_KINDS with their pages", () => {
+  void test("lists every card in catalog order with their pages", () => {
     const summaries = cardSummaries(profile("lat5"));
     assert.deepEqual(
       summaries.map((summary) => [summary.id, summary.href]),
-      CARD_KINDS.map((kind) => [kind.id, kind.href]),
+      cardsInCatalogOrder().map((kind) => [kind.id, kind.href]),
     );
   });
 

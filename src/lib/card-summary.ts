@@ -1,5 +1,5 @@
 import { cardSettingsOf, type CardSettingsId, type CardSettingsMap } from "./card-settings.ts";
-import { CARD_KINDS } from "./cards.ts";
+import { cardsInCatalogOrder } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import { clockLevelById, clockModeById } from "./clock/levels.ts";
 import { codingLevelById, codingModeById } from "./coding/levels.ts";
@@ -35,11 +35,11 @@ export interface CardSummary {
 const UNUSED_DETAIL = "domyślne";
 
 /**
- * Every card of a profile in the order of CARD_KINDS. With `today` a remembered category outside its window reads as
+ * Every card of a profile, in catalog order. With `today` a remembered category outside its window reads as
  * "Wszystkie", as on the bar; without it the remembered one is shown.
  */
 export function cardSummaries(profile: ChildProfile, today?: Date): CardSummary[] {
-  return CARD_KINDS.map((kind) => {
+  return cardsInCatalogOrder().map((kind) => {
     const parts = summaryParts(kind.id, profile, today);
     if (parts === null) {
       return { id: kind.id, title: kind.title, href: kind.href, used: false, badge: null, detail: UNUSED_DETAIL };
