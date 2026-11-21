@@ -336,26 +336,26 @@ Karta nie jest zapisywana (US-08), więc zmiana `CopyDrawingCard` nie wymaga mig
 
 #### Automated
 
-- [x] 2.1 `npm test` przechodzi, w tym nowe testy karty kształtu, generatora, kolorów i silnika
-- [x] 2.2 `npm run lint` przechodzi
-- [x] 2.3 `npm run depcruise` przechodzi
-- [x] 2.4 `npx astro check` przechodzi
-- [x] 2.5 `npm run build` przechodzi
-- [x] 2.6 `npm run thumbnails` zmienia najwyżej `public/thumbnails/kopiuj.svg`
-- [x] 2.7 Wąski Stryker na zmienionych zakresach `generate.ts`, `card.ts` i `colors.ts`, wynik w `reviews/stryker-results.md`
+- [x] 2.1 `npm test` przechodzi, w tym nowe testy karty kształtu, generatora, kolorów i silnika — 5f140220
+- [x] 2.2 `npm run lint` przechodzi — 5f140220
+- [x] 2.3 `npm run depcruise` przechodzi — 5f140220
+- [x] 2.4 `npx astro check` przechodzi — 5f140220
+- [x] 2.5 `npm run build` przechodzi — 5f140220
+- [x] 2.6 `npm run thumbnails` zmienia najwyżej `public/thumbnails/kopiuj.svg` — 5f140220
+- [x] 2.7 Wąski Stryker na zmienionych zakresach `generate.ts`, `card.ts` i `colors.ts`, wynik w `reviews/stryker-results.md` — 5f140220
 
 #### Manual
 
-- [x] 2.8 Na `/copy-drawing` kolejne Generuj dają szablony i kształty na każdym poziomie; kształt odbity wygląda jak w makiecie, kolory po włączeniu zgadzają się z makietą, przełącznik nie zmienia karty
-- [x] 2.9 Kategoria (np. Zwierzęta, Boże Narodzenie) daje kształty tylko ze swojej kategorii; klucz poziomy nie pada w „Domy i budowle”
-- [ ] 2.10 Przed PR-em fazy: `/10x-impl-review copy-drawing-asymmetric-shapes` i poprawki z przeglądu
+- [x] 2.8 Na `/copy-drawing` kolejne Generuj dają szablony i kształty na każdym poziomie; kształt odbity wygląda jak w makiecie, kolory po włączeniu zgadzają się z makietą, przełącznik nie zmienia karty — 5f140220
+- [x] 2.9 Kategoria (np. Zwierzęta, Boże Narodzenie) daje kształty tylko ze swojej kategorii; klucz poziomy nie pada w „Domy i budowle” — 5f140220
+- [x] 2.10 Przed PR-em fazy: `/10x-impl-review copy-drawing-asymmetric-shapes` i poprawki z przeglądu — 5f140220
 
 ### Phase 3: Wydruk próbny i staging
 
 #### Automated
 
-- [ ] 3.1 `E2E_PORT=4399 npx playwright test tests/e2e/copy-drawing.spec.ts` przechodzi na projektach `chromium`, `phone-360`, `pixel-7`, `tablet-768`
-- [ ] 3.2 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check` i `npm run build` przechodzą
+- [x] 3.1 `E2E_PORT=4399 npx playwright test tests/e2e/copy-drawing.spec.ts` przechodzi na projektach `chromium`, `phone-360`, `pixel-7`, `tablet-768`
+- [x] 3.2 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check` i `npm run build` przechodzą
 
 #### Manual
 
