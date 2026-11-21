@@ -32,6 +32,7 @@ const CARDS: CardCase[] = [
   { path: "/size-order", sheet: "Od najmniejszego", sentence: "Ponumeruj od najmniejszego" },
   // The sentence of the default level (Poziom 1); Poziomy 5 and 6 count in twos and fives.
   { path: "/number-maze", sheet: "Labirynt liczbowy", sentence: "Idź po liczbach" },
+  { path: "/shadows", sheet: "Cienie", sentence: "Połącz każdy obrazek z jego cieniem." },
 ];
 
 async function pickCharacter(page: Page, name: string): Promise<void> {

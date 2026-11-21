@@ -56,7 +56,10 @@ export type ShadowShape = ShapeBase &
     | { kind: "circle"; cx: number; cy: number; r: number }
     | { kind: "ellipse"; cx: number; cy: number; rx: number; ry: number; rotate?: number }
     | {
-        /** A thick open line, e.g. a mug handle or a balloon string: `width` wide, outlined like the other shapes. */
+        /**
+         * An open line. A body stroke (mug handle, balloon string) is `width` wide and outlined like the other shapes;
+         * a detail stroke (whiskers, onion lines) is a plain line of `width` in its own color, without an outline.
+         */
         kind: "stroke";
         d: string;
         width: number;
@@ -114,9 +117,10 @@ export const ellipse = (
   rotate = 0,
   detail = false,
 ): ShadowShape => ({ kind: "ellipse", cx, cy, rx, ry, rotate, paint, detail });
-export const stroke = (d: string, width: number, paint: PictureColor): ShadowShape => ({
+export const stroke = (d: string, width: number, paint: PictureColor, detail = false): ShadowShape => ({
   kind: "stroke",
   d,
   width,
   paint,
+  detail,
 });

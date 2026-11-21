@@ -1,9 +1,9 @@
 import type { ShadowFamily, ShadowPicture } from "./picture-format.ts";
 import { OWOCE, PTAKI, UBRANIA, WARZYWA, ZABAWKI, ZWIERZETA } from "./pictures/rozne.ts";
-import { AUTA, DOMKI, DRZEWA, KLUCZE, KUBKI, RYBY } from "./pictures/warianty.ts";
+import { AUTA, DOMKI, DRZEWA, KLUCZE, KUBKI, KWIATY, RYBY } from "./pictures/warianty.ts";
 
 /**
- * The catalog of the shadows card: six families of variants of one thing (the hard level takes six of one) and six
+ * The catalog of the shadows card: seven families of variants of one thing (the hard level takes six of one) and six
  * families of different things of a similar shape (the medium level takes five of one); the easy level takes four
  * pictures from four different families of either kind.
  */
@@ -14,6 +14,7 @@ export const SHADOW_FAMILIES: readonly ShadowFamily[] = [
   { id: "auta", label: "pojazdy", kind: "warianty", pictures: AUTA },
   { id: "drzewa", label: "drzewa", kind: "warianty", pictures: DRZEWA },
   { id: "klucze", label: "klucze", kind: "warianty", pictures: KLUCZE },
+  { id: "kwiaty", label: "kwiaty", kind: "warianty", pictures: KWIATY },
   { id: "owoce", label: "owoce", kind: "rozne", pictures: OWOCE },
   { id: "warzywa", label: "warzywa", kind: "rozne", pictures: WARZYWA },
   { id: "zwierzeta", label: "zwierzęta", kind: "rozne", pictures: ZWIERZETA },

@@ -136,6 +136,11 @@ const CARDS: CardCase[] = [
     path: "/number-maze",
     changes: [{ bar: "Poziom", option: "Poziom 4", shown: "4" }],
   },
+  {
+    id: "cienie",
+    path: "/shadows",
+    changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
+  },
 ];
 
 function barButton(page: Page, bar: string): Locator {

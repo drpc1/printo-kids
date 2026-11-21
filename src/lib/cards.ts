@@ -10,6 +10,14 @@ export interface CardKind {
 /** Polish title order. Insert a new card at its alphabetical place; do not append it. */
 export const CARD_KINDS = [
   {
+    id: "cienie",
+    title: "Cienie",
+    href: "/shadows",
+    thumbnail: "/thumbnails/cienie.svg",
+    description:
+      "Dziecko łączy kreską kolorowy obrazek z jego czarnym cieniem. Na kartce są dwie kolumny: po lewej obrazki, po prawej ich cienie w innej kolejności, przy każdym kropka, a żaden cień nie stoi w rzędzie swojego obrazka. Poziom zmienia liczbę par i to, jak bardzo obrazki są do siebie podobne: od zupełnie różnych rzeczy po warianty jednej rzeczy.",
+  },
+  {
     id: "dyktando",
     title: "Dyktando graficzne",
     href: "/dictation",

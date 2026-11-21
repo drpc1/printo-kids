@@ -28,6 +28,7 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(defaultCardSettings("kodowanie"), { level: "poziom1", mode: "zapisz" });
     assert.deepEqual(defaultCardSettings("odnajmniejszego"), { level: "latwy", colors: false });
     assert.deepEqual(defaultCardSettings("liczby"), { level: "poziom1" });
+    assert.deepEqual(defaultCardSettings("cienie"), { level: "latwy" });
   });
 
   void test("the number-maze card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
@@ -36,6 +37,13 @@ void describe("defaultCardSettings", () => {
     assert.deepEqual(parseCardSettings({ liczby: { level: "latwy" } }), { liczby: { level: "poziom1" } });
     assert.deepEqual(parseCardSettings({ liczby: 3 }), {});
     assert.deepEqual(withCardSettings({}, "liczby", { level: "poziom4" }), { liczby: { level: "poziom4" } });
+  });
+
+  void test("the shadows card reads a stored level, drops an unknown one, and stays absent when never stored", () => {
+    assert.deepEqual(parseCardSettings({ cienie: { level: "trudny" } }), { cienie: { level: "trudny" } });
+    assert.deepEqual(parseCardSettings({ cienie: { level: "poziom1" } }), { cienie: { level: "latwy" } });
+    assert.deepEqual(parseCardSettings({ cienie: 3 }), {});
+    assert.deepEqual(withCardSettings({}, "cienie", { level: "sredni" }), { cienie: { level: "sredni" } });
   });
 
   void test("the size-order card reads a stored level and colors, drops unknown values, and stays absent when never stored", () => {
