@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-20
+updated: 2026-11-21
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -52,7 +52,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | ID   | Change ID                      | Outcome (user can …)                                                                                                                                        | Prerequisites                                              | PRD refs                                                                  | Status      |
 | ---- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ----------- |
 | S-42 | coding-card                    | Rodzic otwiera z katalogu karty kodowania, generuje kartę A4 z kratką, postacią, metą i strzałkami, podgląda ją i drukuje                                   | —                                                          | MS-01, US-35, US-36, FR-045, FR-046, FR-014, FR-017, FR-030, US-05, US-08 | in-progress |
-| S-47 | shadows-card                   | Rodzic otwiera z katalogu „Cienie”, generuje kartę A4, na której dziecko łączy obiekty z ich cieniami, podgląda ją i drukuje                                | —                                                          | MS-02, FR-014, FR-017, FR-028, FR-029, FR-030, US-05, US-08, US-20        | ready       |
+| S-47 | shadows-card                   | Rodzic otwiera z katalogu „Cienie”, generuje kartę A4, na której dziecko łączy obiekty z ich cieniami, podgląda ją i drukuje                                | —                                                          | MS-02, FR-014, FR-017, FR-030, FR-051, FR-052, US-05, US-08, US-41, US-42 | in-progress |
 | S-48 | size-order-card                | Rodzic otwiera z katalogu „Od najmniejszego”, generuje kartę A4, na której dziecko numeruje obrazki od najmniejszego do największego, podgląda ją i drukuje | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | done        |
 | S-49 | number-maze-card               | Rodzic otwiera z katalogu „Labirynt liczbowy”, generuje kartę A4, na której dziecko idzie od startu do mety po kolejnych liczbach, podgląda ją i drukuje    | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08, US-39, US-40, FR-049, FR-050 | done        |
 | S-55 | copy-drawing-asymmetric-shapes | Rodzic dostaje na „Skopiuj obrazek” także niesymetryczne kształty (np. skarpeta, ryba, dinozaur), z kategorią i kolorami jak dotąd                          | —                                                          | MS-07, FR-037, FR-038, US-27, US-28                                       | blocked     |
@@ -122,7 +122,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
   - ~~Poziomy (liczba obiektów, cienie-pułapki z innych wariantów tego samego obiektu na wyższych poziomach), kolory obiektów (przełącznik jak w symetrii czy zawsze w kolorze) i układ na A4.~~ — Zamknięte 2026-11-20 (makieta v2 w `context/changes/shadows-card/`, decyzje użytkowniczki): własny katalog ok. 80 gładkich rysunków w prawdziwych, uproszczonych kolorach w 12 rodzinach zamiast sylwetek z kratek; trudność z podobieństwa obrazków: łatwy 4 pary różnych rzeczy, średni 5 par z jednej rodziny, trudny 6 par wariantów jednej rzeczy; obrazki zawsze w kolorze; bez kategorii; obrazki w lewej kolumnie, cienie w prawej. PRD: US-41–US-42, FR-051–FR-052, Business Logic „Karta „Cienie””.
   - Czy warianty jednej rzeczy na trudnym są rozróżnialne na wydruku i jaki próg różnicy cieni to zapewnia. Rozstrzyga makieta rysunków i wydruk w planie (PRD Open Questions 21). — Owner: user. Block: no.
 - **Risk:** Karta potrzebuje własnego katalogu ok. 80 rysunków (pierwsza makieta z sylwetkami z kratek odpadła, bo źle wyglądały), więc plan jest większy niż przy kartach z gotowymi obrazkami. Cień nie ma detali, więc dwa podobne rysunki mogą dać prawie ten sam cień; generator porównuje cienie i nie stawia na karcie dwóch zbyt podobnych.
-- **Status:** ready
+- **Status:** in-progress
 
 ### S-48: Od najmniejszego
 
@@ -251,19 +251,19 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty. Issue S-42 (#373), S-43 (#374) i S-47 do S-49 (#419–#421) już istnieją; dla pozostałych powstaną po decyzjach z ich niewiadomych.
 
-| Roadmap ID | Change ID                      | Suggested issue title                           | Ready for `/10x-plan` | Notes                                                                                    |
-| ---------- | ------------------------------ | ----------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------- |
-| S-42       | coding-card                    | Karty kodowania                                 | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373)                      |
-| S-47       | shadows-card                   | Cienie                                          | no                    | Run `/10x-new shadows-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#419)    |
-| S-48       | size-order-card                | Od najmniejszego                                | no                    | Run `/10x-new size-order-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#420) |
-| S-49       | number-maze-card               | Labirynt liczbowy                               | no                    | Zrobione, zarchiwizowane                                                                 |
-| S-43       | card-tags-filter               | Tagi i filtr kart w katalogu                    | no                    | Czeka na S-42, S-47 do S-49; najpierw lista tagów (#374)                                 |
-| S-55       | copy-drawing-asymmetric-shapes | „Skopiuj obrazek” z kształtami niesymetrycznymi | no                    | Issue #379; czeka na decyzję, które kształty                                             |
-| S-52       | profile-card-summary           | Okno profilu przy wielu kartach                 | no                    | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować                                    |
-| S-54       | seasons-objects-characters     | Pory roku                                       | no                    | Czeka na wybór sezonu                                                                    |
-| S-53       | how-it-works-m7                | „Jak to działa” przy wielu kartach              | no                    | Czeka na S-43 i decyzję, jak skrócić                                                     |
-| S-50       | stryker-m7-cards               | Stryker dla kart i filtra M-7                   | no                    | Czeka na S-43                                                                            |
-| S-51       | test-plan-m7                   | Test plan po M-7                                | no                    | Czeka na S-50                                                                            |
+| Roadmap ID | Change ID                      | Suggested issue title                           | Ready for `/10x-plan` | Notes                                                                                           |
+| ---------- | ------------------------------ | ----------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------- |
+| S-42       | coding-card                    | Karty kodowania                                 | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373)                             |
+| S-47       | shadows-card                   | Cienie                                          | no                    | Plan w `context/changes/shadows-card/plan.md`; run `/10x-implement shadows-card phase 1` (#419) |
+| S-48       | size-order-card                | Od najmniejszego                                | no                    | Run `/10x-new size-order-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#420)        |
+| S-49       | number-maze-card               | Labirynt liczbowy                               | no                    | Zrobione, zarchiwizowane                                                                        |
+| S-43       | card-tags-filter               | Tagi i filtr kart w katalogu                    | no                    | Czeka na S-42, S-47 do S-49; najpierw lista tagów (#374)                                        |
+| S-55       | copy-drawing-asymmetric-shapes | „Skopiuj obrazek” z kształtami niesymetrycznymi | no                    | Issue #379; czeka na decyzję, które kształty                                                    |
+| S-52       | profile-card-summary           | Okno profilu przy wielu kartach                 | no                    | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować                                           |
+| S-54       | seasons-objects-characters     | Pory roku                                       | no                    | Czeka na wybór sezonu                                                                           |
+| S-53       | how-it-works-m7                | „Jak to działa” przy wielu kartach              | no                    | Czeka na S-43 i decyzję, jak skrócić                                                            |
+| S-50       | stryker-m7-cards               | Stryker dla kart i filtra M-7                   | no                    | Czeka na S-43                                                                                   |
+| S-51       | test-plan-m7                   | Test plan po M-7                                | no                    | Czeka na S-50                                                                                   |
 
 ## Open Roadmap Questions
 
