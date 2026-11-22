@@ -4,7 +4,7 @@
 import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { CopyDrawingSettings } from "../card-settings.ts";
 import { copyDrawingProblems, type CopyDrawingCard } from "./card.ts";
-import { generateCopyDrawingCard, MAX_ATTEMPTS } from "./generate.ts";
+import { composeCopyDrawingCard, generateCopyDrawingCard, MAX_ATTEMPTS } from "./generate.ts";
 import { copyDrawingLevelById } from "./levels.ts";
 
 type Bad = CardSpec<CopyDrawingSettings, CopyDrawingCard>["knownBad"][number];
@@ -46,10 +46,22 @@ function knownBad(): readonly Bad[] {
   const base = fixture(middle);
   const blank: CopyDrawingCard = { ...base, pattern: base.pattern.map((row) => row.map(() => false)) };
   const wrongGrid: CopyDrawingCard = { ...base, pattern: base.pattern.slice(1) };
+  // A dictation shape that is not symmetric, so its flip is another picture; the card claims the flip it does not show.
+  const shape = composeCopyDrawingCard(
+    { kind: "shape", shapeId: "dinozaur", mirrored: false },
+    copyDrawingLevelById("sredni"),
+  );
+  const flipped: CopyDrawingCard = { ...shape, picture: { kind: "shape", shapeId: "dinozaur", mirrored: true } };
   return [
     {
       name: "a grid turned half a circle: not the silhouette of the object",
       card: { ...base, pattern: turned(base.pattern) },
+      settings: middle,
+      expectedCode: "not-silhouette",
+    },
+    {
+      name: "a shape card that names the flipped drawing of its pattern: not the silhouette of the shape",
+      card: flipped,
       settings: middle,
       expectedCode: "not-silhouette",
     },

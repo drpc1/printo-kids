@@ -1,3 +1,4 @@
+import type { DictationLevelId } from "../dictation/levels.ts";
 import { NONOGRAM_SIZES, type NonogramSize, type NonogramSizeId } from "../nonogram/sizes.ts";
 
 /** The levels of the "Skopiuj obrazek" card. They share their ids with the nonogram sizes and name no age. */
@@ -15,6 +16,11 @@ export interface CopyDrawingLevel {
   size: NonogramSize;
   /** Nominal side of one grid cell in mm; the layout may shrink it when the two grids would not fit. */
   cellSize: number;
+  /**
+   * The dictation level whose shapes this level draws. Their drawings fit the grid: lat5 in 8×12, lat6 in 12×15 and
+   * lat7 in 18×24.
+   */
+  dictationLevel: DictationLevelId;
 }
 
 export const DEFAULT_COPY_DRAWING_LEVEL_ID: CopyDrawingLevelId = "sredni";
@@ -35,6 +41,7 @@ export const COPY_DRAWING_LEVELS: readonly CopyDrawingLevel[] = [
     description: "duża kratka, prosty obrazek",
     size: sizeById("latwy"),
     cellSize: 11,
+    dictationLevel: "lat5",
   },
   {
     id: "sredni",
@@ -43,6 +50,7 @@ export const COPY_DRAWING_LEVELS: readonly CopyDrawingLevel[] = [
     description: "mniejsza kratka, więcej szczegółów",
     size: sizeById("sredni"),
     cellSize: 7.5,
+    dictationLevel: "lat6",
   },
   {
     id: "trudny",
@@ -51,6 +59,7 @@ export const COPY_DRAWING_LEVELS: readonly CopyDrawingLevel[] = [
     description: "drobna kratka, bogaty obrazek",
     size: sizeById("trudny"),
     cellSize: 5,
+    dictationLevel: "lat7",
   },
 ];
 

@@ -1,18 +1,23 @@
 import { nonogramImage } from "../nonogram/clues.ts";
 import { symmetryTemplatesFor, type SymmetryColor } from "../symmetry/templates.ts";
-import { silhouetteRowShift, type CopyDrawingCard } from "./card.ts";
+import { shapeCrayonGrid, silhouetteRowShift, type CopyDrawingCard } from "./card.ts";
 import { copyDrawingLevelById } from "./levels.ts";
 
 /**
  * The crayon of every cell of the silhouette, rows by columns: the template's color for a filled cell, the template's
  * hole color for an empty cell the silhouette closes in (none when the template keeps its holes white), null for the
  * rest. Same grid and same vertical shift as `card.pattern`, so a non-null entry marks a cell the colored grid draws.
- * Returns null when the card names a template or variant that does not exist.
+ * A dictation shape gives the crayon of the letter of every cell of its silhouette and no hole color: an enclosed empty
+ * cell stays white. Returns null when the card names a template, variant or shape that does not exist.
  */
 export function copyDrawingCellColors(card: CopyDrawingCard): (SymmetryColor | null)[][] | null {
   const level = copyDrawingLevelById(card.levelId);
+  const { picture } = card;
+  if (picture.kind === "shape") {
+    return shapeCrayonGrid(level, picture.shapeId, picture.mirrored);
+  }
   const template = symmetryTemplatesFor(level.size.templateLevel, "wszystkie").find(
-    (candidate) => candidate.id === card.templateId,
+    (candidate) => candidate.id === picture.templateId,
   );
   if (template === undefined) {
     return null;
@@ -20,7 +25,7 @@ export function copyDrawingCellColors(card: CopyDrawingCard): (SymmetryColor | n
   const { columns, rows } = level.size;
   const cells = [...template.base];
   for (const [index, part] of template.parts.entries()) {
-    const variant = part.variants[card.variants[index]] as (typeof part.variants)[number] | undefined;
+    const variant = part.variants[picture.variants[index]] as (typeof part.variants)[number] | undefined;
     if (variant === undefined) {
       return null;
     }
@@ -28,7 +33,7 @@ export function copyDrawingCellColors(card: CopyDrawingCard): (SymmetryColor | n
   }
 
   const shiftX = columns / 2 - template.width;
-  const shiftY = silhouetteRowShift(nonogramImage(template, card.variants, level.size));
+  const shiftY = silhouetteRowShift(nonogramImage(template, picture.variants, level.size));
   const colors = Array.from({ length: rows }, () => new Array<SymmetryColor | null>(columns).fill(null));
   for (const cell of cells) {
     const row = cell.row + shiftY;

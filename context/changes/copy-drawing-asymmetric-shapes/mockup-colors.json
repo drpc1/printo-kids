@@ -1,0 +1,458 @@
+{
+  "ryba": {
+    "lat6": ["...yyy..", "y.ooooko", "yyoooooo", "yyoooooo", "y.oooooo", "...yyy.."],
+    "lat7": [
+      ".......y....",
+      "......yyy...",
+      "y....ooooo..",
+      "yy..ooooooo.",
+      "yy.ooooookoo",
+      "yyyooooooooo",
+      "yyyooooooooo",
+      "yy.ooooooooo",
+      "yy..ooooooo.",
+      "y....ooooo.."
+    ]
+  },
+  "kaczka": {
+    "lat6": [
+      "........y...",
+      ".......yky..",
+      "......yyyyoo",
+      "yy.....yyy..",
+      "yyyyyyyyy...",
+      ".yyyyyyyy...",
+      "yyyyyyyyy...",
+      "yyyyyyyyy...",
+      ".yyyyyyyy...",
+      "...yyyy....."
+    ],
+    "lat7": [
+      "...........yyyy...",
+      "..........yyykyy..",
+      "..........yyyyyyoo",
+      "..........yyyyyyoo",
+      "yyy.......yyyyyy..",
+      "yyyyyyyyyyyyyyy...",
+      ".yyyyyyyyyyyy.....",
+      ".yyyyyyyyyyyyy....",
+      ".yyyyyyyyyyyyy....",
+      ".yyyyyyyyyyyyy....",
+      ".yyyyyyyyyyyyy....",
+      ".yyyyyyyyyyyy.....",
+      "...yyyyyyyyy......",
+      ".....yyyy........."
+    ]
+  },
+  "dinozaur": {
+    "lat5": [".....gg.", ".....gkg", ".....gg.", "...gggg.", "..ggggg.", "ggggggg.", "g..g.g.."],
+    "lat6": [
+      ".........gg.",
+      ".........gkg",
+      ".........gg.",
+      "........gg..",
+      ".....ggggg..",
+      "....gggggg..",
+      "...ggggggg..",
+      ".ggggggggg..",
+      "gg..g..g....",
+      "g...g..g...."
+    ],
+    "lat7": [
+      "..............ggg.",
+      ".............ggkgg",
+      ".............ggggg",
+      ".............gggg.",
+      ".............ggg..",
+      ".........gg..ggg..",
+      ".......ggggggggg..",
+      "......gggggggggg..",
+      ".....gggggggggg...",
+      "....ggggggggggg...",
+      "...ggggggggggg....",
+      "..gg....gggggg....",
+      ".gg.....gg..gg....",
+      "gg......gg..gg....",
+      "g.......gg..gg...."
+    ]
+  },
+  "lokomotywa": {
+    "lat5": [".k...ggg", ".k...gbg", "rrrrrrrr", "rrrrrrrr", "kk.kk.kk"],
+    "lat6": [
+      ".kk...gggggg",
+      ".kk.y..gbbbg",
+      ".rrrrrrgbbbg",
+      ".rrrrrrggggg",
+      ".rrrrrrggggg",
+      ".rrrrrrggggg",
+      "krrrrrrrrrrr",
+      "k.k.kk..kk.."
+    ],
+    "lat7": [
+      "..kk......gggggggg",
+      "..kk..yy..ggbbbbg.",
+      "..kk..yy..ggbbbbg.",
+      ".rrrrrrrrrggbbbbg.",
+      ".rrrrrrrrrggggggg.",
+      ".rrrrrrrrrggggggg.",
+      ".rrrrrrrrrggggggg.",
+      ".rrrrrrrrrrrrrrrr.",
+      ".rrrrrrrrrrrrrrrr.",
+      ".rrrrrrrrrrrrrrrr.",
+      "kkkkkkkkkk..kkkk..",
+      "...kk..kk....kk..."
+    ]
+  },
+  "helikopter": {
+    "lat6": [
+      "ssssssss....",
+      "...s........",
+      ".ybbby....rr",
+      "yybbbyyrrrrr",
+      "yyyyyyyrrrrr",
+      ".yyyyyy.....",
+      "..yyyy......",
+      ".kkkkkk....."
+    ],
+    "lat7": [
+      "ssssssssss......",
+      "....s...........",
+      "....s.........rr",
+      "..yyyyy.......rr",
+      ".ybbbyyyyrrrrrrr",
+      ".ybbbyyyyrrrrrrr",
+      ".yyyyyyyy.......",
+      "..yyyyyy........",
+      "...yyyy.........",
+      "..kkkkkkk......."
+    ]
+  },
+  "ciezarowka": {
+    "lat5": ["ooooo...", "ooooobb.", "ooooorrr", "ooooorrr", ".kk..kk."],
+    "lat6": [
+      "ooooooo.....",
+      "ooooooo.....",
+      "ooooooorbb..",
+      "ooooooorbbr.",
+      "ooooooorrrrr",
+      "ooooooorrrrr",
+      ".kkk...kkk..",
+      ".kkk...kkk.."
+    ],
+    "lat7": [
+      "ooooooooooo.......",
+      "ooooooooooo.......",
+      "ooooooooooo.......",
+      "ooooooooooorbbb...",
+      "ooooooooooorbbbr..",
+      "ooooooooooorbbbrr.",
+      "ooooooooooorrrrrrr",
+      "ooooooooooorrrrrrr",
+      "ooooooooooorrrrrrr",
+      ".kkkk.......kkkk..",
+      ".kkkk.......kkkk.."
+    ]
+  },
+  "statek": {
+    "lat5": ["..k.....", ".yby....", ".yyy...r", "rrrrrrrr", ".rrrrrr."],
+    "lat6": [
+      "...kk.......",
+      "...kk.......",
+      "..ybyby.....",
+      "..yyyyy....r",
+      "rrrrrrrrrrrr",
+      ".rrrrrrrrrr.",
+      "..rrrrrrrr.."
+    ],
+    "lat7": [
+      "....kk............",
+      "....kk............",
+      "....kk............",
+      "..yyyyyyyy........",
+      "..ybybybyy........",
+      "..yyyyyyyy......rr",
+      "rrrrrrrrrrrrrrrrrr",
+      ".rrrrrrrrrrrrrrrr.",
+      "..rrrrrrrrrrrrrr..",
+      "....rrrrrrrrrr...."
+    ]
+  },
+  "lodka-z-masztem": {
+    "lat5": ["...n....", "...n....", "...n....", "...n...r", "rrrrrrrr", ".rrrrrr.", "..rrrr.."],
+    "lat6": [
+      ".....nn.....",
+      ".....nn.....",
+      ".....nn.....",
+      ".....nn.....",
+      ".....nn.....",
+      ".....nn....r",
+      "rrrrrrrrrrrr",
+      ".rrrrrrrrrr.",
+      "..rrrrrrrr.."
+    ],
+    "lat7": [
+      "........nn........",
+      "........nn........",
+      "........nn........",
+      "........nn........",
+      "........nn........",
+      "........nn........",
+      "........nn........",
+      "........nn......rr",
+      "rrrrrrrrrrrrrrrrrr",
+      ".rrrrrrrrrrrrrrrr.",
+      "..rrrrrrrrrrrrrr..",
+      "....rrrrrrrrrr...."
+    ]
+  },
+  "parasol": {
+    "lat5": ["..yyrr..", ".ryyrry.", "rryyrryy", "...k....", "...k....", "...k....", "k..k....", "kkkk...."],
+    "lat6": [
+      "....rryy....",
+      "..yyrryyrr..",
+      ".ryyrryyrry.",
+      ".ryyrryyrry.",
+      "rryyrryyrryy",
+      "......k.....",
+      "......k.....",
+      "......k.....",
+      "...k..k.....",
+      "...k..k.....",
+      "...kkkk....."
+    ],
+    "lat7": [
+      ".......rryy.......",
+      ".....yrrryyyr.....",
+      "...yyyrrryyyrrr...",
+      "..ryyyrrryyyrrry..",
+      ".rryyyrrryyyrrryy.",
+      ".rryyyrrryyyrrryy.",
+      ".rryyyrrryyyrrryy.",
+      "rrryyyrrryyyrrryyy",
+      "........kk........",
+      "........kk........",
+      "........kk........",
+      "........kk........",
+      "........kk........",
+      "....kk..kk........",
+      "....kk..kk........",
+      "....kkkkkk........",
+      "....kkkkkk........"
+    ]
+  },
+  "klucz-pionowy": {
+    "lat5": [
+      "..yyyy..",
+      ".yyyyyy.",
+      ".yyyyyy.",
+      "..yyyy..",
+      "...yy...",
+      "...yy...",
+      "..yyy...",
+      "...yy...",
+      "...yyy..",
+      "...yy...",
+      "..yyy..."
+    ],
+    "lat6": [
+      "....yyyy....",
+      "...yyyyyy...",
+      "..yyyyyyyy..",
+      "..yyyyyyyy..",
+      "...yyyyyy...",
+      "....yyyy....",
+      ".....yy.....",
+      ".....yy.....",
+      "...yyyy.....",
+      ".....yy.....",
+      ".....yyyy...",
+      ".....yy.....",
+      "...yyyy.....",
+      ".....yyyy..."
+    ],
+    "lat7": [
+      "......yyyyyy......",
+      "....yyyyyyyyyy....",
+      "...yyyyyyyyyyyy...",
+      "..yyyyyyyyyyyyyy..",
+      "..yyyyyyyyyyyyyy..",
+      "..yyyyyyyyyyyyyy..",
+      "..yyyyyyyyyyyyyy..",
+      "...yyyyyyyyyyyy...",
+      "....yyyyyyyyyy....",
+      "......yyyyyy......",
+      ".......yyyy.......",
+      ".......yyyy.......",
+      ".......yyyy.......",
+      "...yyyyyyyy.......",
+      "...yyyyyyyy.......",
+      ".......yyyy.......",
+      ".......yyyyyyyy...",
+      ".......yyyyyyyy...",
+      ".......yyyy.......",
+      ".....yyyyyy.......",
+      ".....yyyyyy.......",
+      ".......yyyy.......",
+      ".......yyyyyyyyy..",
+      ".......yyyyyyyyy.."
+    ]
+  },
+  "skarpeta": {
+    "lat5": [
+      "ssss....",
+      "ssss....",
+      "rrr.....",
+      "ggg.....",
+      "rrr.....",
+      "gggg....",
+      "rrrrrr..",
+      "gggggggg",
+      "rrrrrrrr",
+      ".gggggg."
+    ],
+    "lat6": [
+      "ssssss......",
+      "ssssss......",
+      "ssssss......",
+      "rrrrr.......",
+      "rrrrr.......",
+      "ggggg.......",
+      "ggggg.......",
+      "rrrrr.......",
+      "rrrrrr......",
+      "ggggggggg...",
+      "ggggggggggg.",
+      "rrrrrrrrrrrr",
+      ".rrrrrrrrrr.",
+      "..gggggggg.."
+    ],
+    "lat7": [
+      "sssssssss.........",
+      "sssssssss.........",
+      "sssssssss.........",
+      "rrrrrrrr..........",
+      "rrrrrrrr..........",
+      "gggggggg..........",
+      "gggggggg..........",
+      "rrrrrrrr..........",
+      "rrrrrrrr..........",
+      "gggggggg..........",
+      "gggggggg..........",
+      "rrrrrrrr..........",
+      "rrrrrrrrr.........",
+      "ggggggggggg.......",
+      "gggggggggggggg....",
+      "rrrrrrrrrrrrrrrr..",
+      "rrrrrrrrrrrrrrrrr.",
+      "gggggggggggggggggg",
+      ".gggggggggggggggg.",
+      "...rrrrrrrrrrrr..."
+    ]
+  },
+  "laska-cukrowa": {
+    "lat6": [
+      "..ssr..",
+      ".ssrrs.",
+      "ss...sr",
+      "sr...rr",
+      "rr...rs",
+      "rs.....",
+      "ss.....",
+      "sr.....",
+      "rr.....",
+      "rs.....",
+      "ss.....",
+      "sr.....",
+      "rr.....",
+      "rs....."
+    ],
+    "lat7": [
+      "...sssr...",
+      "..sssrrr..",
+      ".sssrrrss.",
+      "sss....ssr",
+      "ssr....srr",
+      "srr....rrr",
+      "rrr....rrs",
+      "rrs.......",
+      "rss.......",
+      "sss.......",
+      "ssr.......",
+      "srr.......",
+      "rrr.......",
+      "rrs.......",
+      "rss.......",
+      "sss.......",
+      "ssr.......",
+      "srr.......",
+      "rrr.......",
+      "rrs.......",
+      "rss.......",
+      "sss......."
+    ]
+  },
+  "czapka-mikolaja": {
+    "lat6": [
+      "....rrr.....",
+      "...rrrrrr...",
+      "...rrrrrrrr.",
+      "..rrrr...rr.",
+      "..rrrr..ssss",
+      "..rrrrr.ssss",
+      ".rrrrrr.....",
+      "ssssssssss..",
+      "ssssssssss.."
+    ],
+    "lat7": [
+      "......rrrr.......",
+      ".....rrrrrrrr....",
+      "....rrrrrrrrrrr..",
+      "....rrrrrrrrrrrr.",
+      "...rrrrrr....rrr.",
+      "...rrrrrr...sssss",
+      "...rrrrrrr..sssss",
+      "..rrrrrrrr..sssss",
+      "..rrrrrrrrr..sss.",
+      ".rrrrrrrrrrr.....",
+      "ssssssssssssss...",
+      "ssssssssssssss...",
+      "ssssssssssssss..."
+    ]
+  },
+  "sanki": {
+    "lat6": ["..........k.", ".rrrrrrrr.kk", ".rrrrrrrr..k", "..k.....k..k", "kkkkkkkkkkkk"],
+    "lat7": [
+      "...............kk.",
+      ".rrrrrrrrrrrr..kkk",
+      ".rrrrrrrrrrrr...kk",
+      ".rrrrrrrrrrrr...kk",
+      "..kk......kk....kk",
+      "..kk......kk....kk",
+      "kkkkkkkkkkkkkkkkkk",
+      ".kkkkkkkkkkkkkkkkk"
+    ]
+  },
+  "renifer": {
+    "lat7": [
+      ".....s...s...",
+      ".....s...s.s.",
+      ".....ss..sss.",
+      "......ss.ss..",
+      ".......nnnn..",
+      "........nkn..",
+      ".......nnnnnk",
+      ".......nnnnnk",
+      ".......nnnn..",
+      ".......nnn...",
+      "n......nnn...",
+      "nnnnnnnnnn...",
+      ".nnnnnnnnn...",
+      ".nnnnnnnnn...",
+      ".nnnnnnnnn...",
+      ".n.n...n.n...",
+      ".n.n...n.n...",
+      ".n.n...n.n...",
+      ".k.k...k.k..."
+    ]
+  }
+}
