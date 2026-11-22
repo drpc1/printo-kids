@@ -74,12 +74,12 @@ export interface ShadowPicture {
   shapes: readonly ShadowShape[];
 }
 
-export type ShadowFamilyKind = "warianty" | "rozne";
+export type ShadowFamilyKind = "warianty" | "rozne" | "pozy";
 
 export interface ShadowFamily {
   id: string;
   label: string;
-  /** "warianty": variants of one thing (the hard level); "rozne": different things of a similar shape (the medium level). */
+  /** "warianty": variants of one thing (level 3); "rozne": different things of a similar shape (level 2); "pozy": one thing in poses (level 4). */
   kind: ShadowFamilyKind;
   pictures: readonly ShadowPicture[];
 }

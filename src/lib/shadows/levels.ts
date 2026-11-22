@@ -1,8 +1,10 @@
-/** The levels of the shadows card ("Cienie"): the pictures get more alike, not smaller (PRD US-42). Named by numbers; ids keep the old names so saved profiles load. */
-export type ShadowsLevelId = "latwy" | "sredni" | "trudny";
+import { MIN_SHADOW_DIFFERENCE } from "./raster.ts";
 
-/** Which families a level draws from: different families of any kind, one "rozne" family or one "warianty" family. */
-export type ShadowsFamilyRule = "dowolne" | "rozne" | "warianty";
+/** The levels of the shadows card ("Cienie"): the pictures get more alike, not smaller (PRD US-42). Named by numbers; ids keep the old names so saved profiles load. */
+export type ShadowsLevelId = "latwy" | "sredni" | "trudny" | "pozy";
+
+/** Which families a level draws from: different families of any kind, one "rozne" family, one "warianty" family or one family of poses. */
+export type ShadowsFamilyRule = "dowolne" | "rozne" | "warianty" | "pozy";
 
 export interface ShadowsLevel {
   id: ShadowsLevelId;
@@ -16,7 +18,15 @@ export interface ShadowsLevel {
   familyRule: ShadowsFamilyRule;
   /** Largest side of a picture field, mm; a row too low for it shrinks the field. */
   pictureSize: number;
+  /** Smallest share of cells in which two shadows of a card may differ (see raster.ts). */
+  minShadowDifference: number;
 }
+
+/**
+ * Poses differ in a smaller part of the outline than variants do (the closest pair of the mockup, a bird's beak open
+ * or shut, is about 0.03), so level 4 has a lower floor; the print decides whether it is enough (PRD Open Questions 22).
+ */
+const POSES_MIN_SHADOW_DIFFERENCE = 0.025;
 
 export const DEFAULT_SHADOWS_LEVEL_ID: ShadowsLevelId = "latwy";
 
@@ -29,6 +39,7 @@ export const SHADOWS_LEVELS: readonly ShadowsLevel[] = [
     pairCount: 4,
     familyRule: "dowolne",
     pictureSize: 52,
+    minShadowDifference: MIN_SHADOW_DIFFERENCE,
   },
   {
     id: "sredni",
@@ -38,6 +49,7 @@ export const SHADOWS_LEVELS: readonly ShadowsLevel[] = [
     pairCount: 5,
     familyRule: "rozne",
     pictureSize: 43,
+    minShadowDifference: MIN_SHADOW_DIFFERENCE,
   },
   {
     id: "trudny",
@@ -47,6 +59,17 @@ export const SHADOWS_LEVELS: readonly ShadowsLevel[] = [
     pairCount: 6,
     familyRule: "warianty",
     pictureSize: 35,
+    minShadowDifference: MIN_SHADOW_DIFFERENCE,
+  },
+  {
+    id: "pozy",
+    label: "Poziom 4",
+    barLabel: "4",
+    description: "6 par, jedna rzecz w różnych pozach",
+    pairCount: 6,
+    familyRule: "pozy",
+    pictureSize: 35,
+    minShadowDifference: POSES_MIN_SHADOW_DIFFERENCE,
   },
 ];
 
