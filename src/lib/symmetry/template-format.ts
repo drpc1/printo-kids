@@ -80,6 +80,14 @@ const COLOR_LETTERS: Readonly<Record<string, SymmetryColor>> = {
 };
 
 /**
+ * The crayon of a drawing letter (r red, g green, y yellow, b blue, o orange, s gray, k black, n brown), undefined for
+ * any other character. The dictation shapes and the "Skopiuj obrazek" card read their letters here, like `drawing()`.
+ */
+export function symmetryColorOfLetter(letter: string): SymmetryColor | undefined {
+  return Object.hasOwn(COLOR_LETTERS, letter) ? COLOR_LETTERS[letter] : undefined;
+}
+
+/**
  * Reads a drawing of the left half: one string per row, "." is an empty cell and a letter is a filled cell of
  * that color (r red, g green, y yellow, b blue, o orange, s gray, k black, n brown). `top` and `left` place the
  * drawing in the frame.
@@ -92,7 +100,7 @@ export function drawing(lines: readonly string[], top = 0, left = 0): SymmetryCe
       if (letter === ".") {
         continue;
       }
-      const color = COLOR_LETTERS[letter] as SymmetryColor | undefined;
+      const color = symmetryColorOfLetter(letter);
       if (color === undefined) {
         throw new Error(`Unknown color letter "${letter}" in a symmetry drawing`);
       }
