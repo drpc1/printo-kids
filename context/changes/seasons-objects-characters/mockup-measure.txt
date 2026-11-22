@@ -1,0 +1,28 @@
+Mockup: context/changes/seasons-objects-characters/mockup-drawings.json
+Objects: sets = part combinations; clean = one piece without a corner touch; nonogram = sets with one solution
+without guessing (easy: chip rules); dictation = distinct outlines within the command limit.
+
+== half4 (symmetry lat4), nonogram latwy, dictation lat5
+iglo      sets   9 clean   6 | nonogram latwy 9/9 | dictation outlines lat5:6 (max 20 commands)
+platek    sets   3 clean   3 | nonogram latwy 3/3 | dictation outlines lat5:3 (max 36 commands)
+czapka    sets  18 clean   6 | nonogram latwy 18/18 | dictation outlines lat5:6 (max 32 commands)
+szalik    sets  12 clean  12 | nonogram latwy 12/12 | dictation outlines lat5:6 (max 12 commands)
+niedzwiedz sets  36 clean  30 | nonogram latwy 36/36 | dictation outlines lat5:9 (max 40 commands)
+
+== half6 (symmetry lat5), nonogram sredni, dictation lat6
+iglo      sets   9 clean   9 | nonogram sredni 9/9 | dictation outlines lat6:6 (max 28 commands)
+platek    sets   4 clean   4 | nonogram sredni 4/4 | dictation outlines lat6:4 (max 36 commands)
+czapka    sets  18 clean  18 | nonogram sredni 18/18 | dictation outlines lat6:6 (max 40 commands)
+szalik    sets  54 clean  54 | nonogram sredni 54/54 | dictation outlines lat6:18 (max 24 commands)
+niedzwiedz sets  36 clean  30 | nonogram sredni 36/36 | dictation outlines lat6:9 (max 40 commands)
+
+== half9 (symmetry lat7), nonogram trudny, dictation lat7
+iglo      sets   9 clean   3 | nonogram trudny 9/9 | dictation outlines lat7:9 (max 36 commands)
+platek    sets   4 clean   4 | nonogram trudny 4/4 | dictation outlines lat7:4 (max 44 commands)
+czapka    sets  18 clean  18 | nonogram trudny 18/18 | dictation outlines lat7:3 (max 48 commands)
+szalik    sets  54 clean  54 | nonogram trudny 54/54 | dictation outlines lat7:18 (max 32 commands)
+niedzwiedz sets  36 clean  30 | nonogram trudny 36/36 | dictation outlines lat7:9 (max 40 commands)
+
+== dictation shapes: commands plain / mirrored at every drawn level (limit per level in brackets)
+
+RESULT: 0 errors
