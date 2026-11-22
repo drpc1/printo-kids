@@ -354,12 +354,12 @@ Karta nie jest zapisywana (US-08), więc zmiana `CopyDrawingCard` nie wymaga mig
 
 #### Automated
 
-- [x] 3.1 `E2E_PORT=4399 npx playwright test tests/e2e/copy-drawing.spec.ts` przechodzi na projektach `chromium`, `phone-360`, `pixel-7`, `tablet-768`
-- [x] 3.2 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check` i `npm run build` przechodzą
+- [x] 3.1 `E2E_PORT=4399 npx playwright test tests/e2e/copy-drawing.spec.ts` przechodzi na projektach `chromium`, `phone-360`, `pixel-7`, `tablet-768` — 39ed8216
+- [x] 3.2 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check` i `npm run build` przechodzą — 39ed8216
 
 #### Manual
 
-- [ ] 3.3 Wydruk karty z kształtem w kolorach i odbitym, na każdym poziomie, to jedna strona A4 w Safari, Chrome iOS i Brave iOS; kolory czytelne, na trudnym (kratka 5 mm) też
-- [ ] 3.4 Wydruk dyktanda z nowymi rysunkami (renifer, ciężarówka, helikopter, dinozaur, skarpeta) to jedna strona A4, a polecenia prowadzą po obrysie
-- [ ] 3.5 Strona `/copy-drawing` na telefonie: Generuj i Drukuj nie nachodzą na siebie, karta mieści się w podglądzie
-- [ ] 3.6 Przed PR-em fazy: `/10x-impl-review copy-drawing-asymmetric-shapes` i poprawki z przeglądu
+- [x] 3.3 Wydruk karty z kształtem w kolorach i odbitym, na każdym poziomie, to jedna strona A4 w Safari, Chrome iOS i Brave iOS; kolory czytelne, na trudnym (kratka 5 mm) też — 39ed8216
+- [x] 3.4 Wydruk dyktanda z nowymi rysunkami (renifer, ciężarówka, helikopter, dinozaur, skarpeta) to jedna strona A4, a polecenia prowadzą po obrysie — 39ed8216
+- [x] 3.5 Strona `/copy-drawing` na telefonie: Generuj i Drukuj nie nachodzą na siebie, karta mieści się w podglądzie — 39ed8216
+- [x] 3.6 Przed PR-em fazy: `/10x-impl-review copy-drawing-asymmetric-shapes` i poprawki z przeglądu — 39ed8216
