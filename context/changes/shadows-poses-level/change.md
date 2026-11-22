@@ -1,7 +1,7 @@
 ---
 change_id: shadows-poses-level
 title: Karta „Cienie”: najtrudniejszy poziom z pozami jednej rzeczy (GitHub 452)
-status: planning
+status: plan_reviewed
 created: 2026-11-22
 updated: 2026-11-22
 archived_at: null
