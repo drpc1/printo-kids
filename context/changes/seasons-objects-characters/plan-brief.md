@@ -48,12 +48,13 @@ Treść najpierw (makieta jak w S-38), potem kategoria i dane, potem postacie. D
 | 5. Postacie          | Bałwanek z nowym oknem, Pingwin     | Rysunek odstaje od zestawu            |
 | 6. Dokumenty         | PRD, glosariusz, liczby             | Przeoczone miejsce z liczbą 14        |
 
-**Prerequisites:** akceptacja makiety przed Fazami 3–4; rysunek Pingwina przed Fazą 5.
+**Prerequisites:** akceptacja makiety przed Fazami 3–4; rysunek Pingwina już jest (niezatwierdzony w głównym repo).
 **Estimated effort:** ~4–5 sesji.
 
 ## Open Risks & Assumptions
 
 - „Przenieś bałwanka” rozumiem jako obiekt i postać; jeśli chodziło tylko o jedno, do korekty.
+- W głównym repo leży też niezatwierdzony `niedzwiedz-polarny.webp`: czy to druga postać zimowa, do decyzji.
 - Zima ma co najmniej cztery obiekty w każdym rozmiarze dopiero po Fazie 3.
 - Rok przestępny: test okna na 29.02.
 
