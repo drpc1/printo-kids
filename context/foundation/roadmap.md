@@ -252,19 +252,19 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 
 Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Done”. Sekcje „Po tym kamieniu” i „Parked” nie dostają issue, dopóki ich kamień nie jest otwarty. Issue S-42 (#373), S-43 (#374) i S-47 do S-49 (#419–#421) już istnieją; dla pozostałych powstaną po decyzjach z ich niewiadomych.
 
-| Roadmap ID | Change ID                      | Suggested issue title                           | Ready for `/10x-plan` | Notes                                                                                           |
-| ---------- | ------------------------------ | ----------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------- |
-| S-42       | coding-card                    | Karty kodowania                                 | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373)                             |
-| S-47       | shadows-card                   | Cienie                                          | no                    | Plan w `context/changes/shadows-card/plan.md`; run `/10x-implement shadows-card phase 1` (#419) |
-| S-48       | size-order-card                | Od najmniejszego                                | no                    | Run `/10x-new size-order-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#420)        |
-| S-49       | number-maze-card               | Labirynt liczbowy                               | no                    | Zrobione, zarchiwizowane                                                                        |
-| S-43       | card-tags-filter               | Tagi i filtr kart w katalogu                    | no                    | Czeka na S-42, S-47 do S-49; najpierw lista tagów (#374)                                        |
-| S-55       | copy-drawing-asymmetric-shapes | „Skopiuj obrazek” z kształtami niesymetrycznymi | yes                   | Makieta i PRD gotowe; `/10x-plan copy-drawing-asymmetric-shapes` (#379)                         |
-| S-52       | profile-card-summary           | Okno profilu przy wielu kartach                 | no                    | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować                                           |
-| S-54       | seasons-objects-characters     | Pory roku                                       | no                    | Czeka na wybór sezonu                                                                           |
-| S-53       | how-it-works-m7                | „Jak to działa” przy wielu kartach              | no                    | Czeka na S-43 i decyzję, jak skrócić                                                            |
-| S-50       | stryker-m7-cards               | Stryker dla kart i filtra M-7                   | no                    | Czeka na S-43                                                                                   |
-| S-51       | test-plan-m7                   | Test plan po M-7                                | no                    | Czeka na S-50                                                                                   |
+| Roadmap ID | Change ID                      | Suggested issue title                           | Ready for `/10x-plan` | Notes                                                                                    |
+| ---------- | ------------------------------ | ----------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------- |
+| S-42       | coding-card                    | Karty kodowania                                 | no                    | Czeka na makietę i US/FR w PRD; potem `/10x-new coding-card` (#373)                      |
+| S-47       | shadows-card                   | Cienie                                          | no                    | Zrobione, zarchiwizowane (#419)                                                          |
+| S-48       | size-order-card                | Od najmniejszego                                | no                    | Run `/10x-new size-order-card`; najpierw makieta, potem US/FR w PRD i `/10x-plan` (#420) |
+| S-49       | number-maze-card               | Labirynt liczbowy                               | no                    | Zrobione, zarchiwizowane                                                                 |
+| S-43       | card-tags-filter               | Tagi i filtr kart w katalogu                    | no                    | Czeka na S-42, S-47 do S-49; najpierw lista tagów (#374)                                 |
+| S-55       | copy-drawing-asymmetric-shapes | „Skopiuj obrazek” z kształtami niesymetrycznymi | yes                   | Makieta i PRD gotowe; `/10x-plan copy-drawing-asymmetric-shapes` (#379)                  |
+| S-52       | profile-card-summary           | Okno profilu przy wielu kartach                 | no                    | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować                                    |
+| S-54       | seasons-objects-characters     | Pory roku                                       | no                    | Czeka na wybór sezonu                                                                    |
+| S-53       | how-it-works-m7                | „Jak to działa” przy wielu kartach              | no                    | Czeka na S-43 i decyzję, jak skrócić                                                     |
+| S-50       | stryker-m7-cards               | Stryker dla kart i filtra M-7                   | no                    | Czeka na S-43                                                                            |
+| S-51       | test-plan-m7                   | Test plan po M-7                                | no                    | Czeka na S-50                                                                            |
 
 ## Open Roadmap Questions
 
