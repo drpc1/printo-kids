@@ -198,12 +198,12 @@ Brak: umiejętności są w kodzie, a nie w zapisanych danych; profile i ostatnie
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą, w tym nowe testy umiejętności: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Typy i strony Astro przechodzą: `npx astro check`
-- [x] 1.4 Reguły zależności przechodzą: `npm run depcruise`
-- [x] 1.5 Build przechodzi: `npm run build`
-- [x] 1.6 Obecne e2e katalogu przechodzą bez zmian (nazwy linków i plakietki): `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts`
+- [x] 1.1 Testy jednostkowe przechodzą, w tym nowe testy umiejętności: `npm test` — 957ffd35
+- [x] 1.2 Lint przechodzi: `npm run lint` — 957ffd35
+- [x] 1.3 Typy i strony Astro przechodzą: `npx astro check` — 957ffd35
+- [x] 1.4 Reguły zależności przechodzą: `npm run depcruise` — 957ffd35
+- [x] 1.5 Build przechodzi: `npm run build` — 957ffd35
+- [x] 1.6 Obecne e2e katalogu przechodzą bez zmian (nazwy linków i plakietki): `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts` — 957ffd35
 
 #### Manual
 
