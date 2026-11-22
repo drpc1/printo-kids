@@ -194,7 +194,7 @@ Brak: identyfikatory poziomów zostają, a nowy `pozy` czyta się jak każdy inn
 
 #### Manual
 
-- [ ] 1.4 Na `/shadows` pasek pokazuje Poziom 1–3 z opisami. Profil zapisany wcześniej z „trudny” otwiera się na Poziomie 3.
+- [x] 1.4 Na `/shadows` pasek pokazuje Poziom 1–3 z opisami. Profil zapisany wcześniej z „trudny” otwiera się na Poziomie 3.
 
 ### Phase 2: Poziom 4 z pozami
 
@@ -206,5 +206,5 @@ Brak: identyfikatory poziomów zostają, a nowy `pozy` czyta się jak każdy inn
 
 #### Manual
 
-- [ ] 2.4 Na `/shadows` Poziom 4 układa kartę z 6 póz jednej rzeczy, a kolejne Generuj daje inne pozy albo inną rodzinę.
-- [ ] 2.5 Wydruk Poziomu 4 (Safari, Chrome iOS) to jedna strona A4. Użytkowniczka odróżnia cienie póz, także dziób ptaka i zgięte ucho kota. Wynik trafia do Open Questions 22 w PRD.
+- [x] 2.4 Na `/shadows` Poziom 4 układa kartę z 6 póz jednej rzeczy, a kolejne Generuj daje inne pozy albo inną rodzinę.
+- [x] 2.5 Wydruk Poziomu 4 (Safari, Chrome iOS) to jedna strona A4. Użytkowniczka odróżnia cienie póz, także dziób ptaka i zgięte ucho kota. Wynik trafia do Open Questions 22 w PRD.
