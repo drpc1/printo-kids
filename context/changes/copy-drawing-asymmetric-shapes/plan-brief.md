@@ -17,17 +17,17 @@ Generuj na każdym poziomie i w każdej kategorii daje szablon albo jeden z 15 k
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| Które kształty | 15 z 16, bez klucza poziomego | Decyzja użytkowniczki po makiecie; klucz zostaje w dyktandzie | Makieta 2026-11-21 |
-| Kolory kształtu | Litera kredki w każdej kratce bitmapy (`r g y b o s k n`), dziury białe | Jak szablony symetrii; jedno źródło rysunku dla dyktanda i karty | Makieta / Plan |
-| Nowe rysunki | Pięć kształtów przerysowanych, wspólnych z dyktandem | Lepsze proporcje; przechodzą reguły obrysu dyktanda prosto i odbite | Makieta |
-| Losowanie | Każdy obiekt (szablon albo kształt) ma równą szansę, potem wariant albo odbicie | Odpowiedź użytkowniczki przy planowaniu | Plan |
-| Odbicie | Kształt może wypaść odbity w poziomie, jak w dyktandzie | Odpowiedź użytkowniczki przy planowaniu; więcej różnych kart | Plan |
-| Model karty | Dyskryminowane pole `picture` (szablon albo kształt) | Jedno miejsce buduje wzór i kolory dla generatora, sprawdzenia i rysunku | Plan |
-| Klucz | Szablon jak dziś, kształt z własnym znacznikiem (`level:ksztalt:id:prosty/odbity`) | Karty szablonów się nie zmieniają, a klucze się nie pokrywają | Plan |
-| Poziomy | `latwy/sredni/trudny` ↔ `lat5/lat6/lat7` | Rysunki tych poziomów mieszczą się w siatkach 8×12, 12×15, 18×24 | Plan |
-| Wyłączenie klucza | Pole `onCopyDrawing` na każdym kształcie | Jawna decyzja przy każdym nowym kształcie | Plan |
+| Decision          | Choice                                                                             | Why (1 sentence)                                                         | Source             |
+| ----------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------ |
+| Które kształty    | 15 z 16, bez klucza poziomego                                                      | Decyzja użytkowniczki po makiecie; klucz zostaje w dyktandzie            | Makieta 2026-11-21 |
+| Kolory kształtu   | Litera kredki w każdej kratce bitmapy (`r g y b o s k n`), dziury białe            | Jak szablony symetrii; jedno źródło rysunku dla dyktanda i karty         | Makieta / Plan     |
+| Nowe rysunki      | Pięć kształtów przerysowanych, wspólnych z dyktandem                               | Lepsze proporcje; przechodzą reguły obrysu dyktanda prosto i odbite      | Makieta            |
+| Losowanie         | Każdy obiekt (szablon albo kształt) ma równą szansę, potem wariant albo odbicie    | Odpowiedź użytkowniczki przy planowaniu                                  | Plan               |
+| Odbicie           | Kształt może wypaść odbity w poziomie, jak w dyktandzie                            | Odpowiedź użytkowniczki przy planowaniu; więcej różnych kart             | Plan               |
+| Model karty       | Dyskryminowane pole `picture` (szablon albo kształt)                               | Jedno miejsce buduje wzór i kolory dla generatora, sprawdzenia i rysunku | Plan               |
+| Klucz             | Szablon jak dziś, kształt z własnym znacznikiem (`level:ksztalt:id:prosty/odbity`) | Karty szablonów się nie zmieniają, a klucze się nie pokrywają            | Plan               |
+| Poziomy           | `latwy/sredni/trudny` ↔ `lat5/lat6/lat7`                                           | Rysunki tych poziomów mieszczą się w siatkach 8×12, 12×15, 18×24         | Plan               |
+| Wyłączenie klucza | Pole `onCopyDrawing` na każdym kształcie                                           | Jawna decyzja przy każdym nowym kształcie                                | Plan               |
 
 ## Scope
 
@@ -50,11 +50,11 @@ Kształty dyktanda mają jedną bitmapę z literami kredek: dyktando czyta każd
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Kolorowe kształty dyktanda | Litery kredek, pięć nowych rysunków, `onCopyDrawing`; dyktando bez zmian zachowania | Błąd przy przepisywaniu bitmap z JSON-a psuje obrys dyktanda |
+| Phase                                   | What it delivers                                                                               | Key risk                                                                           |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 1. Kolorowe kształty dyktanda           | Litery kredek, pięć nowych rysunków, `onCopyDrawing`; dyktando bez zmian zachowania            | Błąd przy przepisywaniu bitmap z JSON-a psuje obrys dyktanda                       |
 | 2. Kształty na karcie „Skopiuj obrazek” | `picture`, losowanie z obu katalogów, kolory i sprawdzenie kształtu, testy, Stryker, miniatura | Przesunięcie kolorów inne niż wzoru; klucz kształtu pokrywa się z kluczem szablonu |
-| 3. Wydruk próbny i staging | Wydruk na iOS, dyktando z nowymi rysunkami, e2e | Kolory na kratce 5 mm nieczytelne na papierze |
+| 3. Wydruk próbny i staging              | Wydruk na iOS, dyktando z nowymi rysunkami, e2e                                                | Kolory na kratce 5 mm nieczytelne na papierze                                      |
 
 **Prerequisites:** zatwierdzona makieta (`mockup-colors.json`), PRD, glosariusz i roadmapa zaktualizowane w tym worktree (do commita z fazą 1).
 **Estimated effort:** ~2–3 sesje: faza 1 mała, faza 2 główna, faza 3 ręczna.

@@ -1,4 +1,5 @@
 <!-- IMPL-REVIEW-REPORT -->
+
 # Implementation Review: „Skopiuj obrazek” z kształtami dyktanda (S-55)
 
 - **Plan**: context/changes/copy-drawing-asymmetric-shapes/plan.md

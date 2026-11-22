@@ -344,20 +344,20 @@ Brak: pole `cards.cienie` w zapisanych profilach dostaje wartość domyślną pr
 
 #### Manual
 
-- [ ] 3.5 Użytkowniczka sprawdza każdy poziom i podgląd wydruku (jedna strona A4), z postacią i z „Brak”
-- [ ] 3.6 Miniatura w katalogu, plakietka poziomu przy profilu i podsumowanie w oknie profilu są poprawne
-- [ ] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
+- [x] 3.5 Użytkowniczka sprawdza każdy poziom i podgląd wydruku (jedna strona A4), z postacią i z „Brak”
+- [x] 3.6 Miniatura w katalogu, plakietka poziomu przy profilu i podsumowanie w oknie profilu są poprawne
+- [x] 3.7 Strona na telefonie: Generuj i Drukuj się nie zasłaniają, karta mieści się na A4
 - [x] 3.8 Przegląd diffu względem planu (`/10x-impl-review` przed PR fazy)
 
 ### Phase 4: Wydruk próbny
 
 #### Automated
 
-- [ ] 4.1 Po ewentualnej poprawce: `npm test` i `npm run build`
+- [x] 4.1 Po ewentualnej poprawce: `npm test` i `npm run build` (bez poprawek: nic do uruchomienia)
 
 #### Manual
 
-- [ ] 4.2 Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
-- [ ] 4.3 Warianty jednej rzeczy na trudnym są rozróżnialne na wydruku, także w odcieniach szarości na czarno-białej drukarce
-- [ ] 4.4 Dziecko łączy pary na łatwym i średnim
-- [ ] 4.5 Open Questions 21 zamknięte w PRD, roadmapa S-47 zgodna
+- [x] 4.2 Wydruk na A4 jest jedną stroną w Safari, Chrome iOS i Brave iOS (lekcja: mierzyć każdą przeglądarkę osobno)
+- [x] 4.3 Warianty jednej rzeczy na trudnym są rozróżnialne na wydruku, także w odcieniach szarości na czarno-białej drukarce
+- [x] 4.4 Dziecko łączy pary na łatwym i średnim
+- [x] 4.5 Open Questions 21 zamknięte w PRD, roadmapa S-47 zgodna
