@@ -188,9 +188,9 @@ Brak: identyfikatory poziomów zostają, a nowy `pozy` czyta się jak każdy inn
 
 #### Automated
 
-- [ ] 1.1 `npm test` przechodzi
-- [ ] 1.2 `npm run lint` i `npx astro check` przechodzą
-- [ ] 1.3 `npx playwright test tests/e2e/shadows.spec.ts tests/e2e/shadows-reprint.spec.ts --project=chromium` przechodzi (z wolnym `E2E_PORT`)
+- [x] 1.1 `npm test` przechodzi
+- [x] 1.2 `npm run lint` i `npx astro check` przechodzą
+- [x] 1.3 `npx playwright test tests/e2e/shadows.spec.ts tests/e2e/shadows-reprint.spec.ts --project=chromium` przechodzi (z wolnym `E2E_PORT`)
 
 #### Manual
 

@@ -286,8 +286,8 @@ void describe("cardSummaries", () => {
     assert.equal(fresh.href, "/shadows");
 
     const used = byId(cardSummaries(profile("lat5", { cienie: { level: "trudny" } })), "cienie");
-    assert.equal(used.badge, "trudny");
-    assert.equal(used.detail, "trudny");
+    assert.equal(used.badge, "poz. 3");
+    assert.equal(used.detail, "Poziom 3");
   });
 
   void test("sudoku 4×4 has no level and no symbol choice", () => {

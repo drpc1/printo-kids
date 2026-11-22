@@ -111,7 +111,7 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Kodowanie\s+Poziom 2 · Wykonaj/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Od najmniejszego\s+średni · kolory/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Labirynt liczbowy\s+Poziom 5/ })).toBeVisible();
-  await expect(dialog.getByRole("link", { name: /^Cienie\s+trudny/ })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Cienie\s+Poziom 3/ })).toBeVisible();
   const titles = await dialog
     .getByRole("list")
     .getByRole("link")
