@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-21
+updated: 2026-11-22
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -371,3 +371,4 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-41: Rodzic otwiera z katalogu „Zegar”, wybiera poziom (Poziom 1–5: od pełnych godzin po co minutę), tryb (Odczytaj, Dorysuj, Połącz) i zapis 24-godzinny, generuje kartę A4 z tarczami zegara ze wskazówkami, podgląda ją i drukuje także z telefonu; profil pamięta poziom, tryb i 24 h, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43.** — Archived 2026-11-16 → `context/archive/2026-11-15-clock-card/`. Lesson: —.
 - **S-44: Rodzic otwiera ze stopki „Jak to działa” i widzi opisy wszystkich rodzajów kart, poziomy i profil oraz krótką sekcję o świątecznych postaciach i obiektach (15.11–6.01).** — Archived 2026-11-16 → `context/archive/2026-11-16-how-it-works-m6/`. Lesson: —.
 - **S-46: Zespół otwiera `context/foundation/test-plan.md` i widzi stan po M-6: nowe karty i sezonową zawartość w mapie ryzyk (§2), w tym, co jest już sprawdzone (§5), w zakresach Strykera (§5a) i w podręczniku (§6), bez nieaktualnych liczb kart.** — Archived 2026-11-17 → `context/archive/2026-11-17-test-plan-m6/`. Lesson: —.
+- **S-47: ** — Archived 2026-11-22 → `context/archive/2026-11-20-shadows-card/`. Lesson: —.

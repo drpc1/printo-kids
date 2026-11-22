@@ -1,10 +1,10 @@
 ---
 change_id: shadows-card
 title: Karta „Cienie” (S-47, GitHub 419)
-status: impl_reviewed
+status: archived
 created: 2026-11-20
-updated: 2026-11-21
-archived_at: null
+updated: 2026-11-22
+archived_at: 2026-11-22T09:29:43Z
 ---
 
 ## Notes
