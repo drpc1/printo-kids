@@ -1,5 +1,5 @@
 ---
-import { cardsInCatalogOrder } from "@/lib/cards";
+import { cardSkillLabels, cardsInCatalogOrder } from "@/lib/cards";
 ---
 
 <div class="flex w-full flex-col gap-4">
@@ -27,6 +27,9 @@ import { cardsInCatalogOrder } from "@/lib/cards";
             />
           </div>
           <span class="text-center text-base font-medium sm:text-lg">{kind.title}</span>
+          <span aria-hidden="true" class="-mt-3 text-center text-sm text-muted-foreground">
+            {cardSkillLabels(kind).join(" · ")}
+          </span>
         </a>
       </li>
     ))}
