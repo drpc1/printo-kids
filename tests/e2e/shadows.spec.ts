@@ -15,6 +15,7 @@ const LEVELS = [
   { option: "Poziom 1", pairs: 4 },
   { option: "Poziom 2", pairs: 5 },
   { option: "Poziom 3", pairs: 6 },
+  { option: "Poziom 4", pairs: 6 },
 ] as const;
 
 async function generate(page: Page): Promise<Locator> {

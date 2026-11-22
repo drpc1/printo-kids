@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { answerOf, shadowsCardKey, shadowsCardProblems } from "./card.ts";
-import { familyOfPicture, shadowPictureById } from "./families.ts";
+import { SHADOW_FAMILIES, SHADOW_POSE_FAMILIES, familyOfPicture, shadowPictureById } from "./families.ts";
 import { generateShadowsCard } from "./generate.ts";
 import { layoutShadowsSheet } from "./layout.ts";
 import { DEFAULT_SHADOWS_LEVEL_ID, SHADOWS_LEVELS, shadowsLevelById } from "./levels.ts";
-import { MIN_SHADOW_DIFFERENCE, shadowDifference, shadowMask } from "./raster.ts";
+import { shadowDifference, shadowMask } from "./raster.ts";
 import { SHADOWS_SHEET } from "./sheet.ts";
 
 function seeded(seed: number): () => number {
@@ -20,13 +20,14 @@ function seeded(seed: number): () => number {
 }
 
 void describe("shadows levels", () => {
-  void test("Poziom 1 / 2 / 3 with 4 / 5 / 6 pairs; Poziom 1 is the default", () => {
+  void test("Poziom 1 / 2 / 3 / 4 with 4 / 5 / 6 / 6 pairs; Poziom 1 is the default", () => {
     assert.deepEqual(
       SHADOWS_LEVELS.map((level) => [level.id, level.pairCount, level.familyRule]),
       [
         ["latwy", 4, "dowolne"],
         ["sredni", 5, "rozne"],
         ["trudny", 6, "warianty"],
+        ["pozy", 6, "pozy"],
       ],
     );
     assert.equal(DEFAULT_SHADOWS_LEVEL_ID, "latwy");
@@ -73,12 +74,50 @@ void describe("shadows card", () => {
         });
         masks.forEach((a, i) => {
           masks.slice(i + 1).forEach((b) => {
-            assert.ok(shadowDifference(a, b) >= MIN_SHADOW_DIFFERENCE);
+            assert.ok(shadowDifference(a, b) >= level.minShadowDifference);
           });
         });
       }
     });
   }
+
+  void test("level 4 draws six poses of one family; level 1 never draws a pose", () => {
+    const random = seeded(23);
+    const poses = new Set(SHADOW_POSE_FAMILIES.flatMap((family) => family.pictures.map((picture) => picture.id)));
+    for (let n = 0; n < 50; n++) {
+      const card = generateShadowsCard(random, shadowsLevelById("pozy"));
+      assert.ok(card);
+      assert.equal(card.pictures.length, 6);
+      assert.ok(card.pictures.every((id) => poses.has(id)));
+      assert.equal(new Set(card.pictures.map((id) => familyOfPicture(id)?.id)).size, 1);
+      const easy = generateShadowsCard(random, shadowsLevelById("latwy"));
+      assert.ok(easy);
+      assert.ok(easy.pictures.every((id) => !poses.has(id)));
+    }
+  });
+
+  void test("families that do not fit the level are refused", () => {
+    const pose = SHADOW_POSE_FAMILIES[0].pictures;
+    const other = SHADOW_POSE_FAMILIES[1].pictures;
+    const mixed = {
+      levelId: "pozy" as const,
+      pictures: [...pose.slice(0, 3), ...other.slice(0, 3)].map((p) => p.id),
+      shadowOrder: [1, 2, 3, 4, 5, 0],
+    };
+    assert.ok(shadowsCardProblems(mixed, shadowsLevelById("pozy")).includes("families-not-level"));
+    const posesOnEasy = {
+      levelId: "latwy" as const,
+      pictures: pose.slice(0, 4).map((p) => p.id),
+      shadowOrder: [1, 2, 3, 0],
+    };
+    assert.ok(shadowsCardProblems(posesOnEasy, shadowsLevelById("latwy")).includes("families-not-level"));
+    const catalog = {
+      levelId: "pozy" as const,
+      pictures: SHADOW_FAMILIES[0].pictures.slice(0, 6).map((p) => p.id),
+      shadowOrder: [1, 2, 3, 4, 5, 0],
+    };
+    assert.ok(shadowsCardProblems(catalog, shadowsLevelById("pozy")).includes("families-not-level"));
+  });
 
   void test("each rule is refused with its code", () => {
     const level = shadowsLevelById("trudny");

@@ -15,7 +15,7 @@ export const CARD_KINDS = [
     href: "/shadows",
     thumbnail: "/thumbnails/cienie.svg",
     description:
-      "Dziecko łączy kreską kolorowy obrazek z jego czarnym cieniem. Na kartce są dwie kolumny: po lewej obrazki, po prawej ich cienie w innej kolejności, przy każdym kropka, a żaden cień nie stoi w rzędzie swojego obrazka. Poziom zmienia liczbę par i to, jak bardzo obrazki są do siebie podobne: od zupełnie różnych rzeczy po warianty jednej rzeczy.",
+      "Dziecko łączy kreską kolorowy obrazek z jego czarnym cieniem. Na kartce są dwie kolumny: po lewej obrazki, po prawej ich cienie w innej kolejności, przy każdym kropka, a żaden cień nie stoi w rzędzie swojego obrazka. Poziom zmienia liczbę par i to, jak bardzo obrazki są do siebie podobne: od zupełnie różnych rzeczy po warianty jednej rzeczy i jedną rzecz w różnych pozach.",
   },
   {
     id: "dyktando",
