@@ -5,8 +5,8 @@ import { PICTURE_BOX, PICTURE_COLORS } from "./picture-format.ts";
 import { MIN_SHADOW_DIFFERENCE, pathPolylines, shadowDifference, shadowMask, shapesMask } from "./raster.ts";
 
 void describe("shadows catalog", () => {
-  void test("six families of each kind, 6–8 pictures each, at least 72 pictures", () => {
-    assert.equal(SHADOW_FAMILIES.filter((family) => family.kind === "warianty").length, 6);
+  void test("seven families of variants and six of different things, 6–8 pictures each, at least 72 pictures", () => {
+    assert.equal(SHADOW_FAMILIES.filter((family) => family.kind === "warianty").length, 7);
     assert.equal(SHADOW_FAMILIES.filter((family) => family.kind === "rozne").length, 6);
     for (const family of SHADOW_FAMILIES) {
       assert.ok(family.pictures.length >= 6 && family.pictures.length <= 8, family.id);

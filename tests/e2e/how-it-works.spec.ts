@@ -55,7 +55,9 @@ test("a generator page has the footer link and the page states the rules of leve
   await expect(body).toContainText(
     "Numery mają labirynt (Poziom 1–6), symetria, sekwencje i szlaczki (Poziom 1–4), zegar (Poziom 1–5), kodowanie (Poziom 1–4), krzyżówka matematyczna (Poziom 1–7) oraz „Labirynt liczbowy” (Poziom 1–6).",
   );
-  await expect(body).toContainText("„Kto ma więcej”, „Który nie pasuje”, „Skopiuj obrazek” i „Od najmniejszego”");
+  await expect(body).toContainText(
+    "„Kto ma więcej”, „Który nie pasuje”, „Skopiuj obrazek”, „Od najmniejszego” i „Cienie”",
+  );
   await expect(body).not.toContainText("sudoku i nonogram wieku nie mają");
   // GitHub 375: the seasonal characters and the "Boże Narodzenie" category are described with their date window.
   await expect(page.getByRole("heading", { level: 2, name: "Święta" })).toBeVisible();

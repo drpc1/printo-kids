@@ -278,6 +278,18 @@ void describe("cardSummaries", () => {
     assert.equal(used.detail, "Poziom 4");
   });
 
+  void test("the shadows card shows its level and nothing else, and is unused until the profile chose one", () => {
+    const fresh = byId(cardSummaries(profile("lat5")), "cienie");
+    assert.equal(fresh.used, false);
+    assert.equal(fresh.badge, null);
+    assert.equal(fresh.title, "Cienie");
+    assert.equal(fresh.href, "/shadows");
+
+    const used = byId(cardSummaries(profile("lat5", { cienie: { level: "trudny" } })), "cienie");
+    assert.equal(used.badge, "trudny");
+    assert.equal(used.detail, "trudny");
+  });
+
   void test("sudoku 4×4 has no level and no symbol choice", () => {
     const four = byId(
       cardSummaries(profile("lat5", { sudoku: { size: 4, level: "trudny", symbols: "digits", colors: true } })),
@@ -319,6 +331,7 @@ const SAVED_SETTINGS: Readonly<Record<string, CardSettingsMap>> = {
   kodowanie: { kodowanie: defaultCardSettings("kodowanie") },
   odnajmniejszego: { odnajmniejszego: defaultCardSettings("odnajmniejszego") },
   liczby: { liczby: defaultCardSettings("liczby") },
+  cienie: { cienie: defaultCardSettings("cienie") },
 };
 
 void describe("the card registry and summaryParts", () => {

@@ -1,20 +1,12 @@
 // "Cienie" as a card kind: `shadowsSpec` wraps `shadowsCardProblems`, `shadowsEngine` wraps the generator. Running
 // out of attempts is `CardExhausted`; the engine never returns null.
-import {
-  CardExhausted,
-  VerifiedCard,
-  type CardEngine,
-  type CardKindId,
-  type CardProblem,
-  type CardSpec,
-} from "../card-contract.ts";
+import { CardExhausted, VerifiedCard, type CardEngine, type CardProblem, type CardSpec } from "../card-contract.ts";
 import type { ShadowsSettings } from "../card-settings.ts";
 import { shadowsCardKey, shadowsCardProblems, type ShadowsCard } from "./card.ts";
 import { generateShadowsCard, MAX_ATTEMPTS } from "./generate.ts";
 import { shadowsLevelById } from "./levels.ts";
 
-// Phase 3 adds this id to CARD_KINDS (src/lib/cards.ts); until then the union does not hold it.
-const KIND = "cienie" as unknown as CardKindId;
+const KIND = "cienie";
 
 type Bad = CardSpec<ShadowsSettings, ShadowsCard>["knownBad"][number];
 
