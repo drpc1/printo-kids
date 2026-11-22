@@ -1,5 +1,5 @@
 import { cardSettingsOf, type CardSettingsId, type CardSettingsMap } from "./card-settings.ts";
-import { CARD_KINDS } from "./cards.ts";
+import { cardsInCatalogOrder } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import { clockLevelById, clockModeById } from "./clock/levels.ts";
 import { codingLevelById, codingModeById } from "./coding/levels.ts";
@@ -11,6 +11,7 @@ import { moneyCurrencyById } from "./money/currencies.ts";
 import { moneyLevelById } from "./money/levels.ts";
 import { nonogramSizeById } from "./nonogram/sizes.ts";
 import { numberMazeLevelById } from "./number-maze/levels.ts";
+import { shadowsLevelById } from "./shadows/levels.ts";
 import { sizeOrderLevelById } from "./size-order/levels.ts";
 import { oddOneOutLevelById } from "./odd-one-out/levels.ts";
 import { patternLinesHasGuides, patternLinesLevelById } from "./pattern-lines/levels.ts";
@@ -35,11 +36,11 @@ export interface CardSummary {
 const UNUSED_DETAIL = "domyślne";
 
 /**
- * Every card of a profile in the order of CARD_KINDS. With `today` a remembered category outside its window reads as
+ * Every card of a profile, in catalog order. With `today` a remembered category outside its window reads as
  * "Wszystkie", as on the bar; without it the remembered one is shown.
  */
 export function cardSummaries(profile: ChildProfile, today?: Date): CardSummary[] {
-  return CARD_KINDS.map((kind) => {
+  return cardsInCatalogOrder().map((kind) => {
     const parts = summaryParts(kind.id, profile, today);
     if (parts === null) {
       return { id: kind.id, title: kind.title, href: kind.href, used: false, badge: null, detail: UNUSED_DETAIL };
@@ -189,6 +190,14 @@ function summaryParts(cardId: string, profile: ChildProfile, today?: Date): Summ
         return null;
       }
       const level = numberMazeLevelById(settings.level);
+      return { badge: badgeOf(level), level: level.label, extras: [] };
+    }
+    case "cienie": {
+      const settings = cards.cienie;
+      if (settings === undefined) {
+        return null;
+      }
+      const level = shadowsLevelById(settings.level);
       return { badge: badgeOf(level), level: level.label, extras: [] };
     }
     default:

@@ -26,6 +26,7 @@ import { DEFAULT_MONEY_CURRENCY_ID, MONEY_CURRENCY_IDS, type MoneyCurrencyId } f
 import { DEFAULT_MONEY_LEVEL_ID, MONEY_LEVEL_IDS, type MoneyLevelId } from "./money/levels.ts";
 import { DEFAULT_NONOGRAM_SIZE_ID, NONOGRAM_SIZES, type NonogramSizeId } from "./nonogram/sizes.ts";
 import { DEFAULT_ODD_ONE_OUT_LEVEL_ID, ODD_ONE_OUT_LEVELS, type OddOneOutLevelId } from "./odd-one-out/levels.ts";
+import { DEFAULT_SHADOWS_LEVEL_ID, SHADOWS_LEVELS, type ShadowsLevelId } from "./shadows/levels.ts";
 import { DEFAULT_NUMBER_MAZE_LEVEL_ID, NUMBER_MAZE_LEVEL_IDS, type NumberMazeLevelId } from "./number-maze/levels.ts";
 import { DEFAULT_SIZE_ORDER_LEVEL_ID, SIZE_ORDER_LEVELS, type SizeOrderLevelId } from "./size-order/levels.ts";
 import {
@@ -82,6 +83,11 @@ export interface OddOneOutSettings {
 export interface SizeOrderSettings {
   level: SizeOrderLevelId;
   colors: boolean;
+}
+
+/** "Cienie" (S-47): the level is the only setting; it lays out a new card. */
+export interface ShadowsSettings {
+  level: ShadowsLevelId;
 }
 
 /** "Labirynt liczbowy" (S-49): the level is the only setting; it lays out a new card. */
@@ -147,6 +153,7 @@ export interface CardSettingsMap {
   kodowanie?: CodingSettings;
   odnajmniejszego?: SizeOrderSettings;
   liczby?: NumberMazeSettings;
+  cienie?: ShadowsSettings;
 }
 
 export type CardSettingsId = keyof CardSettingsMap;
@@ -167,6 +174,7 @@ export const CARD_SETTINGS_IDS: readonly CardSettingsId[] = [
   "kodowanie",
   "odnajmniejszego",
   "liczby",
+  "cienie",
 ];
 
 /** The settings of one card. */
@@ -190,6 +198,7 @@ const DEFAULTS: Defaults = {
   kodowanie: { level: DEFAULT_CODING_LEVEL_ID, mode: DEFAULT_CODING_MODE_ID },
   odnajmniejszego: { level: DEFAULT_SIZE_ORDER_LEVEL_ID, colors: false },
   liczby: { level: DEFAULT_NUMBER_MAZE_LEVEL_ID },
+  cienie: { level: DEFAULT_SHADOWS_LEVEL_ID },
 };
 
 export function defaultCardSettings<K extends CardSettingsId>(cardId: K): CardSettingsOf<K> {
@@ -329,6 +338,8 @@ function levelIds(cardId: CardSettingsId): readonly string[] {
       return SIZE_ORDER_LEVELS.map((level) => level.id);
     case "liczby":
       return NUMBER_MAZE_LEVEL_IDS;
+    case "cienie":
+      return SHADOWS_LEVELS.map((level) => level.id);
   }
 }
 

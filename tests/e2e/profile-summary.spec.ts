@@ -32,6 +32,7 @@ const ANIA = {
     kodowanie: { level: "poziom2", mode: "wykonaj" },
     odnajmniejszego: { level: "sredni", colors: true },
     liczby: { level: "poziom5" },
+    cienie: { level: "trudny" },
   },
 };
 
@@ -110,6 +111,13 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Kodowanie\s+Poziom 2 · Wykonaj/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Od najmniejszego\s+średni · kolory/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Labirynt liczbowy\s+Poziom 5/ })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /^Cienie\s+trudny/ })).toBeVisible();
+  const titles = await dialog
+    .getByRole("list")
+    .getByRole("link")
+    .evaluateAll((links) => links.map((link) => link.querySelector("span")?.textContent ?? ""));
+  expect(titles.length).toBeGreaterThan(0);
+  expect(titles).toEqual([...titles].sort((a, b) => a.localeCompare(b, "pl")));
   await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
   await expect(dialog.getByRole("button", { name: "Anuluj" })).toHaveCount(0);
 });

@@ -1,0 +1,12 @@
+---
+import GeneratorShell from "@/components/GeneratorShell.astro";
+import ShadowsGenerator from "@/components/ShadowsGenerator";
+import Layout from "@/layouts/Layout.astro";
+import { cardPageTitle, cardTitle } from "@/lib/cards";
+---
+
+<Layout title={cardPageTitle("cienie")} lang="pl">
+  <GeneratorShell heading={cardTitle("cienie")} description="Wygeneruj kartę „Cienie” i wydrukuj ją na kartce A4.">
+    <ShadowsGenerator client:only="react" />
+  </GeneratorShell>
+</Layout>

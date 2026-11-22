@@ -1,7 +1,7 @@
-// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword, clock, coding, size-order and number-maze cards from the real generators and the real
+// Builds the catalog thumbnails of the maze, symmetry, sudoku, sequence, nonogram, dictation, money, odd-one-out, copy-drawing, pattern-lines, math-crossword, clock, coding, size-order, number-maze and shadows cards from the real generators and the real
 // sheet layouts. Each card has its own fixed seed, so re-running yields byte-identical files. Run: npm run thumbnails
 // Literal colors are allowed here: the output is a static public asset, not a page or component.
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { mazeEngine } from "../src/lib/maze/engine.ts";
@@ -69,6 +69,12 @@ import { generateNumberMazeCard } from "../src/lib/number-maze/generate.ts";
 import { layoutNumberMazeSheet } from "../src/lib/number-maze/layout.ts";
 import { DEFAULT_NUMBER_MAZE_LEVEL_ID, numberMazeLevelById } from "../src/lib/number-maze/levels.ts";
 import { NUMBER_MAZE_SHEET } from "../src/lib/number-maze/sheet.ts";
+import { shadowPictureById } from "../src/lib/shadows/families.ts";
+import { generateShadowsCard } from "../src/lib/shadows/generate.ts";
+import { layoutShadowsSheet } from "../src/lib/shadows/layout.ts";
+import { DEFAULT_SHADOWS_LEVEL_ID, shadowsLevelById } from "../src/lib/shadows/levels.ts";
+import { PICTURE_BOX, PICTURE_LINE_WIDTH } from "../src/lib/shadows/picture-format.ts";
+import { SHADOWS_SHEET } from "../src/lib/shadows/sheet.ts";
 
 const SEED = 20261023;
 const LEVEL_ID = "lat5";
@@ -1054,3 +1060,82 @@ numberLines.push("</svg>", "");
 const numberOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/liczby.svg");
 writeFileSync(numberOutFile, numberLines.join("\n"));
 console.log(`Wrote ${numberOutFile} (${numberCard.path.length} path cells)`);
+
+// Shadows card: the same elements ShadowsSheet draws (src/components/ShadowsSheet.tsx) at the default level (łatwy),
+// with positions from `layoutShadowsSheet` and the picture colors read from src/styles/global.css (--picture-*). The
+// band holds the plain instruction (no character). Pictures draw in two passes (outlines, then fills, then details);
+// shadows are the body shapes in black.
+const SHADOWS_SEED = 20261121;
+const SHADOWS = SHADOWS_SHEET;
+const shadowsCss = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), "../src/styles/global.css"), "utf8");
+const PICTURE_HEX = Object.fromEntries(
+  [...shadowsCss.matchAll(/--picture-(\w+): (#[0-9a-f]{6});/g)].map((match) => [match[1], match[2]]),
+);
+const shadowsCard = generateShadowsCard(mulberry32(SHADOWS_SEED), shadowsLevelById(DEFAULT_SHADOWS_LEVEL_ID));
+if (shadowsCard === null) {
+  throw new Error(`Seed ${SHADOWS_SEED} did not produce a valid shadows card`);
+}
+const shadowsLayout = layoutShadowsSheet(shadowsCard, SHADOWS.plainInstructionSize);
+const SHADOW_OUTLINE = 2 * PICTURE_LINE_WIDTH;
+
+function shadowShapeSvg(shape, color, pad) {
+  const edge = pad > 0 ? ` stroke="${color}" stroke-width="${pad}" stroke-linejoin="round"` : "";
+  switch (shape.kind) {
+    case "path":
+      return `<path d="${shape.d}" fill="${color}"${edge}/>`;
+    case "rect":
+      return `<rect x="${shape.x}" y="${shape.y}" width="${shape.width}" height="${shape.height}" rx="${shape.rx ?? 0}" fill="${color}"${edge}/>`;
+    case "circle":
+      return `<circle cx="${shape.cx}" cy="${shape.cy}" r="${shape.r}" fill="${color}"${edge}/>`;
+    case "ellipse":
+      return `<ellipse cx="${shape.cx}" cy="${shape.cy}" rx="${shape.rx}" ry="${shape.ry}" transform="rotate(${shape.rotate ?? 0} ${shape.cx} ${shape.cy})" fill="${color}"${edge}/>`;
+    default:
+      return `<path d="${shape.d}" fill="none" stroke="${color}" stroke-width="${num(shape.width - SHADOW_OUTLINE + pad)}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }
+}
+
+function shadowsPictureSvg(id, field, shadow) {
+  const picture = shadowPictureById(id);
+  if (picture === undefined) {
+    throw new Error(`Unknown shadows picture ${id}`);
+  }
+  const body = picture.shapes.filter((shape) => shape.detail !== true);
+  const details = picture.shapes.filter((shape) => shape.detail === true);
+  const parts = shadow
+    ? body.map((shape) => shadowShapeSvg(shape, "#000", SHADOW_OUTLINE))
+    : [
+        ...body.map((shape) => shadowShapeSvg(shape, PICTURE_HEX.line, SHADOW_OUTLINE)),
+        ...body.map((shape) => shadowShapeSvg(shape, PICTURE_HEX[shape.paint], 0)),
+        ...details.flatMap((shape) =>
+          shape.kind === "stroke"
+            ? [
+                `<path d="${shape.d}" fill="none" stroke="${PICTURE_HEX[shape.paint]}" stroke-width="${shape.width}" stroke-linecap="round" stroke-linejoin="round"/>`,
+              ]
+            : [
+                shadowShapeSvg(shape, PICTURE_HEX.line, SHADOW_OUTLINE),
+                shadowShapeSvg(shape, PICTURE_HEX[shape.paint], 0),
+              ],
+        ),
+      ];
+  return `<g transform="translate(${num(field.x)} ${num(field.y)}) scale(${num(field.size / PICTURE_BOX)})">${parts.join("")}</g>`;
+}
+
+const shadowsLines = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SHADOWS.pageWidth} ${SHADOWS.pageHeight}" width="${SHADOWS.pageWidth}" height="${SHADOWS.pageHeight}">`,
+  `<rect width="${SHADOWS.pageWidth}" height="${SHADOWS.pageHeight}" fill="#fff"/>`,
+  `<rect x="0.25" y="0.25" width="${SHADOWS.pageWidth - 0.5}" height="${SHADOWS.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
+  `<text x="${num(SHADOWS.pageWidth / 2)}" y="${num(shadowsLayout.band.y + shadowsLayout.band.height / 2 + SHADOWS.plainInstructionSize * 0.36)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SHADOWS.plainInstructionSize}" text-anchor="middle">${SHADOWS.instruction}</text>`,
+];
+shadowsLayout.rows.forEach((row, index) => {
+  shadowsLines.push(
+    shadowsPictureSvg(shadowsCard.pictures[index], row.picture, false),
+    shadowsPictureSvg(shadowsCard.pictures[shadowsCard.shadowOrder[index]], row.shadow, true),
+    `<circle cx="${num(row.dotLeft.cx)}" cy="${num(row.dotLeft.cy)}" r="${shadowsLayout.dotRadius}" fill="#000"/>`,
+    `<circle cx="${num(row.dotRight.cx)}" cy="${num(row.dotRight.cy)}" r="${shadowsLayout.dotRadius}" fill="#000"/>`,
+  );
+});
+shadowsLines.push("</svg>", "");
+
+const shadowsOutFile = resolve(dirname(fileURLToPath(import.meta.url)), "../public/thumbnails/cienie.svg");
+writeFileSync(shadowsOutFile, shadowsLines.join("\n"));
+console.log(`Wrote ${shadowsOutFile} (${shadowsCard.pictures.length} pairs)`);

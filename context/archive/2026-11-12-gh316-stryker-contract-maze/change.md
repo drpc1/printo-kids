@@ -1,10 +1,10 @@
 ---
 change_id: gh316-stryker-contract-maze
 title: Stryker: mutacja wąska na card-contract.ts i specu labiryntu (D02 faza 5)
-status: new
+status: archived
 created: 2026-11-12
-updated: 2026-11-12
-archived_at: null
+updated: 2026-11-21
+archived_at: 2026-11-21T20:34:01Z
 ---
 
 ## Notes
