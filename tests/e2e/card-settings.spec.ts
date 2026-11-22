@@ -139,7 +139,7 @@ const CARDS: CardCase[] = [
   {
     id: "cienie",
     path: "/shadows",
-    changes: [{ bar: "Poziom", option: "trudny", shown: "trudny" }],
+    changes: [{ bar: "Poziom", option: "Poziom 3", shown: "3" }],
   },
 ];
 
