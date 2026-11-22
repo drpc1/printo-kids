@@ -1,4 +1,4 @@
-/** The levels of the shadows card ("Cienie"): the pictures get more alike, not smaller (PRD US-42). */
+/** The levels of the shadows card ("Cienie"): the pictures get more alike, not smaller (PRD US-42). Named by numbers; ids keep the old names so saved profiles load. */
 export type ShadowsLevelId = "latwy" | "sredni" | "trudny";
 
 /** Which families a level draws from: different families of any kind, one "rozne" family or one "warianty" family. */
@@ -23,8 +23,8 @@ export const DEFAULT_SHADOWS_LEVEL_ID: ShadowsLevelId = "latwy";
 export const SHADOWS_LEVELS: readonly ShadowsLevel[] = [
   {
     id: "latwy",
-    label: "łatwy",
-    barLabel: "łatwy",
+    label: "Poziom 1",
+    barLabel: "1",
     description: "4 pary, różne rzeczy",
     pairCount: 4,
     familyRule: "dowolne",
@@ -32,8 +32,8 @@ export const SHADOWS_LEVELS: readonly ShadowsLevel[] = [
   },
   {
     id: "sredni",
-    label: "średni",
-    barLabel: "średni",
+    label: "Poziom 2",
+    barLabel: "2",
     description: "5 par, podobne kształty",
     pairCount: 5,
     familyRule: "rozne",
@@ -41,8 +41,8 @@ export const SHADOWS_LEVELS: readonly ShadowsLevel[] = [
   },
   {
     id: "trudny",
-    label: "trudny",
-    barLabel: "trudny",
+    label: "Poziom 3",
+    barLabel: "3",
     description: "6 par, prawie takie same",
     pairCount: 6,
     familyRule: "warianty",

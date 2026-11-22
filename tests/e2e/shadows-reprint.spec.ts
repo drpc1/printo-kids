@@ -102,6 +102,6 @@ test("a level change draws a new card and clears the printed mark", async ({ pag
   await open(page);
   await page.getByRole("button", { name: "Drukuj", exact: true }).click();
   await expect.poll(() => printCalls(page)).toBe(1);
-  await expectFreshCardAfter(page, () => choose(page, "Poziom", "trudny", "trudny"));
-  await expectFreshCardAfter(page, () => choose(page, "Poziom", "średni", "średni"));
+  await expectFreshCardAfter(page, () => choose(page, "Poziom", "Poziom 3", "3"));
+  await expectFreshCardAfter(page, () => choose(page, "Poziom", "Poziom 2", "2"));
 });

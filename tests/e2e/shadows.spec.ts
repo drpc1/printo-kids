@@ -1,5 +1,5 @@
 // Provenance: shadows-card (S-47, US-41, US-42, FR-051, FR-052)
-// Protects the "Cienie" page: łatwy is the default; at every level (łatwy 4, średni 5, trudny 6 pairs) the card has a
+// Protects the "Cienie" page: Poziom 1 is the default; at every level (Poziom 1 4, Poziom 2 5, Poziom 3 6 pairs) the card has a
 // colored picture and a black shadow in each row, a dot beside each, the same set of pictures on both sides and no
 // shadow in the row of its own picture; every field stays inside the 10 mm margin of the A4 page; a level change with
 // a card shown draws a new card; there is no colors, category or solution switch; the level is remembered in the
@@ -12,9 +12,9 @@ const SHEET = "Cienie";
 
 // From the level table of the plan (src/lib/shadows/levels.ts).
 const LEVELS = [
-  { option: "łatwy", pairs: 4 },
-  { option: "średni", pairs: 5 },
-  { option: "trudny", pairs: 6 },
+  { option: "Poziom 1", pairs: 4 },
+  { option: "Poziom 2", pairs: 5 },
+  { option: "Poziom 3", pairs: 6 },
 ] as const;
 
 async function generate(page: Page): Promise<Locator> {
@@ -28,7 +28,7 @@ async function generate(page: Page): Promise<Locator> {
 async function choose(page: Page, option: string): Promise<void> {
   await page.getByRole("button", { name: /^Poziom:/ }).click();
   await page.getByRole("button", { name: new RegExp(`^${option}(?=\\s|$)`) }).click();
-  await expect(page.getByRole("button", { name: `Poziom: ${option}` })).toBeVisible();
+  await expect(page.getByRole("button", { name: `Poziom: ${option.replace("Poziom ", "")}` })).toBeVisible();
 }
 
 async function cardKey(sheet: Locator): Promise<string> {
@@ -56,9 +56,9 @@ async function rows(sheet: Locator) {
   );
 }
 
-test("łatwy is the default: four pairs, a dot beside each, and no switch on the bar", async ({ page }) => {
+test("Poziom 1 is the default: four pairs, a dot beside each, and no switch on the bar", async ({ page }) => {
   const sheet = await generate(page);
-  await expect(page.getByRole("button", { name: "Poziom: łatwy" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Poziom: 1" })).toBeVisible();
   await expect(page.getByRole("switch", { name: "Kolory" })).toHaveCount(0);
   await expect(page.getByRole("switch", { name: /rozwiązanie/i })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /^Kategoria:/ })).toHaveCount(0);
@@ -98,7 +98,7 @@ test("every level has its pairs: the same pictures as shadows, none in its own r
 test("a level change with a card shown draws a new card of that level", async ({ page }) => {
   const sheet = await generate(page);
   const before = await cardKey(sheet);
-  await choose(page, "trudny");
+  await choose(page, "Poziom 3");
   expect(await cardKey(sheet)).not.toBe(before);
   await expect(sheet.locator("[data-row]")).toHaveCount(6);
 });
@@ -130,7 +130,7 @@ test("the level is remembered in the profile and shown on the catalog badge", as
     [PROFILES_KEY, ACTIVE_KEY] as const,
   );
   await generate(page);
-  await choose(page, "średni");
+  await choose(page, "Poziom 2");
   await expect(page.getByRole("status")).toHaveText("Zapamiętane dla Ola");
 
   await expect
@@ -145,12 +145,12 @@ test("the level is remembered in the profile and shown on the catalog badge", as
     .toEqual({ level: "sredni" });
 
   await page.reload();
-  await expect(page.getByRole("button", { name: "Poziom: średni" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Poziom: 2" })).toBeVisible();
 
   await page.goto("/");
   const badge = page.locator('[data-badge-for="cienie"]');
   await expect(badge).toBeVisible();
-  await expect(badge).toHaveText("średni");
+  await expect(badge).toHaveText("poz. 2");
 });
 
 test("the catalog offers the card and opens its page", async ({ page }, testInfo) => {

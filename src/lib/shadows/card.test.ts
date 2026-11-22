@@ -20,7 +20,7 @@ function seeded(seed: number): () => number {
 }
 
 void describe("shadows levels", () => {
-  void test("łatwy / średni / trudny with 4 / 5 / 6 pairs; łatwy is the default", () => {
+  void test("Poziom 1 / 2 / 3 with 4 / 5 / 6 pairs; Poziom 1 is the default", () => {
     assert.deepEqual(
       SHADOWS_LEVELS.map((level) => [level.id, level.pairCount, level.familyRule]),
       [
