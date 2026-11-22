@@ -55,21 +55,21 @@ const FAMILIES: readonly PoseFamily[] = [
   {
     id: "pies",
     label: "pies",
-    details: ["ogon", "uszy", "prawa łapka"],
+    details: ["ogon", "prawe ucho", "prawa łapka"],
     states: [
       ["w górze", "w dół"],
-      ["oklapnięte", "postawione"],
+      ["oklapnięte", "uniesione"],
       ["na dole", "w górze"],
     ],
-    draw: (tailDown, earsUp, pawUp) => [
+    draw: (tailDown, earUp, pawUp) => [
       tailDown ? stroke("M32 90 C20 92 10 92 4 86", 7, "sand") : stroke("M32 88 C14 86 10 72 16 62", 7, "sand"),
       ...(pawUp ? [stroke("M58 62 C68 56 74 48 78 36", 8, "sand")] : []),
       path("M30 94 C26 76 32 60 42 54 H58 C68 60 74 76 70 94 Z", "sand"),
       ellipse(42, 93, 7, 4, "sand"),
       ellipse(58, 93, 7, 4, "sand"),
-      ...(earsUp ? [path("M37 28 L32 6 L48 22 Z M63 28 L68 6 L52 22 Z", "brown")] : []),
       circle(50, 38, 18, "sand"),
-      ...(earsUp ? [] : [ellipse(31, 40, 7, 15, "brown", 15), ellipse(69, 40, 7, 15, "brown", -15)]),
+      ellipse(31, 40, 7, 15, "brown", 15),
+      earUp ? ellipse(74, 22, 6.5, 14, "brown", 55) : ellipse(69, 40, 7, 15, "brown", -15),
       ellipse(60, 75, 6, 8, "brown", 0, true),
       ellipse(50, 46, 8, 6, "cream", 0, true),
       ellipse(50, 43, 3.5, 2.5, "black", 0, true),
@@ -80,21 +80,20 @@ const FAMILIES: readonly PoseFamily[] = [
   {
     id: "krolik",
     label: "królik",
-    details: ["prawe ucho", "lewa łapka", "lewa stopa"],
+    details: ["prawe ucho", "lewe ucho", "lewa stopa"],
     states: [
       ["prosto", "oklapnięte"],
-      ["na dole", "w górze"],
+      ["prosto", "zgięty czubek"],
       ["pod spodem", "w bok"],
     ],
-    draw: (earFlop, pawUp, footOut) => [
-      ellipse(41, 22, 7, 19, "white", -10),
+    draw: (earFlop, tipBent, footOut) => [
+      ...(tipBent ? [ellipse(43, 31, 7, 11, "white", -10), ellipse(36, 18, 6, 10, "white", -60)] : [ellipse(41, 22, 7, 19, "white", -10)]),
       earFlop ? ellipse(70, 30, 7, 19, "white", 65) : ellipse(59, 22, 7, 19, "white", 10),
-      ...(pawUp ? [ellipse(26, 52, 5.5, 13, "white", -30)] : []),
       ellipse(50, 74, 22, 19, "white"),
       footOut ? ellipse(22, 86, 10, 5, "white", -25) : ellipse(37, 92, 10, 5, "white"),
       ellipse(63, 92, 10, 5, "white"),
       circle(50, 48, 17, "white"),
-      ellipse(41, 23, 3.2, 13, "pink", -10, true),
+      tipBent ? ellipse(43, 32, 3.2, 7, "pink", -10, true) : ellipse(41, 23, 3.2, 13, "pink", -10, true),
       earFlop ? ellipse(70, 30, 3.2, 13, "pink", 65, true) : ellipse(59, 23, 3.2, 13, "pink", 10, true),
       ellipse(50, 78, 11, 11, "cream", 0, true),
       circle(43, 46, 2.6, "black", true),
@@ -115,7 +114,7 @@ const FAMILIES: readonly PoseFamily[] = [
     draw: (beakOpen, wingUp, tailDown) => [
       stroke("M44 76 L42 92 M54 76 L56 92", 3, "darkgray"),
       tailDown ? path("M70 60 L90 86 L97 66 Z", "sand") : path("M70 52 L96 36 L92 60 Z", "sand"),
-      ...(wingUp ? [path("M42 48 L58 12 L70 46 Z", "sand")] : []),
+      ...(wingUp ? [path("M44 50 C40 34 50 20 66 14 C66 22 72 22 74 28 C70 34 72 40 66 46 C60 52 50 54 44 50 Z", "sand")] : []),
       ellipse(50, 58, 28, 20, "sand"),
       circle(28, 42, 14, "sand"),
       beakOpen ? path("M15 37 L2 31 L15 43 Z M15 45 L3 54 L15 49 Z", "orange") : path("M15 40 L4 44 L15 47 Z", "orange"),
