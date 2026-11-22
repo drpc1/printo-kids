@@ -1,10 +1,10 @@
 ---
 change_id: copy-drawing-asymmetric-shapes
 title: „Skopiuj obrazek” z kształtami niesymetrycznymi z katalogu dyktanda (S-55)
-status: implemented
+status: archived
 created: 2026-11-21
 updated: 2026-11-22
-archived_at: null
+archived_at: 2026-11-22T19:20:31Z
 ---
 
 ## Notes
