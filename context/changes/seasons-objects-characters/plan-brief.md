@@ -54,7 +54,7 @@ Treść najpierw (makieta jak w S-38), potem kategoria i dane, potem postacie. D
 ## Open Risks & Assumptions
 
 - „Przenieś bałwanka” rozumiem jako obiekt i postać; jeśli chodziło tylko o jedno, do korekty.
-- W głównym repo leży też niezatwierdzony `niedzwiedz-polarny.webp`: czy to druga postać zimowa, do decyzji.
+- Niedźwiedź polarny jest tylko obiektem z szablonów, nie postacią (decyzja 2026-11-22); jego rysunek postaci nie wchodzi do repo.
 - Zima ma co najmniej cztery obiekty w każdym rozmiarze dopiero po Fazie 3.
 - Rok przestępny: test okna na 29.02.
 

@@ -167,7 +167,7 @@ Bałwanek z nowym oknem, Pingwin jako nowa postać.
 
 **File**: `public/characters/pingwin.webp`
 
-**Intent**: Rysunek Pingwina już jest (2026-11-22, niezatwierdzony w git: `public/characters/pingwin.webp` i `context/ideas/postacie/pingwin.png` w głównym katalogu repo; obok jest też `niedzwiedz-polarny.webp`, do rozstrzygnięcia, czy to druga postać zimowa). Faza 5 dodaje je do gałęzi, kadr (`contentLeft/Right`) dopasowuje skrypt jak w S-39; makieta listy do akceptacji.
+**Intent**: Rysunek Pingwina już jest (2026-11-22, niezatwierdzony w git: `public/characters/pingwin.webp` i `context/ideas/postacie/pingwin.png` w głównym katalogu repo; `niedzwiedz-polarny.webp` obok NIE wchodzi: niedźwiedź polarny nie jest postacią, decyzja 2026-11-22). Faza 5 dodaje je do gałęzi, kadr (`contentLeft/Right`) dopasowuje skrypt jak w S-39; makieta listy do akceptacji.
 
 #### 2. Katalog postaci
 
