@@ -41,6 +41,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Rodzic może wybrać dowolną postać z katalogu czternastu postaci: jedenastu stałych i trzech świątecznych widocznych na liście 15.11–6.01 (GitHub 370).
 - Rodzic może na telefonie wygenerować kartę i wydrukować ją jako jedną stronę A4.
 - Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej i wejść na stronę generatora tego rodzaju.
+- Rodzic może zawęzić katalog do kart, które ćwiczą wybraną umiejętność (Czas i pieniądze, Liczby, Logika, Rysowanie, Spostrzegawczość); każda miniatura pokazuje pod nazwą umiejętności karty (2026-11-22, S-43).
 - Rodzic może wygenerować kartę symetrii, na której dziecko dorysowuje drugą połowę obiektu (np. rakiety, robota, truskawki) na kratce, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także z telefonu.
 - Rodzic może wybrać poziom karty symetrii (rozmiar kratki, katalog obiektów, podpowiedź).
 - Rodzic może niezależnie od poziomu włączyć kolory na karcie symetrii; kratki wzoru drukują się w prawdziwych kolorach kredek, bez liter i bez legendy; domyślnie obiekt jest czarną sylwetką.
@@ -159,6 +160,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Strona generatora ma ten sam układ co dziś: profil w rogu, pasek ustawień, Generuj i Drukuj, karta A4 na dole. Pod kartą nic nie ma poza stopką z linkami „Jak to działa” i „Podziel się opinią” (US-22).
 - Po wejściu z katalogu labirynt działa tak jak dotąd: przepływ, poziomy, postać, druk i margines są bez zmian względem US-01, US-03 i US-04.
 - Wybrany profil dziecka zostaje po przejściu między katalogiem a stronami generatorów.
+- Każda miniatura ma pod nazwą szarą linijkę z umiejętnościami karty (jedna albo dwie, np. „Logika · Rysowanie”). Nad miniaturami jest rząd chipów „Co ćwiczy?”: „Wszystkie” i pięć umiejętności, alfabetycznie. Wybiera się jeden; „Wszystkie” jest domyślne. Chip zostawia karty z tą umiejętnością, karta z dwiema pokazuje się pod obiema. Wybór nie jest zapamiętywany: każde wejście na stronę i powrót Wstecz zaczyna od „Wszystkie”. Na telefonie chipy zawijają się i nie zasłaniają nagłówka ani rogu profilu (decyzja 2026-11-22, S-43).
 - Profil w rogu strony głównej jest klikalny tak samo jak na stronach generatorów: wybór, dodanie, edycja, usunięcie i „Bez profilu”; miniatury od razu pokazują zapamiętany poziom wybranego profilu. Okno profilu nie otwiera się samo, także gdy są co najmniej dwa profile i żaden nie jest wybrany (decyzja 2026-10-31, GitHub 234). Zdanie dotyczy katalogu; na stronie generatora, gdy są co najmniej dwa profile i żaden nie jest zapamiętany, okno wyboru profilu otwiera się celowo przy pierwszym wejściu (`openingVisit`).
 - Przy wybranym profilu miniatura karty, której profil już używał, pokazuje zapamiętany poziom (np. „poz. 4”, „średni”); karta, której profil jeszcze nie używał, nie ma plakietki (US-08; decyzja 2026-10-27).
 - Druk nadal nie wymaga profilu dziecka.
@@ -791,7 +793,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 
 ### Rodzaje kart i symetria
 
-- FR-014: Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej; każdy rodzaj ma własną stronę generatora, a labirynt na niej nie zmienia działania. Priority: must-have
+- FR-014: Rodzic może wybrać rodzaj karty w katalogu z miniaturami na stronie głównej i zawęzić katalog chipem umiejętności („Co ćwiczy?”, jeden wybór, bez zapamiętywania); każdy rodzaj ma własną stronę generatora, a labirynt na niej nie zmienia działania. Priority: must-have
   > Socrates: Counter-argument considered: katalog to dodatkowe kliknięcie dla rodzica, który chce tylko labirynt. Resolution: kept; miniatura pokazuje, jak wygląda karta, więc rodzic nie zgaduje po nazwie, a strona generatora zostaje taka jak dziś. Skrót „ostatnio użyte” jest możliwym dodatkiem poza tym kamieniem.
 - FR-015: Rodzic może wygenerować kartę symetrii z połową obiektu z katalogu szablonów i jedną sprawdzalną odpowiedzią, zobaczyć jej podgląd i wydrukować ją jako jedną stronę A4, także na telefonie. Priority: must-have
   > Socrates: Counter-argument considered: dorysowanie odbicia na kratce może być za łatwe do zrobienia samemu bez aplikacji. Resolution: kept; wartość to nowa karta na właściwym poziomie na żądanie, ten sam problem co przy labiryncie.
@@ -1330,6 +1332,20 @@ Pozy (Poziom 4, makieta zaakceptowana 2026-11-22, `context/changes/shadows-poses
 Próg różnicy cieni: pozy różnią się mniejszą częścią obrysu niż warianty Poziomu 3, więc Poziom 4 ma własny, niższy próg (w kodzie poziomów, z komentarzem). W makiecie najmniejsza różnica dwóch póz to ok. 0,03 (ptak: dziób zamknięty i otwarty), a dziś próg kart to 0,08; próg Poziomu 4 potwierdza wydruk (Open Questions 22).
 
 Reguły, które generator sprawdza: karta ma liczbę par poziomu; obrazki pochodzą z rodzin zgodnych z poziomem (Poziom 1: każdy z innej rodziny; Poziom 2: jedna rodzina; Poziom 3: warianty jednej rzeczy; Poziom 4: pozy jednej rodziny póz); cienie karty różnią się parami wyraźnie, czyli cienie porównane w jednej siatce różnią się co najmniej o ustaloną część obrysu (próg w kodzie poziomów, z komentarzem; potwierdza go wydruk); żaden cień nie stoi w rzędzie swojego obrazka; obrazki mieszczą się na A4 z marginesem 10 mm. Karta, która łamie którąś z tych reguł, nie jest pokazana. Każde Generuj daje inne obrazki albo inną kolejność niż poprzednia karta. Wartości są startowe i zostają potwierdzone na wydruku (Open Questions 21). Wynikiem jest karta A4: pary zajmują większą część strony i zachowują margines co najmniej 10 mm.
+
+### Umiejętności kart
+
+Dodane 2026-11-22 (S-43, GitHub 374). Każdy rodzaj karty ma jedną albo dwie umiejętności („Co ćwiczy?”); pokazują je miniatury katalogu i chipy nad nim. Zasada: umiejętność pasuje, gdy rodzic się nie zdziwi (stąd Zegar i „Od najmniejszego” poza „Liczbami”). Nazwa pojęcia to „umiejętność”, nie „kategoria” (to kategoria obiektów), „tag” ani „filtr”. W kodzie: `CARD_SKILLS`, `CardKind.skills`. Chipy są w kolejności alfabetycznej po „Wszystkie”; nowa umiejętność wpada w swoje miejsce alfabetu.
+
+| Umiejętność      | Karty                                                                 |
+| ---------------- | --------------------------------------------------------------------- |
+| Czas i pieniądze | Kto ma więcej, Zegar                                                  |
+| Liczby           | Krzyżówka matematyczna, Kto ma więcej, Labirynt liczbowy              |
+| Logika           | Kodowanie, Który nie pasuje, Labirynt, Nonogram, Sekwencje, Sudoku    |
+| Rysowanie        | Dyktando graficzne, Labirynt, Skopiuj obrazek, Symetria, Szlaczki     |
+| Spostrzegawczość | Cienie, Który nie pasuje, Od najmniejszego, Skopiuj obrazek, Symetria |
+
+Filtr: jeden wybór, „Wszystkie” domyślne, bez zapamiętywania w profilu, w ostatnich parametrach i w adresie.
 
 ### Poziomy
 
