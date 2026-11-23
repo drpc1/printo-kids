@@ -210,6 +210,18 @@ void describe("the approved shapes", () => {
     assert.ok(!dictationShapesFor("lat7", "zwierzeta").some((shape) => shape.id === "skarpeta"));
   });
 
+  void test("Zima has the skate and the mitten on all three levels, both on the Skopiuj obrazek card", () => {
+    for (const levelId of ["lat5", "lat6", "lat7"] as const) {
+      const winter = dictationShapesFor(levelId, "zima");
+      for (const id of ["lyzwa", "rekawiczka"]) {
+        const shape = winter.find((candidate) => candidate.id === id);
+        assert.ok(shape, `${id} at ${levelId}`);
+        assert.equal(shape.onCopyDrawing, true, id);
+        assert.deepEqual(shape.categories, ["zima"], id);
+      }
+    }
+  });
+
   void test("each shape sits in the approved category", () => {
     const categoryOf = (id: string): readonly string[] | undefined =>
       DICTATION_SHAPES.find((shape) => shape.id === id)?.categories;
