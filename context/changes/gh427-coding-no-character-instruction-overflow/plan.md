@@ -226,24 +226,24 @@ Brak danych do migracji; zapisane profile i ustawienia bez zmian.
 
 #### Automated
 
-- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` przechodzą
-- [x] 2.2 Żaden komponent w `src/components` nie rysuje już polecenia bez postaci własnym `<text>`
-- [x] 2.3 E2E Chromium przechodzi: `npx playwright test --project=chromium` (z `E2E_PORT` na wolnym porcie)
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` przechodzą — 2f4afb93
+- [x] 2.2 Żaden komponent w `src/components` nie rysuje już polecenia bez postaci własnym `<text>` — 2f4afb93
+- [x] 2.3 E2E Chromium przechodzi: `npx playwright test --project=chromium` (z `E2E_PORT` na wolnym porcie) — 2f4afb93
 
 #### Manual
 
-- [x] 2.4 Kodowanie (Zapisz, Poziomy 1–4), Dyktando i Krzyżówka bez postaci: polecenie w dwóch liniach, w marginesie
-- [x] 2.5 Pozostałe karty bez postaci: polecenie w jednej linii, bez widocznej zmiany
+- [x] 2.4 Kodowanie (Zapisz, Poziomy 1–4), Dyktando i Krzyżówka bez postaci: polecenie w dwóch liniach, w marginesie — 2f4afb93
+- [x] 2.5 Pozostałe karty bez postaci: polecenie w jednej linii, bez widocznej zmiany — 2f4afb93
 
 ### Phase 3: Miniatury i sprawdzenie
 
 #### Automated
 
-- [ ] 3.1 `npm run thumbnails` kończy się bez błędu, a miniatury są przebudowane
-- [ ] 3.2 `npm test`, `npm run lint`, `npm run build` przechodzą
+- [x] 3.1 `npm run thumbnails` kończy się bez błędu, a miniatury są przebudowane
+- [x] 3.2 `npm test`, `npm run lint`, `npm run build` przechodzą
 
 #### Manual
 
-- [ ] 3.3 Miniatura Kodowania w katalogu: polecenie w dwóch liniach, w szerokości kartki
-- [ ] 3.4 Wydruk A4 bez postaci Kodowania, Dyktanda i Krzyżówki: jedna strona, polecenie w marginesie 10 mm
-- [ ] 3.5 Ten sam wydruk z telefonu (Safari, Chrome iOS, Brave iOS): jedna strona
+- [x] 3.3 Miniatura Kodowania w katalogu: polecenie w dwóch liniach, w szerokości kartki
+- [x] 3.4 Wydruk A4 bez postaci Kodowania, Dyktanda i Krzyżówki: jedna strona, polecenie w marginesie 10 mm
+- [x] 3.5 Ten sam wydruk z telefonu (Safari, Chrome iOS, Brave iOS): jedna strona
