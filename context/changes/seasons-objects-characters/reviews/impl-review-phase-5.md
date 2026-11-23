@@ -46,7 +46,7 @@ Evidence:
   - Tradeoff: Bałwanek disappears from the list for two weeks in November.
   - Confidence: HIGH.
   - Blind spot: A child whose favourite is Bałwanek keeps it, because a selected character stays on the list.
-- **Decision**: PENDING
+- **Decision**: FIXED — Fix B (okno 1.12–29.02 jak w planie, decyzja użytkowniczki 2026-11-23)
 
 ### F2 — Manual check 5.3 is pending
 
