@@ -45,11 +45,15 @@ void describe("template catalog", () => {
   });
 
   void test("every category has at least four objects in every size", () => {
+    // Zima starts with the snowman and the penguin; the winter objects of S-54 (phase 3) bring it to four and remove
+    // this exception before the window opens on 1.12.
+    const startingCategories: ReadonlyMap<string, number> = new Map([["zima", 2]]);
     for (const { levelId } of SIZES) {
       for (const category of OBJECT_CATEGORIES) {
         const objects = symmetryTemplatesFor(levelId).filter((template) => template.categories.includes(category.id));
+        const least = startingCategories.get(category.id) ?? 4;
 
-        assert.ok(objects.length >= 4, `${levelId} ${category.label}: ${objects.length}`);
+        assert.ok(objects.length >= least, `${levelId} ${category.label}: ${objects.length}`);
       }
     }
   });
@@ -58,9 +62,21 @@ void describe("template catalog", () => {
     for (const { levelId } of SIZES) {
       const ids = symmetryTemplatesFor(levelId, "boze-narodzenie").map((template) => template.id);
 
-      for (const id of ["choinka", "gwiazda", "bombka", "dzwonek", "prezent", "piernik", "balwanek", "aniolek"]) {
+      for (const id of ["choinka", "gwiazda", "bombka", "dzwonek", "prezent", "piernik", "aniolek"]) {
         assert.ok(ids.includes(id), `${levelId} ${id}`);
       }
+      assert.ok(!ids.includes("balwanek"), `${levelId} balwanek moved to Zima`);
+    }
+  });
+
+  void test("Zima has the snowman and the penguin in every size; the penguin stays in Zwierzęta", () => {
+    for (const { levelId } of SIZES) {
+      const zima = symmetryTemplatesFor(levelId, "zima").map((template) => template.id);
+      const zwierzeta = symmetryTemplatesFor(levelId, "zwierzeta").map((template) => template.id);
+
+      assert.ok(zima.includes("balwanek"), `${levelId} balwanek`);
+      assert.ok(zima.includes("pingwin"), `${levelId} pingwin`);
+      assert.ok(zwierzeta.includes("pingwin"), `${levelId} pingwin in Zwierzęta`);
     }
   });
 

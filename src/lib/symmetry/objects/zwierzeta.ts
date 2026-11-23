@@ -262,7 +262,7 @@ const PENGUIN_4: SymmetryTemplate = {
   width: 4,
   height: 12,
   holeColor: null,
-  categories: ["zwierzeta"],
+  categories: ["zwierzeta", "zima"],
   base: drawing([
     "..kk", // 0
     ".kkk", // 1
@@ -294,7 +294,7 @@ const PENGUIN_6: SymmetryTemplate = {
   width: 6,
   height: 15,
   holeColor: null,
-  categories: ["zwierzeta"],
+  categories: ["zwierzeta", "zima"],
   base: drawing([
     "...kkk", // 0
     "..kkkk", // 1
@@ -337,7 +337,7 @@ const PENGUIN_9: SymmetryTemplate = {
   width: 9,
   height: 23,
   holeColor: null,
-  categories: ["zwierzeta"],
+  categories: ["zwierzeta", "zima"],
   base: drawing([
     ".....kkkk", // 0
     "....kkkkk", // 1

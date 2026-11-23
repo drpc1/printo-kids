@@ -51,7 +51,7 @@ function drawn<Card>(card: Card | null): Card {
 }
 
 void describe("category choices", () => {
-  void test("the full list has Wszystkie first, then the category with a window, then the others alphabetically, each once", () => {
+  void test("the full list has Wszystkie first, then the categories with a window, then the others, alphabetically, each once", () => {
     assert.equal(OBJECT_CATEGORY_CHOICES[0].id, "wszystkie");
     assert.deepEqual(
       OBJECT_CATEGORY_CHOICES.slice(1)
@@ -64,6 +64,7 @@ void describe("category choices", () => {
       [
         "Wszystkie",
         "Boże Narodzenie",
+        "Zima",
         "Domy i budowle",
         "Jedzenie",
         "Kosmos i maszyny",
@@ -85,21 +86,64 @@ void describe("category choices", () => {
     const outside = [new Date(2026, 10, 14, 23, 59), new Date(2027, 0, 7), new Date(2027, 6, 10)];
     for (const day of inside) {
       assert.equal(objectCategoryChoicesOn(day)[1].id, "boze-narodzenie", day.toDateString());
-      assert.equal(objectCategoryChoicesOn(day).length, OBJECT_CATEGORY_CHOICES.length, day.toDateString());
     }
     for (const day of outside) {
       const ids = objectCategoryChoicesOn(day).map((choice) => choice.id);
       assert.ok(!ids.includes("boze-narodzenie"), day.toDateString());
-      assert.equal(ids.length, OBJECT_CATEGORY_CHOICES.length - 1, day.toDateString());
       assert.equal(ids[0], "wszystkie");
     }
+  });
+
+  void test("Zima is on the bar from 1 December to the end of February, both ends included, also in a leap year", () => {
+    const inside = [
+      new Date(2026, 11, 1),
+      new Date(2027, 0, 6),
+      new Date(2027, 0, 7),
+      new Date(2027, 1, 28, 23, 59),
+      new Date(2028, 1, 29),
+    ];
+    const outside = [new Date(2026, 10, 30, 23, 59), new Date(2027, 2, 1), new Date(2028, 2, 1), new Date(2027, 6, 10)];
+    for (const day of inside) {
+      const ids = objectCategoryChoicesOn(day).map((choice) => choice.id);
+      assert.ok(ids.includes("zima"), day.toDateString());
+    }
+    for (const day of outside) {
+      const ids = objectCategoryChoicesOn(day).map((choice) => choice.id);
+      assert.ok(!ids.includes("zima"), day.toDateString());
+    }
+  });
+
+  void test("the bar lists both seasonal categories in December, only Zima in February and neither in summer", () => {
+    const seasonal = (day: Date): string[] =>
+      objectCategoryChoicesOn(day)
+        .map((choice) => choice.id)
+        .filter((id) => id === "boze-narodzenie" || id === "zima");
+    const fixed = OBJECT_CATEGORY_CHOICES.length - 3;
+
+    assert.deepEqual(seasonal(new Date(2026, 10, 20)), ["boze-narodzenie"]);
+    assert.deepEqual(seasonal(new Date(2026, 11, 10)), ["boze-narodzenie", "zima"]);
+    assert.deepEqual(
+      objectCategoryChoicesOn(new Date(2026, 11, 10))
+        .slice(0, 3)
+        .map((choice) => choice.id),
+      ["wszystkie", "boze-narodzenie", "zima"],
+    );
+    assert.deepEqual(seasonal(new Date(2027, 1, 10)), ["zima"]);
+    assert.equal(objectCategoryChoicesOn(new Date(2027, 1, 10))[1].id, "zima");
+    assert.deepEqual(seasonal(new Date(2027, 6, 10)), []);
+    assert.equal(objectCategoryChoicesOn(new Date(2027, 6, 10)).length, fixed + 1);
   });
 
   void test("a remembered category reads as Wszystkie only when its window does not include the day", () => {
     const winter = new Date(2026, 11, 24);
     const summer = new Date(2027, 6, 10);
+    const february = new Date(2027, 1, 10);
     assert.equal(visibleCategoryOn("boze-narodzenie", winter), "boze-narodzenie");
     assert.equal(visibleCategoryOn("boze-narodzenie", summer), "wszystkie");
+    assert.equal(visibleCategoryOn("boze-narodzenie", february), "wszystkie");
+    assert.equal(visibleCategoryOn("zima", winter), "zima");
+    assert.equal(visibleCategoryOn("zima", february), "zima");
+    assert.equal(visibleCategoryOn("zima", summer), "wszystkie");
     assert.equal(visibleCategoryOn("zwierzeta", summer), "zwierzeta");
     assert.equal(visibleCategoryOn("wszystkie", summer), "wszystkie");
     assert.equal(visibleCategoryOn("wszystkie", winter), "wszystkie");
