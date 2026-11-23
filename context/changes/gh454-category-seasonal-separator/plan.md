@@ -128,8 +128,8 @@ Rysowanie kreski w `LevelChoice` i podłączenie w `CategoryChoice`.
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test` — 0e4a2f09
-- [x] 1.2 Lint przechodzi: `npm run lint` — 0e4a2f09
+- [x] 1.1 Testy przechodzą: `npm test` — e753ac06
+- [x] 1.2 Lint przechodzi: `npm run lint` — e753ac06
 
 ### Phase 2: Kreska w liście kategorii
 
