@@ -485,14 +485,14 @@ test("the catalog is titled PrintoKids; each generator page has the card name as
 });
 
 // Provenance: card-tags-filter (phase 2, S-43)
-// The "Co ćwiczy?" chips narrow the catalog to the cards with one skill. One choice, "Wszystkie" by default, never kept.
+// The "Co dziś ćwiczymy?" chips narrow the catalog to the cards with one skill. One choice, "Wszystkie" by default, never kept.
 test("the skill chips narrow the catalog, keep a card under both its skills and reset to Wszystkie", async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await page.goto("/");
 
-  const group = page.getByRole("group", { name: "Co ćwiczy?" });
+  const group = page.getByRole("group", { name: "Co dziś ćwiczymy?" });
   const all = group.getByRole("button", { name: "Wszystkie", exact: true });
   const links = page.locator("a[data-card-title]");
   await expect(all).toHaveAttribute("aria-pressed", "true");
@@ -522,7 +522,7 @@ test("the skill choice is not kept: coming back to the catalog starts at Wszystk
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
   await page.goto("/");
 
-  const group = page.getByRole("group", { name: "Co ćwiczy?" });
+  const group = page.getByRole("group", { name: "Co dziś ćwiczymy?" });
   const total = await page.locator("a[data-card-title]").count();
   await group.getByRole("button", { name: "Rysowanie" }).click();
   await expect(page.locator("a[data-card-title]:visible")).toHaveCount(5);
@@ -548,7 +548,7 @@ test("a level badge stays on a card after narrowing the catalog", async ({ page 
   await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
   await page.goto("/");
 
-  await page.getByRole("group", { name: "Co ćwiczy?" }).getByRole("button", { name: "Logika" }).click();
+  await page.getByRole("group", { name: "Co dziś ćwiczymy?" }).getByRole("button", { name: "Logika" }).click();
   await expect(page.getByRole("link", { name: "Labirynt, poz. 4" })).toBeVisible();
 });
 
@@ -559,7 +559,7 @@ test("on a phone the skill chips wrap, stay on screen and keep clear of the head
   await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
   await page.goto("/");
 
-  const group = page.getByRole("group", { name: "Co ćwiczy?" });
+  const group = page.getByRole("group", { name: "Co dziś ćwiczymy?" });
   const groupBox = await group.boundingBox();
   const corner = await page.getByRole("button", { name: "Ania", exact: true }).boundingBox();
   const heading = await page.getByRole("heading", { level: 1 }).boundingBox();
