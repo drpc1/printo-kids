@@ -1,6 +1,10 @@
 import { LevelChoice } from "@/components/LevelChoice";
 import { useToday } from "@/hooks/useToday";
-import { objectCategoryChoicesOn, type ObjectCategoryChoiceId } from "@/lib/symmetry/templates";
+import {
+  objectCategoryChoicesOn,
+  objectCategorySeparatorAfterOn,
+  type ObjectCategoryChoiceId,
+} from "@/lib/symmetry/templates";
 
 /**
  * The "Kategoria: …" button of the pages that draw an object from the template catalog (symmetry, nonogram,
@@ -20,7 +24,8 @@ export function CategoryChoice({
   onSelect: (id: ObjectCategoryChoiceId) => void;
   disabled?: boolean;
 }) {
-  const choices = objectCategoryChoicesOn(useToday());
+  const today = useToday();
+  const choices = objectCategoryChoicesOn(today);
   const category = choices.find((choice) => choice.id === categoryId) ?? choices[0];
   return (
     <LevelChoice
@@ -32,6 +37,7 @@ export function CategoryChoice({
       onOpenChange={onOpenChange}
       onSelect={onSelect}
       disabled={disabled}
+      separatorAfter={objectCategorySeparatorAfterOn(today)}
     />
   );
 }

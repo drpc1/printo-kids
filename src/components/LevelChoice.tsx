@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { LevelRow, levelRowClass } from "@/components/LevelRow";
 import { DIALOG_ROW_CLASS } from "@/components/ProfileCorner";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
 /** A list row; `barLabel` is the short text on the bar button, `description` and `typicalAge` fill the row. */
@@ -29,6 +30,7 @@ export function LevelChoice<Id extends string>({
   disabled = false,
   label = "Poziom",
   dialogTitle = "Wybierz poziom",
+  separatorAfter = null,
 }: {
   level: LevelOption<Id>;
   levels: readonly LevelOption<Id>[];
@@ -39,6 +41,8 @@ export function LevelChoice<Id extends string>({
   /** Name on the button; "Kategoria" reuses this control for the object category. */
   label?: string;
   dialogTitle?: string;
+  /** Id of the row under which the list draws a line (the last seasonal category); none by default. */
+  separatorAfter?: Id | null;
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -58,7 +62,7 @@ export function LevelChoice<Id extends string>({
       <DialogContent className={cn("max-h-[calc(100dvh-2rem)] print:hidden")}>
         <DialogTitle className={cn("sr-only")}>{dialogTitle}</DialogTitle>
         <div className={cn("flex flex-col gap-2")}>
-          {levels.map((option) => (
+          {levels.map((option) => [
             <Button
               key={option.id}
               type="button"
@@ -76,8 +80,9 @@ export function LevelChoice<Id extends string>({
               }}
             >
               <LevelRow label={option.label} description={option.description} typicalAge={option.typicalAge} />
-            </Button>
-          ))}
+            </Button>,
+            option.id === separatorAfter ? <Separator key={`${option.id}-line`} /> : null,
+          ])}
         </div>
       </DialogContent>
     </Dialog>
