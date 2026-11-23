@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CategoryChoice } from "@/components/CategoryChoice";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoice } from "@/components/LevelChoice";
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
 import { SettingToggle } from "@/components/SettingToggle";
@@ -23,6 +24,7 @@ import { OBJECT_CATEGORY_CHOICES, type ObjectCategoryChoiceId } from "@/lib/symm
 import { SYMMETRY_LEVELS, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -169,7 +171,13 @@ function SymmetrySheet({
   characterId: string;
   characterSrc: string | null;
 }) {
-  const instructionHeight = instructionBoxHeight(characterSrc !== null, SYMMETRY_SHEET.instructionSize);
+  const plain = layoutPlainInstruction({
+    text: SYMMETRY_SHEET.instructionText,
+    size: SYMMETRY_SHEET.instructionSize,
+    pageWidth: SYMMETRY_SHEET.pageWidth,
+    inset: SYMMETRY_SHEET.inset,
+  });
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const sheet = layoutSymmetrySheet({
     pageWidth: SYMMETRY_SHEET.pageWidth,
     pageHeight: SYMMETRY_SHEET.pageHeight,
@@ -207,17 +215,7 @@ function SymmetrySheet({
           text={SYMMETRY_SHEET.instructionText}
         />
       ) : (
-        <text
-          x={sheet.instruction.x}
-          y={sheet.instruction.y}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={SYMMETRY_SHEET.instructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {SYMMETRY_SHEET.instructionText}
-        </text>
+        <PlainInstruction layout={plain} centerX={sheet.instruction.x} top={sheet.instruction.y - plain.height / 2} />
       )}
       <g>
         {symmetryDrawnCells(card, colors).map(({ cell, fill, opacity }) => (

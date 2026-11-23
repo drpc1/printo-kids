@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { layoutPlainInstruction } from "../sheet/plain-instruction.ts";
 import { instructionBoxHeight } from "../sheet/speech.ts";
 import { generateMathCrosswordCard } from "./generate.ts";
 import { layoutMathCrosswordSheet } from "./layout.ts";
@@ -8,7 +9,16 @@ import { MATH_CROSSWORD_SHEET } from "./sheet.ts";
 
 const EPSILON = 1e-6;
 const WITH_CHARACTER = instructionBoxHeight(true, MATH_CROSSWORD_SHEET.plainInstructionSize);
-const WITHOUT_CHARACTER = instructionBoxHeight(false, MATH_CROSSWORD_SHEET.plainInstructionSize);
+/** The plain instruction of the card; it fits on one line, so the box is as tall as the font. */
+const WITHOUT_CHARACTER = instructionBoxHeight(
+  false,
+  layoutPlainInstruction({
+    text: MATH_CROSSWORD_SHEET.instruction,
+    size: MATH_CROSSWORD_SHEET.plainInstructionSize,
+    pageWidth: MATH_CROSSWORD_SHEET.pageWidth,
+    inset: MATH_CROSSWORD_SHEET.inset,
+  }).height,
+);
 const GAP = MATH_CROSSWORD_SHEET.bandGap;
 
 function mulberry32(seed: number): () => number {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
 import { SettingToggle } from "@/components/SettingToggle";
@@ -32,6 +33,7 @@ import {
 } from "@/lib/sudoku/levels";
 import { SUDOKU_SHEET } from "@/lib/sudoku/sheet";
 import { sudokuShapePath } from "@/lib/sudoku/shapes";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { SPEECH_BAND } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -190,6 +192,13 @@ function SudokuSheet({
 }) {
   const block = sudokuBlock(card.size);
   const cellSize = SUDOKU_SHEET.cellSize[card.size];
+  const plain = layoutPlainInstruction({
+    lines: SUDOKU_SHEET.instructionLines,
+    lineGap: SUDOKU_SHEET.instructionLineGap,
+    size: SUDOKU_SHEET.instructionSize,
+    pageWidth: SUDOKU_SHEET.pageWidth,
+    inset: SUDOKU_SHEET.inset,
+  });
   const sheet = layoutSudokuSheet({
     pageWidth: SUDOKU_SHEET.pageWidth,
     pageHeight: SUDOKU_SHEET.pageHeight,
@@ -235,20 +244,7 @@ function SudokuSheet({
           text={SUDOKU_SHEET.instructionLines.join(" ")}
         />
       ) : (
-        SUDOKU_SHEET.instructionLines.map((text, index) => (
-          <text
-            key={text}
-            x={sheet.instruction.x}
-            y={sheet.instruction.ys[index]}
-            fill="var(--foreground)"
-            fontFamily="ui-sans-serif, system-ui, sans-serif"
-            fontSize={SUDOKU_SHEET.instructionSize}
-            textAnchor="middle"
-            dominantBaseline="middle"
-          >
-            {text}
-          </text>
-        ))
+        <PlainInstruction layout={plain} centerX={sheet.instruction.x} top={sheet.instruction.top} />
       )}
       {card.symbols === "digits" ? (
         <g

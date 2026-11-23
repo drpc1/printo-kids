@@ -1,4 +1,4 @@
-import { fitCellSize, SPEECH_BAND } from "../sheet/speech.ts";
+import { fitCellSize } from "../sheet/speech.ts";
 
 export interface DictationSheetInput {
   pageWidth: number;
@@ -101,19 +101,17 @@ export interface DictationCellSizeInput {
 }
 
 /**
- * The cell size of a card. Without a character it is the level's own size. With one, the speech band takes the
- * place of the one-line instruction and the grid shrinks, in steps of 0.1 mm, only as far as the block needs to stay
- * inside the margin: a short command list leaves the nominal size, a long one a smaller cell.
+ * The cell size of a card, given the height of the instruction above the commands (`instructionBoxHeight`): the
+ * speech band with a character, the plain lines without one. The grid shrinks, in steps of 0.1 mm, only as far as the
+ * block needs to stay inside the margin: a short command list or a one-line instruction leaves the nominal size, a long
+ * list or a taller band a smaller cell.
  */
-export function dictationCellSize(input: DictationCellSizeInput, withBand: boolean): number {
-  if (!withBand) {
-    return input.nominal;
-  }
+export function dictationCellSize(input: DictationCellSizeInput, instructionHeight: number): number {
   const listHeight = Math.ceil(input.commandCount / input.commandsPerRow) * input.commandRowHeight;
   return fitCellSize({
     nominal: input.nominal,
     rows: input.rows,
-    fixedHeight: SPEECH_BAND.characterSize + input.instructionGap + listHeight + input.listGap,
+    fixedHeight: instructionHeight + input.instructionGap + listHeight + input.listGap,
     innerHeight: input.pageHeight - input.inset * 2,
   });
 }

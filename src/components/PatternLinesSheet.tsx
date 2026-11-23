@@ -1,3 +1,4 @@
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import type { PatternLinesCard } from "@/lib/pattern-lines/card";
 import { layoutPatternLinesSheet } from "@/lib/pattern-lines/layout";
@@ -5,6 +6,7 @@ import { patternLinesLevelById } from "@/lib/pattern-lines/levels";
 import { rowGeometry, type GuideLine } from "@/lib/pattern-lines/paths";
 import type { Pt } from "@/lib/pattern-lines/patterns";
 import { PATTERN_LINES_SHEET } from "@/lib/pattern-lines/sheet";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +38,13 @@ export function PatternLinesSheet({
 }) {
   const sheet = PATTERN_LINES_SHEET;
   const level = patternLinesLevelById(card.levelId);
-  const instructionHeight = instructionBoxHeight(characterSrc !== null, sheet.plainInstructionSize);
+  const plain = layoutPlainInstruction({
+    text: level.instruction,
+    size: sheet.plainInstructionSize,
+    pageWidth: sheet.pageWidth,
+    inset: sheet.inset,
+  });
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const layout = layoutPatternLinesSheet(level, instructionHeight);
 
   return (
@@ -61,17 +69,7 @@ export function PatternLinesSheet({
           text={level.instruction}
         />
       ) : (
-        <text
-          x={layout.page.width / 2}
-          y={layout.band.y + layout.band.height / 2}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={sheet.plainInstructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {level.instruction}
-        </text>
+        <PlainInstruction layout={plain} centerX={layout.page.width / 2} top={layout.band.y} />
       )}
       {card.rows.map((row, index) => {
         const geometry = rowGeometry(row, level, lines);

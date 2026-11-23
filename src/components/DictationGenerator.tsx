@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CategoryChoice } from "@/components/CategoryChoice";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoice } from "@/components/LevelChoice";
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
 import { SettingToggle } from "@/components/SettingToggle";
@@ -23,6 +24,7 @@ import {
   type SheetState,
 } from "@/lib/sheet-state";
 import { OBJECT_CATEGORY_CHOICES } from "@/lib/symmetry/templates";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -171,9 +173,15 @@ function DictationSheet({
   characterSrc: string | null;
 }) {
   const level = dictationLevelById(card.levelId);
-  const withBand = characterSrc !== null;
-  const instructionHeight = instructionBoxHeight(withBand, DICTATION_SHEET.instructionSize);
-  // With a character the grid shrinks only as far as the commands of this card need; without one it keeps the level size.
+  const plain = layoutPlainInstruction({
+    text: DICTATION_SHEET.instructionText,
+    size: DICTATION_SHEET.instructionSize,
+    pageWidth: DICTATION_SHEET.pageWidth,
+    inset: DICTATION_SHEET.inset,
+  });
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
+  // The grid shrinks only as far as the instruction (the band, or plain lines taller than one) and the commands of this
+  // card need; with a one-line instruction and a short list it keeps the level size.
   const cellSize = dictationCellSize(
     {
       pageHeight: DICTATION_SHEET.pageHeight,
@@ -186,7 +194,7 @@ function DictationSheet({
       instructionGap: DICTATION_SHEET.instructionGap,
       listGap: DICTATION_SHEET.listGap,
     },
-    withBand,
+    instructionHeight,
   );
   const sheet = layoutDictationSheet({
     pageWidth: DICTATION_SHEET.pageWidth,
@@ -232,17 +240,7 @@ function DictationSheet({
           text={DICTATION_SHEET.instructionText}
         />
       ) : (
-        <text
-          x={sheet.instruction.x}
-          y={sheet.instruction.y}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={DICTATION_SHEET.instructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {DICTATION_SHEET.instructionText}
-        </text>
+        <PlainInstruction layout={plain} centerX={sheet.instruction.x} top={sheet.instruction.y - plain.height / 2} />
       )}
       {card.commands.map((command, index) => {
         const box = sheet.commands[index];

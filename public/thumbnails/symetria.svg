@@ -1,54 +1,60 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297" width="210" height="297">
 <rect width="210" height="297" fill="#fff"/>
 <rect x="0.25" y="0.25" width="209.5" height="296.5" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>
-<text x="105" y="23.5" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle" dominant-baseline="middle">Dorysuj drugą połowę tak, jak w lustrze.</text>
+<text x="105" y="26.02" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle">Dorysuj drugą połowę tak, jak w lustrze.</text>
 <g fill="#000">
-<rect x="60" y="93" width="15" height="15"/>
-<rect x="75" y="93" width="15" height="15"/>
-<rect x="90" y="93" width="15" height="15"/>
+<rect x="45" y="33" width="15" height="15"/>
+<rect x="60" y="33" width="15" height="15"/>
+<rect x="75" y="33" width="15" height="15"/>
+<rect x="90" y="33" width="15" height="15"/>
+<rect x="30" y="48" width="15" height="15"/>
+<rect x="45" y="48" width="15" height="15"/>
+<rect x="60" y="48" width="15" height="15"/>
+<rect x="75" y="48" width="15" height="15"/>
+<rect x="90" y="48" width="15" height="15"/>
+<rect x="15" y="63" width="15" height="15"/>
+<rect x="30" y="63" width="15" height="15"/>
+<rect x="45" y="63" width="15" height="15"/>
+<rect x="15" y="78" width="15" height="15"/>
+<rect x="30" y="78" width="15" height="15"/>
+<rect x="45" y="78" width="15" height="15"/>
+<rect x="15" y="93" width="15" height="15"/>
+<rect x="30" y="93" width="15" height="15"/>
+<rect x="45" y="93" width="15" height="15"/>
+<rect x="30" y="108" width="15" height="15"/>
+<rect x="45" y="108" width="15" height="15"/>
 <rect x="60" y="108" width="15" height="15"/>
+<rect x="75" y="108" width="15" height="15"/>
+<rect x="90" y="108" width="15" height="15"/>
+<rect x="45" y="123" width="15" height="15"/>
 <rect x="60" y="123" width="15" height="15"/>
-<rect x="60" y="138" width="15" height="15"/>
+<rect x="75" y="123" width="15" height="15"/>
+<rect x="90" y="123" width="15" height="15"/>
 <rect x="75" y="138" width="15" height="15"/>
 <rect x="90" y="138" width="15" height="15"/>
-<rect x="60" y="153" width="15" height="15"/>
 <rect x="75" y="153" width="15" height="15"/>
 <rect x="90" y="153" width="15" height="15"/>
-<rect x="60" y="168" width="15" height="15"/>
 <rect x="75" y="168" width="15" height="15"/>
 <rect x="90" y="168" width="15" height="15"/>
-<rect x="60" y="183" width="15" height="15"/>
 <rect x="75" y="183" width="15" height="15"/>
 <rect x="90" y="183" width="15" height="15"/>
-<rect x="60" y="198" width="15" height="15"/>
 <rect x="75" y="198" width="15" height="15"/>
 <rect x="90" y="198" width="15" height="15"/>
-<rect x="60" y="213" width="15" height="15"/>
 <rect x="75" y="213" width="15" height="15"/>
 <rect x="90" y="213" width="15" height="15"/>
 <rect x="75" y="228" width="15" height="15"/>
 <rect x="90" y="228" width="15" height="15"/>
-<rect x="75" y="243" width="15" height="15"/>
-<rect x="90" y="243" width="15" height="15"/>
-<rect x="90" y="258" width="15" height="15"/>
-<rect x="75" y="48" width="15" height="15"/>
-<rect x="90" y="48" width="15" height="15"/>
 <rect x="60" y="63" width="15" height="15"/>
 <rect x="75" y="63" width="15" height="15"/>
 <rect x="90" y="63" width="15" height="15"/>
 <rect x="60" y="78" width="15" height="15"/>
-<rect x="75" y="78" width="15" height="15"/>
-<rect x="90" y="78" width="15" height="15"/>
-<rect x="75" y="108" width="15" height="15"/>
-<rect x="75" y="123" width="15" height="15"/>
+<rect x="60" y="93" width="15" height="15"/>
+<rect x="75" y="93" width="15" height="15"/>
+<rect x="90" y="93" width="15" height="15"/>
+<rect x="45" y="153" width="15" height="15"/>
+<rect x="60" y="153" width="15" height="15"/>
 <rect x="45" y="168" width="15" height="15"/>
-<rect x="30" y="183" width="15" height="15"/>
-<rect x="45" y="183" width="15" height="15"/>
-<rect x="15" y="198" width="15" height="15"/>
-<rect x="30" y="198" width="15" height="15"/>
-<rect x="45" y="198" width="15" height="15"/>
-<rect x="15" y="213" width="15" height="15"/>
-<rect x="30" y="213" width="15" height="15"/>
+<rect x="60" y="168" width="15" height="15"/>
 </g>
 <g fill="none" stroke="#000" stroke-width="0.3">
 <line x1="30" y1="33" x2="30" y2="273"/>

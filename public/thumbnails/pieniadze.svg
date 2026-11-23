@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297" width="210" height="297">
 <rect width="210" height="297" fill="#fff"/>
 <rect x="0.25" y="0.25" width="209.5" height="296.5" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>
-<text x="105" y="23" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle" dominant-baseline="middle">Gdzie jest więcej pieniędzy? Wskaż &lt;, &gt; lub =.</text>
+<text x="105" y="25.52" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="7" text-anchor="middle">Gdzie jest więcej pieniędzy? Wskaż &lt;, &gt; lub =.</text>
 <rect x="10" y="42" width="81" height="45" rx="3" fill="none" stroke="#000" stroke-width="0.3"/>
 <circle cx="19.25" cy="64.5" r="5.1" fill="#fff" stroke="#000" stroke-width="0.8"/>
 <text x="19.25" y="64.5" font-size="5.6" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#000">5</text>

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297" width="210" height="297">
 <rect width="210" height="297" fill="#fff"/>
 <rect x="0.25" y="0.25" width="209.5" height="296.5" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>
-<text x="105" y="59.25" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6.5" text-anchor="middle" dominant-baseline="middle">Uzupełnij puste pola.</text>
-<text x="105" y="68.75" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6.5" text-anchor="middle" dominant-baseline="middle">Nic się nie powtarza w rzędzie, kolumnie i bloku.</text>
+<text x="105" y="61.59" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6.5" text-anchor="middle">Uzupełnij puste pola.</text>
+<text x="105" y="71.09" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6.5" text-anchor="middle">Nic się nie powtarza w rzędzie, kolumnie i bloku.</text>
 <g fill="none" stroke="#000" stroke-width="1.2" stroke-linejoin="round">
 <path d="M33.56 89.56 L56.44 89.56 L56.44 112.44 L33.56 112.44 Z"/>
 <path d="M137.998 92.047 L129.045 101 L137.998 109.953 L133.953 113.998 L125 105.045 L116.047 113.998 L112.002 109.953 L120.955 101 L112.002 92.047 L116.047 88.002 L125 96.955 L133.953 88.002 Z"/>

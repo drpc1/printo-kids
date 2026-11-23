@@ -1,20 +1,19 @@
 import type { ReactElement } from "react";
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import type { ShadowsCard } from "@/lib/shadows/card";
 import { shadowPictureById } from "@/lib/shadows/families";
 import { layoutShadowsSheet, type PictureField } from "@/lib/shadows/layout";
 import { PICTURE_BOX, PICTURE_LINE_WIDTH, type ShadowPicture, type ShadowShape } from "@/lib/shadows/picture-format";
 import { SHADOWS_SHEET } from "@/lib/shadows/sheet";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
-const FONT = "ui-sans-serif, system-ui, sans-serif";
 /** The outline pass thickens every body shape by this stroke; half of it shows outside the fill. */
 const OUTLINE = 2 * PICTURE_LINE_WIDTH;
 const LINE_COLOR = "var(--picture-line)";
 const SHADOW_COLOR = "var(--foreground)";
-/** Baseline of the one-line plain instruction, as a share of its font size below the band's centre. */
-const PLAIN_BASELINE_SHIFT = 0.36;
 
 function paintOf(shape: ShadowShape): string {
   return `var(--picture-${shape.paint})`;
@@ -131,7 +130,13 @@ export function ShadowsSheet({
   characterSrc: string | null;
 }) {
   const sheet = SHADOWS_SHEET;
-  const layout = layoutShadowsSheet(card, instructionBoxHeight(characterSrc !== null, sheet.plainInstructionSize));
+  const plain = layoutPlainInstruction({
+    text: sheet.instruction,
+    size: sheet.plainInstructionSize,
+    pageWidth: sheet.pageWidth,
+    inset: sheet.inset,
+  });
+  const layout = layoutShadowsSheet(card, instructionBoxHeight(characterSrc !== null, plain.height));
 
   return (
     <svg
@@ -155,16 +160,7 @@ export function ShadowsSheet({
           text={sheet.instruction}
         />
       ) : (
-        <text
-          x={layout.page.width / 2}
-          y={layout.band.y + layout.band.height / 2 + sheet.plainInstructionSize * PLAIN_BASELINE_SHIFT}
-          fill="var(--foreground)"
-          fontFamily={FONT}
-          fontSize={sheet.plainInstructionSize}
-          textAnchor="middle"
-        >
-          {sheet.instruction}
-        </text>
+        <PlainInstruction layout={plain} centerX={layout.page.width / 2} top={layout.band.y} />
       )}
       {layout.rows.map((row, index) => {
         const picture = shadowPictureById(card.pictures[index]);

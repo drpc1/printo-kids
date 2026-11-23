@@ -3,6 +3,7 @@ import { CategoryChoice } from "@/components/CategoryChoice";
 import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { NonogramSimpleSheet } from "@/components/NonogramSimpleSheet";
 import { SudokuChoice } from "@/components/SudokuChoice";
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
 import { SettingToggle } from "@/components/SettingToggle";
@@ -24,6 +25,7 @@ import {
 } from "@/lib/sheet-state";
 import type { SimpleNonogramCard } from "@/lib/nonogram/simple";
 import { OBJECT_CATEGORY_CHOICES } from "@/lib/symmetry/templates";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -182,7 +184,13 @@ function NonogramSheet({
   characterId: string;
   characterSrc: string | null;
 }) {
-  const instructionHeight = instructionBoxHeight(characterSrc !== null, NONOGRAM_SHEET.instructionSize);
+  const plain = layoutPlainInstruction({
+    text: NONOGRAM_SHEET.instructionText,
+    size: NONOGRAM_SHEET.instructionSize,
+    pageWidth: NONOGRAM_SHEET.pageWidth,
+    inset: NONOGRAM_SHEET.inset,
+  });
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const size = nonogramSizeById(card.sizeId);
   const sheet = layoutNonogramSheet({
     pageWidth: NONOGRAM_SHEET.pageWidth,
@@ -227,17 +235,7 @@ function NonogramSheet({
           text={NONOGRAM_SHEET.instructionText}
         />
       ) : (
-        <text
-          x={sheet.instruction.x}
-          y={sheet.instruction.y}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={NONOGRAM_SHEET.instructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {NONOGRAM_SHEET.instructionText}
-        </text>
+        <PlainInstruction layout={plain} centerX={sheet.instruction.x} top={sheet.instruction.y - plain.height / 2} />
       )}
       {showSolution ? (
         <g className={cn("print:hidden")} fill="var(--foreground)" data-solution>

@@ -59,6 +59,7 @@ import { clockLevelById, clockModeById } from "../src/lib/clock/levels.ts";
 import { CLOCK_SHEET } from "../src/lib/clock/sheet.ts";
 import { generateCodingCard } from "../src/lib/coding/generate.ts";
 import { layoutCodingSheet } from "../src/lib/coding/layout.ts";
+import { layoutPlainInstruction } from "../src/lib/sheet/plain-instruction.ts";
 import { codingInstruction, codingLevelById, codingModeById } from "../src/lib/coding/levels.ts";
 import { CODING_SHEET } from "../src/lib/coding/sheet.ts";
 import { generateSizeOrderCard } from "../src/lib/size-order/generate.ts";
@@ -119,6 +120,17 @@ const sheet = layoutSheet({
 const cellSize = sheet.maze.width / maze.width;
 const walls = collectWalls(maze, sheet.maze.x, sheet.maze.y, cellSize);
 
+// The instruction of a card without a character, drawn from the same `layoutPlainInstruction` as PlainInstruction.tsx:
+// the same lines, height and baselines (no dominant-baseline). `top` is where the instruction starts on the page.
+function plainInstructionSvg(layout, pageWidth, top) {
+  return layout.lines
+    .map(
+      (line, index) =>
+        `<text x="${num(pageWidth / 2)}" y="${num(top + layout.baselines[index])}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${layout.size}" text-anchor="middle">${line.replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</text>`,
+    )
+    .join("\n");
+}
+
 function label(anchor) {
   return `<text x="${num(anchor.x)}" y="${num(anchor.y)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SHEET_LABEL_SIZE}" text-anchor="middle" dominant-baseline="middle">${anchor.text}</text>`;
 }
@@ -166,6 +178,12 @@ if (card === null) {
   throw new Error(`Seed ${SYMMETRY_SEED} did not produce a valid symmetry card`);
 }
 
+const symmetryPlain = layoutPlainInstruction({
+  text: INSTRUCTION_TEXT,
+  size: INSTRUCTION_SIZE,
+  pageWidth: SYMMETRY_PAGE_WIDTH,
+  inset: SYMMETRY_INSET,
+});
 const symmetrySheet = layoutSymmetrySheet({
   pageWidth: SYMMETRY_PAGE_WIDTH,
   pageHeight: SYMMETRY_PAGE_HEIGHT,
@@ -173,7 +191,7 @@ const symmetrySheet = layoutSymmetrySheet({
   columns: card.columns,
   rows: card.rows,
   cellSize: card.cellSize,
-  instructionHeight: INSTRUCTION_SIZE,
+  instructionHeight: symmetryPlain.height,
   instructionGap: INSTRUCTION_GAP,
 });
 const grid = symmetrySheet.grid;
@@ -183,7 +201,7 @@ const symmetryLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SYMMETRY_PAGE_WIDTH} ${SYMMETRY_PAGE_HEIGHT}" width="${SYMMETRY_PAGE_WIDTH}" height="${SYMMETRY_PAGE_HEIGHT}">`,
   `<rect width="${SYMMETRY_PAGE_WIDTH}" height="${SYMMETRY_PAGE_HEIGHT}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${SYMMETRY_PAGE_WIDTH - 0.5}" height="${SYMMETRY_PAGE_HEIGHT - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(symmetrySheet.instruction.x)}" y="${num(symmetrySheet.instruction.y)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${INSTRUCTION_SIZE}" text-anchor="middle" dominant-baseline="middle">${INSTRUCTION_TEXT}</text>`,
+  plainInstructionSvg(symmetryPlain, SYMMETRY_PAGE_WIDTH, symmetrySheet.instruction.y - symmetryPlain.height / 2),
   `<g fill="#000">`,
 ];
 for (const cell of card.cells) {
@@ -220,6 +238,13 @@ if (sudokuCard === null) {
   throw new Error(`Seed ${SUDOKU_SEED} did not produce a valid sudoku card`);
 }
 
+const sudokuPlain = layoutPlainInstruction({
+  lines: SUDOKU_SHEET.instructionLines,
+  lineGap: SUDOKU_SHEET.instructionLineGap,
+  size: SUDOKU_SHEET.instructionSize,
+  pageWidth: SUDOKU_SHEET.pageWidth,
+  inset: SUDOKU_SHEET.inset,
+});
 const sudokuSheet = layoutSudokuSheet({
   pageWidth: SUDOKU_SHEET.pageWidth,
   pageHeight: SUDOKU_SHEET.pageHeight,
@@ -243,11 +268,7 @@ const sudokuLines = [
   `<rect width="${SUDOKU_SHEET.pageWidth}" height="${SUDOKU_SHEET.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${SUDOKU_SHEET.pageWidth - 0.5}" height="${SUDOKU_SHEET.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
 ];
-SUDOKU_SHEET.instructionLines.forEach((text, index) => {
-  sudokuLines.push(
-    `<text x="${num(sudokuSheet.instruction.x)}" y="${num(sudokuSheet.instruction.ys[index])}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SUDOKU_SHEET.instructionSize}" text-anchor="middle" dominant-baseline="middle">${text}</text>`,
-  );
-});
+sudokuLines.push(plainInstructionSvg(sudokuPlain, SUDOKU_SHEET.pageWidth, sudokuSheet.instruction.top));
 sudokuLines.push(`<g fill="none" stroke="#000" stroke-width="${SUDOKU_SHEET.shapeStroke}" stroke-linejoin="round">`);
 sudokuCard.givens.forEach((row, r) => {
   row.forEach((symbol, c) => {
@@ -280,6 +301,12 @@ if (sequenceCard === null) {
   throw new Error(`Seed ${SEQUENCE_SEED} did not produce a valid sequence card`);
 }
 
+const sequencePlain = layoutPlainInstruction({
+  text: SEQUENCE.instructionText,
+  size: SEQUENCE.instructionSize,
+  pageWidth: SEQUENCE.pageWidth,
+  inset: SEQUENCE.inset,
+});
 const sequenceSheet = layoutSequenceSheet({
   pageWidth: SEQUENCE.pageWidth,
   pageHeight: SEQUENCE.pageHeight,
@@ -287,7 +314,7 @@ const sequenceSheet = layoutSequenceSheet({
   fieldsPerRow: sequenceCard.fieldsPerRow,
   rowCount: sequenceCard.rows.length,
   fieldGapRatio: SEQUENCE.fieldGapRatio,
-  instructionHeight: SEQUENCE.instructionSize,
+  instructionHeight: sequencePlain.height,
   instructionGap: SEQUENCE.instructionGap,
 });
 const fieldSize = sequenceSheet.fieldSize;
@@ -297,7 +324,7 @@ const sequenceLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SEQUENCE.pageWidth} ${SEQUENCE.pageHeight}" width="${SEQUENCE.pageWidth}" height="${SEQUENCE.pageHeight}">`,
   `<rect width="${SEQUENCE.pageWidth}" height="${SEQUENCE.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${SEQUENCE.pageWidth - 0.5}" height="${SEQUENCE.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(sequenceSheet.instruction.x)}" y="${num(sequenceSheet.instruction.y)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SEQUENCE.instructionSize}" text-anchor="middle" dominant-baseline="middle">${SEQUENCE.instructionText}</text>`,
+  plainInstructionSvg(sequencePlain, SEQUENCE.pageWidth, sequenceSheet.instruction.y - sequencePlain.height / 2),
 ];
 sequenceCard.rows.forEach((row, rowIndex) => {
   sequenceSheet.rows[rowIndex].fields.forEach((field, fieldIndex) => {
@@ -345,6 +372,12 @@ if (nonogramCard === null) {
   throw new Error(`Seed ${NONOGRAM_SEED} did not produce a valid nonogram card`);
 }
 
+const nonogramPlain = layoutPlainInstruction({
+  text: NONOGRAM.instructionText,
+  size: NONOGRAM.instructionSize,
+  pageWidth: NONOGRAM.pageWidth,
+  inset: NONOGRAM.inset,
+});
 const nonogramSheet = layoutNonogramSheet({
   pageWidth: NONOGRAM.pageWidth,
   pageHeight: NONOGRAM.pageHeight,
@@ -354,7 +387,7 @@ const nonogramSheet = layoutNonogramSheet({
   cellSize: nonogramCard.cellSize,
   digitSize: NONOGRAM_SIZE.digitSize,
   ...longestClues(nonogramCard.clues),
-  instructionSize: NONOGRAM.instructionSize,
+  instructionSize: nonogramPlain.height,
   instructionGap: NONOGRAM.instructionGap,
   clueGap: NONOGRAM.clueGap,
   clueSlot: NONOGRAM.clueSlot,
@@ -368,7 +401,7 @@ const nonogramLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${NONOGRAM.pageWidth} ${NONOGRAM.pageHeight}" width="${NONOGRAM.pageWidth}" height="${NONOGRAM.pageHeight}">`,
   `<rect width="${NONOGRAM.pageWidth}" height="${NONOGRAM.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${NONOGRAM.pageWidth - 0.5}" height="${NONOGRAM.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(nonogramSheet.instruction.x)}" y="${num(nonogramSheet.instruction.y)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${NONOGRAM.instructionSize}" text-anchor="middle" dominant-baseline="middle">${NONOGRAM.instructionText}</text>`,
+  plainInstructionSvg(nonogramPlain, NONOGRAM.pageWidth, nonogramSheet.instruction.y - nonogramPlain.height / 2),
   `<g fill="none" stroke="#000">`,
 ];
 for (let index = 0; index <= nonogramCard.columns; index += 1) {
@@ -419,6 +452,12 @@ if (dictationCard === null) {
   throw new Error(`Seed ${DICTATION_SEED} did not produce a valid dictation card`);
 }
 
+const dictationPlain = layoutPlainInstruction({
+  text: DICTATION.instructionText,
+  size: DICTATION.instructionSize,
+  pageWidth: DICTATION.pageWidth,
+  inset: DICTATION.inset,
+});
 const dictationSheet = layoutDictationSheet({
   pageWidth: DICTATION.pageWidth,
   pageHeight: DICTATION.pageHeight,
@@ -429,7 +468,7 @@ const dictationSheet = layoutDictationSheet({
   commandCount: dictationCard.commands.length,
   commandsPerRow: DICTATION_LEVEL_LAT6.commandsPerRow,
   commandRowHeight: DICTATION_LEVEL_LAT6.commandRowHeight,
-  instructionSize: DICTATION.instructionSize,
+  instructionSize: dictationPlain.height,
   instructionGap: DICTATION.instructionGap,
   listGap: DICTATION.listGap,
 });
@@ -441,7 +480,7 @@ const dictationLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${DICTATION.pageWidth} ${DICTATION.pageHeight}" width="${DICTATION.pageWidth}" height="${DICTATION.pageHeight}">`,
   `<rect width="${DICTATION.pageWidth}" height="${DICTATION.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${DICTATION.pageWidth - 0.5}" height="${DICTATION.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(dictationSheet.instruction.x)}" y="${num(dictationSheet.instruction.y)}" fill="#000" ${dictationFont} font-size="${DICTATION.instructionSize}" text-anchor="middle" dominant-baseline="middle">${DICTATION.instructionText}</text>`,
+  plainInstructionSvg(dictationPlain, DICTATION.pageWidth, dictationSheet.instruction.y - dictationPlain.height / 2),
 ];
 dictationCard.commands.forEach((command, index) => {
   const box = dictationSheet.commands[index];
@@ -487,6 +526,12 @@ if (moneyCard === null) {
   throw new Error(`Seed ${MONEY_SEED} did not produce a valid money card`);
 }
 
+const moneyPlain = layoutPlainInstruction({
+  text: MONEY.instructionLines.join(" "),
+  size: MONEY.plainInstructionSize,
+  pageWidth: MONEY.pageWidth,
+  inset: MONEY.inset,
+});
 const moneySheet = layoutMoneySheet({
   pageWidth: MONEY.pageWidth,
   pageHeight: MONEY.pageHeight,
@@ -504,7 +549,11 @@ const moneyLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MONEY.pageWidth} ${MONEY.pageHeight}" width="${MONEY.pageWidth}" height="${MONEY.pageHeight}">`,
   `<rect width="${MONEY.pageWidth}" height="${MONEY.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${MONEY.pageWidth - 0.5}" height="${MONEY.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(MONEY.pageWidth / 2)}" y="${num(moneySheet.band.y + moneySheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${MONEY.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${MONEY.instructionLines.join(" ").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</text>`,
+  plainInstructionSvg(
+    moneyPlain,
+    MONEY.pageWidth,
+    moneySheet.band.y + (moneySheet.band.height - moneyPlain.height) / 2,
+  ),
 ];
 const moneyFont = `font-family="ui-sans-serif, system-ui, sans-serif" font-weight="${MONEY.fontWeight}" text-anchor="middle" dominant-baseline="central" fill="#000"`;
 moneyCard.rows.forEach((row, rowIndex) => {
@@ -559,6 +608,12 @@ if (oddCard === null) {
   throw new Error(`Seed ${ODD_SEED} did not produce a valid odd-one-out card`);
 }
 
+const oddPlain = layoutPlainInstruction({
+  text: ODD.instructionLines.join(" "),
+  size: ODD.plainInstructionSize,
+  pageWidth: ODD.pageWidth,
+  inset: ODD.inset,
+});
 const oddSheet = layoutOddOneOutSheet({
   pageWidth: ODD.pageWidth,
   pageHeight: ODD.pageHeight,
@@ -607,7 +662,7 @@ const oddLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ODD.pageWidth} ${ODD.pageHeight}" width="${ODD.pageWidth}" height="${ODD.pageHeight}">`,
   `<rect width="${ODD.pageWidth}" height="${ODD.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${ODD.pageWidth - 0.5}" height="${ODD.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(ODD.pageWidth / 2)}" y="${num(oddSheet.band.y + oddSheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${ODD.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${ODD.instructionLines.join(" ")}</text>`,
+  plainInstructionSvg(oddPlain, ODD.pageWidth, oddSheet.band.y + (oddSheet.band.height - oddPlain.height) / 2),
 ];
 oddCard.rows.forEach((row, rowIndex) => {
   const rowLayout = oddSheet.rows[rowIndex];
@@ -654,12 +709,18 @@ if (copyCard === null) {
   throw new Error(`Seed ${COPY_SEED} did not produce a valid copy-drawing card`);
 }
 
-const copySheet = layoutCopyDrawingSheet(copyLevel, COPY.plainInstructionSize);
+const copyPlain = layoutPlainInstruction({
+  text: COPY.instructionText,
+  size: COPY.plainInstructionSize,
+  pageWidth: COPY.pageWidth,
+  inset: COPY.inset,
+});
+const copySheet = layoutCopyDrawingSheet(copyLevel, copyPlain.height);
 const copyLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${COPY.pageWidth} ${COPY.pageHeight}" width="${COPY.pageWidth}" height="${COPY.pageHeight}">`,
   `<rect width="${COPY.pageWidth}" height="${COPY.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${COPY.pageWidth - 0.5}" height="${COPY.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(COPY.pageWidth / 2)}" y="${num(copySheet.band.y + copySheet.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${COPY.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${COPY.instructionText}</text>`,
+  plainInstructionSvg(copyPlain, COPY.pageWidth, copySheet.band.y),
 ];
 for (const [rect, pattern] of [
   [copySheet.source, copyCard.pattern],
@@ -718,14 +779,20 @@ if (patternCard === null) {
   throw new Error(`Seed ${PATTERN_SEED} did not produce a valid pattern-lines card`);
 }
 
-const patternLayout = layoutPatternLinesSheet(patternLevel, PATTERN.plainInstructionSize);
+const patternPlain = layoutPlainInstruction({
+  text: patternLevel.instruction,
+  size: PATTERN.plainInstructionSize,
+  pageWidth: PATTERN.pageWidth,
+  inset: PATTERN.inset,
+});
+const patternLayout = layoutPatternLinesSheet(patternLevel, patternPlain.height);
 const patternPathD = (points) =>
   points.map((point, index) => `${index === 0 ? "M" : "L"}${num(point.x)} ${num(point.y)}`).join(" ");
 const patternLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${PATTERN.pageWidth} ${PATTERN.pageHeight}" width="${PATTERN.pageWidth}" height="${PATTERN.pageHeight}">`,
   `<rect width="${PATTERN.pageWidth}" height="${PATTERN.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${PATTERN.pageWidth - 0.5}" height="${PATTERN.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(PATTERN.pageWidth / 2)}" y="${num(patternLayout.band.y + patternLayout.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${PATTERN.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${patternLevel.instruction}</text>`,
+  plainInstructionSvg(patternPlain, PATTERN.pageWidth, patternLayout.band.y),
 ];
 patternCard.rows.forEach((row, index) => {
   const geometry = rowGeometry(row, patternLevel, true);
@@ -774,13 +841,19 @@ if (crosswordCard === null) {
   throw new Error(`Seed ${CROSSWORD_SEED} did not produce a valid math-crossword card`);
 }
 
-const crosswordLayout = layoutMathCrosswordSheet(crosswordCard, CROSSWORD.plainInstructionSize);
+const crosswordPlain = layoutPlainInstruction({
+  text: CROSSWORD.instruction,
+  size: CROSSWORD.plainInstructionSize,
+  pageWidth: CROSSWORD.pageWidth,
+  inset: CROSSWORD.inset,
+});
+const crosswordLayout = layoutMathCrosswordSheet(crosswordCard, crosswordPlain.height);
 const crosswordBlanks = new Set(crosswordCard.blanks);
 const crosswordLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CROSSWORD.pageWidth} ${CROSSWORD.pageHeight}" width="${CROSSWORD.pageWidth}" height="${CROSSWORD.pageHeight}">`,
   `<rect width="${CROSSWORD.pageWidth}" height="${CROSSWORD.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${CROSSWORD.pageWidth - 0.5}" height="${CROSSWORD.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(CROSSWORD.pageWidth / 2)}" y="${num(crosswordLayout.band.y + crosswordLayout.band.height / 2)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${CROSSWORD.plainInstructionSize}" text-anchor="middle" dominant-baseline="middle">${CROSSWORD.instruction}</text>`,
+  plainInstructionSvg(crosswordPlain, CROSSWORD.pageWidth, crosswordLayout.band.y),
   `<defs><pattern id="gap" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="2" stroke="#a1a1aa" stroke-width="0.35"/></pattern></defs>`,
 ];
 for (const { x, y } of crosswordLayout.gaps) {
@@ -823,7 +896,13 @@ if (clockCard === null) {
   throw new Error(`Seed ${CLOCK_SEED} did not produce a valid clock card`);
 }
 
-const clockLayout = layoutClockSheet(clockCard, CLOCK.plainInstructionSize);
+const clockPlain = layoutPlainInstruction({
+  text: clockMode.instruction,
+  size: CLOCK.plainInstructionSize,
+  pageWidth: CLOCK.pageWidth,
+  inset: CLOCK.inset,
+});
+const clockLayout = layoutClockSheet(clockCard, clockPlain.height);
 const clockText = (x, y, size, body, extra = "") =>
   `<text x="${num(x)}" y="${num(y + size * CLOCK.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${num(size)}" text-anchor="middle"${extra}>${body}</text>`;
 const clockLine = (line, cap = "") =>
@@ -835,12 +914,7 @@ const clockLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CLOCK.pageWidth} ${CLOCK.pageHeight}" width="${CLOCK.pageWidth}" height="${CLOCK.pageHeight}">`,
   `<rect width="${CLOCK.pageWidth}" height="${CLOCK.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${CLOCK.pageWidth - 0.5}" height="${CLOCK.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  clockText(
-    CLOCK.pageWidth / 2,
-    clockLayout.band.y + clockLayout.band.height / 2,
-    CLOCK.plainInstructionSize,
-    clockMode.instruction,
-  ),
+  plainInstructionSvg(clockPlain, CLOCK.pageWidth, clockLayout.band.y),
 ];
 for (const place of clockLayout.dials) {
   const drawing = drawDial(place.cx, place.cy, clockLayout.radius, clockLevel.minuteTicks, clockCard.times[place.time]);
@@ -891,7 +965,13 @@ const codingCard = generateCodingCard(mulberry32(CODING_SEED), null, codingLevel
 if (codingCard === null) {
   throw new Error(`Seed ${CODING_SEED} did not produce a valid coding card`);
 }
-const codingLayout = layoutCodingSheet(codingCard, CODING.plainInstructionSize);
+const codingPlain = layoutPlainInstruction({
+  text: codingInstruction(codingLevel, codingMode),
+  size: CODING.plainInstructionSize,
+  pageWidth: CODING.pageWidth,
+  inset: CODING.inset,
+});
+const codingLayout = layoutCodingSheet(codingCard, codingPlain.height);
 const codingText = (x, y, size, body, extra = "") =>
   `<text x="${num(x)}" y="${num(y + size * CODING.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${num(size)}" text-anchor="middle"${extra}>${body}</text>`;
 const codingArrow = (cx, cy, length, dir, color) => {
@@ -905,12 +985,7 @@ const codingLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CODING.pageWidth} ${CODING.pageHeight}" width="${CODING.pageWidth}" height="${CODING.pageHeight}">`,
   `<rect width="${CODING.pageWidth}" height="${CODING.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${CODING.pageWidth - 0.5}" height="${CODING.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  codingText(
-    CODING.pageWidth / 2,
-    codingLayout.band.y + codingLayout.band.height / 2,
-    CODING.plainInstructionSize,
-    codingInstruction(codingLevel, codingMode),
-  ),
+  plainInstructionSvg(codingPlain, CODING.pageWidth, codingLayout.band.y),
 ];
 for (let row = 0; row < codingGrid.rows; row += 1) {
   for (let col = 0; col < codingGrid.cols; col += 1) {
@@ -972,13 +1047,19 @@ const sizeCard = generateSizeOrderCard(mulberry32(SIZE_SEED), sizeLevel);
 if (sizeCard === null) {
   throw new Error(`Seed ${SIZE_SEED} did not produce a valid size-order card`);
 }
-const sizeLayout = layoutSizeOrderSheet(sizeCard, SIZE.plainInstructionSize);
+const sizePlain = layoutPlainInstruction({
+  text: SIZE.instruction,
+  size: SIZE.plainInstructionSize,
+  pageWidth: SIZE.pageWidth,
+  inset: SIZE.inset,
+});
+const sizeLayout = layoutSizeOrderSheet(sizeCard, sizePlain.height);
 
 const sizeLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE.pageWidth} ${SIZE.pageHeight}" width="${SIZE.pageWidth}" height="${SIZE.pageHeight}">`,
   `<rect width="${SIZE.pageWidth}" height="${SIZE.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${SIZE.pageWidth - 0.5}" height="${SIZE.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(SIZE.pageWidth / 2)}" y="${num(sizeLayout.band.y + sizeLayout.band.height / 2 + SIZE.plainInstructionSize * SIZE.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SIZE.plainInstructionSize}" text-anchor="middle">${SIZE.instruction}</text>`,
+  plainInstructionSvg(sizePlain, SIZE.pageWidth, sizeLayout.band.y),
 ];
 sizeCard.rows.forEach((row, rowIndex) => {
   const rowLayout = sizeLayout.rows[rowIndex];
@@ -1023,13 +1104,19 @@ const numberCard = generateNumberMazeCard(mulberry32(NUMBER_MAZE_SEED), numberLe
 if (numberCard === null) {
   throw new Error(`Seed ${NUMBER_MAZE_SEED} did not produce a valid number-maze card`);
 }
-const numberLayout = layoutNumberMazeSheet(numberCard, NUMBER.plainInstructionSize);
+const numberPlain = layoutPlainInstruction({
+  text: numberLevel.instruction,
+  size: NUMBER.plainInstructionSize,
+  pageWidth: NUMBER.pageWidth,
+  inset: NUMBER.inset,
+});
+const numberLayout = layoutNumberMazeSheet(numberCard, numberPlain.height);
 
 const numberLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${NUMBER.pageWidth} ${NUMBER.pageHeight}" width="${NUMBER.pageWidth}" height="${NUMBER.pageHeight}">`,
   `<rect width="${NUMBER.pageWidth}" height="${NUMBER.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${NUMBER.pageWidth - 0.5}" height="${NUMBER.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(NUMBER.pageWidth / 2)}" y="${num(numberLayout.band.y + numberLayout.band.height / 2 + NUMBER.plainInstructionSize * NUMBER.baselineShift)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${NUMBER.plainInstructionSize}" text-anchor="middle">${numberLevel.instruction}</text>`,
+  plainInstructionSvg(numberPlain, NUMBER.pageWidth, numberLayout.band.y),
 ];
 for (const cell of numberLayout.cells) {
   numberLines.push(
@@ -1075,7 +1162,13 @@ const shadowsCard = generateShadowsCard(mulberry32(SHADOWS_SEED), shadowsLevelBy
 if (shadowsCard === null) {
   throw new Error(`Seed ${SHADOWS_SEED} did not produce a valid shadows card`);
 }
-const shadowsLayout = layoutShadowsSheet(shadowsCard, SHADOWS.plainInstructionSize);
+const shadowsPlain = layoutPlainInstruction({
+  text: SHADOWS.instruction,
+  size: SHADOWS.plainInstructionSize,
+  pageWidth: SHADOWS.pageWidth,
+  inset: SHADOWS.inset,
+});
+const shadowsLayout = layoutShadowsSheet(shadowsCard, shadowsPlain.height);
 const SHADOW_OUTLINE = 2 * PICTURE_LINE_WIDTH;
 
 function shadowShapeSvg(shape, color, pad) {
@@ -1124,7 +1217,7 @@ const shadowsLines = [
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SHADOWS.pageWidth} ${SHADOWS.pageHeight}" width="${SHADOWS.pageWidth}" height="${SHADOWS.pageHeight}">`,
   `<rect width="${SHADOWS.pageWidth}" height="${SHADOWS.pageHeight}" fill="#fff"/>`,
   `<rect x="0.25" y="0.25" width="${SHADOWS.pageWidth - 0.5}" height="${SHADOWS.pageHeight - 0.5}" fill="none" stroke="#d4d4d8" stroke-width="0.5"/>`,
-  `<text x="${num(SHADOWS.pageWidth / 2)}" y="${num(shadowsLayout.band.y + shadowsLayout.band.height / 2 + SHADOWS.plainInstructionSize * 0.36)}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${SHADOWS.plainInstructionSize}" text-anchor="middle">${SHADOWS.instruction}</text>`,
+  plainInstructionSvg(shadowsPlain, SHADOWS.pageWidth, shadowsLayout.band.y),
 ];
 shadowsLayout.rows.forEach((row, index) => {
   shadowsLines.push(

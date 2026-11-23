@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { layoutPlainInstruction } from "../sheet/plain-instruction.ts";
 import { instructionBoxHeight } from "../sheet/speech.ts";
 import { layoutPatternLinesSheet } from "./layout.ts";
 import { PATTERN_LINES_LEVELS } from "./levels.ts";
@@ -7,7 +8,21 @@ import { PATTERN_LINES_SHEET } from "./sheet.ts";
 
 const EPSILON = 1e-6;
 const WITH_CHARACTER = instructionBoxHeight(true, PATTERN_LINES_SHEET.plainInstructionSize);
-const WITHOUT_CHARACTER = instructionBoxHeight(false, PATTERN_LINES_SHEET.plainInstructionSize);
+/** The tallest plain instruction of the card over its levels; they all fit on one line. */
+const WITHOUT_CHARACTER = instructionBoxHeight(
+  false,
+  Math.max(
+    ...PATTERN_LINES_LEVELS.map(
+      (level) =>
+        layoutPlainInstruction({
+          text: level.instruction,
+          size: PATTERN_LINES_SHEET.plainInstructionSize,
+          pageWidth: PATTERN_LINES_SHEET.pageWidth,
+          inset: PATTERN_LINES_SHEET.inset,
+        }).height,
+    ),
+  ),
+);
 
 void describe("layoutPatternLinesSheet", () => {
   void test("the instruction box is 26 mm with a character and 7 mm without", () => {

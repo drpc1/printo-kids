@@ -3,6 +3,7 @@ import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoice } from "@/components/LevelChoice";
 import { SudokuChoice } from "@/components/SudokuChoice";
 import { SettingToggle } from "@/components/SettingToggle";
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
 import { useCardPage } from "@/hooks/useCardPage";
@@ -15,6 +16,7 @@ import type { MoneyCard } from "@/lib/money/generate";
 import { layoutMoneySheet, layoutPile, type MoneyPileArea } from "@/lib/money/layout";
 import { moneyLevelById, moneyLevels, type MoneyLevelId } from "@/lib/money/levels";
 import { MONEY_SHEET } from "@/lib/money/sheet";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import {
   applySettings,
   failureReason,
@@ -196,6 +198,13 @@ function MoneySheet({
     signGap: MONEY_SHEET.signGap,
     pilePadding: MONEY_SHEET.pilePadding,
   });
+  // The band keeps its height without a character; the plain lines stand centred in it.
+  const plain = layoutPlainInstruction({
+    text: INSTRUCTION_TEXT,
+    size: MONEY_SHEET.plainInstructionSize,
+    pageWidth: MONEY_SHEET.pageWidth,
+    inset: MONEY_SHEET.inset,
+  });
 
   return (
     <svg
@@ -218,17 +227,11 @@ function MoneySheet({
           text={INSTRUCTION_TEXT}
         />
       ) : (
-        <text
-          x={sheet.page.width / 2}
-          y={sheet.band.y + sheet.band.height / 2}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={MONEY_SHEET.plainInstructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {INSTRUCTION_TEXT}
-        </text>
+        <PlainInstruction
+          layout={plain}
+          centerX={sheet.page.width / 2}
+          top={sheet.band.y + (sheet.band.height - plain.height) / 2}
+        />
       )}
       {card.rows.map((row, index) => {
         const rowLayout = sheet.rows[index];
