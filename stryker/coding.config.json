@@ -1,0 +1,13 @@
+{
+  "$schema": "../node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress"],
+  "testRunner": "command",
+  "coverageAnalysis": "off",
+  "concurrency": 4,
+  "timeoutMS": 60000,
+  "commandRunner": {
+    "command": "node scripts/with-env.mjs MUTATION_RUN=1 -- node --experimental-strip-types --test src/lib/coding/card.test.ts src/lib/coding/generate.test.ts src/lib/coding/search.test.ts src/lib/coding/oracle.test.ts src/lib/coding/levels.test.ts "
+  },
+  "mutate": ["src/lib/coding/card.ts", "src/lib/coding/generate.ts", "src/lib/coding/search.ts"]
+}

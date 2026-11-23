@@ -132,3 +132,50 @@ void describe("copyDrawingCellColors", () => {
     );
   });
 });
+
+/** Empty cells of `pattern` that cannot be reached from outside the grid through empty cells (own flood, no shared code). */
+function enclosedEmptyCells(pattern: readonly (readonly boolean[])[]): Set<string> {
+  const outside = new Set<string>();
+  const stack: [number, number][] = [];
+  const rows = pattern.length;
+  const columns = pattern[0].length;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < columns; c++) {
+      if (!pattern[r][c] && (r === 0 || c === 0 || r === rows - 1 || c === columns - 1)) stack.push([r, c]);
+    }
+  }
+  for (let next = stack.pop(); next !== undefined; next = stack.pop()) {
+    const [r, c] = next;
+    if (r < 0 || c < 0 || r >= rows || c >= columns || pattern[r][c] || outside.has(`${r},${c}`)) continue;
+    outside.add(`${r},${c}`);
+    stack.push([r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]);
+  }
+  const closed = new Set<string>();
+  pattern.forEach((row, r) => {
+    row.forEach((filled, c) => {
+      if (!filled && !outside.has(`${r},${c}`)) closed.add(`${r},${c}`);
+    });
+  });
+  return closed;
+}
+
+void describe("copyDrawingCellColors: holes (independent flood)", () => {
+  for (const level of COPY_DRAWING_LEVELS) {
+    void test(`${level.id}: enclosed empty cells take the hole color or stay white, the rest of the grid is bare`, () => {
+      for (const template of symmetryTemplatesFor(level.size.templateLevel, "wszystkie")) {
+        const card = composeCopyDrawingCard(templatePicture(template), level);
+        const colors = copyDrawingCellColors(card);
+        assert.ok(colors, template.id);
+        const closed = enclosedEmptyCells(card.pattern);
+        colors.forEach((row, r) => {
+          row.forEach((crayon, c) => {
+            const where = `${template.id} ${c},${r}`;
+            if (card.pattern[r][c]) assert.notEqual(crayon, null, where);
+            else if (closed.has(`${r},${c}`)) assert.equal(crayon, template.holeColor, where);
+            else assert.equal(crayon, null, where);
+          });
+        });
+      }
+    });
+  }
+});
