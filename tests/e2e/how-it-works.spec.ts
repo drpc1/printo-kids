@@ -60,7 +60,8 @@ test("a generator page has the footer link and the page states the rules of leve
   // GitHub 375: the seasonal characters and the "Boże Narodzenie" category are described with their date window.
   await expect(page.getByRole("heading", { level: 2, name: "Święta" })).toBeVisible();
   await expect(body).toContainText("Od 15 listopada do 6 stycznia");
-  await expect(body).toContainText("Bałwanka, Mikołaja i Renifera");
+  await expect(body).toContainText("dodatkowo Mikołaja i Renifera");
+  await expect(body).toContainText("Od 1 grudnia do końca lutego lista ma Bałwanka i Pingwina");
   await expect(body).not.toContainText("filtr");
 });
 
