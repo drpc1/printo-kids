@@ -561,8 +561,13 @@ const ART: ObjectArt[] = [
           "sssss..sssss",
         ],
         parts: {
-          ears: [{ 0: "..ss....ss.." }, { 0: ".sss....sss." }],
-          mouth: [{ 5: "....ssss...." }, { 5: "....s..s...." }],
+          // Ears and mouth are one part: a 6 by 15 template has at most three parts.
+          head: [
+            { 0: "..ss....ss..", 5: "....ssss...." },
+            { 0: "..ss....ss..", 5: "....s..s...." },
+            { 0: ".sss....sss.", 5: "....ssss...." },
+            { 0: ".sss....sss.", 5: "....s..s...." },
+          ],
           arms: [{ 9: "...s....s...", 10: "...s....s..." }, {}],
           legs: [{ 13: ".ssss..ssss." }, { 13: ".ssssssssss." }],
         },

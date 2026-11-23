@@ -1165,123 +1165,6 @@ const PIERNIK_9: SymmetryTemplate = {
   ],
 };
 
-const BALWANEK_4: SymmetryTemplate = {
-  id: "balwanek",
-  width: 4,
-  height: 12,
-  holeColor: "black",
-  categories: ["zima"],
-  base: drawing(["....", "....", "....", ".sss", ".s.o", ".sss", "..ss", ".sss", "....", "....", "ssss", ".sss"]),
-  parts: [
-    {
-      id: "hat",
-      variants: [
-        drawing(["..kk", "..kk", ".kkk"]),
-        drawing(["....", "..kk", ".kkk"]),
-        drawing(["...k", "..kk", ".kkk"]),
-      ],
-    },
-    {
-      id: "buttons",
-      variants: [drawing(["ssss", "sss."], 8), drawing(["sss.", "ssss"], 8)],
-    },
-  ],
-};
-
-const BALWANEK_6: SymmetryTemplate = {
-  id: "balwanek",
-  width: 6,
-  height: 15,
-  holeColor: "black",
-  categories: ["zima"],
-  base: drawing([
-    "......",
-    "......",
-    "......",
-    "......",
-    "...sss",
-    "..ss.o",
-    "..ssss",
-    "......",
-    ".sssss",
-    "ssssss",
-    "......",
-    "......",
-    "......",
-    "ssssss",
-    ".sssss",
-  ]),
-  parts: [
-    {
-      id: "hat",
-      variants: [drawing(["....kk", "....kk", "....kk", "..kkkk"]), drawing(["...kkk", "...kkk", "...kkk", ".kkkkk"])],
-    },
-    {
-      id: "scarf",
-      variants: [drawing(["...sss"], 7), drawing(["..rrrr"], 7)],
-    },
-    {
-      id: "buttons",
-      variants: [drawing(["sssss.", "ssssss", "sssss."], 10), drawing(["ssssss", "sssss.", "ssssss"], 10)],
-    },
-  ],
-};
-
-const BALWANEK_9: SymmetryTemplate = {
-  id: "balwanek",
-  width: 9,
-  height: 24,
-  holeColor: "black",
-  categories: ["zima"],
-  base: drawing([
-    ".........",
-    ".........",
-    ".........",
-    ".........",
-    ".........",
-    ".....ssss",
-    "....sssss",
-    "....s.sss",
-    "....sssso",
-    "....sssss",
-    ".....ssss",
-    ".........",
-    "...ssssss",
-    "..sssssss",
-    ".ssssssss",
-    ".........",
-    ".........",
-    ".........",
-    ".........",
-    ".........",
-    ".........",
-    ".........",
-    "..sssssss",
-    "....sssss",
-  ]),
-  parts: [
-    {
-      id: "hat",
-      variants: [
-        drawing(["......kkk", "......kkk", "......kkk", "......kkk", "....kkkkk"]),
-        drawing(["......kkk", "......kkk", "......rrr", "......kkk", "...kkkkkk"]),
-        drawing([".........", ".........", "......kkk", "......kkk", "....kkkkk"]),
-      ],
-    },
-    {
-      id: "scarf",
-      variants: [drawing(["....rrrrr"], 11), drawing(["....sssss"], 11)],
-    },
-    {
-      id: "buttons",
-      variants: [
-        drawing([".sssssss.", "sssssssss", "sssssssss", "ssssssss.", "sssssssss", ".ssssssss", ".sssssss."], 15),
-        drawing([".ssssssss", "ssssssss.", "sssssssss", "sssssssss", "ssssssss.", ".ssssssss", ".ssssssss"], 15),
-      ],
-    },
-  ],
-};
-
 const ANIOLEK_4: SymmetryTemplate = {
   id: "aniolek",
   width: 4,
@@ -1405,7 +1288,7 @@ const ANIOLEK_9: SymmetryTemplate = {
 };
 
 export const BOZE_NARODZENIE: SymmetryObjectSizes = {
-  half4: [BOMBKA_4, DZWONEK_4, PREZENT_4, PIERNIK_4, BALWANEK_4, ANIOLEK_4],
-  half6: [BOMBKA_6, DZWONEK_6, PREZENT_6, PIERNIK_6, BALWANEK_6, ANIOLEK_6],
-  half9: [BOMBKA_9, DZWONEK_9, PREZENT_9, PIERNIK_9, BALWANEK_9, ANIOLEK_9],
+  half4: [BOMBKA_4, DZWONEK_4, PREZENT_4, PIERNIK_4, ANIOLEK_4],
+  half6: [BOMBKA_6, DZWONEK_6, PREZENT_6, PIERNIK_6, ANIOLEK_6],
+  half9: [BOMBKA_9, DZWONEK_9, PREZENT_9, PIERNIK_9, ANIOLEK_9],
 };
