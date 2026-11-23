@@ -146,6 +146,7 @@ for (const size of ["half4", "half6", "half9"] as const) {
     "<p>Każdy obrazek to jedna kombinacja części (numery wariantów pod obrazkiem). Najpierw w kolorach, potem w czerni (jak nonogram i czarna „Skopiuj obrazek”).</p>";
   for (const object of mock.objects) {
     const spec = object.sizes[size];
+    if (spec === undefined) continue;
     const sets = combos(spec.parts.map((part) => part.variants.length));
     const drawn = sets.map((set) => ({ set, ...objectSvgs(object, size, set) }));
     const tile = (svg: string, label: string): string =>
@@ -156,7 +157,7 @@ for (const size of ["half4", "half6", "half9"] as const) {
   }
   pages.push({
     file: `preview-${size === "half4" ? "4x12" : size === "half6" ? "6x15" : "9x24"}.png`,
-    html: page(`S-38 Boże Narodzenie — obiekty z szablonów, ${TITLE[size]}`, body),
+    html: page(`S-54 Zima — obiekty z szablonów, ${TITLE[size]}`, body),
   });
 }
 

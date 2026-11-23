@@ -203,7 +203,7 @@ for (const size of ["half4", "half6", "half9"] as const) {
   log(
     `== ${size} (symmetry ${levelId}), nonogram ${nonoSize.id}, dictation ${dictLevels.map((level) => level.id).join("+")}`,
   );
-  for (const object of mock.objects ?? []) {
+  for (const object of (mock.objects ?? []).filter((candidate) => candidate.sizes[size] !== undefined)) {
     const template = templateOf(object, size);
     const sets = combos(template);
     const frame = sets.flatMap((set) => frameProblems(template, set));
