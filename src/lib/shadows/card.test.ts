@@ -33,13 +33,16 @@ void describe("shadows levels", () => {
     assert.equal(DEFAULT_SHADOWS_LEVEL_ID, "latwy");
   });
 });
+// Mutation runs (stryker/shadows.config.json) set MUTATION_RUN=1: 100 cards per level take about a minute, so a mutant
+// would cost hours; 15 cards still exercise every rule.
+const CARDS = process.env.MUTATION_RUN === "1" ? 15 : 100;
 
 void describe("shadows card", () => {
   for (const level of SHADOWS_LEVELS) {
     void test(`${level.label}: 100 cards are valid and follow the family rule (independent oracle)`, () => {
       const random = seeded(17);
       let previous: string | null = null;
-      for (let n = 0; n < 100; n++) {
+      for (let n = 0; n < CARDS; n++) {
         const card = generateShadowsCard(random, level, previous);
         assert.ok(card, `card ${n}`);
         assert.deepEqual(shadowsCardProblems(card, level), []);
@@ -156,4 +159,58 @@ void describe("shadows layout", () => {
       });
     }
   }
+});
+
+void describe("shadows card: pair count, duplicates, similar shadows and key", () => {
+  const level = shadowsLevelById("trudny");
+  const card = generateShadowsCard(seeded(5), level);
+  assert.ok(card);
+  const codes = (changed: Partial<typeof card>) => shadowsCardProblems({ ...card, ...changed }, level);
+
+  void test("a card with the wrong number of pairs or an order of another length is named", () => {
+    assert.ok(codes({ pictures: card.pictures.slice(0, 5) }).includes("wrong-pair-count"));
+    assert.ok(codes({ shadowOrder: card.shadowOrder.slice(0, 5) }).includes("wrong-pair-count"));
+    assert.ok(!codes({}).includes("wrong-pair-count"));
+  });
+
+  void test("the same picture twice is named", () => {
+    assert.ok(codes({ pictures: [card.pictures[0], ...card.pictures.slice(0, -1)] }).includes("duplicate-picture"));
+    assert.ok(!codes({}).includes("duplicate-picture"));
+  });
+
+  void test("two pictures of one family on a level of different families are refused", () => {
+    const easy = shadowsLevelById("latwy");
+    const family = SHADOW_FAMILIES[0].pictures.slice(0, 2).map((p) => p.id);
+    const other = SHADOW_FAMILIES.slice(1, 3).map((f) => f.pictures[0].id);
+    const sameFamily = { levelId: "latwy" as const, pictures: [...family, ...other], shadowOrder: [1, 2, 3, 0] };
+    assert.ok(shadowsCardProblems(sameFamily, easy).includes("families-not-level"));
+    const fine = { ...sameFamily, pictures: [family[0], ...other, SHADOW_FAMILIES[3].pictures[0].id] };
+    assert.ok(!shadowsCardProblems(fine, easy).includes("families-not-level"));
+  });
+
+  void test("the threshold on shadow difference decides: a card is refused only when its closest pair is below it", () => {
+    const masks = card.pictures.map((id) => {
+      const picture = shadowPictureById(id);
+      assert.ok(picture);
+      return shadowMask(picture);
+    });
+    const gaps = masks.flatMap((a, i) => masks.slice(i + 1).map((b) => shadowDifference(a, b)));
+    const closest = Math.min(...gaps);
+    const withThreshold = (minShadowDifference: number) => shadowsCardProblems(card, { ...level, minShadowDifference });
+    assert.ok(!withThreshold(closest).includes("shadows-too-similar"));
+    assert.ok(withThreshold(closest + 1e-6).includes("shadows-too-similar"));
+    assert.ok(withThreshold(2).includes("shadows-too-similar"));
+    assert.ok(!withThreshold(0).includes("shadows-too-similar"));
+    // The same picture twice is a duplicate, not a pair of alike shadows.
+    const twice = shadowsCardProblems(
+      { ...card, pictures: [card.pictures[0], card.pictures[0], ...card.pictures.slice(2)] },
+      { ...level, minShadowDifference: 2 },
+    );
+    assert.equal(twice.includes("shadows-too-similar"), true);
+  });
+
+  void test("the key is the level, the pictures and the order, each told apart", () => {
+    assert.equal(shadowsCardKey({ levelId: "latwy", pictures: ["a", "b"], shadowOrder: [1, 0] }), "latwy:a,b:1,0");
+    assert.notEqual(shadowsCardKey(card), shadowsCardKey({ ...card, shadowOrder: [...card.shadowOrder].reverse() }));
+  });
 });

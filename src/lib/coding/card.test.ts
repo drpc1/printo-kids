@@ -69,3 +69,69 @@ void describe("codingProblems", () => {
     assert.notEqual(codingKey(zapisz.card), codingKey({ ...zapisz.card, path: toDirs("RRRUUR") }));
   });
 });
+
+void describe("codingProblems: settings and target rules", () => {
+  const [zapisz, wykonaj] = knownBadBases();
+  const wy = (changed: Partial<typeof wykonaj.card>): CodingProblem[] =>
+    codingProblems({ ...wykonaj.card, ...changed }, wykonaj.settings);
+  const [star, heart, circle] = wykonaj.card.targets;
+
+  void test("a card for another level or mode than asked is named", () => {
+    assert.ok(codingProblems(zapisz.card, { ...zapisz.settings, level: "poziom2" }).includes("settings-mismatch"));
+    assert.ok(codingProblems(zapisz.card, { ...zapisz.settings, mode: "wykonaj" }).includes("settings-mismatch"));
+    assert.ok(!codingProblems(zapisz.card, zapisz.settings).includes("settings-mismatch"));
+  });
+
+  void test("rows of the wrong width are a wrong grid size", () => {
+    const blocked = zapisz.card.blocked.map((row, i) => (i === 2 ? row.slice(1) : row));
+    assert.deepEqual(codingProblems({ ...zapisz.card, blocked }, zapisz.settings), ["wrong-grid-size"]);
+  });
+
+  void test("a path with fewer turns than the level asks for is named", () => {
+    const blocked = Array.from({ length: 6 }, () => Array.from({ length: 6 }, () => false));
+    const card = { ...wykonaj.card, level: "poziom2" as const, blocked, start: [0, 0] as const, goal: [5, 4] as const };
+    const path = toDirs("RRRRRDDDD");
+    const targets = [
+      { ...star, cell: [5, 4] as const },
+      { ...heart, cell: [5, 5] as const },
+      { ...circle, cell: [4, 5] as const },
+    ];
+    const codes = codingProblems({ ...card, path, targets }, { level: "poziom2", mode: "wykonaj" });
+    assert.deepEqual(codes, ["too-few-turns"]);
+  });
+
+  void test("Zapisz: a second shortest path and pictures on the card are named", () => {
+    const blocked = zapisz.card.blocked.map((row, i) => (i === 3 ? row.map((b, j) => (j === 2 ? false : b)) : row));
+    assert.ok(codingProblems({ ...zapisz.card, blocked }, zapisz.settings).includes("shortest-path-not-unique"));
+    assert.ok(codingProblems({ ...zapisz.card, targets: [star] }, zapisz.settings).includes("wrong-target-count"));
+  });
+
+  void test("Wykonaj: exactly three different pictures, one goal on the goal cell, all on free cells", () => {
+    assert.deepEqual(wy({}), []);
+    assert.ok(wy({ targets: [star, heart] }).includes("wrong-target-count"));
+    assert.ok(wy({ targets: [star, heart, { ...circle, kind: "heart" }] }).includes("wrong-target-count"));
+    assert.ok(wy({ targets: [star, heart, { ...circle, cell: heart.cell }] }).includes("wrong-target-count"));
+    assert.ok(wy({ targets: [star, { ...heart, isGoal: true }, circle] }).includes("wrong-target-count"));
+    assert.ok(
+      wy({ targets: [{ ...star, isGoal: false }, { ...heart, isGoal: true }, circle] }).includes("wrong-target-count"),
+    );
+    assert.ok(wy({ targets: [star, heart, { ...circle, cell: [1, 0] }] }).includes("wrong-target-count"));
+  });
+
+  void test("Wykonaj: a distractor on the path or far from the goal is named", () => {
+    assert.ok(wy({ targets: [star, { ...heart, cell: [2, 2] }, circle] }).includes("distractor-on-path"));
+    const far = wy({ targets: [star, heart, { ...circle, cell: [0, 0] }] });
+    assert.ok(far.includes("distractor-too-far"));
+    assert.ok(!wy({}).includes("distractor-too-far"));
+  });
+
+  void test("the key tells apart cards that differ only in obstacles or pictures", () => {
+    const blocked = wykonaj.card.blocked.map((row, i) => (i === 4 ? row.map((b, j) => (j === 0 ? true : b)) : row));
+    assert.notEqual(codingKey(wykonaj.card), codingKey({ ...wykonaj.card, blocked }));
+    assert.notEqual(codingKey(wykonaj.card), codingKey({ ...wykonaj.card, targets: [heart, star, circle] }));
+    assert.notEqual(
+      codingKey(wykonaj.card),
+      codingKey({ ...wykonaj.card, targets: [{ ...star, isGoal: false }, star, circle].slice(0, 3) }),
+    );
+  });
+});

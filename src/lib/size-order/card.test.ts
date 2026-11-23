@@ -62,6 +62,8 @@ void describe("sizeOrderCardProblems", () => {
     assert.ok(
       codes(rows({ ...first, picture: { kind: "icon", id: "nope" } }, second, ...rest)).includes("unknown-picture"),
     );
+    assert.ok(codes(rows({ ...first, crayon: "gray" as never }, second, ...rest)).includes("unknown-crayon"));
+    assert.ok(!codes(c).includes("unknown-crayon"));
   });
 
   void test("a card of shapes only misses an icon, a card of icons only misses a shape", () => {
