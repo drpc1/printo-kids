@@ -291,19 +291,24 @@ export const ZWIERZETA: readonly ShadowPicture[] = [
   {
     id: "swinka",
     label: "świnka",
+    // Przerysowana 2026-11-23 (uwaga użytkowniczki: głowa wyglądała strasznie). Z profilu: owalny tułów,
+    // okrągła głowa z dużym ryjkiem, dwa zwisające uszy, cztery krótkie nóżki i zakręcony ogonek.
+    // Oko i dziurki są detalem, więc nie wchodzą do cienia.
     shapes: [
-      stroke("M17 50 C8 48 9 39 15 41 C20 43 15 50 10 48", 3.4, "pink"),
-      rect(26, 66, 8, 24, "pink", 2),
-      rect(38, 68, 8, 22, "pink", 2),
-      rect(54, 68, 8, 22, "pink", 2),
-      rect(64, 66, 8, 24, "pink", 2),
-      ellipse(46, 56, 32, 20, "pink"),
-      path("M73 36 L76 23 L86 33 Z", "pink"),
-      circle(80, 46, 15, "pink"),
-      ellipse(93, 50, 5, 7, "pink"),
-      circle(82, 41, 2.2, "black", true),
-      circle(93, 48, 1.2, "darkred", true),
-      circle(93, 53, 1.2, "darkred", true),
+      stroke("M17 50 C8 48 6 38 13 36", 5, "pink"),
+      // Nogi na przemian, od lewej: tylna (za tułowiem, stopa wyżej), przednia, tylna, przednia.
+      rect(22, 68, 11, 19, "pink", 4),
+      rect(52, 68, 11, 19, "pink", 4),
+      ellipse(44, 56, 34, 22, "pink"),
+      rect(37, 70, 11, 20, "pink", 4),
+      rect(67, 70, 11, 20, "pink", 4),
+      path("M76 34 C80 22 90 20 95 28 C90 30 86 34 86 40 Z", "pink"),
+      circle(76, 48, 18, "pink"),
+      ellipse(91, 55, 8, 10, "pink"),
+      path("M64 36 C62 24 70 18 80 24 C76 28 72 32 72 38 Z", "pink"),
+      circle(79, 43, 1.7, "black", true),
+      ellipse(87.5, 55, 1, 1.7, "darkred", 0, true),
+      ellipse(94.5, 55, 1, 1.7, "darkred", 0, true),
     ],
   },
 ];
