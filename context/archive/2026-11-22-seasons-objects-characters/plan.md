@@ -255,7 +255,7 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Manual
 
-- [ ] 2.3 Pasek na telefonie nie zasłania Generuj/Drukuj
+- [x] 2.3 Pasek na telefonie nie zasłania Generuj/Drukuj (staging, grudzień, 2026-11-23)
 
 ### Phase 3: Obiekty z szablonów
 
@@ -266,7 +266,7 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Manual
 
-- [ ] 3.3 Wydruk próbny kategorii „Zima”
+- [x] 3.3 Wydruk próbny kategorii „Zima” (staging, grudzień, 2026-11-23)
 
 ### Phase 4: Kształty dyktanda
 
@@ -276,7 +276,7 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Manual
 
-- [ ] 4.2 Podgląd dyktanda i „Skopiuj obrazek” z kategorią Zima
+- [x] 4.2 Podgląd dyktanda i „Skopiuj obrazek” z kategorią Zima (staging, grudzień, 2026-11-23)
 
 ### Phase 5: Postacie zimowe
 
@@ -287,7 +287,7 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Manual
 
-- [ ] 5.3 Lista postaci na telefonie nie jest ucięta, Pingwin wygląda jak reszta
+- [x] 5.3 Lista postaci na telefonie nie jest ucięta, Pingwin wygląda jak reszta (staging, grudzień, 2026-11-23)
 
 ### Phase 6: Dokumenty i domknięcie
 
@@ -297,4 +297,4 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Manual
 
-- [ ] 6.2 Checklista stagingu
+- [x] 6.2 Checklista stagingu (staging, grudzień, 2026-11-23)
