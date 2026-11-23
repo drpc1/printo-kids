@@ -617,6 +617,6 @@ const shapesPath = nodePath.join(here, "shapes.json");
 const shapes = fs.existsSync(shapesPath) ? (JSON.parse(fs.readFileSync(shapesPath, "utf8")) as object) : {};
 fs.writeFileSync(
   nodePath.join(here, "mockup-drawings.json"),
-  JSON.stringify({ approved: false, note: "S-54 winter mockup, hand-drawn in build-drawings.mts", objects, shapes }, null, 1),
+  JSON.stringify({ approved: true, note: "S-54 winter mockup, hand-drawn in build-drawings.mts, accepted 2026-11-23 (szalik kept)", objects, shapes }, null, 1),
 );
 console.log("written", objects.length, "objects");

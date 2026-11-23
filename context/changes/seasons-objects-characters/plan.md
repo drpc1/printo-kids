@@ -240,11 +240,11 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Automated
 
-- [ ] 1.1 Skrypt reguł przechodzi dla zatwierdzonych rysunków
+- [x] 1.1 Skrypt reguł przechodzi dla zatwierdzonych rysunków — 64034280
 
 #### Manual
 
-- [ ] 1.2 Użytkowniczka akceptuje PNG podglądu (czytelność w czerni w 4×12)
+- [x] 1.2 Użytkowniczka akceptuje PNG podglądu (czytelność w czerni w 4×12) — 64034280
 
 ### Phase 2: Kategoria „Zima” z oknem dat
 
