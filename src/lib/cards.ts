@@ -1,5 +1,5 @@
 /**
- * What a card practises ("Co ćwiczy?"), in the order of the catalog chips: Polish alphabetical by label.
+ * What a card practises ("Co dziś ćwiczymy?"), in the order of the catalog chips: Polish alphabetical by label.
  * A skill fits a card when a parent would not be surprised to find it there (a clock is not "Liczby").
  * Insert a new skill at its alphabetical place. Not to be confused with card kind id `liczby` ("Labirynt liczbowy").
  */
