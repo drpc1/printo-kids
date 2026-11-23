@@ -214,13 +214,13 @@ Brak: umiejętności są w kodzie, a nie w zapisanych danych; profile i ostatnie
 
 #### Automated
 
-- [x] 2.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 2.2 Lint przechodzi: `npm run lint`
-- [x] 2.3 Typy i strony Astro przechodzą: `npx astro check`
-- [x] 2.4 Reguły zależności przechodzą: `npm run depcruise`
-- [x] 2.5 Build przechodzi: `npm run build`
-- [x] 2.6 Smoke przechodzi na zbudowanym serwerze: `npm run smoke`
-- [x] 2.7 E2E katalogu przechodzi na projektach Chromium, w tym nowe testy filtra: `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts`
+- [x] 2.1 Testy jednostkowe przechodzą: `npm test` — a923111e
+- [x] 2.2 Lint przechodzi: `npm run lint` — a923111e
+- [x] 2.3 Typy i strony Astro przechodzą: `npx astro check` — a923111e
+- [x] 2.4 Reguły zależności przechodzą: `npm run depcruise` — a923111e
+- [x] 2.5 Build przechodzi: `npm run build` — a923111e
+- [x] 2.6 Smoke przechodzi na zbudowanym serwerze: `npm run smoke` — a923111e
+- [x] 2.7 E2E katalogu przechodzi na projektach Chromium, w tym nowe testy filtra: `E2E_PORT=4399 npx playwright test tests/e2e/catalog.spec.ts` — a923111e
 
 #### Manual
 
