@@ -24,7 +24,7 @@ szalik    sets   9 clean   9 | nonogram trudny 9/9 | dictation outlines lat7:3 (
 niedzwiedz sets  24 clean  24 | nonogram trudny 24/24 | dictation outlines lat7:6 (max 52 commands)
 
 == dictation shapes: commands plain / mirrored at every drawn level (limit per level in brackets)
-lyzwa            zima                       lat5 8x9: 18/18 [55] | lat6 12x13: 22/22 [55] | lat7 18x18: 26/26 [84]
+lyzwa            zima                       lat5 8x10: 20/20 [55] | lat6 12x15: 26/26 [55] | lat7 18x21: 30/30 [84]
 rekawiczka       zima                       lat5 8x12: 20/20 [55] | lat6 12x15: 26/26 [55] | lat7 18x23: 30/30 [84]
 
 RESULT: 0 errors

@@ -1,9 +1,9 @@
 ---
 change_id: seasons-objects-characters
 title: Zimowe obiekty i postacie w oknie dat (grudzień–luty)
-status: implementing
+status: impl_reviewed
 created: 2026-11-22
-updated: 2026-11-22
+updated: 2026-11-23
 archived_at: null
 ---
 
