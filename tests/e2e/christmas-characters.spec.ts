@@ -1,7 +1,8 @@
 // Provenance: christmas-characters (S-39, US-03, FR-012, FR-030)
 // Protects the window of the Christmas characters: inside 15.11-6.01 the pick list has them after Brak, with a line
 // under them, and a pick speaks the instruction on a card; outside the window they are not on the list, but a
-// remembered one stays selected and on the card. The date is the device clock, fixed here.
+// remembered one stays selected and on the card. March is outside the winter window too (S-54). The date is the device
+// clock, fixed here.
 import { expect, test, type Page } from "@playwright/test";
 
 const LAST_USED_KEY = "printo-kids:last-used";
@@ -42,8 +43,8 @@ test.describe("Christmas characters", () => {
     ).toHaveCount(1);
   });
 
-  test("on 10 February the list has no Christmas characters, but a remembered one stays", async ({ page }) => {
-    await page.clock.setFixedTime(new Date(2027, 1, 10, 12, 0, 0));
+  test("on 10 March the list has no seasonal characters", async ({ page }) => {
+    await page.clock.setFixedTime(new Date(2027, 2, 10, 12, 0, 0));
     await openWith(page, "none");
     const labels = await listLabels(page);
     expect(labels).not.toContain("Mikołaj");
@@ -51,8 +52,8 @@ test.describe("Christmas characters", () => {
     await expect(page.getByRole("dialog").locator('[data-slot="separator"]')).toHaveCount(0);
   });
 
-  test("on 10 February a remembered Mikołaj stays selected, on top of the list and on the card", async ({ page }) => {
-    await page.clock.setFixedTime(new Date(2027, 1, 10, 12, 0, 0));
+  test("on 10 March a remembered Mikołaj stays selected, on top of the list and on the card", async ({ page }) => {
+    await page.clock.setFixedTime(new Date(2027, 2, 10, 12, 0, 0));
     await openWith(page, "mikolaj");
     await expect(page.getByRole("button", { name: "Postać: Mikołaj" })).toBeVisible();
     const labels = await listLabels(page);

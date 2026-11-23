@@ -22,6 +22,7 @@ const catalog = [
   { id: "balwanek", label: "Bałwanek", src: "/characters/balwanek.webp" },
   { id: "mikolaj", label: "Mikołaj", src: "/characters/mikolaj.webp" },
   { id: "renifer", label: "Renifer", src: "/characters/renifer.webp" },
+  { id: "pingwin", label: "Pingwin", src: "/characters/pingwin.webp" },
   { id: "dinozaur", label: "Dinozaur", src: "/characters/dinozaur.webp" },
   { id: "jednorozec", label: "Jednorożec", src: "/characters/jednorozec.webp" },
   { id: "kot", label: "Kot", src: "/characters/kot.webp" },
@@ -36,7 +37,7 @@ const catalog = [
 ] as const;
 
 void describe("character catalog", () => {
-  void test("lists Brak, the three Christmas characters, then eleven characters in Polish alphabetical order", () => {
+  void test("lists Brak, the four seasonal characters, then eleven characters in Polish alphabetical order", () => {
     assert.deepEqual(
       CHARACTER_CHOICES.map((row) => ({ id: row.id, label: row.label, src: row.src })),
       [...catalog],
@@ -147,20 +148,38 @@ void describe("character drawing margins", () => {
   });
 });
 
-void describe("the pick list and the window of the Christmas characters", () => {
+void describe("the pick list and the windows of the seasonal characters", () => {
   const ids = (today: Date, selected = "none") => characterPickRowsOn(today, selected).rows.map((row) => row.id);
 
-  void test("inside 15 November - 6 January the list has 15 rows and a line after Renifer", () => {
-    for (const day of [new Date(2026, 10, 15), new Date(2026, 11, 31), new Date(2027, 0, 6)]) {
+  void test("15-30 November: Mikołaj and Renifer only (Bałwanek waits for winter), 14 rows, a line after Renifer", () => {
+    for (const day of [new Date(2026, 10, 15), new Date(2026, 10, 30, 23, 59)]) {
       const pick = characterPickRowsOn(day, "none");
-      assert.equal(pick.rows.length, 15, day.toDateString());
-      assert.deepEqual(ids(day).slice(0, 4), ["none", "balwanek", "mikolaj", "renifer"], day.toDateString());
+      assert.equal(pick.rows.length, 14, day.toDateString());
+      assert.deepEqual(ids(day).slice(0, 3), ["none", "mikolaj", "renifer"], day.toDateString());
       assert.equal(pick.separatorAfter, "renifer", day.toDateString());
     }
   });
 
-  void test("outside the window the list has 12 rows and no line", () => {
-    for (const day of [new Date(2026, 10, 14), new Date(2027, 0, 7), new Date(2026, 6, 1)]) {
+  void test("1 December - 6 January: Christmas and winter characters, 16 rows, a line after Pingwin", () => {
+    for (const day of [new Date(2026, 11, 1), new Date(2026, 11, 31), new Date(2027, 0, 6)]) {
+      const pick = characterPickRowsOn(day, "none");
+      assert.equal(pick.rows.length, 16, day.toDateString());
+      assert.deepEqual(ids(day).slice(0, 5), ["none", "balwanek", "mikolaj", "renifer", "pingwin"], day.toDateString());
+      assert.equal(pick.separatorAfter, "pingwin", day.toDateString());
+    }
+  });
+
+  void test("7 January - end of February: only Bałwanek and Pingwin, 14 rows, also on 29 February", () => {
+    for (const day of [new Date(2027, 0, 7), new Date(2027, 1, 28), new Date(2028, 1, 29)]) {
+      const pick = characterPickRowsOn(day, "none");
+      assert.equal(pick.rows.length, 14, day.toDateString());
+      assert.deepEqual(ids(day).slice(0, 3), ["none", "balwanek", "pingwin"], day.toDateString());
+      assert.equal(pick.separatorAfter, "pingwin", day.toDateString());
+    }
+  });
+
+  void test("outside every window the list has 12 rows and no line", () => {
+    for (const day of [new Date(2026, 10, 14), new Date(2027, 2, 1), new Date(2026, 6, 1)]) {
       const pick = characterPickRowsOn(day, "none");
       assert.equal(pick.rows.length, 12, day.toDateString());
       assert.equal(pick.separatorAfter, null, day.toDateString());
@@ -177,5 +196,6 @@ void describe("the pick list and the window of the Christmas characters", () => 
     assert.equal(characterChoice("mikolaj"), "mikolaj");
     assert.equal(characterSheetSrc("renifer"), "/characters/renifer.webp");
     assert.equal(ALLOWED_CHARACTER_IDS.includes("balwanek"), true);
+    assert.equal(characterChoice("pingwin"), "pingwin");
   });
 });
