@@ -282,8 +282,8 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Automated
 
-- [ ] 5.1 Testy dat postaci, lint, astro check i build przechodzą
-- [ ] 5.2 E2E listy postaci (grudzień, luty, marzec)
+- [x] 5.1 Testy dat postaci, lint, astro check i build przechodzą — f2bbb973
+- [x] 5.2 E2E listy postaci (grudzień, luty, marzec) — f2bbb973
 
 #### Manual
 

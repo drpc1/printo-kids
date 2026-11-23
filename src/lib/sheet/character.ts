@@ -3,6 +3,9 @@ import { inWindow, type DateWindow } from "../date-window.ts";
 /** The Christmas characters are offered on the pick list from 15 November to 6 January, like the category of S-38. */
 const CHRISTMAS_WINDOW: DateWindow = { from: { month: 11, day: 15 }, to: { month: 1, day: 6 } };
 
+/** The winter characters are offered from 1 December to the end of February, like the category Zima (S-54). */
+const WINTER_WINDOW: DateWindow = { from: { month: 12, day: 1 }, to: { month: 2, day: 29 } };
+
 const noneChoice = { id: "none", label: "Brak", src: null } as const;
 
 export const CHARACTER_CHOICES = [
@@ -13,7 +16,7 @@ export const CHARACTER_CHOICES = [
     src: "/characters/balwanek.webp",
     contentLeft: 298 / 1024,
     contentRight: 296 / 1024,
-    window: CHRISTMAS_WINDOW,
+    window: WINTER_WINDOW,
   },
   {
     id: "mikolaj",
@@ -30,6 +33,14 @@ export const CHARACTER_CHOICES = [
     contentLeft: 258 / 1024,
     contentRight: 258 / 1024,
     window: CHRISTMAS_WINDOW,
+  },
+  {
+    id: "pingwin",
+    label: "Pingwin",
+    src: "/characters/pingwin.webp",
+    contentLeft: 298 / 1024,
+    contentRight: 298 / 1024,
+    window: WINTER_WINDOW,
   },
   {
     id: "dinozaur",
