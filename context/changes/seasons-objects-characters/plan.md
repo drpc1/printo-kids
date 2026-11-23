@@ -272,7 +272,7 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Automated
 
-- [ ] 4.1 Testy kształtów, lint i astro check przechodzą
+- [x] 4.1 Testy kształtów, lint i astro check przechodzą — 845eba8d
 
 #### Manual
 
