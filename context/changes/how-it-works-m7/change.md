@@ -1,9 +1,9 @@
 ---
 change_id: how-it-works-m7
 title: „Jak to działa” przy 16 kartach: zwijane karty
-status: planned
+status: implementing
 created: 2026-11-23
-updated: 2026-11-23
+updated: 2026-11-24
 archived_at: null
 ---
 

@@ -171,14 +171,14 @@ Brak. Strona jest renderowana po stronie serwera z danych statycznych; dochodzą
 
 #### Automated
 
-- [ ] 1.1 Nowy test przechodzi: `npm test`
-- [ ] 1.2 Reguły zależności nie narzekają na nowy moduł: `npm run depcruise`
-- [ ] 1.3 Lint przechodzi: `npm run lint`
-- [ ] 1.4 Typy przechodzą: `npx astro check`
+- [x] 1.1 Nowy test przechodzi: `npm test`
+- [x] 1.2 Reguły zależności nie narzekają na nowy moduł: `npm run depcruise`
+- [x] 1.3 Lint przechodzi: `npm run lint`
+- [x] 1.4 Typy przechodzą: `npx astro check`
 
 #### Manual
 
-- [ ] 1.5 Wiersze poziomów z rejestru zgadzają się z paskiem wybranej karty (labirynt, sudoku 6×6, pieniądze w złotych)
+- [x] 1.5 Wiersze poziomów z rejestru zgadzają się z paskiem wybranej karty (labirynt, sudoku 6×6, pieniądze w złotych)
 
 ### Phase 2: Strona ze zwijanymi wierszami
 

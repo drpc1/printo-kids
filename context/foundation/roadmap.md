@@ -59,7 +59,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-52 | profile-card-summary           | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą                                                          | S-42, S-47, S-48, S-49                                     | MS-04, FR-017, US-08                                                      | blocked  |
 | S-54 | seasons-objects-characters     | Rodzic wybiera obiekty i postacie kolejnej pory roku w jej oknie dat, tak jak świąteczne                                                                    | —                                                          | MS-06, FR-028, FR-029, FR-012, US-19, US-20                               | done     |
 | S-43 | card-tags-filter               | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                | S-42, S-47, S-48, S-49                                     | MS-03, FR-014, US-05                                                      | done     |
-| S-53 | how-it-works-m7                | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16                                                                    | S-42, S-47, S-48, S-49, S-43                               | MS-05, US-22, FR-031                                                      | planning |
+| S-53 | how-it-works-m7                | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16                                                                    | S-42, S-47, S-48, S-49, S-43                               | MS-05, US-22, FR-031                                                      | in-progress |
 | S-50 | stryker-m7-cards               | Zespół ma karty i logikę M-7 sprawdzone mutacjami Strykera na zakresach z ryzykiem                                                                          | S-42, S-47, S-48, S-49, S-55                               | MS-01, MS-02, MS-03                                                       | done     |
 | S-51 | test-plan-m7                   | Zespół ma test-plan.md zgodny ze stanem po M-7                                                                                                              | S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54, S-55 | MS-01, MS-02, MS-03                                                       | proposed |
 
@@ -221,7 +221,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 - **Unknowns:**
   - ~~Jak skrócić: zwijanie, osobne strony kart, czy krótsze opisy?~~ — Zamknięte 2026-11-23 (decyzja użytkowniczki): zwijane karty (`<details>`), zasady profilu, poziomów i postaci na górze; opisy zostają w `CARD_KINDS`, więc PRD zmienia się tylko w US-22.
 - **Risk:** Strona opisuje każdy rodzaj i poziomy w dwóch–trzech zdaniach; skracanie nie może zgubić poprawności opisów poziomów.
-- **Status:** planning
+- **Status:** in-progress
 
 ### S-50: Stryker dla kart i filtra M-7
 
