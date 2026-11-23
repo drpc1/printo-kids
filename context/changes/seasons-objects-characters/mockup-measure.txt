@@ -3,6 +3,11 @@ Objects: sets = part combinations; clean = one piece without a corner touch; non
 without guessing (easy: chip rules); dictation = distinct outlines within the command limit.
 
 == half4 (symmetry lat4), nonogram latwy, dictation lat5
+platek    sets   8 clean   8 | nonogram latwy 8/8 | dictation outlines lat5:3 (max 44 commands)
+czapka    sets  18 clean  18 | nonogram latwy 18/18 | dictation outlines lat5:2 (max 24 commands)
+iglo      sets   9 clean   9 | nonogram latwy 9/9 | dictation outlines lat5:2 (max 16 commands)
+szalik    sets   9 clean   9 | nonogram latwy 9/9 | dictation outlines lat5:3 (max 40 commands)
+niedzwiedz sets   8 clean   4 | nonogram latwy 8/8 | dictation outlines lat5:4 (max 36 commands)
 
 == half6 (symmetry lat5), nonogram sredni, dictation lat6
 platek    sets  18 clean  18 | nonogram sredni 11/18 | dictation outlines lat6:1 (max 52 commands)
@@ -12,7 +17,14 @@ szalik    sets   9 clean   9 | nonogram sredni 9/9 | dictation outlines lat6:3 (
 niedzwiedz sets  16 clean  16 | nonogram sredni 16/16 | dictation outlines lat6:4 (max 40 commands)
 
 == half9 (symmetry lat7), nonogram trudny, dictation lat7
+platek    sets  24 clean  24 | nonogram trudny 24/24 | dictation outlines lat7:12 (max 84 commands)
+czapka    sets  18 clean  18 | nonogram trudny 18/18 | dictation outlines lat7:2 (max 36 commands)
+iglo      sets   9 clean   9 | nonogram trudny 9/9 | dictation outlines lat7:2 (max 32 commands)
+szalik    sets   9 clean   9 | nonogram trudny 9/9 | dictation outlines lat7:3 (max 64 commands)
+niedzwiedz sets  24 clean  24 | nonogram trudny 24/24 | dictation outlines lat7:6 (max 52 commands)
 
 == dictation shapes: commands plain / mirrored at every drawn level (limit per level in brackets)
+lyzwa            zima                       lat5 8x9: 18/18 [55] | lat6 12x13: 22/22 [55] | lat7 18x18: 26/26 [84]
+rekawiczka       zima                       lat5 8x12: 20/20 [55] | lat6 12x15: 26/26 [55] | lat7 18x23: 30/30 [84]
 
 RESULT: 0 errors
