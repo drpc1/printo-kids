@@ -1,7 +1,9 @@
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { blockLines, layoutSimpleNonogramSheet } from "@/lib/nonogram/layout";
 import { NONOGRAM_SHEET, NONOGRAM_SIMPLE_SHEET } from "@/lib/nonogram/sheet";
 import type { SimpleNonogramCard, Tone } from "@/lib/nonogram/simple";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -27,8 +29,14 @@ export function NonogramSimpleSheet({
   characterId: string;
   characterSrc: string | null;
 }) {
-  const instructionHeight = instructionBoxHeight(characterSrc !== null, NONOGRAM_SHEET.instructionSize);
   const chips = NONOGRAM_SIMPLE_SHEET;
+  const plain = layoutPlainInstruction({
+    text: chips.instructionText,
+    size: NONOGRAM_SHEET.instructionSize,
+    pageWidth: NONOGRAM_SHEET.pageWidth,
+    inset: NONOGRAM_SHEET.inset,
+  });
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const sheet = layoutSimpleNonogramSheet({
     pageWidth: NONOGRAM_SHEET.pageWidth,
     pageHeight: NONOGRAM_SHEET.pageHeight,
@@ -72,17 +80,7 @@ export function NonogramSimpleSheet({
           text={chips.instructionText}
         />
       ) : (
-        <text
-          x={sheet.instruction.x}
-          y={sheet.instruction.y}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={NONOGRAM_SHEET.instructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {chips.instructionText}
-        </text>
+        <PlainInstruction layout={plain} centerX={sheet.instruction.x} top={sheet.instruction.y - plain.height / 2} />
       )}
       {showSolution ? (
         <g className={cn("print:hidden")} data-solution>

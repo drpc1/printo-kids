@@ -14,11 +14,13 @@ export function PlainInstruction({
   centerX: number;
   top: number;
 }) {
+  // No wrapping <g>: the sheets' structure (and tests that count their groups) stays as it was with a plain <text>.
   return (
-    <g data-plain-instruction>
+    <>
       {layout.lines.map((line, index) => (
         <text
           key={line}
+          data-plain-instruction
           x={centerX}
           y={top + layout.baselines[index]}
           fill="var(--foreground)"
@@ -29,6 +31,6 @@ export function PlainInstruction({
           {line}
         </text>
       ))}
-    </g>
+    </>
   );
 }

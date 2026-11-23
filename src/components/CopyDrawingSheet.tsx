@@ -1,3 +1,4 @@
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import type { CopyDrawingCard } from "@/lib/copy-drawing/card";
 import { copyDrawingCellColors } from "@/lib/copy-drawing/colors";
@@ -5,6 +6,7 @@ import { layoutCopyDrawingSheet, type CopyDrawingGridRect } from "@/lib/copy-dra
 import { copyDrawingLevelById } from "@/lib/copy-drawing/levels";
 import { COPY_DRAWING_SHEET } from "@/lib/copy-drawing/sheet";
 import { blockLines } from "@/lib/nonogram/layout";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +30,13 @@ export function CopyDrawingSheet({
 }) {
   const sheet = COPY_DRAWING_SHEET;
   const level = copyDrawingLevelById(card.levelId);
-  const instructionHeight = instructionBoxHeight(characterSrc !== null, sheet.plainInstructionSize);
+  const plain = layoutPlainInstruction({
+    text: sheet.instructionText,
+    size: sheet.plainInstructionSize,
+    pageWidth: sheet.pageWidth,
+    inset: sheet.inset,
+  });
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const layout = layoutCopyDrawingSheet(level, instructionHeight);
 
   return (
@@ -53,17 +61,7 @@ export function CopyDrawingSheet({
           text={sheet.instructionText}
         />
       ) : (
-        <text
-          x={layout.page.width / 2}
-          y={layout.band.y + layout.band.height / 2}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={sheet.plainInstructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {sheet.instructionText}
-        </text>
+        <PlainInstruction layout={plain} centerX={layout.page.width / 2} top={layout.band.y} />
       )}
       <Grid
         rect={layout.source}

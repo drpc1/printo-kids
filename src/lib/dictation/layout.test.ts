@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { layoutPlainInstruction } from "../sheet/plain-instruction.ts";
 import { SPEECH_BAND } from "../sheet/speech.ts";
 import {
   dictationCellSize,
@@ -11,6 +12,14 @@ import { DICTATION_LEVELS, DICTATION_LEVEL_LAT6, type DictationLevel } from "./l
 import { DICTATION_ARROWS, DICTATION_SHEET, formatDictationCommand } from "./sheet.ts";
 
 const { pageWidth, pageHeight, inset } = DICTATION_SHEET;
+const ONE_LINE = DICTATION_SHEET.instructionSize;
+/** The instruction of the card without a character; it does not fit on one line, so the band is two lines tall. */
+const WITHOUT_CHARACTER = layoutPlainInstruction({
+  text: DICTATION_SHEET.instructionText,
+  size: ONE_LINE,
+  pageWidth,
+  inset,
+});
 const LEVEL = DICTATION_LEVEL_LAT6;
 const { commandsPerRow, maxCommands } = LEVEL;
 const BOX_WIDTH = (pageWidth - inset * 2) / commandsPerRow;
@@ -149,15 +158,42 @@ void describe("dictationCellSize and the speech band", () => {
     };
   }
 
-  void test("without a character the level keeps its own cell size", () => {
+  void test("with a one-line instruction and no character the level keeps its own cell size", () => {
     for (const level of DICTATION_LEVELS) {
-      assert.equal(dictationCellSize(sizeInput(level, level.maxCommands), false), level.cellSize);
+      assert.equal(dictationCellSize(sizeInput(level, level.maxCommands), ONE_LINE), level.cellSize);
     }
+  });
+
+  void test("the plain instruction of Dyktando graficzne is two lines, taller than the one line the levels were made for", () => {
+    assert.equal(WITHOUT_CHARACTER.lines.length, 2);
+    assert.ok(WITHOUT_CHARACTER.height > ONE_LINE);
+  });
+
+  void test("without a character a two-line instruction fits every level inside the margin and keeps 85% of its cell", () => {
+    for (const level of DICTATION_LEVELS) {
+      const cell = dictationCellSize(sizeInput(level, level.maxCommands), WITHOUT_CHARACTER.height);
+      const sheet = layoutDictationSheet({
+        ...inputFor(level),
+        cellSize: cell,
+        instructionSize: WITHOUT_CHARACTER.height,
+      });
+
+      assert.ok(cell >= level.cellSize * 0.85, `${level.id} cell ${cell}`);
+      assert.ok(cell <= level.cellSize, level.id);
+      assert.ok(sheet.grid.y + sheet.grid.height <= pageHeight - inset + 1e-9, `${level.id} grid bottom`);
+      assert.ok(sheet.instruction.y - WITHOUT_CHARACTER.height / 2 >= inset - 1e-9, `${level.id} top`);
+    }
+  });
+
+  void test("a short command list keeps the nominal cell under a two-line instruction too", () => {
+    const [easy] = DICTATION_LEVELS;
+
+    assert.equal(dictationCellSize(sizeInput(easy, 12), WITHOUT_CHARACTER.height), easy.cellSize);
   });
 
   void test("every level with a full command list fits inside the margin and keeps at least 85% of its cell", () => {
     for (const level of DICTATION_LEVELS) {
-      const cell = dictationCellSize(sizeInput(level, level.maxCommands), true);
+      const cell = dictationCellSize(sizeInput(level, level.maxCommands), SPEECH_BAND.characterSize);
       const sheet = layoutDictationSheet({
         ...inputFor(level),
         cellSize: cell,
@@ -172,7 +208,9 @@ void describe("dictationCellSize and the speech band", () => {
 
   void test("the sizes of a full list are 12.7, 10.5 and 7.2 mm", () => {
     assert.deepEqual(
-      DICTATION_LEVELS.map((level) => dictationCellSize(sizeInput(level, level.maxCommands), true)),
+      DICTATION_LEVELS.map((level) =>
+        dictationCellSize(sizeInput(level, level.maxCommands), SPEECH_BAND.characterSize),
+      ),
       [12.7, 10.5, 7.2],
     );
   });
@@ -180,15 +218,15 @@ void describe("dictationCellSize and the speech band", () => {
   void test("a short command list keeps the nominal cell: 33 commands on easy, 44 on medium", () => {
     const [easy, medium] = DICTATION_LEVELS;
 
-    assert.equal(dictationCellSize(sizeInput(easy, 33), true), easy.cellSize);
-    assert.equal(dictationCellSize(sizeInput(medium, 44), true), medium.cellSize);
-    assert.ok(dictationCellSize(sizeInput(easy, 34), true) < easy.cellSize);
+    assert.equal(dictationCellSize(sizeInput(easy, 33), SPEECH_BAND.characterSize), easy.cellSize);
+    assert.equal(dictationCellSize(sizeInput(medium, 44), SPEECH_BAND.characterSize), medium.cellSize);
+    assert.ok(dictationCellSize(sizeInput(easy, 34), SPEECH_BAND.characterSize) < easy.cellSize);
   });
 
   void test("the hard level shrinks to 7.5 mm with five rows of commands and to 7.2 mm with six", () => {
     const hard = DICTATION_LEVELS[2];
 
-    assert.equal(dictationCellSize(sizeInput(hard, 70), true), 7.5);
-    assert.equal(dictationCellSize(sizeInput(hard, 84), true), 7.2);
+    assert.equal(dictationCellSize(sizeInput(hard, 70), SPEECH_BAND.characterSize), 7.5);
+    assert.equal(dictationCellSize(sizeInput(hard, 84), SPEECH_BAND.characterSize), 7.2);
   });
 });

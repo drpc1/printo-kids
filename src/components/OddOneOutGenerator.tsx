@@ -3,6 +3,7 @@ import { CharacterChoiceControl } from "@/components/CharacterChoiceControl";
 import { LevelChoice } from "@/components/LevelChoice";
 import { OddOneOutPicture } from "@/components/OddOneOutPicture";
 import { SettingToggle } from "@/components/SettingToggle";
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { CardPage } from "@/components/CardPage";
 import { useCardPage } from "@/hooks/useCardPage";
@@ -13,6 +14,7 @@ import { layoutOddOneOutSheet } from "@/lib/odd-one-out/layout";
 import { ODD_ONE_OUT_LEVELS, oddOneOutLevelById, type OddOneOutLevelId } from "@/lib/odd-one-out/levels";
 import type { OddOneOutCard } from "@/lib/odd-one-out/rules";
 import { ODD_ONE_OUT_SHEET } from "@/lib/odd-one-out/sheet";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import {
   applySettings,
   failureReason,
@@ -150,6 +152,13 @@ function OddOneOutSheet({
     slotPadding: ODD_ONE_OUT_SHEET.slotPadding,
   });
   const smallScale = oddOneOutLevelById(card.levelId).smallRatio;
+  // The band keeps its height without a character; the plain lines stand centred in it.
+  const plain = layoutPlainInstruction({
+    text: INSTRUCTION_TEXT,
+    size: ODD_ONE_OUT_SHEET.plainInstructionSize,
+    pageWidth: ODD_ONE_OUT_SHEET.pageWidth,
+    inset: ODD_ONE_OUT_SHEET.inset,
+  });
 
   return (
     <svg
@@ -172,17 +181,11 @@ function OddOneOutSheet({
           text={INSTRUCTION_TEXT}
         />
       ) : (
-        <text
-          x={sheet.page.width / 2}
-          y={sheet.band.y + sheet.band.height / 2}
-          fill="var(--foreground)"
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-          fontSize={ODD_ONE_OUT_SHEET.plainInstructionSize}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {INSTRUCTION_TEXT}
-        </text>
+        <PlainInstruction
+          layout={plain}
+          centerX={sheet.page.width / 2}
+          top={sheet.band.y + (sheet.band.height - plain.height) / 2}
+        />
       )}
       {card.rows.map((row, rowIndex) => {
         const rowLayout = sheet.rows[rowIndex];

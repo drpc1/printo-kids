@@ -1,8 +1,10 @@
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import type { NumberMazeCard } from "@/lib/number-maze/card";
 import { layoutNumberMazeSheet } from "@/lib/number-maze/layout";
 import { numberMazeLevelById } from "@/lib/number-maze/levels";
 import { NUMBER_MAZE_SHEET } from "@/lib/number-maze/sheet";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +29,13 @@ export function NumberMazeSheet({
 }) {
   const sheet = NUMBER_MAZE_SHEET;
   const instruction = numberMazeLevelById(card.levelId).instruction;
-  const layout = layoutNumberMazeSheet(card, instructionBoxHeight(characterSrc !== null, sheet.plainInstructionSize));
+  const plain = layoutPlainInstruction({
+    text: instruction,
+    size: sheet.plainInstructionSize,
+    pageWidth: sheet.pageWidth,
+    inset: sheet.inset,
+  });
+  const layout = layoutNumberMazeSheet(card, instructionBoxHeight(characterSrc !== null, plain.height));
 
   return (
     <svg
@@ -51,16 +59,7 @@ export function NumberMazeSheet({
           text={instruction}
         />
       ) : (
-        <text
-          x={layout.page.width / 2}
-          y={layout.band.y + layout.band.height / 2 + sheet.plainInstructionSize * sheet.baselineShift}
-          fill="var(--foreground)"
-          fontFamily={FONT}
-          fontSize={sheet.plainInstructionSize}
-          textAnchor="middle"
-        >
-          {instruction}
-        </text>
+        <PlainInstruction layout={plain} centerX={layout.page.width / 2} top={layout.band.y} />
       )}
       <g fill="none" stroke="var(--foreground)" strokeWidth={sheet.cellStroke} data-cells>
         {layout.cells.map((cell, index) => (

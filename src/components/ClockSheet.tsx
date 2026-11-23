@@ -1,8 +1,10 @@
+import { PlainInstruction } from "@/components/PlainInstruction";
 import { CharacterInstruction } from "@/components/SpeechBand";
 import { formatClockTime, type ClockCard } from "@/lib/clock/card";
 import { drawDial, layoutClockSheet, type ClockLine, type ClockRect } from "@/lib/clock/layout";
 import { clockLevelById, clockModeById } from "@/lib/clock/levels";
 import { CLOCK_SHEET } from "@/lib/clock/sheet";
+import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
 
@@ -114,7 +116,13 @@ export function ClockSheet({
   const sheet = CLOCK_SHEET;
   const level = clockLevelById(card.level);
   const mode = clockModeById(card.mode);
-  const instructionHeight = instructionBoxHeight(characterSrc !== null, sheet.plainInstructionSize);
+  const plain = layoutPlainInstruction({
+    text: mode.instruction,
+    size: sheet.plainInstructionSize,
+    pageWidth: sheet.pageWidth,
+    inset: sheet.inset,
+  });
+  const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const layout = layoutClockSheet(card, instructionHeight);
 
   return (
@@ -139,13 +147,7 @@ export function ClockSheet({
           text={mode.instruction}
         />
       ) : (
-        <CentredText
-          x={layout.page.width / 2}
-          y={layout.band.y + layout.band.height / 2}
-          size={sheet.plainInstructionSize}
-        >
-          {mode.instruction}
-        </CentredText>
+        <PlainInstruction layout={plain} centerX={layout.page.width / 2} top={layout.band.y} />
       )}
       {layout.dials.map((place) => {
         const time = card.times[place.time];

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { layoutPlainInstruction } from "../sheet/plain-instruction.ts";
 import { estimatedTextWidth, instructionBoxHeight } from "../sheet/speech.ts";
 import { hourAngle, minuteAngle, partOfDay, type ClockCard } from "./card.ts";
 import { generateClockCard } from "./generate.ts";
@@ -10,7 +11,21 @@ import { CLOCK_SHEET } from "./sheet.ts";
 const EPSILON = 1e-6;
 const SHEET = CLOCK_SHEET;
 const WITH_CHARACTER = instructionBoxHeight(true, SHEET.plainInstructionSize);
-const WITHOUT_CHARACTER = instructionBoxHeight(false, SHEET.plainInstructionSize);
+/** The tallest plain instruction of the card over its modes; they all fit on one line. */
+const WITHOUT_CHARACTER = instructionBoxHeight(
+  false,
+  Math.max(
+    ...CLOCK_MODES.map(
+      (mode) =>
+        layoutPlainInstruction({
+          text: mode.instruction,
+          size: SHEET.plainInstructionSize,
+          pageWidth: SHEET.pageWidth,
+          inset: SHEET.inset,
+        }).height,
+    ),
+  ),
+);
 
 function mulberry32(seed: number): () => number {
   let state = seed >>> 0;

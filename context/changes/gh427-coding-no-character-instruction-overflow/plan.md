@@ -213,27 +213,27 @@ Brak danych do migracji; zapisane profile i ustawienia bez zmian.
 
 #### Automated
 
-- [x] 1.1 Testy helpera i test poleceń wszystkich kart przechodzą: `npm test`
-- [x] 1.2 `npm run lint` i `npx astro check` bez błędów
-- [x] 1.3 `npm run depcruise` bez nowych naruszeń
+- [x] 1.1 Testy helpera i test poleceń wszystkich kart przechodzą: `npm test` — 8710deb5
+- [x] 1.2 `npm run lint` i `npx astro check` bez błędów — 8710deb5
+- [x] 1.3 `npm run depcruise` bez nowych naruszeń — 8710deb5
 
 #### Manual
 
-- [x] 1.4 Test kart wymienia długie polecenia Kodowania, Dyktanda i Krzyżówki jako dwuliniowe
-- [x] 1.5 Prawdziwa szerokość czterech długich poleceń zmierzona w podglądzie, próg skalibrowany przed fazą 2
+- [x] 1.4 Test kart wymienia długie polecenia Kodowania, Dyktanda i Krzyżówki jako dwuliniowe — 8710deb5
+- [x] 1.5 Prawdziwa szerokość czterech długich poleceń zmierzona w podglądzie, próg skalibrowany przed fazą 2 — 8710deb5
 
 ### Phase 2: Migracja kart
 
 #### Automated
 
-- [ ] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` przechodzą
-- [ ] 2.2 Żaden komponent w `src/components` nie rysuje już polecenia bez postaci własnym `<text>`
-- [ ] 2.3 E2E Chromium przechodzi: `npx playwright test --project=chromium` (z `E2E_PORT` na wolnym porcie)
+- [x] 2.1 `npm test`, `npm run lint`, `npx astro check`, `npm run depcruise`, `npm run build` przechodzą
+- [x] 2.2 Żaden komponent w `src/components` nie rysuje już polecenia bez postaci własnym `<text>`
+- [x] 2.3 E2E Chromium przechodzi: `npx playwright test --project=chromium` (z `E2E_PORT` na wolnym porcie)
 
 #### Manual
 
-- [ ] 2.4 Kodowanie (Zapisz, Poziomy 1–4), Dyktando i Krzyżówka bez postaci: polecenie w dwóch liniach, w marginesie
-- [ ] 2.5 Pozostałe karty bez postaci: polecenie w jednej linii, bez widocznej zmiany
+- [x] 2.4 Kodowanie (Zapisz, Poziomy 1–4), Dyktando i Krzyżówka bez postaci: polecenie w dwóch liniach, w marginesie
+- [x] 2.5 Pozostałe karty bez postaci: polecenie w jednej linii, bez widocznej zmiany
 
 ### Phase 3: Miniatury i sprawdzenie
 

@@ -1,16 +1,33 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { layoutPlainInstruction } from "../sheet/plain-instruction.ts";
 import { instructionBoxHeight } from "../sheet/speech.ts";
 import { type CodingCard } from "./card.ts";
 import { generateCodingCard } from "./generate.ts";
 import { layoutCodingSheet, type CodingRect } from "./layout.ts";
-import { CODING_LEVELS, CODING_MODES } from "./levels.ts";
+import { CODING_LEVELS, CODING_MODES, codingInstruction } from "./levels.ts";
 import { CODING_SHEET } from "./sheet.ts";
 
 const EPSILON = 1e-6;
 const SHEET = CODING_SHEET;
 const WITH_CHARACTER = instructionBoxHeight(true, SHEET.plainInstructionSize);
-const WITHOUT_CHARACTER = instructionBoxHeight(false, SHEET.plainInstructionSize);
+/** The tallest plain instruction of the card: the long sentences of Zapisz are broken into two lines. */
+const WITHOUT_CHARACTER = instructionBoxHeight(
+  false,
+  Math.max(
+    ...CODING_LEVELS.flatMap((level) =>
+      CODING_MODES.map(
+        (mode) =>
+          layoutPlainInstruction({
+            text: codingInstruction(level, mode),
+            size: SHEET.plainInstructionSize,
+            pageWidth: SHEET.pageWidth,
+            inset: SHEET.inset,
+          }).height,
+      ),
+    ),
+  ),
+);
 
 function mulberry32(seed: number): () => number {
   let state = seed >>> 0;
@@ -27,9 +44,11 @@ const overlap = (a: CodingRect, b: CodingRect): boolean =>
   a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
 
 void describe("layoutCodingSheet", () => {
-  void test("the instruction box is 26 mm with a character and 7 mm without", () => {
+  void test("the instruction box is 26 mm with a character and two 7 mm lines without (the long Zapisz sentences)", () => {
     assert.equal(WITH_CHARACTER, 26);
-    assert.equal(WITHOUT_CHARACTER, 7);
+    assert.ok(
+      Math.abs(WITHOUT_CHARACTER - (2 * SHEET.plainInstructionSize + 0.25 * SHEET.plainInstructionSize)) < EPSILON,
+    );
   });
 
   for (const level of CODING_LEVELS) {

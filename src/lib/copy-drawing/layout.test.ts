@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import { layoutPlainInstruction } from "../sheet/plain-instruction.ts";
 import { instructionBoxHeight } from "../sheet/speech.ts";
 import { layoutCopyDrawingSheet } from "./layout.ts";
 import { COPY_DRAWING_LEVELS } from "./levels.ts";
@@ -7,7 +8,16 @@ import { COPY_DRAWING_SHEET } from "./sheet.ts";
 
 const EPSILON = 1e-6;
 const WITH_CHARACTER = instructionBoxHeight(true, COPY_DRAWING_SHEET.plainInstructionSize);
-const WITHOUT_CHARACTER = instructionBoxHeight(false, COPY_DRAWING_SHEET.plainInstructionSize);
+/** The plain instruction of the card; it fits on one line, so the box is as tall as the font. */
+const WITHOUT_CHARACTER = instructionBoxHeight(
+  false,
+  layoutPlainInstruction({
+    text: COPY_DRAWING_SHEET.instructionText,
+    size: COPY_DRAWING_SHEET.plainInstructionSize,
+    pageWidth: COPY_DRAWING_SHEET.pageWidth,
+    inset: COPY_DRAWING_SHEET.inset,
+  }).height,
+);
 
 void describe("layoutCopyDrawingSheet", () => {
   void test("the instruction box is 26 mm with a character and 7 mm without", () => {
