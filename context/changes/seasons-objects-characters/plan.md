@@ -293,7 +293,7 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Automated
 
-- [ ] 6.1 Lint, depcruise, testy, astro check i build przechodzą
+- [x] 6.1 Lint, depcruise, testy, astro check i build przechodzą — a1604562
 
 #### Manual
 
