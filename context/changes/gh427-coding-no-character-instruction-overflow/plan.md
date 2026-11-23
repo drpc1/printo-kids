@@ -239,11 +239,11 @@ Brak danych do migracji; zapisane profile i ustawienia bez zmian.
 
 #### Automated
 
-- [x] 3.1 `npm run thumbnails` kończy się bez błędu, a miniatury są przebudowane
-- [x] 3.2 `npm test`, `npm run lint`, `npm run build` przechodzą
+- [x] 3.1 `npm run thumbnails` kończy się bez błędu, a miniatury są przebudowane — c569ba4b
+- [x] 3.2 `npm test`, `npm run lint`, `npm run build` przechodzą — c569ba4b
 
 #### Manual
 
-- [x] 3.3 Miniatura Kodowania w katalogu: polecenie w dwóch liniach, w szerokości kartki
-- [x] 3.4 Wydruk A4 bez postaci Kodowania, Dyktanda i Krzyżówki: jedna strona, polecenie w marginesie 10 mm
-- [x] 3.5 Ten sam wydruk z telefonu (Safari, Chrome iOS, Brave iOS): jedna strona
+- [x] 3.3 Miniatura Kodowania w katalogu: polecenie w dwóch liniach, w szerokości kartki — c569ba4b
+- [x] 3.4 Wydruk A4 bez postaci Kodowania, Dyktanda i Krzyżówki: jedna strona, polecenie w marginesie 10 mm — c569ba4b
+- [x] 3.5 Ten sam wydruk z telefonu (Safari, Chrome iOS, Brave iOS): jedna strona — c569ba4b

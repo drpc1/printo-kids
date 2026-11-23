@@ -1,7 +1,7 @@
 ---
 change_id: gh427-coding-no-character-instruction-overflow
 title: Kodowanie bez postaci: polecenie wychodzi poza szerokość kartki
-status: implementing
+status: implemented
 created: 2026-11-23
 updated: 2026-11-23
 archived_at: null
