@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { SHADOW_FAMILIES, SHADOW_PICTURES, familyOfPicture, shadowPictureById } from "./families.ts";
+import {
+  SHADOW_FAMILIES,
+  SHADOW_PICTURES,
+  SHADOW_POSE_FAMILIES,
+  SHADOW_POSE_PICTURES,
+  familyOfPicture,
+  shadowPictureById,
+} from "./families.ts";
+import { shadowsLevelById } from "./levels.ts";
 import { PICTURE_BOX, PICTURE_COLORS } from "./picture-format.ts";
 import { MIN_SHADOW_DIFFERENCE, pathPolylines, shadowDifference, shadowMask, shapesMask } from "./raster.ts";
 
@@ -62,6 +70,47 @@ void describe("shadows catalog", () => {
           difference >= MIN_SHADOW_DIFFERENCE,
           `${SHADOW_PICTURES[i].id} ~ ${SHADOW_PICTURES[j].id}: ${difference.toFixed(3)}`,
         );
+      }
+    }
+  });
+
+  void test("poses: five families of eight distinct poses, unique ids, a shadow each", () => {
+    assert.equal(SHADOW_POSE_FAMILIES.length, 5);
+    const ids = [...SHADOW_PICTURES, ...SHADOW_POSE_PICTURES].map((picture) => picture.id);
+    assert.equal(new Set(ids).size, ids.length);
+    for (const family of SHADOW_POSE_FAMILIES) {
+      assert.equal(family.kind, "pozy");
+      assert.equal(family.pictures.length, 8, family.id);
+      for (const picture of family.pictures) {
+        assert.equal(shadowPictureById(picture.id), picture);
+        assert.equal(familyOfPicture(picture.id), family);
+        assert.ok(picture.shapes.some((shape) => shape.detail !== true));
+      }
+    }
+  });
+
+  void test("poses: every two of a family differ by the level 4 floor and none is the mirror of another", () => {
+    const floor = shadowsLevelById("pozy").minShadowDifference;
+    for (const family of SHADOW_POSE_FAMILIES) {
+      const masks = family.pictures.map((picture) => shadowMask(picture));
+      const size = Math.round(Math.sqrt(masks[0].length));
+      const mirror = (mask: boolean[]) =>
+        mask.map((_, k) => mask[Math.floor(k / size) * size + (size - 1 - (k % size))]);
+      for (let i = 0; i < masks.length; i++) {
+        for (let j = i + 1; j < masks.length; j++) {
+          const difference = shadowDifference(masks[i], masks[j]);
+          assert.ok(
+            difference >= floor,
+            `${family.pictures[i].id} ~ ${family.pictures[j].id}: ${difference.toFixed(3)}`,
+          );
+        }
+        for (let j = 0; j < masks.length; j++) {
+          if (i === j) continue;
+          assert.ok(
+            shadowDifference(mirror(masks[i]), masks[j]) >= floor,
+            `${family.pictures[i].id} mirrored ~ ${family.pictures[j].id}`,
+          );
+        }
       }
     }
   });

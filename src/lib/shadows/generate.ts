@@ -1,5 +1,5 @@
 import { shadowsCardKey, shadowsCardProblems, type ShadowsCard } from "./card.ts";
-import { SHADOW_FAMILIES } from "./families.ts";
+import { SHADOW_FAMILIES, SHADOW_POSE_FAMILIES } from "./families.ts";
 import type { ShadowsLevel } from "./levels.ts";
 
 /** Draws again at most this many times before giving up. */
@@ -18,7 +18,7 @@ function pick<T>(items: readonly T[], random: () => number): T {
   return items[Math.min(items.length - 1, Math.floor(random() * items.length))];
 }
 
-/** Picture ids for the level: one from each of several families, or several from one family of the level's kind. */
+/** Picture ids for the level: one from each of several families, or several from one family of the level's kind (poses for level 4). */
 function drawPictures(level: ShadowsLevel, random: () => number): string[] {
   if (level.familyRule === "dowolne") {
     return shuffle(SHADOW_FAMILIES, random)
@@ -26,7 +26,9 @@ function drawPictures(level: ShadowsLevel, random: () => number): string[] {
       .map((family) => pick(family.pictures, random).id);
   }
   const family = pick(
-    SHADOW_FAMILIES.filter((candidate) => candidate.kind === level.familyRule),
+    level.familyRule === "pozy"
+      ? SHADOW_POSE_FAMILIES
+      : SHADOW_FAMILIES.filter((candidate) => candidate.kind === level.familyRule),
     random,
   );
   return shuffle(family.pictures, random)

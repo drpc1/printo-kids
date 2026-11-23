@@ -1,6 +1,6 @@
 import { familyOfPicture, shadowPictureById } from "./families.ts";
 import type { ShadowsLevel, ShadowsLevelId } from "./levels.ts";
-import { MIN_SHADOW_DIFFERENCE, shadowDifference, shadowMask } from "./raster.ts";
+import { shadowDifference, shadowMask } from "./raster.ts";
 
 export interface ShadowsCard {
   levelId: ShadowsLevelId;
@@ -46,7 +46,9 @@ function familiesFit(card: ShadowsCard, level: ShadowsLevel): boolean {
   const families = card.pictures.map((id) => familyOfPicture(id));
   if (families.some((family) => family === undefined)) return false;
   const ids = new Set(families.map((family) => family?.id));
-  if (level.familyRule === "dowolne") return ids.size === card.pictures.length;
+  if (level.familyRule === "dowolne") {
+    return ids.size === card.pictures.length && families.every((family) => family?.kind !== "pozy");
+  }
   return ids.size === 1 && families[0]?.kind === level.familyRule;
 }
 
@@ -75,7 +77,7 @@ export function shadowsCardProblems(card: ShadowsCard, level: ShadowsLevel): rea
     const masks = card.pictures.map((id) => maskOf(id) ?? []);
     const tooClose = masks.some((a, i) =>
       masks.some(
-        (b, j) => j > i && card.pictures[i] !== card.pictures[j] && shadowDifference(a, b) < MIN_SHADOW_DIFFERENCE,
+        (b, j) => j > i && card.pictures[i] !== card.pictures[j] && shadowDifference(a, b) < level.minShadowDifference,
       ),
     );
     if (tooClose) problems.push("shadows-too-similar");
