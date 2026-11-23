@@ -46,7 +46,7 @@ Evidence:
   - Tradeoff: Changes the accepted drawings and needs another approval.
   - Confidence: MED.
   - Blind spot: Readability of the new variants in 4×12.
-- **Decision**: PENDING
+- **Decision**: FIXED — Fix A (wyjątek zostaje, decyzja użytkowniczki 2026-11-23)
 
 ### F2 — Bear ears and mouth merged into one part on 6×15
 
