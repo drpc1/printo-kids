@@ -60,7 +60,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-54 | seasons-objects-characters     | Rodzic wybiera obiekty i postacie kolejnej pory roku w jej oknie dat, tak jak świąteczne                                                                    | —                                                          | MS-06, FR-028, FR-029, FR-012, US-19, US-20                               | done     |
 | S-43 | card-tags-filter               | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                | S-42, S-47, S-48, S-49                                     | MS-03, FR-014, US-05                                                      | done     |
 | S-53 | how-it-works-m7                | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16                                                                    | S-42, S-47, S-48, S-49, S-43                               | MS-05, US-22, FR-031                                                      | blocked  |
-| S-50 | stryker-m7-cards               | Zespół ma karty i logikę M-7 sprawdzone mutacjami Strykera na zakresach z ryzykiem                                                                          | S-42, S-47, S-48, S-49, S-55                               | MS-01, MS-02, MS-03                                                       | planning |
+| S-50 | stryker-m7-cards               | Zespół ma karty i logikę M-7 sprawdzone mutacjami Strykera na zakresach z ryzykiem                                                                          | S-42, S-47, S-48, S-49, S-55                               | MS-01, MS-02, MS-03                                                       | done     |
 | S-51 | test-plan-m7                   | Zespół ma test-plan.md zgodny ze stanem po M-7                                                                                                              | S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54, S-55 | MS-01, MS-02, MS-03                                                       | proposed |
 
 ## Streams
@@ -234,7 +234,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 - **Unknowns:**
   - Które zakresy dostają Strykera? Rozstrzyga się po zbudowaniu kart, na podstawie ryzyk z test-plan.md; zakres wąski (`--mutate "plik:od-do"`), bez ścigania 100%. — Owner: team. Block: no.
 - **Risk:** Stryker idzie po kartach i filtrze, bo sprawdza gotowy kod; jak w M-6 jest osobnym slice'em, a nie częścią każdej karty.
-- **Status:** planning
+- **Status:** done
 
 ### S-51: Test plan po M-7
 
@@ -263,7 +263,7 @@ Issues na GitHubie z etykietą `roadmap-slice` idą za „At a glance” i „Do
 | S-52       | profile-card-summary           | Okno profilu przy wielu kartach                 | no                    | Czeka na S-42, S-47 do S-49 i decyzję, co przebudować                                    |
 | S-54       | seasons-objects-characters     | Pory roku                                       | no                    | Zrobione, zarchiwizowane                                                                 |
 | S-53       | how-it-works-m7                | „Jak to działa” przy wielu kartach              | no                    | Czeka na S-43 i decyzję, jak skrócić                                                     |
-| S-50       | stryker-m7-cards               | Stryker dla kart i filtra M-7                   | no                    | Plan gotowy, w trakcie                                                                   |
+| S-50       | stryker-m7-cards               | Stryker dla kart i filtra M-7                   | no                    | Gotowe (PR 478)                                                                          |
 | S-51       | test-plan-m7                   | Test plan po M-7                                | no                    | Czeka na S-50                                                                            |
 
 ## Open Roadmap Questions
@@ -320,6 +320,7 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 
 ## Done
 
+- **S-50: Zespół uruchamia Strykera na zakresach z ryzykiem z M-7 (generatory i reguły jednoznaczności kart kodowania i trzech nowych kart, a dla filtra tylko jego logikę, jeśli ją ma) i przegląda ocalałe mutanty pojedynczo (AGENTS.md, „Mutation testing”).** — Archived 2026-11-23 → `context/archive/2026-11-23-stryker-m7-cards/`. Lesson: —.
 - **S-54: Rodzic wybiera obiekty i postacie kolejnej pory roku (np. wiosny) w jej oknie dat na kartach z szablonów i przy poleceniu, tak jak świąteczne z M-6, i drukuje kartę jako jedną stronę A4.** — Archived 2026-11-23 → `context/archive/2026-11-22-seasons-objects-characters/`. Lesson: —.
 - **S-43: Rodzic zawęża katalog na stronie głównej do kart z wybraną umiejętnością i szybciej znajduje właściwy rodzaj karty (chipy „Co dziś ćwiczymy?”, tagi na miniaturze).** — Archived 2026-11-23 → `context/archive/2026-11-22-card-tags-filter/`. Lesson: —.
 - **S-42: Rodzic otwiera z katalogu karty kodowania, wybiera poziom, generuje kartę A4 z kratką, przeszkodami, postacią i metą, na której dziecko zapisuje strzałkami najkrótszą drogę albo wykonuje podane strzałki, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43 (M-7).** — Archived 2026-11-21 → `context/archive/2026-11-17-coding-card/`. Lesson: —.

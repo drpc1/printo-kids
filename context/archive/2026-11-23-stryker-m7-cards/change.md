@@ -1,10 +1,10 @@
 ---
 change_id: stryker-m7-cards
 title: Stryker dla kart M-7 (S-50)
-status: impl_reviewed
+status: archived
 created: 2026-11-23
 updated: 2026-11-23
-archived_at: null
+archived_at: 2026-11-23T21:35:35Z
 ---
 
 ## Notes
