@@ -4,6 +4,7 @@ import { JEDZENIE } from "./objects/jedzenie.ts";
 import { KOSMOS } from "./objects/kosmos.ts";
 import { KSZTALTY } from "./objects/ksztalty.ts";
 import { PRZYRODA } from "./objects/przyroda.ts";
+import { ZIMA } from "./objects/zima.ts";
 import { ZWIERZETA } from "./objects/zwierzeta.ts";
 import { inWindow } from "../date-window.ts";
 import type { SymmetryLevelId } from "./levels.ts";
@@ -45,6 +46,7 @@ const CATALOG: readonly SymmetryObjectSizes[] = [
   BUDOWLE,
   KSZTALTY,
   BOZE_NARODZENIE,
+  ZIMA,
 ];
 
 /** Drawn as the left half of a 12-column grid: 6 columns, and column 5 touches the axis. Used by 5 and 6 lat. */

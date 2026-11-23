@@ -21,9 +21,10 @@ const LEVELS_WITH_TEMPLATES: readonly SymmetryLevel[] = SYMMETRY_LEVELS;
  * Objects of the approved Boże Narodzenie mockup (christmas-objects, 2026-11-14) whose variants are mostly colors:
  * the bauble and the gift keep one silhouette and change color (a gift is one colored part, so it has a single part),
  * and the gingerbread man has a fixed mouth. They are exempt from the part-count and distinct-silhouette checks below;
- * their variant sets must still draw different colored cells.
+ * their variant sets must still draw different colored cells. The approved Zima mockup (seasons-objects-characters,
+ * 2026-11-23) adds the hat (stripes and cuff colors), the igloo (a blue door frame) and the scarf (stripes).
  */
-const COLOR_VARIANT_OBJECTS = new Set(["bombka", "prezent"]);
+const COLOR_VARIANT_OBJECTS = new Set(["bombka", "prezent", "czapka", "iglo", "szalik"]);
 const FIXED_PART_OBJECTS = new Set(["piernik"]);
 
 void describe("mirrorAnswer", () => {
