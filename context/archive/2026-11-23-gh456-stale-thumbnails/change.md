@@ -1,10 +1,10 @@
 ---
 change_id: gh456-stale-thumbnails
 title: Odśwież nieaktualne miniatury katalogu (6 plików)
-status: new
+status: archived
 created: 2026-11-23
 updated: 2026-11-23
-archived_at: null
+archived_at: 2026-11-23T22:21:56Z
 ---
 
 ## Notes
