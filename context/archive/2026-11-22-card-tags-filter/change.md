@@ -1,10 +1,10 @@
 ---
 change_id: card-tags-filter
 title: Umiejętności i filtr kart w katalogu
-status: impl_reviewed
+status: archived
 created: 2026-11-22
 updated: 2026-11-23
-archived_at: null
+archived_at: 2026-11-23T13:37:16Z
 ---
 
 ## Notes

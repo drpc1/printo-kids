@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-22
+updated: 2026-11-23
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -58,7 +58,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-55 | copy-drawing-asymmetric-shapes | Rodzic dostaje na „Skopiuj obrazek” także niesymetryczne kształty (np. skarpeta, ryba, dinozaur), z kategorią i kolorami jak dotąd                          | —                                                          | MS-07, FR-037, FR-038, US-27, US-28                                       | done        |
 | S-52 | profile-card-summary           | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą                                                          | S-42, S-47, S-48, S-49                                     | MS-04, FR-017, US-08                                                      | blocked     |
 | S-54 | seasons-objects-characters     | Rodzic wybiera obiekty i postacie kolejnej pory roku w jej oknie dat, tak jak świąteczne                                                                    | —                                                          | MS-06, FR-028, FR-029, FR-012, US-19, US-20                               | in-progress |
-| S-43 | card-tags-filter               | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                | S-42, S-47, S-48, S-49                                     | MS-03, FR-014, US-05                                                      | planning    |
+| S-43 | card-tags-filter               | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                | S-42, S-47, S-48, S-49                                     | MS-03, FR-014, US-05                                                      | done        |
 | S-53 | how-it-works-m7                | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16                                                                    | S-42, S-47, S-48, S-49, S-43                               | MS-05, US-22, FR-031                                                      | blocked     |
 | S-50 | stryker-m7-cards               | Zespół ma karty i logikę M-7 sprawdzone mutacjami Strykera na zakresach z ryzykiem                                                                          | S-42, S-47, S-48, S-49, S-43, S-54, S-55                   | MS-01, MS-02, MS-03                                                       | proposed    |
 | S-51 | test-plan-m7                   | Zespół ma test-plan.md zgodny ze stanem po M-7                                                                                                              | S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54, S-55 | MS-01, MS-02, MS-03                                                       | proposed    |
@@ -167,7 +167,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
   - ~~Filtr jedno- czy wielokrotny?~~ Zamknięte 2026-11-22 po makiecie (decyzja użytkowniczki): rząd chipów „Wszystkie” + pięć tagów nad katalogiem, jeden wybór, „Wszystkie” domyślne; chip ukrywa karty bez tego tagu, a karta z dwoma tagami pokazuje się pod obydwoma; tagi stoją pod nazwą na miniaturze. Odrzucony wariant: sekcje z nagłówkami i chipami przewijającymi (zmusza do jednego tagu na kartę). Wybór nie jest zapamiętywany ani w profilu, ani na urządzeniu (decyzja użytkowniczki 2026-11-22): każde wejście na stronę główną zaczyna od „Wszystkie”. Pojęcie nazywa się „umiejętność” (decyzja użytkowniczki 2026-11-22), w kodzie `CardKind.skills`, a nad chipami w UI stoi „Co ćwiczy?”; nie „kategoria” (to kategoria obiektów z paska), nie „tag” (glosariusz rezerwuje go jako zakazaną nazwę kategorii obiektów i plakietki) i nie „filtr” (to mechanizm, nie wartość). Glosariusz i PRD dostają je w planie S-43.
   - ~~Czy sezonowy tag „Święta” wchodzi do filtra?~~ Zamknięte 2026-11-17 kodem: sezon to kategoria obiektów „Boże Narodzenie” z oknem 15.11–6.01 (`src/lib/symmetry/template-format.ts:30`), nie tag, więc filtr kart nie potrzebuje tagu „Święta”.
 - **Risk:** Katalog ma dziś stały kształt, a testy e2e i plakietki zakładają stałą liczbę miniatur; filtr zmienia ich widoczność. Tagi kart i kategorie obiektów to dwa różne pojęcia i trzeba je odróżnić w nazwach, żeby rodzic i kod ich nie mylił.
-- **Status:** planning
+- **Status:** done
 
 ### S-55: „Skopiuj obrazek” z kształtami niesymetrycznymi
 
@@ -320,6 +320,7 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 
 ## Done
 
+- **S-43: Rodzic zawęża katalog na stronie głównej do kart z wybraną umiejętnością i szybciej znajduje właściwy rodzaj karty (chipy „Co dziś ćwiczymy?”, tagi na miniaturze).** — Archived 2026-11-23 → `context/archive/2026-11-22-card-tags-filter/`. Lesson: —.
 - **S-42: Rodzic otwiera z katalogu karty kodowania, wybiera poziom, generuje kartę A4 z kratką, przeszkodami, postacią i metą, na której dziecko zapisuje strzałkami najkrótszą drogę albo wykonuje podane strzałki, podgląda ją i drukuje także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tagi dochodzą w S-43 (M-7).** — Archived 2026-11-21 → `context/archive/2026-11-17-coding-card/`. Lesson: —.
 - **S-49: Rodzic otwiera z katalogu „Labirynt liczbowy”, wybiera poziom i dostaje kartę A4 z kratką liczb, na której dziecko rysuje drogę od startu do mety po kolejnych liczbach, omijając pułapki** — Archived 2026-11-20 → `context/archive/2026-11-20-number-maze-card/`. Lesson: —.
 - **S-48: Rodzic otwiera z katalogu „Od najmniejszego”, wybiera poziom, uruchamia generowanie i dostaje kartę A4 z rzędami obrazków tego samego obiektu w różnych wielkościach; dziecko wpisuje pod nimi kolejność od najmniejszego do największego (1, 2, 3…).** — Archived 2026-11-18 → `context/archive/2026-11-18-size-order-card/`. Lesson: —.
