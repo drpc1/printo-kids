@@ -261,8 +261,8 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Automated
 
-- [ ] 3.1 Testy katalogu i kart dla kategorii zima przechodzą
-- [ ] 3.2 Lint, astro check i build przechodzą
+- [x] 3.1 Testy katalogu i kart dla kategorii zima przechodzą — 0b8299bc
+- [x] 3.2 Lint, astro check i build przechodzą — 0b8299bc
 
 #### Manual
 
