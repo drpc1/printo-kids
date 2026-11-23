@@ -19,7 +19,7 @@ export function PlainInstruction({
     <>
       {layout.lines.map((line, index) => (
         <text
-          key={line}
+          key={`${index}-${line}`}
           data-plain-instruction
           x={centerX}
           y={top + layout.baselines[index]}

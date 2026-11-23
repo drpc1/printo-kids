@@ -126,7 +126,7 @@ function plainInstructionSvg(layout, pageWidth, top) {
   return layout.lines
     .map(
       (line, index) =>
-        `<text x="${num(pageWidth / 2)}" y="${num(top + layout.baselines[index])}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${layout.size}" text-anchor="middle">${line.replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</text>`,
+        `<text x="${num(pageWidth / 2)}" y="${num(top + layout.baselines[index])}" fill="#000" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${layout.size}" text-anchor="middle">${line.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</text>`,
     )
     .join("\n");
 }
