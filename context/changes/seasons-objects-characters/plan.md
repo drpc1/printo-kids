@@ -250,8 +250,8 @@ Zapisane ulubione postacie zostają; zapamiętana kategoria „Zima” poza okne
 
 #### Automated
 
-- [ ] 2.1 Lint, depcruise, testy, astro check i build przechodzą
-- [ ] 2.2 E2E: pasek w grudniu i lutym
+- [x] 2.1 Lint, depcruise, testy, astro check i build przechodzą — 367753a0
+- [x] 2.2 E2E: pasek w grudniu i lutym — 367753a0
 
 #### Manual
 
