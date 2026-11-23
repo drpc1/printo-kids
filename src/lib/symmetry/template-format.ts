@@ -29,6 +29,12 @@ export const OBJECT_CATEGORIES = [
     label: "Boże Narodzenie",
     window: { from: { month: 11, day: 15 }, to: { month: 1, day: 6 } },
   },
+  {
+    id: "zima",
+    label: "Zima",
+    // 29.02 also closes the window in a common year: 28.02 is inside, 1.03 outside.
+    window: { from: { month: 12, day: 1 }, to: { month: 2, day: 29 } },
+  },
 ] as const satisfies readonly ObjectCategory[];
 
 export type ObjectCategoryId = (typeof OBJECT_CATEGORIES)[number]["id"];

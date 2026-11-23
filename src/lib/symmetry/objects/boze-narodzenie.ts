@@ -1170,7 +1170,7 @@ const BALWANEK_4: SymmetryTemplate = {
   width: 4,
   height: 12,
   holeColor: "black",
-  categories: ["boze-narodzenie"],
+  categories: ["zima"],
   base: drawing(["....", "....", "....", ".sss", ".s.o", ".sss", "..ss", ".sss", "....", "....", "ssss", ".sss"]),
   parts: [
     {
@@ -1193,7 +1193,7 @@ const BALWANEK_6: SymmetryTemplate = {
   width: 6,
   height: 15,
   holeColor: "black",
-  categories: ["boze-narodzenie"],
+  categories: ["zima"],
   base: drawing([
     "......",
     "......",
@@ -1232,7 +1232,7 @@ const BALWANEK_9: SymmetryTemplate = {
   width: 9,
   height: 24,
   holeColor: "black",
-  categories: ["boze-narodzenie"],
+  categories: ["zima"],
   base: drawing([
     ".........",
     ".........",
