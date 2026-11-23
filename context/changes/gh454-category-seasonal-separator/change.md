@@ -1,7 +1,7 @@
 ---
 change_id: gh454-category-seasonal-separator
 title: Kreska pod kategorią sezonową na liście kategorii
-status: implementing
+status: impl_reviewed
 created: 2026-11-23
 updated: 2026-11-23
 archived_at: null

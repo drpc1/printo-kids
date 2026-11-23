@@ -88,6 +88,17 @@ export function objectCategoryChoicesOn(today: Date): readonly { id: ObjectCateg
   return OBJECT_CATEGORY_CHOICES.filter((choice) => choice.id === "wszystkie" || categoryOpenOn(choice.id, today));
 }
 
+/**
+ * The id of the last seasonal category (one with a date window) on the bar of `today`, where the list draws a line
+ * under it, or null when no seasonal category is shown. Like `separatorAfter` of the character list.
+ */
+export function objectCategorySeparatorAfterOn(today: Date): ObjectCategoryChoiceId | null {
+  const seasonal = objectCategoryChoicesOn(today).filter((choice) =>
+    OBJECT_CATEGORIES.some((category) => category.id === choice.id && windowOf(category) !== undefined),
+  );
+  return seasonal.length === 0 ? null : seasonal[seasonal.length - 1].id;
+}
+
 /** The category the bar shows for a remembered one: "wszystkie" when its window does not include `today`. */
 export function visibleCategoryOn(category: ObjectCategoryChoiceId, today: Date): ObjectCategoryChoiceId {
   return category === "wszystkie" || categoryOpenOn(category, today) ? category : "wszystkie";

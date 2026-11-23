@@ -128,16 +128,16 @@ Rysowanie kreski w `LevelChoice` i podłączenie w `CategoryChoice`.
 
 #### Automated
 
-- [x] 1.1 Testy przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
+- [x] 1.1 Testy przechodzą: `npm test` — e753ac06
+- [x] 1.2 Lint przechodzi: `npm run lint` — e753ac06
 
 ### Phase 2: Kreska w liście kategorii
 
 #### Automated
 
-- [ ] 2.1 Lint, format i typy: `npm run lint` oraz `npx astro check`
-- [ ] 2.2 Testy: `npm test`
-- [ ] 2.3 Zależności: `npm run depcruise`
+- [x] 2.1 Lint, format i typy: `npm run lint` oraz `npx astro check`
+- [x] 2.2 Testy: `npm test`
+- [x] 2.3 Zależności: `npm run depcruise`
 
 #### Manual
 

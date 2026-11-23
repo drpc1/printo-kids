@@ -16,6 +16,7 @@ import {
   OBJECT_CATEGORIES,
   OBJECT_CATEGORY_CHOICES,
   objectCategoryChoicesOn,
+  objectCategorySeparatorAfterOn,
   symmetryTemplatesFor,
   visibleCategoryOn,
   type ObjectCategoryChoiceId,
@@ -111,6 +112,13 @@ void describe("category choices", () => {
       const ids = objectCategoryChoicesOn(day).map((choice) => choice.id);
       assert.ok(!ids.includes("zima"), day.toDateString());
     }
+  });
+
+  void test("the line goes under the last seasonal category on the bar and nowhere outside the windows", () => {
+    assert.equal(objectCategorySeparatorAfterOn(new Date(2026, 10, 20)), "boze-narodzenie");
+    assert.equal(objectCategorySeparatorAfterOn(new Date(2026, 11, 10)), "zima");
+    assert.equal(objectCategorySeparatorAfterOn(new Date(2027, 1, 10)), "zima");
+    assert.equal(objectCategorySeparatorAfterOn(new Date(2026, 6, 10)), null);
   });
 
   void test("the bar lists both seasonal categories in December, only Zima in February and neither in summer", () => {
