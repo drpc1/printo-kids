@@ -483,3 +483,103 @@ test("the catalog is titled PrintoKids; each generator page has the card name as
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
   }
 });
+
+// Provenance: card-tags-filter (phase 2, S-43)
+// The "Co ćwiczy?" chips narrow the catalog to the cards with one skill. One choice, "Wszystkie" by default, never kept.
+test("the skill chips narrow the catalog, keep a card under both its skills and reset to Wszystkie", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/");
+
+  const group = page.getByRole("group", { name: "Co ćwiczy?" });
+  const all = group.getByRole("button", { name: "Wszystkie", exact: true });
+  const links = page.locator("a[data-card-title]");
+  await expect(all).toHaveAttribute("aria-pressed", "true");
+  const total = await links.count();
+  expect(total).toBeGreaterThan(0);
+  await expect(page.locator("a[data-card-title]:visible")).toHaveCount(total);
+
+  const shown = () =>
+    page
+      .locator("a[data-card-title]:visible")
+      .evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute("data-card-title") ?? ""));
+
+  await group.getByRole("button", { name: "Czas i pieniądze" }).click();
+  await expect(group.getByRole("button", { name: "Czas i pieniądze" })).toHaveAttribute("aria-pressed", "true");
+  await expect(all).toHaveAttribute("aria-pressed", "false");
+  expect(await shown()).toEqual(["Kto ma więcej", "Zegar"]);
+
+  // "Kto ma więcej" has two skills, so it stays under "Liczby" too.
+  await group.getByRole("button", { name: "Liczby" }).click();
+  expect(await shown()).toEqual(["Krzyżówka matematyczna", "Kto ma więcej", "Labirynt liczbowy"]);
+
+  await all.click();
+  await expect(page.locator("a[data-card-title]:visible")).toHaveCount(total);
+});
+
+test("the skill choice is not kept: coming back to the catalog starts at Wszystkie", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/");
+
+  const group = page.getByRole("group", { name: "Co ćwiczy?" });
+  const total = await page.locator("a[data-card-title]").count();
+  await group.getByRole("button", { name: "Rysowanie" }).click();
+  await expect(page.locator("a[data-card-title]:visible")).toHaveCount(5);
+
+  await page.getByRole("link", { name: "Symetria" }).click();
+  await expect(page).toHaveURL(/\/symmetry$/);
+  await page.getByRole("link", { name: "Wszystkie karty" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(group.getByRole("button", { name: "Wszystkie", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("a[data-card-title]:visible")).toHaveCount(total);
+
+  // A page restored from the cache with a chip chosen is reset by pageshow.
+  await group.getByRole("button", { name: "Logika" }).click();
+  await page.evaluate(() => {
+    window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true }));
+  });
+  await expect(group.getByRole("button", { name: "Wszystkie", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("a[data-card-title]:visible")).toHaveCount(total);
+});
+
+test("a level badge stays on a card after narrowing the catalog", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
+  await page.goto("/");
+
+  await page.getByRole("group", { name: "Co ćwiczy?" }).getByRole("button", { name: "Logika" }).click();
+  await expect(page.getByRole("link", { name: "Labirynt, poz. 4" })).toBeVisible();
+});
+
+test("on a phone the skill chips wrap, stay on screen and keep clear of the heading and the profile corner", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "phone-360", "phone layout");
+  await seedProfiles(page, [ANIA, ZOSIA], ANIA.id);
+  await page.goto("/");
+
+  const group = page.getByRole("group", { name: "Co ćwiczy?" });
+  const groupBox = await group.boundingBox();
+  const corner = await page.getByRole("button", { name: "Ania", exact: true }).boundingBox();
+  const heading = await page.getByRole("heading", { level: 1 }).boundingBox();
+  expect(groupBox).not.toBeNull();
+  expect(corner).not.toBeNull();
+  expect(heading).not.toBeNull();
+  expect(groupBox !== null && heading !== null && groupBox.y >= heading.y + heading.height).toBe(true);
+  expect(groupBox !== null && corner !== null && groupBox.y >= corner.y + corner.height).toBe(true);
+
+  const viewport = page.viewportSize();
+  for (const chip of await group.getByRole("button").all()) {
+    const box = await chip.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box !== null && viewport !== null && box.x >= 0 && box.x + box.width <= viewport.width).toBe(true);
+  }
+
+  // Two columns of thumbnails, as before the chips.
+  const firstTwo = await page.locator("li[data-skills] a").evaluateAll((anchors) => {
+    return anchors.slice(0, 3).map((anchor) => Math.round(anchor.getBoundingClientRect().top));
+  });
+  expect(firstTwo[0]).toBe(firstTwo[1]);
+  expect(firstTwo[2]).toBeGreaterThan(firstTwo[1] ?? 0);
+});

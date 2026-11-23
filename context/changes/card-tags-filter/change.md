@@ -3,7 +3,7 @@ change_id: card-tags-filter
 title: Umiejętności i filtr kart w katalogu
 status: impl_reviewed
 created: 2026-11-22
-updated: 2026-11-22
+updated: 2026-11-23
 archived_at: null
 ---
 
