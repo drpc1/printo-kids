@@ -156,29 +156,29 @@ Zaktualizować PRD i uruchomić wszystkie bramki.
 
 #### Automated
 
-- [x] 1.1 Lint przechodzi: `npm run lint`
-- [x] 1.2 Typy i build przechodzą: `npx astro check` oraz `npm run build`
+- [x] 1.1 Lint przechodzi: `npm run lint` — b8aac793
+- [x] 1.2 Typy i build przechodzą: `npx astro check` oraz `npm run build` — b8aac793
 
 #### Manual
 
-- [x] 1.3 Wszystkie wiersze zamknięte, trzy grupy w podanej kolejności
-- [x] 1.4 Wiersze zasad rozwijają się myszą i klawiaturą, brak poziomego przepełnienia przy 375 px
-- [x] 1.5 Wiersz „Postać i własny obrazek” zawiera opis własnego obrazka
+- [x] 1.3 Wszystkie wiersze zamknięte, trzy grupy w podanej kolejności — b8aac793
+- [x] 1.4 Wiersze zasad rozwijają się myszą i klawiaturą, brak poziomego przepełnienia przy 375 px — b8aac793
+- [x] 1.5 Wiersz „Postać i własny obrazek” zawiera opis własnego obrazka — b8aac793
 
 ### Phase 2: Testy e2e
 
 #### Automated
 
-- [x] 2.1 Spec przechodzi na Chromium z `E2E_PORT`
-- [x] 2.2 Spec jest czerwony po celowym dodaniu `open` do `<details>`, a po cofnięciu zielony
+- [x] 2.1 Spec przechodzi na Chromium z `E2E_PORT` — 66d267e5
+- [x] 2.2 Spec jest czerwony po celowym dodaniu `open` do `<details>`, a po cofnięciu zielony — 66d267e5
 
 ### Phase 3: PRD i pełna weryfikacja
 
 #### Automated
 
-- [x] 3.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` zielone
-- [x] 3.2 Spec e2e z fazy 2 zielony
+- [x] 3.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` zielone — 8d3e1d94
+- [x] 3.2 Spec e2e z fazy 2 zielony — 8d3e1d94
 
 #### Manual
 
-- [x] 3.3 PRD US-05 i US-22 zgadzają się z działającą stroną
+- [x] 3.3 PRD US-05 i US-22 zgadzają się z działającą stroną — 8d3e1d94
