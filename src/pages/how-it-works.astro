@@ -1,33 +1,46 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import HowItWorksRow from "@/components/HowItWorksRow.astro";
 import { cardsInCatalogOrder } from "@/lib/cards";
 import { cardLevelGroups } from "@/lib/card-levels";
 
 const cards = cardsInCatalogOrder();
-const sections = [
+// Rows inside a group are in Polish alphabetical order; the groups themselves are in a fixed, non-alphabetical order.
+const settingsRows = [
   {
-    heading: "Poziomy",
-    text: "Poziom wybierasz na pasku każdej karty. Karta ma albo poziomy łatwy, średni i trudny, albo numery (Poziom 1, 2, 3…). Przy każdym poziomie jest krótki opis tego, co się zmienia. Poziomy nie oceniają dziecka, a numery i nazwy nie są porównywalne między kartami. Tylko przy labiryncie, symetrii, sekwencjach i dyktandzie widać typowy wiek jako wskazówkę na pierwszy wybór. Poziomy każdej karty są w jej wierszu poniżej, w części „Rodzaje kart”.",
+    title: "Postać i własny obrazek",
+    paragraphs: [
+      "Na labiryncie postać stoi przy starcie. Na pozostałych kartach stoi przy zdaniu polecenia i „mówi” je w dymku. Postać jest ozdobą: nie zmienia zadania, odpowiedzi ani trudności i drukuje się w kolorze.",
+      "Zamiast postaci z katalogu możesz wybrać „Własny obrazek” na liście postaci: przy pasku „Postać” na karcie, przy tworzeniu profilu i przy ulubionej postaci. Wskaż plik z urządzenia, np. zdjęcie dziecka albo jego rysunek (JPEG, PNG, WebP albo HEIC, do 8 MB). Obrazek zostaje w przeglądarce i nie jest wysyłany na serwer. Może być też ulubioną postacią profilu.",
+    ],
   },
   {
-    heading: "Profil dziecka",
-    text: "Profil to imię i ulubiona postać. Profil sam zapamiętuje ustawienia każdej karty z paska (poziom, kolory, kategorię i inne), więc przy następnej wizycie pasek jest taki, jak dziecko ostatnio go zostawiło. Każda zmiana zapisuje się od razu, bez przycisku „Zapisz”. Bez profilu urządzenie pamięta ostatnie ustawienia osobno dla każdej karty. Drukowanie nie wymaga profilu.",
+    title: "Poziomy",
+    paragraphs: [
+      "Poziom wybierasz na pasku każdej karty. Karta ma albo poziomy łatwy, średni i trudny, albo numery (Poziom 1, 2, 3…). Przy każdym poziomie jest krótki opis tego, co się zmienia. Poziomy nie oceniają dziecka, a numery i nazwy nie są porównywalne między kartami. Tylko przy labiryncie, symetrii, sekwencjach i dyktandzie widać typowy wiek jako wskazówkę na pierwszy wybór. Poziomy każdej karty są w jej wierszu poniżej, w grupie „Karty”.",
+    ],
   },
   {
-    heading: "Ulubiona postać",
-    text: "Ulubiona postać zmienia się tylko wtedy, gdy zrobisz to jawnie: w oknie profilu albo wyborem „Ustaw jako ulubioną” pod listą postaci na pasku. Inna postać wybrana na pasku działa tylko do końca wizyty na tej stronie, a przy następnym wejściu wraca ulubiona.",
+    title: "Profil dziecka i ulubiona postać",
+    paragraphs: [
+      "Profil to imię i ulubiona postać. Profil sam zapamiętuje ustawienia każdej karty z paska (poziom, kolory, kategorię i inne), więc przy następnej wizycie pasek jest taki, jak dziecko ostatnio go zostawiło. Każda zmiana zapisuje się od razu, bez przycisku „Zapisz”. Bez profilu urządzenie pamięta ostatnie ustawienia osobno dla każdej karty. Drukowanie nie wymaga profilu.",
+      "Ulubiona postać zmienia się tylko wtedy, gdy zrobisz to jawnie: w oknie profilu albo wyborem „Ustaw jako ulubioną” pod listą postaci na pasku. Inna postać wybrana na pasku działa tylko do końca wizyty na tej stronie, a przy następnym wejściu wraca ulubiona.",
+    ],
+  },
+];
+
+const goodToKnowRows = [
+  {
+    title: "Święta i zima",
+    paragraphs: [
+      "Od 15 listopada do 6 stycznia, według daty na urządzeniu, lista postaci ma dodatkowo Mikołaja i Renifera, a pasek kategorii na symetrii, nonogramie, dyktandzie i „Skopiuj obrazek” ma kategorię „Boże Narodzenie”. Od 1 grudnia do końca lutego lista ma Bałwanka i Pingwina, a pasek kategorię „Zima”. Poza tymi dniami ich nie ma na listach, ale zapisana ulubiona postać sezonowa zostaje, a „Wszystkie” przez cały rok losuje z pełnego katalogu obiektów.",
+    ],
   },
   {
-    heading: "Postać na karcie",
-    text: "Na labiryncie postać stoi przy starcie. Na pozostałych kartach stoi przy zdaniu polecenia i „mówi” je w dymku. Postać jest ozdobą: nie zmienia zadania, odpowiedzi ani trudności i drukuje się w kolorze.",
-  },
-  {
-    heading: "Święta i zima",
-    text: "Od 15 listopada do 6 stycznia, według daty na urządzeniu, lista postaci ma dodatkowo Mikołaja i Renifera, a pasek kategorii na symetrii, nonogramie, dyktandzie i „Skopiuj obrazek” ma kategorię „Boże Narodzenie”. Od 1 grudnia do końca lutego lista ma Bałwanka i Pingwina, a pasek kategorię „Zima”. Poza tymi dniami ich nie ma na listach, ale zapisana ulubiona postać sezonowa zostaje, a „Wszystkie” przez cały rok losuje z pełnego katalogu obiektów.",
-  },
-  {
-    heading: "Twoje dane",
-    text: "Profile, ustawienia kart i własny obrazek zostają w przeglądarce na tym urządzeniu. Aplikacja nie ma kont i nie wysyła ich na serwer.",
+    title: "Twoje dane",
+    paragraphs: [
+      "Profile, ustawienia kart i własny obrazek zostają w przeglądarce na tym urządzeniu. Aplikacja nie ma kont i nie wysyła ich na serwer.",
+    ],
   },
 ];
 ---
@@ -42,56 +55,57 @@ const sections = [
         Wszystkie karty
       </a>
       <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Jak to działa</h1>
-      {sections.map((section) => (
-        <section class="flex flex-col gap-2">
-          <h2 class="text-2xl font-semibold tracking-tight">{section.heading}</h2>
-          <p class="text-lg leading-relaxed text-muted-foreground">{section.text}</p>
-        </section>
-      ))}
       <section class="flex flex-col gap-2">
-        <h2 class="text-2xl font-semibold tracking-tight">Rodzaje kart</h2>
+        <h2 class="text-2xl font-semibold tracking-tight">Ustawienia i zasady</h2>
+        <div class="flex flex-col border-t border-border">
+          {settingsRows.map((row) => (
+            <HowItWorksRow title={row.title}>
+              {row.paragraphs.map((text) => (
+                <p class="text-lg leading-relaxed text-muted-foreground">{text}</p>
+              ))}
+            </HowItWorksRow>
+          ))}
+        </div>
+      </section>
+      <section class="flex flex-col gap-2">
+        <h2 class="text-2xl font-semibold tracking-tight">Karty</h2>
         <div class="flex flex-col border-t border-border">
           {cards.map((card) => (
-            <details class="group border-b border-border">
-              <summary class="focus-visible:border-ring focus-visible:ring-ring/50 flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-md py-2 outline-none focus-visible:ring-[3px] [&::-webkit-details-marker]:hidden">
-                <h3 class="text-xl font-semibold tracking-tight">{card.title}</h3>
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="size-5 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </summary>
-              <div class="flex flex-col gap-4 pb-4">
-                <p class="text-lg leading-relaxed text-muted-foreground">{card.description}</p>
-                {cardLevelGroups(card.id).map((group) => (
-                  <div class="flex flex-col gap-2">
-                    {group.heading && <h4 class="text-base font-semibold">{group.heading}</h4>}
-                    <ul class="flex flex-col gap-2">
-                      {group.rows.map((row) => (
-                        <li class="flex flex-col">
-                          <span class="text-base font-medium text-foreground">{row.label}</span>
-                          {row.description && <span class="text-base text-muted-foreground">{row.description}</span>}
-                          {row.typicalAge && <span class="text-base text-muted-foreground">{row.typicalAge}</span>}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-                <a
-                  href={card.href}
-                  class="focus-visible:border-ring focus-visible:ring-ring/50 inline-flex min-h-11 w-fit items-center rounded-md text-base font-medium text-foreground underline underline-offset-4 outline-none focus-visible:ring-[3px]"
-                >
-                  Otwórz {card.title}
-                </a>
-              </div>
-            </details>
+            <HowItWorksRow title={card.title}>
+              <p class="text-lg leading-relaxed text-muted-foreground">{card.description}</p>
+              {cardLevelGroups(card.id).map((group) => (
+                <div class="flex flex-col gap-2">
+                  {group.heading && <h4 class="text-base font-semibold">{group.heading}</h4>}
+                  <ul class="flex flex-col gap-2">
+                    {group.rows.map((row) => (
+                      <li class="flex flex-col">
+                        <span class="text-base font-medium text-foreground">{row.label}</span>
+                        {row.description && <span class="text-base text-muted-foreground">{row.description}</span>}
+                        {row.typicalAge && <span class="text-base text-muted-foreground">{row.typicalAge}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <a
+                href={card.href}
+                class="focus-visible:border-ring focus-visible:ring-ring/50 inline-flex min-h-11 w-fit items-center rounded-md text-base font-medium text-foreground underline underline-offset-4 outline-none focus-visible:ring-[3px]"
+              >
+                Otwórz {card.title}
+              </a>
+            </HowItWorksRow>
+          ))}
+        </div>
+      </section>
+      <section class="flex flex-col gap-2">
+        <h2 class="text-2xl font-semibold tracking-tight">Dobrze wiedzieć</h2>
+        <div class="flex flex-col border-t border-border">
+          {goodToKnowRows.map((row) => (
+            <HowItWorksRow title={row.title}>
+              {row.paragraphs.map((text) => (
+                <p class="text-lg leading-relaxed text-muted-foreground">{text}</p>
+              ))}
+            </HowItWorksRow>
           ))}
         </div>
       </section>

@@ -3,7 +3,8 @@
 // /how-it-works, the page states the rules of levels, profile and character, the words it uses for the favorite
 // ("Ustaw jako ulubioną") are still the ones the character list shows with an active profile, and the footer stays out
 // of the print. S-53 (how-it-works-m7): the card kinds are collapsible <details> rows with their own level lists, so
-// the tests open the rows and the general level rules no longer enumerate the cards. The flows are the same on every screen size, so they run on desktop Chromium only.
+// the tests open the rows and the general level rules no longer enumerate the cards. how-it-works-groups: the page has three
+// groups (rules, cards, good to know) whose rows are all closed and alphabetical, and the character row describes the own image. The flows are the same on every screen size, so they run on desktop Chromium only.
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const PROFILES_KEY = "printo-kids:child-profiles";
@@ -40,6 +41,20 @@ test("the catalog footer leads to the how-it-works page and back", async ({ page
   await expect(page).toHaveURL(/\/$/);
 });
 
+const GROUPS = ["Ustawienia i zasady", "Karty", "Dobrze wiedzieć"];
+
+// A group is the <section> under its h2; its rows are the <details> inside it.
+function groupFor(page: Page, name: string): Locator {
+  return page.locator("section", { has: page.getByRole("heading", { level: 2, name, exact: true }) });
+}
+
+async function expandRow(page: Page, title: string): Promise<Locator> {
+  const row = rowFor(page, title);
+  await row.locator("summary").click();
+  await expect(row).toHaveAttribute("open", "");
+  return row;
+}
+
 test("a generator page has the footer link and the page states the rules of levels, profile and character", async ({
   page,
 }, testInfo) => {
@@ -49,27 +64,62 @@ test("a generator page has the footer link and the page states the rules of leve
   await page.getByRole("link", { name: "Jak to działa", exact: true }).click();
   await expect(page).toHaveURL(/\/how-it-works$/);
 
-  for (const heading of ["Poziomy", "Profil dziecka", "Ulubiona postać", "Postać na karcie"]) {
-    await expect(page.getByRole("heading", { level: 2, name: heading })).toBeVisible();
-  }
-  const body = page.locator("main");
-  await expect(body).toContainText("bez przycisku „Zapisz”");
-  await expect(body).toContainText("Ustaw jako ulubioną");
-  await expect(body).toContainText("do końca wizyty");
-  await expect(body).toContainText("przy zdaniu polecenia");
-  // S-53: the level rules are general; each card's levels live in its own row under "Rodzaje kart".
-  await expect(body).toContainText("Poziomy nie oceniają dziecka");
-  await expect(body).toContainText("nie są porównywalne między kartami");
-  await expect(body).toContainText("typowy wiek");
-  await expect(body).toContainText("w jej wierszu poniżej");
-  await expect(body).not.toContainText("krzyżówka matematyczna (Poziom 1–7)");
-  await expect(body).not.toContainText("sudoku i nonogram wieku nie mają");
+  // The rule rows are collapsed like the card rows; open each before reading it.
+  const character = await expandRow(page, "Postać i własny obrazek");
+  await expect(character).toContainText("przy zdaniu polecenia");
+  const levels = await expandRow(page, "Poziomy");
+  await expect(levels).toContainText("Poziomy nie oceniają dziecka");
+  await expect(levels).toContainText("nie są porównywalne między kartami");
+  await expect(levels).toContainText("typowy wiek");
+  await expect(levels).toContainText("w jej wierszu poniżej");
+  await expect(levels).not.toContainText("krzyżówka matematyczna (Poziom 1–7)");
+  await expect(levels).not.toContainText("sudoku i nonogram wieku nie mają");
+  const profile = await expandRow(page, "Profil dziecka i ulubiona postać");
+  await expect(profile).toContainText("bez przycisku „Zapisz”");
+  await expect(profile).toContainText("Ustaw jako ulubioną");
+  await expect(profile).toContainText("do końca wizyty");
   // GitHub 375: the seasonal characters and the "Boże Narodzenie" category are described with their date window.
-  await expect(page.getByRole("heading", { level: 2, name: "Święta" })).toBeVisible();
-  await expect(body).toContainText("Od 15 listopada do 6 stycznia");
-  await expect(body).toContainText("dodatkowo Mikołaja i Renifera");
-  await expect(body).toContainText("Od 1 grudnia do końca lutego lista ma Bałwanka i Pingwina");
-  await expect(body).not.toContainText("filtr");
+  const seasons = await expandRow(page, "Święta i zima");
+  await expect(seasons).toContainText("Od 15 listopada do 6 stycznia");
+  await expect(seasons).toContainText("dodatkowo Mikołaja i Renifera");
+  await expect(seasons).toContainText("Od 1 grudnia do końca lutego lista ma Bałwanka i Pingwina");
+  await expect(page.locator("main")).not.toContainText("filtr");
+});
+
+test("the own image is described in the character row", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/how-it-works");
+
+  const row = await expandRow(page, "Postać i własny obrazek");
+  await expect(row).toContainText("„Własny obrazek” na liście postaci");
+  await expect(row).toContainText("JPEG, PNG, WebP albo HEIC, do 8 MB");
+  await expect(row).toContainText("nie jest wysyłany na serwer");
+  await expect(row).toContainText("ulubioną postacią profilu");
+});
+
+test("the page has three groups, every row closed, rows in Polish alphabetical order", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/how-it-works");
+
+  // The groups keep a fixed order that is deliberately not alphabetical.
+  await expect(page.getByRole("heading", { level: 2 })).toHaveText(GROUPS);
+  const rows = page.locator("details");
+  for (const row of await rows.all()) {
+    await expect(row).not.toHaveAttribute("open", "");
+  }
+  for (const group of GROUPS) {
+    const titles = await groupFor(page, group).getByRole("heading", { level: 3 }).allTextContents();
+    expect(titles.length).toBeGreaterThan(0);
+    expect(titles).toEqual([...titles].sort((a, b) => a.localeCompare(b, "pl")));
+  }
+  await expect(groupFor(page, "Ustawienia i zasady").locator("details")).toHaveCount(3);
+  await expect(groupFor(page, "Dobrze wiedzieć").locator("details")).toHaveCount(2);
+
+  // A rule row opens from the keyboard.
+  const summary = rowFor(page, "Poziomy").locator("summary");
+  await summary.focus();
+  await page.keyboard.press("Enter");
+  await expect(rowFor(page, "Poziomy")).toHaveAttribute("open", "");
 });
 
 test("the page describes every card kind in catalog order", async ({ page }, testInfo) => {
@@ -81,10 +131,9 @@ test("the page describes every card kind in catalog order", async ({ page }, tes
   expect(titles.length).toBeGreaterThan(0);
   await page.goto("/how-it-works");
 
-  await expect(page.getByRole("heading", { level: 2, name: "Rodzaje kart" })).toBeVisible();
-  await expect(page.getByRole("heading", { level: 3 })).toHaveText(titles);
-  const rows = page.locator("details");
-  await expect(rows).toHaveCount(titles.length);
+  const cards = groupFor(page, "Karty");
+  await expect(cards.getByRole("heading", { level: 3 })).toHaveText(titles);
+  await expect(cards.locator("details")).toHaveCount(titles.length);
   for (const title of titles) {
     // Exact: "Labirynt" is also a word of "Labirynt liczbowy".
     const row = rowFor(page, title);
