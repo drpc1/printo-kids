@@ -2,8 +2,9 @@
 // Protects the footer link "Jak to działa" and the page behind it: the catalog and a generator page lead to
 // /how-it-works, the page states the rules of levels, profile and character, the words it uses for the favorite
 // ("Ustaw jako ulubioną") are still the ones the character list shows with an active profile, and the footer stays out
-// of the print. The flows are the same on every screen size, so they run on desktop Chromium only.
-import { expect, test, type Page } from "@playwright/test";
+// of the print. S-53 (how-it-works-m7): the card kinds are collapsible <details> rows with their own level lists, so
+// the tests open the rows and the general level rules no longer enumerate the cards. The flows are the same on every screen size, so they run on desktop Chromium only.
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const PROFILES_KEY = "printo-kids:child-profiles";
 const ACTIVE_KEY = "printo-kids:active-profile";
@@ -20,6 +21,11 @@ async function seedProfile(page: Page): Promise<void> {
     },
     [PROFILES_KEY, ACTIVE_KEY, [ANIA], ANIA.id] as const,
   );
+}
+
+// A card's row is the closed-by-default <details> whose summary holds the h3 with its title.
+function rowFor(page: Page, title: string): Locator {
+  return page.locator("details", { has: page.getByRole("heading", { level: 3, name: title, exact: true }) });
 }
 
 test("the catalog footer leads to the how-it-works page and back", async ({ page }, testInfo) => {
@@ -51,11 +57,12 @@ test("a generator page has the footer link and the page states the rules of leve
   await expect(body).toContainText("Ustaw jako ulubioną");
   await expect(body).toContainText("do końca wizyty");
   await expect(body).toContainText("przy zdaniu polecenia");
-  // S-37: the level rules name the four M-5 cards and no longer say which old cards lack an age.
-  await expect(body).toContainText(
-    "Numery mają labirynt (Poziom 1–6), symetria, sekwencje i szlaczki (Poziom 1–4), zegar (Poziom 1–5), kodowanie (Poziom 1–4), krzyżówka matematyczna (Poziom 1–7), „Labirynt liczbowy” (Poziom 1–6) oraz „Cienie” (Poziom 1–4).",
-  );
-  await expect(body).toContainText("„Kto ma więcej”, „Który nie pasuje”, „Skopiuj obrazek” i „Od najmniejszego”");
+  // S-53: the level rules are general; each card's levels live in its own row under "Rodzaje kart".
+  await expect(body).toContainText("Poziomy nie oceniają dziecka");
+  await expect(body).toContainText("nie są porównywalne między kartami");
+  await expect(body).toContainText("typowy wiek");
+  await expect(body).toContainText("w jej wierszu poniżej");
+  await expect(body).not.toContainText("krzyżówka matematyczna (Poziom 1–7)");
   await expect(body).not.toContainText("sudoku i nonogram wieku nie mają");
   // GitHub 375: the seasonal characters and the "Boże Narodzenie" category are described with their date window.
   await expect(page.getByRole("heading", { level: 2, name: "Święta" })).toBeVisible();
@@ -76,12 +83,36 @@ test("the page describes every card kind in catalog order", async ({ page }, tes
 
   await expect(page.getByRole("heading", { level: 2, name: "Rodzaje kart" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 3 })).toHaveText(titles);
+  const rows = page.locator("details");
+  await expect(rows).toHaveCount(titles.length);
   for (const title of titles) {
     // Exact: "Labirynt" is also a word of "Labirynt liczbowy".
-    const heading = page.getByRole("heading", { level: 3, name: title, exact: true });
-    await expect(heading.getByRole("link", { name: title, exact: true })).toHaveAttribute("href", /^\/[a-z-]+$/);
-    await expect(heading.locator("xpath=following-sibling::p[1]")).not.toBeEmpty();
+    const row = rowFor(page, title);
+    await expect(row).not.toHaveAttribute("open", "");
+    await row.locator("summary").click();
+    await expect(row).toHaveAttribute("open", "");
+    await expect(row.locator("p").first()).toBeVisible();
+    await expect(row.locator("p").first()).not.toBeEmpty();
+    // The level list of every card comes from the registry and is never empty.
+    await expect(row.locator("li").first()).toBeVisible();
+    const link = row.getByRole("link", { name: `Otwórz ${title}`, exact: true });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("href", /^\/[a-z-]+$/);
   }
+});
+
+test("only the cards with an old age name show a typical age in their level rows", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await page.goto("/how-it-works");
+
+  const maze = rowFor(page, "Labirynt");
+  await maze.locator("summary").click();
+  await expect(maze).toContainText("zwykle ok.");
+
+  const shadows = rowFor(page, "Cienie");
+  await shadows.locator("summary").click();
+  await expect(shadows.locator("li").first()).toBeVisible();
+  await expect(shadows).not.toContainText("zwykle ok.");
 });
 
 test("the page words for the favorite are the ones the character list shows", async ({ page }, testInfo) => {

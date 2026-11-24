@@ -175,8 +175,8 @@ export const CARD_KINDS = [
 /** The ids of the catalog, as a union: what `CARD_ENGINES` and the card settings are keyed by. */
 export type CardKindId = (typeof CARD_KINDS)[number]["id"];
 
-export function cardsInCatalogOrder(): CardKind[] {
-  return ([...CARD_KINDS] as CardKind[]).sort((left, right) => left.title.localeCompare(right.title, "pl"));
+export function cardsInCatalogOrder(): (typeof CARD_KINDS)[number][] {
+  return [...CARD_KINDS].sort((left, right) => left.title.localeCompare(right.title, "pl"));
 }
 
 export function cardTitle(id: CardKind["id"]): string {
