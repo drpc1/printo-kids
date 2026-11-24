@@ -5,6 +5,7 @@ import { COPY_DRAWING_LEVELS } from "./copy-drawing/levels.ts";
 import { DICTATION_LEVELS } from "./dictation/levels.ts";
 import { LEVELS as MAZE_LEVELS } from "./maze/levels.ts";
 import { MATH_CROSSWORD_LEVELS } from "./math-crossword/levels.ts";
+import { MONEY_CURRENCIES } from "./money/currencies.ts";
 import { moneyLevels } from "./money/levels.ts";
 import { NONOGRAM_SIZES } from "./nonogram/sizes.ts";
 import { NUMBER_MAZE_LEVELS } from "./number-maze/levels.ts";
@@ -67,13 +68,21 @@ function sudokuGroups(): readonly CardLevelGroup[] {
   });
 }
 
+/** Money: one group per currency, because the nominals and so the level descriptions differ by currency. */
+function moneyGroups(): readonly CardLevelGroup[] {
+  return MONEY_CURRENCIES.map((currency) => ({
+    heading: currency.label.charAt(0).toUpperCase() + currency.label.slice(1),
+    rows: rowsOf(moneyLevels(currency.id)),
+  }));
+}
+
 /** Level lists of every card kind. A `Record` over `CardKindId`, so a new card must add its entry here. */
 const LEVEL_GROUPS: Record<CardKindId, () => readonly CardLevelGroup[]> = {
   cienie: () => single(SHADOWS_LEVELS),
   dyktando: () => single(DICTATION_LEVELS),
   kodowanie: () => single(CODING_LEVELS),
   krzyzowka: () => single(MATH_CROSSWORD_LEVELS),
-  pieniadze: () => single(moneyLevels("pln")),
+  pieniadze: moneyGroups,
   niepasuje: () => single(ODD_ONE_OUT_LEVELS),
   labirynt: () => single(MAZE_LEVELS),
   liczby: () => single(NUMBER_MAZE_LEVELS),
@@ -87,7 +96,7 @@ const LEVEL_GROUPS: Record<CardKindId, () => readonly CardLevelGroup[]> = {
   zegar: () => single(CLOCK_LEVELS),
 };
 
-/** The level rows of a card for the "Jak to działa" page, from the same data the level list on the bar uses. */
+/** The level rows of a card for the "Jak to działa" page, from the same data the level list on the bar uses (except the one-level sudoku 4×4 row, written here). */
 export function cardLevelGroups(id: CardKindId): readonly CardLevelGroup[] {
   return LEVEL_GROUPS[id]();
 }

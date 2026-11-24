@@ -166,7 +166,7 @@ Wielu rodziców / opiekunów — kierunek produktu, nie warunek pierwszej wersji
 - Druk nadal nie wymaga profilu dziecka.
 - Pasek „Postać” jest na stronie każdego rodzaju karty. Na labiryncie postać stoi przy starcie, na pozostałych kartach przy poleceniu (US-21; decyzja 2026-10-26, wcześniej pasek był tylko przy labiryncie).
 - Strony generatorów można zmieniać niezależnie od siebie: zmiana jednej nie zmienia drugiej.
-- Strona „Jak to działa” (US-22) opisuje każdy rodzaj karty w dwóch–trzech zdaniach: co dziecko robi i co jest na kartce. Rodzaje są w kolejności katalogu (alfabetycznie), a każdy tytuł prowadzi do strony generatora. Opis rodzaju żyje przy jego definicji w kodzie (`CARD_KINDS`), żeby nowy rodzaj dostawał go tam, gdzie powstaje; strona główna zostaje bez opisów (decyzja 2026-10-31, GitHub 233). Od S-53 (decyzja 2026-11-23) zasady profilu, poziomów i postaci stoją na górze strony, a każdy rodzaj jest zwijanym wierszem z tytułem; po rozwinięciu widać opis i link do generatora, żeby strona nie rosła z każdą kartą.
+- Strona „Jak to działa” (US-22) opisuje każdy rodzaj karty w dwóch–trzech zdaniach: co dziecko robi i co jest na kartce. Rodzaje są w kolejności katalogu (alfabetycznie), a każdy tytuł prowadzi do strony generatora. Opis rodzaju żyje przy jego definicji w kodzie (`CARD_KINDS`), żeby nowy rodzaj dostawał go tam, gdzie powstaje; strona główna zostaje bez opisów (decyzja 2026-10-31, GitHub 233). Od S-53 (decyzja 2026-11-23) zasady profilu, poziomów i postaci stoją na górze strony, a każdy rodzaj jest zwijanym wierszem z tytułem; po rozwinięciu widać opis, poziomy karty i link do generatora, żeby strona nie rosła z każdą kartą.
 
 ### US-06: Rodzic generuje kartę symetrii do druku
 

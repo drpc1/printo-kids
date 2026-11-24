@@ -36,4 +36,14 @@ void describe("cardLevelGroups", () => {
     assert.equal(groups[1]?.rows.length, 3);
     assert.equal(groups[2]?.rows.length, 3);
   });
+
+  void test("money has one group per currency, because the level descriptions differ by currency", () => {
+    const groups = cardLevelGroups("pieniadze");
+    assert.deepEqual(
+      groups.map((group) => group.heading),
+      ["Złote", "Euro", "Dolary"],
+    );
+    const firstDescriptions = groups.map((group) => group.rows[0]?.description);
+    assert.equal(new Set(firstDescriptions).size, 3);
+  });
 });
