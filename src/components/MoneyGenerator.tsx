@@ -16,6 +16,7 @@ import type { MoneyCard } from "@/lib/money/generate";
 import { layoutMoneySheet, layoutPile, type MoneyPileArea } from "@/lib/money/layout";
 import { moneyLevelById, moneyLevels, type MoneyLevelId } from "@/lib/money/levels";
 import { MONEY_SHEET } from "@/lib/money/sheet";
+import { moneyPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import {
   applySettings,
@@ -199,12 +200,7 @@ function MoneySheet({
     pilePadding: MONEY_SHEET.pilePadding,
   });
   // The band keeps its height without a character; the plain lines stand centred in it.
-  const plain = layoutPlainInstruction({
-    text: INSTRUCTION_TEXT,
-    size: MONEY_SHEET.plainInstructionSize,
-    pageWidth: MONEY_SHEET.pageWidth,
-    inset: MONEY_SHEET.inset,
-  });
+  const plain = layoutPlainInstruction(moneyPlainInstruction());
 
   return (
     <svg

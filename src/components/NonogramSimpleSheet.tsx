@@ -3,6 +3,7 @@ import { CharacterInstruction } from "@/components/SpeechBand";
 import { blockLines, layoutSimpleNonogramSheet } from "@/lib/nonogram/layout";
 import { NONOGRAM_SHEET, NONOGRAM_SIMPLE_SHEET } from "@/lib/nonogram/sheet";
 import type { SimpleNonogramCard, Tone } from "@/lib/nonogram/simple";
+import { nonogramPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -30,12 +31,7 @@ export function NonogramSimpleSheet({
   characterSrc: string | null;
 }) {
   const chips = NONOGRAM_SIMPLE_SHEET;
-  const plain = layoutPlainInstruction({
-    text: chips.instructionText,
-    size: NONOGRAM_SHEET.instructionSize,
-    pageWidth: NONOGRAM_SHEET.pageWidth,
-    inset: NONOGRAM_SHEET.inset,
-  });
+  const plain = layoutPlainInstruction(nonogramPlainInstruction(chips.instructionText));
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const sheet = layoutSimpleNonogramSheet({
     pageWidth: NONOGRAM_SHEET.pageWidth,

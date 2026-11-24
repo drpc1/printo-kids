@@ -4,6 +4,7 @@ import type { CodingCard, Dir, TargetKind } from "@/lib/coding/card";
 import { layoutCodingSheet } from "@/lib/coding/layout";
 import { codingInstruction, codingLevelById, codingModeById } from "@/lib/coding/levels";
 import { CODING_SHEET } from "@/lib/coding/sheet";
+import { codingPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -156,12 +157,7 @@ export function CodingSheet({
   const level = codingLevelById(card.level);
   const mode = codingModeById(card.mode);
   const instruction = codingInstruction(level, mode);
-  const plain = layoutPlainInstruction({
-    text: instruction,
-    size: sheet.plainInstructionSize,
-    pageWidth: sheet.pageWidth,
-    inset: sheet.inset,
-  });
+  const plain = layoutPlainInstruction(codingPlainInstruction(instruction));
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const layout = layoutCodingSheet(card, instructionHeight);
   const grid = layout.grid;

@@ -6,6 +6,7 @@ import { layoutCopyDrawingSheet, type CopyDrawingGridRect } from "@/lib/copy-dra
 import { copyDrawingLevelById } from "@/lib/copy-drawing/levels";
 import { COPY_DRAWING_SHEET } from "@/lib/copy-drawing/sheet";
 import { blockLines } from "@/lib/nonogram/layout";
+import { copyDrawingPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -30,12 +31,7 @@ export function CopyDrawingSheet({
 }) {
   const sheet = COPY_DRAWING_SHEET;
   const level = copyDrawingLevelById(card.levelId);
-  const plain = layoutPlainInstruction({
-    text: sheet.instructionText,
-    size: sheet.plainInstructionSize,
-    pageWidth: sheet.pageWidth,
-    inset: sheet.inset,
-  });
+  const plain = layoutPlainInstruction(copyDrawingPlainInstruction());
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const layout = layoutCopyDrawingSheet(level, instructionHeight);
 
