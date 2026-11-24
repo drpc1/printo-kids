@@ -176,9 +176,9 @@ Zaktualizować PRD i uruchomić wszystkie bramki.
 
 #### Automated
 
-- [ ] 3.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` zielone
-- [ ] 3.2 Spec e2e z fazy 2 zielony
+- [x] 3.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` zielone
+- [x] 3.2 Spec e2e z fazy 2 zielony
 
 #### Manual
 
-- [ ] 3.3 PRD US-05 i US-22 zgadzają się z działającą stroną
+- [x] 3.3 PRD US-05 i US-22 zgadzają się z działającą stroną

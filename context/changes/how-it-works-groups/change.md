@@ -1,7 +1,7 @@
 ---
 change_id: how-it-works-groups
 title: Strona „Jak to działa”: trzy zwinięte grupy i opis własnego obrazka
-status: implementing
+status: implemented
 created: 2026-11-24
 updated: 2026-11-24
 archived_at: null
