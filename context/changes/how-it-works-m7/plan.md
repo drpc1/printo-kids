@@ -200,10 +200,10 @@ Brak. Strona jest renderowana po stronie serwera z danych statycznych; dochodzą
 
 #### Automated
 
-- [x] 3.1 E2E strony przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium`
-- [x] 3.2 Całość lokalnie: `npm run lint && npm run depcruise && npm test && npx astro check && npm run build`
+- [x] 3.1 E2E strony przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium` — e3822e26
+- [x] 3.2 Całość lokalnie: `npm run lint && npm run depcruise && npm test && npx astro check && npm run build` — e3822e26
 
 #### Manual
 
-- [x] 3.3 Strona wygląda dobrze w jasnym i ciemnym motywie, jeśli aplikacja ma oba
-- [x] 3.4 „Jak to działa” z katalogu i ze stopki generatora otwiera się i wraca przez „Wszystkie karty”
+- [x] 3.3 Strona wygląda dobrze w jasnym i ciemnym motywie, jeśli aplikacja ma oba — e3822e26
+- [x] 3.4 „Jak to działa” z katalogu i ze stopki generatora otwiera się i wraca przez „Wszystkie karty” — e3822e26
