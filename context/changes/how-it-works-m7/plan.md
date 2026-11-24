@@ -171,30 +171,30 @@ Brak. Strona jest renderowana po stronie serwera z danych statycznych; dochodzą
 
 #### Automated
 
-- [x] 1.1 Nowy test przechodzi: `npm test`
-- [x] 1.2 Reguły zależności nie narzekają na nowy moduł: `npm run depcruise`
-- [x] 1.3 Lint przechodzi: `npm run lint`
-- [x] 1.4 Typy przechodzą: `npx astro check`
+- [x] 1.1 Nowy test przechodzi: `npm test` — 6a4ffff7
+- [x] 1.2 Reguły zależności nie narzekają na nowy moduł: `npm run depcruise` — 6a4ffff7
+- [x] 1.3 Lint przechodzi: `npm run lint` — 6a4ffff7
+- [x] 1.4 Typy przechodzą: `npx astro check` — 6a4ffff7
 
 #### Manual
 
-- [x] 1.5 Wiersze poziomów z rejestru zgadzają się z paskiem wybranej karty (labirynt, sudoku 6×6, pieniądze w złotych)
+- [x] 1.5 Wiersze poziomów z rejestru zgadzają się z paskiem wybranej karty (labirynt, sudoku 6×6, pieniądze w złotych) — 6a4ffff7
 
 ### Phase 2: Strona ze zwijanymi wierszami
 
 #### Automated
 
-- [ ] 2.1 Lint przechodzi: `npm run lint`
-- [ ] 2.2 Typy przechodzą: `npx astro check`
-- [ ] 2.3 Build przechodzi na workerd: `npm run build`
-- [ ] 2.4 Format zgodny: `npm run format`
+- [x] 2.1 Lint przechodzi: `npm run lint`
+- [x] 2.2 Typy przechodzą: `npx astro check`
+- [x] 2.3 Build przechodzi na workerd: `npm run build`
+- [x] 2.4 Format zgodny: `npm run format`
 
 #### Manual
 
-- [ ] 2.5 Zasady na górze, 16 wierszy zwiniętych i mieści się na jednym-dwóch ekranach
-- [ ] 2.6 Rozwinięcie karty pokazuje opis, poziomy z opisami i działający link do generatora
-- [ ] 2.7 Wiersz da się rozwinąć klawiaturą, fokus jest widoczny
-- [ ] 2.8 Na szerokości telefonu (375 px) nic nie wychodzi poza ekran, tytuły się nie ucinają
+- [x] 2.5 Zasady na górze, 16 wierszy zwiniętych i mieści się na jednym-dwóch ekranach
+- [x] 2.6 Rozwinięcie karty pokazuje opis, poziomy z opisami i działający link do generatora
+- [x] 2.7 Wiersz da się rozwinąć klawiaturą, fokus jest widoczny
+- [x] 2.8 Na szerokości telefonu (375 px) nic nie wychodzi poza ekran, tytuły się nie ucinają
 
 ### Phase 3: Testy i domknięcie
 
