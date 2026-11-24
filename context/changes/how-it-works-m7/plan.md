@@ -184,26 +184,26 @@ Brak. Strona jest renderowana po stronie serwera z danych statycznych; dochodzą
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi: `npm run lint`
-- [x] 2.2 Typy przechodzą: `npx astro check`
-- [x] 2.3 Build przechodzi na workerd: `npm run build`
-- [x] 2.4 Format zgodny: `npm run format`
+- [x] 2.1 Lint przechodzi: `npm run lint` — 874aa7fd
+- [x] 2.2 Typy przechodzą: `npx astro check` — 874aa7fd
+- [x] 2.3 Build przechodzi na workerd: `npm run build` — 874aa7fd
+- [x] 2.4 Format zgodny: `npm run format` — 874aa7fd
 
 #### Manual
 
-- [x] 2.5 Zasady na górze, 16 wierszy zwiniętych i mieści się na jednym-dwóch ekranach
-- [x] 2.6 Rozwinięcie karty pokazuje opis, poziomy z opisami i działający link do generatora
-- [x] 2.7 Wiersz da się rozwinąć klawiaturą, fokus jest widoczny
-- [x] 2.8 Na szerokości telefonu (375 px) nic nie wychodzi poza ekran, tytuły się nie ucinają
+- [x] 2.5 Zasady na górze, 16 wierszy zwiniętych i mieści się na jednym-dwóch ekranach — 874aa7fd
+- [x] 2.6 Rozwinięcie karty pokazuje opis, poziomy z opisami i działający link do generatora — 874aa7fd
+- [x] 2.7 Wiersz da się rozwinąć klawiaturą, fokus jest widoczny — 874aa7fd
+- [x] 2.8 Na szerokości telefonu (375 px) nic nie wychodzi poza ekran, tytuły się nie ucinają — 874aa7fd
 
 ### Phase 3: Testy i domknięcie
 
 #### Automated
 
-- [ ] 3.1 E2E strony przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium`
-- [ ] 3.2 Całość lokalnie: `npm run lint && npm run depcruise && npm test && npx astro check && npm run build`
+- [x] 3.1 E2E strony przechodzi: `npx playwright test tests/e2e/how-it-works.spec.ts --project=chromium`
+- [x] 3.2 Całość lokalnie: `npm run lint && npm run depcruise && npm test && npx astro check && npm run build`
 
 #### Manual
 
-- [ ] 3.3 Strona wygląda dobrze w jasnym i ciemnym motywie, jeśli aplikacja ma oba
-- [ ] 3.4 „Jak to działa” z katalogu i ze stopki generatora otwiera się i wraca przez „Wszystkie karty”
+- [x] 3.3 Strona wygląda dobrze w jasnym i ciemnym motywie, jeśli aplikacja ma oba
+- [x] 3.4 „Jak to działa” z katalogu i ze stopki generatora otwiera się i wraca przez „Wszystkie karty”
