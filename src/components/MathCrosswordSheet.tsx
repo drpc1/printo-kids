@@ -3,6 +3,7 @@ import { CharacterInstruction } from "@/components/SpeechBand";
 import type { MathCell, MathCrosswordCard } from "@/lib/math-crossword/card";
 import { layoutMathCrosswordSheet } from "@/lib/math-crossword/layout";
 import { MATH_CROSSWORD_SHEET } from "@/lib/math-crossword/sheet";
+import { mathCrosswordPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -51,12 +52,7 @@ export function MathCrosswordSheet({
   characterSrc: string | null;
 }) {
   const sheet = MATH_CROSSWORD_SHEET;
-  const plain = layoutPlainInstruction({
-    text: sheet.instruction,
-    size: sheet.plainInstructionSize,
-    pageWidth: sheet.pageWidth,
-    inset: sheet.inset,
-  });
+  const plain = layoutPlainInstruction(mathCrosswordPlainInstruction());
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const layout = layoutMathCrosswordSheet(card, instructionHeight);
   const blanks = new Set(card.blanks);

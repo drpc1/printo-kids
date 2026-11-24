@@ -24,6 +24,7 @@ import {
   type SheetState,
 } from "@/lib/sheet-state";
 import { OBJECT_CATEGORY_CHOICES } from "@/lib/symmetry/templates";
+import { dictationPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -173,12 +174,7 @@ function DictationSheet({
   characterSrc: string | null;
 }) {
   const level = dictationLevelById(card.levelId);
-  const plain = layoutPlainInstruction({
-    text: DICTATION_SHEET.instructionText,
-    size: DICTATION_SHEET.instructionSize,
-    pageWidth: DICTATION_SHEET.pageWidth,
-    inset: DICTATION_SHEET.inset,
-  });
+  const plain = layoutPlainInstruction(dictationPlainInstruction());
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   // The grid shrinks only as far as the instruction (the band, or plain lines taller than one) and the commands of this
   // card need; with a one-line instruction and a short list it keeps the level size.

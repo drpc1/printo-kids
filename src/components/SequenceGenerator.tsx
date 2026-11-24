@@ -23,6 +23,7 @@ import { layoutSequenceSheet } from "@/lib/sequence/layout";
 import { SEQUENCE_LEVELS, sequenceLevelById, type SequenceLevelId } from "@/lib/sequence/levels";
 import { SEQUENCE_SHEET } from "@/lib/sequence/sheet";
 import { sequenceShapeOutline } from "@/lib/sequence/shapes";
+import { sequencePlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -149,12 +150,7 @@ function SequenceSheet({
   characterId: string;
   characterSrc: string | null;
 }) {
-  const plain = layoutPlainInstruction({
-    text: SEQUENCE_SHEET.instructionText,
-    size: SEQUENCE_SHEET.instructionSize,
-    pageWidth: SEQUENCE_SHEET.pageWidth,
-    inset: SEQUENCE_SHEET.inset,
-  });
+  const plain = layoutPlainInstruction(sequencePlainInstruction());
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const sheet = layoutSequenceSheet({
     pageWidth: SEQUENCE_SHEET.pageWidth,

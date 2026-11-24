@@ -4,6 +4,7 @@ import { formatClockTime, type ClockCard } from "@/lib/clock/card";
 import { drawDial, layoutClockSheet, type ClockLine, type ClockRect } from "@/lib/clock/layout";
 import { clockLevelById, clockModeById } from "@/lib/clock/levels";
 import { CLOCK_SHEET } from "@/lib/clock/sheet";
+import { clockPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -116,12 +117,7 @@ export function ClockSheet({
   const sheet = CLOCK_SHEET;
   const level = clockLevelById(card.level);
   const mode = clockModeById(card.mode);
-  const plain = layoutPlainInstruction({
-    text: mode.instruction,
-    size: sheet.plainInstructionSize,
-    pageWidth: sheet.pageWidth,
-    inset: sheet.inset,
-  });
+  const plain = layoutPlainInstruction(clockPlainInstruction(mode.instruction));
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const layout = layoutClockSheet(card, instructionHeight);
 

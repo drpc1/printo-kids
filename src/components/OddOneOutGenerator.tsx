@@ -14,6 +14,7 @@ import { layoutOddOneOutSheet } from "@/lib/odd-one-out/layout";
 import { ODD_ONE_OUT_LEVELS, oddOneOutLevelById, type OddOneOutLevelId } from "@/lib/odd-one-out/levels";
 import type { OddOneOutCard } from "@/lib/odd-one-out/rules";
 import { ODD_ONE_OUT_SHEET } from "@/lib/odd-one-out/sheet";
+import { oddOneOutPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import {
   applySettings,
@@ -153,12 +154,7 @@ function OddOneOutSheet({
   });
   const smallScale = oddOneOutLevelById(card.levelId).smallRatio;
   // The band keeps its height without a character; the plain lines stand centred in it.
-  const plain = layoutPlainInstruction({
-    text: INSTRUCTION_TEXT,
-    size: ODD_ONE_OUT_SHEET.plainInstructionSize,
-    pageWidth: ODD_ONE_OUT_SHEET.pageWidth,
-    inset: ODD_ONE_OUT_SHEET.inset,
-  });
+  const plain = layoutPlainInstruction(oddOneOutPlainInstruction());
 
   return (
     <svg

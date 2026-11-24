@@ -4,6 +4,7 @@ import { iconById, type IconFigure } from "@/lib/odd-one-out/icons";
 import type { SizeOrderCard } from "@/lib/size-order/card";
 import { iconBounds, layoutSizeOrderSheet } from "@/lib/size-order/layout";
 import { SIZE_ORDER_SHEET } from "@/lib/size-order/sheet";
+import { sizeOrderPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { sudokuShapePath } from "@/lib/sudoku/shapes";
@@ -123,12 +124,7 @@ export function SizeOrderSheet({
   characterSrc: string | null;
 }) {
   const sheet = SIZE_ORDER_SHEET;
-  const plain = layoutPlainInstruction({
-    text: sheet.instruction,
-    size: sheet.plainInstructionSize,
-    pageWidth: sheet.pageWidth,
-    inset: sheet.inset,
-  });
+  const plain = layoutPlainInstruction(sizeOrderPlainInstruction());
   const layout = layoutSizeOrderSheet(card, instructionBoxHeight(characterSrc !== null, plain.height));
 
   return (

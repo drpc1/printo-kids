@@ -25,6 +25,7 @@ import {
 } from "@/lib/sheet-state";
 import type { SimpleNonogramCard } from "@/lib/nonogram/simple";
 import { OBJECT_CATEGORY_CHOICES } from "@/lib/symmetry/templates";
+import { nonogramPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -184,12 +185,7 @@ function NonogramSheet({
   characterId: string;
   characterSrc: string | null;
 }) {
-  const plain = layoutPlainInstruction({
-    text: NONOGRAM_SHEET.instructionText,
-    size: NONOGRAM_SHEET.instructionSize,
-    pageWidth: NONOGRAM_SHEET.pageWidth,
-    inset: NONOGRAM_SHEET.inset,
-  });
+  const plain = layoutPlainInstruction(nonogramPlainInstruction(NONOGRAM_SHEET.instructionText));
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const size = nonogramSizeById(card.sizeId);
   const sheet = layoutNonogramSheet({

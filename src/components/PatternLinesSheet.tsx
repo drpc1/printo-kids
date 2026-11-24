@@ -6,6 +6,7 @@ import { patternLinesLevelById } from "@/lib/pattern-lines/levels";
 import { rowGeometry, type GuideLine } from "@/lib/pattern-lines/paths";
 import type { Pt } from "@/lib/pattern-lines/patterns";
 import { PATTERN_LINES_SHEET } from "@/lib/pattern-lines/sheet";
+import { patternLinesPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -38,12 +39,7 @@ export function PatternLinesSheet({
 }) {
   const sheet = PATTERN_LINES_SHEET;
   const level = patternLinesLevelById(card.levelId);
-  const plain = layoutPlainInstruction({
-    text: level.instruction,
-    size: sheet.plainInstructionSize,
-    pageWidth: sheet.pageWidth,
-    inset: sheet.inset,
-  });
+  const plain = layoutPlainInstruction(patternLinesPlainInstruction(level.instruction));
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const layout = layoutPatternLinesSheet(level, instructionHeight);
 

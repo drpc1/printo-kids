@@ -24,6 +24,7 @@ import { OBJECT_CATEGORY_CHOICES, type ObjectCategoryChoiceId } from "@/lib/symm
 import { SYMMETRY_LEVELS, symmetryLevelById, type SymmetryLevelId } from "@/lib/symmetry/levels";
 import { layoutSymmetrySheet } from "@/lib/symmetry/layout";
 import { SYMMETRY_SHEET } from "@/lib/symmetry/sheet";
+import { symmetryPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -171,12 +172,7 @@ function SymmetrySheet({
   characterId: string;
   characterSrc: string | null;
 }) {
-  const plain = layoutPlainInstruction({
-    text: SYMMETRY_SHEET.instructionText,
-    size: SYMMETRY_SHEET.instructionSize,
-    pageWidth: SYMMETRY_SHEET.pageWidth,
-    inset: SYMMETRY_SHEET.inset,
-  });
+  const plain = layoutPlainInstruction(symmetryPlainInstruction());
   const instructionHeight = instructionBoxHeight(characterSrc !== null, plain.height);
   const sheet = layoutSymmetrySheet({
     pageWidth: SYMMETRY_SHEET.pageWidth,

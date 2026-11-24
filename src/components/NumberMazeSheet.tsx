@@ -4,6 +4,7 @@ import type { NumberMazeCard } from "@/lib/number-maze/card";
 import { layoutNumberMazeSheet } from "@/lib/number-maze/layout";
 import { numberMazeLevelById } from "@/lib/number-maze/levels";
 import { NUMBER_MAZE_SHEET } from "@/lib/number-maze/sheet";
+import { numberMazePlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -29,12 +30,7 @@ export function NumberMazeSheet({
 }) {
   const sheet = NUMBER_MAZE_SHEET;
   const instruction = numberMazeLevelById(card.levelId).instruction;
-  const plain = layoutPlainInstruction({
-    text: instruction,
-    size: sheet.plainInstructionSize,
-    pageWidth: sheet.pageWidth,
-    inset: sheet.inset,
-  });
+  const plain = layoutPlainInstruction(numberMazePlainInstruction(instruction));
   const layout = layoutNumberMazeSheet(card, instructionBoxHeight(characterSrc !== null, plain.height));
 
   return (

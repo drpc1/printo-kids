@@ -33,6 +33,7 @@ import {
 } from "@/lib/sudoku/levels";
 import { SUDOKU_SHEET } from "@/lib/sudoku/sheet";
 import { sudokuShapePath } from "@/lib/sudoku/shapes";
+import { sudokuPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { SPEECH_BAND } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -192,13 +193,7 @@ function SudokuSheet({
 }) {
   const block = sudokuBlock(card.size);
   const cellSize = SUDOKU_SHEET.cellSize[card.size];
-  const plain = layoutPlainInstruction({
-    lines: SUDOKU_SHEET.instructionLines,
-    lineGap: SUDOKU_SHEET.instructionLineGap,
-    size: SUDOKU_SHEET.instructionSize,
-    pageWidth: SUDOKU_SHEET.pageWidth,
-    inset: SUDOKU_SHEET.inset,
-  });
+  const plain = layoutPlainInstruction(sudokuPlainInstruction());
   const sheet = layoutSudokuSheet({
     pageWidth: SUDOKU_SHEET.pageWidth,
     pageHeight: SUDOKU_SHEET.pageHeight,

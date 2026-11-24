@@ -6,6 +6,7 @@ import { shadowPictureById } from "@/lib/shadows/families";
 import { layoutShadowsSheet, type PictureField } from "@/lib/shadows/layout";
 import { PICTURE_BOX, PICTURE_LINE_WIDTH, type ShadowPicture, type ShadowShape } from "@/lib/shadows/picture-format";
 import { SHADOWS_SHEET } from "@/lib/shadows/sheet";
+import { shadowsPlainInstruction } from "@/lib/sheet/card-instructions";
 import { layoutPlainInstruction } from "@/lib/sheet/plain-instruction";
 import { instructionBoxHeight } from "@/lib/sheet/speech";
 import { cn } from "@/lib/utils";
@@ -130,12 +131,7 @@ export function ShadowsSheet({
   characterSrc: string | null;
 }) {
   const sheet = SHADOWS_SHEET;
-  const plain = layoutPlainInstruction({
-    text: sheet.instruction,
-    size: sheet.plainInstructionSize,
-    pageWidth: sheet.pageWidth,
-    inset: sheet.inset,
-  });
+  const plain = layoutPlainInstruction(shadowsPlainInstruction());
   const layout = layoutShadowsSheet(card, instructionBoxHeight(characterSrc !== null, plain.height));
 
   return (
