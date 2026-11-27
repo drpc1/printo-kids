@@ -199,9 +199,9 @@ Brak migracji; dane profilu bez zmian.
 
 #### Automated
 
-- [x] 2.1 E2E przechodzą na `chromium`, `phone-360` i `tablet-768`
-- [x] 2.2 Lint i typy: `npm run lint`, `npx astro check`
-- [x] 2.3 Test e2e jest czerwony po celowym zepsuciu widoku
+- [x] 2.1 E2E przechodzą na `chromium`, `phone-360` i `tablet-768` — c68ab4a7
+- [x] 2.2 Lint i typy: `npm run lint`, `npx astro check` — c68ab4a7
+- [x] 2.3 Test e2e jest czerwony po celowym zepsuciu widoku — c68ab4a7
 
 #### Manual
 
@@ -212,8 +212,8 @@ Brak migracji; dane profilu bez zmian.
 
 #### Automated
 
-- [ ] 3.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` zielone
-- [ ] 3.2 E2E jak w fazie 2 na trzech projektach
+- [x] 3.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` zielone
+- [x] 3.2 E2E jak w fazie 2 na trzech projektach
 
 #### Manual
 
