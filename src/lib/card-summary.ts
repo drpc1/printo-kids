@@ -235,3 +235,21 @@ export function splitCardSummaries(summaries: CardSummary[]): { used: CardSummar
     defaults: summaries.filter((summary) => !summary.used),
   };
 }
+
+/**
+ * The profile window's two groups. The maze counts as chosen only once the profile has stored its level (a new profile
+ * just starts at the default), so a fresh profile has no rows yet, like every other card.
+ */
+export function profileCardGroups(
+  profile: ChildProfile,
+  today?: Date,
+): { used: CardSummary[]; defaults: CardSummary[] } {
+  const mazeChosen = profile.cards?.labirynt !== undefined;
+  return splitCardSummaries(
+    cardSummaries(profile, today).map((summary) =>
+      summary.id === "labirynt" && !mazeChosen
+        ? { ...summary, used: false, badge: null, detail: UNUSED_DETAIL }
+        : summary,
+    ),
+  );
+}
