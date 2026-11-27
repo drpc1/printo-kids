@@ -183,25 +183,25 @@ Brak nowego kodu, więc brak nowych testów. Weryfikacja jest dokumentowa: Prett
 
 #### Automated
 
-- [x] 1.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md`
-- [x] 1.2 Numery ryzyk w tabeli §2, w Risk Response Guidance i w §3 są ciągłe i zgodne (17–21 po jednym wierszu w obu tabelach §2)
+- [x] 1.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md` — cbf61709
+- [x] 1.2 Numery ryzyk w tabeli §2, w Risk Response Guidance i w §3 są ciągłe i zgodne (17–21 po jednym wierszu w obu tabelach §2) — cbf61709
 
 #### Manual
 
-- [x] 1.3 Każde nowe ryzyko ma źródło w PRD, roadmapie albo archiwum i nie cytuje `plik:linia` ani nazw funkcji w scenariuszu
+- [x] 1.3 Każde nowe ryzyko ma źródło w PRD, roadmapie albo archiwum i nie cytuje `plik:linia` ani nazw funkcji w scenariuszu — cbf61709
 
 ### Phase 2: §4–§7, frontmatter
 
 #### Automated
 
-- [ ] 2.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md`
-- [ ] 2.2 Liczba rodzajów w dokumencie (16) zgadza się z `CARD_KINDS`
-- [ ] 2.3 Liczba testów w §4 i §5 zgadza się z ostatnim `npm test`
+- [x] 2.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md`
+- [x] 2.2 Liczba rodzajów w dokumencie (16) zgadza się z `CARD_KINDS`
+- [x] 2.3 Liczba testów w §4 i §5 zgadza się z ostatnim `npm test`
 
 #### Manual
 
-- [ ] 2.4 Każda liczba w tabeli Strykera zgadza się z `stryker-results.md` z S-50
-- [ ] 2.5 Żaden nowy akapit nie twierdzi, że test istnieje, jeśli go w repozytorium nie ma
+- [x] 2.4 Każda liczba w tabeli Strykera zgadza się z `stryker-results.md` z S-50
+- [x] 2.5 Żaden nowy akapit nie twierdzi, że test istnieje, jeśli go w repozytorium nie ma
 
 ### Phase 3: Roadmapa i weryfikacja
 
