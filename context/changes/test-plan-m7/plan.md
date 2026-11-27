@@ -207,9 +207,9 @@ Brak nowego kodu, więc brak nowych testów. Weryfikacja jest dokumentowa: Prett
 
 #### Automated
 
-- [x] 3.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md context/foundation/roadmap.md`
-- [x] 3.2 `git diff --name-only origin/main` zawiera tylko pliki pod `context/`
+- [x] 3.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md context/foundation/roadmap.md` — 4d243334
+- [x] 3.2 `git diff --name-only origin/main` zawiera tylko pliki pod `context/` — 4d243334
 
 #### Manual
 
-- [x] 3.3 Raport `/10x-impl-review` ma werdykt APPROVED
+- [x] 3.3 Raport `/10x-impl-review` ma werdykt APPROVED — 4d243334
