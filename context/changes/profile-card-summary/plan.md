@@ -213,7 +213,7 @@ Brak migracji; dane profilu bez zmian.
 #### Automated
 
 - [x] 3.1 `npm test`, `npm run lint`, `npm run depcruise`, `npx astro check`, `npm run build` zielone
-- [x] 3.2 E2E jak w fazie 2 na trzech projektach
+- [x] 3.2 E2E jak w fazie 2 na trzech projektach — f8e2bd42
 
 #### Manual
 

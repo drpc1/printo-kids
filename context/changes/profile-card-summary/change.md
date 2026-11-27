@@ -1,7 +1,7 @@
 ---
 change_id: profile-card-summary
 title: Podsumowanie ustawień kart w oknie profilu przy 16 kartach
-status: implementing
+status: impl_reviewed
 created: 2026-11-27
 updated: 2026-11-27
 archived_at: null
