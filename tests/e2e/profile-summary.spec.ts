@@ -132,7 +132,7 @@ test("the edit window shows the rule and a read-only summary of every card", asy
 
 const ZOSIA = { id: "profile-zosia", name: "Zosia", character: "kot" };
 
-test("a profile that used only the maze lists one row and folds the other cards into Domyślne", async ({
+test("a new profile has no used card, maze included, and shows every card under an open Domyślne", async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
@@ -140,9 +140,27 @@ test("a profile that used only the maze lists one row and folds the other cards 
   await page.goto("/maze");
 
   const dialog = await openEdit(page, "Zosia");
+  await expect(dialog.getByRole("list", { name: "Karty z ustawieniami profilu" })).toHaveCount(0);
+  await expect(dialog.getByText("Domyślne (16)", { exact: true })).toBeVisible();
+  const folded = dialog.getByRole("list", { name: "Karty z ustawieniami domyślnymi" });
+  await expect(folded.getByRole("link")).toHaveCount(16);
+  await folded.getByRole("link", { name: "Labirynt", exact: true }).click();
+  await expect(page).toHaveURL(/\/maze$/);
+  await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();
+});
+
+test("a profile with one chosen card lists one row and folds the other cards into Domyślne", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  const onlyNonogram = { ...ZOSIA, cards: { nonogram: { level: "sredni", category: "zwierzeta" } } };
+  await seed(page, [onlyNonogram], onlyNonogram.id);
+  await page.goto("/maze");
+
+  const dialog = await openEdit(page, "Zosia");
   const used = dialog.getByRole("list", { name: "Karty z ustawieniami profilu" });
   await expect(used.getByRole("link")).toHaveCount(1);
-  await expect(used.getByRole("link", { name: /^Labirynt\s+Poziom 3/ })).toBeVisible();
+  await expect(used.getByRole("link", { name: /^Nonogram\s+średni · Zwierzęta/ })).toBeVisible();
 
   // Folded until opened; the summary opens with the keyboard.
   const folded = dialog.getByRole("list", { name: "Karty z ustawieniami domyślnymi" });

@@ -19,7 +19,7 @@ import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
 import { Separator } from "@/components/ui/separator";
 import { useToday } from "@/hooks/useToday";
-import { cardSummaries, splitCardSummaries } from "@/lib/card-summary";
+import { profileCardGroups } from "@/lib/card-summary";
 import { readLastUsed } from "@/lib/last-used";
 import {
   ALLOWED_CHARACTER_IDS,
@@ -580,25 +580,27 @@ const SUMMARY_LINK_CLASS =
  */
 function ProfileSummary({ profile }: { profile: ChildProfile }) {
   const today = useToday();
-  const { used, defaults } = splitCardSummaries(cardSummaries(profile, today));
+  const { used, defaults } = profileCardGroups(profile, today);
   return (
     <div className={cn("flex flex-col gap-2")}>
       <p className={cn("text-muted-foreground text-sm")}>
         Ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
       </p>
       <div className={cn("border-border rounded-md border")}>
-        <ul aria-label="Karty z ustawieniami profilu">
-          {used.map((summary) => (
-            <li key={summary.id} className={cn("border-border border-t first:border-t-0")}>
-              <a href={summary.href} className={cn(SUMMARY_LINK_CLASS)}>
-                <span className={cn("font-medium")}>{summary.title}</span>
-                <span className={cn("text-muted-foreground text-right")}>{summary.detail} ›</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        {used.length > 0 ? (
+          <ul aria-label="Karty z ustawieniami profilu">
+            {used.map((summary) => (
+              <li key={summary.id} className={cn("border-border border-t first:border-t-0")}>
+                <a href={summary.href} className={cn(SUMMARY_LINK_CLASS)}>
+                  <span className={cn("font-medium")}>{summary.title}</span>
+                  <span className={cn("text-muted-foreground text-right")}>{summary.detail} ›</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         {defaults.length > 0 ? (
-          <details className={cn("group border-border border-t")}>
+          <details open={used.length === 0} className={cn("group border-border border-t first:border-t-0")}>
             <summary className={cn(SUMMARY_LINK_CLASS, "cursor-pointer list-none [&::-webkit-details-marker]:hidden")}>
               <span className={cn("text-muted-foreground")}>Domyślne ({defaults.length})</span>
               <ChevronDown

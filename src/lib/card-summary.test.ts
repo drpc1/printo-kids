@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { defaultCardSettings, type CardSettingsMap } from "./card-settings.ts";
-import { cardSummaries, splitCardSummaries } from "./card-summary.ts";
+import { cardSummaries, profileCardGroups, splitCardSummaries } from "./card-summary.ts";
 import { CARD_KINDS, cardsInCatalogOrder } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import type { LevelId } from "./maze/levels.ts";
@@ -370,5 +370,22 @@ void describe("splitCardSummaries", () => {
   void test("a profile that used every card has no defaults", () => {
     const every = Object.assign({}, ...Object.values(SAVED_SETTINGS)) as Parameters<typeof profile>[1];
     assert.deepEqual(splitCardSummaries(cardSummaries(profile(null, every))).defaults, []);
+  });
+});
+
+void describe("profileCardGroups", () => {
+  void test("a new profile has no used card, the maze included, until it stores a level", () => {
+    const fresh = profileCardGroups(profile(null));
+    assert.deepEqual(fresh.used, []);
+    assert.equal(fresh.defaults.length, cardSummaries(profile(null)).length);
+    assert.ok(fresh.defaults.some((summary) => summary.id === "labirynt"));
+  });
+
+  void test("the maze moves to used once its level is stored", () => {
+    const chosen = profileCardGroups(profile(null, { labirynt: { level: "lat6" } }));
+    assert.deepEqual(
+      chosen.used.map((summary) => summary.id),
+      ["labirynt"],
+    );
   });
 });
