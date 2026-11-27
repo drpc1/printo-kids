@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-27
+updated: 2026-11-28
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -61,7 +61,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-43 | card-tags-filter               | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                | S-42, S-47, S-48, S-49                                     | MS-03, FR-014, US-05                                                      | done     |
 | S-53 | how-it-works-m7                | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16                                                                    | S-42, S-47, S-48, S-49, S-43                               | MS-05, US-22, FR-031                                                      | done     |
 | S-50 | stryker-m7-cards               | Zespół ma karty i logikę M-7 sprawdzone mutacjami Strykera na zakresach z ryzykiem                                                                          | S-42, S-47, S-48, S-49, S-55                               | MS-01, MS-02, MS-03                                                       | done     |
-| S-51 | test-plan-m7                   | Zespół ma test-plan.md zgodny ze stanem po M-7                                                                                                              | S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54, S-55 | MS-01, MS-02, MS-03                                                       | proposed |
+| S-51 | test-plan-m7                   | Zespół ma test-plan.md zgodny ze stanem po M-7                                                                                                              | S-42, S-47, S-48, S-49, S-43, S-50, S-52, S-53, S-54, S-55 | MS-01, MS-02, MS-03                                                       | in-progress |
 
 ## Streams
 
@@ -246,7 +246,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Ostatni slice kamienia: opisuje to, co zbudowały i sprawdziły poprzednie.
-- **Status:** proposed
+- **Status:** in-progress
 
 ## Backlog Handoff
 
