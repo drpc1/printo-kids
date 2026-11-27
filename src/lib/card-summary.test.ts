@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { defaultCardSettings, type CardSettingsMap } from "./card-settings.ts";
-import { cardSummaries } from "./card-summary.ts";
+import { cardSummaries, splitCardSummaries } from "./card-summary.ts";
 import { CARD_KINDS, cardsInCatalogOrder } from "./cards.ts";
 import type { ChildProfile } from "./child-profiles.ts";
 import type { LevelId } from "./maze/levels.ts";
@@ -342,5 +342,33 @@ void describe("the card registry and summaryParts", () => {
       const summary = byId(cardSummaries(profile(null, saved)), kind.id);
       assert.equal(summary.used, true, `summaryParts has no branch for "${kind.id}"`);
     }
+  });
+});
+
+void describe("splitCardSummaries", () => {
+  void test("a profile with nothing saved uses only the maze and keeps the rest as defaults in catalog order", () => {
+    const all = cardSummaries(profile(null));
+    const { used, defaults } = splitCardSummaries(all);
+    assert.deepEqual(
+      used.map((summary) => summary.id),
+      ["labirynt"],
+    );
+    assert.deepEqual(
+      defaults.map((summary) => summary.id),
+      all.filter((summary) => summary.id !== "labirynt").map((summary) => summary.id),
+    );
+  });
+
+  void test("a card the profile saved moves to used and every card lands in exactly one group", () => {
+    const all = cardSummaries(profile("lat5", { nonogram: { level: "trudny", category: "ksztalty" } }));
+    const { used, defaults } = splitCardSummaries(all);
+    assert.ok(used.some((summary) => summary.id === "nonogram"));
+    assert.ok(!defaults.some((summary) => summary.id === "nonogram"));
+    assert.equal(used.length + defaults.length, all.length);
+  });
+
+  void test("a profile that used every card has no defaults", () => {
+    const every = Object.assign({}, ...Object.values(SAVED_SETTINGS)) as Parameters<typeof profile>[1];
+    assert.deepEqual(splitCardSummaries(cardSummaries(profile(null, every))).defaults, []);
   });
 });
