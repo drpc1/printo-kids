@@ -194,9 +194,9 @@ Brak nowego kodu, więc brak nowych testów. Weryfikacja jest dokumentowa: Prett
 
 #### Automated
 
-- [x] 2.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md`
-- [x] 2.2 Liczba rodzajów w dokumencie (16) zgadza się z `CARD_KINDS`
-- [x] 2.3 Liczba testów w §4 i §5 zgadza się z ostatnim `npm test`
+- [x] 2.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md` — 85dc40df
+- [x] 2.2 Liczba rodzajów w dokumencie (16) zgadza się z `CARD_KINDS` — 85dc40df
+- [x] 2.3 Liczba testów w §4 i §5 zgadza się z ostatnim `npm test` — 85dc40df
 
 #### Manual
 
@@ -207,9 +207,9 @@ Brak nowego kodu, więc brak nowych testów. Weryfikacja jest dokumentowa: Prett
 
 #### Automated
 
-- [ ] 3.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md context/foundation/roadmap.md`
-- [ ] 3.2 `git diff --name-only origin/main` zawiera tylko pliki pod `context/`
+- [x] 3.1 Prettier przechodzi: `npx prettier --check context/foundation/test-plan.md context/foundation/roadmap.md`
+- [x] 3.2 `git diff --name-only origin/main` zawiera tylko pliki pod `context/`
 
 #### Manual
 
-- [ ] 3.3 Raport `/10x-impl-review` ma werdykt APPROVED
+- [x] 3.3 Raport `/10x-impl-review` ma werdykt APPROVED

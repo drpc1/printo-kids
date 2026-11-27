@@ -1,7 +1,7 @@
 ---
 change_id: test-plan-m7
 title: Test plan po M-7
-status: implementing
+status: impl_reviewed
 created: 2026-11-28
 updated: 2026-11-28
 archived_at: null
