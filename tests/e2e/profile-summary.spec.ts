@@ -2,7 +2,7 @@
 // Protects the profile window: a new profile asks only for the name and the character and starts at the default maze
 // level, the edit window has no level control but one sentence about the rule and a read-only summary of the six
 // cards (each row leads to its card page, an old profile shows its level as the maze level, a card the profile never
-// used says "domyślne"), a pick in the favorite list is saved at once (no "Zapisz" and no "Anuluj"; favorite-character-
+// used waits in the folded "Domyślne (N)" row and still leads to its page; S-52), a pick in the favorite list is saved at once (no "Zapisz" and no "Anuluj"; favorite-character-
 // explicit, S-31), the list opened from edit shows a visible heading "Ulubiona postać" in the window title, level
 // with the close control and above the character rows, and has no "Wybierz postać", the add and edit forms show that
 // caption under the name (beside the chosen character on a wide screen, above it on a phone), the list opened from
@@ -100,9 +100,7 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Labirynt\s+Poziom 4/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Symetria\s+Poziom 3 · kolory · Wszystkie/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Sudoku\s+6×6 · średni · kształty/ })).toBeVisible();
-  await expect(dialog.getByRole("link", { name: /^Sekwencje\s+domyślne/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Nonogram\s+średni · Zwierzęta/ })).toBeVisible();
-  await expect(dialog.getByRole("link", { name: /^Dyktando graficzne\s+domyślne/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Kto ma więcej\s+łatwy/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Skopiuj obrazek\s+trudny · kolory · Zwierzęta/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Szlaczki\s+Poziom 4 · bez linii/ })).toBeVisible();
@@ -112,14 +110,73 @@ test("the edit window shows the rule and a read-only summary of every card", asy
   await expect(dialog.getByRole("link", { name: /^Od najmniejszego\s+średni · kolory/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Labirynt liczbowy\s+Poziom 5/ })).toBeVisible();
   await expect(dialog.getByRole("link", { name: /^Cienie\s+Poziom 3/ })).toBeVisible();
-  const titles = await dialog
-    .getByRole("list")
-    .getByRole("link")
-    .evaluateAll((links) => links.map((link) => link.querySelector("span")?.textContent ?? ""));
-  expect(titles.length).toBeGreaterThan(0);
-  expect(titles).toEqual([...titles].sort((a, b) => a.localeCompare(b, "pl")));
+  // The two cards Ania never used wait in the folded row: not shown until it is opened, then reachable by title.
+  await expect(dialog.getByRole("link", { name: /^Sekwencje/ })).toBeHidden();
+  await expect(dialog.getByRole("link", { name: /^Dyktando graficzne/ })).toBeHidden();
+  await dialog.getByText("Domyślne (2)", { exact: true }).click();
+  await expect(dialog.getByRole("link", { name: "Sekwencje", exact: true })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: "Dyktando graficzne", exact: true })).toBeVisible();
+  const titlesOf = (name: string) =>
+    dialog
+      .getByRole("list", { name })
+      .getByRole("link")
+      .evaluateAll((links) => links.map((link) => link.querySelector("span")?.textContent ?? ""));
+  for (const name of ["Karty z ustawieniami profilu", "Karty z ustawieniami domyślnymi"]) {
+    const titles = await titlesOf(name);
+    expect(titles.length).toBeGreaterThan(0);
+    expect(titles).toEqual([...titles].sort((a, b) => a.localeCompare(b, "pl")));
+  }
   await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
   await expect(dialog.getByRole("button", { name: "Anuluj" })).toHaveCount(0);
+});
+
+const ZOSIA = { id: "profile-zosia", name: "Zosia", character: "kot" };
+
+test("a profile that used only the maze lists one row and folds the other cards into Domyślne", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  await seed(page, [ZOSIA], ZOSIA.id);
+  await page.goto("/maze");
+
+  const dialog = await openEdit(page, "Zosia");
+  const used = dialog.getByRole("list", { name: "Karty z ustawieniami profilu" });
+  await expect(used.getByRole("link")).toHaveCount(1);
+  await expect(used.getByRole("link", { name: /^Labirynt\s+Poziom 3/ })).toBeVisible();
+
+  // Folded until opened; the summary opens with the keyboard.
+  const folded = dialog.getByRole("list", { name: "Karty z ustawieniami domyślnymi" });
+  await expect(folded).toBeHidden();
+  const toggle = dialog.getByText("Domyślne (15)", { exact: true });
+  await dialog.locator("summary").focus();
+  await page.keyboard.press("Enter");
+  await expect(folded.getByRole("link")).toHaveCount(15);
+  await page.keyboard.press("Enter");
+  await expect(folded).toBeHidden();
+
+  // A folded card still leads to its page and the profile stays chosen.
+  await toggle.click();
+  await folded.getByRole("link", { name: /^Sekwencje/ }).click();
+  await expect(page).toHaveURL(/\/sequences$/);
+  await expect(page.getByRole("button", { name: "Zosia", exact: true })).toBeVisible();
+});
+
+test("a profile that used every card has no Domyślne row", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "layout-independent flow");
+  const everyCard = {
+    ...ANIA,
+    cards: {
+      ...ANIA.cards,
+      sekwencje: { level: "lat5", colors: false },
+      dyktando: { level: "sredni", category: "wszystkie" },
+    },
+  };
+  await seed(page, [everyCard], everyCard.id);
+  await page.goto("/maze");
+
+  const dialog = await openEdit(page, "Ania");
+  await expect(dialog.getByRole("list", { name: "Karty z ustawieniami profilu" }).getByRole("link")).toHaveCount(16);
+  await expect(dialog.getByText(/^Domyślne \(/)).toHaveCount(0);
 });
 
 test("a summary row opens the card page and the profile stays chosen", async ({ page }, testInfo) => {
@@ -308,11 +365,16 @@ test("the edit window keeps the character row reachable and the summary inside i
   expect(box?.y ?? -1).toBeGreaterThanOrEqual(0);
   expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(height);
   await expect(dialog.getByRole("button", { name: "Zapisz" })).toHaveCount(0);
-  const list = await dialog.getByRole("list").boundingBox();
+  await dialog.getByText("Domyślne (2)", { exact: true }).click();
   const frame = await dialog.boundingBox();
-  expect(list).not.toBeNull();
   expect(frame).not.toBeNull();
-  expect((list?.x ?? 0) + (list?.width ?? 0)).toBeLessThanOrEqual((frame?.x ?? 0) + (frame?.width ?? 0));
+  for (const name of ["Karty z ustawieniami profilu", "Karty z ustawieniami domyślnymi"]) {
+    const list = await dialog.getByRole("list", { name }).boundingBox();
+    expect(list).not.toBeNull();
+    expect((list?.x ?? 0) + (list?.width ?? 0)).toBeLessThanOrEqual((frame?.x ?? 0) + (frame?.width ?? 0));
+  }
+  const root = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(root).toBeLessThanOrEqual(0);
 });
 
 test("Dodaj profil has a plus icon and a border, unlike the profile rows", async ({ page }, testInfo) => {

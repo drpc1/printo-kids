@@ -191,17 +191,17 @@ Brak migracji; dane profilu bez zmian.
 
 #### Automated
 
-- [x] 1.1 Testy jednostkowe przechodzą: `npm test`
-- [x] 1.2 Lint przechodzi: `npm run lint`
-- [x] 1.3 Test jest czerwony po celowym zepsuciu, potem przywrócony
+- [x] 1.1 Testy jednostkowe przechodzą: `npm test` — cad9c91b
+- [x] 1.2 Lint przechodzi: `npm run lint` — cad9c91b
+- [x] 1.3 Test jest czerwony po celowym zepsuciu, potem przywrócony — cad9c91b
 
 ### Phase 2: Widok i testy e2e
 
 #### Automated
 
-- [ ] 2.1 E2E przechodzą na `chromium`, `phone-360` i `tablet-768`
-- [ ] 2.2 Lint i typy: `npm run lint`, `npx astro check`
-- [ ] 2.3 Test e2e jest czerwony po celowym zepsuciu widoku
+- [x] 2.1 E2E przechodzą na `chromium`, `phone-360` i `tablet-768`
+- [x] 2.2 Lint i typy: `npm run lint`, `npx astro check`
+- [x] 2.3 Test e2e jest czerwony po celowym zepsuciu widoku
 
 #### Manual
 
