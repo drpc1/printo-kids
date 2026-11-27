@@ -19,7 +19,7 @@ import type { CardSettingsMap } from "@/lib/card-settings";
 import { readActiveProfile } from "@/lib/active-profile";
 import { Separator } from "@/components/ui/separator";
 import { useToday } from "@/hooks/useToday";
-import { cardSummaries } from "@/lib/card-summary";
+import { cardSummaries, splitCardSummaries } from "@/lib/card-summary";
 import { readLastUsed } from "@/lib/last-used";
 import {
   ALLOWED_CHARACTER_IDS,
@@ -570,31 +570,55 @@ function ProfileCharacterControl({
   );
 }
 
-/** What the profile remembers for each card, read-only: the bar of every card is the one place that changes it. */
+const SUMMARY_LINK_CLASS =
+  "focus-visible:ring-ring/50 flex min-h-11 items-center justify-between gap-2 rounded-md px-3 py-1.5 text-sm outline-none focus-visible:ring-[3px]";
+
+/**
+ * What the profile remembers for each card, read-only: the bar of every card is the one place that changes it.
+ * Cards the profile has chosen something on are rows; the rest wait in one folded row, so the window does not grow
+ * with every new card.
+ */
 function ProfileSummary({ profile }: { profile: ChildProfile }) {
   const today = useToday();
+  const { used, defaults } = splitCardSummaries(cardSummaries(profile, today));
   return (
     <div className={cn("flex flex-col gap-2")}>
       <p className={cn("text-muted-foreground text-sm")}>
         Ustawienia każdej karty zapamiętują się same, a ulubiona postać zmienia się tylko jawnie.
       </p>
-      <ul className={cn("border-border rounded-md border")}>
-        {cardSummaries(profile, today).map((summary) => (
-          <li key={summary.id} className={cn("border-border border-t first:border-t-0")}>
-            <a
-              href={summary.href}
-              className={cn(
-                "focus-visible:ring-ring/50 flex min-h-11 items-center justify-between gap-2 rounded-md px-3 py-1.5 text-sm outline-none focus-visible:ring-[3px]",
-              )}
-            >
-              <span className={cn("font-medium")}>{summary.title}</span>
-              <span className={cn("text-muted-foreground text-right", !summary.used && "italic")}>
-                {summary.detail} ›
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div className={cn("border-border rounded-md border")}>
+        <ul aria-label="Karty z ustawieniami profilu">
+          {used.map((summary) => (
+            <li key={summary.id} className={cn("border-border border-t first:border-t-0")}>
+              <a href={summary.href} className={cn(SUMMARY_LINK_CLASS)}>
+                <span className={cn("font-medium")}>{summary.title}</span>
+                <span className={cn("text-muted-foreground text-right")}>{summary.detail} ›</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        {defaults.length > 0 ? (
+          <details className={cn("group border-border border-t")}>
+            <summary className={cn(SUMMARY_LINK_CLASS, "cursor-pointer list-none [&::-webkit-details-marker]:hidden")}>
+              <span className={cn("text-muted-foreground")}>Domyślne ({defaults.length})</span>
+              <ChevronDown
+                className={cn("text-muted-foreground size-4 shrink-0 transition-transform group-open:rotate-180")}
+                aria-hidden
+              />
+            </summary>
+            <ul aria-label="Karty z ustawieniami domyślnymi">
+              {defaults.map((summary) => (
+                <li key={summary.id} className={cn("border-border border-t")}>
+                  <a href={summary.href} className={cn(SUMMARY_LINK_CLASS)}>
+                    <span className={cn("font-medium")}>{summary.title}</span>
+                    <span aria-hidden>›</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        ) : null}
+      </div>
     </div>
   );
 }

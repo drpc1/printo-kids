@@ -227,3 +227,11 @@ function categoryLabel(category: ObjectCategoryChoiceId, today?: Date): string {
   const shown = today === undefined ? category : visibleCategoryOn(category, today);
   return OBJECT_CATEGORY_CHOICES.find((choice) => choice.id === shown)?.label ?? shown;
 }
+
+/** The cards the profile has chosen something on, and the rest, both in catalog order. */
+export function splitCardSummaries(summaries: CardSummary[]): { used: CardSummary[]; defaults: CardSummary[] } {
+  return {
+    used: summaries.filter((summary) => summary.used),
+    defaults: summaries.filter((summary) => !summary.used),
+  };
+}

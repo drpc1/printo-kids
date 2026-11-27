@@ -3,7 +3,7 @@ project: PrintoKids
 version: 1
 status: draft
 created: 2026-09-27
-updated: 2026-11-24
+updated: 2026-11-27
 prd_version: 6
 main_goal: speed
 top_blocker: decisions
@@ -56,7 +56,7 @@ Rodzic przedszkolaka wyczerpał darmowe karty o właściwej skali trudności, a 
 | S-48 | size-order-card                | Rodzic otwiera z katalogu „Od najmniejszego”, generuje kartę A4, na której dziecko numeruje obrazki od najmniejszego do największego, podgląda ją i drukuje | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08                               | done     |
 | S-49 | number-maze-card               | Rodzic otwiera z katalogu „Labirynt liczbowy”, generuje kartę A4, na której dziecko idzie od startu do mety po kolejnych liczbach, podgląda ją i drukuje    | —                                                          | MS-02, FR-014, FR-017, FR-030, US-05, US-08, US-39, US-40, FR-049, FR-050 | done     |
 | S-55 | copy-drawing-asymmetric-shapes | Rodzic dostaje na „Skopiuj obrazek” także niesymetryczne kształty (np. skarpeta, ryba, dinozaur), z kategorią i kolorami jak dotąd                          | —                                                          | MS-07, FR-037, FR-038, US-27, US-28                                       | done     |
-| S-52 | profile-card-summary           | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą                                                          | S-42, S-47, S-48, S-49                                     | MS-04, FR-017, US-08                                                      | blocked  |
+| S-52 | profile-card-summary           | Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą                                                          | S-42, S-47, S-48, S-49                                     | MS-04, FR-017, US-08                                                      | done     |
 | S-54 | seasons-objects-characters     | Rodzic wybiera obiekty i postacie kolejnej pory roku w jej oknie dat, tak jak świąteczne                                                                    | —                                                          | MS-06, FR-028, FR-029, FR-012, US-19, US-20                               | done     |
 | S-43 | card-tags-filter               | Rodzic zawęża katalog na stronie głównej do kart z wybranym tagiem i szybciej znajduje właściwy rodzaj karty                                                | S-42, S-47, S-48, S-49                                     | MS-03, FR-014, US-05                                                      | done     |
 | S-53 | how-it-works-m7                | Rodzic otwiera „Jak to działa” i szybko znajduje opis właściwej karty, choć kart jest 16                                                                    | S-42, S-47, S-48, S-49, S-43                               | MS-05, US-22, FR-031                                                      | done     |
@@ -194,7 +194,7 @@ Brak. Katalog kart, pamięć paska i postać przy poleceniu już istnieją (Base
 - **Unknowns:**
   - Co to znaczy „przebudować profil”: tylko skrócić podsumowanie (US-08: „tylko do odczytu”), czy zmienić też to, co profil pamięta? — Owner: user. Block: yes (przed `/10x-new`).
 - **Risk:** Podsumowanie jest dziś listą wszystkich rodzajów kart; z 16 kartami okno zajmuje ekran. Zmiana dotyka US-08 i danych zapisanych w profilach, więc stare profile muszą się czytać bez migracji.
-- **Status:** blocked
+- **Status:** done
 
 ### S-54: Pory roku
 
@@ -378,3 +378,4 @@ Kolorowanki oraz działania na liczbach z dopiskiem waluty zostają poza tą lis
 - **S-46: Zespół otwiera `context/foundation/test-plan.md` i widzi stan po M-6: nowe karty i sezonową zawartość w mapie ryzyk (§2), w tym, co jest już sprawdzone (§5), w zakresach Strykera (§5a) i w podręczniku (§6), bez nieaktualnych liczb kart.** — Archived 2026-11-17 → `context/archive/2026-11-17-test-plan-m6/`. Lesson: —.
 - **S-47: Rodzic otwiera z katalogu „Cienie”, wybiera poziom, uruchamia generowanie i dostaje kartę A4: w jednej kolumnie kolorowe obrazki z własnego katalogu karty, w drugiej ich czarne cienie w innej kolejności; dziecko łączy kreską każdy obrazek z jego cieniem. Podgląda kartę i drukuje ją jako jedną stronę A4 także z telefonu; profil pamięta pasek, a postać stoi przy poleceniu. Karta ma miniaturę i opis w „Jak to działa”; tag dochodzi w S-43. Generator sprawdza, że cienie na karcie różnią się wyraźnie.** — Archived 2026-11-22 → `context/archive/2026-11-20-shadows-card/`. Lesson: —.
 - **S-55: Rodzic dostaje na karcie „Skopiuj obrazek” także obrazki niesymetryczne lewo–prawo (np. skarpeta, laska cukrowa, ryba, dinozaur) z katalogu kształtów dyktanda, w wybranej kategorii i z kolorami po włączeniu kolorów; karta nadal ma jedną sprawdzalną odpowiedź i mieści się na A4.** — Archived 2026-11-22 → `context/archive/2026-11-21-copy-drawing-asymmetric-shapes/`. Lesson: —.
+- **S-52: Rodzic otwiera okno profilu i widzi ustawienia kart w postaci, która nie rośnie z każdą nową kartą (wiersze kart użytych i zwinięte „Domyślne (N)” z linkami); każda pozycja prowadzi do strony karty.** — Archived 2026-11-27 → `context/archive/2026-11-27-profile-card-summary/`. Lesson: —.
